@@ -25,7 +25,7 @@ export class FuseConfigService
                 navigation      : 'left', // 'right', 'left', 'top', 'none'
                 navigationFolded: false, // true, false
                 toolbar         : 'below', // 'above', 'below', 'none'
-                footer          : 'below', // 'above', 'below', 'none'
+                footer          : 'none', // 'above', 'below', 'none'
                 mode            : 'fullwidth' // 'boxed', 'fullwidth'
             },
             colorClasses    : {
