@@ -18,7 +18,11 @@ import { TabService } from '../../tab/tab.service';
 export class FuseHomeComponent
 {
     @ViewChild(TabsComponent) tabsComponent;
-    @ViewChild('aboutTemplate') aboutTemplate;
+    @ViewChild('aboutTpl') aboutTpl;
+    @ViewChild('usersTpl') usersTpl;
+    @ViewChild('exportsTpl') exportsTpl;
+    @ViewChild('presentationsTpl') presentationsTpl;
+
     tabSubscription: Subscription;
     constructor(private translationLoader: FuseTranslationLoaderService, private tabService: TabService)
     {
@@ -36,9 +40,23 @@ export class FuseHomeComponent
         this.tabsComponent.openTab(_tab);
     }
 
-    onOpenAbout() {
-        const aboutTab = new Tab('About', 'aboutTemplate', {}, true);
+    openAbout() {
+        const aboutTab = new Tab('About', 'aboutTpl', {}, true);
         this.openTab(aboutTab);
+    }
+
+    openUsers() {
+        const usersTab = new Tab('Users', 'usersTpl', {}, false);
+        this.openTab(usersTab);
+    }
+
+    openExports() {
+        const exportsTab = new Tab('Exports', 'exportsTpl', {}, false);
+        this.openTab(exportsTab);
+    }
+    openPresentations() {
+        const presentationsTab = new Tab('Presentations', 'presentationsTpl', {}, false);
+        this.openTab(presentationsTab);
     }
 
 }

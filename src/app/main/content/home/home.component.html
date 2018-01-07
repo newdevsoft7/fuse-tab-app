@@ -8,13 +8,15 @@
             at tellus. Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada. Curabitur non nulla sit amet nisl
             tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla
             sit amet nisl tempus convallis quis ac lectus.</p>
-            <button class="btn btn-default" (click)="onOpenAbout()">
-                <i class="glyphicon glyphicon-question-sign"></i> About this</button>
+            <button mat-raised-button color="accent" (click)="openAbout()">About</button>
+            <button mat-raised-button color="accent" (click)="openUsers()">Users</button>
+            <button mat-raised-button color="accent" (click)="openExports()">Exports</button>
+            <button mat-raised-button color="accent" (click)="openPresentations()">Presentations</button>
         </app-tab>
     </app-tabs>
 
         
-    <ng-template #aboutTemplate>
+    <ng-template #aboutTpl>
         <h3>About</h3>
         <p>Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget
             felis porttitor volutpat. Donec rutrum congue leo eget malesuada. Vivamus magna justo, lacinia eget consectetur sed,
@@ -49,6 +51,18 @@
             at tellus. Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada. Curabitur non nulla sit amet nisl
             tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla
             sit amet nisl tempus convallis quis ac lectus.</p>
+    </ng-template>
+
+    <ng-template #usersTpl>
+        <app-users></app-users>
+    </ng-template>
+
+    <ng-template #exportsTpl>
+        <app-users-exports></app-users-exports>
+    </ng-template>
+
+    <ng-template #presentationsTpl>
+        <app-users-presentations></app-users-presentations>
     </ng-template>
 
 </div>

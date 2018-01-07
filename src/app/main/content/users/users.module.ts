@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UsersComponent } from './users.component';
+import { UsersExportsComponent } from './exports/exports.component';
+import { UsersPresentationsComponent } from './presentations/presentations.component';
+import { SharedModule } from '../../../core/modules/shared.module';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedModule
+  ],
+  declarations: [
+    UsersComponent,
+    UsersExportsComponent,
+    UsersPresentationsComponent
+  ],
+  exports: [
+    UsersComponent,
+    UsersExportsComponent,
+    UsersPresentationsComponent
+  ]
+})
+export class UsersModule { }

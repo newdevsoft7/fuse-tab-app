@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../../../core/modules/shared.module';
 import { TabModule } from '../../tab/tab.module';
+import { UsersModule } from '../users/users.module';
 
 import { FuseHomeComponent } from './home.component';
 
@@ -20,6 +21,7 @@ const routes = [
     imports     : [
         SharedModule,
         TabModule,
+        UsersModule,
         RouterModule.forChild(routes)
     ],
     exports     : [
