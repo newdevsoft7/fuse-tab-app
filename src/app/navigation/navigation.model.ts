@@ -1,4 +1,9 @@
 import { FuseNavigationModelInterface } from '../core/components/navigation/navigation.model';
+import {
+    USERS_TAB,
+    USERS_EXPORTS_TAB,
+    USERS_PRESENTATIONS_TAB
+} from '../constants/tab';
 
 export class FuseNavigationModel implements FuseNavigationModelInterface
 {
@@ -20,7 +25,7 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'translate': 'NAV.USERS_EXPORT',
                         'type' : 'item',
                         'icon' : 'email',
-                        'url'  : '/sample'
+                        'tab' : USERS_EXPORTS_TAB
                     },
                     {
                         'id': 'presentations',
@@ -28,7 +33,7 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'translate': 'NAV.USERS_PRESENTATIONS',
                         'type': 'item',
                         'icon': 'email',
-                        'url': '/presentations'
+                        'tab': USERS_PRESENTATIONS_TAB
                         
                     }
                 ]

@@ -10,6 +10,7 @@ import { TabsComponent } from '../../tab/tabs/tabs.component';
 import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
+
 @Component({
     selector   : 'fuse-home',
     templateUrl: './home.component.html',
@@ -20,8 +21,8 @@ export class FuseHomeComponent
     @ViewChild(TabsComponent) tabsComponent;
     @ViewChild('aboutTpl') aboutTpl;
     @ViewChild('usersTpl') usersTpl;
-    @ViewChild('exportsTpl') exportsTpl;
-    @ViewChild('presentationsTpl') presentationsTpl;
+    @ViewChild('usersExportsTpl') usersExportsTpl;
+    @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
 
     tabSubscription: Subscription;
     constructor(private translationLoader: FuseTranslationLoaderService, private tabService: TabService)
@@ -51,11 +52,11 @@ export class FuseHomeComponent
     }
 
     openExports() {
-        const exportsTab = new Tab('Exports', 'exportsTpl', {}, false);
+        const exportsTab = new Tab('Exports', 'usersExportsTpl', {}, false);
         this.openTab(exportsTab);
     }
     openPresentations() {
-        const presentationsTab = new Tab('Presentations', 'presentationsTpl', {}, false);
+        const presentationsTab = new Tab('Presentations', 'usersPresentationsTpl', {}, false);
         this.openTab(presentationsTab);
     }
 

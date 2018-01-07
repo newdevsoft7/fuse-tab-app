@@ -8,7 +8,7 @@
     </span>
 </a>
 
-<span class="nav-link" *ngIf="item.function" (click)="item.function()" matRipple>
+<span class="nav-link" *ngIf="item.tab" (click)="openTab(item.tab)" [class.active]="item.active" matRipple>
     <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
     <span class="nav-link-title" [translate]="item.translate">{{item.title}}</span>
     <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
