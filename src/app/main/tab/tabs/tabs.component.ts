@@ -1,16 +1,17 @@
-import { Component, ContentChildren, QueryList, AfterContentInit, ViewChild, ComponentFactoryResolver, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { Component, ContentChildren, QueryList, AfterContentInit, ViewChild, ComponentFactoryResolver, ViewContainerRef, ViewEncapsulation, ElementRef } from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 import { DynamicTabsDirective } from '../dynamic-tabs.directive';
 import { Tab } from '../tab';
 import { TabService } from '../tab.service';
 
-
+export type ScrollDirection = 'after' | 'before';
 @Component({
 	selector: 'app-tabs',
 	templateUrl: './tabs.component.html',
 	styleUrls: ['./tabs.component.scss'],
 	encapsulation: ViewEncapsulation.None
 })
+
 export class TabsComponent implements AfterContentInit {
 	dynamicTabs: TabComponent[] = [];
 
@@ -20,8 +21,18 @@ export class TabsComponent implements AfterContentInit {
 	@ViewChild(DynamicTabsDirective)
 	dynamicTabPlaceholder: DynamicTabsDirective;
 
+	@ViewChild('tabListContainer') _tabListContainer: ElementRef;
+	@ViewChild('tabList') _tabList: ElementRef;
 
-	constructor(private _componentFactoryResolver: ComponentFactoryResolver, private tabService: TabService) {
+	/** The distance in pixels that the tab labels should be translated to the left. */
+	private _scrollDistance = 0;
+	/** Whether the tab list can be scrolled more towards the end of the tab label list. */
+	_disableScrollAfter = true;
+
+	/** Whether the tab list can be scrolled more towards the beginning of the tab label list. */
+	_disableScrollBefore = true;
+
+	constructor(private _componentFactoryResolver: ComponentFactoryResolver, private tabService: TabService, private element: ElementRef) {
 	}
 
 	ngAfterContentInit() {
@@ -46,9 +57,6 @@ export class TabsComponent implements AfterContentInit {
 
 			// fetch the view container reference from our anchor directive
 			let viewContainerRef = this.dynamicTabPlaceholder.viewContainer;
-
-			// alternatively...
-			// let viewContainerRef = this.dynamicTabPlaceholder;
 
 			// create a component instance
 			let componentRef = viewContainerRef.createComponent(componentFactory);
@@ -105,6 +113,40 @@ export class TabsComponent implements AfterContentInit {
 			// close the 1st active tab (should only be one at a time)
 			this.closeTab(activeTabs[0]);
 		}
+	}
+
+	_checkScrollingControls() {
+		// Check if the pagination arrows should be activated.
+		this._disableScrollBefore = this.scrollDistance == 0;
+		this._disableScrollAfter = this.scrollDistance == this._getMaxScrollDistance();
+
+	}
+
+	/** Sets the distance in pixels that the tab header should be transformed in the X-axis. */
+	set scrollDistance(v: number) {
+		this._scrollDistance = Math.max(0, Math.min(this._getMaxScrollDistance(), v));
+	}
+
+	get scrollDistance(): number { return this._scrollDistance; }
+
+	_updateTabScrollPosition() {
+		const translateX = -this.scrollDistance;
+		this._tabList.nativeElement.style.transform = `translate3d(${translateX}px, 0, 0)`;
+		this._checkScrollingControls();
+	}
+
+	scrollHeader(scrollDir: ScrollDirection) {
+		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
+
+		// Move the scroll distance one-third the length of the tab list's viewport.
+		this.scrollDistance += (scrollDir == 'before' ? -1 : 1) * viewLength / 3;
+		this._updateTabScrollPosition();
+	}
+
+	_getMaxScrollDistance(): number {
+		const lengthOfTabList = this._tabList.nativeElement.scrollWidth;
+		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
+		return (lengthOfTabList - viewLength) || 0;
 	}
 
 }

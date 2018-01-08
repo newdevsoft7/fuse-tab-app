@@ -2,10 +2,32 @@ ul:not(.browser-default) {
     padding-left: 0;
     list-style-type: none;
 }
+.tabs-wrapper {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+
+    .tabs-nav {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        min-width: 32px;
+        cursor: pointer;
+        z-index: 2;
+        border: 1px solid rgba(197, 198, 203, 0.3);    
+    }
+
+    .tabs-viewer {
+        display: flex;
+        flex-grow: 1;
+        overflow: hidden;
+        z-index: 1;
+    }
+}
 .tabs {
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
     height: 48px;
     width: 100%;
     background-color: #fff;
@@ -13,6 +35,25 @@ ul:not(.browser-default) {
     white-space: nowrap;
     border-bottom: 1px solid rgba(197, 198, 203, 0.3);
     font-size: 0px;
+    transition: transform .5s cubic-bezier(.35,0,.25,1);
+    
+    .tabs-nav {
+        position: absolute;
+        background-color: #fff;
+        padding: 12px 5px;
+        display: inline-block;
+        border: 1px solid rgba(197, 198, 203, 0.3);
+    }
+
+    .tabs-nav-prev {
+        top: 0px;
+        left: 0px;
+    }
+
+    .tabs-nav-next {
+        top: 0px;
+        right: 0px;
+    }
 
     .tab {
         display: inline-block;

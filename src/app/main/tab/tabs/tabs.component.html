@@ -1,13 +1,19 @@
-<ul class="tabs">
-	<li *ngFor="let tab of tabs" class="tab" (click)="selectTab(tab)" [class.active]="tab.active">
-		<a href="javascript:void(0)" matRipple>{{tab.title}}</a>
-	</li>
-	<!-- dynamic tabs -->
-	<li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" class="tab" [class.active]="tab.active">
-		<a href="javascript:void(0)" matRipple>{{tab.title}}
-			<mat-icon (click)="closeTab(tab)">cancel</mat-icon>
-		</a>
-	</li>
-</ul>
+<div class="tabs-wrapper">
+	<div class="tabs-nav tabs-nav-prev" (click)="scrollHeader('before')" matRipple><mat-icon>navigate_before</mat-icon></div>
+	<div class="tabs-viewer" #tabListContainer>
+		<ul class="tabs" #tabList>
+			<li *ngFor="let tab of tabs" class="tab" (click)="selectTab(tab)" [class.active]="tab.active">
+				<a href="javascript:void(0)" matRipple>{{tab.title}}</a>
+			</li>
+			<!-- dynamic tabs -->
+			<li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" class="tab" [class.active]="tab.active">
+				<a href="javascript:void(0)" matRipple>{{tab.title}}
+					<mat-icon (click)="closeTab(tab)">cancel</mat-icon>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="tabs-nav tabs-nav-next" (click)="scrollHeader('after')" matRipple><mat-icon>navigate_next</mat-icon></div>
+</div>
 <ng-content></ng-content>
 <ng-template dynamic-tabs></ng-template>
