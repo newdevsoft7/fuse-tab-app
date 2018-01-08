@@ -1,5 +1,6 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { FuseNavigationService } from '../../navigation.service';
+import { TabService } from '../../../../../main/tab/tab.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { fuseAnimations } from '../../../../animations';
 
@@ -17,7 +18,8 @@ export class FuseNavVerticalCollapseComponent implements OnInit
 
     constructor(
         private navigationService: FuseNavigationService,
-        private router: Router
+        private router: Router,
+        private tabService: TabService
     )
     {
         // Listen for route changes
@@ -97,6 +99,13 @@ export class FuseNavVerticalCollapseComponent implements OnInit
         // Navigation collapse toggled...
         this.navigationService.onNavCollapseToggled.emit(this.item);
         this.navigationService.onNavCollapseToggle.emit();
+    }
+
+    openTab(ev) {
+        ev.preventDefault();
+        if (this.item.tab) {
+            this.tabService.openTab(this.item.tab);
+        }
     }
 
     /**

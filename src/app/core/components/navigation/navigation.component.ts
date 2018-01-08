@@ -13,6 +13,7 @@ export class FuseNavigationComponent implements OnDestroy
 {
     navigationModel: any[];
     navigationModelChangeSubscription: Subscription;
+    tabSubscription: Subscription;
 
     @Input('layout') layout = 'vertical';
 
@@ -26,10 +27,10 @@ export class FuseNavigationComponent implements OnDestroy
                 .subscribe((navigationModel) => {
                     this.navigationModel = navigationModel;
                 });
-        
-        this.tabService.tab$.subscribe(tab => {
-            this.updateNavItemActive(this.navigationModel, tab);
-        });
+        this.tabSubscription = 
+            this.tabService.tab$.subscribe(tab => {
+                this.updateNavItemActive(this.navigationModel, tab);
+            });
     }
 
     updateNavItemActive(items, tab) {
@@ -44,6 +45,7 @@ export class FuseNavigationComponent implements OnDestroy
     ngOnDestroy()
     {
         this.navigationModelChangeSubscription.unsubscribe();
+        this.tabSubscription.unsubscribe();
     }
 
 }

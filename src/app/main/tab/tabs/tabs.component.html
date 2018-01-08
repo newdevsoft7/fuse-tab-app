@@ -1,10 +1,10 @@
 <ul class="tabs">
 	<li *ngFor="let tab of tabs" class="tab" (click)="selectTab(tab)" [class.active]="tab.active">
-		<a href="javascript:void(0)">{{tab.title}}</a>
+		<a href="javascript:void(0)" matRipple>{{tab.title}}</a>
 	</li>
 	<!-- dynamic tabs -->
 	<li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" class="tab" [class.active]="tab.active">
-		<a href="javascript:void(0)">{{tab.title}}
+		<a href="javascript:void(0)" matRipple>{{tab.title}}
 			<mat-icon (click)="closeTab(tab)">cancel</mat-icon>
 		</a>
 	</li>

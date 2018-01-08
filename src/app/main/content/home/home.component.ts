@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
@@ -16,7 +16,7 @@ import { TabService } from '../../tab/tab.service';
     templateUrl: './home.component.html',
     styleUrls  : ['./home.component.scss']
 })
-export class FuseHomeComponent
+export class FuseHomeComponent implements OnDestroy
 {
     @ViewChild(TabsComponent) tabsComponent;
     @ViewChild('aboutTpl') aboutTpl;
@@ -31,6 +31,10 @@ export class FuseHomeComponent
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
         })
+    }
+
+    ngOnDestroy() {
+        this.tabSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { FuseConfigService } from '../../core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TabService } from '../tab/tab.service';
+import { USERS_PROFILE_TAB } from '../../constants/tab';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -20,7 +22,8 @@ export class FuseToolbarComponent
     constructor(
         private router: Router,
         private fuseConfig: FuseConfigService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        private tabService: TabService
     )
     {
         this.userStatusOptions = [
@@ -97,5 +100,13 @@ export class FuseToolbarComponent
 
         // Use the selected language for translations
         this.translate.use(lang.id);
+    }
+
+    logout() {
+        this.router.navigate(['/login']);
+    }
+
+    openProfile() {
+        // TODO
     }
 }
