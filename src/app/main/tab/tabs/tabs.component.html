@@ -2,7 +2,8 @@
 	<div
 		class="tabs-nav tabs-nav-prev"
 		(click)="scrollHeader('before')"
-		matRipple
+		mat-ripple
+		[matRippleDisabled]="_disableScrollBefore"
 		[class.tabs-pagination-disabled]="_disableScrollBefore"
 	>
 		<mat-icon>navigate_before</mat-icon>
@@ -23,7 +24,8 @@
 	<div
 		class="tabs-nav tabs-nav-next"
 		(click)="scrollHeader('after')"
-		matRipple
+		mat-ripple
+		[matRippleDisabled]="_disableScrollAfter"
 		[class.tabs-pagination-disabled]="_disableScrollAfter"
 	>
 		<mat-icon>navigate_next</mat-icon>
