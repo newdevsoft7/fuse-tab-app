@@ -8,8 +8,14 @@ ul:not(.browser-default) {
     position: relative;
     flex-shrink: 0;
 
+    &.tabs-nav-control-enabled {
+        .tabs-nav {
+            display: flex;
+        }
+    }
+
     .tabs-nav {
-        display: flex;
+        display: none;
         position: relative;
         justify-content: center;
         align-items: center;
@@ -19,6 +25,11 @@ ul:not(.browser-default) {
         border: 1px solid rgba(197, 198, 203, 0.3);    
     }
 
+    .tabs-pagination-disabled {
+        box-shadow: none;
+        cursor: default;
+    }
+    
     .tabs-viewer {
         display: flex;
         flex-grow: 1;

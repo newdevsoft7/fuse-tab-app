@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 
 @Component({
 	selector: 'app-tab',
@@ -19,6 +19,6 @@ export class TabComponent {
 	@Input() template;
 	@Input() data;
 
-	constructor() { }
+	constructor(public element: ElementRef) { }
 
 }

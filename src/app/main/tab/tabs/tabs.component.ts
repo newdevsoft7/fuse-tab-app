@@ -1,10 +1,26 @@
-import { Component, ContentChildren, QueryList, AfterContentInit, ViewChild, ComponentFactoryResolver, ViewContainerRef, ViewEncapsulation, ElementRef } from '@angular/core';
+import { 
+	Component,
+	ContentChildren,
+	QueryList,
+	ViewChild,
+	ComponentFactoryResolver,
+	ViewContainerRef,
+	ViewEncapsulation,
+	ElementRef,
+	AfterContentInit,
+	AfterContentChecked,
+	AfterViewChecked,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+} from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 import { DynamicTabsDirective } from '../dynamic-tabs.directive';
 import { Tab } from '../tab';
 import { TabService } from '../tab.service';
 
 export type ScrollDirection = 'after' | 'before';
+const EXAGGERATED_OVERSCROLL = 60;
+
 @Component({
 	selector: 'app-tabs',
 	templateUrl: './tabs.component.html',
@@ -26,12 +42,17 @@ export class TabsComponent implements AfterContentInit {
 
 	/** The distance in pixels that the tab labels should be translated to the left. */
 	private _scrollDistance = 0;
+
+	private _selectedTab: TabComponent | null = null;
+
 	/** Whether the tab list can be scrolled more towards the end of the tab label list. */
 	_disableScrollAfter = true;
 
 	/** Whether the tab list can be scrolled more towards the beginning of the tab label list. */
 	_disableScrollBefore = true;
 
+	_showPaginationControls = false;
+	
 	constructor(private _componentFactoryResolver: ComponentFactoryResolver, private tabService: TabService, private element: ElementRef) {
 	}
 
@@ -44,8 +65,6 @@ export class TabsComponent implements AfterContentInit {
 			this.selectTab(this.tabs.first);
 		}
 	}
-
-
 
 	openTab(newTab: Tab) {
 		const existedTab = this.dynamicTabs.find(tab => tab.title == newTab.title);
@@ -72,7 +91,9 @@ export class TabsComponent implements AfterContentInit {
 			this.dynamicTabs.push(componentRef.instance as TabComponent);
 
 			// set it active
-			this.selectTab(this.dynamicTabs[this.dynamicTabs.length - 1]);
+			setTimeout(() => { 
+				this.selectTab(this.dynamicTabs[this.dynamicTabs.length - 1]);
+			});
 		}
 	}
 
@@ -83,6 +104,66 @@ export class TabsComponent implements AfterContentInit {
 
 		// activate the tab the user has clicked on.
 		tab.active = true;
+
+		let selectedTabIndex = this.tabs.toArray().findIndex(t => t == tab);
+		if (selectedTabIndex < 0) {
+			selectedTabIndex = this.tabs.toArray().length + this.dynamicTabs.findIndex(t => t == tab);
+		}
+		this._selectedTab = this._tabList.nativeElement.children[selectedTabIndex];
+		
+		if (this._selectedTab) this._scrollToLabel(this._selectedTab);
+
+		setTimeout(() => {
+			this._checkPaginationEnabled();
+		});
+	}
+
+	/**
+	 * Evaluate whether the pagination controls should be displayed. If the scroll width of the
+	 * tab list is wider than the size of the header container, then the pagination controls should
+	 * be shown.
+	 *
+	 * This is an expensive call that forces a layout reflow to compute box and scroll metrics and
+	 * should be called sparingly.
+	 */
+	_checkPaginationEnabled() {
+		const isEnabled = this._tabList.nativeElement.scrollWidth > this._tabListContainer.nativeElement.offsetWidth;
+
+		if (!isEnabled) {
+			this.scrollDistance = 0;
+		}
+
+		this._showPaginationControls = isEnabled;
+	}
+	
+	/**
+   * Moves the tab list such that the desired tab label (marked by index) is moved into view.
+   *
+   * This is an expensive call that forces a layout reflow to compute box and scroll metrics and
+   * should be called sparingly.
+   */
+	_scrollToLabel(tabElement) {
+		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
+		const elementWidth = tabElement.offsetWidth;
+		
+		let labelBeforePos: number, labelAfterPos: number;
+
+		labelBeforePos = tabElement.offsetLeft;
+		labelAfterPos = labelBeforePos + elementWidth;
+
+		const beforeVisiblePos = this.scrollDistance;
+		const afterVisiblePos = this.scrollDistance + viewLength;
+		
+		if (labelBeforePos < beforeVisiblePos) {
+			// Scroll header to move label to the before direction
+			this.scrollDistance -= beforeVisiblePos - labelBeforePos + EXAGGERATED_OVERSCROLL;
+		} else if (labelAfterPos > afterVisiblePos) {
+			// Scroll header to move label to the after direction
+			this.scrollDistance += labelAfterPos - afterVisiblePos + EXAGGERATED_OVERSCROLL;
+		} else {
+			if (!this._showPaginationControls) this.scrollDistance = 0;
+		}
+		this._updateTabScrollPosition();		
 	}
 
 	closeTab(tab: TabComponent) {
@@ -115,6 +196,15 @@ export class TabsComponent implements AfterContentInit {
 		}
 	}
 
+	/**
+	 * Evaluate whether the before and after controls should be enabled or disabled.
+	 * If the header is at the beginning of the list (scroll distance is equal to 0) then disable the
+	 * before button. If the header is at the end of the list (scroll distance is equal to the
+	 * maximum distance we can scroll), then disable the after button.
+	 *
+	 * This is an expensive call that forces a layout reflow to compute box and scroll metrics and
+	 * should be called sparingly.
+	 */
 	_checkScrollingControls() {
 		// Check if the pagination arrows should be activated.
 		this._disableScrollBefore = this.scrollDistance == 0;
@@ -129,12 +219,21 @@ export class TabsComponent implements AfterContentInit {
 
 	get scrollDistance(): number { return this._scrollDistance; }
 
+	/** Performs the CSS transformation on the tab list that will cause the list to scroll. */
 	_updateTabScrollPosition() {
 		const translateX = -this.scrollDistance;
 		this._tabList.nativeElement.style.transform = `translate3d(${translateX}px, 0, 0)`;
 		this._checkScrollingControls();
 	}
 
+	/**
+	 * Moves the tab list in the 'before' or 'after' direction (towards the beginning of the list or
+	 * the end of the list, respectively). The distance to scroll is computed to be a third of the
+	 * length of the tab list view window.
+	 *
+	 * This is an expensive call that forces a layout reflow to compute box and scroll metrics and
+	 * should be called sparingly.
+	 */
 	scrollHeader(scrollDir: ScrollDirection) {
 		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
 
@@ -143,6 +242,13 @@ export class TabsComponent implements AfterContentInit {
 		this._updateTabScrollPosition();
 	}
 
+	/**
+	 * Determines what is the maximum length in pixels that can be set for the scroll distance. This
+	 * is equal to the difference in width between the tab list container and tab header container.
+	 *
+	 * This is an expensive call that forces a layout reflow to compute box and scroll metrics and
+	 * should be called sparingly.
+	 */
 	_getMaxScrollDistance(): number {
 		const lengthOfTabList = this._tabList.nativeElement.scrollWidth;
 		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
