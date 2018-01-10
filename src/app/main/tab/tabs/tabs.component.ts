@@ -13,9 +13,11 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 } from '@angular/core';
+
 import { TabComponent } from '../tab/tab.component';
 import { DynamicTabsDirective } from '../dynamic-tabs.directive';
 import { Tab } from '../tab';
+import { TabInkBar } from './ink-bar';
 import { TabService } from '../tab.service';
 
 export type ScrollDirection = 'after' | 'before';
@@ -39,11 +41,12 @@ export class TabsComponent implements AfterContentInit {
 
 	@ViewChild('tabListContainer') _tabListContainer: ElementRef;
 	@ViewChild('tabList') _tabList: ElementRef;
+	@ViewChild(TabInkBar) _inkBar: TabInkBar;
 
 	/** The distance in pixels that the tab labels should be translated to the left. */
 	private _scrollDistance = 0;
 
-	private _selectedTab: TabComponent | null = null;
+	private _selectedTab = null;
 
 	/** Whether the tab list can be scrolled more towards the end of the tab label list. */
 	_disableScrollAfter = true;
@@ -98,22 +101,24 @@ export class TabsComponent implements AfterContentInit {
 	}
 
 	selectTab(tab: TabComponent) {
-		// deactivate all tabs
-		this.tabs.toArray().forEach(tab => tab.active = false);
-		this.dynamicTabs.forEach(tab => tab.active = false);
-
-		// activate the tab the user has clicked on.
-		tab.active = true;
-
-		let selectedTabIndex = this.tabs.toArray().findIndex(t => t == tab);
-		if (selectedTabIndex < 0) {
-			selectedTabIndex = this.tabs.toArray().length + this.dynamicTabs.findIndex(t => t == tab);
-		}
-		this._selectedTab = this._tabList.nativeElement.children[selectedTabIndex];
-		
-		if (this._selectedTab) this._scrollToLabel(this._selectedTab);
-
 		setTimeout(() => {
+			// deactivate all tabs
+			this.tabs.toArray().forEach(tab => tab.active = false);
+			this.dynamicTabs.forEach(tab => tab.active = false);
+	
+			// activate the tab the user has clicked on.
+			tab.active = true;
+	
+			let selectedTabIndex = this.tabs.toArray().findIndex(t => t == tab);
+			if (selectedTabIndex < 0) {
+				selectedTabIndex = this.tabs.toArray().length + this.dynamicTabs.findIndex(t => t == tab);
+			}
+			this._selectedTab = this._tabList.nativeElement.children[selectedTabIndex];
+		});
+		
+		
+		setTimeout(() => {
+			if (this._selectedTab) this._scrollToLabel(this._selectedTab);
 			this._checkPaginationEnabled();
 		});
 	}
@@ -163,7 +168,8 @@ export class TabsComponent implements AfterContentInit {
 		} else {
 			if (!this._showPaginationControls) this.scrollDistance = 0;
 		}
-		this._updateTabScrollPosition();		
+		this._updateTabScrollPosition();
+		this._alignInkBarToSelectedTab();		
 	}
 
 	closeTab(tab: TabComponent) {
@@ -253,6 +259,12 @@ export class TabsComponent implements AfterContentInit {
 		const lengthOfTabList = this._tabList.nativeElement.scrollWidth;
 		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
 		return (lengthOfTabList - viewLength) || 0;
+	}
+
+	/** Tells the ink-bar to align itself to the current label wrapper */
+	private _alignInkBarToSelectedTab(): void {
+		if (this._selectedTab)
+			this._inkBar.alignToElement(this._selectedTab);
 	}
 
 }

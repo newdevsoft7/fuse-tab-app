@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TabsComponent } from './tabs/tabs.component';
 import { TabComponent } from './tab/tab.component';
 import { DynamicTabsDirective } from './dynamic-tabs.directive';
+import { TabInkBar } from './tabs/ink-bar';
 import { SharedModule } from '../../core/modules/shared.module';
 import { TabService } from './tab.service';
 
@@ -14,7 +15,8 @@ import { TabService } from './tab.service';
 	declarations: [
 		TabsComponent,
 		TabComponent,
-		DynamicTabsDirective
+		DynamicTabsDirective,
+		TabInkBar
 	],
 	entryComponents: [
 		TabComponent
