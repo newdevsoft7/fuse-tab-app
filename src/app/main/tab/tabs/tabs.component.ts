@@ -114,13 +114,13 @@ export class TabsComponent implements AfterContentInit {
 				selectedTabIndex = this.tabs.toArray().length + this.dynamicTabs.findIndex(t => t == tab);
 			}
 			this._selectedTab = this._tabList.nativeElement.children[selectedTabIndex];
+			if (this._selectedTab) this._scrollToLabel(this._selectedTab);
 		});
 		
 		
 		setTimeout(() => {
-			if (this._selectedTab) this._scrollToLabel(this._selectedTab);
 			this._checkPaginationEnabled();
-		});
+		}, 100);
 	}
 
 	/**
