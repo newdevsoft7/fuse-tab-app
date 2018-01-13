@@ -23,6 +23,7 @@ import { FuseTranslationLoaderService } from '../services/translation-loader.ser
 import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
 
+
 @NgModule({
     declarations   : [
         FuseMatSidenavHelperDirective,
@@ -43,7 +44,7 @@ import { TranslateModule } from '@ngx-translate/core';
         ReactiveFormsModule,
         ColorPickerModule,
         NgxDnDModule,
-        NgxDatatableModule
+        NgxDatatableModule,
     ],
     exports        : [
         FlexLayoutModule,
@@ -62,7 +63,7 @@ import { TranslateModule } from '@ngx-translate/core';
         NgxDatatableModule,
         FuseIfOnDomDirective,
         FuseMaterialColorPickerComponent,
-        TranslateModule
+        TranslateModule,
     ],
     entryComponents: [
         FuseConfirmDialogComponent

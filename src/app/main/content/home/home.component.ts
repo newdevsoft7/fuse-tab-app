@@ -19,10 +19,10 @@ import { TabService } from '../../tab/tab.service';
 export class FuseHomeComponent implements OnDestroy
 {
     @ViewChild(TabsComponent) tabsComponent;
-    @ViewChild('aboutTpl') aboutTpl;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
+    @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
 
     tabSubscription: Subscription;
     constructor(private translationLoader: FuseTranslationLoaderService, private tabService: TabService)
@@ -43,11 +43,6 @@ export class FuseHomeComponent implements OnDestroy
             template: this[tab.template]
         };
         this.tabsComponent.openTab(_tab);
-    }
-
-    openAbout() {
-        const aboutTab = new Tab('About', 'aboutTpl', {}, true);
-        this.openTab(aboutTab);
     }
 
     openUsers() {

@@ -1,0 +1,29 @@
+export class ProfileField {
+    id: string;
+    ename: string;
+    etype: string;
+    editable: string;
+    deletable: string;
+    visibility: string;
+    display_order: string;
+    sex: string;
+    filter: string;
+    profile_category_id: string;
+    options: any[];
+
+    constructor(profileField) {
+        {
+            this.id = profileField.id || 0;
+            this.ename = profileField.ename || '';
+            this.etype = profileField.etype || '';
+            this.editable = profileField.editable || '1';
+            this.deletable = profileField.deletable || '';
+            this.visibility = profileField.visibility || '';
+            this.display_order = profileField.display_order || '';
+            this.sex = profileField.sex || '';
+            this.filter = profileField.filter || 'range';
+            this.profile_category_id = profileField.profile_category_id || 1;
+            this.options = profileField.options || [];
+        }
+    }
+}

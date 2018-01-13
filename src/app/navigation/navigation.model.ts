@@ -2,7 +2,8 @@ import { FuseNavigationModelInterface } from '../core/components/navigation/navi
 import {
     USERS_TAB,
     USERS_EXPORTS_TAB,
-    USERS_PRESENTATIONS_TAB
+    USERS_PRESENTATIONS_TAB,
+    SETTINGS_PROFILE_INFO_TAB
 } from '../constants/tab';
 
 export class FuseNavigationModel implements FuseNavigationModelInterface
@@ -277,7 +278,7 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                                 'title': 'Info',
                                 'translate': 'NAV.SETTINGS_PROFILE_INFO',
                                 'type': 'item',
-                                'tab': { title: 'Info' }
+                                'tab': SETTINGS_PROFILE_INFO_TAB
                             },
                             {
                                 'id': 'photo_categories',

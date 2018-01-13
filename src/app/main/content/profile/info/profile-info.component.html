@@ -1,0 +1,22 @@
+<div class="ngx-dnd-container" ngxDroppable="group" [model]="profileFields" (drop)="onDrop($event)">
+    <div class="ngx-dnd-item" ngxDraggable *ngFor="let field of profileFields" [model]="field" (click)="click(field, $event)">
+        <ng-container *ngTemplateOutlet="fieldTpl; context: {$implicit: field}"></ng-container>
+    </div>
+</div>
+<ng-template #fieldTpl let-field>
+    <div class="panel" *ngIf="field.cname">
+        <div class="panel-heading">
+            <div>{{field.cname}}</div>
+        </div>
+
+        <div class="panel-body ngx-dnd-container" ngxDroppable="group" [model]="field.elements" (drop)="onDrop($event)">
+                <div class="ngx-dnd-item" ngxDraggable *ngFor="let field of field.elements" [model]="field"  (click)="click(field, $event)">
+                    <ng-container *ngTemplateOutlet="fieldTpl; context: {$implicit: field}"></ng-container>
+                </div>
+            </div>
+        </div>
+
+    <div class="field" *ngIf="field.ename">
+        <div>{{field.ename}}</div>
+    </div>
+</ng-template>
