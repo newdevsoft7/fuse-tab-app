@@ -1,31 +1,37 @@
 .panel {
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-color: #d6e9c6;
-    border-radius: 4px;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
-    margin-bottom: 20px;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        background-color: #eef0f2;
+        border-radius: 2px;
+        color: #000;
+        margin-bottom: 20px;
+
+        .mat-icon {
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+        }
 
     .panel-heading {
-        background-color: #dff0d8;
-        border-bottom: 1px solid transparent;
-        border-color: #d6e9c6;
-        border-top-left-radius: 3px;
-        border-top-right-radius: 3px;
-        color: #3c763d;
-        padding: 10px 15px;
+        background-color: #dcdfe2;
+        border-bottom: 1px solid #ddd;
+        color: #000;
+        padding: 0 15px;
+        font-size: 15px;
+        font-weight: 500;
+        min-height: 55px;
     }
 
     .panel-body {
+        background-color: #eef0f2;
         padding: 15px;
     }
 }
 
 .field {
-    border: 1px solid rgba(197, 198, 203, 0.3);
-    border-radius: 4px;
-    margin: 10px 0px;
+    background-color: #fff;
+    border-radius: 2px;
+    margin: 13px 0px;
+    min-height:  60px;
     padding: 10px;
 }
 

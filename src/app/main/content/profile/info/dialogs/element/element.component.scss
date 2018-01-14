@@ -1,0 +1,15 @@
+.profile-info-field-dialog {
+    width: 600px;
+
+    .mat-icon-button {
+        &:disabled  {
+            .mat-icon {
+                color: #ccc;
+            }
+        }
+    }
+    
+    .mat-dialog-container {
+        padding: 0;
+    }
+}

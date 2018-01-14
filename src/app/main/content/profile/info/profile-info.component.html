@@ -1,12 +1,35 @@
+<!-- NEW CARD BUTTON-->
+<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="mb-16">
+    <app-profile-info-add-category (onCategoryAdd)="onCategoryAdd($event)">
+    </app-profile-info-add-category>
+
+    <app-profile-info-add-field (onFieldAdd)="onFieldAdd($event)">
+    </app-profile-info-add-field>
+</div>
+<!-- / NEW CARD BUTTON-->
 <div class="ngx-dnd-container" ngxDroppable="group" [model]="profileFields" (drop)="onDrop($event)">
     <div class="ngx-dnd-item" ngxDraggable *ngFor="let field of profileFields" [model]="field" (click)="click(field, $event)">
         <ng-container *ngTemplateOutlet="fieldTpl; context: {$implicit: field}"></ng-container>
     </div>
 </div>
 <ng-template #fieldTpl let-field>
-    <div class="panel" *ngIf="field.cname">
-        <div class="panel-heading">
-            <div>{{field.cname}}</div>
+    <div class="panel mat-elevation-z1" *ngIf="field.cname">
+        <div class="panel-heading" fxLayout="row" fxLayoutAlign="space-between center">
+            <app-profile-info-edit-category-name fxFlex="1 0 auto" [category]="field"></app-profile-info-edit-category-name>
+            <div fxFlex="0 1 auto">
+                <button mat-icon-button [matMenuTriggerFor]="listCategoryMenu" class="mr-8">
+                    <mat-icon class="mat-primary-50-bg">add</mat-icon>
+                </button>
+                <mat-menu #listCategoryMenu="matMenu">
+                    <button mat-menu-item (click)="onAddCategory(field)">Add Subcategory</button>
+                    <button mat-menu-item (click)="onAddField(field)">Add Element</button>
+                </mat-menu>
+            </div>
+            <div fxFlex="0 1 auto" *ngIf="field.deletable != '0'">
+                <button mat-icon-button (click)="onRemoveNode(field)">
+                    <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                </button>
+            </div>
         </div>
 
         <div class="panel-body ngx-dnd-container" ngxDroppable="group" [model]="field.elements" (drop)="onDrop($event)">
@@ -16,7 +39,22 @@
             </div>
         </div>
 
-    <div class="field" *ngIf="field.ename">
-        <div>{{field.ename}}</div>
+    <div class="field mat-elevation-z1" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="field.ename">
+        <app-profile-info-edit-element-name fxFlex="1 0 auto" [element]="field"></app-profile-info-edit-element-name>
+        <app-profile-info-edit-element-visibility fxFlex="0 1 auto" [element]="field" class="px-16"></app-profile-info-edit-element-visibility>
+        <app-profile-info-edit-element-sex fxFlex="0 1 auto" [element]="field" class="px-16"></app-profile-info-edit-element-sex>
+        <app-profile-info-edit-element-type fxFlex="0 1 auto" [element]="field" class="px-16"></app-profile-info-edit-element-type>
+        <div fxFlex="0 1 auto" fxLayout="row" class="ml-8">
+            <div fxFlex="0 1 auto" *ngIf="field.etype == 'list' || field.etype == 'listm'">
+                <button mat-icon-button class="mr-8" (click)="onEditFieldOptions(field)">
+                    <mat-icon class="mat-primary-50-bg">edit</mat-icon>
+                </button>
+            </div>
+            <div fxFlex="0 1 auto" *ngIf="field.deletable != '0'">
+                <button mat-icon-button (click)="onRemoveNode(field)">
+                    <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                </button>
+            </div>
+        </div>
     </div>
 </ng-template>

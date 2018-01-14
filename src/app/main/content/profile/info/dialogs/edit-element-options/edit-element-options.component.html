@@ -1,0 +1,63 @@
+<div class="dialog-content-wrapper">
+	<mat-toolbar matDialogTitle class="mat-accent-bg m-0">
+
+		<div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+			<div fxFlex fxLayout="row" fxLayoutAlign="start center">
+				<div>List Options</div>
+			</div>
+
+			<button mat-icon-button (click)="onSave()" aria-label="Close Dialog">
+				<mat-icon>check</mat-icon>
+			</button>
+			<!-- CLOSE DIALOG BUTTON -->
+			<button mat-icon-button (click)="dialogRef.close()" aria-label="Close Dialog">
+				<mat-icon>close</mat-icon>
+			</button>
+			<!-- / CLOSE DIALOG BUTTON -->
+		</div>
+	</mat-toolbar>
+
+	<div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+		<div class="new-field-form" fxLayout="column" fxLayoutAlign="start stretch" fxFlex="1 0 auto" fxLayoutGap="20px">
+
+			<div fxFlow="1 0 auto">
+                <label>How would you like to filter this element?</label>
+			    <mat-radio-group [(ngModel)]="field.filter">
+                    <mat-radio-button value="range">Range</mat-radio-button>
+                    <mat-radio-button value="equals">Equals</mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div fxFlow="1 0 auto" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="30px">
+                <mat-form-field fxFlex="1 0 auto">
+                    <input matInput #optionInput placeholder="Option" required>
+                </mat-form-field>
+                <div fxFlex="0 1 auto" class="mt-8">
+                    <button mat-raised-button color="accent" (click)="addOption(optionInput.value)" [disabled]="!optionInput.value">
+                        Add
+                    </button>
+                </div>
+            </div>
+            <div fxFlex="1 0 auto">
+                <button mat-icon-button (click)="onSortOptions()">
+                    <mat-icon class="mat-red-bg filter">sort_by_alpha</mat-icon>
+                </button>
+            </div>
+            <div class="ngx-dnd-container" ngxDroppable [model]="field.options" fxLayout="row" fxLayoutWrap="wrap" fxLayoutGap="20px"
+                 fxLayoutAlign="start start">
+                <div class="ngx-dnd-item"
+                    ngxDraggable
+                    *ngFor="let item of field.options; index as i"
+                    [model]="item"
+                    >
+                    <div class="option mb-8">
+                        {{item.option}}
+                        <button mat-icon-button (click)="onRemoveOption(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>                    
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

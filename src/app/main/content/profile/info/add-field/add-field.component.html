@@ -1,0 +1,51 @@
+<div class="list new-element mat-elevation-z1">
+
+	<button *ngIf="!formActive" mat-button class="new-element-form-button" (click)="openForm()">
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<mat-icon class="mat-red-bg">add</mat-icon>
+			<span>Add a Field</span>
+		</div>
+	</button>
+
+	<form *ngIf="formActive" class="new-element-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="row" fxLayoutAlign="start center"
+		fxFlex="1 0 auto" fxLayoutGap="30px">
+
+        <mat-form-field floatPlaceholder="never" fxFlex>
+            <input matInput formControlName="ename" #nameInput placeholder="Write a Field Name" required>
+        </mat-form-field>
+
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="30px">
+			<mat-form-field fxFlex floatPlaceholder="never">
+				<mat-select formControlName="etype" placeholder="Type">
+					<mat-option *ngFor="let item of TYPE" [value]="item.value">
+						{{item.label}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+        
+            <mat-form-field fxFlex floatPlaceholder="never">
+                <mat-select formControlName="visibility" placeholder="Visibility">
+                    <mat-option [value]="'hidden'">
+                        Hidden
+                    </mat-option>
+                    <mat-option [value]="'required'">
+                        Required
+                    </mat-option>
+                    <mat-option [value]="'invoice'">
+                        Required for invoice
+                    </mat-option>
+                    <mat-option [value]="'optional'">
+                        Optional
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+		</div>
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>

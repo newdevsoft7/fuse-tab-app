@@ -1,0 +1,41 @@
+.profile-info-edit-field-options-dialog {
+    width: 600px;
+
+    .mat-icon-button {
+        &:disabled  {
+            .mat-icon {
+                color: #ccc;
+            }
+        }
+    }
+
+    .filter.mat-icon {
+        border-radius: 50%;
+        width: 40px;
+        line-height: 40px;
+        margin-right: 16px;
+        height: 40px;
+    }
+    
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .ngx-dnd-container {
+        width: 550px;
+    }
+
+    .option {
+        border: 1px solid #eee;
+        padding: 2px 13px;
+        background-color: #eee;
+
+        .mat-icon-button {
+            margin-right: -12px;
+        }
+    }
+
+    .mat-radio-button {
+        margin-left: 15px;
+    }
+}

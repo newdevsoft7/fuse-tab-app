@@ -1,0 +1,17 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-name" (click)="openForm()" class="ml-8">
+	{{element.ename}}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-name-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+    <mat-form-field floatPlaceholder="never" fxFlexLayout="start center">
+        <input matInput formControlName="ename" #nameInput fxFlex placeholder="Write a Field Name" required class="px-8">
+    </mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

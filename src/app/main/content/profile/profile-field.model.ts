@@ -1,5 +1,6 @@
 export class ProfileField {
     id: string;
+    cname: string;
     ename: string;
     etype: string;
     editable: string;
@@ -14,13 +15,14 @@ export class ProfileField {
     constructor(profileField) {
         {
             this.id = profileField.id || 0;
+            this.cname = profileField.cname;
             this.ename = profileField.ename || '';
             this.etype = profileField.etype || '';
             this.editable = profileField.editable || '1';
-            this.deletable = profileField.deletable || '';
+            this.deletable = profileField.deletable || '1';
             this.visibility = profileField.visibility || '';
             this.display_order = profileField.display_order || '';
-            this.sex = profileField.sex || '';
+            this.sex = profileField.sex || 'Both';
             this.filter = profileField.filter || 'range';
             this.profile_category_id = profileField.profile_category_id || 1;
             this.options = profileField.options || [];

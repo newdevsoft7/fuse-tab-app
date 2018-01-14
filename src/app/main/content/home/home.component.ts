@@ -10,6 +10,8 @@ import { TabsComponent } from '../../tab/tabs/tabs.component';
 import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
+import { SETTINGS_PROFILE_INFO_TAB } from '../../../constants/tab';
+
 
 @Component({
     selector   : 'fuse-home',
@@ -57,6 +59,10 @@ export class FuseHomeComponent implements OnDestroy
     openPresentations() {
         const presentationsTab = new Tab('Presentations', 'usersPresentationsTpl', {}, false);
         this.openTab(presentationsTab);
+    }
+
+    openSettingsProfileInfo() {
+        this.openTab(SETTINGS_PROFILE_INFO_TAB);
     }
 
 }
