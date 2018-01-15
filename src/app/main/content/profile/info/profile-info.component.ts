@@ -49,6 +49,7 @@ export class ProfileInfoComponent implements OnInit {
 		let node: ProfileField = evt.value;
 		const parent = this.findParent(node, this.profileFields);
 		node.profile_category_id = parent == this.profileFields ? null : (parent as ProfileField).id
+		console.log(node.profile_category_id);
 	}
 
 	click(model, evt) {
@@ -82,14 +83,20 @@ export class ProfileInfoComponent implements OnInit {
 		this.dialogRef.afterClosed()
 			.subscribe((newCategory: ProfileField) => {
 				if (newCategory) {
-					if (category) {
-						newCategory.profile_category_id = category.id;
-						if (!category.elements) category.elements = [];
-						category.elements.push(newCategory);
-					} else {
-						newCategory.profile_category_id = null;
-						this.profileFields.push(newCategory);
-					}
+					this.profileInfoService.createCategory(newCategory.cname)
+						.subscribe(res => {
+							const savedCategory = res.data;
+							if (category) {
+								savedCategory.profile_category_id = category.id;
+
+								// TODO - Update Profile Category ID with Backend
+								if (!category.elements) category.elements = [];
+								category.elements.push(newCategory);
+							} else {
+								newCategory.profile_category_id = null;
+								this.profileFields.push(newCategory);
+							}
+						});
 				}
 			});
 	}
@@ -104,14 +111,17 @@ export class ProfileInfoComponent implements OnInit {
 		this.dialogRef.afterClosed()
 			.subscribe((newField: ProfileField) => {
 				if (newField) {
-					if (category) {
-						newField.profile_category_id = category.id;
-						if (!category.elements) category.elements = [];
-						category.elements.push(newField);
-					} else {
-						newField.profile_category_id = null;
-						this.profileFields.push(newField);
-					}
+					newField.profile_category_id = category ? category.id : null;
+					this.profileInfoService.createElement(newField)
+						.subscribe(res => {
+							const savedField = res.data;
+							if (category) {
+								if (!category.elements) category.elements = [];
+								category.elements.push(savedField);
+							} else {
+								this.profileFields.push(savedField);
+							}
+						});
 				}
 			});
 	}
@@ -126,8 +136,12 @@ export class ProfileInfoComponent implements OnInit {
 		this.dialogRef.afterClosed()
 			.subscribe((modifiedField: ProfileField) => {
 				if (modifiedField) {
-					field.filter = modifiedField.filter;
-					field.options = modifiedField.options;
+					this.profileInfoService.updateElement(modifiedField)
+						.subscribe(res => {
+							const savedField = res.data;
+							field.filter = savedField.filter;
+							field.options = modifiedField.options;
+						})
 				}
 			});
 	}
@@ -138,19 +152,27 @@ export class ProfileInfoComponent implements OnInit {
 		}
 
 		const newCategory = new ProfileField({cname: newCategoryName});
-		this.profileFields.push(newCategory);
+		this.profileInfoService.createCategory(newCategoryName)
+			.subscribe(res => {
+				const savedCategory = res.data;
+				this.profileFields.push(savedCategory);
+			});
 	}
 
 	onFieldAdd(newField) {
 		if (newField === {}) {
 			return;
 		}
-
 		const field = new ProfileField(newField);
-		this.profileFields.push(field);
+		this.profileInfoService.createElement(field)
+			.subscribe(res => {
+				const savedField = res.data;
+				this.profileFields.push(savedField);
+			})
 	}
 
 	onRemoveNode(node) {
+		let isDeleted = false;
 		this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
 			disableClose: false
 		});
@@ -159,10 +181,23 @@ export class ProfileInfoComponent implements OnInit {
 
 		this.confirmDialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				let parent = this.findParent(node, this.profileFields);
-				parent = parent == this.profileFields ? parent : parent.elements;
-				const index = parent.findIndex(v => v == node);
-				parent.splice(index, 1);
+				if (node.cname) {
+					this.profileInfoService.deleteCategory(node.id)
+						.subscribe(res => {
+							isDeleted = true;
+						});
+				} else {
+					this.profileInfoService.deleteElement(node.id)
+						.subscribe(res => {
+							isDeleted = true;
+						});
+				}
+				if (isDeleted) {
+					let parent = this.findParent(node, this.profileFields);
+					parent = parent == this.profileFields ? parent : parent.elements;
+					const index = parent.findIndex(v => v == node);
+					parent.splice(index, 1);
+				}
 			}
 		});
 	}

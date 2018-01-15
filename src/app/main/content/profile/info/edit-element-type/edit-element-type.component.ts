@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ProfileInfoService } from '../profile-info.service';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-profile-info-edit-element-type',
@@ -21,7 +23,9 @@ export class ProfileInfoEditElementTypeComponent implements OnInit {
 	form: FormGroup;
 	@Input() element;
 
-	constructor(private formBuilder: FormBuilder) { }
+	constructor(
+		private formBuilder: FormBuilder,
+		private profileInfoService: ProfileInfoService) { }
 
 	ngOnInit() {
 	}
@@ -44,7 +48,12 @@ export class ProfileInfoEditElementTypeComponent implements OnInit {
 
 	onFormSubmit() {
 		if (this.form.valid) {
-			this.element.etype = this.form.getRawValue().etype;
+			const newElement = _.cloneDeep(this.element);
+			newElement.etype = this.form.getRawValue().etype;
+			this.profileInfoService.updateElement(newElement)
+				.subscribe(res => {
+					this.element.etype = newElement.etype; 
+				});
 			this.formActive = false;
 		}
 	}

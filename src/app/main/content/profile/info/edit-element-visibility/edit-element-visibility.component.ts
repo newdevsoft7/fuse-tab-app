@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ProfileInfoService } from '../profile-info.service';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-profile-info-edit-element-visibility',
@@ -14,7 +16,9 @@ export class ProfileInfoEditElementVisibilityComponent implements OnInit {
 	form: FormGroup;
 	@Input() element;
 
-	constructor(private formBuilder: FormBuilder) { }
+	constructor(
+		private formBuilder: FormBuilder,
+		private profileInfoService: ProfileInfoService) { }
 
 	ngOnInit() {
 	}
@@ -33,7 +37,12 @@ export class ProfileInfoEditElementVisibilityComponent implements OnInit {
 
 	onFormSubmit() {
 		if (this.form.valid) {
-			this.element.visibility = this.form.getRawValue().visibility;
+			const newElement = _.cloneDeep(this.element);
+			newElement.visibility = this.form.getRawValue().visibility;
+			this.profileInfoService.updateElement(newElement)
+				.subscribe(res => {
+					this.element.visibility = newElement.visibility;
+				});
 			this.formActive = false;
 		}
 	}

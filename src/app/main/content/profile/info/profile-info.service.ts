@@ -7,14 +7,61 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 const BASE_URL = `${environment.apiUrl}`;
+const PROFILE_STRUCTURE_URL = `${BASE_URL}/profileStructure`;
 
 @Injectable()
 export class ProfileInfoService {
 	constructor(private http: HttpClient) { }
 
+	// Returns all fields including categories, elements, and options
 	getFields(): Observable<any> {
 		const url = `${BASE_URL}/profile/structure`;
         return this.http.get(url);
 	}
+
+	getCategories(): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/category`;
+		return this.http.get(url);
+	}
+
+	createCategory(categoryName: string): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/category`;
+		return this.http.post(url, {
+			cname: categoryName
+		});
+	}
+
+	updateCategory(category: ProfileField): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/category/${category.id}`;
+		return this.http.put(url, category);
+	}
+
+	deleteCategory(id: number): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/category/${id}`;
+		return this.http.delete(url);
+	}
+
+
+
+	getElements(): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/element`;
+		return this.http.get(url);
+	}
+
+	createElement(element: ProfileField): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/element`;
+		return this.http.post(url, element);
+	}
+
+	updateElement(element: ProfileField): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/element/${element.id}`;
+		return this.http.put(url, element);
+	}
+
+	deleteElement(id: number): Observable<any> {
+		const url = `${PROFILE_STRUCTURE_URL}/element/${id}`;
+		return this.http.delete(url);
+	}
+
 
 }

@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ProfileInfoService } from '../profile-info.service';
+import * as _ from 'lodash';
 
 @Component({
 	selector: 'app-profile-info-edit-element-sex',
@@ -13,7 +15,9 @@ export class ProfileInfoEditElementSexComponent implements OnInit {
 	form: FormGroup;
 	@Input() element;
 
-	constructor(private formBuilder: FormBuilder) { }
+	constructor(
+		private formBuilder: FormBuilder,
+		private profileInfoService: ProfileInfoService) { }
 
 	ngOnInit() {
 	}
@@ -32,8 +36,13 @@ export class ProfileInfoEditElementSexComponent implements OnInit {
 
 	onFormSubmit() {
 		if (this.form.valid) {
-            const sex = this.form.getRawValue().sex;
-			this.element.sex = sex == 'Both' ? null : sex;
+			const newElement = _.cloneDeep(this.element);
+			const sex = this.form.getRawValue().sex;
+			newElement.sex = sex == 'Both' ? null : sex;
+			this.profileInfoService.updateElement(newElement)
+				.subscribe(res => {
+					this.element.sex = newElement.sex;
+				});
 			this.formActive = false;
 		}
 	}
