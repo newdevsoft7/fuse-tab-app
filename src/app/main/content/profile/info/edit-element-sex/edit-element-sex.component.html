@@ -1,5 +1,5 @@
 <div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-sex" (click)="openForm()">
-	{{(!element.sex ? 'Both': element.sex) | uppercase}}
+	<span class="field-sex">{{(!element.sex ? 'Both': element.sex) | uppercase}}</span>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-sex-form" fxLayout="row" fxFlex="1 0 auto"

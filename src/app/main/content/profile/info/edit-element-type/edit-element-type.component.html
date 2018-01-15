@@ -1,5 +1,5 @@
 <div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-type" (click)="openForm()">
-	{{type | uppercase}}
+	<span class="field-type">{{type | uppercase}}</span>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-type-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">

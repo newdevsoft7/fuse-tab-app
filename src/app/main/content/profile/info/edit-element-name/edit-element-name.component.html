@@ -1,5 +1,5 @@
 <div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-name" (click)="openForm()" class="ml-8">
-	{{element.ename}}
+	<span class="field-name">{{element.ename}}</span>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-name-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
