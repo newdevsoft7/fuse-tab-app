@@ -25,6 +25,10 @@ export class ProfileInfoComponent implements OnInit {
 	dialogRef: any;
 	confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
+	items: any[] = [];
+	femaleHeader = [];
+	maleHeader = [];
+
 	constructor(
 		private profileInfoService: ProfileInfoService,
 		public dialog: MatDialog) { }
@@ -41,15 +45,14 @@ export class ProfileInfoComponent implements OnInit {
 			);
 	}
 
-	print() {
-		console.log(this.profileFields);
+	refreshHeaderItems() {
+		this.profileInfoService.getHeaderItems().subscribe(res => this.items = res);
 	}
 
 	onDrop(evt) {
 		let node: ProfileField = evt.value;
 		const parent = this.findParent(node, this.profileFields);
 		node.profile_category_id = parent == this.profileFields ? null : (parent as ProfileField).id
-		console.log(node.profile_category_id);
 	}
 
 	click(model, evt) {

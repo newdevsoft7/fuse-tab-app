@@ -1,4 +1,4 @@
-<!-- NEW CARD BUTTON-->
+<!-- NEW CATEGORY / NEW ELEMENT BUTTON-->
 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="mb-16">
     <app-profile-info-add-category (onCategoryAdd)="onCategoryAdd($event)">
     </app-profile-info-add-category>
@@ -6,12 +6,18 @@
     <app-profile-info-add-field (onFieldAdd)="onFieldAdd($event)">
     </app-profile-info-add-field>
 </div>
-<!-- / NEW CARD BUTTON-->
+<!-- / NEW CATEGORY / NEW ELEMENT BUTTON-->
 <div class="ngx-dnd-container" ngxDroppable="group" [model]="profileFields" (drop)="onDrop($event)">
     <div class="ngx-dnd-item" ngxDraggable *ngFor="let field of profileFields" [model]="field" (click)="click(field, $event)">
         <ng-container *ngTemplateOutlet="fieldTpl; context: {$implicit: field}"></ng-container>
     </div>
 </div>
+
+<div>
+    <ng-select [items]="items" bindLabel="name" bindValue="id" [multiple]="true" [(ngModel)]="femaleHeader"></ng-select>
+    <ng-select [items]="items" bindLabel="name" bindValue="id" [multiple]="true" [(ngModel)]="maleHeader"></ng-select>
+</div>
+
 <ng-template #fieldTpl let-field>
     <div class="panel mat-elevation-z1" *ngIf="field.cname">
         <div class="panel-heading" fxLayout="row" fxLayoutAlign="space-between center">

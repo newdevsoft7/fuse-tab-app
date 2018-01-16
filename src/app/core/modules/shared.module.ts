@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
@@ -45,6 +47,7 @@ import { TranslateModule } from '@ngx-translate/core';
         ColorPickerModule,
         NgxDnDModule,
         NgxDatatableModule,
+        NgSelectModule
     ],
     exports        : [
         FlexLayoutModule,
@@ -64,6 +67,7 @@ import { TranslateModule } from '@ngx-translate/core';
         FuseIfOnDomDirective,
         FuseMaterialColorPickerComponent,
         TranslateModule,
+        NgSelectModule
     ],
     entryComponents: [
         FuseConfirmDialogComponent

@@ -63,5 +63,20 @@ export class ProfileInfoService {
 		return this.http.delete(url);
 	}
 
+	getHeaderItems(): Observable<any> {
+		return Observable.forkJoin([
+			this.http.get(`${PROFILE_STRUCTURE_URL}/element`).map((res: {data : any[]}) => res.data),
+			this.http.get(`${PROFILE_STRUCTURE_URL}/category`).map((res: {data: any[]}) => res.data)
+		]).map((data: any[]) => {
+			const elements = data[0];
+			const categories = data[1];
+			elements.forEach(e => {
+				const category = categories.find(c => c.id == e.profile_category_id);
+				e.name = category ? `${category.cname} - ${e.ename}` : e.ename;
+			});
+			return elements;
+		});
+	}
+
 
 }
