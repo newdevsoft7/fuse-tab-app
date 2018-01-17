@@ -2,9 +2,9 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-	selector: 'app-profile-info-add-category',
-	templateUrl: './add-category.component.html',
-	styleUrls: ['./add-category.component.scss']
+    selector: 'app-profile-info-add-category',
+    templateUrl: './add-category.component.html',
+    styleUrls: ['./add-category.component.scss']
 })
 export class ProfileInfoAddCategoryComponent implements OnInit {
 

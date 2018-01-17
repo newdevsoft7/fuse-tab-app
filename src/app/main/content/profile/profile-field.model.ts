@@ -9,7 +9,7 @@ export class ProfileField {
     display_order: string;
     sex: string;
     filter: string;
-    profile_category_id: string;
+    profile_cat_id: string;
     options: any[];
 
     constructor(profileField) {
@@ -24,7 +24,7 @@ export class ProfileField {
             this.display_order = profileField.display_order || '';
             this.sex = profileField.sex || 'Both';
             this.filter = profileField.filter || 'range';
-            this.profile_category_id = profileField.profile_category_id || 1;
+            this.profile_cat_id = profileField.profile_cat_id || 1;
             this.options = profileField.options || [];
         }
     }

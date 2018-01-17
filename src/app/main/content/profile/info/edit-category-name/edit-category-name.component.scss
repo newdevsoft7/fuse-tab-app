@@ -1,7 +1,17 @@
 .category-header-name {
-    .category-name:hover {
-        cursor: text;
-    }    
+    &.disabled {
+        pointer-events: none;
+        .category-name {
+            border-bottom: none;
+        }
+    }
+    
+    .category-name {
+        border-bottom: dashed 1px #d0d0d0;
+        &:hover {
+            cursor: text;
+        }
+    }
 }
 
 .category-header-name-form {
@@ -15,5 +25,10 @@
 
     .mat-form-field-underline {
         bottom: -5px;
+    }
+
+    .mat-form-field-label {
+        top: 0.8em;
+        padding: 0 8px;
     }
 }

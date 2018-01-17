@@ -9,13 +9,6 @@ import { ProfileInfoModule } from '../profile/info/profile-info.module';
 
 import { FuseHomeComponent } from './home.component';
 
-const routes = [
-    {
-        path     : 'home',
-        component: FuseHomeComponent
-    }
-];
-
 @NgModule({
     declarations: [
         FuseHomeComponent
@@ -26,7 +19,6 @@ const routes = [
         UsersModule,
         ProfileModule,
         ProfileInfoModule,
-        RouterModule.forChild(routes)
     ],
     exports     : [
         FuseHomeComponent

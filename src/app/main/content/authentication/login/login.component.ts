@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
+import { AuthenticationService } from '../../../../shared/authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector   : 'fuse-login',
@@ -13,10 +15,15 @@ export class FuseLoginComponent implements OnInit
 {
     loginForm: FormGroup;
     loginFormErrors: any;
+    isSuccess = true;
+    message = '';
+    isSubmitted = false;
 
     constructor(
         private fuseConfig: FuseConfigService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private authService: AuthenticationService,
+        private router: Router
     )
     {
         this.fuseConfig.setSettings({
@@ -28,7 +35,7 @@ export class FuseLoginComponent implements OnInit
         });
 
         this.loginFormErrors = {
-            email   : {},
+            username: {},
             password: {}
         };
     }
@@ -36,12 +43,13 @@ export class FuseLoginComponent implements OnInit
     ngOnInit()
     {
         this.loginForm = this.formBuilder.group({
-            email   : ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required]
+            username   : ['', [Validators.required, Validators.email]], 
+            password   : ['', Validators.required]
         });
 
         this.loginForm.valueChanges.subscribe(() => {
             this.onLoginFormValuesChanged();
+            this.isSuccess = true;
         });
     }
 
@@ -65,5 +73,19 @@ export class FuseLoginComponent implements OnInit
                 this.loginFormErrors[field] = control.errors;
             }
         }
+    }
+
+    login() {
+        this.isSubmitted = true;
+        const username = this.loginForm.getRawValue().username;
+        const password = this.loginForm.getRawValue().password;
+        this.authService.login(username, password)
+            .subscribe(res => {
+                    this.router.navigate(['/home']);
+            }, err => {
+                this.isSuccess = false;
+                this.isSubmitted = false;
+                this.message = err.error.message;
+            });
     }
 }

@@ -4,6 +4,7 @@ import { FuseConfigService } from '../../core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TabService } from '../tab/tab.service';
 import { USERS_PROFILE_TAB } from '../../constants/tab';
+import { AuthenticationService } from '../../shared/authentication/authentication.service';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -23,7 +24,8 @@ export class FuseToolbarComponent
         private router: Router,
         private fuseConfig: FuseConfigService,
         private translate: TranslateService,
-        private tabService: TabService
+        private tabService: TabService,
+        private authService: AuthenticationService
     )
     {
         this.userStatusOptions = [
@@ -103,7 +105,12 @@ export class FuseToolbarComponent
     }
 
     logout() {
-        this.router.navigate(['/login']);
+        this.authService.logout()
+            .subscribe(res => {
+                this.router.navigate(['/login']);
+            }, error => {
+                console.log(error);
+            });
     }
 
     openProfile() {

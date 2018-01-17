@@ -13,11 +13,6 @@
     </div>
 </div>
 
-<div>
-    <ng-select [items]="items" bindLabel="name" bindValue="id" [multiple]="true" [(ngModel)]="femaleHeader"></ng-select>
-    <ng-select [items]="items" bindLabel="name" bindValue="id" [multiple]="true" [(ngModel)]="maleHeader"></ng-select>
-</div>
-
 <ng-template #fieldTpl let-field>
     <div class="panel mat-elevation-z1" *ngIf="field.cname">
         <div class="panel-heading" fxLayout="row" fxLayoutAlign="space-between center">
@@ -51,7 +46,7 @@
         <app-profile-info-edit-element-sex fxFlex="0 1 auto" [element]="field" class="px-16"></app-profile-info-edit-element-sex>
         <app-profile-info-edit-element-type fxFlex="0 1 auto" [element]="field" class="px-16"></app-profile-info-edit-element-type>
         <div fxFlex="0 1 auto" fxLayout="row" class="ml-8">
-            <div fxFlex="0 1 auto" *ngIf="field.etype == 'list' || field.etype == 'listm'">
+            <div fxFlex="0 1 auto" *ngIf="field.editable != '0' && (field.etype == 'list' || field.etype == 'listm')">
                 <button mat-icon-button class="mr-8" (click)="onEditFieldOptions(field)">
                     <mat-icon class="mat-primary-50-bg">edit</mat-icon>
                 </button>

@@ -1,4 +1,4 @@
-<div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-visibility" (click)="openForm()">
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-visibility" (click)="openForm()" [class.disabled]="element.editable != '1'">
     <span class="field-visibility">{{element.visibility | uppercase}}</span>
 </div>
 
