@@ -37,17 +37,8 @@
 		
 				<mat-form-field fxFlex="1 0 auto">
 					<mat-select formControlName="visibility" placeholder="Visibility">
-						<mat-option [value]="'hidden'">
-							Hidden
-						</mat-option>
-						<mat-option [value]="'required'">
-							Required
-						</mat-option>
-						<mat-option [value]="'invoice'">
-							Required for invoice
-						</mat-option>
-						<mat-option [value]="'optional'">
-							Optional
+						<mat-option *ngFor="let item of VISIBILITY" [value]="item.value">
+							{{item.label}}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>

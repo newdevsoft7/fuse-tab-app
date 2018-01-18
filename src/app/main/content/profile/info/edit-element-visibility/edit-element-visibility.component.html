@@ -1,22 +1,13 @@
 <div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-visibility" (click)="openForm()" [class.disabled]="element.editable != '1'">
-    <span class="field-visibility">{{element.visibility | uppercase}}</span>
+    <span class="field-visibility">{{visibility | uppercase}}</span>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-visibility-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
 
     <mat-form-field fxFlex="1 0 auto">
         <mat-select formControlName="visibility" placeholder="Visibility">
-            <mat-option [value]="'hidden'">
-                Hidden
-            </mat-option>
-            <mat-option [value]="'required'">
-                Required
-            </mat-option>
-            <mat-option [value]="'invoice'">
-                Required for invoice
-            </mat-option>
-            <mat-option [value]="'optional'">
-                Optional
+            <mat-option *ngFor="let item of TYPE" [value]="item.value">
+                {{item.label}}
             </mat-option>
         </mat-select>
     </mat-form-field>

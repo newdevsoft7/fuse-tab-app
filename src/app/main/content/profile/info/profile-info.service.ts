@@ -61,6 +61,23 @@ export class ProfileInfoService {
         return this.http.delete(url);
     }
 
+    createListOption(element: ProfileField, option): Observable<any> {
+        const url = `${PROFILE_STRUCTURE_URL}/element/${element.id}/option`;
+        return this.http.post(url, {
+            option: option.option
+        }).catch(this.handleError);
+    }
+
+    deleteListOption(id: number): Observable<any> {
+        const url = `${PROFILE_STRUCTURE_URL}/option/${id}`;
+        return this.http.delete(url).catch(this.handleError);
+    }
+
+    updateListOption(option): Observable<any> {
+        const url = `${PROFILE_STRUCTURE_URL}/option/${option.id}`;
+        return this.http.put(url, option).catch(this.handleError);
+    }
+
     getHeaderItems(): Observable<any> {
         return Observable.forkJoin([
             this.http.get(`${PROFILE_STRUCTURE_URL}/element`).map((res: {data: any[]}) => res.data),
@@ -76,5 +93,8 @@ export class ProfileInfoService {
         });
     }
 
+    private handleError(error: Response | any) {
+        return Observable.throw(error);
+    }
 
 }

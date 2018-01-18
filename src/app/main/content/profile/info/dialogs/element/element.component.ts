@@ -3,10 +3,10 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatMenuTrigger } from '@angul
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-	selector: 'app-profile-info-element-dialog',
-	templateUrl: './element.component.html',
-	styleUrls: ['./element.component.scss'],
-	encapsulation: ViewEncapsulation.None
+    selector: 'app-profile-info-element-dialog',
+    templateUrl: './element.component.html',
+    styleUrls: ['./element.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ProfileInfoElementDialogComponent implements OnInit {
     form: FormGroup;
@@ -22,14 +22,21 @@ export class ProfileInfoElementDialogComponent implements OnInit {
         { value: 'number', label: 'Number' },
     ];
 
-	constructor(
+    VISIBILITY: any[] = [
+        { value: 'hidden', label: 'Hidden' },
+        { value: 'required', label: 'Required' },
+        { value: 'pay', label: 'Required for invoice' },
+        { value: 'optional', label: 'Optional' },
+    ];
+
+    constructor(
         public dialogRef: MatDialogRef<ProfileInfoElementDialogComponent>,
-		@Inject(MAT_DIALOG_DATA) private data: any,
+        @Inject(MAT_DIALOG_DATA) private data: any,
         public dialog: MatDialog,
         private formBuilder: FormBuilder
-	) { }
+    ) { }
 
-	ngOnInit() {
+    ngOnInit() {
         this.form = this.formBuilder.group({
             ename: ['', Validators.required],
             etype: ['', Validators.required],
@@ -44,7 +51,7 @@ export class ProfileInfoElementDialogComponent implements OnInit {
         });
     }
 
-	onSave() {
-		this.dialogRef.close(this.form.value);
-	}
+    onSave() {
+        this.dialogRef.close(this.form.value);
+    }
 }

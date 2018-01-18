@@ -2,9 +2,9 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-	selector: 'app-profile-info-add-field',
-	templateUrl: './add-field.component.html',
-	styleUrls: ['./add-field.component.scss']
+    selector: 'app-profile-info-add-field',
+    templateUrl: './add-field.component.html',
+    styleUrls: ['./add-field.component.scss']
 })
 export class ProfileInfoAddFieldComponent implements OnInit {
     TYPE: any[] = [
@@ -16,44 +16,52 @@ export class ProfileInfoAddFieldComponent implements OnInit {
         { value: 'date', label: 'Date' },
         { value: 'number', label: 'Number' },
     ];
-	formActive = false;
-	form: FormGroup;
-	@Output() onFieldAdd = new EventEmitter();
-	@ViewChild('nameInput') nameInputField;
 
-	constructor(
-		private formBuilder: FormBuilder
-	) {
-	}
+    VISIBILITY: any[] = [
+        { value: 'hidden', label: 'Hidden' },
+        { value: 'required', label: 'Required' },
+        { value: 'pay', label: 'Required for invoice' },
+        { value: 'optional', label: 'Optional' },
+    ];
+    
+    formActive = false;
+    form: FormGroup;
+    @Output() onFieldAdd = new EventEmitter();
+    @ViewChild('nameInput') nameInputField;
 
-	ngOnInit() {
+    constructor(
+        private formBuilder: FormBuilder
+    ) {
+    }
 
-	}
+    ngOnInit() {
 
-	openForm() {
-		this.form = this.formBuilder.group({
+    }
+
+    openForm() {
+        this.form = this.formBuilder.group({
             ename: ['', Validators.required],
             etype: ['', Validators.required],
             visibility: ['', Validators.required]
-		});
-		this.formActive = true;
-		this.focusNameField();
-	}
+        });
+        this.formActive = true;
+        this.focusNameField();
+    }
 
-	closeForm() {
-		this.formActive = false;
-	}
+    closeForm() {
+        this.formActive = false;
+    }
 
-	focusNameField() {
-		setTimeout(() => {
-			this.nameInputField.nativeElement.focus();
-		});
-	}
+    focusNameField() {
+        setTimeout(() => {
+            this.nameInputField.nativeElement.focus();
+        });
+    }
 
-	onFormSubmit() {
-		if (this.form.valid) {
-			this.onFieldAdd.next(this.form.value);
-			this.formActive = false;
-		}
-	}
+    onFormSubmit() {
+        if (this.form.valid) {
+            this.onFieldAdd.next(this.form.value);
+            this.formActive = false;
+        }
+    }
 }

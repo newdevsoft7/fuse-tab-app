@@ -91,18 +91,18 @@ export class ProfileInfoComponent implements OnInit {
 
     onAddField(category) {
         this.dialogRef = this.dialog.open(ProfileInfoElementDialogComponent, {
-            panelClass: 'profile-info-field-dialog',
-            data: {
-                field: new ProfileField({})
-            }
+            panelClass: 'profile-info-field-dialog'
         });
         this.dialogRef.afterClosed()
             .subscribe((newField: ProfileField) => {
                 if (newField) {
-                    newField.profile_cat_id = category.id
+                    newField.profile_cat_id = category.id;
+                    
                     this.profileInfoService.createElement(newField)
                         .subscribe(res => {
                             const savedField = res.data;
+                            savedField.editable = '1';
+                            savedField.deletable = '1';
                             if (!category.elements) { category.elements = []; }
                             category.elements.push(savedField);
                         });
@@ -151,6 +151,8 @@ export class ProfileInfoComponent implements OnInit {
         this.profileInfoService.createElement(field)
             .subscribe(res => {
                 const savedField = res.data;
+                savedField.editable = '1';
+                savedField.deletable = '1';
                 const category = this.profileFields.find(v => v.id == savedField.profile_cat_id && v.cname);
                 if (!category.elements) { category.elements = []; }
                 category.elements.push(savedField);
