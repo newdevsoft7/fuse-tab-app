@@ -3,8 +3,10 @@ import { AuthService } from 'ngx-auth';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { of } from 'rxjs/observable/of';
-import { map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 
