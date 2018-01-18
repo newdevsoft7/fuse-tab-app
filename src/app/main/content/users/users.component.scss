@@ -1,0 +1,19 @@
+.users-wrapper {
+    .action-btns {
+        .mat-raised-button {
+            .mat-icon {
+                margin-right: 8px;
+                color: white;
+            }
+        }
+    }
+
+    .avatar {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        line-height: 50px;
+        margin: 5px;
+        border-radius: 5px;
+    }
+}
