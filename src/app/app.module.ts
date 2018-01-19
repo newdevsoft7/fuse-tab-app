@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { RouterModule, Routes } from '@angular/router';
 import 'hammerjs';
 import { SharedModule } from './core/modules/shared.module';
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
         BrowserModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        ToastrModule.forRoot(),
         RouterModule.forRoot(appRoutes),
         SharedModule,
         TranslateModule.forRoot(),

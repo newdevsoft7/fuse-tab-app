@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
 import { fuseAnimations } from '../../../core/animations';
 import { UserService } from './user.service';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
@@ -28,6 +29,7 @@ export class UsersComponent implements OnInit {
 
     constructor(
         private dialog: MatDialog,
+        private toastr: ToastrService,
         private userService: UserService) { }
 
     ngOnInit() {
@@ -82,7 +84,9 @@ export class UsersComponent implements OnInit {
         });
 
         this.filteredUsers = filteredUsers;
-        this.table.offset = 0;
+        if (this.table) {
+            this.table.offset = 0;
+        }
     }
 
     openNewUser() {
@@ -98,9 +102,10 @@ export class UsersComponent implements OnInit {
                 this.userService
                     .createUser(user)
                     .subscribe(res => {
+                        this.toastr.success('Success!');
                         this.getUsers();
                     }, err => {
-                        
+                        this.toastr.error('Error occurred!');
                     });
             });
     }
