@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from 'ngx-auth';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { map } from 'rxjs/operators';
 
@@ -28,7 +29,8 @@ export class AuthenticationService implements AuthService {
 
     constructor(
         private http: HttpClient,
-        private tokenStorage: TokenStorage) { }
+        private tokenStorage: TokenStorage,
+        private router: Router) { }
     
     /**
      * Check, if user already authorized.
@@ -84,11 +86,10 @@ export class AuthenticationService implements AuthService {
     }
 
     public logout() {
-        return this.http
-            .post(`${AUTH_URL}/logout`, {})
-            .map(_ => {
-                this.tokenStorage.clear();
-            }).catch(error => this.handleError(error));
+        this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
+        this.tokenStorage.clear();
+        this.router.navigate(['/login']);
+            
     }
 
     public verifyTokenRequest(url: string): boolean {
@@ -110,10 +111,9 @@ export class AuthenticationService implements AuthService {
      * @param {AccessData} data
      */
     private saveAccessData({ access_token, refresh_token, user }: AccessData) {
-        this.tokenStorage
-            .setAccessToken(access_token)
-            .setRefreshToken(refresh_token)
-            .setUser(user);
+        if (access_token) { this.tokenStorage.setAccessToken(access_token); }
+        if (refresh_token) { this.tokenStorage.setRefreshToken(refresh_token); }
+        if (user) { this.tokenStorage.setUser(user); }
     }
 
 }

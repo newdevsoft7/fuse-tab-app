@@ -105,12 +105,7 @@ export class FuseToolbarComponent
     }
 
     logout() {
-        this.authService.logout()
-            .subscribe(res => {
-                this.router.navigate(['/login']);
-            }, error => {
-                console.log(error);
-            });
+        this.authService.logout();
     }
 
     openProfile() {

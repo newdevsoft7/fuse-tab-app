@@ -2,6 +2,7 @@ import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
+import { AuthenticationService } from '../../../shared/authentication/authentication.service';
 
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
@@ -27,8 +28,11 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
 
     tabSubscription: Subscription;
-    constructor(private translationLoader: FuseTranslationLoaderService, private tabService: TabService)
-    {
+    constructor(
+        private translationLoader: FuseTranslationLoaderService,
+        private tabService: TabService,
+        private authService: AuthenticationService) {
+        this.authService.refreshToken().subscribe(_ => {});
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);

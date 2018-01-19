@@ -8,6 +8,7 @@ import { ProfileModule } from '../profile/profile.module';
 import { ProfileInfoModule } from '../profile/info/profile-info.module';
 
 import { FuseHomeComponent } from './home.component';
+import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { FuseHomeComponent } from './home.component';
         UsersModule,
         ProfileModule,
         ProfileInfoModule,
+        AuthenticationModule
     ],
     exports     : [
         FuseHomeComponent
