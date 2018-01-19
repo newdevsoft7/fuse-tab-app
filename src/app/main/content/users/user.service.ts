@@ -18,6 +18,12 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    createUser(user): Observable<any> {
+        const url = `${BASE_URL}/user`;
+        return this.http.post(url, user)
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

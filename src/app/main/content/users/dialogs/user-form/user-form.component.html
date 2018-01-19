@@ -1,0 +1,103 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Create User</span>
+            <button mat-button class="mat-icon-button"
+                    (click)="dialogRef.close()"
+                    aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="userForm" novalidate>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="mr-12 mt-12">account_circle</mat-icon>
+                <mat-form-field fxFlex>
+                    <input formControlName="fname" placeholder="First Name" matInput required>
+                    <mat-error *ngIf="userFormErrors.fname.required">
+                        First Name is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="mr-12 mt-12"></mat-icon>
+                <mat-form-field fxFlex>
+                    <input formControlName="lname" placeholder="Last Name" matInput>
+                    <mat-error *ngIf="userFormErrors.lname.required">
+                        Last Name is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24">
+                <mat-icon class="mr-12 mt-12">person_outline</mat-icon>
+                <mat-form-field fxFlex="1 0 auto">
+                    <mat-select formControlName="sex" placeholder="Sex">
+                        <mat-option [value]="'female'">
+                            Female
+                        </mat-option>
+                        <mat-option [value]="'male'">
+                            Male
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="userFormErrors.sex.required">
+                        Sex is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="mr-12 mt-12">phone</mat-icon>
+                <mat-form-field fxFlex>
+                    <input formControlName="mob" matInput placeholder="Mobile">
+                    <mat-error *ngIf="userFormErrors.mob.required">
+                        Mobile is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="mr-12 mt-12">email</mat-icon>
+                <mat-form-field fxFlex>
+                    <input formControlName="email" matInput type="email" placeholder="Email">
+                    <mat-error *ngIf="userFormErrors.email.required">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="!userFormErrors.email.required && userFormErrors.email.email">
+                        Please enter a valid email address
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-icon class="mr-12 mt-12">vpn_key</mat-icon>
+                <mat-form-field fxFlex>
+                    <input formControlName="password" matInput placeholder="New Password" type="password">
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-checkbox formControlName="welcome_email">Send notification email</mat-checkbox>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <button mat-raised-button
+                (click)="onSave()"
+                class="save-button mat-accent"
+                [disabled]="userForm.invalid"
+                aria-label="SAVE">
+            SAVE
+        </button>
+
+    </div>
+</div>
