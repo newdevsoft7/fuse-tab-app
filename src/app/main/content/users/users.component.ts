@@ -75,7 +75,7 @@ export class UsersComponent implements OnInit {
         const val = value.toLowerCase();
 
         const filteredUsers = this.users.filter(function (user) {
-            return Object.keys(user).some(key => {
+            return Object.keys(user).some(key => {;
                 return (user[key] ? user[key] : '')
                     .toString()
                     .toLowerCase()
@@ -102,10 +102,10 @@ export class UsersComponent implements OnInit {
                 this.userService
                     .createUser(user)
                     .subscribe(res => {
-                        this.toastr.success('Success!');
+                        this.toastr.success(res.message);
                         this.getUsers();
                     }, err => {
-                        this.toastr.error('Error occurred!');
+                       this.toastr.error(err.error.errors.email[0])
                     });
             });
     }

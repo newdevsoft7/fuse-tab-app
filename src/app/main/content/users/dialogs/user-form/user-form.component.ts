@@ -64,7 +64,8 @@ export class UserFormDialogComponent implements OnInit
 
     onSave() {
         const user = this.userForm.value;
-        user.welcome_email = user.welcome_email ? 1 : 0;
+        delete user.welcome_email;
+        // user.welcome_email = user.welcome_email ? 1 : 0;
         this.dialogRef.close(user);
     }
 }
