@@ -6,7 +6,7 @@ import { FuseLoginComponent } from './login.component';
 
 const routes = [
     {
-        path     : 'login',
+        path     : '',
         component: FuseLoginComponent
     }
 ];

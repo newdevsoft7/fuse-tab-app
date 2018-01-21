@@ -10,6 +10,13 @@ import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { FuseHomeComponent } from './home.component';
 import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
 
+const routes = [
+    {
+        path: '',
+        component: FuseHomeComponent
+    }
+];
+
 @NgModule({
     declarations: [
         FuseHomeComponent
@@ -20,7 +27,8 @@ import { AuthenticationModule } from '../../../shared/authentication/authenticat
         UsersModule,
         ProfileModule,
         ProfileInfoModule,
-        AuthenticationModule
+        AuthenticationModule,
+        RouterModule.forChild(routes)
     ],
     exports     : [
         FuseHomeComponent

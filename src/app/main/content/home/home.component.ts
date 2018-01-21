@@ -36,7 +36,7 @@ export class FuseHomeComponent implements OnDestroy
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
-        })
+        });
     }
 
     ngOnDestroy() {
