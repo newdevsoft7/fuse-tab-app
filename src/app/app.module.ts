@@ -17,6 +17,7 @@ import { LoginModule } from './main/content/authentication/login/login.module';
 import { AuthenticationModule } from './shared/authentication/authentication.module';
 import { FuseHomeComponent } from './main/content/home/home.component';
 import { ProtectedGuard, PublicGuard } from 'ngx-auth';
+import { CustomToastComponent } from './shared/custom-toast.component';
 
 
 const appRoutes: Routes = [
@@ -38,13 +39,17 @@ const appRoutes: Routes = [
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        CustomToastComponent
     ],
     imports     : [
         BrowserModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({
+            toastComponent: CustomToastComponent,
+            timeOut: 7000
+        }),
         RouterModule.forRoot(appRoutes),
         SharedModule,
         TranslateModule.forRoot(),
@@ -57,6 +62,9 @@ const appRoutes: Routes = [
         FuseSplashScreenService,
         FuseConfigService,
         FuseNavigationService
+    ],
+    entryComponents: [
+        CustomToastComponent
     ],
     bootstrap   : [
         AppComponent
