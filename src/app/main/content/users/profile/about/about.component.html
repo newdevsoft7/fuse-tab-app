@@ -1,0 +1,191 @@
+<div id="about" class="p-24" fxLayout="row" fxLayoutWrap>
+
+    <div class="about-content"
+        fxLayout="column"
+        [fxFlex]="(isOwner || isAdmin) ? 65 : 100">
+
+        <div class="profile-box info-box general" fxLayout="column" *ngIf="isOwner">
+
+            <header class="mat-accent-bg">
+                <div class="title">Basic Information</div>
+            </header>
+
+            <div class="content">
+                <div class="info-line">
+                    <div class="title">First Name</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'fname'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Last Name</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'lname'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Alias</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'alias'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Email</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'email'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Mobile Number</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'mob'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Address</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'address'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">City</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'city'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">State</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'state'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Postal Code</div>
+                    <div class="info">
+                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'postcode'" fxFlex="0 1 auto">
+                        </app-users-profile-edit-basic-text-value>
+                    </div>
+                </div>
+                
+                <div class="info-line">
+                    <div class="title">Sex</div>
+                    <div class="info">
+                        <app-users-profile-edit-sex
+                            [element]="userInfo" fxFlex="0 1 auto">
+                        </app-users-profile-edit-sex>
+                    </div>
+                </div>
+
+                <div class="info-line">
+                    <div class="title">Date of Birth</div>
+                    <div class="info">
+                        <app-users-profile-edit-date
+                            [userId]="userInfo.id"
+                            [element]="userInfo"
+                            [field]="'dob'"
+                            fxFlex="0 1 auto">
+                        </app-users-profile-edit-date>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <ng-container *ngIf="isRegistrant || isStaff">
+            <ng-container *ngFor="let item of userInfo.data">
+                <ng-container *ngTemplateOutlet="template; context: {$implicit: item}"></ng-container>
+            </ng-container>
+        </ng-container>
+
+    </div>
+
+    <div class="about-sidebar" fxLayout="column" fxFlex="35" *ngIf="isAdmin || isOwner">
+
+        <div class="profile-box admin-notes" fxLayout="column">
+
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Admin Notes</div>
+                <div class="more secondary-text">
+                    <span>See All</span>
+                </div>
+            </header>
+
+            <div class="content">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<ng-template #template let-item>
+    <div *ngIf="item.cname" class="profile-box info-box" fxLayout="column">
+        <header class="mat-accent-bg">
+            <div class="title">{{item.cname}}</div>
+        </header>
+        
+        <div class="content">
+            <ng-container *ngFor="let item of item.elements">
+                <ng-container *ngTemplateOutlet="template; context: {$implicit: item}"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+
+    <div *ngIf="item.ename" class="info-line">
+        <ng-container *ngIf="item.ename.indexOf('id') == -1">
+            <div class="title">{{item.ename}}</div>
+            <div class="info">
+
+                <ng-container *ngIf="item.etype == 'list'">
+                    <app-users-profile-edit-list-value
+                        [userId]="userInfo.id"
+                        [element]="item"
+                        fxFlex="0 1 auto">
+                    </app-users-profile-edit-list-value>
+                </ng-container>
+
+                <ng-container *ngIf="item.etype == 'listm'">
+                    <app-users-profile-edit-listm-value
+                        [userId]="userInfo.id"
+                        [element]="item"
+                        fxFlex="0 1 auto">
+                    </app-users-profile-edit-listm-value>
+                </ng-container>
+
+                <ng-container *ngIf="!['list', 'listm'].includes(item.etype)">
+                    <app-users-profile-edit-date *ngIf="item.ename == 'Date of Birth'"
+                        [userId]="userInfo.id"
+                        [element]="item"
+                        [field]="'data'"
+                        fxFlex="0 1 auto">
+                    </app-users-profile-edit-date>
+
+                    <app-users-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'"
+                        [userId]="userInfo.id"
+                        [element]="item"
+                        fxFlex="0 1 auto">
+                    </app-users-profile-edit-text-value>
+                </ng-container>
+
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

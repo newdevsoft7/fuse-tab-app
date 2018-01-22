@@ -1,0 +1,26 @@
+.basic-text-element {
+    .element-value {
+        border-bottom: dashed 1px #d0d0d0;
+        &:hover {
+            cursor: text;
+        }
+    }
+}
+.basic-text-element-form {
+    .mat-form-field-wrapper {
+        padding: 0;
+    }
+
+    .mat-form-field-infix {
+        padding: 0;
+    }
+
+    .mat-form-field-underline {
+        bottom: -5px;
+    }
+
+    .mat-form-field-label {
+        top: 0.8em;
+        padding: 0 8px;
+    }
+}

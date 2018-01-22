@@ -44,7 +44,7 @@ const appRoutes: Routes = [
         BrowserAnimationsModule,
         ToastrModule.forRoot({
             toastComponent: CustomToastComponent,
-            timeOut: 7000
+            timeOut: 5000
         }),
         RouterModule.forRoot(appRoutes),
         SharedModule,

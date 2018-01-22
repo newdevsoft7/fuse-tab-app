@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="list-element" (click)="openForm()">
+	<span class="element-value">{{element.data ? element.data : 'Empty'}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="list-element-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field fxFlex="1 0 auto" floatPlaceholder="never">
+		<mat-select formControlName="data">
+			<mat-option *ngFor="let item of element.options" [value]="item.option">
+				{{item.option}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

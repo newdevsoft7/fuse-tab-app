@@ -18,9 +18,20 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getUser(id: number): Observable<any> {
+        return this.http.get(`${BASE_URL}/profile/${id}`)
+            .catch(this.handleError);
+    }
+
     createUser(user): Observable<any> {
         const url = `${BASE_URL}/user`;
         return this.http.post(url, user)
+            .catch(this.handleError);
+    }
+
+    updateProfile(userId: number, elementId: number | string, data: any): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/${elementId}`;
+        return this.http.put(url, { data })
             .catch(this.handleError);
     }
 
