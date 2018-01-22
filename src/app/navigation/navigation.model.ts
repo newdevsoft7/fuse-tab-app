@@ -1,10 +1,5 @@
 import { FuseNavigationModelInterface } from '../core/components/navigation/navigation.model';
-import {
-    USERS_TAB,
-    USERS_EXPORTS_TAB,
-    USERS_PRESENTATIONS_TAB,
-    SETTINGS_PROFILE_INFO_TAB
-} from '../constants/tab';
+import * as TAB from '../constants/tab';
 
 export class FuseNavigationModel implements FuseNavigationModelInterface
 {
@@ -19,21 +14,21 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'translate': 'NAV.USERS',
                 'type'    : 'collapse',
                 'icon': 'people',
-                'tab'   : USERS_TAB,
+                'tab'   : TAB.USERS_TAB,
                 'children': [
                     {
                         'id'   : 'export',
                         'title': 'Export',
                         'translate': 'NAV.USERS_EXPORT',
                         'type' : 'item',
-                        'tab' : USERS_EXPORTS_TAB
+                        'tab': TAB.USERS_EXPORTS_TAB
                     },
                     {
                         'id': 'presentations',
                         'title': 'Presentations',
                         'translate': 'NAV.USERS_PRESENTATIONS',
                         'type': 'item',
-                        'tab': USERS_PRESENTATIONS_TAB
+                        'tab': TAB.USERS_PRESENTATIONS_TAB
                         
                     },
                     {
@@ -41,7 +36,31 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'New Submission',
                         'translate': 'NAV.USERS_NEW_SUBMISSION',
                         'type': 'item',
-                        'tab': { title: 'New Submission' }
+                        'tab': TAB.USERS_NEW_SUBMISSION_TAB
+
+                    },
+                    {
+                        'id': 'new_user',
+                        'title': 'New User',
+                        'translate': 'NAV.USERS_NEW_USER',
+                        'type': 'item',
+                        'tab': TAB.USERS_NEW_USER_TAB
+
+                    },
+                    {
+                        'id': 'recent_activity',
+                        'title': 'Recent Activity',
+                        'translate': 'NAV.USERS_RECENT_ACTIVITY',
+                        'type': 'item',
+                        'tab': TAB.USERS_RECENT_ACTIVITY_TAB
+
+                    },
+                    {
+                        'id': 'new_message',
+                        'title': 'New Message',
+                        'translate': 'NAV.USERS_NEW_MESSAGE',
+                        'type': 'item',
+                        'tab': TAB.USERS_NEW_MESSAGE_TAB
 
                     }
                 ]
@@ -52,14 +71,14 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'translate': 'NAV.SCHEDULE',
                 'type': 'collapse',
                 'icon': 'schedule',
-                'tab': { title: 'Schedule' },
+                'tab': TAB.SCHEDULE_TAB,
                 'children': [
                     {
                         'id': 'calendar',
                         'title': 'Calendar',
                         'translate': 'NAV.SCHEDULE_CALENDAR',
                         'type': 'item',
-                        'tab'  : { title: 'Calendar' }
+                        'tab'  : TAB.SCHEDULE_CALENDAR_TAB
                         
                     },
                     {
@@ -67,28 +86,28 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'List',
                         'translate': 'NAV.SCHEDULE_LIST',
                         'type': 'item',
-                        'tab': { title: 'List' }
+                        'tab': TAB.SCHEDULE_LIST_TAB
                     },
                     {
                         'id': 'import_shifts',
                         'title': 'Import Shifts',
                         'translate': 'NAV.SCHEDULE_IMPORT_SHIFTS',
                         'type': 'collapse',
-                        'tab': { title: 'Import Shifts' },
+                        'tab': TAB.SCHEDULE_IMPORT_SHIFTS_TAB,
                         'children': [
                             {
                                 'id': 'import_history',
                                 'title': 'Import History',
                                 'translate': 'NAV.SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY',
                                 'type': 'item',
-                                'tab': { title: 'Import History' }
+                                'tab': TAB.SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY_TAB
                             },
                             {
                                 'id': 'column_mapping',
                                 'title': 'Column Mapping',
                                 'translate': 'NAV.SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING',
                                 'type': 'item',
-                                'tab': { title: 'Column Mapping' }
+                                'tab': TAB.SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING_TAB
                             }
                         ]
                     },
@@ -97,21 +116,21 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'Export Shifts',
                         'translate': 'NAV.SCHEDULE_EXPORT_SHIFTS',
                         'type': 'collapse',
-                        'tab': { title: 'Export Shifts' },
+                        'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
                         'children': [
                             {
                                 'id': 'excel_spreadsheet',
                                 'title': 'Excel Spreadsheet',
                                 'translate': 'NAV.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
                                 'type': 'item',
-                                'tab': { title: 'Excel Spreadsheet' }
+                                'tab': TAB.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB
                             },
                             {
                                 'id': 'pdf_overview',
                                 'title': 'PDF Overview',
                                 'translate': 'NAV.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
                                 'type': 'item',
-                                'tab': { title: 'PDF Overview' }
+                                'tab': TAB.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB
                             }
                         ]
                     },
@@ -120,7 +139,7 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'New Shift',
                         'translate': 'NAV.SCHEDULE_NEW_SHIFT',
                         'type': 'item',
-                        'tab': { title: 'New Shift' }
+                        'tab': TAB.SCHEDULE_NEW_SHIFT_TAB
                     }
                 ]
             },
@@ -130,14 +149,14 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'translate': 'NAV.REPORTS_AND_UPLOADS',
                 'type': 'collapse',
                 'icon': 'cloud_upload',
-                'tab': { title: 'Reports & Uploads' },
+                'tab': TAB.REPORTS_AND_UPLOADS_TAB,
                 'children': [
                     {
                         'id': 'report_designer',
                         'title': 'Report Designer',
                         'translate': 'NAV.REPORTS_AND_UPLOADS_REPORT_DESIGNER',
                         'type': 'item',
-                        'tab': { title: 'Report Designer' }
+                        'tab': TAB.REPORTS_AND_UPLOADS_REPORT_DESIGNER_TAB
 
                     },
                     {
@@ -145,7 +164,7 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'Shared Files',
                         'translate': 'NAV.REPORTS_AND_UPLOADS_SHARED_FILES',
                         'type': 'item',
-                        'tab': { title: 'Shared Files' }
+                        'tab': TAB.REPORTS_AND_UPLOADS_SHARED_FILES_TAB
 
                     }
                 ]
@@ -156,35 +175,35 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'translate': 'NAV.ACCOUNTING',
                 'type': 'collapse',
                 'icon': 'attach_money',
-                'tab': { title: 'Accounting' },
+                'tab': TAB.ACCOUNTING_TAB,
                 'children': [
                     {
                         'id': 'staff_invoices',
                         'title': 'Staff Invoices',
                         'translate': 'NAV.ACCOUNTING_STAFF_INVOICES',
                         'type': 'collapse',
-                        'tab': { title: 'Staff Invoices' },
+                        'tab': TAB.ACCOUNTING_STAFF_INVOICES_TAB,
                         'children': [
                             {
                                 'id': 'generate_staff_invoices',
                                 'title': 'Generate Staff Invoices',
                                 'translate': 'NAV.ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES',
                                 'type': 'item',
-                                'tab': { title: 'Generate Staff Invoices' }
+                                'tab': TAB.ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES_TAB
                             },
                             {
                                 'id': 'my_invoices',
                                 'title': 'My Invoices',
                                 'translate': 'NAV.ACCOUNTING_STAFF_INVOICES_MY_INVOICES',
                                 'type': 'collapse',
-                                'tab': { title: 'My Invoices' },
+                                'tab': TAB.ACCOUNTING_STAFF_INVOICES_MY_INVOICES_TAB,
                                 'children': [
                                     {
                                         'id': 'new_invoice',
                                         'title': 'New Invoice',
                                         'translate': 'NAV.ACCOUNTING_STAFF_INVOICES_MY_INVOICES_NEW_INVOICE',
                                         'type': 'item',
-                                        'tab': { title: 'New Invoice' }
+                                        'tab': TAB.ACCOUNTING_STAFF_INVOICES_MY_INVOICES_NEW_INVOICE_TAB
                                     }
                                 ]
                             }
@@ -198,42 +217,42 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'translate': 'NAV.TRACKING',
                 'type': 'collapse',
                 'icon': 'dashboard',
-                'tab': { title: 'Tracking' },
+                'tab': TAB.TRACKING_TAB,
                 'children': [
                     {
                         'id': 'brand',
                         'title': 'Brand',
                         'translate': 'NAV.TRACKING_BRAND',
                         'type': 'item',
-                        'tab': { title: 'Brand' }
+                        'tab': TAB.TRACKING_BRAND_TAB
                     },
                     {
                         'id': 'campaign',
                         'title': 'Campaign',
                         'translate': 'NAV.TRACKING_CAMPAIGN',
                         'type': 'item',
-                        'tab': { title: 'Campaign' }
+                        'tab': TAB.TRACKING_CAMPAIGN_TAB
                     },
                     {
                         'id': 'job_number',
                         'title': 'Job Number',
                         'translate': 'NAV.TRACKING_JOB_NUMBER',
                         'type': 'item',
-                        'tab': { title: 'Job Number' }
+                        'tab': TAB.TRACKING_JOB_NUMBER_TAB
                     },
                     {
                         'id': 'po_number',
                         'title': 'PO Number',
                         'translate': 'NAV.TRACKING_PO_NUMBER',
                         'type': 'item',
-                        'tab': { title: 'PO Number' }
+                        'tab': TAB.TRACKING_PO_NUMBER_TAB
                     },
                     {
                         'id': 'test',
                         'title': 'Test',
                         'translate': 'NAV.TRACKING_TEST',
                         'type': 'item',
-                        'tab': { title: 'Test' }
+                        'tab': TAB.TRACKING_TEST_TAB
                     }
                 ]
             },
@@ -243,70 +262,70 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'translate': 'NAV.SETTINGS',
                 'type': 'collapse',
                 'icon': 'settings',
-                'tab': { title: 'Settings' },
+                'tab': TAB.SETTINGS_TAB,
                 'children': [
                     {
                         'id': 'profile',
                         'title': 'Profile',
                         'translate': 'NAV.SETTINGS_PROFILE',
                         'type': 'collapse',
-                        'tab': { title: 'Profile' },
+                        'tab': TAB.SETTINGS_PROFILE_TAB,
                         'children': [
                             {
                                 'id': 'attributes',
                                 'title': 'Attributes',
                                 'translate': 'NAV.SETTINGS_PROFILE_ATTRIBUTES',
                                 'type': 'item',
-                                'tab': { title: 'Attributes' }
+                                'tab': TAB.SETTINGS_PROFILE_ATTRIBUTES_TAB
                             },
                             {
                                 'id': 'document_categories',
                                 'title': 'Document Categories',
                                 'translate': 'NAV.SETTINGS_PROFILE_DOCUMENT_CATEGORIES',
                                 'type': 'item',
-                                'tab': { title: 'Document Categories' }
+                                'tab': TAB.SETTINGS_PROFILE_DOCUMENT_CATEGORIES_TAB
                             },
                             {
                                 'id': 'experience',
                                 'title': 'Experience',
                                 'translate': 'NAV.SETTINGS_PROFILE_EXPERIENCE',
                                 'type': 'item',
-                                'tab': { title: 'Experience' }
+                                'tab': TAB.SETTINGS_PROFILE_EXPERIENCE_TAB
                             },
                             {
                                 'id': 'info',
                                 'title': 'Info',
                                 'translate': 'NAV.SETTINGS_PROFILE_INFO',
                                 'type': 'item',
-                                'tab': SETTINGS_PROFILE_INFO_TAB
+                                'tab': TAB.SETTINGS_PROFILE_INFO_TAB
                             },
                             {
                                 'id': 'photo_categories',
                                 'title': 'Photo Categories',
                                 'translate': 'NAV.SETTINGS_PROFILE_PHOTO_CATEGORIES',
                                 'type': 'item',
-                                'tab': { title: 'Photo Categories' }
+                                'tab': TAB.SETTINGS_PROFILE_PHOTO_CATEGORIES_TAB
                             },
                             {
                                 'id': 'ratings',
                                 'title': 'Ratings',
                                 'translate': 'NAV.SETTINGS_PROFILE_RATINGS',
                                 'type': 'item',
-                                'tab': { title: 'Ratings' }
+                                'tab': TAB.SETTINGS_PROFILE_RATINGS_TAB
                             },
                             {
                                 'id': 'showcases',
                                 'title': 'Showcases',
                                 'translate': 'NAV.SETTINGS_PROFILE_SHOWCASES',
                                 'type': 'item',
-                                'tab': { title: 'Showcases' }
+                                'tab': TAB.SETTINGS_PROFILE_SHOWCASES_TAB
                             },
                             {
                                 'id': 'video_categories',
                                 'title': 'Video Categories',
                                 'translate': 'NAV.SETTINGS_PROFILE_VIDEO_CATEGORIES',
                                 'type': 'item',
-                                'tab': { title: 'Video Categories' }
+                                'tab': TAB.SETTINGS_PROFILE_VIDEO_CATEGORIES_TAB
                             }
                         ]
                     },
@@ -315,42 +334,42 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'System',
                         'translate': 'NAV.SETTINGS_SYSTEM',
                         'type': 'item',
-                        'tab': { title: 'System' }
+                        'tab': TAB.SETTINGS_SYSTEM_TAB
                     },
                     {
                         'id': 'templates',
                         'title': 'Templates',
                         'translate': 'NAV.SETTINGS_TEMPLATES',
                         'type': 'collapse',
-                        'tab': { title: 'Templates' },
+                        'tab': TAB.SETTINGS_TEMPLATES_TAB,
                         'children': [
                             {
                                 'id': 'email',
                                 'title': 'Email',
                                 'translate': 'NAV.SETTINGS_TEMPLATES_EMAIL',
                                 'type': 'item',
-                                'tab': { title: 'Email' }
+                                'tab': TAB.SETTINGS_TEMPLATES_EMAIL_TAB
                             },
                             {
                                 'id': 'email_attachments',
                                 'title': 'Email Attachments',
                                 'translate': 'NAV.SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS',
                                 'type': 'item',
-                                'tab': { title: 'Email Attachments' }
+                                'tab': TAB.SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS_TAB
                             },
                             {
                                 'id': 'sms',
                                 'title': 'SMS',
                                 'translate': 'NAV.SETTINGS_TEMPLATES_SMS',
                                 'type': 'item',
-                                'tab': { title: 'SMS' }
+                                'tab': TAB.SETTINGS_TEMPLATES_SMS_TAB
                             },
                             {
                                 'id': 'shift_notes',
                                 'title': 'Shift Notes',
                                 'translate': 'NAV.SETTINGS_TEMPLATES_SHIFT_NOTES',
                                 'type': 'item',
-                                'tab': { title: 'Shift Notes' }
+                                'tab': TAB.SETTINGS_TEMPLATES_SHIFT_NOTES_TAB
                             }
                         ]
                     },
@@ -359,35 +378,35 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                         'title': 'Help',
                         'translate': 'NAV.SETTINGS_HELP',
                         'type': 'collapse',
-                        'tab': { title: 'Help' },
+                        'tab': TAB.SETTINGS_HELP_TAB,
                         'children': [
                             {
                                 'id': 'quickstart_guide',
                                 'title': 'QuickStart Guide',
                                 'translate': 'NAV.SETTINGS_HELP_QUICKSTART_GUIDE',
                                 'type': 'item',
-                                'tab': { title: 'QuickStart Guide' }
+                                'tab': TAB.SETTINGS_HELP_QUICKSTART_GUIDE_TAB
                             },
                             {
                                 'id': 'video_system_setup',
                                 'title': 'Video - System Setup',
                                 'translate': 'NAV.SETTINGS_HELP_VIDEO_SYSTEM_SETUP',
                                 'type': 'item',
-                                'tab': { title: 'Video - System Setup' }
+                                'tab': TAB.SETTINGS_HELP_VIDEO_SYSTEM_SETUP_TAB
                             },
                             {
                                 'id': 'video_scheduling',
                                 'title': 'Video Scheduling',
                                 'translate': 'NAV.SETTINGS_HELP_VIDEO_SCHEDULING',
                                 'type': 'item',
-                                'tab': { title: 'Video Scheduling' }
+                                'tab': TAB.SETTINGS_HELP_VIDEO_SCHEDULING_TAB
                             },
                             {
                                 'id': 'updates_and_changelog',
                                 'title': 'Updates & Changelog',
                                 'translate': 'NAV.SETTINGS_HELP_UPDATES_CHANGELOG',
                                 'type': 'item',
-                                'tab': { title: 'Updates & Changelog' }
+                                'tab': TAB.SETTINGS_HELP_UPDATES_CHANGELOG_TAB
                             }
                         ]
                     }

@@ -6,6 +6,7 @@ import { UsersPresentationsComponent } from './presentations/presentations.compo
 import { SharedModule } from '../../../core/modules/shared.module';
 import { UserService } from './user.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
     imports: [
@@ -16,12 +17,14 @@ import { UserFormDialogComponent } from './dialogs/user-form/user-form.component
         UsersComponent,
         UsersExportsComponent,
         UsersPresentationsComponent,
-        UserFormDialogComponent
+        UserFormDialogComponent,
+        UserComponent
     ],
     exports: [
         UsersComponent,
         UsersExportsComponent,
-        UsersPresentationsComponent
+        UsersPresentationsComponent,
+        UserComponent
     ],
     providers: [
         UserService

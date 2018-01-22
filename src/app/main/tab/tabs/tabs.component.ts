@@ -70,7 +70,7 @@ export class TabsComponent implements AfterContentInit {
 	}
 
 	openTab(newTab: Tab) {
-		const existedTab = this.dynamicTabs.find(tab => tab.title == newTab.title);
+		const existedTab = this.dynamicTabs.find(tab => tab.url == newTab.url);
 		if (existedTab && !newTab.shouldAlwaysOpen) {
 			this.selectTab(existedTab);
 		} else {
@@ -86,6 +86,7 @@ export class TabsComponent implements AfterContentInit {
 			// set the according properties on our component instance
 			let instance: TabComponent = componentRef.instance as TabComponent;
 			instance.title = newTab.title;
+			instance.url = newTab.url;
 			instance.template = newTab.template;
 			instance.data = newTab.data;
 

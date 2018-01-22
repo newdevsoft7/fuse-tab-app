@@ -20,6 +20,10 @@
         <app-users></app-users>
     </ng-template>
 
+    <ng-template #usersUserTpl let-data="data">
+        <app-users-user [data]="data"></app-users-user>
+    </ng-template>
+
     <ng-template #usersExportsTpl>
         <app-users-exports></app-users-exports>
     </ng-template>

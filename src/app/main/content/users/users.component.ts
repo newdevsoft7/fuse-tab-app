@@ -6,6 +6,8 @@ import { UserService } from './user.service';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import * as _ from 'lodash';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
+import { Tab } from '../../tab/tab';
+import { TabService } from '../../tab/tab.service';
 
 @Component({
     selector: 'app-users',
@@ -30,7 +32,8 @@ export class UsersComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
-        private userService: UserService) { }
+        private userService: UserService,
+        private tabService: TabService) { }
 
     ngOnInit() {
         this.getUsers();
@@ -64,6 +67,8 @@ export class UsersComponent implements OnInit {
 
     openUserTab(user, event: Event) {
         event.stopPropagation();
+        const tab = new Tab(`${user.fname} ${user.lname}`, 'usersUserTpl', `users/user/${user.id}`, user);
+        this.tabService.openTab(tab);
     }
 
     onSelect({ selected }) {

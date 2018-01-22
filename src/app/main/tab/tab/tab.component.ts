@@ -18,6 +18,7 @@ export class TabComponent {
 	@Input() active = false;
 	@Input() template;
 	@Input() data;
+	@Input() url;
 
 	constructor(public element: ElementRef) { }
 

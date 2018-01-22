@@ -11,7 +11,8 @@ import { TabsComponent } from '../../tab/tabs/tabs.component';
 import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
-import { SETTINGS_PROFILE_INFO_TAB } from '../../../constants/tab';
+import * as TAB from '../../../constants/tab';
+
 
 
 @Component({
@@ -26,6 +27,7 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
+    @ViewChild('usersUserTpl') usersUserTpl;
 
     tabSubscription: Subscription;
     constructor(
@@ -52,21 +54,18 @@ export class FuseHomeComponent implements OnDestroy
     }
 
     openUsers() {
-        const usersTab = new Tab('Users', 'usersTpl', {}, false);
-        this.openTab(usersTab);
+        this.openTab(TAB.USERS_TAB);
     }
 
     openExports() {
-        const exportsTab = new Tab('Exports', 'usersExportsTpl', {}, false);
-        this.openTab(exportsTab);
+        this.openTab(TAB.USERS_EXPORTS_TAB);
     }
     openPresentations() {
-        const presentationsTab = new Tab('Presentations', 'usersPresentationsTpl', {}, false);
-        this.openTab(presentationsTab);
+        this.openTab(TAB.USERS_PRESENTATIONS_TAB);
     }
 
     openSettingsProfileInfo() {
-        this.openTab(SETTINGS_PROFILE_INFO_TAB);
+        this.openTab(TAB.SETTINGS_PROFILE_INFO_TAB);
     }
 
 }
