@@ -67,7 +67,7 @@ export class UsersComponent implements OnInit {
 
     openUserTab(user, event: Event) {
         event.stopPropagation();
-        const tab = new Tab(`${user.fname} ${user.lname}`, 'usersUserTpl', `users/user/${user.id}`, user);
+        const tab = new Tab(`${user.fname} ${user.lname}`, 'usersProfileTpl', `users/user/${user.id}`, user);
         this.tabService.openTab(tab);
     }
 

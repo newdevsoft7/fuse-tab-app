@@ -22,14 +22,14 @@ import * as TAB from '../../../constants/tab';
 })
 export class FuseHomeComponent implements OnDestroy
 {
+    tabSubscription: Subscription;
     @ViewChild(TabsComponent) tabsComponent;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
-    @ViewChild('usersUserTpl') usersUserTpl;
+    @ViewChild('usersProfileTpl') usersProfileTpl;
 
-    tabSubscription: Subscription;
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
@@ -38,7 +38,7 @@ export class FuseHomeComponent implements OnDestroy
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
-        });
+        })
     }
 
     ngOnDestroy() {

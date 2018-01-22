@@ -6,7 +6,9 @@ import { UsersPresentationsComponent } from './presentations/presentations.compo
 import { SharedModule } from '../../../core/modules/shared.module';
 import { UserService } from './user.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
-import { UserComponent } from './user/user.component';
+import { UsersProfileComponent } from './profile/profile.component';
+import { UsersProfileAboutComponent } from './profile/about/about.component';
+import { UsersProfilePhotoComponent } from './profile/photo/photo.component';
 
 @NgModule({
     imports: [
@@ -18,13 +20,15 @@ import { UserComponent } from './user/user.component';
         UsersExportsComponent,
         UsersPresentationsComponent,
         UserFormDialogComponent,
-        UserComponent
+        UsersProfileComponent,
+        UsersProfileAboutComponent,
+        UsersProfilePhotoComponent
     ],
     exports: [
         UsersComponent,
         UsersExportsComponent,
         UsersPresentationsComponent,
-        UserComponent
+        UsersProfileComponent
     ],
     providers: [
         UserService

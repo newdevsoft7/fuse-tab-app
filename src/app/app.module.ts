@@ -23,13 +23,9 @@ import { CustomToastComponent } from './shared/custom-toast.component';
 const appRoutes: Routes = [
     {
         path: 'home',
-        canActivate: [ ProtectedGuard ],
-        loadChildren: './main/content/home/home.module#FuseHomeModule'
-    },
-    {
-        path: 'login',
-        canActivate: [ PublicGuard ],
-        loadChildren: './main/content/authentication/login/login.module#LoginModule'
+        component: FuseHomeComponent,
+        canActivate: [ProtectedGuard]
+
     },
     {
         path: '**',

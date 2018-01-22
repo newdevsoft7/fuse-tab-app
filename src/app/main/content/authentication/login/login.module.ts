@@ -3,11 +3,13 @@ import { SharedModule } from '../../../../core/modules/shared.module';
 import { RouterModule } from '@angular/router';
 
 import { FuseLoginComponent } from './login.component';
+import { PublicGuard } from 'ngx-auth'
 
 const routes = [
     {
-        path     : '',
-        component: FuseLoginComponent
+        path     : 'login',
+        component: FuseLoginComponent,
+        canActivate: [ PublicGuard ]
     }
 ];
 
