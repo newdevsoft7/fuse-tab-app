@@ -55,7 +55,7 @@ export class UsersProfileEditTextValueComponent implements OnInit {
 						this.element.data = value;
 						this.toastr.success(res.message);
 					}, err => {
-						const errors = err.errors.data;
+						const errors = err.error.errors.data;
 						errors.forEach(v => {
 							this.toastr.error(v);
 						});

@@ -54,7 +54,7 @@ export class UsersProfileEditBasicTextValueComponent implements OnInit {
 				let field;
 				switch (this.field) {
 					case 'mob':
-						field = 'mobile';
+						field = 7;	// TODO
 						break;
 					default:
 						field = this.field;
@@ -65,7 +65,7 @@ export class UsersProfileEditBasicTextValueComponent implements OnInit {
 						this.element[this.field] = value;
 						this.toastr.success(res.message)
 					}, err => {
-						const errors = err.errors.data;
+						const errors = err.error.errors.data;
 						errors.forEach(v => {
 							this.toastr.error(v);
 						});
