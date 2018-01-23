@@ -12,7 +12,10 @@
 
             <div class="content">
                 <div class="info-line">
-                    <div class="title">First Name</div>
+                    <div class="title">
+                        <span class="required">*</span>
+                        First Name
+                    </div>
                     <div class="info">
                         <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'fname'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
@@ -20,7 +23,10 @@
                 </div>
 
                 <div class="info-line">
-                    <div class="title">Last Name</div>
+                    <div class="title">
+                        <span class="required">*</span>
+                        Last Name
+                    </div>
                     <div class="info">
                         <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'lname'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
@@ -36,7 +42,10 @@
                 </div>
 
                 <div class="info-line">
-                    <div class="title">Email</div>
+                    <div class="title">
+                        <span class="required">*</span>
+                        Email
+                    </div>
                     <div class="info">
                         <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'email'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
@@ -44,7 +53,10 @@
                 </div>
 
                 <div class="info-line">
-                    <div class="title">Mobile Number</div>
+                    <div class="title">
+                        <span class="required">*</span>
+                        Mobile Number
+                    </div>
                     <div class="info">
                         <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'mob'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
@@ -84,7 +96,10 @@
                 </div>
                 
                 <div class="info-line">
-                    <div class="title">Sex</div>
+                    <div class="title">
+                        <span class="required">*</span>
+                        Sex
+                    </div>
                     <div class="info">
                         <app-users-profile-edit-sex
                             [element]="userInfo" fxFlex="0 1 auto">
@@ -93,7 +108,10 @@
                 </div>
 
                 <div class="info-line">
-                    <div class="title">Date of Birth</div>
+                    <div class="title">
+                        <span class="required">*</span>
+                        Date of Birth
+                    </div>
                     <div class="info">
                         <app-users-profile-edit-date
                             [userId]="userInfo.id"
@@ -151,9 +169,11 @@
 
     <div *ngIf="item.ename" class="info-line">
         <ng-container *ngIf="item.ename.indexOf('id') == -1">
-            <div class="title">{{item.ename}}</div>
+            <div class="title">
+                <span *ngIf="item.visibility == 'required'" class="required">*</span>
+                {{item.ename}}
+            </div>
             <div class="info">
-
                 <ng-container *ngIf="item.etype == 'list'">
                     <app-users-profile-edit-list-value
                         [userId]="userInfo.id"
