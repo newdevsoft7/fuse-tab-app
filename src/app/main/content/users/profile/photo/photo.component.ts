@@ -169,4 +169,12 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 		}
 	}
 
+	get isOwner() {
+		return this.user.lvl == 'owner';
+	}
+
+	get isAdmin() {
+		return this.user.lvl == 'admin';
+	}
+
 }
