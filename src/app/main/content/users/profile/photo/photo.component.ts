@@ -16,6 +16,8 @@ const PROFILE_PHOTO = 'profile_photo';
 export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	@Input('userInfo') user;
+	@Input() currentUser;
+
 	@Output() onAvatarChanged = new EventEmitter();
 
 	photos: any[];
@@ -170,11 +172,11 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	}
 
 	get isOwner() {
-		return this.user.lvl == 'owner';
+		return this.currentUser.lvl == 'owner';
 	}
 
 	get isAdmin() {
-		return this.user.lvl == 'admin';
+		return this.currentUser.lvl == 'admin';
 	}
 
 }

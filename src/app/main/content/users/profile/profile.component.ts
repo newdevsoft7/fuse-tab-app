@@ -1,24 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { fuseAnimations } from '../../../../core/animations';
+import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
 import { UserService } from '../user.service';
 
 
 @Component({
 	selector: 'app-users-profile',
 	templateUrl: './profile.component.html',
-	styleUrls: ['./profile.component.scss'],
-	animations: fuseAnimations
+	styleUrls: ['./profile.component.scss']
 })
 export class UsersProfileComponent implements OnInit {
+
 	@Input('data') user;
+
+	currentUser: any;
 	userInfo: any;
 
 	constructor(
+		private tokenStorage: TokenStorage,
 		private userService: UserService
 	) { }
 
 	ngOnInit() {
 		this.getUserInfo();
+		this.currentUser = this.tokenStorage.getUser();
 	}
 
 	getAvatar(userInfo) {

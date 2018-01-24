@@ -9,27 +9,12 @@ import { UserService } from '../../user.service';
 export class UsersProfileAboutComponent implements OnInit {
 
     @Input() userInfo;
+    @Input() currentUser;
+
     constructor(
         private userService: UserService
     ) { }
 
     ngOnInit() {
     }
-
-    get isOwner() {
-        return this.userInfo.lvl == 'owner';
-    }
-
-    get isAdmin() {
-        return this.userInfo.lvl == 'admin';
-    }
-
-    get isStaff() {
-        return this.userInfo.lvl == 'staff';
-    }
-
-    get isRegistrant() {
-        return this.userInfo.lvl.indexOf('registrant') > -1;
-    }
-
 }

@@ -2,9 +2,9 @@
 
     <div class="about-content"
         fxLayout="column"
-        [fxFlex]="(isOwner || isAdmin) ? 65 : 100">
+        [fxFlex]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
 
-        <div class="profile-box info-box general" fxLayout="column" *ngIf="isOwner">
+        <div class="profile-box info-box general" fxLayout="column" *ngIf="userInfo.lvl == 'owner'">
 
             <header class="mat-accent-bg">
                 <div class="title">Basic Information</div>
@@ -126,7 +126,7 @@
 
         </div>
 
-        <ng-container *ngIf="isRegistrant || isStaff">
+        <ng-container *ngIf="userInfo.lvl.indexOf('registrant') > -1 || userInfo.lvl == 'staff'">
             <ng-container *ngFor="let item of userInfo.data">
                 <ng-container *ngTemplateOutlet="template; context: {$implicit: item}"></ng-container>
             </ng-container>
@@ -134,7 +134,7 @@
 
     </div>
 
-    <div class="about-sidebar" fxLayout="column" fxFlex="35" *ngIf="isAdmin || isOwner">
+    <div class="about-sidebar" fxLayout="column" fxFlex="35" *ngIf="currentUser.lvl == 'owner' || currentUser.lvl == 'admin'">
 
         <div class="profile-box admin-notes" fxLayout="column">
 
