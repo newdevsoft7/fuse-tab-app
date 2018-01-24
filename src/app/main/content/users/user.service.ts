@@ -35,6 +35,49 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    uploadProfilePhoto(userId: number, data: any): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/photo`;
+        return this.http.post(url, data)
+            .catch(this.handleError);
+    }
+
+    getProfilePhotos(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/photos`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    deleteProfileFile(fileId: number, fileType: string): Observable<any> {
+        const url = `${BASE_URL}/file/${fileType}/${fileId}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    };
+
+    setProfilePhoto(userId: number, photoId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/photo/${photoId}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
+    lockProfilePhoto(photoId: number, setLock = 1): Observable<any> {
+        const url = `${BASE_URL}/profilePhoto/${photoId}/lock/${setLock}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
+    setProfilePhotoAsAdmin(photoId: number, setAdmin: number): Observable<any> {
+        const url = `${BASE_URL}/profilePhoto/${photoId}/adminOnly/${setAdmin}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+    
+    rotateProfilePhoto(photoId: number, deg: number): Observable <any> {
+        const url = `${BASE_URL}/profilePhoto/${photoId}/rotate/${deg}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

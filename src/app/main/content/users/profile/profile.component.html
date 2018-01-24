@@ -5,10 +5,8 @@
 
         <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
             <img class="profile-image avatar huge"
-                [src]="getAvatar(userInfo)"
-                *fuseIfOnDom
-                [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
-            <div class="name" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                [src]="getAvatar(userInfo)">
+            <div class="name">
                 {{userInfo.fname}} {{userInfo.lname}}
             </div>
         </div>
@@ -26,7 +24,7 @@
             </mat-tab>
 
             <mat-tab label="Photos">
-                <app-users-profile-photo></app-users-profile-photo>
+                <app-users-profile-photo [userInfo]="userInfo" (onAvatarChanged)="onAvatarChanged($event)"></app-users-profile-photo>
             </mat-tab>
 
         </mat-tab-group>

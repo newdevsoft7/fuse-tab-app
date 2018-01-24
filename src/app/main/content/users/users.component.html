@@ -69,7 +69,7 @@
     <div class="content p-24 pb-56 pr-sm-92 ps ps--active-y">
 
         <!-- TABLE -->
-        <div *ngIf="filteredUsers" class="users-table" [@animate]="{value:'*'}">
+        <div *ngIf="filteredUsers" class="users-table">
 
             <ngx-datatable
                 #table
@@ -196,8 +196,7 @@
         <!-- / TABLE -->
 
         <!-- ADD USER BUTTON -->
-        <button mat-fab class="mat-accent-bg" id="add-user-button" aria-label="add user" *fuseIfOnDom
-            [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}" (click)="openNewUser()">
+        <button mat-fab class="mat-accent-bg" id="add-user-button" aria-label="add user">
             <mat-icon>person_add</mat-icon>
         </button>
         <!-- / ADD USER BUTTON -->

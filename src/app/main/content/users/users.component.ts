@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
-import { fuseAnimations } from '../../../core/animations';
 import { UserService } from './user.service';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import * as _ from 'lodash';
@@ -13,8 +12,7 @@ import { TabService } from '../../tab/tab.service';
     selector: 'app-users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    animations: fuseAnimations
+    encapsulation: ViewEncapsulation.None
 })
 export class UsersComponent implements OnInit {
     users: any[];

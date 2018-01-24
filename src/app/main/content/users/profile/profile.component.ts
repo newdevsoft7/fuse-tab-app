@@ -34,6 +34,10 @@ export class UsersProfileComponent implements OnInit {
 		}
 	}
 
+	onAvatarChanged(avatar) {
+		this.userInfo.ppic_a = avatar;
+	}
+
 	private getUserInfo() {
 		this.user = this.userService
 			.getUser(this.user.id)

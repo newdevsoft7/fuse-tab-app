@@ -1,0 +1,99 @@
+<div id="photos" class="p-24">
+
+    <!-- BASIC SECTION -->
+    <div class="group">
+
+        <div class="photo">
+
+            <!-- ADD FILE BUTTON -->
+            <div class="file-uploader">
+                <input hidden type="file" #fileInput (change)="onUploadPhoto($event)" multiple/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+
+            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicPhotos" (drop)="onDrop($event)">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of basicPhotos" [model]="photo">
+                    <ng-container [ngTemplateOutlet]="photoTpl" [ngTemplateOutletContext]="{photo: photo}">
+                    </ng-container>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    <!-- / BASIC SECTION-->
+
+    <!-- ADMIN SECTION -->
+    <div class="group">
+
+        <div class="photo">
+            <div class="group-title">
+                <span class="name">Admin Only</span>
+                <span class="info"></span>
+            </div>
+            
+            <!-- ADD FILE BUTTON -->
+            <div class="file-uploader">
+                <input hidden type="file" #adminFileInput (change)="onUploadPhoto($event, 1)" multiple/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="adminFileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+
+            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminPhotos" (drop)="onDrop($event)">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of adminPhotos" [model]="photo">
+                    <ng-container [ngTemplateOutlet]="photoTpl" [ngTemplateOutletContext]="{photo: photo}">
+                    </ng-container>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    <!-- / ADMIN SECTION -->
+
+</div>
+
+<ng-template #photoTpl let-photo="photo">
+
+    <img class="preview" [src]="photo.thumbnail" (click)="showFullImage(photo)">
+
+    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
+        
+        <div fxLayout="row" fxLayoutAlign="start">
+
+            <button mat-icon-button (click)="rotateLeft(photo)">
+                <mat-icon fontSet="fa" fontIcon="fa-undo"></mat-icon>
+            </button>
+    
+            <button mat-icon-button (click)="rotateRight(photo)">
+                <mat-icon fontSet="fa" fontIcon="fa-repeat"></mat-icon>
+            </button>
+
+        </div>
+    
+        <div fxLayout="row" fxLayoutAlign="end">
+            
+            <button mat-icon-button>
+                <mat-icon [class.fa-rotate-90]="!photo.main" fontSet="fa" fontIcon="fa-thumb-tack" (click)="setProfilePhoto(photo)"></mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="onLockedChanged(photo)">
+                <mat-icon *ngIf="photo.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
+                <mat-icon *ngIf="!photo.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="deleteProfilePhoto(photo)">
+                <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+            </button>
+            
+        </div>
+        
+    </div>
+</ng-template>

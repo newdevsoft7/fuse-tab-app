@@ -15,6 +15,7 @@ import { UsersProfileEditBasicTextValueComponent } from './profile/about/edit-ba
 import { UsersProfileEditSexComponent } from './profile/about/edit-sex/edit-sex.component';
 import { UsersProfileEditListmValueComponent } from './profile/about/edit-listm-value/edit-listm-value.component';
 import { UsersProfileEditDateComponent } from './profile/about/edit-date/edit-date.component';
+import { UsersProfilePhotoGalleryDialogComponent } from './profile/photo/photo-gallery-dialog/photo-gallery-dialog.component';
 
 @NgModule({
     imports: [
@@ -34,7 +35,8 @@ import { UsersProfileEditDateComponent } from './profile/about/edit-date/edit-da
         UsersProfileEditListmValueComponent,
         UsersProfileEditBasicTextValueComponent,
         UsersProfileEditSexComponent,
-        UsersProfileEditDateComponent
+        UsersProfileEditDateComponent,
+        UsersProfilePhotoGalleryDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -46,7 +48,8 @@ import { UsersProfileEditDateComponent } from './profile/about/edit-date/edit-da
         UserService
     ],
     entryComponents: [
-        UserFormDialogComponent
+        UserFormDialogComponent,
+        UsersProfilePhotoGalleryDialogComponent
     ]
 })
 export class UsersModule { }
