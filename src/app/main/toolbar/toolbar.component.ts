@@ -100,10 +100,12 @@ export class FuseToolbarComponent implements OnInit
 
     ngOnInit() {
         const user = this.tokenStorage.getUser();
-        this.userService.getUser(user.id)
-            .subscribe(res => {
-                this.user = res;
-            });
+        if (user) {
+            this.userService.getUser(user.id)
+                .subscribe(res => {
+                    this.user = res;
+                });
+        }
     }
 
     search(value)
