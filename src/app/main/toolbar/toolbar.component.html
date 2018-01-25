@@ -26,16 +26,18 @@
         </div>
 
         <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
-
-            <button mat-button [matMenuTriggerFor]="userMenu"
-                    class="user-button">
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <img class="avatar" src="assets/images/avatars/profile.jpg">
-                    <span class="username mr-12" fxHide fxShow.gt-sm>John Doe</span>
-                    <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
-                </div>
-            </button>
-
+            <ng-container *ngIf="user">
+                <button mat-button [matMenuTriggerFor]="userMenu"  *fuseIfOnDom
+                        [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"
+                        class="user-button">
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <img class="avatar" [src]="user.ppic_a">
+                        <span class="username mr-12" fxHide fxShow.gt-sm>{{user.fname}} {{user.lname}}</span>
+                        <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
+                    </div>
+                </button>
+            </ng-container>
+            
             <mat-menu #userMenu="matMenu">
 
                 <button mat-menu-item (click)="openProfile()">

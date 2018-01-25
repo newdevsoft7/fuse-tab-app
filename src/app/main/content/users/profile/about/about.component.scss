@@ -24,8 +24,45 @@
 
             .admin-notes {
 
-                .content {
+                .see-all-button {
+                    &:hover {
+                        cursor: pointer;
+                    }
 
+                    &.disabled {
+                        pointer-events: none;
+                    }
+                }
+
+                .content {
+                    .notes {
+
+                        .note {
+                            padding: 16px 0;
+
+                            .avatar {
+                                margin-right: 16px;
+                            }
+
+                            .username {
+                                font-weight: 500;
+                                color: mat-color($accent)
+                            }
+
+                            .message {
+                                font-weight: 500;
+                            }
+
+                            .time {
+                            }
+
+                            .delete-note {
+                                &:hover {
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

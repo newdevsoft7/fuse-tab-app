@@ -1,18 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { FuseConfigService } from '../../core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TabService } from '../tab/tab.service';
 import { USERS_PROFILE_TAB } from '../../constants/tab';
 import { AuthenticationService } from '../../shared/authentication/authentication.service';
+import { UserService } from '../content/users/user.service';
+import { TokenStorage } from '../../shared/authentication/token-storage.service';
+import { fuseAnimations } from '../../core/animations';
+import { Tab } from '../tab/tab';
 
 @Component({
     selector   : 'fuse-toolbar',
     templateUrl: './toolbar.component.html',
-    styleUrls  : ['./toolbar.component.scss']
+    styleUrls  : ['./toolbar.component.scss'],
+    animations: fuseAnimations
 })
 
-export class FuseToolbarComponent
+export class FuseToolbarComponent implements OnInit
 {
     userStatusOptions: any[];
     languages: any;
@@ -20,12 +25,16 @@ export class FuseToolbarComponent
     showLoadingBar: boolean;
     horizontalNav: boolean;
 
+    user: any;
+
     constructor(
         private router: Router,
         private fuseConfig: FuseConfigService,
         private translate: TranslateService,
         private tabService: TabService,
-        private authService: AuthenticationService
+        private authService: AuthenticationService,
+        private userService: UserService,
+        private tokenStorage: TokenStorage
     )
     {
         this.userStatusOptions = [
@@ -89,6 +98,14 @@ export class FuseToolbarComponent
 
     }
 
+    ngOnInit() {
+        const user = this.tokenStorage.getUser();
+        this.userService.getUser(user.id)
+            .subscribe(res => {
+                this.user = res;
+            });
+    }
+
     search(value)
     {
         // Do your search here...
@@ -109,6 +126,7 @@ export class FuseToolbarComponent
     }
 
     openProfile() {
-        // TODO
+        const tab = new Tab(`${this.user.fname} ${this.user.lname}`, 'usersProfileTpl', `users/user/${this.user.id}`, this.user);
+        this.tabService.openTab(tab);
     }
 }

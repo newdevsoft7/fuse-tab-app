@@ -141,11 +141,74 @@
             <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="title">Admin Notes</div>
                 <div class="more secondary-text">
-                    <span>See All</span>
+                    <span (click)="onSeeAllAdminNotes()" class="see-all-button" [class.disabled]="isSeeAllAdminNotes">See All</span>
                 </div>
             </header>
 
             <div class="content">
+
+                <!-- ADMIN NOTE FORM -->
+                <form [formGroup]="adminNoteForm" novalidate fxLayout="column">
+
+                    <mat-form-field class="mb-4" floatPlaceholder="never">
+                        <textarea matInput placeholder="Write an admin note.." formControlName="note" #adminNoteInput></textarea>
+                    </mat-form-field>
+                    
+                    <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="canSavePost">
+                        <mat-form-field>
+                            <mat-select formControlName="type" placeholder="Note Type">
+                                <mat-option [value]="'info'">
+                                    Info
+                                </mat-option>
+                                <mat-option [value]="'interview'">
+                                    Interview
+                                </mat-option>
+                                <mat-option [value]="'system'">
+                                    System
+                                </mat-option>
+                                <mat-option [value]="'positive'">
+                                    Positive
+                                </mat-option>
+                                <mat-option [value]="'negative'">
+                                    Negative
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <button
+                            mat-raised-button
+                            (click)="onPostAdminNote()"
+                            class="save-button mat-accent"
+                            [disabled]="adminNoteForm.invalid"
+                            aria-label="POST">
+                            POST
+                        </button>
+                    </div>
+
+                    <div class="notes">
+                        <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes">
+                            <img [src]="note.creator_thumbnail" class="avatar" alt="{{note.creator_name}}" />
+                    
+                            <div fxLayout="column">
+                                
+                                <div>
+                                    <div class="username">{{note.creator_name}}</div>
+                                    <div>
+                                        <strong class="mr-8">{{note.type}}</strong>
+                                        <span class="message"> {{note.note}}</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span class="time secondary-text mr-8">{{note.created_at | date: 'medium'}}</span>
+                                    <span class="delete-note" (click)="onDeleteAdminNote(note)">Delete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- / ADMIN NOTE FORM -->
+                
             </div>
 
         </div>

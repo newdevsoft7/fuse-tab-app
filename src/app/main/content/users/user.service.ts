@@ -71,12 +71,35 @@ export class UserService {
             .catch(this.handleError);
     }
     
-    rotateProfilePhoto(photoId: number, deg: number): Observable <any> {
+    rotateProfilePhoto(photoId: number, deg: number): Observable<any> {
         const url = `${BASE_URL}/profilePhoto/${photoId}/rotate/${deg}`;
         return this.http.put(url, {})
             .catch(this.handleError);
     }
 
+    getAdminNotes(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/adminNote`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    createAdminNote(userId: number, data: any): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/adminNote`;
+        return this.http.post(url, { ...data })
+            .catch(this.handleError);
+    }
+
+    updateAdminNote(noteId: number, data: any): Observable<any> {
+        const url = `${BASE_URL}/profile/adminNote/${noteId}`;
+        return this.http.put(url, { ...data })
+            .catch(this.handleError);
+    }
+
+    deleteAdminNote(noteId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/adminNote/${noteId}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response | any) {
         return Observable.throw(error);

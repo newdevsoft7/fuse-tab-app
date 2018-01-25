@@ -25,6 +25,8 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	adminPhotos: any[];
 	differ: any;
 
+	uploading = false;
+
 	dialogRef: any;
 	
 	constructor(
@@ -92,6 +94,9 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	onUploadPhoto(event, isAdmin = 0) {
 		const files = event.target.files;
 		if (files && files.length > 0) {
+
+			this.uploading = true;
+
 			let formData = new FormData();
 
 			for (let i = 0; i < files.length; i++) {
@@ -104,12 +109,19 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 			this.userService.uploadProfilePhoto(this.user.id, formData)
 				.subscribe(res => {
+					this.uploading = false;
 					this.toastr.success(res.message);
 					res.data.map(photo => {
 						this.photos.push(photo);
 					});
 				}, err => {
-					console.log(err);
+					this.uploading = false;
+					_.forEach(err.error.errors, errors => {
+						_.forEach(errors, (error: string) => {
+							const message = _.replace(error, /photo\.\d+/g, 'photo');
+							this.toastr.error(message);
+						});
+					});
 				});
 		}
 	}
