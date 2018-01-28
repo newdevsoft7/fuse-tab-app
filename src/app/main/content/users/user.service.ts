@@ -101,6 +101,54 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getProfileVideos(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/videos`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    uploadProfileVideo(userId: number, data: any): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/video`;
+        return this.http.post(url, data)
+            .catch(this.handleError);
+    }
+
+    lockProfileVideo(videoId: number, setLock = 1): Observable<any> {
+        const url = `${BASE_URL}/profileVideo/${videoId}/lock/${setLock}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
+    setProfileVideoAsAdmin(videoId: number, setAdmin: number): Observable<any> {
+        const url = `${BASE_URL}/profileVideo/${videoId}/adminOnly/${setAdmin}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
+    getProfileDocuments(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/documents`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    lockProfileDocument(documentId: number, setLock = 1): Observable<any> {
+        const url = `${BASE_URL}/profileDocument/${documentId}/lock/${setLock}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
+    uploadProfileDocument(userId: number, data: any): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/document`;
+        return this.http.post(url, data)
+            .catch(this.handleError);
+    }
+
+    setProfileDocumentAsAdmin(documentId: number, setAdmin: number): Observable<any> {
+        const url = `${BASE_URL}/profileDocument/${documentId}/adminOnly/${setAdmin}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

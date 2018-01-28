@@ -44,6 +44,10 @@ export class UsersComponent implements OnInit {
                 this.users = res.users;
                 this.columns = res.columns;
                 this.updateFilter(this.search.nativeElement.value);
+            }, err => {
+                if (err.status && err.status == 403) {
+                    this.toastr.error('You have no permission!');
+                }
             });
     }
 

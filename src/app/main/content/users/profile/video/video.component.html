@@ -1,0 +1,79 @@
+<div id="videos" class="p-24">
+
+    <!-- BASIC SECTION -->
+    <div class="group">
+
+        <div class="video">
+
+            <!-- ADD FILE BUTTON -->
+            <div class="file-uploader">
+                <input hidden type="file" #fileInput (change)="onUploadVideo($event)" multiple/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+
+            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicVideos" (drop)="onDrop($event)">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of videos" [model]="video">
+                    <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- / BASIC SECTION-->
+
+    <!-- ADMIN SECTION -->
+    <div class="group" *ngIf="isOwner || isAdmin">
+    
+        <div class="video">
+            <div class="group-title">
+                <span class="name">Admin Only</span>
+                <span class="info"></span>
+            </div>
+    
+            <!-- ADD FILE BUTTON -->
+            <div class="file-uploader">
+                <input hidden type="file" #adminFileInput (change)="onUploadVideo($event, 1)" multiple/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="adminFileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+    
+            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminVideos" (drop)="onDrop($event)">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of adminVideos" [model]="video">
+                    <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
+                    </ng-container>
+                </div>
+            </div>
+    
+        </div>
+    
+    </div>
+    <!-- / ADMIN SECTION -->
+
+</div>
+
+<ng-template #videoTpl let-video="video">
+
+    <img class="preview" [src]="video.thumbnail" (click)="showVideo(video)">
+
+    <div class="title" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-icon-button (click)="onLockedChanged(video)">
+            <mat-icon *ngIf="video.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
+            <mat-icon *ngIf="!video.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="deleteProfileVideo(video)">
+            <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+        </button>
+
+    </div>
+</ng-template>

@@ -1,8 +1,11 @@
 import { Component, OnInit, Input, ViewEncapsulation, DoCheck, IterableDiffers, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
+import { CustomLoadingService } from '../../../../../shared/custom-loading.service';
 import { UserService } from '../../user.service';
+
 import * as _ from 'lodash';
+
 import { UsersProfilePhotoGalleryDialogComponent } from './photo-gallery-dialog/photo-gallery-dialog.component';
 
 const PROFILE_PHOTO = 'profile_photo';
@@ -25,11 +28,10 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	adminPhotos: any[];
 	differ: any;
 
-	uploading = false;
-
 	dialogRef: any;
 	
 	constructor(
+		private loadingService: CustomLoadingService,
 		private dialog: MatDialog,
 		private userService: UserService,
 		private toastr: ToastrService,
@@ -95,7 +97,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 		const files = event.target.files;
 		if (files && files.length > 0) {
 
-			this.uploading = true;
+			this.loadingService.showLoadingSpinner();
 
 			let formData = new FormData();
 
@@ -109,13 +111,13 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 			this.userService.uploadProfilePhoto(this.user.id, formData)
 				.subscribe(res => {
-					this.uploading = false;
+					this.loadingService.hideLoadingSpinner();
 					this.toastr.success(res.message);
 					res.data.map(photo => {
 						this.photos.push(photo);
 					});
 				}, err => {
-					this.uploading = false;
+					this.loadingService.hideLoadingSpinner();
 					_.forEach(err.error.errors, errors => {
 						_.forEach(errors, (error: string) => {
 							const message = _.replace(error, /photo\.\d+/g, 'photo');
@@ -169,8 +171,8 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	onDrop(event) {
 		const photo = event.value;
-		const isDroppedInAdmin = this.adminPhotos.findIndex(v => v.id == photo.id) > -1 && !photo.admin_only;
-		const isDroppedInBasic = this.basicPhotos.findIndex(v => v.id == photo.id) > -1 && photo.admin_only;
+		const isDroppedInAdmin = (this.adminPhotos.findIndex(v => v.id == photo.id) > -1) && (photo.admin_only != 1);
+		const isDroppedInBasic = (this.basicPhotos.findIndex(v => v.id == photo.id) > -1) && (photo.admin_only == 1);
 		
 		if (isDroppedInAdmin || isDroppedInBasic) {
 			const adminOnly = isDroppedInAdmin ? 1 : 0;

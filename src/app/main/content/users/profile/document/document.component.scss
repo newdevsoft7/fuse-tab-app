@@ -1,0 +1,109 @@
+@import "src/app/core/scss/fuse";
+#documents {
+
+    .group {
+
+        .group-title {
+            margin-bottom: 24px;
+
+            .name {
+                font-size: 20px;
+            }
+
+            .info {
+                margin-left: 16px;
+                font-size: 15px;
+                color: rgba(0, 0, 0, 0.54);
+            }
+        }
+
+        .group-media {
+            margin-bottom: 16px;
+            min-height: 272px;
+
+            .media {
+                margin: 0 16px 16px 0;
+                position: relative;
+
+                .preview {
+                    width: 256px;
+                    height: 256px;
+                    display: block;
+                }
+
+                .title {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    z-index: 10;
+                    padding: 0 16px;
+                    height: 48px;
+                    line-height: 48px;
+                    background: rgba(0, 0, 0, 0.54);
+                    color: #FFF;
+                    font-size: 15px;
+
+                    mat-icon {
+                        cursor: pointer;
+                        color: #FFF;
+                    }
+                }
+            }
+        }
+    }
+
+    .file-uploader {
+        .mat-icon {
+            margin-right: 8px;
+            color: white;
+        }
+
+    }
+
+    .ngx-dnd-item {
+        transition: opacity 0.4s ease-in-out;
+        display: block; 
+    }
+
+    .ngx-dnd-item:not(.has-handle):not(.move-disabled),
+    .ngx-dnd-item.has-handle [ngxdraghandle],
+    .ngx-dnd-item.has-handle [ngxDragHandle] {
+        cursor: move;
+        cursor: grab;
+        cursor: -webkit-grab;
+    }
+
+    .ngx-dnd-item .ngx-dnd-content {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .gu-mirror {
+        position: fixed !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        opacity: 0.8;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+        filter: alpha(opacity=80);
+    }
+
+    .gu-hide {
+        display: none !important;
+    }
+
+    .gu-unselectable {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+    }
+
+    .gu-transit {
+        opacity: 0.2;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+        filter: alpha(opacity=20);
+    }
+}

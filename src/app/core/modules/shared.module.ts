@@ -24,6 +24,7 @@ import { FuseMaterialColorPickerComponent } from '../components/material-color-p
 import { FuseTranslationLoaderService } from '../services/translation-loader.service';
 import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
+import { CustomLoadingService } from '../../shared/custom-loading.service';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { TranslateModule } from '@ngx-translate/core';
         FuseMatchMedia,
         FuseNavbarVerticalService,
         FuseMatSidenavHelperService,
-        FuseTranslationLoaderService
+        FuseTranslationLoaderService,
+        CustomLoadingService
     ]
 })
 

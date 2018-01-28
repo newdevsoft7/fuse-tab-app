@@ -1,0 +1,79 @@
+<div id="documents" class="p-24">
+
+    <!-- BASIC SECTION -->
+    <div class="group">
+
+        <div class="document">
+
+            <!-- ADD FILE BUTTON -->
+            <div class="file-uploader">
+                <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+
+            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicDocuments" (drop)="onDrop($event)">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of basicDocuments" [model]="document">
+                    <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
+                    </ng-container>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    <!-- / BASIC SECTION-->
+
+    <!-- ADMIN SECTION -->
+    <div class="group" *ngIf="isOwner || isAdmin">
+
+        <div class="document">
+            <div class="group-title">
+                <span class="name">Admin Only</span>
+                <span class="info"></span>
+            </div>
+            
+            <!-- ADD FILE BUTTON -->
+            <div class="file-uploader">
+                <input hidden type="file" #adminFileInput (change)="onUploadDocument($event, 1)" multiple/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="adminFileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+
+            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminDocuments" (drop)="onDrop($event)">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of adminDocuments" [model]="document">
+                    <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
+                    </ng-container>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    <!-- / ADMIN SECTION -->
+
+</div>
+
+<ng-template #documentTpl let-document="document">
+    <a [href]="document.path" target="blank">
+        <img class="preview" [src]="document.thumbnail">
+    </a>
+    <div class="title" fxLayout="row" fxLayoutAlign="end center">
+        
+            <button mat-icon-button (click)="onLockedChanged(document)">
+                <mat-icon *ngIf="document.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
+                <mat-icon *ngIf="!document.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="deleteProfileDocument(document)">
+                <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+            </button>
+            
+    </div>
+</ng-template>

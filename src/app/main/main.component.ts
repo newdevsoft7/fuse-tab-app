@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { FuseConfigService } from '../core/services/config.service';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
+import { CustomLoadingService } from '../shared/custom-loading.service';
 
 @Component({
     selector     : 'fuse-main',
@@ -15,8 +16,11 @@ export class FuseMainComponent implements OnInit, OnDestroy
     onSettingsChanged: Subscription;
     fuseSettings: any;
     @HostBinding('attr.fuse-layout-mode') layoutMode;
+    
+    loading = false;
 
     constructor(
+        private loadingService: CustomLoadingService,
         private _renderer: Renderer2,
         private _elementRef: ElementRef,
         private fuseConfig: FuseConfigService,
@@ -37,6 +41,10 @@ export class FuseMainComponent implements OnInit, OnDestroy
         {
             this.document.body.className += ' is-mobile';
         }
+
+        this.loadingService.isLoading.subscribe(isLoading => {
+            this.loading = isLoading;
+        })
     }
 
     ngOnInit()

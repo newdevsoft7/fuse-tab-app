@@ -32,7 +32,9 @@ export class UsersProfileAboutComponent implements OnInit {
             note: ['', Validators.required]
         });
 
-        this.refreshAdminNotesView();
+        if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+            this.refreshAdminNotesView();
+        }
 
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
@@ -60,7 +62,7 @@ export class UsersProfileAboutComponent implements OnInit {
             .subscribe(res => {
                 const note = res.data;
                 note.creator_thumbnail = this.userInfo.ppic_a;
-                note.creator_name = `${this.userInfo.fname}`;
+                note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
                 
                 this.userInfo.profile_admin_notes.unshift(note);
