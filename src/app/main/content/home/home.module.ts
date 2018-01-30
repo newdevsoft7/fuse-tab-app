@@ -6,6 +6,7 @@ import { TabModule } from '../../tab/tab.module';
 import { UsersModule } from '../users/users.module';
 import { ProfileModule } from '../profile/profile.module';
 import { ProfileInfoModule } from '../profile/info/profile-info.module';
+import { ScheduleModule } from '../schedule/schedule.module';
 
 import { FuseHomeComponent } from './home.component';
 import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
@@ -27,6 +28,7 @@ import { AuthenticationModule } from '../../../shared/authentication/authenticat
         UsersModule,
         ProfileModule,
         ProfileInfoModule,
+        ScheduleModule,
         AuthenticationModule
         // RouterModule.forChild(routes)
     ],

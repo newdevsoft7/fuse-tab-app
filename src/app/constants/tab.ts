@@ -9,8 +9,8 @@ export const USERS_NEW_USER_TAB = new Tab('New User', '', 'users/new-user', {});
 export const USERS_RECENT_ACTIVITY_TAB = new Tab('Recent Activity', '', 'users/recent-activity', {});
 export const USERS_NEW_MESSAGE_TAB = new Tab('New Message', '', 'users/new-message', {});
 
-export const SCHEDULE_TAB = new Tab('Schedule', '', 'schedule', {});
-export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', '', 'scheddule/calendar', {});
+export const SCHEDULE_TAB = new Tab('Schedule', 'scheduleTpl', 'schedule', {});
+export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {});
 export const SCHEDULE_LIST_TAB = new Tab('List', '', 'schedule/list', {});
 export const SCHEDULE_IMPORT_SHIFTS_TAB = new Tab('Import Shifts', '', 'schedule/import-shifts', {});
 export const SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY_TAB = new Tab('Import History', '', 'schedule/import-shifts/import-history', {});

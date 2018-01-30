@@ -38,7 +38,6 @@ import { FuseSearchBarModule } from '../core/components/search-bar/search-bar.mo
         LoadingModule.forRoot({
             fullScreenBackdrop: true
         })
-        
     ],
     exports     : [
         FuseMainComponent

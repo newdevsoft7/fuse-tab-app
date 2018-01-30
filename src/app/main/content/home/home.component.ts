@@ -29,6 +29,8 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
+    @ViewChild('scheduleTpl') scheduleTpl;
+    @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
@@ -38,7 +40,7 @@ export class FuseHomeComponent implements OnDestroy
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
-        })
+        });
     }
 
     ngOnDestroy() {
