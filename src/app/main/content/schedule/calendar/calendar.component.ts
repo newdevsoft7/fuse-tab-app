@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Moment } from 'moment';
+import { CalendarEventFormDialogComponent } from './event-form/event-form.component';
+import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
+import { FormGroup } from '@angular/forms/src/model';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -8,6 +11,8 @@ import { Moment } from 'moment';
   styleUrls: ['./calendar.component.scss']
 })
 export class ScheduleCalendarComponent implements OnInit {
+
+  dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
   options: EventOptionEntity = {
     defaultDate: '2017-12-12',
@@ -89,9 +94,26 @@ export class ScheduleCalendarComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(
+    private dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
+  cellClicked(date: Moment): void {
+    this.dialogRef = this.dialog.open(CalendarEventFormDialogComponent, {
+      panelClass: 'event-form-dialog',
+      data: {
+        action: 'new',
+        date
+      }
+    });
+    this.dialogRef.afterClosed().subscribe((response: FormGroup) => {
+      if (!response) {
+        return;
+      }
+      const newEvent = response.getRawValue();
+      console.log('============', newEvent);
+    });
+  }
 }

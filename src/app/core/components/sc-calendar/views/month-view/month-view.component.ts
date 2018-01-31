@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges } from '@angular/core';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import * as _ from 'lodash';
 
 @Component({
@@ -11,6 +12,7 @@ import * as _ from 'lodash';
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Output() onCellClicked: EventEmitter<Moment> = new EventEmitter();
   @ViewChild('monthView') monthView: any;
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -43,7 +45,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  private init() {
+  private init(): void {
     this.initPositions();
     this.rowData = [];
     this.monthDays = this.getMonthDays(this.options.defaultDate);
@@ -59,14 +61,14 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  private initPositions() {
+  private initPositions(): void {
     this.positions = [];
     for (let i = 0; i < 7; i++) {
       this.positions.push([]);
     }
   }
 
-  private updateCellHeight() {
+  private updateCellHeight(): void {
     this.cellHeight = this.monthView.nativeElement.clientWidth / 7;
   }
 
@@ -194,23 +196,23 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     return tempEvents;
   }
 
-  isToday(date) {
+  isToday(date): boolean {
     return moment().isSame(date, 'day');
   }
 
-  dayRender(day) {    
+  dayRender(day): void {    
     this.options.dayRender(day.date, day.cell);
   }
 
-  eventRender(data) {
+  eventRender(data): void {
     this.options.eventRender(data.event, data.element);
   }
 
-  onPopupShown(event) {
+  onPopupShown(event): void {
     this.hoverPopupEvent = event;
   }
 
-  onMenuShown(event) {
+  onMenuShown(event): void {
     this.menuEvent = event;
   }
 }

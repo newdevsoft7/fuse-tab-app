@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../modules/shared.module';
-import { CommonModule } from '@angular/common';
 import { SCCalendarComponent } from './sc-calendar.component';
 import { 
   SCCalendarMonthViewComponent, 
@@ -26,7 +25,6 @@ import { PopoverModule } from './popover';
     ContextMenuTriggerDirective
   ],
   imports: [
-    CommonModule,
     PopoverModule,
     SharedModule
   ],

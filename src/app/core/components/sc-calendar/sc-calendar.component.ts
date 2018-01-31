@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation, DoCheck } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, DoCheck } from '@angular/core';
 import { EventOptionEntity, ContextMenuItemEntity } from './entities';
+import { Moment } from 'moment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -12,6 +13,7 @@ import * as _ from 'lodash';
 export class SCCalendarComponent implements OnInit, DoCheck {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Output() cellClicked: EventEmitter<Moment> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();
 
   oldOptions: EventOptionEntity;
@@ -37,20 +39,17 @@ export class SCCalendarComponent implements OnInit, DoCheck {
     }
   }
 
-  get title() {
+  get title(): string {
     return moment(this.eventOptions.defaultDate).format(this.eventOptions.titleFormat);
   }
 
-  dateChanged(when) {
+  dateChanged(when): void {
     switch (when) {
       case 'prev':
         this.options.defaultDate = moment(this.eventOptions.defaultDate).subtract(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD');
         break;
       case 'next':
         this.options.defaultDate = moment(this.eventOptions.defaultDate).add(1, <any>this.eventOptions.defaultView).format('YYYY-MM-DD');
-        break;
-      case 'today':
-        this.options.defaultDate = moment().format('YYYY-MM-DD');
         break;
     }
   }
