@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
 import { Moment } from 'moment';
@@ -14,11 +14,13 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() contextMenu: ContextMenuItemEntity[] = [];
   @Output() onCellClicked: EventEmitter<Moment> = new EventEmitter();
   @ViewChild('monthView') monthView: any;
+  @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.updateCellHeight();
   }
 
+  activatedCell: ElementRef;
   contextMenuContent: ContextMenuItemEntity[];
 
   monthDays:any;
@@ -29,7 +31,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   hoverPopupEvent: any;
   menuEvent: any;
 
-  constructor() {}
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
     this.updateCellHeight();
@@ -214,5 +216,32 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   onMenuShown(event): void {
     this.menuEvent = event;
+  }
+
+  checkActivation(event: any, Yindex: number): void {
+    const cellWidth = Math.floor(event.target.clientWidth / 7);
+    const xIndex = (event.offsetX % cellWidth > 0) ? Math.floor(event.offsetX / cellWidth) : Math.floor(event.offsetX / cellWidth) - 1;
+    const cell = this.dayCellList.toArray()[Yindex * 7 + xIndex];
+    if (cell !== this.activatedCell) {
+      if (this.activatedCell) {
+        this.renderer.removeClass(this.activatedCell.nativeElement, 'activated');
+      }
+      this.renderer.addClass(cell.nativeElement, 'activated');
+      this.activatedCell = cell;
+    }
+  }
+
+  clearActivation(event: any): void {
+    event.stopPropagation();
+    if (this.activatedCell) {
+      this.renderer.removeClass(this.activatedCell.nativeElement, 'activated');
+      this.activatedCell = null;
+    }
+  }
+
+  cellClick() {
+    if (this.activatedCell) {
+      this.activatedCell.nativeElement.click();
+    }
   }
 }

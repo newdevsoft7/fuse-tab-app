@@ -9,12 +9,13 @@
       [style.height]="rowData[i].height * 22 + 25 + 'px'"
       *ngFor="let days of monthDays; let i = index"
       fxLayout="row">
-      <div class="row-content">
+      <div class="row-content" (mousemove)="checkActivation($event, i)" (click)="cellClick()">
         <div 
           class="event"
+          (mousemove)="clearActivation($event)"
           [style.width]="14.28 * event.data.duration + '%'"
           [style.left]="14.28 * event.data.left + '%'"
-          [style.top]="22 * event.data.top + 'px'"
+          [style.top]="25 + 22 * event.data.top + 'px'"
           *ngFor="let event of rowData[i].content">
           <sc-calendar-event-chip
             [data]="event"
@@ -26,6 +27,7 @@
         </div>
       </div>
       <div class="day"
+        #daycell
         [dayCell]="day.date"
         (dayRender)="dayRender($event)"
         [class.today]="isToday(day.date)"
