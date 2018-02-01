@@ -23,7 +23,8 @@
             [contextMenu]="contextMenu"
             (onMenuShown)="onMenuShown($event)"
             [hoverPopup]="hoverPopup"
-            (onPopupShown)="onPopupShown($event)"></sc-calendar-event-chip>
+            (onPopupShown)="onPopupShown($event)"
+            (eventClicked)="options.eventClick($event.event, $event.jsEvent)"></sc-calendar-event-chip>
         </div>
       </div>
       <div class="day"
@@ -31,7 +32,7 @@
         [dayCell]="day.date"
         (dayRender)="dayRender($event)"
         [class.today]="isToday(day.date)"
-        (click)="onCellClicked.next(day.date)"
+        (click)="options.dayClick(day.date, $event)"
         *ngFor="let day of days"
         fxFlex>
         <span class="date-badge" [class.inactive]="!day.active">{{day.date.date()}}</span>

@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, DoCheck } from '@angular/core';
 import { EventOptionEntity, ContextMenuItemEntity } from './entities';
-import { Moment } from 'moment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
@@ -13,7 +12,6 @@ import * as _ from 'lodash';
 export class SCCalendarComponent implements OnInit, DoCheck {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: ContextMenuItemEntity[] = [];
-  @Output() cellClicked: EventEmitter<Moment> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();
 
   oldOptions: EventOptionEntity;

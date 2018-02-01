@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { TextMaskModule } from 'angular2-text-mask';
 
 import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.directive';
 import { FuseMatSidenavHelperService } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.service';
@@ -48,7 +49,8 @@ import { CustomLoadingService } from '../../shared/custom-loading.service';
         ColorPickerModule,
         NgxDnDModule,
         NgxDatatableModule,
-        NgSelectModule
+        NgSelectModule,
+        TextMaskModule
     ],
     exports        : [
         FlexLayoutModule,
@@ -68,7 +70,8 @@ import { CustomLoadingService } from '../../shared/custom-loading.service';
         FuseIfOnDomDirective,
         FuseMaterialColorPickerComponent,
         TranslateModule,
-        NgSelectModule
+        NgSelectModule,
+        TextMaskModule
     ],
     entryComponents: [
         FuseConfirmDialogComponent

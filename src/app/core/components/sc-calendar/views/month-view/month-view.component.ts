@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, QueryList, ElementRef, Renderer2 } from '@angular/core';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
-import { Moment } from 'moment';
 import * as _ from 'lodash';
 
 @Component({
@@ -12,7 +11,6 @@ import * as _ from 'lodash';
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: ContextMenuItemEntity[] = [];
-  @Output() onCellClicked: EventEmitter<Moment> = new EventEmitter();
   @ViewChild('monthView') monthView: any;
   @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;
   @HostListener('window:resize', ['$event'])

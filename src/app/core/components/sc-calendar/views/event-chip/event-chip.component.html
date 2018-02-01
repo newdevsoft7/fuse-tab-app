@@ -6,7 +6,8 @@
   [popover]="hoverPopup"
   [popoverOnHover]="true"
   [popoverCloseOnMouseOutside]="true"
-  (onShown)="popupShown()">
+  (onShown)="popupShown()"
+  (click)="eventClicked.next({ event: event.raw, jsEvent: $event })">
   <div
     class="context-menu-trigger"
     [contextMenuTrigger]="contextMenu"

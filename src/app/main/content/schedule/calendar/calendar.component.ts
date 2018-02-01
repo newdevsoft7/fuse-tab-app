@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Moment } from 'moment';
+import * as moment from 'moment';
 import { CalendarEventFormDialogComponent } from './event-form/event-form.component';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
 import { FormGroup } from '@angular/forms/src/model';
@@ -15,67 +16,29 @@ export class ScheduleCalendarComponent implements OnInit {
   dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
   options: EventOptionEntity = {
-    defaultDate: '2017-12-12',
     dayRender: (date: Moment, cell: Element): void => {
       // put some logic here for styling the day cells
     },
     eventRender: (event: EventEntity, element: Element): void => {
       // put some logic here for styling event chips
     },
+    dayClick: (date: Moment, jsEvent: Event): void => {
+      this.addNewEvent(date);
+    },
+    eventClick: (event: EventEntity, jsEvent: Event): void => {
+      // put some logic here for editing event
+    },
     events: [
       {
         title: 'All Day Event',
-        start: '2017-12-01'
+        start: '2018-02-05T16:00:00'
       },
       {
         title: 'Long Event',
-        start: '2017-12-07',
-        end: '2017-12-10',
+        start: '2018-02-07',
+        end: '2018-02-10',
         backgroundColor: '#ff4081',
         icon: 'warning'
-      },
-      {
-        title: 'Repeating Event',
-        start: '2017-12-09T16:00:00'
-      },
-      {
-        title: 'Repeating Event',
-        start: '2017-12-16T16:00:00'
-      },
-      {
-        title: 'Conference',
-        start: '2017-12-11',
-        end: '2017-12-13'
-      },
-      {
-        title: 'Meeting',
-        start: '2017-12-12T10:30:00',
-        end: '2017-12-12T12:30:00'
-      },
-      {
-        title: 'Lunch',
-        start: '2017-12-12T12:00:00'
-      },
-      {
-        title: 'Meeting',
-        start: '2017-12-12T14:30:00'
-      },
-      {
-        title: 'Happy Hour',
-        start: '2017-12-12T17:30:00'
-      },
-      {
-        title: 'Dinner',
-        start: '2017-12-12T20:00:00'
-      },
-      {
-        title: 'Birthday Party',
-        start: '2017-12-13T07:00:00'
-      },
-      {
-        title: 'Click for Google',
-        url: 'http://google.com/',
-        start: '2017-12-28'
       }
     ]
   };
@@ -156,7 +119,7 @@ export class ScheduleCalendarComponent implements OnInit {
   ngOnInit() {
   }
 
-  cellClicked(date: Moment): void {
+  addNewEvent(date: Moment): void {
     this.dialogRef = this.dialog.open(CalendarEventFormDialogComponent, {
       panelClass: 'event-form-dialog',
       data: {
@@ -168,8 +131,20 @@ export class ScheduleCalendarComponent implements OnInit {
       if (!response) {
         return;
       }
-      const newEvent = response.getRawValue();
-      console.log('============', newEvent);
+      const temp = response.getRawValue();
+      const newEvent = new EventEntity();
+      newEvent.title = temp.title;
+      newEvent.start = `${moment(temp.start.date).format('YYYY-MM-DD')} ${temp.start.time}`;
+      if (temp.end) {
+        newEvent.end = `${moment(temp.end.date).format('YYYY-MM-DD')} ${temp.end.time}`;
+      }
+      if (temp.backgroundColor) {
+        newEvent.backgroundColor = temp.backgroundColor;
+      }
+      if (!this.options.events) {
+        this.options.events = [];
+      }
+      this.options.events.push(newEvent);
     });
   }
 }

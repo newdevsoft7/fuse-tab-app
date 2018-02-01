@@ -22,54 +22,66 @@
                      required>
           </mat-form-field>
 
-          <div class="py-16" fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName="color">
+          <div class="py-16" fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
 
               <mat-form-field fxFlex>
                   <input matInput
                          class="background-color-input"
                          name="background color"
-                         formControlName="background"
+                         formControlName="backgroundColor"
                          placeholder="Background color"
-                         [(colorPicker)]="event.backgroundColor"
+                         [(colorPicker)]="eventForm.get('backgroundColor').value"
                          cpWidth="290px"
                          [cpPresetColors]="presetColors"
-                         [style.background]="event.backgroundColor"
-                         (colorPickerChange)="event.backgroundColor = $event; eventForm.patchValue({color:{background:$event}})"/>
+                         [style.background]="eventForm.get('backgroundColor').value"
+                         (colorPickerChange)="eventForm.patchValue({backgroundColor: $event})"/>
               </mat-form-field>
 
           </div>
 
-          <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+          <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName="start" class="mb-16">
 
               <mat-form-field class="mr-sm-24" fxFlex>
                   <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date"
-                         [max]="eventForm.get('end').value"
+                         [max]="eventForm.get(['end', 'date']).value"
                          name="start"
-                         formControlName="start"
+                         formControlName="date"
                          required>
                   <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #startDatePicker></mat-datepicker>
               </mat-form-field>
 
               <mat-form-field class="no-errors-spacer" fxFlex mat-no-float>
-                  <input matInput placeholder="Start Time">
+                  <input matInput name="start_time" formControlName="time" placeholder="Start Time" [textMask]="startMask">
+                  <mat-error *ngIf="eventForm?.get(['start', 'time'])?.errors?.earlierThanEndDate">
+                    Start Date/Time must occur earlier than End Date/Time.
+                  </mat-error>
+                  <mat-error *ngIf="eventForm?.get(['start', 'time'])?.errors?.validTimeFormat">
+                    Invalid format.
+                  </mat-error>
               </mat-form-field>
 
           </div>
 
-          <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+          <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName="end">
 
               <mat-form-field class="mr-sm-24" fxFlex>
                   <input matInput [matDatepicker]="endDatePicker" placeholder="End Date"
-                         [min]="eventForm.get('start').value"
+                         [min]="eventForm.get(['start', 'date']).value"
                          name="end"
-                         formControlName="end">
+                         formControlName="date">
                   <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                   <mat-datepicker #endDatePicker></mat-datepicker>
               </mat-form-field>
 
               <mat-form-field class="no-errors-spacer" fxFlex mat-no-float>
-                  <input matInput placeholder="End Time">
+                  <input matInput name="end_time" formControlName="time" placeholder="End Time" [textMask]="endMask">
+                  <mat-error *ngIf="eventForm?.get(['end', 'time'])?.errors?.laterThanStartDate">
+                    End Date/Time must occur later than Start Date/Time.
+                  </mat-error>
+                  <mat-error *ngIf="eventForm?.get(['end', 'time'])?.errors?.validTimeFormat">
+                    Invalid format.
+                  </mat-error>
               </mat-form-field>
 
           </div>
