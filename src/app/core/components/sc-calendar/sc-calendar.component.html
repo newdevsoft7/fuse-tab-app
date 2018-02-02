@@ -1,6 +1,7 @@
 <div class="calendar-container" #calendar fxLayout="column">
   <sc-calendar-header
     [title]="title"
+    [month]="month"
     (dateChanged)="dateChanged($event)"></sc-calendar-header>
   <div class="content" [ngSwitch]="eventOptions.defaultView">
     <ng-container *ngSwitchCase="'month'">

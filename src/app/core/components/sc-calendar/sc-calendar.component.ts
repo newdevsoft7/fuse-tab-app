@@ -41,6 +41,10 @@ export class SCCalendarComponent implements OnInit, DoCheck {
     return moment(this.eventOptions.defaultDate).format(this.eventOptions.titleFormat);
   }
 
+  get month(): string {
+    return moment(this.eventOptions.defaultDate).format('MMM');
+  }
+
   dateChanged(when): void {
     switch (when) {
       case 'prev':
