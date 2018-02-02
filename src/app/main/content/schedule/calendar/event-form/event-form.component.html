@@ -94,7 +94,7 @@
       <button *ngIf="action !=='edit'"
               mat-raised-button
               (click)="dialogRef.close(eventForm)"
-              class="save-button mat-accent"
+              color="accent"
               [disabled]="eventForm.invalid"
               aria-label="SAVE">
           SAVE
@@ -102,20 +102,20 @@
 
       <button *ngIf="action ==='edit'"
               mat-raised-button
-              (click)="dialogRef.close(['save',eventForm])"
-              class="save-button mat-accent"
+              (click)="dialogRef.close(eventForm)"
+              color="accent"
               [disabled]="eventForm.invalid"
               aria-label="SAVE">
           SAVE
       </button>
 
       <button *ngIf="action ==='edit'"
-              mat-button
-              class="mat-icon-button"
-              (click)="dialogRef.close(['delete',eventForm])"
-              aria-label="Delete"
-              matTooltip="Delete">
-          <mat-icon>delete</mat-icon>
+              mat-raised-button
+              color="warn"
+              (click)="dialogRef.close()"
+              aria-label="Cancel"
+              matTooltip="Cancel">
+          CANCEL
       </button>
   </div>
 </div>

@@ -120,13 +120,13 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
         const event: any = _.cloneDeep(this.options.events[i]);
         event.startedAt = startAt;
         event.endedAt = endAt;
-        event.days = event.endedAt.diff(event.startedAt, 'days') + 1;
+        event.days = moment(event.endedAt.format('YYYY-MM-DD')).diff(event.startedAt.format('YYYY-MM-DD'), 'days') + 1;
         const isBeyondStart = event.startedAt.isBefore(startDate, 'day');
         const isBeyondEnd = event.endedAt.isAfter(endDate, 'day');
         if (isBeyondStart || isBeyondEnd) {
           const start = isBeyondStart? startDate : event.startedAt;
           const end = isBeyondEnd? endDate : event.endedAt;
-          event.duration = end.diff(start, 'days') + 1;
+          event.duration = moment(end.format('YYYY-MM-DD')).diff(start.format('YYYY-MM-DD'), 'days') + 1;
           event.left = start.diff(startDate, 'days');
           event.isMore = isBeyondEnd;
         } else {

@@ -19,8 +19,10 @@ export class CalendarEventFormDialogComponent implements OnInit
     dialogTitle: string;
     eventForm: FormGroup;
     action: string;
-    date: Moment;
     presetColors = MatColors.presets;
+
+    start: { date?: string, time?: string } = {};
+    end: { date?: string, time?: string } = {};
 
     constructor(
         public dialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
@@ -31,18 +33,23 @@ export class CalendarEventFormDialogComponent implements OnInit
     {
         this.event = data.event;
         this.action = data.action;
-        this.date = data.date;
 
         if ( this.action === 'edit' )
         {
             this.dialogTitle = this.event.title;
+            this.start.date = moment(this.event.start).format('YYYY-MM-DD');
+            this.start.time = moment(this.event.start).format('HH:mm');
+            if (this.event.end) {
+                this.end.date = moment(this.event.end).format('YYYY-MM-DD');
+                this.end.time = moment(this.event.end).format('HH:mm');
+            }
         }
         else
         {
             this.dialogTitle = 'New Event';
             this.event = new EventEntity();
-            this.event.start = this.date.format('YYYY-MM-DD');
-            this.event.end = this.date.format('YYYY-MM-DD');
+            this.start.date = data.date.format('YYYY-MM-DD');
+            this.end.date = data.date.format('YYYY-MM-DD');
         }
 
         this.eventForm = this.createEventForm();
@@ -69,12 +76,12 @@ export class CalendarEventFormDialogComponent implements OnInit
         return new FormGroup({
             title : new FormControl(this.event.title),
             start: this.formBuilder.group({
-              date: new FormControl(this.event.start),
-              time: new FormControl(this.date.format('HH:mm'), [ValidateTimeFormat, ValidateStartDatetime])
+              date: new FormControl(this.start.date),
+              time: new FormControl(this.start.time, [ValidateTimeFormat, ValidateStartDatetime])
             }),
             end: this.formBuilder.group({
-              date: new FormControl(this.event.end),
-              time: new FormControl(this.date.format('HH:mm'), [ValidateTimeFormat, ValidateEndDatetime])
+              date: new FormControl(this.end.date),
+              time: new FormControl(this.end.time, [ValidateTimeFormat, ValidateEndDatetime])
             }),
             backgroundColor  : new FormControl(this.event.backgroundColor)
         });

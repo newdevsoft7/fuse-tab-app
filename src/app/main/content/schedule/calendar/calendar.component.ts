@@ -23,10 +23,16 @@ export class ScheduleCalendarComponent implements OnInit {
       // put some logic here for styling event chips
     },
     dayClick: (date: Moment, jsEvent: Event): void => {
-      this.addNewEvent(date);
+      this.triggerEventModal({
+        action: 'new',
+        date
+      });
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
-      // put some logic here for editing event
+      this.triggerEventModal({
+        action: 'edit',
+        event
+      });
     },
     events: [
       {
@@ -119,13 +125,10 @@ export class ScheduleCalendarComponent implements OnInit {
   ngOnInit() {
   }
 
-  addNewEvent(date: Moment): void {
+  triggerEventModal(data: { action: string, date?: Moment, event?: EventEntity }): void {
     this.dialogRef = this.dialog.open(CalendarEventFormDialogComponent, {
       panelClass: 'event-form-dialog',
-      data: {
-        action: 'new',
-        date
-      }
+      data
     });
     this.dialogRef.afterClosed().subscribe((response: FormGroup) => {
       if (!response) {
@@ -134,17 +137,32 @@ export class ScheduleCalendarComponent implements OnInit {
       const temp = response.getRawValue();
       const newEvent = new EventEntity();
       newEvent.title = temp.title;
-      newEvent.start = `${moment(temp.start.date).format('YYYY-MM-DD')} ${temp.start.time}`;
-      if (temp.end) {
-        newEvent.end = `${moment(temp.end.date).format('YYYY-MM-DD')} ${temp.end.time}`;
+      if (temp.start.time) {
+        newEvent.start = `${moment(temp.start.date).format('YYYY-MM-DD')} ${temp.start.time}`;
+      } else {
+        newEvent.start = `${moment(temp.start.date).format('YYYY-MM-DD')}`;
+      }
+      if (temp.end.date && moment(temp.end.date).isValid()) {
+        if (temp.end.time) {
+          newEvent.end = `${moment(temp.end.date).format('YYYY-MM-DD')} ${temp.end.time || ''}`;
+        } else {
+          newEvent.end = `${moment(temp.end.date).format('YYYY-MM-DD')}`;
+        }
       }
       if (temp.backgroundColor) {
         newEvent.backgroundColor = temp.backgroundColor;
       }
-      if (!this.options.events) {
-        this.options.events = [];
+      if (data.action === 'new') {        
+        if (!this.options.events) {
+          this.options.events = [];
+        }
+        this.options.events.push(newEvent);
+      } else {
+        const index = this.options.events.indexOf(data.event);
+        if (index > -1) {
+          this.options.events[index] = { ...data.event, ...newEvent };
+        }
       }
-      this.options.events.push(newEvent);
     });
   }
 }
