@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { FormGroup } from '@angular/forms/src/model';
 import { CalendarEventFormDialogComponent } from './event-form/event-form.component';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
-import { FormGroup } from '@angular/forms/src/model';
+import { ScheduleService } from '../schedule.service';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -33,20 +34,7 @@ export class ScheduleCalendarComponent implements OnInit {
         action: 'edit',
         event
       });
-    },
-    events: [
-      {
-        title: 'All Day Event',
-        start: '2018-02-05T16:00:00'
-      },
-      {
-        title: 'Long Event',
-        start: '2018-02-07',
-        end: '2018-02-10',
-        backgroundColor: '#ff4081',
-        icon: 'warning'
-      }
-    ]
+    }
   };
 
   contextMenu: ContextMenuItemEntity[] = [
@@ -120,9 +108,24 @@ export class ScheduleCalendarComponent implements OnInit {
   ];
 
   constructor(
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private scheduleService: ScheduleService) { }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  updateEvents(event: { startDate: string, endDate: string }) {
+    this.fetchEvents(event.startDate, event.endDate);
+  }
+
+  async fetchEvents(startDate: string, endDate: string) {
+    try {
+      this.options.events = await this.scheduleService.getEvents(startDate, endDate);
+    } catch (e) {
+      this.snackBar.open(e.message || 'Something is wrong while fetching events.', 'Ok', {
+        duration: 2000
+      });
+    }
   }
 
   triggerEventModal(data: { action: string, date?: Moment, event?: EventEntity }): void {
