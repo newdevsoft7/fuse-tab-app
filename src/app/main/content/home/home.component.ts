@@ -36,7 +36,7 @@ export class FuseHomeComponent implements OnDestroy
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
         private authService: AuthenticationService) {
-        this.authService.refreshToken().subscribe(_ => {});
+        //this.authService.refreshToken().subscribe(_ => {});
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
