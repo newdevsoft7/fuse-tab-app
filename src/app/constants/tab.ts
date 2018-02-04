@@ -12,6 +12,7 @@ export const USERS_NEW_MESSAGE_TAB = new Tab('New Message', '', 'users/new-messa
 export const SCHEDULE_TAB = new Tab('Schedule', 'scheduleTpl', 'schedule', {});
 export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {});
 export const SCHEDULE_LIST_TAB = new Tab('List', '', 'schedule/list', {});
+export const SCHEDULE_SHIFT_TAB = new Tab('Shift','scheduleShiftTpl', 'schedule/shift', {});
 export const SCHEDULE_IMPORT_SHIFTS_TAB = new Tab('Import Shifts', '', 'schedule/import-shifts', {});
 export const SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY_TAB = new Tab('Import History', '', 'schedule/import-shifts/import-history', {});
 export const SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING_TAB = new Tab('Column Mapping', '', 'schedule/import-shifts/column-mapping', {});

@@ -31,6 +31,7 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersProfileTpl') usersProfileTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
+    @ViewChild('scheduleShiftTpl') scheduleShiftTpl;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
@@ -52,6 +53,7 @@ export class FuseHomeComponent implements OnDestroy
             ...tab,
             template: this[tab.template]
         };
+
         this.tabsComponent.openTab(_tab);
     }
 
@@ -70,4 +72,7 @@ export class FuseHomeComponent implements OnDestroy
         this.openTab(TAB.SETTINGS_PROFILE_INFO_TAB);
     }
 
+    openShift(){
+        this.openTab(TAB.SCHEDULE_SHIFT_TAB);
+    }
 }

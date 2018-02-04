@@ -11,6 +11,7 @@
             <button mat-raised-button color="accent" (click)="openUsers()">Users</button>
             <button mat-raised-button color="accent" (click)="openSettingsProfileInfo()">Profile Info</button>
             <button mat-raised-button color="accent" (click)="openPresentations()">Presentations</button>
+            <button mat-raised-button color="accent" (click)="openShift()">Shift Page</button>
         </app-tab>
     </app-tabs>
 
@@ -44,4 +45,8 @@
         <app-schedule-calendar></app-schedule-calendar>
     </ng-template>
 
+    <ng-template #scheduleShiftTpl>
+        <app-schedule-shift></app-schedule-shift>
+    </ng-template>
+    
 </div>
