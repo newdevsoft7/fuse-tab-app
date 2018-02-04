@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { EventEntity } from '../../../../../core/components/sc-calendar';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatColors } from '../../../../../core/matColors';
@@ -27,8 +27,7 @@ export class CalendarEventFormDialogComponent implements OnInit
     constructor(
         public dialogRef: MatDialogRef<CalendarEventFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
-        private formBuilder: FormBuilder,
-        private snackBar: MatSnackBar
+        private formBuilder: FormBuilder
     )
     {
         this.event = data.event;
