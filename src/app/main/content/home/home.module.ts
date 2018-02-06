@@ -10,6 +10,7 @@ import { ScheduleModule } from '../schedule/schedule.module';
 
 import { FuseHomeComponent } from './home.component';
 import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
+import { SettingsModule } from '../settings/settings.module';
 
 // const routes = [
 //     {
@@ -29,7 +30,9 @@ import { AuthenticationModule } from '../../../shared/authentication/authenticat
         ProfileModule,
         ProfileInfoModule,
         ScheduleModule,
-        AuthenticationModule
+        SettingsModule,
+        AuthenticationModule,
+
         // RouterModule.forChild(routes)
     ],
     exports     : [

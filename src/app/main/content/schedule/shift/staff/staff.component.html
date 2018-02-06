@@ -1,4 +1,4 @@
-<div id="staff" class="p-24" fxLayout="row" fxLayoutWrap>
+<div id="staff" class="pt-24" fxLayout="row" fxLayoutWrap>
     <div class="staff-content" fxLayout="column" [fxFlex]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
     
         <div class="staff-box info-box general" fxLayout="column" *ngIf="currentUser.lvl == 'owner'">

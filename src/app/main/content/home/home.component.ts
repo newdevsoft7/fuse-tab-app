@@ -32,7 +32,9 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('scheduleShiftTpl') scheduleShiftTpl;
-
+    @ViewChild('scheduleNewShiftTpl') scheduleNewShiftTpl;
+    @ViewChild('settingsTpl') settingsTpl;
+    
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,

@@ -18,6 +18,7 @@ import { ScheduleShiftStaffSelectedComponent } from './shift/staff/selected/sele
 import { ScheduleShiftStaffNAComponent } from './shift/staff/na/na.component';
 import { ScheduleShiftStaffApplicantsComponent } from './shift/staff/applicants/applicants.component';
 import { ScheduleShiftStaffStandbyComponent } from './shift/staff/standby/standby.component';
+import { ScheduleNewShiftComponent } from './new-shift/new-shift.component';
 
 @NgModule({
 	imports: [
@@ -38,7 +39,8 @@ import { ScheduleShiftStaffStandbyComponent } from './shift/staff/standby/standb
         ScheduleShiftStaffSelectedComponent,
         ScheduleShiftStaffStandbyComponent,
         ScheduleShiftStaffApplicantsComponent,
-        ScheduleShiftStaffNAComponent
+        ScheduleShiftStaffNAComponent,
+        ScheduleNewShiftComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],
@@ -46,6 +48,7 @@ import { ScheduleShiftStaffStandbyComponent } from './shift/staff/standby/standb
         ScheduleComponent,
         ScheduleCalendarComponent,
         ScheduleShiftComponent,
+        ScheduleNewShiftComponent,
         CalendarEventFormDialogComponent
     ]
 })

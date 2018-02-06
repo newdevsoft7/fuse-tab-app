@@ -60,6 +60,33 @@ export const locale = {
             'SETTINGS_HELP_VIDEO_SCHEDULING': 'Video Scheduling',
             'SETTINGS_HELP_UPDATES_CHANGELOG': 'Updates & Changelog'
 
+        },
+        'SETTINGS': {
+            'SIDE_NAV': {
+                'ADMINISTRATOR': 'Administrator',
+                'CLIENT': 'Client',
+                'EXPENSES': 'Expenses',
+                'FORMS': 'Forms',
+                'LIST_VIEW': 'List View',
+                'LOCATIONS': 'Locations',
+                'OUTSOURCING': 'Outsourcing',
+                'PAY_LEVELS': 'Pay Levels',
+                'REGIONS': 'Regions',
+                'REGISTRATION': 'Registration',
+                'REPORTS': 'Reports',
+                'SCHEDULING': 'Scheduling',
+                'SHOWCASES': 'Showcases',
+                'SMS': 'SMS',
+                'STAFF': 'Staff',
+                'SUPERVISOR': 'Supervisor',
+                'SYSTEM': 'System',
+                'TERM_AGREEMENTS': 'Term & Agreements',
+                'TRACKING_CATEGORIES': 'Tracking Categories',
+                'UPLOADING': 'Uploading',
+                'USER_TABLE': 'User Table',
+                'WORK_AREAS': 'Work Areas',
+                'XERO': 'Xero'
+            }
         }
     }
 };
