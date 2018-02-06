@@ -11,31 +11,26 @@
 		fxFlex="1 0 auto" fxLayoutGap="30px">
 
         <mat-form-field floatPlaceholder="never" fxFlex>
-            <input matInput formControlName="ename" #nameInput placeholder="Write a Work Area" required>
+            <input matInput formControlName="aname" #nameInput placeholder="Write a Work Area" required>
         </mat-form-field>
 
 		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="30px">
 			<mat-form-field fxFlex floatPlaceholder="never">
-				<input 
-					type="text" 
-					placeholder="Category" 
-					aria-label="Number" 
-					matInput 
-					[formControl]="work_area_cat_id" 
-					[matAutocomplete]="auto" required>
-
-				<mat-autocomplete #auto="matAutocomplete">
-					<mat-option *ngFor="let category of filteredCategries | async" [value]="category.id">
-						{{ category.cname }}
+				<mat-select formControlName="work_area_cat_id" placeholder="Category">
+					<mat-option *ngFor="let category of categories" [value]="category.id">
+						{{category.cname}}
 					</mat-option>
-				</mat-autocomplete>
-			
+				</mat-select>
 			</mat-form-field>
-        
-            <!-- <mat-form-field fxFlex floatPlaceholder="never">
-				<ng2-timezone-picker formControlName="php_tz" [timezone]="php_tz" placeholder="select timezone">
-				</ng2-timezone-picker>
-            </mat-form-field> -->
+
+			<mat-form-field fxFlex floatPlaceholder="never">
+				<mat-select formControlName="php_tz" placeholder="Timezone">
+					<mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
+						{{timezone.name}}
+					</mat-option>
+				</mat-select>
+		
+			</mat-form-field>
 		</div>
 
 		<button mat-icon-button fxFlex="0 1 auto">

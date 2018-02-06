@@ -64,11 +64,11 @@ export class SettingsWorkAreasCategoriesComponent implements OnInit {
         const newCategory = { cname: newCategoryName };
         this.settingsService.createWorkAreaCategory(newCategory)
             .subscribe(res => {
-                console.log(res);
-                const savedCategory = res.data;
-                this.categories.push( savedCategory );
-                this.updateFilter(this.search.nativeElement.value);
-                //this.getCategories();
+                this.toastr.success(res.message);
+                //const savedCategory = res.data;
+                //this.categories.push( savedCategory );
+                //this.updateFilter(this.search.nativeElement.value);
+                this.getCategories();
             });
     }
 
@@ -84,10 +84,11 @@ export class SettingsWorkAreasCategoriesComponent implements OnInit {
 
                     this.settingsService.deleteWorkAreaCategory(category.id)
                         .subscribe(res => {
-                            const index = this.categories.findIndex(v => v.id == category.id);
-                            this.categories.splice(index, 1);
-                            this.updateFilter(this.search.nativeElement.value);
-                            //this.getCategories();
+                            this.toastr.success(res.message);
+                            //const index = this.categories.findIndex(v => v.id == category.id);
+                            //this.categories.splice(index, 1);
+                            //this.updateFilter(this.search.nativeElement.value);
+                            this.getCategories();
                         });
             }
         });        

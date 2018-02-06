@@ -20,7 +20,6 @@
             "prefix": "app",
             "styles": [
                 "../node_modules/ngx-toastr/toastr.css",
-                "../node_modules/select2/dist/css/select2.min.css",
                 "styles.scss"
 
             ],

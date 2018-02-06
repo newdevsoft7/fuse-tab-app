@@ -2,9 +2,6 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { SettingsService } from '../../settings.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
 
 
 @Component({
@@ -16,13 +13,14 @@ export class SettingsWorkAreasAddComponent implements OnInit {
 
     loadingIndicator:boolean = true;
     categories:any[];
-    filteredCategries: Observable<any[]>;
+    timezones:any[];
+
 
     formActive = false;
     form: FormGroup;
-    work_area_cat_id: FormControl;
 
-    @Output() onFieldAdd = new EventEmitter();
+
+    @Output() onWorkAreaAdd = new EventEmitter();
     @ViewChild('nameInput') nameInputField;
 
 
@@ -31,12 +29,11 @@ export class SettingsWorkAreasAddComponent implements OnInit {
         private toastr: ToastrService,
         private settingsService: SettingsService ) {
 
-        this.work_area_cat_id = new FormControl();
-
     }
 
     ngOnInit() {
         this.getCategories();
+        this.getTimeZones();
     }
     private getCategories() {
         this.settingsService.getWorkAreaCategories()
@@ -44,10 +41,21 @@ export class SettingsWorkAreasAddComponent implements OnInit {
                 this.loadingIndicator = false;
                 this.categories = res;
 
-                this.filteredCategries = this.work_area_cat_id.valueChanges
-                    .startWith(null)
-                    .map(category => category ? this.filterCategries(category) : this.categories.slice());
+            }, err => {
+                if (err.status && err.status == 403) {
+                    this.toastr.error('You have no permission!');
+                }
+            });
+    }
 
+    private getTimeZones(){
+        this.settingsService.getTimezones()
+            .subscribe(res => {
+                this.loadingIndicator = false;
+                this.timezones = [];
+                Object.keys(res).forEach(key => {
+                    this.timezones.push({ id: key, name: res[key] });
+                });
             }, err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
@@ -57,7 +65,7 @@ export class SettingsWorkAreasAddComponent implements OnInit {
 
     openForm() {
         this.form = this.formBuilder.group({
-            ename: ['', Validators.required],
+            aname: ['', Validators.required],
             work_area_cat_id: ['', Validators.required],
             php_tz: ['', Validators.required]
         });
@@ -78,13 +86,9 @@ export class SettingsWorkAreasAddComponent implements OnInit {
 
     onFormSubmit() {
         if (this.form.valid) {
-            this.onFieldAdd.next(this.form.value);
+            this.onWorkAreaAdd.next(this.form.value);
             this.formActive = false;
         }
     }
 
-    filterCategries(name: string) {
-        return this.categories.filter(category =>
-            category.cname.toLowerCase().indexOf(category.cname.toLowerCase()) === 0);
-    }  
 }

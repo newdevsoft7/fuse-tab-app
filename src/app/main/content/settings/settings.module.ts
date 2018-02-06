@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { TimezonePickerModule } from 'ng2-timezone-selector';
-
 
 import { SettingsService } from './settings.service';
 import { SharedModule } from '../../../core/modules/shared.module';
@@ -14,6 +12,10 @@ import { SettingsWorkAreasCategoriesComponent } from './work-areas/categories/ca
 import { SettingsWorkAreasAddCategoryComponent } from './work-areas/add-category/add-category.component';
 import { SettingsWorkAreasEditCatNameComponent } from './work-areas/edit-category-name/edit-category-name.component';
 import { SettingsWorkAreasAddComponent } from './work-areas/add-workarea/add-workarea.component';
+import { SettingsWorkAreasEditNameComponent } from './work-areas/edit-workarea-name/edit-workarea-name.component';
+import { SettingsWorkAreasEditCategoryComponent } from './work-areas/edit-workarea-category/edit-workarea-category.component';
+import { SettingsWorkAreasEditTimezoneComponent } from './work-areas/edit-workarea-timezone/edit-workarea-timezone.component';
+import { WorkAreaFormDialogComponent } from './work-areas/dialogs/workarea-form/workarea-form.component';
 
 
 @NgModule({
@@ -21,7 +23,6 @@ import { SettingsWorkAreasAddComponent } from './work-areas/add-workarea/add-wor
         CommonModule,
         SharedModule,
         RouterModule,
-        TimezonePickerModule
     ],
 
     declarations: [
@@ -30,13 +31,17 @@ import { SettingsWorkAreasAddComponent } from './work-areas/add-workarea/add-wor
         SettingsWorkAreasComponent,
         SettingsWorkAreasMainComponent,
         SettingsWorkAreasAddComponent,
+        SettingsWorkAreasEditNameComponent,
+        SettingsWorkAreasEditCategoryComponent,
+        SettingsWorkAreasEditTimezoneComponent,
+        WorkAreaFormDialogComponent,
         SettingsWorkAreasCategoriesComponent,
         SettingsWorkAreasAddCategoryComponent,
         SettingsWorkAreasEditCatNameComponent
     ],
 
     providers: [SettingsService],
-    entryComponents: [],
+    entryComponents: [WorkAreaFormDialogComponent],
     exports: [
         SettingsComponent
     ]

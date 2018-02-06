@@ -16,12 +16,12 @@
             </div>
             <!-- / SEARCH -->
 
-            <!-- NEW CATEGORY BUTTON-->
+            <!-- NEW WORKAREA BUTTON-->
             <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="mb-16">
                 <app-settings-work-areas-add (onWorkAreaAdd)="onWorkAreaAdd($event)">
                 </app-settings-work-areas-add>
             </div>
-            <!-- / NEW CATEGORY BUTTON-->
+            <!-- / NEW WORKAREA BUTTON-->
         </div>
     </div>
     <!-- / HEADER -->
@@ -30,40 +30,97 @@
     <div class="content p-24 ps ps--active-y">
 
         <!-- TABLE -->
-        <div *ngIf="filteredCategories" class="categories-table">
+        <div *ngIf="filteredWorkAreas" class="workareas-table">
 
-            <ngx-datatable #table class="material striped" [rows]="filteredCategories" [loadingIndicator]="loadingIndicator" [columnMode]="'force'"
-                [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'"
-                [selectAllRowsOnPage]="true" [selected]="selectedCategories" [reorderable]="reorderable" [limit]="5" (select)="onSelect($event)"
+            <ngx-datatable 
+                #table 
+                class="material striped" 
+                [rows]="filteredWorkAreas" 
+                [loadingIndicator]="loadingIndicator" 
+                [columnMode]="'force'"
+                [headerHeight]="48" 
+                [footerHeight]="56" 
+                [rowHeight]="'auto'" 
+                [scrollbarH]="true" 
+                [selectionType]="'checkbox'"
+                [selectAllRowsOnPage]="true" 
+                [selected]="selectedWorkAreas" 
+                [reorderable]="reorderable" 
+                [limit]="5" 
+                (select)="onSelect($event)"
                 (activate)="onActivate($event)">
 
-                <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true"
-                    [checkboxable]="true">
-                </ngx-datatable-column>
+                    <ngx-datatable-column 
+                        [width]="30" 
+                        [sortable]="false" 
+                        [canAutoResize]="false" 
+                        [draggable]="false" 
+                        [resizeable]="false" 
+                        [headerCheckboxable]="true"
+                        [checkboxable]="true">
+                    </ngx-datatable-column>
 
 
-                <ngx-datatable-column [width]="350" name="Categories Name" prop="cname">
-                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <app-settings-work-areas-edit-cat-name fxFlex="1 0 auto" [category]="row">
-                        </app-settings-work-areas-edit-cat-name>
+                    <ngx-datatable-column name="Name" prop="aname">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <app-settings-work-areas-edit-name fxFlex="1 0 auto" [element]="row">
+                            </app-settings-work-areas-edit-name>
 
-                    </ng-template>
-                </ngx-datatable-column>
+                        </ng-template>
+                    </ngx-datatable-column>
 
+                    <ngx-datatable-column name="Category" prop="work_area_cat_id">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <app-settings-work-areas-edit-category fxFlex="1 0 auto" [element]="row" [categories]="categories">
+                            </app-settings-work-areas-edit-category>
+                    
+                        </ng-template>
+                    </ngx-datatable-column>
 
-                <ngx-datatable-column [width]="100" [sortable]="false" [resizeable]="false" [draggable]="false" [canAutoResize]="false">
+                    <ngx-datatable-column name="Timezone" prop="php_tz">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <app-settings-work-areas-edit-timezone fxFlex="1 0 auto" [element]="row" [timezones]="timezones">
+                            </app-settings-work-areas-edit-timezone>
+                    
+                        </ng-template>
+                    </ngx-datatable-column>
 
-                    <ng-template let-row="row" ngx-datatable-cell-template>
+                    <ngx-datatable-column 
+                        [width]="100" 
+                        [sortable]="false" 
+                        [resizeable]="false" 
+                        [draggable]="false" 
+                        [canAutoResize]="false">
 
-                        <div fxFlex="0 1 auto">
-                            <button mat-icon-button (click)="onRemoveCategory(row)">
-                                <mat-icon class="mat-primary-50-bg">delete</mat-icon>
-                            </button>
-                        </div>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
 
-                    </ng-template>
+                                <div fxFlex="0 1 auto">
+                                    <!-- <button mat-icon-button (click)="onRemoveWorkArea(row)">
+                                        <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                                    </button> -->
 
-                </ngx-datatable-column>
+                                    <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                                        <mat-icon class="material-icons">more_horiz</mat-icon>
+                                    </button>
+                                    
+                                    <mat-menu #menu>
+
+                                        <button mat-menu-item (click)="onEditWorkArea(row)">
+                                            <mat-icon>edit</mat-icon>
+                                            <span>Edit</span>
+                                        </button>
+
+                                        <button mat-menu-item (click)="onRemoveWorkArea(row)">
+                                            <mat-icon>delete</mat-icon>
+                                            <span>Remove</span>
+                                        </button>
+
+                                    </mat-menu>                                    
+                                </div>
+
+                            </ng-template>
+
+                    </ngx-datatable-column>
 
             </ngx-datatable>
 
