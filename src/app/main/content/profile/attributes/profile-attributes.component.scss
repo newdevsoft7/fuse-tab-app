@@ -1,0 +1,85 @@
+#profile-attributes-wrapper {
+    
+    .panel {
+        background-color: #eef0f2;
+        border-radius: 2px;
+        color: #000;
+        margin-bottom: 20px;
+
+        .mat-icon {
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+            line-height: 40px;
+        }
+
+        .panel-heading {
+            background-color: #dcdfe2;
+            border-bottom: 1px solid #ddd;
+            color: #000;
+            padding: 0 15px;
+            font-size: 15px;
+            font-weight: 500;
+            min-height: 55px;
+        }
+
+        .panel-body {
+            background-color: #eef0f2;
+            padding: 15px;
+        }
+    }
+
+    .field {
+        background-color: #fff;
+        border-radius: 2px;
+        margin: 13px 0px;
+        min-height:  60px;
+        padding: 10px;
+    }
+
+    .ngx-dnd-item {
+        transition: opacity 0.4s ease-in-out;
+        display: block; 
+    }
+
+    .ngx-dnd-item:not(.has-handle):not(.move-disabled),
+    .ngx-dnd-item.has-handle [ngxdraghandle],
+    .ngx-dnd-item.has-handle [ngxDragHandle] {
+        cursor: move;
+        cursor: grab;
+        cursor: -webkit-grab;
+    }
+
+    .ngx-dnd-item .ngx-dnd-content {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .gu-mirror {
+        position: fixed !important;
+        margin: 0 !important;
+        z-index: 9999 !important;
+        opacity: 0.8;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+        filter: alpha(opacity=80);
+    }
+
+    .gu-hide {
+        display: none !important;
+    }
+
+    .gu-unselectable {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+    }
+
+    .gu-transit {
+        opacity: 0.2;
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+        filter: alpha(opacity=20);
+    }
+}

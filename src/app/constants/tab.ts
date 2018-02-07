@@ -40,12 +40,12 @@ export const TRACKING_TEST_TAB = new Tab('Test', '', 'tracking/test', {});
 
 export const SETTINGS_TAB = new Tab('Settings', 'settingsTpl', 'settings', {});
 export const SETTINGS_PROFILE_TAB = new Tab('Profile', '', 'settings/profile', {});
-export const SETTINGS_PROFILE_ATTRIBUTES_TAB = new Tab('Attributes', '', 'settings/profile/attributes', {});
+export const SETTINGS_PROFILE_ATTRIBUTES_TAB = new Tab('Attributes', 'settingsProfileAttributesTpl', 'settings/profile/attributes', {});
 export const SETTINGS_PROFILE_DOCUMENT_CATEGORIES_TAB = new Tab('Document Categories', '', 'settings/profile/document-categories', {});
 export const SETTINGS_PROFILE_EXPERIENCE_TAB = new Tab('Experience', '', 'settings/profile/experience', {});
 export const SETTINGS_PROFILE_INFO_TAB = new Tab('Profile Info', 'settingsProfileInfoTpl', 'settings/profile/info', {});
 export const SETTINGS_PROFILE_PHOTO_CATEGORIES_TAB = new Tab('Photo Categories', '', 'settings/profile/photo-categories', {});
-export const SETTINGS_PROFILE_RATINGS_TAB = new Tab('Ratings', '', 'settings/profile/rating', {});
+export const SETTINGS_PROFILE_RATINGS_TAB = new Tab('Ratings', 'settingsProfileRatingsTpl', 'settings/profile/rating', {});
 export const SETTINGS_PROFILE_SHOWCASES_TAB = new Tab('Showcases', '', 'settings/profile/showcases', {});
 export const SETTINGS_PROFILE_VIDEO_CATEGORIES_TAB = new Tab('Video Categories', '', 'settings/profile/video-categories', {});
 export const SETTINGS_SYSTEM_TAB = new Tab('System', '', 'settings/system', {});

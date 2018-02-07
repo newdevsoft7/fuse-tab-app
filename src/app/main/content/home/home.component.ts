@@ -29,6 +29,8 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
+    @ViewChild('settingsProfileAttributesTpl') settingsProfileAttributesTpl;
+    @ViewChild('settingsProfileRatingsTpl') settingsProfileRatingsTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('scheduleShiftTpl') scheduleShiftTpl;

@@ -11,6 +11,8 @@ import { ScheduleModule } from '../schedule/schedule.module';
 import { FuseHomeComponent } from './home.component';
 import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
 import { SettingsModule } from '../settings/settings.module';
+import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
+import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 
 // const routes = [
 //     {
@@ -29,6 +31,8 @@ import { SettingsModule } from '../settings/settings.module';
         UsersModule,
         ProfileModule,
         ProfileInfoModule,
+        ProfileAttributesModule,
+        ProfileRatingsModule,
         ScheduleModule,
         SettingsModule,
         AuthenticationModule,

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@an
 import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from './user.service';
-    import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
 import * as _ from 'lodash';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
 import { Tab } from '../../tab/tab';

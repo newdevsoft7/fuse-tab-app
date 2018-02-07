@@ -1,0 +1,43 @@
+export const ATTRIBUTE_ROLE:any[]=[
+    { value: 'any', label: 'Any' },
+    { value: 'yes', label: 'Yes' },
+    { value: 'no', label: 'No' },
+];
+
+export const ATTRIBUTE_VISIBILITY:any[]=[
+    { value: 'staff', label: 'Staff' },
+    { value: 'admin', label: 'Admin' },    
+];
+
+export class ProfileAttribute {
+    id: string;
+    aname: string;
+    visibility: string;
+    role_default: string;
+    display_order:string;
+    attribute_cat_id:string;
+
+    constructor(profileAttribute) {
+        {
+            this.id = profileAttribute.id || 0;
+            this.aname = profileAttribute.aname;
+            this.visibility = profileAttribute.visibility || '';
+            this.role_default = profileAttribute.role_default || '';            
+            this.display_order = profileAttribute.display_order || '';
+            this.attribute_cat_id = profileAttribute.attribute_cat_id || null;
+        }
+    }
+}
+export class ProfileAttributeCategory {
+    id: string;
+    cname: string;
+    display_order: string;
+
+    constructor(profileAttributeCategory) {
+        {
+            this.id = profileAttributeCategory.id || 0;
+            this.cname = profileAttributeCategory.cname || '';
+            this.display_order = profileAttributeCategory.display_order || '';            
+        }
+    }
+}
