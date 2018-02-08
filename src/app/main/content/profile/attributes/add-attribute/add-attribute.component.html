@@ -7,8 +7,14 @@
 		</div>
 	</button>
 
-	<form *ngIf="formActive" class="new-element-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="row" fxLayoutAlign="start center"
-		fxFlex="1 0 auto" fxLayoutGap="30px">
+	<form 
+		*ngIf="formActive" 
+		class="new-element-form" 
+		[formGroup]="form" 
+		(submit)="onFormSubmit()" 
+		fxLayout="row" 
+		fxLayoutAlign="start center"
+		fxFlex="1 0 auto">
 
         <mat-form-field floatPlaceholder="never" fxFlex>
             <input matInput formControlName="aname" #nameInput placeholder="Write a Field Name" required>

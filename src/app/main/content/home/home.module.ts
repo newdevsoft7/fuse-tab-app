@@ -13,6 +13,7 @@ import { AuthenticationModule } from '../../../shared/authentication/authenticat
 import { SettingsModule } from '../settings/settings.module';
 import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
+import { TrackingModule } from '../tracking/tracking.module';
 
 // const routes = [
 //     {
@@ -35,6 +36,7 @@ import { ProfileAttributesModule } from '../profile/attributes/profile-attribute
         ProfileRatingsModule,
         ScheduleModule,
         SettingsModule,
+        TrackingModule,
         AuthenticationModule,
 
         // RouterModule.forChild(routes)

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatMenuTrigger } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ATTRIBUTE_ROLE, ATTRIBUTE_VISIBILITY } from '../../profile-attribute.models';
+import { PROFILE_ATTRIBUTE_ROLE, PROFILE_ATTRIBUTE_VISIBILITY } from '../../profile-attribute.models';
 
 @Component({
     selector: 'app-profile-attributes-attribute-dialog',
@@ -13,8 +13,8 @@ export class ProfileAttributesAttributeDialogComponent implements OnInit {
     form: FormGroup;
     @ViewChild('nameInput') nameInputField;
 
-    ROLE = ATTRIBUTE_ROLE;
-    VISIBILITY = ATTRIBUTE_VISIBILITY;
+    ROLE = PROFILE_ATTRIBUTE_ROLE;
+    VISIBILITY = PROFILE_ATTRIBUTE_VISIBILITY;
 
     constructor(
         public dialogRef: MatDialogRef<ProfileAttributesAttributeDialogComponent>,

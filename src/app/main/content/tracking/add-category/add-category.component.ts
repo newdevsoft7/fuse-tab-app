@@ -1,21 +1,22 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PROFILE_ATTRIBUTE_ROLE, PROFILE_ATTRIBUTE_VISIBILITY } from '../profile-attribute.models';
+import { TRACKING_CATEGORY_STAFF_VISIBILITY, TRACKING_CATEGORY_CLIENT_VISIBILITY } from '../tracking.models';
 
 @Component({
-    selector: 'app-profile-attributes-add-attribute',
-    templateUrl: './add-attribute.component.html',
-    styleUrls: ['./add-attribute.component.scss']
+    selector: 'app-tracking-add-category',
+    templateUrl: './add-category.component.html',
+    styleUrls: ['./add-category.component.scss']
 })
-export class ProfileAttributesAddAttributeComponent implements OnInit {
-    
+export class TrackingAddCategoryComponent implements OnInit {
+
+    STAFF_VISIBILITY = TRACKING_CATEGORY_STAFF_VISIBILITY;
+    CLIENT_VISIBILITY = TRACKING_CATEGORY_CLIENT_VISIBILITY;
+
     formActive = false;
     form: FormGroup;
-    @Output() onAttributeAdd = new EventEmitter();
+    @Output() onCategoryAdd = new EventEmitter();
     @ViewChild('nameInput') nameInputField;
 
-    VISIBILITY = PROFILE_ATTRIBUTE_VISIBILITY;
-    ROLE = PROFILE_ATTRIBUTE_ROLE;
 
     constructor(
         private formBuilder: FormBuilder
@@ -28,9 +29,10 @@ export class ProfileAttributesAddAttributeComponent implements OnInit {
 
     openForm() {
         this.form = this.formBuilder.group({
-            aname: ['', Validators.required],
-            visibility: ['', Validators.required],
-            role_default: [''],
+            cname: ['', Validators.required],
+            staff_visibility: ['', Validators.required],
+            client_visibility:['', Validators.required],
+            required:['']
         });
         this.formActive = true;
         this.focusNameField();
@@ -48,8 +50,10 @@ export class ProfileAttributesAddAttributeComponent implements OnInit {
 
     onFormSubmit() {
         if (this.form.valid) {
-            this.onAttributeAdd.next(this.form.value);
+            this.onCategoryAdd.next(this.form.value);
             this.formActive = false;
         }
     }
+
+
 }

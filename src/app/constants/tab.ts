@@ -31,12 +31,7 @@ export const ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES_TAB = new Tab('Ge
 export const ACCOUNTING_STAFF_INVOICES_MY_INVOICES_TAB = new Tab('My Invoices', '', 'accounting/staff-invoices/my-invoices', {});
 export const ACCOUNTING_STAFF_INVOICES_MY_INVOICES_NEW_INVOICE_TAB = new Tab('New Invoice', '', 'accounting/staff-invoices/my-invoices/new', {});
 
-export const TRACKING_TAB = new Tab('Tracking', '', 'tracking', {});
-export const TRACKING_BRAND_TAB = new Tab('Brand', '', 'tracking/brand', {});
-export const TRACKING_CAMPAIGN_TAB = new Tab('Campaign', '', 'tracking/compaign', {});
-export const TRACKING_JOB_NUMBER_TAB = new Tab('Job Number', '', 'tracking/job-number', {});
-export const TRACKING_PO_NUMBER_TAB = new Tab('PO Number', '', 'tracking/po-number', {});
-export const TRACKING_TEST_TAB = new Tab('Test', '', 'tracking/test', {});
+export const TRACKING_TAB = new Tab('Tracking', 'trackingTpl', 'tracking', {});
 
 export const SETTINGS_TAB = new Tab('Settings', 'settingsTpl', 'settings', {});
 export const SETTINGS_PROFILE_TAB = new Tab('Profile', '', 'settings/profile', {});

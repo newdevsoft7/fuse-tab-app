@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsul
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import * as _ from 'lodash';
-import { ATTRIBUTE_VISIBILITY } from '../profile-attribute.models';
+import { PROFILE_ATTRIBUTE_VISIBILITY } from '../profile-attribute.models';
 import { ProfileAttributesService } from '../profile-attributes.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class ProfileAttributesEditAttributeVSComponent implements OnInit {
     form: FormGroup;
     @Input() attribute;
 
-    VISIBILITY = ATTRIBUTE_VISIBILITY;
+    VISIBILITY = PROFILE_ATTRIBUTE_VISIBILITY;
 
     constructor(
         private formBuilder: FormBuilder,

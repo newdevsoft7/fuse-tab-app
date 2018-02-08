@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsul
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import * as _ from 'lodash';
-import { ATTRIBUTE_ROLE } from '../profile-attribute.models';
+import { PROFILE_ATTRIBUTE_ROLE } from '../profile-attribute.models';
 import { ProfileAttributesService } from '../profile-attributes.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { ProfileAttributesService } from '../profile-attributes.service';
 })
 export class ProfileAttributesEditAttributeRoleComponent implements OnInit {
 
-    ROLE = ATTRIBUTE_ROLE;
+    ROLE = PROFILE_ATTRIBUTE_ROLE;
     formActive = false;
     form: FormGroup;
     @Input() attribute;
