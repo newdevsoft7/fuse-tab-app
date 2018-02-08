@@ -30,7 +30,7 @@ export class ProfileAttributesAddAttributeComponent implements OnInit {
         this.form = this.formBuilder.group({
             aname: ['', Validators.required],
             visibility: ['', Validators.required],
-            role_default: ['', Validators.required],
+            role_default: [''],
         });
         this.formActive = true;
         this.focusNameField();

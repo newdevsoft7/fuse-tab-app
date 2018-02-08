@@ -37,7 +37,8 @@ export class ProfileAttributesEditAttributeRoleComponent implements OnInit {
     }
 
     get role() {
-        return this.ROLE.find(t => t.value == this.attribute.role_default).label;
+        return this.ROLE.find(t => t.value == this.attribute.role_default) ? 
+            this.ROLE.find(t => t.value == this.attribute.role_default).label : 'Any';
     }
     
 

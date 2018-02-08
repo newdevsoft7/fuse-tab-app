@@ -51,7 +51,7 @@ export class ProfileAttributesEditAttributeNameComponent implements OnInit {
             this.attributesService.updateAttribute(newAttribute).subscribe(
                 res => {
                     const attribute = res.data;
-                    this.attribute.ename = attribute.aname;
+                    this.attribute.aname = attribute.aname;
                 },
                 err => {
                     const errors = err.error.errors;

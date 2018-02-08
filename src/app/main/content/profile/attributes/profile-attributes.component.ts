@@ -102,7 +102,7 @@ export class ProfileAttributesComponent implements OnInit {
             return;
         }
         const attribute = new ProfileAttribute(newAttribute);
-
+        console.log(attribute);
         this.attributesService.createAttribute(attribute).subscribe(
             res => {
                 const savedAttribute = res.data;

@@ -1,5 +1,5 @@
 export const ATTRIBUTE_ROLE:any[]=[
-    { value: 'any', label: 'Any' },
+    { value: null, label: 'Any' },
     { value: 'yes', label: 'Yes' },
     { value: 'no', label: 'No' },
 ];
@@ -22,7 +22,7 @@ export class ProfileAttribute {
             this.id = profileAttribute.id || 0;
             this.aname = profileAttribute.aname;
             this.visibility = profileAttribute.visibility || '';
-            this.role_default = profileAttribute.role_default || '';            
+            this.role_default = profileAttribute.role_default || null;            
             this.display_order = profileAttribute.display_order || '';
             this.attribute_cat_id = profileAttribute.attribute_cat_id || null;
         }
