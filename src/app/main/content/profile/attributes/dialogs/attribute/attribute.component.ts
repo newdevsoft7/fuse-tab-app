@@ -27,7 +27,7 @@ export class ProfileAttributesAttributeDialogComponent implements OnInit {
         this.form = this.formBuilder.group({
             aname: ['', Validators.required],
             visibility: ['', Validators.required],
-            role_default: ['', Validators.required],            
+            role_default: [''],            
         });
         this.focusNameField();
     }

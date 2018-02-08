@@ -46,6 +46,7 @@ export class ProfileAttributesEditAttributeRoleComponent implements OnInit {
         if (this.form.valid) {
             const newAttribute = _.cloneDeep(this.attribute);
             newAttribute.role_default = this.form.getRawValue().role_default;
+            console.log(newAttribute);
             this.attributesService.updateAttribute(newAttribute)
                 .subscribe(res => {
                     this.attribute.role_default = newAttribute.role_default; 

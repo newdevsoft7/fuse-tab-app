@@ -87,6 +87,7 @@ export class ProfileAttributesComponent implements OnInit {
         this.attributesService.createCategory(newCategory).subscribe(
             res => {
                 const savedCategory = res.data;
+                savedCategory.attributes = [];
                 this.categories.push(savedCategory);
             },
             err => {
@@ -102,13 +103,14 @@ export class ProfileAttributesComponent implements OnInit {
             return;
         }
         const attribute = new ProfileAttribute(newAttribute);
-        console.log(attribute);
+
         this.attributesService.createAttribute(attribute).subscribe(
             res => {
                 const savedAttribute = res.data;
                 const category = this.categories.find( c => c.id == savedAttribute.attribute_cat_id );
                 if (!category.attributes) { category.attributes = []; }
                 category.attributes.push(attribute);
+                this.attributes.push(attribute);
             },
             err => {
                 const errors = err.error.errors;
@@ -132,6 +134,7 @@ export class ProfileAttributesComponent implements OnInit {
                             const savedAttribute = res.data;
                             if (!category.attributes) { category.attributes = []; }
                             category.attributes.push(savedAttribute);
+                            this.attributes.push(savedAttribute);
                         },
                         err => {
                             const errors = err.error.errors;
@@ -172,13 +175,22 @@ export class ProfileAttributesComponent implements OnInit {
     }
 
     private removeCategory(category) {
-        let attrs = this.getAttributesOfCategory(category);
+
+        let attrs = [...this.getAttributesOfCategory(category)];
         /*attrs.forEach( attribute => this.removeAttribute(attribute) );*/
 
         this.attributesService.deleteCategory(category.id).subscribe(
             res => {
-                let index = this.categories.findIndex( c => c == category );
-                this.categories.splice(index, 1);
+                if ( this.categories ){
+                    let index = this.categories.findIndex( c => c == category );
+                    this.categories.splice(index, 1);
+                    attrs.forEach(attribute => {
+                        attribute.attribute_cat_id = null;
+                        let Uncategorised = this.getUncategorisedCategory();
+                        Uncategorised.attributes.push(attribute);
+
+                    });                    
+                }
             },
             err => {
                 const errors = err.error.errors.data;
@@ -207,11 +219,9 @@ export class ProfileAttributesComponent implements OnInit {
 
     onDropCategory(evt) {
         this.categoriesReorder( this.categories );
-
     }
 
     onDropAttribute(evt){
-
         const attribute: ProfileAttribute = evt.value;
         let parentCategory = null;
         this.categories.forEach( category =>{
@@ -281,5 +291,8 @@ export class ProfileAttributesComponent implements OnInit {
         this.categories.map(category => {
             category.attributes = this.getAttributesOfCategory(category);
         });        
+    }
+    getUncategorisedCategory(){
+        return this.categories.find( c => c.id == null );
     }
 }
