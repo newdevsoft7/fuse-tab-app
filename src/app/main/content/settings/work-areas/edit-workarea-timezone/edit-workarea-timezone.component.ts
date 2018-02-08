@@ -40,7 +40,8 @@ export class SettingsWorkAreasEditTimezoneComponent implements OnInit {
 
     get timezonename() {
         if ( !this.timezones ) return ' ';
-        return this.timezones.find(t => t.id == this.element.php_tz) ? this.timezones.find(t => t.id == this.element.php_tz).name : 'T';
+        return this.timezones.find(t => t.id == this.element.php_tz) ? 
+                this.timezones.find(t => t.id == this.element.php_tz).name : ' ...';
     }
 
 

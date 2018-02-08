@@ -100,9 +100,7 @@ export class SettingsWorkAreasMainComponent implements OnInit {
         this.settingsService.createWorkArea(newWorkArea)
             .subscribe(res => {
                 this.toastr.success(res.message);
-                //const savedWorkArea = res.data;
-                //this.workareas.push(savedWorkArea);
-                //this.updateFilter(this.search.nativeElement.value);
+
                 this.getWorkAreas();
             });
     }
@@ -120,8 +118,7 @@ export class SettingsWorkAreasMainComponent implements OnInit {
                 this.settingsService.deleteWorkArea(workarea.id)
                     .subscribe(res => {
                         this.toastr.success(res.message);
-                        //const index = this.workareas.findIndex(v => v.id == workarea.id);
-                        //this.workareas.splice(index, 1);
+
                         this.getWorkAreas();
                         this.updateFilter(this.search.nativeElement.value);
                         
