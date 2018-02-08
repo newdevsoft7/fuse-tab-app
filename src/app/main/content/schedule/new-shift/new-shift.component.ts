@@ -14,7 +14,7 @@ import * as _ from 'lodash';
 })
 export class ScheduleNewShiftComponent implements OnInit {
 
-
+    shiftForm: FormGroup;
     constructor(
         private formBuilder: FormBuilder,        
         private toastr: ToastrService,

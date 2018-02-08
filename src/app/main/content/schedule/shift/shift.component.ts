@@ -12,7 +12,7 @@ import { ScheduleService } from '../schedule.service';
 export class ScheduleShiftComponent implements OnInit {
 
 	currentUser: any;
-
+	value = 1;
 	constructor(
 		private tokenStorage: TokenStorage,
 		private userService: ScheduleService
