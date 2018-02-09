@@ -18,7 +18,7 @@ export class TrackingOption {
     id: string;
     oname: string;
     staff_visibility: string;
-    active: string;
+    active: number;
     tracking_cat_id:string;
 
     constructor(trackingOption) {
@@ -26,7 +26,7 @@ export class TrackingOption {
             this.id = trackingOption.id || 0;
             this.oname = trackingOption.oname || '';
             this.staff_visibility = trackingOption.staff_visibility || TRACKING_OPTION_STAFF_VISIBILITY[0].value;
-            this.active = trackingOption.active || '0';
+            this.active = trackingOption.active || 0;
             this.tracking_cat_id = trackingOption.tracking_cat_id || null;
         }
     }

@@ -218,43 +218,43 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
                 'type': 'collapse',
                 'icon': 'dashboard',
                 'tab': TAB.TRACKING_TAB,
-                'children': [
-                    {
-                        'id': 'brand',
-                        'title': 'Brand',
-                        'translate': 'NAV.TRACKING_BRAND',
-                        'type': 'item',
-                        'tab': TAB.TRACKING_BRAND_TAB
-                    },
-                    {
-                        'id': 'campaign',
-                        'title': 'Campaign',
-                        'translate': 'NAV.TRACKING_CAMPAIGN',
-                        'type': 'item',
-                        'tab': TAB.TRACKING_CAMPAIGN_TAB
-                    },
-                    {
-                        'id': 'job_number',
-                        'title': 'Job Number',
-                        'translate': 'NAV.TRACKING_JOB_NUMBER',
-                        'type': 'item',
-                        'tab': TAB.TRACKING_JOB_NUMBER_TAB
-                    },
-                    {
-                        'id': 'po_number',
-                        'title': 'PO Number',
-                        'translate': 'NAV.TRACKING_PO_NUMBER',
-                        'type': 'item',
-                        'tab': TAB.TRACKING_PO_NUMBER_TAB
-                    },
-                    {
-                        'id': 'test',
-                        'title': 'Test',
-                        'translate': 'NAV.TRACKING_TEST',
-                        'type': 'item',
-                        'tab': TAB.TRACKING_TEST_TAB
-                    }
-                ]
+                // 'children': [
+                //     {
+                //         'id': 'brand',
+                //         'title': 'Brand',
+                //         'translate': 'NAV.TRACKING_BRAND',
+                //         'type': 'item',
+                //         'tab': TAB.TRACKING_BRAND_TAB
+                //     },
+                //     {
+                //         'id': 'campaign',
+                //         'title': 'Campaign',
+                //         'translate': 'NAV.TRACKING_CAMPAIGN',
+                //         'type': 'item',
+                //         'tab': TAB.TRACKING_CAMPAIGN_TAB
+                //     },
+                //     {
+                //         'id': 'job_number',
+                //         'title': 'Job Number',
+                //         'translate': 'NAV.TRACKING_JOB_NUMBER',
+                //         'type': 'item',
+                //         'tab': TAB.TRACKING_JOB_NUMBER_TAB
+                //     },
+                //     {
+                //         'id': 'po_number',
+                //         'title': 'PO Number',
+                //         'translate': 'NAV.TRACKING_PO_NUMBER',
+                //         'type': 'item',
+                //         'tab': TAB.TRACKING_PO_NUMBER_TAB
+                //     },
+                //     {
+                //         'id': 'test',
+                //         'title': 'Test',
+                //         'translate': 'NAV.TRACKING_TEST',
+                //         'type': 'item',
+                //         'tab': TAB.TRACKING_TEST_TAB
+                //     }
+                // ]
             },
             {
                 'id': 'settings',

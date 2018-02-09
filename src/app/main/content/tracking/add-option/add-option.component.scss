@@ -1,18 +1,12 @@
 :host {
-    .new-category {
+    .new-option {
         border-radius: 2px;
-        //background-color: #EEF0F2;
+        background-color: #EEF0F2;
         //color:black;
-        .new-category-btn{
-            position: absolute;
-            right: 18px;
-            bottom: -26px;
-            z-index: 10;
-        }
         md-select, .mat-select-placeholder, .mat-select-trigger {
         color:white !important;
         }
-        .new-category-form-button {
+        .new-option-form-button {
             text-transform: none;
             font-size: 15px;
             padding: 0 16px;
@@ -29,7 +23,7 @@
             }
         }
 
-        .new-category-form {
+        .new-option-form {
             padding: 16px;
             height: 64px;
 

@@ -39,7 +39,6 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedCategory = category;
              });
 
-
     }
 
     ngOnInit() {
@@ -66,6 +65,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log(err);
             });
     }
+
     onCategoryAdd(newCategory) {
         if (newCategory === {}) {
             return;
@@ -74,9 +74,10 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
         const category = new TrackingCategory(newCategory);
         this.trackingService.createTrackingCategory(category).subscribe(
             res => {
-                const savedCategory = res.data;
-                savedCategory.attributes = [];
+                const savedCategory = {...res.data};
                 this.categories.push(savedCategory);
+                this.trackingService.toggleSelectedCategory( savedCategory );
+                this.trackingService.toggleCategories(this.categories);
             },
             err => {
                 const errors = err.error.errors;

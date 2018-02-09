@@ -37,7 +37,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.sidenav.open();
-        }, 200);
+        }, 250);
     }
 
     ngOnDestroy(){

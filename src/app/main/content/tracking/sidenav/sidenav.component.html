@@ -3,7 +3,7 @@
 
         <div class="nav-link" matRipple 
             (click)="changeCategory(category)" 
-            [ngClass]="{'active':category.id === selectedCategory.id }" 
+            [ngClass]="{'active':selectedCategory && category.id === selectedCategory.id }" 
             fxLayout="row"
             fxLayoutAlign="space-between center">
 

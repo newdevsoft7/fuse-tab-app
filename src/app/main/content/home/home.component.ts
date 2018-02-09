@@ -12,6 +12,8 @@ import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
 import * as TAB from '../../../constants/tab';
+import { TrackingService } from '../tracking/tracking.service';
+import { TrackingCategory } from '../tracking/tracking.models';
 
 
 
@@ -41,6 +43,7 @@ export class FuseHomeComponent implements OnDestroy
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
+        private trackingService: TrackingService,
         private authService: AuthenticationService) {
         //this.authService.refreshToken().subscribe(_ => {});
         this.translationLoader.loadTranslations(english, turkish);
@@ -60,6 +63,12 @@ export class FuseHomeComponent implements OnDestroy
         };
 
         this.tabsComponent.openTab(_tab);
+        if (_tab.url == 'tracking'){
+            let trackingCategory = _tab.data;
+            if (JSON.stringify(_tab.data) != '{}' ){
+                this.trackingService.toggleSelectedCategory (trackingCategory as TrackingCategory);
+            }
+        }
     }
 
     openUsers() {

@@ -24,9 +24,9 @@
         <!-- SIDENAV -->
         <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3" mat-is-locked-open="gt-md" #sidenav>
     
-            <div class="sidenav-content" fusePerfectScrollbar>
-        
-                <app-tracking-sidenav></app-tracking-sidenav>
+            <div class="sidenav-content pt-16" fusePerfectScrollbar>
+                
+                <app-tracking-sidenav [categories]="categories"></app-tracking-sidenav>
 
             </div>
         
@@ -38,7 +38,7 @@
         
             <!-- CONTENT -->
             <div class="content mat-elevation-z4 mat-white-bg p-24">
-                <app-tracking-option fxFlexFill></app-tracking-option>
+                <app-tracking-option fxFlexFill [category]="selectedCategory"></app-tracking-option>
             </div>
             <!-- / CONTENT -->
 

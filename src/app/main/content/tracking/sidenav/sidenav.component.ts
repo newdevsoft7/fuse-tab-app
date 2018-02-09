@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { TrackingService } from '../tracking.service';
 import { TrackingCategory } from '../tracking.models';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,23 +17,19 @@ export class TrackingSidenavComponent implements OnInit, OnDestroy {
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    categories:TrackingCategory[];
     selectedCategory:TrackingCategory;
     private onSelectedCategoryChanged: Subscription;
-    private onCategoriesChanged: Subscription;    
+    //private onCategoriesChanged: Subscription;    
+
+    @Input() categories;
 
     constructor( 
         private trackingService: TrackingService,
         public dialog: MatDialog,
         private toastr: ToastrService) { 
 
-        this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
-            categeories => {
-                this.categories = categeories;
-                this.changeCategory(this.categories[0]);
-            });
-            
-            
+        //this.changeCategory(this.categories[0]);
+
         this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
             category => {
                 this.selectedCategory = category;
@@ -45,7 +41,7 @@ export class TrackingSidenavComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
         this.onSelectedCategoryChanged.unsubscribe();
-        this.onCategoriesChanged.unsubscribe();        
+        //this.onCategoriesChanged.unsubscribe();        
     }
 
 
@@ -53,8 +49,9 @@ export class TrackingSidenavComponent implements OnInit, OnDestroy {
         this.selectedCategory = category;
         //if ( !this.selectedCategory ) return;
         this.trackingService.toggleSelectedCategory(this.selectedCategory );
+        this.trackingService.toggleCategories(this.categories);
     }
-    
+
     onRemoveCategory(event, category){
         event.stopPropagation();
 
@@ -72,6 +69,7 @@ export class TrackingSidenavComponent implements OnInit, OnDestroy {
                         if (this.categories) {
                             let index = this.categories.findIndex(c => c == category);
                             this.categories.splice(index, 1);
+                            this.trackingService.toggleCategories(this.categories);
                             if (isSelected) this.changeCategory( this.categories[0] );
                         }
                     },

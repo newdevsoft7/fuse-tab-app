@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnDestroy, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { TrackingService } from '../tracking.service';
+import { TrackingCategory } from '../tracking.models';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-tracking-edit-category-name',
@@ -11,21 +13,30 @@ import { TrackingService } from '../tracking.service';
     styleUrls: ['./edit-category-name.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class TrackingEditCategoryNameComponent implements OnInit {
+export class TrackingEditCategoryNameComponent implements OnInit, OnDestroy {
 
     formActive = false;
     form: FormGroup;
     @Input() category;
     @ViewChild('nameInput') nameInputField;
+    categories: TrackingCategory[];
+    private onCategoriesChanged: Subscription;
 
     constructor(
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
-        private trackingService: TrackingService) { }
+        private trackingService: TrackingService) { 
+        this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
+            categeories => {
+                this.categories = categeories;
+            });
+        }
 
     ngOnInit() {
     }
-
+    ngOnDestroy(){
+        this.onCategoriesChanged.unsubscribe();
+    }
     openForm() {
         this.form = this.formBuilder.group({
             cname: [this.category.cname]
@@ -52,6 +63,7 @@ export class TrackingEditCategoryNameComponent implements OnInit {
                 res => {
                     const category = res.data;
                     this.category.cname = category.cname;
+                    this.trackingService.toggleCategories( this.categories );
                 },
                 err => {
                     const errors = err.error.errors;

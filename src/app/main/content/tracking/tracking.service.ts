@@ -41,6 +41,12 @@ export class TrackingService {
         return this.http.get(TRACKING_OPTION_URL)
             .catch(this.handleError);
     }
+    
+    getTrackingOptionsByCategory(categoryId: number): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${categoryId}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
 
     createTrackingOption(trackingOption: TrackingOption): Observable<any> {
         return this.http.post(TRACKING_OPTION_URL, trackingOption)
