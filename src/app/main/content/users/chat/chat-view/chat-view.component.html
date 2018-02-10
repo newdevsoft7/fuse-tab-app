@@ -17,9 +17,7 @@
                 <!-- / RESPONSIVE CHATS BUTTON-->
 
                 <!-- CHAT CONTACT-->
-                <div class="chat-contact" fxLayout="row" fxLayoutAlign="start center"
-                     fuseMatSidenavToggler="chat-right-sidenav" (click)="selectContact()">
-
+                <div class="chat-contact" fxLayout="row" fxLayoutAlign="start center" *ngIf="user">
                     <div class="avatar-wrapper">
 
                         <img [src]="user?.ppic_a"
