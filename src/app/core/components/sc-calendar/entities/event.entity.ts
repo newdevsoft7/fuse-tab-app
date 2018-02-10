@@ -16,7 +16,7 @@ export class EventEntity {
   constraint?: any;
   source?: any;
   color?: string;
-  backgroundColor?: string;
-  borderColor?: string;
-  textColor?: string;
+  eventBackgroundColor?: string;
+  eventBorderColor?: string;
+  eventTextColor?: string;
 }

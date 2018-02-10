@@ -4,6 +4,7 @@ import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
 import { AuthenticationService } from '../../../../shared/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { FCMService } from '../../../../shared/fcm.service';
 
 @Component({
     selector   : 'fuse-login',
@@ -23,7 +24,8 @@ export class FuseLoginComponent implements OnInit
         private fuseConfig: FuseConfigService,
         private formBuilder: FormBuilder,
         private authService: AuthenticationService,
-        private router: Router
+        private router: Router,
+        private fcmService: FCMService
     )
     {
         this.fuseConfig.setSettings({
@@ -75,17 +77,18 @@ export class FuseLoginComponent implements OnInit
         }
     }
 
-    login() {
+    async login() {
         this.isSubmitted = true;
         const username = this.loginForm.getRawValue().username;
         const password = this.loginForm.getRawValue().password;
-        this.authService.login(username, password)
-            .subscribe(res => {
-                    this.router.navigate(['/home']);
-            }, err => {
-                this.isSuccess = false;
-                this.isSubmitted = false;
-                this.message = err.error.message;
-            });
+        try {
+            await this.authService.login(username, password).toPromise();
+            await this.fcmService.requestPermission();
+            this.router.navigate(['/home']);
+        } catch (err) {
+            this.isSuccess = false;
+            this.isSubmitted = false;
+            this.message = err.error.message;
+        }
     }
 }

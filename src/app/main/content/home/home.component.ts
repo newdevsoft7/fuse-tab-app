@@ -13,7 +13,7 @@ import { TabService } from '../../tab/tab.service';
 
 import * as TAB from '../../../constants/tab';
 
-
+import { FCMService } from '../../../shared/fcm.service';
 
 @Component({
     selector   : 'fuse-home',
@@ -31,16 +31,31 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersProfileTpl') usersProfileTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
+    @ViewChild('usersChatTpl') usersChatTpl;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
-        private authService: AuthenticationService) {
-        this.authService.refreshToken().subscribe(_ => {});
+        private authService: AuthenticationService,
+        private fcmService: FCMService) {
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
         });
+        /**
+         * detect the message arrival
+         */
+        this.fcmService.receiveMessage();
+
+        /**
+         * request notification permission
+         */
+        // this.usersChatService.requestPermission();
+
+        /**
+         * firebase token refreshed
+         */
+        this.fcmService.refreshToken();
     }
 
     ngOnDestroy() {

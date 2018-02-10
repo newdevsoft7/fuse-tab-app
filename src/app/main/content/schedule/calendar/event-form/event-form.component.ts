@@ -82,7 +82,7 @@ export class CalendarEventFormDialogComponent implements OnInit
               date: new FormControl(this.end.date),
               time: new FormControl(this.end.time, [ValidateTimeFormat, ValidateEndDatetime])
             }),
-            backgroundColor  : new FormControl(this.event.backgroundColor)
+            backgroundColor  : new FormControl(this.event.eventBackgroundColor)
         });
     }
 }

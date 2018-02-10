@@ -20,6 +20,15 @@ import { UsersProfilePhotoGalleryDialogComponent } from './profile/photo/photo-g
 import { UsersProfileVideoComponent } from './profile/video/video.component';
 import { UsersProfileVideoGalleryDialogComponent } from './profile/video/video-gallery-dialog/video-gallery-dialog.component';
 import { UsersProfileDocumentComponent } from './profile/document/document.component';
+import { UsersChatComponent } from './chat/chat.component';
+import { UsersChatService } from './chat/chat.service';
+import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
+import { FuseChatViewComponent } from './chat/chat-view/chat-view.component';
+import { FuseChatLeftSidenavComponent } from './chat/sidenavs/left/left.component';
+import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.component';
+import { FuseChatUserSidenavComponent } from './chat/sidenavs/left/user/user.component';
+import { FuseChatRightSidenavComponent } from './chat/sidenavs/right/right.component';
+import { FuseChatContactSidenavComponent } from './chat/sidenavs/right/contact/contact.component';
 
 @NgModule({
     imports: [
@@ -44,16 +53,33 @@ import { UsersProfileDocumentComponent } from './profile/document/document.compo
         UsersProfilePhotoGalleryDialogComponent,
         UsersProfileVideoComponent,
         UsersProfileVideoGalleryDialogComponent,
-        UsersProfileDocumentComponent
+        UsersProfileDocumentComponent,
+        UsersChatComponent,
+        FuseChatStartComponent,
+        FuseChatViewComponent,
+        FuseChatLeftSidenavComponent,
+        FuseChatChatsSidenavComponent,
+        FuseChatUserSidenavComponent,
+        FuseChatRightSidenavComponent,
+        FuseChatContactSidenavComponent
     ],
     exports: [
         UsersComponent,
         UsersExportsComponent,
         UsersPresentationsComponent,
-        UsersProfileComponent
+        UsersProfileComponent,
+        UsersChatComponent,
+        FuseChatStartComponent,
+        FuseChatViewComponent,
+        FuseChatLeftSidenavComponent,
+        FuseChatChatsSidenavComponent,
+        FuseChatUserSidenavComponent,
+        FuseChatRightSidenavComponent,
+        FuseChatContactSidenavComponent
     ],
     providers: [
-        UserService
+        UserService,
+        UsersChatService
     ],
     entryComponents: [
         UserFormDialogComponent,

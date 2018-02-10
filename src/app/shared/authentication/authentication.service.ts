@@ -14,6 +14,8 @@ import 'rxjs/add/operator/catch';
 import { environment } from '../../../environments/environment';
 import { TokenStorage } from './token-storage.service';
 
+import { UsersChatService } from '../../main/content/users/chat/chat.service';
+
 const BASE_URL = `${environment.apiUrl}`;
 const AUTH_URL = `${BASE_URL}/auth`;
 
@@ -30,7 +32,8 @@ export class AuthenticationService implements AuthService {
     constructor(
         private http: HttpClient,
         private tokenStorage: TokenStorage,
-        private router: Router) { }
+        private router: Router,
+        private usersChatService: UsersChatService) { }
     
     /**
      * Check, if user already authorized.
@@ -85,11 +88,16 @@ export class AuthenticationService implements AuthService {
             .catch(this.handleError);
     }
 
-    public logout() {
+    public async logout() {
+        try {
+            await this.usersChatService.removeDevice();
+            this.usersChatService.Device = null;
+        } catch (e) {
+            this.handleError(e);
+        }
         this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
         this.tokenStorage.clear();
         this.router.navigate(['/login']);
-            
     }
 
     public verifyTokenRequest(url: string): boolean {
