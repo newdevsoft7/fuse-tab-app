@@ -125,7 +125,7 @@
                         [resizeable]="false" 
                         [headerCheckboxable]="true" >
                             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                                <mat-checkbox class="example-margin" [(ngModel)]="row.active" (change)="onChangeActive(row)"></mat-checkbox>
+                                <mat-checkbox [(ngModel)]="row.active" (change)="onChangeActive(row)"></mat-checkbox>
                             </ng-template>
                     </ngx-datatable-column>
 
