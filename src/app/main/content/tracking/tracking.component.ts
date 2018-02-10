@@ -1,15 +1,13 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, IterableDiffer } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { IterableDiffer } from '@angular/core/src/change_detection/differs/iterable_differs';
 import { MatSidenav } from '@angular/material';
 import { TrackingService } from './tracking.service';
 import { TrackingCategory } from './tracking.models';
-
 
 @Component({
     selector: 'app-tracking',
@@ -25,9 +23,9 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('sidenav') private sidenav: MatSidenav;
 
-    constructor(   
+    constructor(
         private toastr: ToastrService,
-        private trackingService: TrackingService ) {
+        private trackingService: TrackingService) {
 
         this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
             categeories => {
@@ -37,7 +35,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe( 
             category => {
                 this.selectedCategory = category;
-             });
+            });
 
     }
 
@@ -61,7 +59,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.categories = [...res];
                 this.trackingService.toggleCategories(this.categories);
             },
-            (err) => {
+            err => {
                 console.log(err);
             });
     }
@@ -74,9 +72,9 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
         const category = new TrackingCategory(newCategory);
         this.trackingService.createTrackingCategory(category).subscribe(
             res => {
-                const savedCategory = {...res.data};
+                const savedCategory = { ...res.data };
                 this.categories.push(savedCategory);
-                this.trackingService.toggleSelectedCategory( savedCategory );
+                this.trackingService.toggleSelectedCategory(savedCategory);
                 this.trackingService.toggleCategories(this.categories);
             },
             err => {

@@ -17,6 +17,7 @@ export class TrackingEditCategoryClientComponent implements OnInit {
 
     formActive = false;
     form: FormGroup;
+    
     @Input() category;
 
     VISIBILITY = TRACKING_CATEGORY_CLIENT_VISIBILITY;

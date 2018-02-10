@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
-export enum CategoryAction{
+export enum CategoryAction {
     NONE = -1,
     GETLIST = 0,
     SELECT,

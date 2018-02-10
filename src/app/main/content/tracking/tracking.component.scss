@@ -1,13 +1,16 @@
-:host{
-    #tracking{
-        .header{
+:host {
+
+    #tracking {
+        .header {
             position: relative;
         }
     }
-    .inner-sidenav{
+
+    .inner-sidenav {
         height: 100%;
     }
-    .mat-sidenav-content{
-        margin-left:220px;
+
+    .mat-sidenav-content {
+        margin-left: 220px;
     }
 }

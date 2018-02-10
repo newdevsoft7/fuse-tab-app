@@ -1,15 +1,17 @@
-.field-header-visibility {
+.tracking-category-staff {
     border-bottom: dashed 1px #d0d0d0;
+
     &.disabled {
         pointer-events: none;
         border-bottom: none;
-    } 
+    }
+    
     .field-visibility:hover {
         cursor: text;
     }
 }
 
-.field-header-visibility-form {
+.tracking-category-staff-form {
     .mat-form-field-wrapper {
         padding: 0;
     }

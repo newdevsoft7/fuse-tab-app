@@ -17,10 +17,13 @@ export class TrackingEditCategoryNameComponent implements OnInit, OnDestroy {
 
     formActive = false;
     form: FormGroup;
+    
+    categories: TrackingCategory[];
+
+    private onCategoriesChanged: Subscription;
+
     @Input() category;
     @ViewChild('nameInput') nameInputField;
-    categories: TrackingCategory[];
-    private onCategoriesChanged: Subscription;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -34,9 +37,11 @@ export class TrackingEditCategoryNameComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
     }
+
     ngOnDestroy(){
         this.onCategoriesChanged.unsubscribe();
     }
+
     openForm() {
         this.form = this.formBuilder.group({
             cname: [this.category.cname]
@@ -63,7 +68,7 @@ export class TrackingEditCategoryNameComponent implements OnInit, OnDestroy {
                 res => {
                     const category = res.data;
                     this.category.cname = category.cname;
-                    this.trackingService.toggleCategories( this.categories );
+                    this.trackingService.toggleCategories(this.categories);
                 },
                 err => {
                     const errors = err.error.errors;

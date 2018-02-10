@@ -12,23 +12,20 @@ import { ToastrService } from 'ngx-toastr';
     templateUrl: './sidenav.component.html',
     styleUrls: ['./sidenav.component.scss']
 })
-
 export class TrackingSidenavComponent implements OnInit, OnDestroy {
+
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
-    selectedCategory:TrackingCategory;
+    selectedCategory: TrackingCategory;
     private onSelectedCategoryChanged: Subscription;
-    //private onCategoriesChanged: Subscription;    
 
     @Input() categories;
 
-    constructor( 
+    constructor(
         private trackingService: TrackingService,
         public dialog: MatDialog,
         private toastr: ToastrService) { 
-
-        //this.changeCategory(this.categories[0]);
 
         this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
             category => {
@@ -41,13 +38,10 @@ export class TrackingSidenavComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(){
         this.onSelectedCategoryChanged.unsubscribe();
-        //this.onCategoriesChanged.unsubscribe();        
     }
-
 
     changeCategory(category:TrackingCategory ){
         this.selectedCategory = category;
-        //if ( !this.selectedCategory ) return;
         this.trackingService.toggleSelectedCategory(this.selectedCategory );
         this.trackingService.toggleCategories(this.categories);
     }
@@ -67,10 +61,10 @@ export class TrackingSidenavComponent implements OnInit, OnDestroy {
                 this.trackingService.deleteTrackingCategory(category.id).subscribe(
                     res => {
                         if (this.categories) {
-                            let index = this.categories.findIndex(c => c == category);
+                            const index = this.categories.findIndex(c => c == category);
                             this.categories.splice(index, 1);
                             this.trackingService.toggleCategories(this.categories);
-                            if (isSelected) this.changeCategory( this.categories[0] );
+                            if (isSelected) this.changeCategory(this.categories[0]);
                         }
                     },
                     err => {

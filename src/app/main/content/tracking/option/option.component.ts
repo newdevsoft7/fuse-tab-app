@@ -60,7 +60,7 @@ export class TrackingOptionComponent implements OnInit, DoCheck {
         this.trackingService.getTrackingOptionsByCategory(categoryId).subscribe(
             res => {
                 this.loadingIndicator = false;
-                this.options = [...res];
+                this.options = [ ...res ];
                 this.updateFilter(this.search.nativeElement.value);
             }, err => {
                 if (err.status && err.status == 403) {
@@ -101,7 +101,6 @@ export class TrackingOptionComponent implements OnInit, DoCheck {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-
                 this.trackingService.deleteTrackingOption(option.id)
                     .subscribe(res => {
                         this.toastr.success(res.message);
@@ -143,8 +142,8 @@ export class TrackingOptionComponent implements OnInit, DoCheck {
     }
 
     onSelect(evt) {
-
     }
+    
     onActivate(evt) {
     }       
 }

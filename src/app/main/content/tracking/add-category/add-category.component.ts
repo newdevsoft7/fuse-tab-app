@@ -17,14 +17,11 @@ export class TrackingAddCategoryComponent implements OnInit {
     @Output() onCategoryAdd = new EventEmitter();
     @ViewChild('nameInput') nameInputField;
 
-
     constructor(
-        private formBuilder: FormBuilder
-    ) {
+        private formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
-
     }
 
     openForm() {
@@ -54,6 +51,4 @@ export class TrackingAddCategoryComponent implements OnInit {
             this.formActive = false;
         }
     }
-
-
 }

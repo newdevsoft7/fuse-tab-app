@@ -36,6 +36,7 @@ export class FuseNavigationComponent implements OnDestroy
                     this.navigationModel = navigationModel;
                     this.getTrackingCategories();
                 });
+
         this.tabSubscription = 
             this.tabService.tab$.subscribe(tab => {
                 this.updateNavItemActive(this.navigationModel, tab);
@@ -50,7 +51,6 @@ export class FuseNavigationComponent implements OnDestroy
             category => {
                 let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
                 let tab = trackingNav.children.find ( t => t.id == category.id );
-                //if (!tab && trackingNav.children.length > 0) tab = trackingNav.children[0];
                 if (tab) this.updateNavItemActive(trackingNav.children, tab.tab);
             });            
     }
@@ -79,7 +79,7 @@ export class FuseNavigationComponent implements OnDestroy
                 let trackingCategories = [...res];
                 this.addTrackingCategoriesToMenu( trackingCategories );
             },
-            (err) => {
+            err => {
                 console.log(err);
             });
     }
