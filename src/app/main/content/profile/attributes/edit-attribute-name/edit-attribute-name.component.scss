@@ -1,4 +1,4 @@
-.field-header-name {
+.profile-attribute-name {
     &.disabled {
         pointer-events: none;
         .field-name {
@@ -12,7 +12,8 @@
         }
     }
 }
-.field-header-name-form {
+
+.profile-attribute-name-form {
     .mat-form-field-wrapper {
         padding: 0;
     }

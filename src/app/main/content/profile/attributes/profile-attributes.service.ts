@@ -16,8 +16,7 @@ const ATTRIBUTE_CATEGORY_URL = `${ATTRIBUTE_URL}/category`
 export class ProfileAttributesService {
     constructor(private http: HttpClient) { }
 
-    // Returns all attributes including categories, elements, and options
-    getAttributes(): Observable<any> {
+    getAttributes(): Observable<ProfileAttribute[]> {
         return this.http.get(ATTRIBUTE_URL)
             .catch(this.handleError);
     }
@@ -32,7 +31,8 @@ export class ProfileAttributesService {
         return this.http.put(url, attribute)
             .catch(this.handleError);
     }
-    updateAttributeuser(categoryId: number, attributeId: number, role: string): Observable<any> {
+
+    updateAttributeUser(categoryId: number, attributeId: number, role: string): Observable<any> {
         const url = `${BASE_URL}/attributeUser/${categoryId}/${attributeId}`;
         return this.http.put(url, role)
             .catch(this.handleError);

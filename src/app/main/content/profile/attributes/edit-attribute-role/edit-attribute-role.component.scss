@@ -1,15 +1,15 @@
-.field-header-type {
+.profile-attribute-role {
     border-bottom: dashed 1px #d0d0d0;
     &.disabled {
         pointer-events: none;
         border-bottom: none;
     }
-    .field-type:hover {
+    .field-role:hover {
         cursor: text;
     }
 }
 
-.field-header-type-form {
+.profile-attribute-role-form {
     .mat-form-field-wrapper {
         padding: 0;
     }

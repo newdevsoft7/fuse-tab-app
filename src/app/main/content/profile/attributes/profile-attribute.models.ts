@@ -1,10 +1,10 @@
-export const PROFILE_ATTRIBUTE_ROLE:any[]=[
-    { value: null, label: 'Any' },
+export const PROFILE_ATTRIBUTE_ROLE = [
+    { value: '', label: 'Any' },
     { value: 'yes', label: 'Yes' },
     { value: 'no', label: 'No' },
 ];
 
-export const PROFILE_ATTRIBUTE_VISIBILITY:any[]=[
+export const PROFILE_ATTRIBUTE_VISIBILITY = [
     { value: 'staff', label: 'Staff' },
     { value: 'admin', label: 'Admin' },    
 ];
@@ -14,20 +14,21 @@ export class ProfileAttribute {
     aname: string;
     visibility: string;
     role_default: string;
-    display_order:string;
-    attribute_cat_id:string;
+    display_order: string;
+    attribute_cat_id: string;
 
     constructor(profileAttribute) {
         {
             this.id = profileAttribute.id || 0;
             this.aname = profileAttribute.aname || '';
             this.visibility = profileAttribute.visibility || PROFILE_ATTRIBUTE_VISIBILITY[0].value;
-            this.role_default = profileAttribute.role_default || null;            
+            this.role_default = profileAttribute.role_default || '';            
             this.display_order = profileAttribute.display_order || '';
             this.attribute_cat_id = profileAttribute.attribute_cat_id || null;
         }
     }
 }
+
 export class ProfileAttributeCategory {
     id: string;
     cname: string;

@@ -18,19 +18,17 @@ export class ProfileAttributesAddAttributeComponent implements OnInit {
     ROLE = PROFILE_ATTRIBUTE_ROLE;
 
     constructor(
-        private formBuilder: FormBuilder
-    ) {
+        private formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
-
     }
 
     openForm() {
         this.form = this.formBuilder.group({
             aname: ['', Validators.required],
             visibility: ['', Validators.required],
-            role_default: [''],
+            role_default: [null],
         });
         this.formActive = true;
         this.focusNameField();

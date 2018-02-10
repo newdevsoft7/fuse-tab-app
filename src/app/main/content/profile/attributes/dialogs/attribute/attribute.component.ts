@@ -9,6 +9,7 @@ import { PROFILE_ATTRIBUTE_ROLE, PROFILE_ATTRIBUTE_VISIBILITY } from '../../prof
     styleUrls: ['./attribute.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
+
 export class ProfileAttributesAttributeDialogComponent implements OnInit {
     form: FormGroup;
     @ViewChild('nameInput') nameInputField;
@@ -41,7 +42,7 @@ export class ProfileAttributesAttributeDialogComponent implements OnInit {
     onSave() {
         this.dialogRef.close(this.form.value);
     }
+
     onFormSubmit(){
-        
     }
 }

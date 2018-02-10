@@ -14,12 +14,10 @@ export class ProfileAttributesAddCategoryComponent implements OnInit {
     @ViewChild('nameInput') nameInputField;
 
     constructor(
-        private formBuilder: FormBuilder
-    ) {
+        private formBuilder: FormBuilder) {
     }
 
     ngOnInit() {
-
     }
 
     openForm() {

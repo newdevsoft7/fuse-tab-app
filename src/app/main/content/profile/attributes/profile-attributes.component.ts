@@ -9,7 +9,6 @@ import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-
 
 import { ProfileAttributesService } from './profile-attributes.service';
 
-
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileAttribute, ProfileAttributeCategory } from './profile-attribute.models';
@@ -32,27 +31,24 @@ export class ProfileAttributesComponent implements OnInit {
     constructor(
         private attributesService: ProfileAttributesService,
         private toastr: ToastrService, 
-        public dialog: MatDialog) 
-        { 
-        }
+        public dialog: MatDialog) {
+    }
 
     ngOnInit() {
-        //this.getCategories();
         this.getAttributesAndCategories();
     }
     
     getCategories(){
         this.attributesService.getCategories()
             .subscribe(
-                res=>{
+                res => {
                     this.categories = [ ...res ];
-                    this.categories.unshift({ id:null, cname:"Uncategorised", display_order: 0} );
+                    this.categories.unshift({ id: null, cname: 'Uncategorised', display_order: 0 } );
                     
                     this.attributesMapToCategories();
                     this.SortbyDisplayOrder( this.categories );
-
                 },
-                (err) => {
+                err => {
                     console.log(err);
                 }
             );
@@ -61,21 +57,21 @@ export class ProfileAttributesComponent implements OnInit {
     getAttributesAndCategories() {
         this.attributesService.getAttributes()
             .subscribe(
-            res => {
-                this.attributes = [ ...res ];
-                this.SortbyDisplayOrder( this.attributes );
-
-                this.getCategories();
-            },
-            (err) => {
-                console.log(err);
-            }
-        );
+                res => {
+                    res.forEach(attribute => attribute.role_default = attribute.role_default || '');
+                    this.attributes = [ ...res ];
+                    this.SortbyDisplayOrder( this.attributes );
+                    this.getCategories();
+                },
+                err => {
+                    console.log(err);
+                }
+            );
     }
 
 
     getAttributesOfCategory(category){
-        return this.attributes.filter( attribute => category.id == attribute.attribute_cat_id);
+        return this.attributes.filter(attribute => category.id == attribute.attribute_cat_id);
     }
 
     onCategoryAdd(newCategoryName) {
@@ -107,7 +103,7 @@ export class ProfileAttributesComponent implements OnInit {
         this.attributesService.createAttribute(attribute).subscribe(
             res => {
                 const savedAttribute = res.data;
-                const category = this.categories.find( c => c.id == savedAttribute.attribute_cat_id );
+                const category = this.categories.find(c => c.id == savedAttribute.attribute_cat_id);
                 if (!category.attributes) { category.attributes = []; }
                 category.attributes.push(attribute);
                 this.attributes.push(attribute);
@@ -177,16 +173,15 @@ export class ProfileAttributesComponent implements OnInit {
     private removeCategory(category) {
 
         let attrs = [...this.getAttributesOfCategory(category)];
-        /*attrs.forEach( attribute => this.removeAttribute(attribute) );*/
 
         this.attributesService.deleteCategory(category.id).subscribe(
             res => {
-                if ( this.categories ){
-                    let index = this.categories.findIndex( c => c == category );
+                if (this.categories){
+                    const index = this.categories.findIndex(c => c == category);
                     this.categories.splice(index, 1);
                     attrs.forEach(attribute => {
                         attribute.attribute_cat_id = null;
-                        let Uncategorised = this.getUncategorisedCategory();
+                        const Uncategorised = this.getUncategorisedCategory();
                         Uncategorised.attributes.push(attribute);
 
                     });                    
@@ -203,11 +198,11 @@ export class ProfileAttributesComponent implements OnInit {
     private removeAttribute(attribute) {
         this.attributesService.deleteAttribute(attribute.id).subscribe( 
             res =>{
-                let index = this.attributes.findIndex( a => a == attribute );
+                let index = this.attributes.findIndex(a => a == attribute);
                 this.attributes.splice(index, 1);
                 let category = this.categories.find(c => c.id == attribute.attribute_cat_id);
                 index = category.attributes.findIndex(a => a == attribute);
-                category.attributes.splice(index,1);
+                category.attributes.splice(index, 1);
             },
             err => {
                 const errors = err.error.errors.data;
@@ -218,23 +213,22 @@ export class ProfileAttributesComponent implements OnInit {
     }
 
     onDropCategory(evt) {
-        this.categoriesReorder( this.categories );
+        this.categoriesReorder(this.categories);
     }
 
     onDropAttribute(evt){
         const attribute: ProfileAttribute = evt.value;
         let parentCategory = null;
-        this.categories.forEach( category =>{
-            let index = category.attributes.findIndex( a => a == attribute );
-            if (index >= 0 ) {
+        this.categories.forEach(category => {
+            let index = category.attributes.findIndex(a => a == attribute);
+            if (index >= 0) {
                 parentCategory = category;
                 return;
             }
         });
-        console.log(parentCategory);
 
         attribute.attribute_cat_id = parentCategory.id;
-        this.attributesReorder( parentCategory.attributes );
+        this.attributesReorder(parentCategory.attributes);
     }
 
     clickCategory(model, evt) {
@@ -251,13 +245,13 @@ export class ProfileAttributesComponent implements OnInit {
         });        
     }
 
-    categoriesReorder(cats:any[]){
+    categoriesReorder(cats: any[]){
         cats.map(category => {
             category.display_order = this.categories.findIndex(c => c == category);
         }); 
         
         cats.forEach( category =>{
-            if ( !category.id ) return;
+            if (!category.id) return;
             this.attributesService.updateCategory(category).subscribe(
                 res => {
                 },
@@ -269,7 +263,8 @@ export class ProfileAttributesComponent implements OnInit {
                 });
         });
     }
-    attributesReorder(attrs:any[]){
+
+    attributesReorder(attrs:any[]) {
         attrs.map(attribute => {
             attribute.display_order = attrs.findIndex(a => a == attribute).toString();
         });
@@ -292,7 +287,8 @@ export class ProfileAttributesComponent implements OnInit {
             category.attributes = this.getAttributesOfCategory(category);
         });        
     }
+
     getUncategorisedCategory(){
-        return this.categories.find( c => c.id == null );
+        return this.categories.find(c => c.id == null);
     }
 }

@@ -8,13 +8,13 @@
 	</button>
 
 	<form *ngIf="formActive" class="new-element-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="row" fxLayoutAlign="start center"
-		fxFlex="1 0 auto" fxLayoutGap="30px">
+		fxFlex="1 0 auto" fxLayoutGap="16px">
 
         <mat-form-field floatPlaceholder="never" fxFlex>
             <input matInput formControlName="ename" #nameInput placeholder="Write a Field Name" required>
         </mat-form-field>
 
-		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="30px">
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="16px">
 			<mat-form-field fxFlex floatPlaceholder="never">
 				<mat-select formControlName="etype" placeholder="Type">
 					<mat-option *ngFor="let item of TYPE" [value]="item.value">
@@ -32,11 +32,13 @@
             </mat-form-field>
 		</div>
 
-		<button mat-icon-button fxFlex="0 1 auto">
-			<mat-icon>check</mat-icon>
-		</button>
-		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
-			<mat-icon>close</mat-icon>
-		</button>
+		<div fxLayout="row">
+			<button mat-icon-button fxFlex="0 1 auto">
+				<mat-icon>check</mat-icon>
+			</button>
+			<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+				<mat-icon>close</mat-icon>
+			</button>
+		</div>
 	</form>
 </div>

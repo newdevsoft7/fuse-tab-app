@@ -1,8 +1,8 @@
-<div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-type" (click)="openForm()">
-	<span class="field-type">{{role | uppercase}}</span>
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="profile-attribute-role" (click)="openForm()">
+	<span class="field-role">{{role | uppercase}}</span>
 </div>
 
-<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-type-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="profile-attribute-role-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
 
 	<mat-form-field fxFlex="1 0 auto">
         <mat-select formControlName="role_default" placeholder="Role">
