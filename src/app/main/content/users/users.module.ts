@@ -20,6 +20,7 @@ import { UsersProfilePhotoGalleryDialogComponent } from './profile/photo/photo-g
 import { UsersProfileVideoComponent } from './profile/video/video.component';
 import { UsersProfileVideoGalleryDialogComponent } from './profile/video/video-gallery-dialog/video-gallery-dialog.component';
 import { UsersProfileDocumentComponent } from './profile/document/document.component';
+import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { UsersProfileDocumentComponent } from './profile/document/document.compo
         UsersProfilePhotoGalleryDialogComponent,
         UsersProfileVideoComponent,
         UsersProfileVideoGalleryDialogComponent,
-        UsersProfileDocumentComponent
+        UsersProfileDocumentComponent,
+        UsersProfileAttributesComponent
     ],
     exports: [
         UsersComponent,

@@ -18,7 +18,6 @@ import { ProfileAttributesEditAttributeVSComponent } from './edit-attribute-visi
 	imports: [
         CommonModule,
         SharedModule
-
 	],
 	declarations: [
         ProfileAttributesComponent,
