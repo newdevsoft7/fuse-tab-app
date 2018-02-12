@@ -1,0 +1,22 @@
+<div id="users-profile-workareas" class="p-24" fxLayout="row" fxLayoutWrap>
+
+    <div class="users-profile-workareas-content" fxLayout="column" fxFlex="100">
+
+        <div *ngFor="let category of workAreas"
+             class="profile-box info-box general"
+             fxLayout="column">
+
+            <header class="mat-accent-bg">
+                <div class="title">{{category.cname == '' ? 'Uncategorised' : category.cname}}</div>
+            </header>
+
+            <div class="content" fxLayout="row" fxLayoutWrap>
+                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex="25">
+                    <mat-checkbox [(ngModel)]="workarea.set" (change)="onUpdateWorkArea(workarea)">{{workarea.aname}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
