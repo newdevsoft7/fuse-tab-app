@@ -1,7 +1,7 @@
-<div class="main-wrapper p-16">
+<div class="settings-workarea-wrapper">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24">
+    <div class="header p-16 pb-0">
 
         <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="action-btns">
 
@@ -22,12 +22,13 @@
                 </app-settings-work-areas-add>
             </div>
             <!-- / NEW WORKAREA BUTTON-->
+
         </div>
     </div>
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content p-24 ps ps--active-y">
+    <div class="content p-16 pt-4 ps ps--active-y">
 
         <!-- TABLE -->
         <div *ngIf="filteredWorkAreas" class="workareas-table">
@@ -49,17 +50,6 @@
                 [limit]="5" 
                 (select)="onSelect($event)"
                 (activate)="onActivate($event)">
-
-                    <!-- <ngx-datatable-column 
-                        [width]="30" 
-                        [sortable]="false" 
-                        [canAutoResize]="false" 
-                        [draggable]="false" 
-                        [resizeable]="false" 
-                        [headerCheckboxable]="true"
-                        [checkboxable]="true">
-                    </ngx-datatable-column> -->
-
 
                     <ngx-datatable-column name="Name" prop="aname">
                         <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>

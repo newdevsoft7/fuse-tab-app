@@ -1,7 +1,7 @@
-<div class="categories-wrapper p-16">
+<div class="categories-wrapper">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24">
+    <div class="header p-16 pb-0">
 
         <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="action-btns">
 
@@ -22,12 +22,13 @@
                 </app-settings-work-areas-add-category>
             </div>
             <!-- / NEW CATEGORY BUTTON-->
+
         </div>
     </div>
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content p-24 ps ps--active-y">
+    <div class="content p-16 pt-4 ps ps--active-y">
 
         <!-- TABLE -->
         <div *ngIf="filteredCategories" class="categories-table">
@@ -50,28 +51,15 @@
                 (select)="onSelect($event)"
                 (activate)="onActivate($event)">
 
-                    <!-- <ngx-datatable-column 
-                        [width]="30" 
-                        [sortable]="false" 
-                        [canAutoResize]="false" 
-                        [draggable]="false" 
-                        [resizeable]="false" 
-                        [headerCheckboxable]="true"
-                        [checkboxable]="true">
-                    </ngx-datatable-column> -->
-
-
                     <ngx-datatable-column 
                         [width]="350"
-                        name="Categories Name" 
+                        name="Name" 
                         prop="cname">
                             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                                 <app-settings-work-areas-edit-cat-name fxFlex="1 0 auto" [category]="row">
                                 </app-settings-work-areas-edit-cat-name>
-                            
                             </ng-template>
                     </ngx-datatable-column>
-
  
                     <ngx-datatable-column 
                         [width]="100" 
@@ -97,7 +85,7 @@
         </div>
         <!-- / TABLE -->
 
-
     </div>
     <!-- CONTENT -->
+
 </div>

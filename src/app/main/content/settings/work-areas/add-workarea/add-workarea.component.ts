@@ -35,12 +35,12 @@ export class SettingsWorkAreasAddComponent implements OnInit {
         this.getCategories();
         this.getTimeZones();
     }
+
     private getCategories() {
         this.settingsService.getWorkAreaCategories()
             .subscribe(res => {
                 this.loadingIndicator = false;
                 this.categories = res;
-
             }, err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
@@ -71,7 +71,7 @@ export class SettingsWorkAreasAddComponent implements OnInit {
         });
         this.formActive = true;
         this.focusNameField();
- 
+        this.getCategories();
     }
 
     closeForm() {

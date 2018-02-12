@@ -6,9 +6,6 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { SettingsService } from '../settings.service';
 
-
-
-
 @Component({
     selector: 'app-settings-work-areas',
     templateUrl: './work-areas.component.html',
@@ -20,13 +17,10 @@ export class SettingsWorkAreasComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
-        private settingsService: SettingsService
-    ) {
+        private settingsService: SettingsService) {
     }
 
     ngOnInit() {
     }
-
-
 
 }

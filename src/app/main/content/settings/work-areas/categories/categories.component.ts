@@ -33,14 +33,12 @@ export class SettingsWorkAreasCategoriesComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
-        private settingsService: SettingsService
-    ) {
+        private settingsService: SettingsService) {
     }
 
     ngOnInit() {
         this.getCategories();
     }
-
 
     private getCategories() {
         this.settingsService.getWorkAreaCategories()
@@ -108,9 +106,7 @@ export class SettingsWorkAreasCategoriesComponent implements OnInit {
         }
     }
 
-    onSelect(evt){
+    onSelect(evt) {}
 
-    }
-    onActivate(evt) {
-    }    
+    onActivate(evt) {}    
 }

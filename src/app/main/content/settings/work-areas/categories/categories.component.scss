@@ -1,10 +1,12 @@
-.categories-wrapper{
-    .header{
+.categories-wrapper {
+    .header {
         background-image: none !important;
     }
-    .categories-table{
+
+    .categories-table {
         width:100%;
     }
+
     .datatable-checkbox input[type='checkbox'] {
         &:after, &:before {
             width: 16px;
@@ -18,13 +20,5 @@
 
     .content {
         min-height: 150px;
-        
-        #add-user-button {
-            position: absolute;
-            top: 24px;
-            right: 12px;
-            padding: 0;
-            z-index: 99;
-        }
     }    
 }       

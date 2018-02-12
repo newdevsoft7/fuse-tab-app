@@ -42,7 +42,7 @@ export class SettingsWorkAreasEditCategoryComponent implements OnInit {
     }
 
     get categoryname() {
-        if ( !this.categories ) return ' ';
+        if (!this.categories) return ' ';
         return this.categories.find(t => t.id == this.element.work_area_cat_id).cname;
     }
 

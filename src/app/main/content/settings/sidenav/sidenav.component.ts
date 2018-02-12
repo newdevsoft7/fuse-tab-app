@@ -16,7 +16,7 @@ export class SettingsSidenavComponent implements OnInit {
     selectedSideNav:any;
 
     constructor(
-        private settingsService: SettingsService ) { 
+        private settingsService: SettingsService) { 
 
         this.sidenavs = this.settingsService.getSideNavs();
         this.changeSideNav( this.sidenavs[0] );

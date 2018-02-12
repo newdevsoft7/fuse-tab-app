@@ -14,13 +14,12 @@ const WORK_AREA_URL = `${environment.apiUrl}/workArea`;
 export class SettingsService {
 
     onSideNavChanged: Subject<any> = new Subject();
-    sidenavs:any[];
+    sidenavs: any[];
 
     constructor(
         private http: HttpClient) { 
             this.sidenavs = new SettingsSideNavModel().model;
         }
-
     
     getSideNavs(){
         return this.sidenavs;
@@ -30,14 +29,13 @@ export class SettingsService {
      * Toggle selected sidenav
      * @param sidenav
      */
-    toggleSelectedSideNav( sidenav: any ){
-        this.onSideNavChanged.next( sidenav );       
+    toggleSelectedSideNav(sidenav: any) {
+        this.onSideNavChanged.next(sidenav);       
     }
 
-    getSelectedSideNav(): Observable<any>{
+    getSelectedSideNav(): Observable<any> {
         return this.onSideNavChanged.asObservable();
     }
-
 
     getWorkAreas(): Observable<any> {
         return this.http.get(WORK_AREA_URL)
@@ -67,20 +65,20 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
-    createWorkAreaCategory(workareaCat): Observable<any> {
+    createWorkAreaCategory(workareaCategory): Observable<any> {
         const url = `${WORK_AREA_URL}/category`;
-        return this.http.post(url, workareaCat)
+        return this.http.post(url, workareaCategory)
             .catch(this.handleError);
     }
 
-    updateWorkAreaCategory(workareaCatId: number, data: any): Observable<any> {
-        const url = `${WORK_AREA_URL}/category/${workareaCatId}`;
+    updateWorkAreaCategory(workareaCategoryId: number, data: any): Observable<any> {
+        const url = `${WORK_AREA_URL}/category/${workareaCategoryId}`;
         return this.http.put(url, { ...data })
             .catch(this.handleError);
     }
 
-    deleteWorkAreaCategory(workareaCatId: number): Observable<any> {
-        const url = `${WORK_AREA_URL}/category/${workareaCatId}`;
+    deleteWorkAreaCategory(workareaCategoryId: number): Observable<any> {
+        const url = `${WORK_AREA_URL}/category/${workareaCategoryId}`;
         return this.http.delete(url)
             .catch(this.handleError);
     }
