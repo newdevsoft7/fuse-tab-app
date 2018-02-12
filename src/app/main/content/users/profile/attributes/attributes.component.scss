@@ -39,26 +39,9 @@
 
         &.info-box {
 
-            .info-line {
+            .info {
                 margin-bottom: 24px;
-
-                .title {
-                    font-size: 15px;
-                    font-weight: 500;
-                    padding-bottom: 4px;
-                    position: relative;
-                    padding-left: 8px;
-
-                    span.required {
-                        color: #f44336;
-                        position: absolute;
-                        left: -2px;
-                    }
-                }
-
-                .info {
-                    padding-left: 8px;
-                }
+                padding-left: 8px;
 
                 &:last-child {
                     margin-bottom: 0;

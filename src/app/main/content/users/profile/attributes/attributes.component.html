@@ -1,14 +1,19 @@
 <div id="attributes" class="p-24" fxLayout="row" fxLayoutWrap>
 
-    <div class="attributes-content" fxLayout="column">
+    <div class="attributes-content" fxLayout="column" fxFlex="100">
 
-        <div class="profile-box info-box general" fxLayout="column">
+        <div *ngFor="let category of attributes"
+             class="profile-box info-box general"
+             fxLayout="column">
 
             <header class="mat-accent-bg">
-                <div class="title"></div>
+                <div class="title">{{category.cname == '' ? 'Uncategorised' : category.cname}}</div>
             </header>
 
-            <div class="content">
+            <div class="content" fxLayout="row" fxLayoutWrap>
+                <div *ngFor="let attribute of category.attributes" class="info" fxFlex="25">
+                    <mat-checkbox [(ngModel)]="attribute.set" (change)="onUpdateAttribute(attribute)">{{attribute.aname}}</mat-checkbox>
+                </div>
             </div>
         </div>
 

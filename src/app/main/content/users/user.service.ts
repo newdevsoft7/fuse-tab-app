@@ -7,8 +7,6 @@ import 'rxjs/add/operator/map';
 
 const BASE_URL = `${environment.apiUrl}`;
 const USERS_URL = `${BASE_URL}/users`;
-const ATTRIBUTE_URL = `${BASE_URL}/attribute`;
-const ATTRIBUTE_CATEGORY_URL = `${ATTRIBUTE_URL}/category`
 
 @Injectable()
 export class UserService {
@@ -152,19 +150,15 @@ export class UserService {
     }
 
 
-    getAttributes(): Observable<any> {
-        return this.http.get(ATTRIBUTE_URL)
+    getProfileAttributes(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/attributes`;
+        return this.http.get(url)
             .catch(this.handleError);
     }
 
-    updateAttributeUser(categoryId: number, attributeId: number, role: string): Observable<any> {
-        const url = `${BASE_URL}/attributeUser/${categoryId}/${attributeId}`;
-        return this.http.put(url, role)
-            .catch(this.handleError);
-    }
-
-    getCategories(): Observable<any> {
-        return this.http.get(ATTRIBUTE_CATEGORY_URL)
+    updateProfileAttribute(userId: number, attributeId: number, value: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/attribute`;
+        return this.http.put(url, { attribute_id: attributeId, set: value })
             .catch(this.handleError);
     }
 
