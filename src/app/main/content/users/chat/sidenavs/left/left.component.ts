@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { fuseAnimations } from '../../../../../../core/animations';
 
 @Component({
@@ -7,22 +7,14 @@ import { fuseAnimations } from '../../../../../../core/animations';
     styleUrls  : ['./left.component.scss'],
     animations : fuseAnimations
 })
-export class FuseChatLeftSidenavComponent implements OnInit
+export class FuseChatLeftSidenavComponent
 {
     @Input() users: any = [];
     @Output() fetchChat: EventEmitter<number> = new EventEmitter();
-    view: string;
 
     constructor()
     {
-        this.view = 'chats';
-    }
 
-    ngOnInit()
-    {
-        // this.chatService.onLeftSidenavViewChanged.subscribe(view => {
-        //     this.view = view;
-        // });
     }
 
 }

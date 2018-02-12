@@ -22,16 +22,14 @@
                 <!-- CONTENT -->
                 <!-- <fuse-chat-start *ngIf="!selectedChat"></fuse-chat-start> -->
                 <mat-sidenav-content>
-                  <fuse-chat-view *ngIf="selectedChat" [messages]="selectedChat" [user]="selectedUser" (sendMessage)="sendMessage($event)"></fuse-chat-view>
+                  <fuse-chat-view
+                    *ngIf="selectedChat" 
+                    [messages]="selectedChat" 
+                    [user]="selectedUser" 
+                    (sendMessage)="sendMessage($event)"
+                    (updateReadStatus)="updateReadStatus($event)"></fuse-chat-view>
                 </mat-sidenav-content>
                 <!-- / CONTENT -->
-
-                <!-- RIGHT SIDENAV -->
-                <!-- <mat-sidenav class="sidenav" align="end" opened="false" mode="over"
-                             fuseMatSidenavHelper="chat-right-sidenav">
-                    <fuse-chat-right-sidenav></fuse-chat-right-sidenav>
-                </mat-sidenav> -->
-                <!-- / RIGHT SIDENAV -->
 
             </mat-sidenav-container>
 

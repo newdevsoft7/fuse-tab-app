@@ -31,12 +31,6 @@ export class FCMService {
     }
   }
 
-  receiveMessage() {
-    this.messaging.onMessage((payload) => {
-      this.usersChatService.currentMessage.next(payload);
-    });
-  }
-
   refreshToken() {
     this.messaging.onTokenRefresh(async () => {
       const token = await this.messaging.getToken();

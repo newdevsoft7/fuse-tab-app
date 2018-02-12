@@ -4,7 +4,6 @@ import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
 import { AuthenticationService } from '../../../../shared/authentication/authentication.service';
 import { Router } from '@angular/router';
-import { FCMService } from '../../../../shared/fcm.service';
 
 @Component({
     selector   : 'fuse-login',
@@ -24,8 +23,7 @@ export class FuseLoginComponent implements OnInit
         private fuseConfig: FuseConfigService,
         private formBuilder: FormBuilder,
         private authService: AuthenticationService,
-        private router: Router,
-        private fcmService: FCMService
+        private router: Router
     )
     {
         this.fuseConfig.setSettings({
@@ -83,7 +81,6 @@ export class FuseLoginComponent implements OnInit
         const password = this.loginForm.getRawValue().password;
         try {
             await this.authService.login(username, password).toPromise();
-            await this.fcmService.requestPermission();
             this.router.navigate(['/home']);
         } catch (err) {
             this.isSuccess = false;

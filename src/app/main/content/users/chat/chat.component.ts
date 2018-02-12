@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
 import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
 import { FuseChatViewComponent } from './chat-view/chat-view.component';
+import { SocketService } from '../../../../shared/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
@@ -11,7 +12,7 @@ import 'rxjs/add/operator/filter';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class UsersChatComponent implements OnInit {
+export class UsersChatComponent {
 
   @ViewChild(FuseChatViewComponent) chatView: FuseChatViewComponent;
   content: string;
@@ -19,20 +20,39 @@ export class UsersChatComponent implements OnInit {
   selectedUser: any;
   users: any = [];
   incomingMessage: any;
+  unreadList: any = [];
 
   constructor(
     private usersChatService: UsersChatService, 
     private userService: UserService, 
-    private tokenStorage: TokenStorage) {
+    private tokenStorage: TokenStorage, 
+    private socketService: SocketService) {
 
     usersChatService.currentMessage.subscribe(res => {
-      if (res && res.data) {
-        if (this.selectedChat) {
-          this.selectedChat.push(res.data);
-          this.chatView.readyToReply();
-        } else {
-          this.incomingMessage = res.data;
-        }
+      if (!res || !res.type) return;
+      switch (res.type) {
+        case 'newMessage':
+          res.data.sent = 1;
+          if (!this.selectedChat) {
+            this.incomingMessage = res.data;
+            return;
+          }
+          if (parseInt(res.data.sender_id) === this.selectedUser.id) {
+            this.selectedChat.push(res.data);
+            this.chatView.readyToReply();
+          } else {
+            this.incomingMessage = res.data;
+          }
+          break;
+        case 'unread':
+          if (!this.selectedChat) return;
+          for (let i = 0; i < this.selectedChat.length; i++) {
+            const message = this.selectedChat[i];
+            if (res.data.indexOf(message.id) !== -1) {
+              message.read = 1;
+            }
+          }
+          break;
       }
     });
 
@@ -43,6 +63,14 @@ export class UsersChatComponent implements OnInit {
     try {
       const currentUserId = this.tokenStorage.getUser().id;
       this.users = (await this.userService.getUsers().map(_ => _.users).toPromise()).filter(user => user.id !== currentUserId);
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  async fetchUnreadMessages() {
+    try {
+      this.unreadList = await this.usersChatService.getUnreadMessages();
     } catch (e) {
       this.handleError(e);
     }
@@ -61,9 +89,28 @@ export class UsersChatComponent implements OnInit {
 
   async sendMessage(message: any) {
     try {
-      const res = await this.usersChatService.sendMessage(message);
-      this.selectedChat.push(res);
+      const payload = await this.usersChatService.sendMessage(message);
+      this.socketService.sendData(JSON.stringify({
+        type: 'message',
+        payload
+      }));
+      this.selectedChat.push(payload);
       this.chatView.readyToReply();
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  async updateReadStatus(msgIds: number[]) {
+    try {
+      await this.usersChatService.updateReadStatus(msgIds);
+      this.socketService.sendData(JSON.stringify({
+        type: 'unread',
+        payload: {
+          receiver_id: this.selectedUser.id,
+          ids: msgIds
+        }
+      }));
     } catch (e) {
       this.handleError(e);
     }
@@ -72,12 +119,4 @@ export class UsersChatComponent implements OnInit {
   handleError(e) {
     throw new Error(e);
   }
-
-  ngOnInit()
-    {
-        this.usersChatService.onChatSelected
-            .subscribe(chatData => {
-                this.selectedChat = chatData;
-            });
-    }
 }

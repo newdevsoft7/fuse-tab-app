@@ -22,13 +22,9 @@ import { UsersProfileVideoGalleryDialogComponent } from './profile/video/video-g
 import { UsersProfileDocumentComponent } from './profile/document/document.component';
 import { UsersChatComponent } from './chat/chat.component';
 import { UsersChatService } from './chat/chat.service';
-import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 import { FuseChatViewComponent } from './chat/chat-view/chat-view.component';
 import { FuseChatLeftSidenavComponent } from './chat/sidenavs/left/left.component';
 import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.component';
-import { FuseChatUserSidenavComponent } from './chat/sidenavs/left/user/user.component';
-import { FuseChatRightSidenavComponent } from './chat/sidenavs/right/right.component';
-import { FuseChatContactSidenavComponent } from './chat/sidenavs/right/contact/contact.component';
 
 @NgModule({
     imports: [
@@ -55,13 +51,9 @@ import { FuseChatContactSidenavComponent } from './chat/sidenavs/right/contact/c
         UsersProfileVideoGalleryDialogComponent,
         UsersProfileDocumentComponent,
         UsersChatComponent,
-        FuseChatStartComponent,
         FuseChatViewComponent,
         FuseChatLeftSidenavComponent,
-        FuseChatChatsSidenavComponent,
-        FuseChatUserSidenavComponent,
-        FuseChatRightSidenavComponent,
-        FuseChatContactSidenavComponent
+        FuseChatChatsSidenavComponent
     ],
     exports: [
         UsersComponent,
@@ -69,13 +61,9 @@ import { FuseChatContactSidenavComponent } from './chat/sidenavs/right/contact/c
         UsersPresentationsComponent,
         UsersProfileComponent,
         UsersChatComponent,
-        FuseChatStartComponent,
         FuseChatViewComponent,
         FuseChatLeftSidenavComponent,
-        FuseChatChatsSidenavComponent,
-        FuseChatUserSidenavComponent,
-        FuseChatRightSidenavComponent,
-        FuseChatContactSidenavComponent
+        FuseChatChatsSidenavComponent
     ],
     providers: [
         UserService,

@@ -14,6 +14,8 @@ import { TabService } from '../../tab/tab.service';
 import * as TAB from '../../../constants/tab';
 
 import { FCMService } from '../../../shared/fcm.service';
+import { SocketService } from '../../../shared/socket.service';
+import { TokenStorage } from '../../../shared/authentication/token-storage.service';
 
 @Component({
     selector   : 'fuse-home',
@@ -37,25 +39,28 @@ export class FuseHomeComponent implements OnDestroy
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
         private authService: AuthenticationService,
-        private fcmService: FCMService) {
+        private fcmService: FCMService,
+        private socketService: SocketService,
+        private tokenStorage: TokenStorage) {
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
         });
-        /**
-         * detect the message arrival
-         */
-        this.fcmService.receiveMessage();
+        this.loadFCMservices();
+        this.socketService.initialized().subscribe(() => {
+            this.socketService.sendData(JSON.stringify({
+                type: 'init',
+                payload: this.tokenStorage.getUser().id
+            }));
+        });
+    }
 
-        /**
-         * request notification permission
-         */
-        // this.usersChatService.requestPermission();
-
-        /**
-         * firebase token refreshed
-         */
-        this.fcmService.refreshToken();
+    async loadFCMservices() {
+        await this.fcmService.requestPermission();
+       /**
+        * firebase token refreshed
+        */
+       this.fcmService.refreshToken();
     }
 
     ngOnDestroy() {

@@ -13,9 +13,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @Input() messages: any = [];
     @Input() user: any;
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
-    chat: any;
-    dialog: any;
-    contact: any;
+    @Output() updateReadStatus: EventEmitter<any> = new EventEmitter();
     replyInput: any;
     selectedChat: any;
     @ViewChild(FusePerfectScrollbarDirective) directiveScroll: FusePerfectScrollbarDirective;
@@ -26,30 +24,13 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     {
     }
 
-    ngOnInit()
-    {
-        // this.user = this.chatService.user;
-        // this.chatService.onChatSelected
-        //     .subscribe(chatData => {
-        //         if ( chatData )
-        //         {
-        //             this.selectedChat = chatData;
-        //             this.contact = chatData.contact;
-        //             this.dialog = chatData.dialog;
-        //             this.readyToReply();
-        //         }
-        //     });
+    ngOnInit() {
     }
 
     ngAfterViewInit()
     {
         this.replyInput = this.replyInputField.first.nativeElement;
         this.readyToReply();
-    }
-
-    selectContact()
-    {
-        this.chatService.selectContact(this.contact);
     }
 
     readyToReply()
@@ -78,7 +59,15 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
 
             setTimeout(() => {
                 this.directiveScroll.scrollToBottom(0, speed);
+                this.updateRead();
             });
+        }
+    }
+
+    updateRead() {
+        const unreads = this.messages.filter(message => parseInt(message.read) === 0 && parseInt(message.sender_id) === this.user.id).map(message => message.id);
+        if (unreads.length > 0) {
+            this.updateReadStatus.next(unreads);
         }
     }
 
