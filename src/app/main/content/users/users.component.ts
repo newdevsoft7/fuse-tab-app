@@ -119,5 +119,8 @@ export class UsersComponent implements OnInit {
 
     onActivate(evt) {
     }
-
+    
+    onSearchChipsChange(evt){
+        console.log(evt);
+    }
 }

@@ -1,0 +1,28 @@
+<div id="users-search-bar-wrapper" class="p-24">
+
+    <mat-form-field fxFlex="100">
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let item of value" (remove)="remove(item)">
+                {{item.text}} <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+
+            <input #chipInput 
+                   [matChipInputFor]="chipList" 
+                   [matChipInputAddOnBlur]="false" 
+                   (matChipInputTokenEnd)="addNew($event)" 
+                   
+                   [matAutocomplete]="auto" />
+        </mat-chip-list>
+    </mat-form-field>
+
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
+        <ng-container *ngFor="let group of source">
+            <mat-optgroup *ngIf=" sourceFiltered(group.children).length>0" [label]="group.text">
+                <mat-option *ngFor="let option of sourceFiltered(group.children)" [value]="option">
+                    {{option.text}}
+                </mat-option>
+            </mat-optgroup>
+        </ng-container>
+    </mat-autocomplete>
+
+</div>

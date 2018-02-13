@@ -175,6 +175,12 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getUsersFilters(query: string): Observable<any> {
+        const url = `${USERS_URL}/filter/${query}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

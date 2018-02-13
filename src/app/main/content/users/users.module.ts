@@ -22,6 +22,7 @@ import { UsersProfileVideoGalleryDialogComponent } from './profile/video/video-g
 import { UsersProfileDocumentComponent } from './profile/document/document.component';
 import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
 import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
+import { UsersSearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.co
     ],
     declarations: [
         UsersComponent,
+        UsersSearchBarComponent,
         UsersExportsComponent,
         UsersPresentationsComponent,
         UserFormDialogComponent,

@@ -1,7 +1,7 @@
 <div class="users-wrapper">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24">
+    <div class="header p-16 p-sm-24" fxLayout="column">
 
         <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="action-btns">
             <div>
@@ -61,6 +61,10 @@
             </div>
             <!-- / SEARCH -->
 
+        </div>
+
+        <div>
+            <app-users-search-bar (onSearchChipsChange)="onSearchChipsChange($event)"></app-users-search-bar>
         </div>
     </div>
     <!-- / HEADER -->
