@@ -10,6 +10,10 @@ import { ScheduleModule } from '../schedule/schedule.module';
 
 import { FuseHomeComponent } from './home.component';
 import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
+import { SettingsModule } from '../settings/settings.module';
+import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
+import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
+import { TrackingModule } from '../tracking/tracking.module';
 
 // const routes = [
 //     {
@@ -28,8 +32,13 @@ import { AuthenticationModule } from '../../../shared/authentication/authenticat
         UsersModule,
         ProfileModule,
         ProfileInfoModule,
+        ProfileAttributesModule,
+        ProfileRatingsModule,
         ScheduleModule,
-        AuthenticationModule
+        SettingsModule,
+        TrackingModule,
+        AuthenticationModule,
+
         // RouterModule.forChild(routes)
     ],
     exports     : [

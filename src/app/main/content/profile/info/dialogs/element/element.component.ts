@@ -54,4 +54,7 @@ export class ProfileInfoElementDialogComponent implements OnInit {
     onSave() {
         this.dialogRef.close(this.form.value);
     }
+    onFormSubmit(){
+        
+    }
 }

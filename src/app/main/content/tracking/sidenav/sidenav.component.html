@@ -1,0 +1,20 @@
+<div class="page-layout simple fullwidth nav">
+    <div class="nav-item" *ngFor="let category of categories">
+
+        <div class="nav-link" matRipple 
+            (click)="changeCategory(category)" 
+            [ngClass]="{'active':selectedCategory && category.id === selectedCategory.id }" 
+            fxLayout="row"
+            fxLayoutAlign="space-between center">
+
+            <span>{{category.cname}}</span>
+            <div fxFlex="0 1 auto">
+                <button mat-icon-button (click)="onRemoveCategory($event, category)">
+                    <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <mat-divider></mat-divider>
+    </div>
+</div>

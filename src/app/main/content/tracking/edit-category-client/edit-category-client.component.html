@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="tracking-category-client" (click)="openForm()">
+    <span class="field-visibility">{{visibility | uppercase}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="tracking-category-client-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+    <mat-form-field fxFlex="1 0 auto" floatPlaceholder="never">
+        <mat-select formControlName="client_visibility" placeholder="Client Visibility">
+            <mat-option *ngFor="let item of VISIBILITY" [value]="item.value">
+                {{item.label}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-icon-button fxFlex="0 1 auto">
+        <mat-icon>check</mat-icon>
+    </button>
+    <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

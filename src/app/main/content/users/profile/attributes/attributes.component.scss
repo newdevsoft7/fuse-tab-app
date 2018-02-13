@@ -1,0 +1,52 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    #users-profile-attributes {
+
+        .users-profile-attributes-content {
+            
+        }
+    }
+
+    // Profile boxes
+    .profile-box {
+        margin-bottom: 16px;
+        @include mat-elevation(2);
+
+        header {
+            padding: 16px;
+
+            .title {
+                font-size: 17px;
+            }
+
+            .more {
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            padding: 16px;
+            background-color: #FFF;
+        }
+
+        footer {
+            padding: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        &.info-box {
+
+            .info {
+                margin-bottom: 24px;
+                padding-left: 8px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

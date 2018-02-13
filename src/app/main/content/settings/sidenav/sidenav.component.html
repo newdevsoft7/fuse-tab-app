@@ -1,0 +1,14 @@
+<div class="page-layout simple fullwidth nav">
+    <div class="nav-item" *ngFor="let sidenav of sidenavs">
+
+        <a class="nav-link" matRipple 
+            (click)="changeSideNav(sidenav)" 
+            [ngClass]="{'active':sidenav.id === selectedSideNav.id }" >
+
+            <mat-icon class="nav-link-icon" *ngIf="sidenav.icon">{{sidenav.icon}}</mat-icon>
+            <span>{{sidenav.title}}</span>
+        </a>
+
+        <mat-divider></mat-divider>
+    </div>
+</div>

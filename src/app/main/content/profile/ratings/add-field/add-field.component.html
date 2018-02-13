@@ -1,0 +1,24 @@
+<div class="list new-field mat-elevation-z1">
+
+	<button *ngIf="!formActive" mat-button class="new-field-form-button" (click)="openForm()">
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<mat-icon class="mat-red-bg">add</mat-icon>
+			<span>Add a Rating</span>
+		</div>
+	</button>
+
+	<form *ngIf="formActive" class="new-field-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="row" fxLayoutAlign="start center"
+		fxFlex="1 0 auto">
+
+		<mat-form-field floatPlaceholder="never" fxFlex>
+			<input matInput formControlName="rname" #nameInput placeholder="Write a Field Name" required>
+		</mat-form-field>
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>

@@ -1,0 +1,25 @@
+.settings-workarea-wrapper {
+
+    .header {
+        background-image: none !important;
+    }
+
+    .workareas-table {
+        width:100%;
+    }
+    
+    .datatable-checkbox input[type='checkbox'] {
+        &:after, &:before {
+            width: 16px;
+            height: 16px;
+        }
+
+        &:checked:before {
+            height: 8px;
+        }
+    }
+
+    .content {
+        min-height: 150px;
+    }    
+}

@@ -1,0 +1,21 @@
+<div
+	fxFlex="1 0 auto"
+	*ngIf="!formActive"
+	class="profile-attribute-name ml-8"
+	(click)="openForm()">
+	<span class="field-name">{{attribute.aname}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="profile-attribute-name-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+    <mat-form-field floatPlaceholder="never" fxFlexLayout="start center">
+        <input matInput formControlName="aname" #nameInput fxFlex placeholder="Write a Attribute Name" required class="px-8">
+    </mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

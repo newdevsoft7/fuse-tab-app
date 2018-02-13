@@ -1,0 +1,53 @@
+<div class="list new-category mat-elevation-z1">
+
+	<button *ngIf="!formActive" mat-button class="mat-warn mat-accent new-category-button" mat-fab (click)="openForm()">
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<mat-icon class="mat-red-bg">add</mat-icon>
+			<!-- <span>Add a Category</span> -->
+		</div>
+	</button>
+
+	<form 
+		*ngIf="formActive" 
+		class="new-category-form" 
+		[formGroup]="form" 
+		(submit)="onFormSubmit()" 
+		fxLayout="row" 
+		fxLayoutAlign="start center"
+		fxFlex="1 0 auto"
+		fxLayoutGap="10px">
+
+		<mat-form-field floatPlaceholder="never" fxFlex>
+			<input matInput formControlName="cname" #nameInput placeholder="Write a Category Name" required>
+		</mat-form-field>
+		
+		<div fxLayout="row" fxLayoutAlign="center center" fxFlex="1 0 auto" fxLayoutGap="30px">
+		
+			<mat-form-field fxFlex floatPlaceholder="never">
+				<mat-select formControlName="staff_visibility" placeholder="Staff">
+					<mat-option *ngFor="let item of STAFF_VISIBILITY" [value]="item.value">
+						{{item.label}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		
+		
+			<mat-form-field fxFlex floatPlaceholder="never">
+				<mat-select formControlName="client_visibility" placeholder="Client">
+					<mat-option *ngFor="let item of CLIENT_VISIBILITY" [value]="item.value">
+						{{item.label}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+		</div>
+		<mat-checkbox class="example-margin" formControlName="required">Required at shift creation</mat-checkbox>
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>

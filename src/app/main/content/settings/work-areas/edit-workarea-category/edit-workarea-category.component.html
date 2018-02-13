@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-category" (click)="openForm()">
+	<span class="field-category">{{categoryname | uppercase}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-category-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field fxFlex="1 0 auto">
+        <mat-select formControlName="work_area_cat_id" placeholder="Category">
+            <mat-option *ngFor="let category of categories" [value]="category.id">
+                {{category.cname}}
+            </mat-option>
+        </mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

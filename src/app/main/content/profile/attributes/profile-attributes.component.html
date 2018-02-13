@@ -1,0 +1,81 @@
+<div id="profile-attributes-wrapper">
+
+    <!-- NEW CATEGORY / NEW ATTRIBUTE BUTTON-->
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="mb-16">
+        <app-profile-attributes-add-category (onCategoryAdd)="onCategoryAdd($event)">
+        </app-profile-attributes-add-category>
+
+        <app-profile-attributes-add-attribute (onAttributeAdd)="onAttributeAdd($event)">
+        </app-profile-attributes-add-attribute>
+    </div>
+    <!-- / NEW CATEGORY / NEW ATTRIBUTE BUTTON-->
+
+    <div class="ngx-dnd-container" ngxDroppable="group" [model]="categories" (drop)="onDropCategory($event)">
+        <div class="ngx-dnd-item" 
+            ngxDraggable="['group']"
+            *ngFor="let category of categories"
+            [model]="category" 
+            [moves]="category.id!=null"
+            (click)="clickCategory(category, $event)">
+                <ng-container *ngTemplateOutlet="CategoryTpl; context: {$implicit: category}"></ng-container>
+        </div>
+    </div>
+
+    <ng-template #CategoryTpl let-category>
+        <div class="panel mat-elevation-z1">
+            <div class="panel-heading" fxLayout="row" fxLayoutAlign="space-between center">
+                <app-profile-attributes-edit-category-name fxFlex="1 0 auto" [category]="category"></app-profile-attributes-edit-category-name>
+                <div fxFlex="0 1 auto">
+                    <button mat-icon-button [matMenuTriggerFor]="listCategoryMenu" class="mr-8">
+                        <mat-icon class="mat-primary-50-bg">add</mat-icon>
+                    </button>
+                    <mat-menu #listCategoryMenu="matMenu">
+                        <button mat-menu-item (click)="onAddAttribute(category)">Add Attribute</button>
+                    </mat-menu>
+                </div>
+                <div fxFlex="0 1 auto" *ngIf="category.id">
+                    <button mat-icon-button (click)="onRemoveCategory(category)">
+                        <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-body ngx-dnd-container" 
+                ngxDroppable="category" 
+                [model]="category.attributes" 
+                (drop)="onDropAttribute($event)">
+
+                    <div class="ngx-dnd-item" 
+                        ngxDraggable="['category']"
+                        *ngFor="let attribute of category.attributes" 
+                        [model]="attribute"  
+                        (click)="clickAttribute(attribute, $event)">
+                            <ng-container *ngTemplateOutlet="attributeTpl; context: {$implicit: attribute}"></ng-container>
+                    </div>
+                </div>
+            </div>
+
+    </ng-template>
+
+    <ng-template #attributeTpl let-attribute>
+        <div class="field mat-elevation-z1" fxLayout="row" fxLayoutAlign="space-between center">
+            <app-profile-attributes-edit-attribute-name fxFlex="1 0 auto" [attribute]="attribute">
+            </app-profile-attributes-edit-attribute-name>
+
+            <app-profile-attributes-edit-attribute-visibility fxFlex="0 1 auto" [attribute]="attribute" class="px-16">
+            </app-profile-attributes-edit-attribute-visibility>
+
+            <app-profile-attributes-edit-attribute-role fxFlex="0 1 auto" [attribute]="attribute" class="px-16">
+            </app-profile-attributes-edit-attribute-role>
+
+            <div fxFlex="0 1 auto" fxLayout="row" class="ml-8">
+                <div fxFlex="0 1 auto">
+                    <button mat-icon-button (click)="onRemoveAttribute(attribute)">
+                        <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+</div>

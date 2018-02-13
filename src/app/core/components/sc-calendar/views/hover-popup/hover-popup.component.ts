@@ -7,5 +7,5 @@ import { EventEntity } from '../../entities';
   styleUrls: ['./hover-popup.component.scss']
 })
 export class SCCalendarHoverPopupComponent {
-  @Input() event: EventEntity;
+  @Input() event: any;
 }

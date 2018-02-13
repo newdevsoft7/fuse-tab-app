@@ -23,6 +23,10 @@
                 <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-about>
             </mat-tab>
 
+            <mat-tab label="Skills & Qualifications">
+                <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-attributes>
+            </mat-tab>
+
             <mat-tab label="Photos">
                 <app-users-profile-photo
                     [userInfo]="userInfo"
@@ -37,6 +41,10 @@
 
             <mat-tab label="Documents">
                 <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-document>
+            </mat-tab>
+
+            <mat-tab label="Work Areas">
+                <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-workareas>
             </mat-tab>
 
         </mat-tab-group>

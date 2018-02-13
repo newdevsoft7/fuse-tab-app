@@ -1,0 +1,49 @@
+<div class="dialog-content-wrapper">
+	<mat-toolbar matDialogTitle class="mat-accent-bg m-0">
+
+		<div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+			<div fxFlex fxLayout="row" fxLayoutAlign="start center">
+				<div>Add Attribute</div>
+			</div>
+
+			<button mat-icon-button (click)="onSave()" aria-label="Close Dialog" [disabled]="!form.valid">
+				<mat-icon>check</mat-icon>
+			</button>
+			<!-- CLOSE DIALOG BUTTON -->
+			<button mat-icon-button (click)="dialogRef.close()" aria-label="Close Dialog">
+				<mat-icon>close</mat-icon>
+			</button>
+			<!-- / CLOSE DIALOG BUTTON -->
+		</div>
+	</mat-toolbar>
+
+	<div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+		<form class="new-field-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="column" fxLayoutAlign="start stretch"
+			fxFlex="1 0 auto" fxLayoutGap="30px">
+		
+			<mat-form-field fxFlex>
+				<input matInput formControlName="aname" #nameInput placeholder="Name" required>
+			</mat-form-field>
+		
+			<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="30px">
+		
+				<mat-form-field fxFlex="1 0 auto">
+					<mat-select formControlName="visibility" placeholder="Visibility">
+						<mat-option *ngFor="let item of VISIBILITY" [value]="item.value">
+							{{item.label}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<mat-form-field fxFlex="1 0 auto">
+					<mat-select formControlName="role_default" placeholder="Role">
+						<mat-option *ngFor="let item of ROLE" [value]="item.value">
+							{{item.label}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+            </div>		
+		</form>
+	</div>
+</div>

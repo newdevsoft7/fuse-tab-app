@@ -1,0 +1,67 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Edit WorkArea</span>
+            <button mat-button class="mat-icon-button"
+                    (click)="dialogRef.close()"
+                    aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="workareaForm" novalidate>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field fxFlex>
+                    <input formControlName="aname" [ngModel]="workarea.aname" placeholder="Work Area Name" matInput required>
+                    <mat-error *ngIf="workAreaFormErrors.aname.required">
+                        Work Area Name is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24">
+                <mat-form-field fxFlex="1 0 auto">
+                    <mat-select formControlName="work_area_cat_id" placeholder="Category" [ngModel]="workarea.work_area_cat_id">
+                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                            {{category.cname}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="workAreaFormErrors.work_area_cat_id.required">
+                        Category is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24">
+                <mat-form-field fxFlex="1 0 auto">
+                <mat-select formControlName="php_tz" placeholder="Timezone" [ngModel]="workarea.php_tz">
+                    <mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
+                        {{timezone.name}}
+                    </mat-option>
+                </mat-select>
+                    <mat-error *ngIf="workAreaFormErrors.php_tz.required">
+                        Timezone is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <button mat-raised-button
+                (click)="onSave()"
+                class="save-button mat-accent"
+                [disabled]="workareaForm.invalid"
+                aria-label="SAVE">
+            SAVE
+        </button>
+
+    </div>
+</div>

@@ -11,6 +11,7 @@
             <button mat-raised-button color="accent" (click)="openUsers()">Users</button>
             <button mat-raised-button color="accent" (click)="openSettingsProfileInfo()">Profile Info</button>
             <button mat-raised-button color="accent" (click)="openPresentations()">Presentations</button>
+            <button mat-raised-button color="accent" (click)="openShift()">Shift Page</button>
         </app-tab>
     </app-tabs>
 
@@ -36,6 +37,14 @@
         <app-profile-info></app-profile-info>
     </ng-template>
 
+    <ng-template #settingsProfileAttributesTpl>
+        <app-profile-attributes></app-profile-attributes>
+    </ng-template>
+
+    <ng-template #settingsProfileRatingsTpl>
+        <app-profile-ratings></app-profile-ratings>
+    </ng-template>
+
     <ng-template #scheduleTpl>
         <app-schedule></app-schedule>
     </ng-template>
@@ -48,4 +57,19 @@
         <app-users-chat></app-users-chat>
     </ng-template>
 
+    <ng-template #scheduleShiftTpl>
+        <app-schedule-shift></app-schedule-shift>
+    </ng-template>
+
+    <ng-template #scheduleNewShiftTpl>
+        <app-schedule-new-shift></app-schedule-new-shift>
+    </ng-template>
+
+    <ng-template #settingsTpl>
+        <app-settings></app-settings>
+    </ng-template>
+
+    <ng-template #trackingTpl>
+        <app-tracking></app-tracking>
+    </ng-template>
 </div>

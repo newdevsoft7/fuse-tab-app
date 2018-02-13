@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="profile-attribute-visibility" (click)="openForm()">
+    <span class="field-visibility">{{visibility | uppercase}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="profile-attribute-visibility-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+    <mat-form-field fxFlex="1 0 auto">
+        <mat-select formControlName="visibility" placeholder="Visibility">
+            <mat-option *ngFor="let item of VISIBILITY" [value]="item.value">
+                {{item.label}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-icon-button fxFlex="0 1 auto">
+        <mat-icon>check</mat-icon>
+    </button>
+    <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

@@ -1,0 +1,103 @@
+<div class="ratings-wrapper p-16">
+
+    <!-- HEADER -->
+    <div class="header p-16 p-sm-24">
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="action-btns">
+
+            <!-- SEARCH -->
+            <div class="search-input-wrapper mt-16 ml-8 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
+                <label for="search" class="mr-8">
+                    <mat-icon>search</mat-icon>
+                </label>
+                <mat-form-field mat-no-float class="m-0" floatPlaceholder="never">
+                    <input matInput id="search" #searchInput placeholder="Search for anything" (keyup)='updateFilter(searchInput.value)'>
+                </mat-form-field>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- NEW RATING BUTTON-->
+            <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="mb-16">
+                <app-profile-ratings-add-field (onFieldAdd)="onRatingAdd($event)">
+                </app-profile-ratings-add-field>
+            </div>
+            <!-- / NEW RATING BUTTON-->
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24 ps ps--active-y">
+
+        <!-- TABLE -->
+        <div *ngIf="filteredRatings" class="ratings-table">
+
+            <ngx-datatable 
+                #table 
+                class="material striped" 
+                [rows]="filteredRatings" 
+                [loadingIndicator]="loadingIndicator" 
+                [columnMode]="'force'"
+                [headerHeight]="48" 
+                [footerHeight]="56" 
+                [rowHeight]="'auto'" 
+                [scrollbarH]="true" 
+                [selectionType]="'checkbox'"
+                [selectAllRowsOnPage]="true" 
+                [selected]="selectedRatings" 
+                [reorderable]="reorderable" 
+                [limit]="10" 
+                (select)="onSelect($event)"
+                (activate)="onActivate($event)">
+
+                    <!-- <ngx-datatable-column 
+                        [width]="30" 
+                        [sortable]="false" 
+                        [canAutoResize]="false" 
+                        [draggable]="false" 
+                        [resizeable]="false" 
+                        [headerCheckboxable]="true"
+                        [checkboxable]="true">
+                    </ngx-datatable-column> -->
+
+
+                    <ngx-datatable-column 
+                        [width]="350"
+                        name="Ratings Name" 
+                        prop="cname">
+                            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                                <app-profile-ratings-edit-element-name fxFlex="1 0 auto" [rating]="row">
+                                </app-profile-ratings-edit-element-name>
+                            
+                            </ng-template>
+                    </ngx-datatable-column>
+
+ 
+                    <ngx-datatable-column 
+                        [width]="100" 
+                        [sortable]="false" 
+                        [resizeable]="false" 
+                        [draggable]="false" 
+                        [canAutoResize]="false">
+
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+
+                                <div fxFlex="0 1 auto">
+                                    <button mat-icon-button (click)="onRemoveRating(row)">
+                                        <mat-icon class="mat-primary-50-bg">delete</mat-icon>
+                                    </button>
+                                </div>
+
+                            </ng-template>
+
+                    </ngx-datatable-column>
+
+            </ngx-datatable>
+
+        </div>
+        <!-- / TABLE -->
+
+
+    </div>
+    <!-- CONTENT -->
+</div>

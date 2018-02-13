@@ -1,0 +1,27 @@
+.tracking-category-option {
+    border-bottom: dashed 1px #d0d0d0;
+
+    &.disabled {
+        pointer-events: none;
+        border-bottom: none;
+    }
+
+    .field-visibility:hover {
+        cursor: text;
+    }
+}
+
+.tracking-category-option-form {
+    
+    .mat-form-field-wrapper {
+        padding: 0;
+    }
+
+    .mat-form-field-infix {
+        padding: 0;
+    }
+
+    .mat-form-field-underline {
+        bottom: -5px;
+    }
+}

@@ -12,6 +12,8 @@ import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
 import * as TAB from '../../../constants/tab';
+import { TrackingService } from '../tracking/tracking.service';
+import { TrackingCategory } from '../tracking/tracking.models';
 
 import { FCMService } from '../../../shared/fcm.service';
 import { SocketService } from '../../../shared/socket.service';
@@ -31,17 +33,25 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
+    @ViewChild('settingsProfileAttributesTpl') settingsProfileAttributesTpl;
+    @ViewChild('settingsProfileRatingsTpl') settingsProfileRatingsTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('usersChatTpl') usersChatTpl;
+    @ViewChild('scheduleShiftTpl') scheduleShiftTpl;
+    @ViewChild('scheduleNewShiftTpl') scheduleNewShiftTpl;
+    @ViewChild('settingsTpl') settingsTpl;
+    @ViewChild('trackingTpl') trackingTpl;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
-        private authService: AuthenticationService,
         private fcmService: FCMService,
         private socketService: SocketService,
-        private tokenStorage: TokenStorage) {
+        private tokenStorage: TokenStorage,
+        private trackingService: TrackingService,
+        private authService: AuthenticationService) {
+        // this.authService.refreshToken().subscribe(_ => {});
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
@@ -72,7 +82,14 @@ export class FuseHomeComponent implements OnDestroy
             ...tab,
             template: this[tab.template]
         };
+
         this.tabsComponent.openTab(_tab);
+        if (_tab.url == 'tracking'){
+            let trackingCategory = _tab.data;
+            if (JSON.stringify(_tab.data) != '{}' ){
+                this.trackingService.toggleSelectedCategory (trackingCategory as TrackingCategory);
+            }
+        }
     }
 
     openUsers() {
@@ -90,4 +107,7 @@ export class FuseHomeComponent implements OnDestroy
         this.openTab(TAB.SETTINGS_PROFILE_INFO_TAB);
     }
 
+    openShift(){
+        this.openTab(TAB.SCHEDULE_SHIFT_TAB);
+    }
 }

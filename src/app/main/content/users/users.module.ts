@@ -25,6 +25,8 @@ import { UsersChatService } from './chat/chat.service';
 import { FuseChatViewComponent } from './chat/chat-view/chat-view.component';
 import { FuseChatLeftSidenavComponent } from './chat/sidenavs/left/left.component';
 import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.component';
+import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
+import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
 
 @NgModule({
     imports: [
@@ -53,7 +55,9 @@ import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.
         UsersChatComponent,
         FuseChatViewComponent,
         FuseChatLeftSidenavComponent,
-        FuseChatChatsSidenavComponent
+        FuseChatChatsSidenavComponent,
+        UsersProfileAttributesComponent,
+        UsersProfileWorkAreasComponent
     ],
     exports: [
         UsersComponent,

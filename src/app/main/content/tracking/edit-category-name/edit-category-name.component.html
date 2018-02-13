@@ -1,0 +1,21 @@
+<div 
+    fxFlex="1 0 auto"
+    *ngIf="!formActive"
+    class="tracking-category-name ml-8"
+    [class.disabled]="!category.id"
+    (click)="openForm()">
+    <span class="category-name">{{category.cname}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="tracking-category-name-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+    <mat-form-field floatPlaceholder="never" fxFlexLayout="start center">
+        <input matInput formControlName="cname" #nameInput fxFlex placeholder="Write a Category Name" class="px-8" required>
+    </mat-form-field>
+    <button mat-icon-button fxFlex="0 1 auto">
+        <mat-icon>check</mat-icon>
+    </button>
+    <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+        <mat-icon>close</mat-icon>
+    </button>
+</form>

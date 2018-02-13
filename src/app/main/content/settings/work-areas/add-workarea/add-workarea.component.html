@@ -1,0 +1,43 @@
+<div class="list new-element mat-elevation-z1">
+
+	<button *ngIf="!formActive" mat-button class="new-element-form-button" (click)="openForm()">
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<mat-icon class="mat-red-bg">add</mat-icon>
+			<span>Add a Work Area</span>
+		</div>
+	</button>
+
+	<form *ngIf="formActive" class="new-element-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="row" fxLayoutAlign="start center"
+		fxFlex="1 0 auto" fxLayoutGap="30px">
+
+        <mat-form-field floatPlaceholder="never" fxFlex>
+            <input matInput formControlName="aname" #nameInput placeholder="Write a Work Area" required>
+        </mat-form-field>
+
+		<div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutGap="30px">
+			<mat-form-field fxFlex floatPlaceholder="never">
+				<mat-select formControlName="work_area_cat_id" placeholder="Category">
+					<mat-option *ngFor="let category of categories" [value]="category.id">
+						{{category.cname}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field fxFlex floatPlaceholder="never">
+				<mat-select formControlName="php_tz" placeholder="Timezone">
+					<mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
+						{{timezone.name}}
+					</mat-option>
+				</mat-select>
+		
+			</mat-form-field>
+		</div>
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>

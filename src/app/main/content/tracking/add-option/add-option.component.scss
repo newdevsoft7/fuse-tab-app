@@ -1,0 +1,40 @@
+:host {
+
+    .new-option {
+        border-radius: 2px;
+        background-color: #EEF0F2;
+
+        md-select,
+        .mat-select-placeholder,
+        .mat-select-trigger {
+            color:white !important;
+        }
+
+        .new-option-form-button {
+            text-transform: none;
+            font-size: 15px;
+            padding: 0 8px;
+            height: 54px;
+            margin: 0;
+            width: 100%;
+
+            mat-icon {
+                border-radius: 50%;
+                height: 40px;
+                width: 40px;
+                line-height: 40px;
+                margin-right: 8px;
+            }
+        }
+
+        .new-option-form {
+            padding: 8px;
+            height: 54px;
+
+            > input {
+                height: 100%;
+                padding: 0 10px;
+            }          
+        }
+    }
+}

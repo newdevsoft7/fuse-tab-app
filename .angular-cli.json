@@ -23,6 +23,7 @@
             "styles": [
                 "../node_modules/ngx-toastr/toastr.css",
                 "styles.scss"
+
             ],
             "scripts": [],
             "environmentSource": "environments/environment.ts",

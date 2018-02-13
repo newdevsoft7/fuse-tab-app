@@ -1,0 +1,46 @@
+:host {
+
+    .new-category {
+        border-radius: 2px;
+
+        .new-category-button {
+            position: absolute;
+            right: 18px;
+            bottom: -26px;
+            z-index: 10;
+        }
+
+        md-select,
+        .mat-select-placeholder,
+        .mat-select-trigger {
+            color:white !important;
+        }
+
+        .new-category-form-button {
+            text-transform: none;
+            font-size: 15px;
+            padding: 0 8px;
+            height: 54px;
+            margin: 0;
+            width: 100%;
+
+            mat-icon {
+                border-radius: 50%;
+                height: 40px;
+                width: 40px;
+                line-height: 40px;
+                margin-right: 8px;
+            }
+        }
+
+        .new-category-form {
+            padding: 8px;
+            height: 54px;
+
+            > input {
+                height: 100%;
+                padding: 0 10px;
+            }          
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="field-header-timezone" (click)="openForm()">
+	<span class="field-category">{{timezonename | uppercase}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-timezone-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field fxFlex="1 0 auto">
+        <mat-select formControlName="php_tz" placeholder="Timezone">
+            <mat-option *ngFor="let timezone of timezones" [value]="timezone.id">
+                {{timezone.name}}
+            </mat-option>
+        </mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

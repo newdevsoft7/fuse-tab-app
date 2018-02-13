@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="profile-attribute-role" (click)="openForm()">
+	<span class="field-role">{{role | uppercase}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="profile-attribute-role-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field fxFlex="1 0 auto">
+        <mat-select formControlName="role_default" placeholder="Role">
+            <mat-option *ngFor="let item of ROLE" [value]="item.value">
+                {{item.label}}
+            </mat-option>
+        </mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

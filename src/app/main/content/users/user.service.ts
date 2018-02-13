@@ -149,6 +149,32 @@ export class UserService {
             .catch(this.handleError);
     }
 
+
+    getProfileAttributes(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/attributes`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    updateProfileAttribute(userId: number, attributeId: number, value: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/attribute`;
+        return this.http.put(url, { attribute_id: attributeId, set: value })
+            .catch(this.handleError);
+    }
+
+    
+    getProfileWorkAreas(userId: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/workAreas`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    updateProfileWorkArea(userId: number, workAreaId: number, value: number): Observable<any> {
+        const url = `${BASE_URL}/profile/${userId}/workArea`;
+        return this.http.put(url, { work_area_id: workAreaId, set: value })
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

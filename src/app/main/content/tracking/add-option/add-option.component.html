@@ -1,0 +1,41 @@
+<div class="list new-option mat-elevation-z1">
+
+	<button *ngIf="!formActive" mat-button class="new-option-form-button" (click)="openForm()">
+		<div fxLayout="row" fxLayoutAlign="start center">
+			<mat-icon class="mat-red-bg">add</mat-icon>
+			<span>Add a Option</span>
+		</div>
+	</button>
+
+	<form 
+		*ngIf="formActive" 
+		class="new-option-form" 
+		[formGroup]="form" 
+		(submit)="onFormSubmit()" 
+		fxLayout="row" 
+		fxLayoutAlign="start center"
+		fxFlex="1 0 auto"
+		fxLayoutGap="10px">
+
+		<mat-form-field floatPlaceholder="never" fxFlex>
+			<input matInput formControlName="oname" #nameInput placeholder="Write a Option Name" required>
+		</mat-form-field>
+		
+		<mat-form-field fxFlex floatPlaceholder="never">
+			<mat-select formControlName="staff_visibility" placeholder="Staff">
+				<mat-option *ngFor="let item of STAFF_VISIBILITY" [value]="item.value">
+					{{item.label}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		
+		<mat-checkbox class="example-margin" formControlName="active">Active</mat-checkbox>
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>
