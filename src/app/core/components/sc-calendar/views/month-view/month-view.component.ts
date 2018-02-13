@@ -115,7 +115,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     if (!this.options.events) return tempEvents;
     for (let i = 0; i < this.options.events.length; i++) {
       const startAt = moment(this.options.events[i].start),
-            endAt = this.options.events[i].end? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
+            endAt = (this.options.events[i].end && moment(this.options.events[i].end).isValid())? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
       if ((startAt.isSameOrAfter(startDate, 'day') && startAt.isSameOrBefore(endDate, 'day')) || (startAt.isBefore(startDate) && endAt.isSameOrAfter(startDate))) {
         const event: any = _.cloneDeep(this.options.events[i]);
         event.startedAt = startAt;

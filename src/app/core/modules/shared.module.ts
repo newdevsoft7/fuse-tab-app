@@ -26,7 +26,8 @@ import { FuseTranslationLoaderService } from '../services/translation-loader.ser
 import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomLoadingService } from '../../shared/custom-loading.service';
-
+import { FCMService } from '../../shared/fcm.service';
+import { SocketService } from '../../shared/socket.service';
 
 @NgModule({
     declarations   : [
@@ -82,7 +83,9 @@ import { CustomLoadingService } from '../../shared/custom-loading.service';
         FuseNavbarVerticalService,
         FuseMatSidenavHelperService,
         FuseTranslationLoaderService,
-        CustomLoadingService
+        CustomLoadingService,
+        FCMService,
+        SocketService
     ]
 })
 

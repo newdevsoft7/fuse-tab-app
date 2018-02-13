@@ -75,17 +75,17 @@ export class FuseLoginComponent implements OnInit
         }
     }
 
-    login() {
+    async login() {
         this.isSubmitted = true;
         const username = this.loginForm.getRawValue().username;
         const password = this.loginForm.getRawValue().password;
-        this.authService.login(username, password)
-            .subscribe(res => {
-                    this.router.navigate(['/home']);
-            }, err => {
-                this.isSuccess = false;
-                this.isSubmitted = false;
-                this.message = err.error.message;
-            });
+        try {
+            await this.authService.login(username, password).toPromise();
+            this.router.navigate(['/home']);
+        } catch (err) {
+            this.isSuccess = false;
+            this.isSubmitted = false;
+            this.message = err.error.message;
+        }
     }
 }

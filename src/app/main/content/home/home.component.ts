@@ -15,7 +15,9 @@ import * as TAB from '../../../constants/tab';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingCategory } from '../tracking/tracking.models';
 
-
+import { FCMService } from '../../../shared/fcm.service';
+import { SocketService } from '../../../shared/socket.service';
+import { TokenStorage } from '../../../shared/authentication/token-storage.service';
 
 @Component({
     selector   : 'fuse-home',
@@ -35,6 +37,7 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('settingsProfileRatingsTpl') settingsProfileRatingsTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
+    @ViewChild('usersChatTpl') usersChatTpl;
     @ViewChild('scheduleShiftTpl') scheduleShiftTpl;
     @ViewChild('scheduleNewShiftTpl') scheduleNewShiftTpl;
     @ViewChild('settingsTpl') settingsTpl;
@@ -43,13 +46,38 @@ export class FuseHomeComponent implements OnDestroy
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private tabService: TabService,
+        private fcmService: FCMService,
+        private socketService: SocketService,
+        private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
         private authService: AuthenticationService) {
-        //this.authService.refreshToken().subscribe(_ => {});
+        // this.authService.refreshToken().subscribe(_ => {});
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
         });
+        this.loadFCMservices();
+        if (this.socketService.isConnected) {
+            this.startSocket();
+        }
+        this.socketService.initialized().subscribe(() => {
+            this.startSocket();
+        });
+    }
+
+    startSocket() {
+        this.socketService.sendData(JSON.stringify({
+            type: 'init',
+            payload: this.tokenStorage.getUser().id
+        }));
+    }
+
+    async loadFCMservices() {
+        await this.fcmService.requestPermission();
+       /**
+        * firebase token refreshed
+        */
+       this.fcmService.refreshToken();
     }
 
     ngOnDestroy() {
