@@ -57,12 +57,19 @@ export class FuseHomeComponent implements OnDestroy
             this.openTab(tab);
         });
         this.loadFCMservices();
+        if (this.socketService.isConnected) {
+            this.startSocket();
+        }
         this.socketService.initialized().subscribe(() => {
-            this.socketService.sendData(JSON.stringify({
-                type: 'init',
-                payload: this.tokenStorage.getUser().id
-            }));
+            this.startSocket();
         });
+    }
+
+    startSocket() {
+        this.socketService.sendData(JSON.stringify({
+            type: 'init',
+            payload: this.tokenStorage.getUser().id
+        }));
     }
 
     async loadFCMservices() {

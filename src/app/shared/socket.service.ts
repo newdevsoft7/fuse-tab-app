@@ -10,6 +10,7 @@ const SOCKET_SERVER_URL = environment.socketServerUrl;
 export class SocketService {
   conn: WebSocket;
   webSocketData = new BehaviorSubject(null);
+  isConnected: boolean;
 
   constructor(
     private usersChatService: UsersChatService) {
@@ -20,6 +21,7 @@ export class SocketService {
   initialized(): Observable<any> {
     return new Observable(observer => {
       this.conn.onopen = () => {
+        this.isConnected = true;
         observer.next();
         observer.complete();
       };
