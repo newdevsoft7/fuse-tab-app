@@ -10,6 +10,7 @@ import { fuseAnimations } from '../../../../../../core/animations';
 export class FuseChatLeftSidenavComponent
 {
     @Input() users: any = [];
+    @Input() unreads: any= [];
     @Output() fetchChat: EventEmitter<number> = new EventEmitter();
 
     constructor()
