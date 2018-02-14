@@ -30,10 +30,7 @@ export class ScheduleCalendarComponent implements OnInit {
       });
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
-      this.triggerEventModal({
-        action: 'edit',
-        event
-      });
+      
     }
   };
 
@@ -56,7 +53,10 @@ export class ScheduleCalendarComponent implements OnInit {
       title: 'Edit',
       icon: 'mode_edit',
       callback: (event: EventEntity): void => {
-        // put some logic here
+        this.triggerEventModal({
+          action: 'edit',
+          event
+        });
       }
     },
     {
@@ -153,7 +153,7 @@ export class ScheduleCalendarComponent implements OnInit {
         }
       }
       if (temp.backgroundColor) {
-        newEvent.backgroundColor = temp.backgroundColor;
+        newEvent.eventBackgroundColor = temp.backgroundColor;
       }
       if (data.action === 'new') {        
         if (!this.options.events) {

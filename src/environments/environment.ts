@@ -6,6 +6,6 @@
 export const environment = {
     production: false,
     hmr       : false,
-    apiUrl: 'http://api.demo.staffconnect-app.com/api'
-    // apiUrl:   'http://localhost:8000/api'
+    apiUrl:   'http://localhost:8000/api',
+    socketServerUrl: 'ws://localhost:8080'
 };

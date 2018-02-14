@@ -9,6 +9,7 @@ export const locale = {
             'USERS_NEW_USER': 'New User',
             'USERS_RECENT_ACTIVITY': 'Recent Activity',
             'USERS_NEW_MESSAGE': 'New Message',
+            'USERS_CHAT': 'Chat',
 
             'SCHEDULE': 'Schedule',
             'SCHEDULE_CALENDAR': 'Calendar',

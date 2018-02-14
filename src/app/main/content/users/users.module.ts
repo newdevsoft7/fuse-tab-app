@@ -20,6 +20,11 @@ import { UsersProfilePhotoGalleryDialogComponent } from './profile/photo/photo-g
 import { UsersProfileVideoComponent } from './profile/video/video.component';
 import { UsersProfileVideoGalleryDialogComponent } from './profile/video/video-gallery-dialog/video-gallery-dialog.component';
 import { UsersProfileDocumentComponent } from './profile/document/document.component';
+import { UsersChatComponent } from './chat/chat.component';
+import { UsersChatService } from './chat/chat.service';
+import { FuseChatViewComponent } from './chat/chat-view/chat-view.component';
+import { FuseChatLeftSidenavComponent } from './chat/sidenavs/left/left.component';
+import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.component';
 import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
 import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
 import { UsersSearchBarComponent } from './search-bar/search-bar.component';
@@ -49,6 +54,10 @@ import { UsersSearchBarComponent } from './search-bar/search-bar.component';
         UsersProfileVideoComponent,
         UsersProfileVideoGalleryDialogComponent,
         UsersProfileDocumentComponent,
+        UsersChatComponent,
+        FuseChatViewComponent,
+        FuseChatLeftSidenavComponent,
+        FuseChatChatsSidenavComponent,
         UsersProfileAttributesComponent,
         UsersProfileWorkAreasComponent
     ],
@@ -56,10 +65,15 @@ import { UsersSearchBarComponent } from './search-bar/search-bar.component';
         UsersComponent,
         UsersExportsComponent,
         UsersPresentationsComponent,
-        UsersProfileComponent
+        UsersProfileComponent,
+        UsersChatComponent,
+        FuseChatViewComponent,
+        FuseChatLeftSidenavComponent,
+        FuseChatChatsSidenavComponent
     ],
     providers: [
-        UserService
+        UserService,
+        UsersChatService
     ],
     entryComponents: [
         UserFormDialogComponent,
