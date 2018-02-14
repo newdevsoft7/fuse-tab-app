@@ -6,6 +6,7 @@ import { FuseChatViewComponent } from './chat-view/chat-view.component';
 import { SocketService } from '../../../../shared/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+import { FavicoService } from '../../../../shared/favico.service';
 
 @Component({
   selector: 'app-users-chat',
@@ -19,14 +20,13 @@ export class UsersChatComponent {
   selectedChat: any;
   selectedUser: any;
   users: any = [];
-  incomingMessage: any;
-  unreadList: any = [];
 
   constructor(
     private usersChatService: UsersChatService, 
     private userService: UserService, 
     private tokenStorage: TokenStorage, 
-    private socketService: SocketService) {
+    private socketService: SocketService,
+    private favicoService: FavicoService) {
 
     usersChatService.currentMessage.subscribe(res => {
       if (!res || !res.type) return;
@@ -34,14 +34,16 @@ export class UsersChatComponent {
         case 'newMessage':
           res.data.sent = 1;
           if (!this.selectedChat) {
-            this.incomingMessage = res.data;
+            this.usersChatService.unreadList.push(res.data);
+            this.favicoService.setBadge(this.usersChatService.unreadList.length);
             return;
           }
           if (parseInt(res.data.sender_id) === this.selectedUser.id) {
             this.selectedChat.push(res.data);
             this.chatView.readyToReply();
           } else {
-            this.incomingMessage = res.data;
+            this.usersChatService.unreadList.push(res.data);
+            this.favicoService.setBadge(this.usersChatService.unreadList.length);
           }
           break;
         case 'unread':
@@ -59,18 +61,14 @@ export class UsersChatComponent {
     this.fetchUsers();
   }
 
+  getUnreads() {
+    return this.usersChatService.unreadList;
+  }
+
   async fetchUsers() {
     try {
       const currentUserId = this.tokenStorage.getUser().id;
       this.users = (await this.userService.getUsers().map(_ => _.users).toPromise()).filter(user => user.id !== currentUserId);
-    } catch (e) {
-      this.handleError(e);
-    }
-  }
-
-  async fetchUnreadMessages() {
-    try {
-      this.unreadList = await this.usersChatService.getUnreadMessages();
     } catch (e) {
       this.handleError(e);
     }
@@ -111,6 +109,13 @@ export class UsersChatComponent {
           ids: msgIds
         }
       }));
+      for (let i = this.usersChatService.unreadList.length - 1; i >= 0; i--) {
+        const id = this.usersChatService.unreadList[i].id;
+        if (msgIds.indexOf(id) !== -1) {
+          this.usersChatService.unreadList.splice(i, 1);
+        }
+      }
+      this.favicoService.setBadge(this.usersChatService.unreadList.length);
     } catch (e) {
       this.handleError(e);
     }

@@ -31,12 +31,9 @@
                             <div class="contact-name">{{user.fname}} {{user.lname}}</div>
                         </div>
 
-                        <!-- <div fxLayout="column" fxLayoutAlign="center end">
-                            <div class="contact-last-message-time">
-                                {{chat.lastMessageTime | date}}
-                            </div>
-                            <div *ngIf="chat.unread" class="unread-message-count">{{chat.unread}}</div>
-                        </div> -->
+                        <div fxLayout="column" fxLayoutAlign="center end">
+                            <div *ngIf="getUnreadCounts(user.id)" class="unread-message-count">{{getUnreadCounts(user.id)}}</div>
+                        </div>
                     </div>
                 </div>
             </button>

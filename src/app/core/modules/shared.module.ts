@@ -28,6 +28,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CustomLoadingService } from '../../shared/custom-loading.service';
 import { FCMService } from '../../shared/fcm.service';
 import { SocketService } from '../../shared/socket.service';
+import { FavicoService } from '../../shared/favico.service';
+import { ActivityManagerService } from '../../shared/activity-manager.service';
 
 @NgModule({
     declarations   : [
@@ -85,7 +87,9 @@ import { SocketService } from '../../shared/socket.service';
         FuseTranslationLoaderService,
         CustomLoadingService,
         FCMService,
-        SocketService
+        SocketService,
+        FavicoService,
+        ActivityManagerService
     ]
 })
 

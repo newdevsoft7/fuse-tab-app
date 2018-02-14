@@ -65,7 +65,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     }
 
     updateRead() {
-        const unreads = this.messages.filter(message => parseInt(message.read) === 0 && parseInt(message.sender_id) === this.user.id).map(message => message.id);
+        const unreads = this.messages.filter(message => parseInt(message.read) === 0 && parseInt(message.sender_id) === this.user.id).map(message => parseInt(message.id));
         if (unreads.length > 0) {
             this.updateReadStatus.next(unreads);
         }

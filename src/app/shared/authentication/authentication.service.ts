@@ -69,9 +69,11 @@ export class AuthenticationService implements AuthService {
         return this.tokenStorage
             .getRefreshToken()
             .switchMap((refreshToken: string) => {
-                return this.http.post(`${AUTH_URL}/refresh`, {
-                    refresh_token: refreshToken
-                });
+                if (refreshToken) {
+                    return this.http.post(`${AUTH_URL}/refresh`, {
+                        refresh_token: refreshToken
+                    });
+                }
             })
             .do(this.saveAccessData.bind(this))
             .catch((err) => {
@@ -98,14 +100,18 @@ export class AuthenticationService implements AuthService {
             this.handleError(e);
         }
         if (this.tokenStorage.getUser()) {
-            this.socketService.sendData(JSON.stringify({
-                type: 'disconnect',
-                payload: this.tokenStorage.getUser().id
-            }));
+            this.disconnectSocket();
         }
         this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
         this.tokenStorage.clear();
         this.router.navigate(['/login']);
+    }
+
+    public disconnectSocket() {
+        this.socketService.sendData(JSON.stringify({
+            type: 'disconnect',
+            payload: this.tokenStorage.getUser().id
+        }));
     }
 
     public verifyTokenRequest(url: string): boolean {
