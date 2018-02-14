@@ -16,7 +16,6 @@ import { TabService } from '../../tab/tab.service';
 })
 export class UsersComponent implements OnInit {
     users: any[];
-    filteredUsers: any[];
     selectedUsers: any[] = [];
     columns: any[];
     loadingIndicator = true;
@@ -25,7 +24,6 @@ export class UsersComponent implements OnInit {
     dialogRef: any;
 
     @ViewChild(DatatableComponent) table: DatatableComponent
-    @ViewChild('searchInput') search: ElementRef;
 
     constructor(
         private dialog: MatDialog,
@@ -43,7 +41,6 @@ export class UsersComponent implements OnInit {
                 this.loadingIndicator = false;
                 this.users = res.users;
                 this.columns = res.columns;
-                this.updateFilter(this.search.nativeElement.value);
             }, err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
@@ -78,24 +75,6 @@ export class UsersComponent implements OnInit {
         this.selectedUsers.push(...selected);
     }
 
-    updateFilter(value) {
-        const val = value.toLowerCase();
-
-        const filteredUsers = this.users.filter(function (user) {
-            return Object.keys(user).some(key => {;
-                return (user[key] ? user[key] : '')
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(val) !== -1 || !val
-            })
-        });
-
-        this.filteredUsers = filteredUsers;
-        if (this.table) {
-            this.table.offset = 0;
-        }
-    }
-
     openNewUser() {
         this.dialogRef = this.dialog.open(UserFormDialogComponent, {
             panelClass: 'user-form-dialog',
@@ -120,7 +99,7 @@ export class UsersComponent implements OnInit {
     onActivate(evt) {
     }
     
-    onSearchChipsChange(evt){
+    onFiltersChange(evt) {
         console.log(evt);
     }
 }

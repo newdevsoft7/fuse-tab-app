@@ -49,23 +49,14 @@
 
             </div>
 
-
-            <!-- SEARCH -->
-            <div class="search-input-wrapper mt-16 ml-8 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
-                <label for="search" class="mr-8">
-                    <mat-icon>search</mat-icon>
-                </label>
-                <mat-form-field mat-no-float class="m-0" floatPlaceholder="never">
-                    <input matInput id="search" #searchInput placeholder="Search for anything" (keyup)='updateFilter(searchInput.value)'>
-                </mat-form-field>
-            </div>
-            <!-- / SEARCH -->
-
         </div>
 
+        <!-- SEARCHBAR -->
         <div>
-            <app-users-search-bar (onSearchChipsChange)="onSearchChipsChange($event)"></app-users-search-bar>
+            <app-users-search-bar (onFiltersChange)="onFiltersChange($event)"></app-users-search-bar>
         </div>
+        <!-- / SEARCHBAR -->
+
     </div>
     <!-- / HEADER -->
 
@@ -73,12 +64,12 @@
     <div class="content p-24 pb-56 pr-sm-92 ps ps--active-y">
 
         <!-- TABLE -->
-        <div *ngIf="filteredUsers" class="users-table">
+        <div *ngIf="users" class="users-table">
 
             <ngx-datatable
                 #table
                 class="material striped"
-                [rows]="filteredUsers"
+                [rows]="users"
                 [loadingIndicator]="loadingIndicator"
                 [columnMode]="'force'"
                 [headerHeight]="48"

@@ -28,6 +28,7 @@ import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.
 import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
 import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
 import { UsersSearchBarComponent } from './search-bar/search-bar.component';
+import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filter.component';
 
 @NgModule({
     imports: [
@@ -59,7 +60,8 @@ import { UsersSearchBarComponent } from './search-bar/search-bar.component';
         FuseChatLeftSidenavComponent,
         FuseChatChatsSidenavComponent,
         UsersProfileAttributesComponent,
-        UsersProfileWorkAreasComponent
+        UsersProfileWorkAreasComponent,
+        UsersAddFilterDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -78,7 +80,8 @@ import { UsersSearchBarComponent } from './search-bar/search-bar.component';
     entryComponents: [
         UserFormDialogComponent,
         UsersProfilePhotoGalleryDialogComponent,
-        UsersProfileVideoGalleryDialogComponent
+        UsersProfileVideoGalleryDialogComponent,
+        UsersAddFilterDialogComponent
     ]
 })
 export class UsersModule { }

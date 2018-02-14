@@ -1,5 +1,16 @@
-import { Component, OnInit, Input, ViewChild, forwardRef, ChangeDetectionStrategy, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { MatAutocompleteSelectedEvent, MatInput } from '@angular/material';
+import {
+    Component,
+    OnInit,
+    Input,
+    ViewChild,
+    forwardRef,
+    ChangeDetectionStrategy,
+    AfterViewInit,
+    Output,
+    EventEmitter
+} from '@angular/core';
+
+import { MatAutocompleteSelectedEvent, MatInput, MatDialog } from '@angular/material';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
@@ -9,6 +20,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../user.service';
+import { UsersAddFilterDialogComponent } from './add-filter/add-filter.component';
 
 import * as _ from 'lodash';
 
@@ -34,8 +46,6 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     multi: true
 };
 
-const inputGroup = { text: "User Input", children: [] };
-
 @Component({
     selector: 'app-users-search-bar',
     templateUrl: './search-bar.component.html',
@@ -48,14 +58,17 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
     @ViewChild('chipInput') chipInput: MatInput;
 
+    dialogRef: any;
+
     source = [];
     private _value: Tag[] = [];
 
     private searchTerms = new Subject<string>();
 
-    @Output() onSearchChipsChange = new EventEmitter();
+    @Output() onFiltersChange = new EventEmitter();
 
     constructor(
+        private dialog: MatDialog,
         private toastr: ToastrService,
         private userService: UserService) {
     }
@@ -68,15 +81,15 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
 
     ngOnInit() {
-        this.getFilters('a');
+        this.getFilters();
     }
 
     ngAfterViewInit() {
         Observable.fromEvent(this.chipInput['nativeElement'], 'keyup')
-            .debounceTime(500)
+            .debounceTime(300)
             .distinctUntilChanged()
             .subscribe((event) => {
-                this.onSearchChange(this.chipInput['nativeElement'].value);
+                this.onSearchChange(this.chipInput['nativeElement'].value.toLowerCase());
             });
     }
 
@@ -103,7 +116,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         };
     }
 
-    private getFilters(query: string) {
+    private getFilters(query = '') {
         this.userService.getUsersFilters(query).subscribe(
             res => {
                 this.source = [...res];
@@ -120,12 +133,11 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
     add(event: MatAutocompleteSelectedEvent): void {
         const t: Tag = event.option.value;
-        console.log(t);
         this._value.push(t);
         this.value = this._value;
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
-        this.onSearchChipsChange.next(this._value);
+        this.onFiltersChange.next(this._value);
         
     }
 
@@ -149,7 +161,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
                     this._value.push(newTag);
                     this.value = this._value;
 
-                    this.onSearchChipsChange.next(this._value);
+                    this.onFiltersChange.next(this._value);
                 }
             } else {
                 if (this.value.findIndex(v => v.id == inputValue) < 0) {
@@ -157,7 +169,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
                     this._value.push(newTag);
                     this.value = this._value;
 
-                    this.onSearchChipsChange.next(this._value);
+                    this.onFiltersChange.next(this._value);
                 }
             }
         }
@@ -170,7 +182,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         this._value = this._value.filter((i: Tag) => i.id !== tag.id);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
-        this.onSearchChipsChange.next(this._value);
+        this.onFiltersChange.next(this._value);
     }
 
     sourceFiltered(groupItems: Tag[]): Tag[] {
@@ -179,5 +191,14 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
     displayFn(value: any): string {
         return value && typeof value === 'object' ? value.text : value;
+    }
+
+    openFiltersDialog() {
+        this.dialogRef = this.dialog.open(UsersAddFilterDialogComponent, {
+            panelClass: 'users-filter-dialog',
+        });
+
+        this.dialogRef.afterClosed()
+            .subscribe(_ => {});
     }
 }
