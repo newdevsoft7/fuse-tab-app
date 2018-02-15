@@ -116,9 +116,11 @@ export class TabsComponent implements AfterContentInit {
 			}
 			this._selectedTab = this._tabList.nativeElement.children[selectedTabIndex];
 			if (this._selectedTab) this._scrollToLabel(this._selectedTab);
+
+			this.tabService.tabActived.next(tab);
+			this.tabService.currentTab = tab;
 		});
-		
-		
+
 		setTimeout(() => {
 			this._checkPaginationEnabled();
 		}, 100);

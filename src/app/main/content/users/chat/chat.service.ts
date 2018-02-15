@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
 import { environment } from '../../../../../environments/environment';
 
 import 'rxjs/add/operator/map';
@@ -8,21 +9,19 @@ import 'rxjs/add/operator/map';
 const BASE_URL = `${environment.apiUrl}`;
 const USER_URL = `${BASE_URL}/user`;
 
-
-import { FuseUtils } from '../../../../core/fuseUtils';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
 @Injectable()
 export class UsersChatService {
 
   currentMessage = new BehaviorSubject(null);
+  unreadList: any = [];
 
   constructor(
-    private http: HttpClient) {}
+    private http: HttpClient,
+    private tokenStorage: TokenStorage) {
+  }
 
   get Device(): number {
-    return parseInt(localStorage.getItem('device'), 10);
+    return parseInt(localStorage.getItem('device'));
   }
 
   set Device(device: number) {
@@ -37,28 +36,42 @@ export class UsersChatService {
     return !!localStorage.getItem('device');
   }
 
-  async removeDevice(): Promise<any> {
-    const url = `${USER_URL}/device/${this.Device}`;
-    return await this.http.delete(url).toPromise();
+  getUserId() {
+    return this.tokenStorage.getUser()? this.tokenStorage.getUser().id : null;
   }
 
-  async registerDevice(firebase_token: string) {
-    const url = `${USER_URL}/device`;
+  async removeDevice(): Promise<any> {
+    const url = `${USER_URL}/device/${this.Device}`;
     try {
-      const deviceId = await this.http.post(url, { firebase_token }).map((_: any) => _.id).toPromise();
-      this.Device = deviceId;
+      await this.http.delete(url).toPromise();
+      this.Device = null;
     } catch (e) {
-      throw new Error(e.message || 'Something is wrong');
+      await Promise.reject(e);
     }
   }
 
-  async updateDevice(firebase_token: string) {
-    const url = `${USER_URL}/device/${this.Device}`;
-
+  async registerDevice(firebase_token: string): Promise<any> {
+    const url = `${USER_URL}/device`;
     try {
-      await this.http.put(url, { firebase_token }).toPromise();
+      const deviceId = await this.http.post(url, { 
+        firebase_token,
+        user_id: this.getUserId()
+      }).map((_: any) => _.id).toPromise();
+      this.Device = deviceId;
     } catch (e) {
-      throw new Error(e.message || 'Something is wrong');
+      await this.handleError(e);
+    }
+  }
+
+  async updateDevice(firebase_token: string): Promise<any> {
+    const url = `${USER_URL}/device/${this.Device}`;
+    try {
+      await this.http.put(url, { 
+        firebase_token,
+        user_id: this.getUserId()
+      }).toPromise();
+    } catch (e) {
+      await this.handleError(e);
     }
   }
 
@@ -67,18 +80,22 @@ export class UsersChatService {
     return this.http.post(url, body).toPromise();
   }
 
-  async getMessagesByUser(userId: number) {
+  async getMessagesByUser(userId: number): Promise<any> {
     const url = `${USER_URL}/${userId}/message`;
     return this.http.get(url).toPromise();
   }
 
-  async getUnreadMessages() {
+  async getUnreadMessages(): Promise<any> {
     const url = `${USER_URL}/message/unread`;
     return this.http.get(url).toPromise();
   }
 
-  async updateReadStatus(ids: number[]) {
+  async updateReadStatus(ids: number[]): Promise<any> {
     const url = `${USER_URL}/message/unread`;
     return this.http.post(url, { ids }).toPromise();
+  }
+
+  private handleError(error): Promise<any> {
+    return Promise.reject(error);
   }
 }

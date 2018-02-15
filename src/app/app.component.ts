@@ -8,9 +8,6 @@ import { FuseNavigationModel } from './navigation/navigation.model';
 import { locale as navigationEnglish } from './navigation/i18n/en';
 import { locale as navigationTurkish } from './navigation/i18n/tr';
 
-import { SocketService } from './shared/socket.service';
-import { UsersChatService } from './main/content/users/chat/chat.service';
-
 @Component({
     selector   : 'fuse-root',
     templateUrl: './app.component.html',
@@ -22,9 +19,7 @@ export class AppComponent
         private fuseNavigationService: FuseNavigationService,
         private fuseSplashScreen: FuseSplashScreenService,
         private translate: TranslateService,
-        private translationLoader: FuseTranslationLoaderService,
-        private socketService: SocketService,
-        private usersChatService: UsersChatService
+        private translationLoader: FuseTranslationLoaderService
     )
     {
         // Add languages
@@ -41,14 +36,5 @@ export class AppComponent
 
         // Set the navigation translations
         this.translationLoader.loadTranslations(navigationEnglish, navigationTurkish);
-        
-        // listen data from web socket server
-        this.socketService.listenData();
-
-        this.socketService.webSocketData.subscribe(res => {
-            if (res && res.data) { 
-                this.usersChatService.currentMessage.next(JSON.parse(res.data));
-            }
-        });
     }
 }
