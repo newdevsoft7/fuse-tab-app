@@ -13,8 +13,22 @@ export class UserService {
 
     constructor(private http: HttpClient) { }
 
-    getUsers(): Observable<any> {
-        return this.http.get(USERS_URL)
+    /**
+     * GET api/users/{pageSize}/{pageNumber}/{filterGroups?}/{sorts?}
+     */
+    getUsers(param = null): Observable<any> {
+        let url = `${USERS_URL}/20/0`;
+
+        if (param) {
+            const filters = param.filters ? encodeURIComponent(`{"filters":${JSON.stringify(param.filters)}}`) : '';
+            const sorts = param.sorts ? encodeURIComponent(param.sorts) : '';
+            const paginate = param.paginate ? param.paginate : '';
+            const pageSize = param.pageSize ? param.pageSize : 5;
+            const pageNumber = param.pageNumber ? param.pageNumber : 0;
+            url = `${USERS_URL}/${pageSize}/${pageNumber}/${filters}/${sorts}/${paginate}`;
+        }
+
+        return this.http.get(url)
             .catch(this.handleError);
     }
 

@@ -17,6 +17,7 @@ import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
 
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { UP_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
 
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../user.service';
@@ -88,8 +89,10 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         Observable.fromEvent(this.chipInput['nativeElement'], 'keyup')
             .debounceTime(300)
             .distinctUntilChanged()
-            .subscribe((event) => {
-                this.onSearchChange(this.chipInput['nativeElement'].value.toLowerCase());
+            .subscribe((event: KeyboardEvent) => {
+                if (![UP_ARROW, DOWN_ARROW].includes(event.keyCode)) {
+                    this.onSearchChange(this.chipInput['nativeElement'].value.toLowerCase());
+                }
             });
     }
 
@@ -138,6 +141,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
         this.onFiltersChange.next(this._value);
+        this.onSearchChange('');
         
     }
 
@@ -175,13 +179,14 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         }
 
         this.chipInput['nativeElement'].value = '';
-
+        this.onSearchChange('');
     }
 
     remove(tag: Tag): void {
         this._value = this._value.filter((i: Tag) => i.id !== tag.id);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
+        this.onSearchChange('');
         this.onFiltersChange.next(this._value);
     }
 

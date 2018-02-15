@@ -80,7 +80,13 @@
                 [selectAllRowsOnPage]="true"
                 [selected]="selectedUsers"
                 [reorderable]="reorderable"
-                [limit]="10"
+                [externalPaging]="true"
+                [count]="total"
+                [offset]="pageNumber"
+                [limit]="pageSize"
+                [sortType]="'multi'"
+                (page)="setPage($event)"
+                (sort)="onSort($event)"
                 (select)="onSelect($event)"
                 (activate)="onActivate($event)">
 

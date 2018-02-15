@@ -18,6 +18,14 @@ export class UsersComponent implements OnInit {
     users: any[];
     selectedUsers: any[] = [];
     columns: any[];
+
+    pageNumber: number;
+    pageSize: number;
+    total: number;
+
+    filters: any[];
+    sorts: any[];
+
     loadingIndicator = true;
     reorderable = true;
 
@@ -35,12 +43,18 @@ export class UsersComponent implements OnInit {
         this.getUsers();
     }
 
-    private getUsers() {
-        this.userService.getUsers()
-            .subscribe(res => {
+    private getUsers(params = null) {
+        const query = {
+            pageSize: 2,
+            ...params
+        };
+        this.userService.getUsers(query).subscribe(res => {
                 this.loadingIndicator = false;
-                this.users = res.users;
+                this.users = res.data;
                 this.columns = res.columns;
+                this.pageSize = res.page_size;
+                this.pageNumber = res.page_number;
+                this.total = res.total_counts;
             }, err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
@@ -98,8 +112,25 @@ export class UsersComponent implements OnInit {
 
     onActivate(evt) {
     }
+
+    setPage(pageInfo) {
+        this.pageNumber = pageInfo.offset;
+        this.getUsers({
+            filters: this.filters,
+            pageNumber: this.pageNumber,
+            sorts: this.sorts
+        });
+    }
     
-    onFiltersChange(evt) {
-        console.log(evt);
+    onFiltersChange(evt: any[]) {
+        this.filters = evt.map(v => v.id);
+        this.getUsers({
+            filters: this.filters
+        });
+    }
+
+    onSort(event) {
+        // this.sorts = event.sorts.map(v => [`${v.prop}` => `${v.dir}`]);
+        // console.log(this.sorts);
     }
 }
