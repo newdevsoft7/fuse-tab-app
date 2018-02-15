@@ -68,7 +68,7 @@ export class UsersChatComponent {
   async fetchUsers() {
     try {
       const currentUserId = this.tokenStorage.getUser().id;
-      this.users = (await this.userService.getUsers().map(_ => _.users).toPromise()).filter(user => user.id !== currentUserId);
+      this.users = (await this.userService.getUsers().map(_ => _.data).toPromise()).filter(user => user.id !== currentUserId);
     } catch (e) {
       this.handleError(e);
     }

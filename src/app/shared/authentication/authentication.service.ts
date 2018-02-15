@@ -92,13 +92,8 @@ export class AuthenticationService implements AuthService {
             .catch(this.handleError);
     }
 
-    public async logout() {
-        try {
-            await this.usersChatService.removeDevice();
-            this.usersChatService.Device = null;
-        } catch (e) {
-            this.handleError(e);
-        }
+    public logout() {
+        this.usersChatService.removeDevice();
         if (this.tokenStorage.getUser()) {
             this.disconnectSocket();
         }

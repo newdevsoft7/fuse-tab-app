@@ -42,7 +42,12 @@ export class UsersChatService {
 
   async removeDevice(): Promise<any> {
     const url = `${USER_URL}/device/${this.Device}`;
-    return await this.http.delete(url).toPromise();
+    try {
+      await this.http.delete(url).toPromise();
+      this.Device = null;
+    } catch (e) {
+      await Promise.reject(e);
+    }
   }
 
   async registerDevice(firebase_token: string): Promise<any> {
