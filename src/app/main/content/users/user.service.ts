@@ -28,7 +28,7 @@ export class UserService {
             url = `${USERS_URL}/${pageSize}/${pageNumber}/${filters}/${sorts}/${paginate}`;
         }
 
-        return this.http.get(url)
+        return this.http.get(url.replace(/\/+$/, ''))
             .catch(this.handleError);
     }
 
@@ -191,7 +191,7 @@ export class UserService {
 
     getUsersFilters(query: string): Observable<any> {
         const url = `${USERS_URL}/filter/${query}`;
-        return this.http.get(url)
+        return this.http.get(url.replace(/\/+$/, ''))
             .catch(this.handleError);
     }
 

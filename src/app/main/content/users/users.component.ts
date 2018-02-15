@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit {
     pageSize: number;
     total: number;
 
-    filters: any[];
+    filters = [];
     sorts: any[];
 
     typeFilters;
