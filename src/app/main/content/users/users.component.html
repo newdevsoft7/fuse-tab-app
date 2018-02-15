@@ -3,58 +3,62 @@
     <!-- HEADER -->
     <div class="header p-16 p-sm-24" fxLayout="column">
 
-        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="action-btns">
-            <div>
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>mail</mat-icon>
-                        <span>New Message</span>
-                    </div>
-                </button>
+        <div fxLayout="row"
+             fxLayout.xs="column"
+             fxLayoutAlign="start"
+             fxLayoutGap="12px"
+             fxLayoutGap.xs="0"
+             fxLayoutWrap
+             class="action-btns">
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>assignment</mat-icon>
-                        <span>Assign Reports</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="my-12" color="accent">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>mail</mat-icon>
+                    <span>New Message</span>
+                </div>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>add_to_photos</mat-icon>
-                        <span>Export</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="my-12" color="accent">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>assignment</mat-icon>
+                    <span>Assign Reports</span>
+                </div>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>contact_mail</mat-icon>
-                        <span>Email Showcase</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="my-12" color="accent">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>add_to_photos</mat-icon>
+                    <span>Export</span>
+                </div>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>contact_mail</mat-icon>
-                        <span>Add to presentation</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="my-12" color="accent">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>contact_mail</mat-icon>
+                    <span>Email Showcase</span>
+                </div>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>perm_contact_calendar</mat-icon>
-                        <span>Add to submission</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="my-12" color="accent">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>contact_mail</mat-icon>
+                    <span>Add to presentation</span>
+                </div>
+            </button>
 
-            </div>
-
+            <button mat-raised-button class="my-12" color="accent">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>perm_contact_calendar</mat-icon>
+                    <span>Add to submission</span>
+                </div>
+            </button>
         </div>
 
         <!-- SEARCHBAR -->
-        <div>
-            <app-users-search-bar (onFiltersChange)="onFiltersChange($event)"></app-users-search-bar>
-        </div>
+        <app-users-search-bar (onFiltersChange)="onFiltersChange($event)"
+                              [typeFilters]="typeFilters"
+                              (onTypeFilterSelected)="onTypeFilterChange($event)">
+        </app-users-search-bar>
         <!-- / SEARCHBAR -->
 
     </div>
@@ -117,15 +121,16 @@
 
                     <ngx-datatable-column
                         *ngIf="!['id', 'ppic_a', 'fav'].includes(column.key_name)"
-                        name="{{column.display_name}}"
-                        prop="{{column.key_name}}"
+                        [name]="column.display_name"
+                        [prop]="column.key_name"
+                        [sortable]="column.sortable == 1 ? true : false"
                         >
                     </ngx-datatable-column>
 
                     <ngx-datatable-column
                         *ngIf="column.key_name == 'ppic_a'"
-                        name="{{column.display_name}}"
-                        prop="{{column.key_name}}"
+                        [name]="column.display_name"
+                        [prop]="column.key_name"
                         [width]="100"
                         [sortable]="false"
                         [canAutoResize]="false">
@@ -136,8 +141,9 @@
 
                     <ngx-datatable-column
                         *ngIf="column.key_name == 'fav'"
-                        name="{{column.display_name}}"
-                        prop="{{column.key_name}}"
+                        [name]="column.display_name"
+                        [prop]="column.key_name"
+                        [sortable]="column.sortable == 1 ? true : false"
                         [width]="100"
                         [canAutoResize]="false">
                         

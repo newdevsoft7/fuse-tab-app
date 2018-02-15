@@ -64,6 +64,10 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     source = [];
     private _value: Tag[] = [];
 
+    @Input('typeFilters') typeFilters;
+    @Output() onTypeFilterSelected = new EventEmitter();
+    selectedTypeFilter = 'utype:=:all';  // All Active Users
+
     private searchTerms = new Subject<string>();
 
     @Output() onFiltersChange = new EventEmitter();
@@ -205,5 +209,9 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
         this.dialogRef.afterClosed()
             .subscribe(_ => {});
+    }
+
+    onTypeFilterChange(event) {
+        this.onTypeFilterSelected.next(event.value);
     }
 }

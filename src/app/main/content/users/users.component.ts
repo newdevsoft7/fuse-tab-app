@@ -8,6 +8,8 @@ import { UserFormDialogComponent } from './dialogs/user-form/user-form.component
 import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
+const DEFAULT_PAGE_SIZE = 5;
+
 @Component({
     selector: 'app-users',
     templateUrl: './users.component.html',
@@ -26,6 +28,9 @@ export class UsersComponent implements OnInit {
     filters: any[];
     sorts: any[];
 
+    typeFilters;
+    selectedTypeFilter = 'utype:=:all'  // All Active Users
+
     loadingIndicator = true;
     reorderable = true;
 
@@ -40,22 +45,35 @@ export class UsersComponent implements OnInit {
         private tabService: TabService) { }
 
     ngOnInit() {
-        this.getUsers();
+        this.init();
+    }
+
+    private async init() {
+        try {
+            this.typeFilters = await this.userService.getUsersTypeFilters();
+            this.getUsers();
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     private getUsers(params = null) {
         const query = {
-            pageSize: 2,
+            pageSize: DEFAULT_PAGE_SIZE,
+            filters: this.mergeAllFilters(),
+            sorts: this.sorts,
             ...params
         };
-        this.userService.getUsers(query).subscribe(res => {
+        this.userService.getUsers(query).subscribe(
+            res => {
                 this.loadingIndicator = false;
                 this.users = res.data;
                 this.columns = res.columns;
                 this.pageSize = res.page_size;
                 this.pageNumber = res.page_number;
                 this.total = res.total_counts;
-            }, err => {
+            },
+            err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
                 }
@@ -105,7 +123,10 @@ export class UsersComponent implements OnInit {
                         this.toastr.success(res.message);
                         this.getUsers();
                     }, err => {
-                       this.toastr.error(err.error.errors.email[0])
+                        const errors = err.error.errors;
+                        Object.keys(errors).forEach(v => {
+                            this.toastr.error(errors[v]);
+                        });
                     });
             });
     }
@@ -116,21 +137,26 @@ export class UsersComponent implements OnInit {
     setPage(pageInfo) {
         this.pageNumber = pageInfo.offset;
         this.getUsers({
-            filters: this.filters,
-            pageNumber: this.pageNumber,
-            sorts: this.sorts
+            pageNumber: this.pageNumber
         });
     }
     
     onFiltersChange(evt: any[]) {
         this.filters = evt.map(v => v.id);
-        this.getUsers({
-            filters: this.filters
-        });
+        this.getUsers();
+    }
+
+    onTypeFilterChange(filter) {
+        this.selectedTypeFilter = filter;
+        this.getUsers();
+    }
+
+    private mergeAllFilters(): any[] {
+        return [this.selectedTypeFilter, ...this.filters];
     }
 
     onSort(event) {
-        // this.sorts = event.sorts.map(v => [`${v.prop}` => `${v.dir}`]);
-        // console.log(this.sorts);
+        this.sorts = event.sorts.map(v => `${v.prop}:${v.dir}`);
+        this.getUsers();
     }
 }

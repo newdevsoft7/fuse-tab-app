@@ -20,8 +20,8 @@ export class UserService {
         let url = `${USERS_URL}/20/0`;
 
         if (param) {
-            const filters = param.filters ? encodeURIComponent(`{"filters":${JSON.stringify(param.filters)}}`) : '';
-            const sorts = param.sorts ? encodeURIComponent(param.sorts) : '';
+            const filters = param.filters ? encodeURIComponent(JSON.stringify(param.filters)) : '';
+            const sorts = param.sorts ? encodeURIComponent(JSON.stringify(param.sorts)) : '';
             const paginate = param.paginate ? param.paginate : '';
             const pageSize = param.pageSize ? param.pageSize : 5;
             const pageNumber = param.pageNumber ? param.pageNumber : 0;
@@ -193,6 +193,11 @@ export class UserService {
         const url = `${USERS_URL}/filter/${query}`;
         return this.http.get(url)
             .catch(this.handleError);
+    }
+
+    async getUsersTypeFilters(): Promise<any> {
+        const url = `${USERS_URL}/typeFilter`;
+        return this.http.get(url).toPromise();
     }
 
     private handleError(error: Response | any) {
