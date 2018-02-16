@@ -1,56 +1,44 @@
-<div class="users-wrapper">
+<div class="users-wrapper page-layout simple">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24" fxLayout="column">
+    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
 
         <div fxLayout="row"
              fxLayout.xs="column"
              fxLayoutAlign="start"
-             fxLayoutGap="12px"
-             fxLayoutGap.xs="0"
+             fxLayoutGap.gt-xs="12px"
+             fxLayoutGap.xs="4px"
              fxLayoutWrap
              class="action-btns">
 
-            <button mat-raised-button class="my-12" color="accent">
-                <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button class="mat-white-bg my-4">
                     <mat-icon>mail</mat-icon>
                     <span>New Message</span>
-                </div>
             </button>
 
-            <button mat-raised-button class="my-12" color="accent">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>assignment</mat-icon>
-                    <span>Assign Reports</span>
-                </div>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>assignment</mat-icon>
+                <span>Assign Reports</span>
             </button>
 
-            <button mat-raised-button class="my-12" color="accent">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>add_to_photos</mat-icon>
-                    <span>Export</span>
-                </div>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>add_to_photos</mat-icon>
+                <span>Export</span>
             </button>
 
-            <button mat-raised-button class="my-12" color="accent">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>contact_mail</mat-icon>
-                    <span>Email Showcase</span>
-                </div>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>contact_mail</mat-icon>
+                <span>Email Showcase</span>
             </button>
 
-            <button mat-raised-button class="my-12" color="accent">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>contact_mail</mat-icon>
-                    <span>Add to presentation</span>
-                </div>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>contact_mail</mat-icon>
+                <span>Add to presentation</span>
             </button>
 
-            <button mat-raised-button class="my-12" color="accent">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon>perm_contact_calendar</mat-icon>
-                    <span>Add to submission</span>
-                </div>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>perm_contact_calendar</mat-icon>
+                <span>Add to submission</span>
             </button>
         </div>
 
@@ -65,7 +53,7 @@
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content p-24 pt-28 pb-56 ps ps--active-y">
+    <div class="content p-24 pt-40 pb-56 ps ps--active-y">
 
         <!-- TABLE -->
         <div *ngIf="users" class="users-table">

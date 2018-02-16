@@ -1,17 +1,5 @@
 .users-wrapper {
-    .header {
-        min-height: 120px;
-    }
-
-    .action-btns {
-        .mat-raised-button {
-            .mat-icon {
-                margin-right: 8px;
-                color: white;
-            }
-        }
-    }
-
+    
     .avatar {
         width: 50px;
         min-width: 50px;
@@ -41,7 +29,7 @@
         
         #add-user-button {
             position: absolute;
-            top: 0px;
+            top: 10px;
             right: 1px;
             padding: 0;
             z-index: 99;
