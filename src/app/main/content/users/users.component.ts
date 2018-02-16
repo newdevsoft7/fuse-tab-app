@@ -8,6 +8,8 @@ import { UserFormDialogComponent } from './dialogs/user-form/user-form.component
 import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
+const DEFAULT_PAGE_SIZE = 5;
+
 @Component({
     selector: 'app-users',
     templateUrl: './users.component.html',
@@ -16,16 +18,26 @@ import { TabService } from '../../tab/tab.service';
 })
 export class UsersComponent implements OnInit {
     users: any[];
-    filteredUsers: any[];
     selectedUsers: any[] = [];
     columns: any[];
+
+    pageNumber: number;
+    pageSize = DEFAULT_PAGE_SIZE;
+    total: number;
+    pageLengths = [5, 10, 20, 50, 100];
+
+    filters = [];
+    sorts: any[];
+
+    typeFilters;
+    selectedTypeFilter = 'utype:=:all'  // All Active Users
+
     loadingIndicator = true;
     reorderable = true;
 
     dialogRef: any;
 
     @ViewChild(DatatableComponent) table: DatatableComponent
-    @ViewChild('searchInput') search: ElementRef;
 
     constructor(
         private dialog: MatDialog,
@@ -34,17 +46,39 @@ export class UsersComponent implements OnInit {
         private tabService: TabService) { }
 
     ngOnInit() {
-        this.getUsers();
+        this.init();
     }
 
-    private getUsers() {
-        this.userService.getUsers()
-            .subscribe(res => {
+    private async init() {
+        try {
+            this.typeFilters = await this.userService.getUsersTypeFilters();
+            this.getUsers();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    onPageLengthChange(event) {
+        this.getUsers({pageSize: event.value});
+    }
+
+    private getUsers(params = null) {
+        const query = {
+            pageSize: this.pageSize,
+            filters: this.mergeAllFilters(),
+            sorts: this.sorts,
+            ...params
+        };
+        this.userService.getUsers(query).subscribe(
+            res => {
                 this.loadingIndicator = false;
-                this.users = res.users;
+                this.users = res.data;
                 this.columns = res.columns;
-                this.updateFilter(this.search.nativeElement.value);
-            }, err => {
+                this.pageSize = res.page_size;
+                this.pageNumber = res.page_number;
+                this.total = res.total_counts;
+            },
+            err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
                 }
@@ -78,24 +112,6 @@ export class UsersComponent implements OnInit {
         this.selectedUsers.push(...selected);
     }
 
-    updateFilter(value) {
-        const val = value.toLowerCase();
-
-        const filteredUsers = this.users.filter(function (user) {
-            return Object.keys(user).some(key => {;
-                return (user[key] ? user[key] : '')
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(val) !== -1 || !val
-            })
-        });
-
-        this.filteredUsers = filteredUsers;
-        if (this.table) {
-            this.table.offset = 0;
-        }
-    }
-
     openNewUser() {
         this.dialogRef = this.dialog.open(UserFormDialogComponent, {
             panelClass: 'user-form-dialog',
@@ -112,12 +128,45 @@ export class UsersComponent implements OnInit {
                         this.toastr.success(res.message);
                         this.getUsers();
                     }, err => {
-                       this.toastr.error(err.error.errors.email[0])
+                        const errors = err.error.errors;
+                        Object.keys(errors).forEach(v => {
+                            this.toastr.error(errors[v]);
+                        });
                     });
             });
     }
 
     onActivate(evt) {
+    }
+
+    setPage(pageInfo) {
+        this.pageNumber = pageInfo.page - 1;
+        this.getUsers({
+            pageNumber: this.pageNumber
+        });
+    }
+    
+    onFiltersChange(evt: any[]) {
+        this.filters = evt.map(v => v.id);
+        this.getUsers();
+    }
+
+    onTypeFilterChange(filter) {
+        this.selectedTypeFilter = filter;
+        this.getUsers();
+    }
+
+    private mergeAllFilters(): any[] {
+        return [this.selectedTypeFilter, ...this.filters];
+    }
+
+    onSort(event) {
+        this.sorts = event.sorts.map(v => `${v.prop}:${v.dir}`);
+        this.getUsers();
+    }
+
+    min(x, y) {
+        return Math.min(x, y);
     }
 
 }

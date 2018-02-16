@@ -1,80 +1,67 @@
-<div class="users-wrapper">
+<div class="users-wrapper page-layout simple">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24">
+    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
 
-        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutWrap class="action-btns">
-            <div>
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>mail</mat-icon>
-                        <span>New Message</span>
-                    </div>
-                </button>
+        <div fxLayout="row"
+             fxLayout.xs="column"
+             fxLayoutAlign="start"
+             fxLayoutGap.gt-xs="12px"
+             fxLayoutGap.xs="4px"
+             fxLayoutWrap
+             class="action-btns">
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>assignment</mat-icon>
-                        <span>Assign Reports</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon>mail</mat-icon>
+                    <span>New Message</span>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>add_to_photos</mat-icon>
-                        <span>Export</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>assignment</mat-icon>
+                <span>Assign Reports</span>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>contact_mail</mat-icon>
-                        <span>Email Showcase</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>add_to_photos</mat-icon>
+                <span>Export</span>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>contact_mail</mat-icon>
-                        <span>Add to presentation</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>contact_mail</mat-icon>
+                <span>Email Showcase</span>
+            </button>
 
-                <button mat-raised-button class="my-12" color="accent">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <mat-icon>perm_contact_calendar</mat-icon>
-                        <span>Add to submission</span>
-                    </div>
-                </button>
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>contact_mail</mat-icon>
+                <span>Add to presentation</span>
+            </button>
 
-            </div>
-
-
-            <!-- SEARCH -->
-            <div class="search-input-wrapper mt-16 ml-8 m-sm-0" fxLayout="row" fxLayoutAlign="start center">
-                <label for="search" class="mr-8">
-                    <mat-icon>search</mat-icon>
-                </label>
-                <mat-form-field mat-no-float class="m-0" floatPlaceholder="never">
-                    <input matInput id="search" #searchInput placeholder="Search for anything" (keyup)='updateFilter(searchInput.value)'>
-                </mat-form-field>
-            </div>
-            <!-- / SEARCH -->
-
+            <button mat-raised-button class="mat-white-bg my-4">
+                <mat-icon>perm_contact_calendar</mat-icon>
+                <span>Add to submission</span>
+            </button>
         </div>
+
+        <!-- SEARCHBAR -->
+        <app-users-search-bar (onFiltersChange)="onFiltersChange($event)"
+                              [typeFilters]="typeFilters"
+                              (onTypeFilterSelected)="onTypeFilterChange($event)">
+        </app-users-search-bar>
+        <!-- / SEARCHBAR -->
+
     </div>
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content p-24 pb-56 pr-sm-92 ps ps--active-y">
+    <div class="content p-24 pt-40 pb-56 ps ps--active-y">
 
         <!-- TABLE -->
-        <div *ngIf="filteredUsers" class="users-table">
+        <div *ngIf="users" class="users-table">
 
             <ngx-datatable
                 #table
                 class="material striped"
-                [rows]="filteredUsers"
+                [rows]="users"
                 [loadingIndicator]="loadingIndicator"
                 [columnMode]="'force'"
                 [headerHeight]="48"
@@ -85,7 +72,13 @@
                 [selectAllRowsOnPage]="true"
                 [selected]="selectedUsers"
                 [reorderable]="reorderable"
-                [limit]="10"
+                [externalPaging]="true"
+                [count]="total"
+                [offset]="pageNumber"
+                [limit]="pageSize"
+                [sortType]="'multi'"
+                (page)="setPage($event)"
+                (sort)="onSort($event)"
                 (select)="onSelect($event)"
                 (activate)="onActivate($event)">
 
@@ -116,15 +109,16 @@
 
                     <ngx-datatable-column
                         *ngIf="!['id', 'ppic_a', 'fav'].includes(column.key_name)"
-                        name="{{column.display_name}}"
-                        prop="{{column.key_name}}"
+                        [name]="column.display_name"
+                        [prop]="column.key_name"
+                        [sortable]="column.sortable == 1 ? true : false"
                         >
                     </ngx-datatable-column>
 
                     <ngx-datatable-column
                         *ngIf="column.key_name == 'ppic_a'"
-                        name="{{column.display_name}}"
-                        prop="{{column.key_name}}"
+                        [name]="column.display_name"
+                        [prop]="column.key_name"
                         [width]="100"
                         [sortable]="false"
                         [canAutoResize]="false">
@@ -135,8 +129,9 @@
 
                     <ngx-datatable-column
                         *ngIf="column.key_name == 'fav'"
-                        name="{{column.display_name}}"
-                        prop="{{column.key_name}}"
+                        [name]="column.display_name"
+                        [prop]="column.key_name"
+                        [sortable]="column.sortable == 1 ? true : false"
                         [width]="100"
                         [canAutoResize]="false">
                         
@@ -202,6 +197,38 @@
                     </ng-template>
 
                 </ngx-datatable-column>
+
+                <ngx-datatable-footer>
+                    <ng-template ngx-datatable-footer-template
+                                 let-rowCount="rowCount"
+                                 let-pageSize="pageSize"
+                                 let-selectedCount="selectedCount"
+                                 let-curPage="curPage"
+                                 let-offset="offset">
+                        <div class="page-count h-60">
+                            Show
+                            <mat-form-field class="mx-8">
+                                <mat-select (change)="onPageLengthChange($event)" [value]="5">
+                                    <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            entries
+                            <span class="mx-48">
+                                Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of {{rowCount}} entries
+                            </span>
+                        </div>
+                        <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'"
+                                         [pagerRightArrowIcon]="'datatable-icon-right'"
+                                         [pagerPreviousIcon]="'datatable-icon-prev'"
+                                         [pagerNextIcon]="'datatable-icon-skip'"
+                                         [page]="curPage"
+                                         [size]="pageSize"
+                                         [count]="rowCount"
+                                         [hidden]="!((rowCount / pageSize) > 1)"
+                                         (change)="setPage($event)">
+                        </datatable-pager>
+                    </ng-template>
+                </ngx-datatable-footer>
 
             </ngx-datatable>
 

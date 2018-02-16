@@ -13,8 +13,22 @@ export class UserService {
 
     constructor(private http: HttpClient) { }
 
-    getUsers(): Observable<any> {
-        return this.http.get(USERS_URL)
+    /**
+     * GET api/users/{pageSize}/{pageNumber}/{filterGroups?}/{sorts?}
+     */
+    getUsers(param = null): Observable<any> {
+        let url = `${USERS_URL}/20/0`;
+
+        if (param) {
+            const filters = param.filters ? encodeURIComponent(JSON.stringify(param.filters)) : '';
+            const sorts = param.sorts ? encodeURIComponent(JSON.stringify(param.sorts)) : '';
+            const paginate = param.paginate ? param.paginate : '';
+            const pageSize = param.pageSize ? param.pageSize : 5;
+            const pageNumber = param.pageNumber ? param.pageNumber : 0;
+            url = `${USERS_URL}/${pageSize}/${pageNumber}/${filters}/${sorts}/${paginate}`;
+        }
+
+        return this.http.get(url.replace(/\/+$/, ''))
             .catch(this.handleError);
     }
 
@@ -173,6 +187,17 @@ export class UserService {
         const url = `${BASE_URL}/profile/${userId}/workArea`;
         return this.http.put(url, { work_area_id: workAreaId, set: value })
             .catch(this.handleError);
+    }
+
+    getUsersFilters(query: string): Observable<any> {
+        const url = `${USERS_URL}/filter/${query}`;
+        return this.http.get(url.replace(/\/+$/, ''))
+            .catch(this.handleError);
+    }
+
+    async getUsersTypeFilters(): Promise<any> {
+        const url = `${USERS_URL}/typeFilter`;
+        return this.http.get(url).toPromise();
     }
 
     private handleError(error: Response | any) {
