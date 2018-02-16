@@ -22,8 +22,9 @@ export class UsersComponent implements OnInit {
     columns: any[];
 
     pageNumber: number;
-    pageSize: number;
+    pageSize = DEFAULT_PAGE_SIZE;
     total: number;
+    pageLengths = [5, 10, 20, 50, 100];
 
     filters = [];
     sorts: any[];
@@ -57,9 +58,13 @@ export class UsersComponent implements OnInit {
         }
     }
 
+    onPageLengthChange(event) {
+        this.getUsers({pageSize: event.value});
+    }
+
     private getUsers(params = null) {
         const query = {
-            pageSize: DEFAULT_PAGE_SIZE,
+            pageSize: this.pageSize,
             filters: this.mergeAllFilters(),
             sorts: this.sorts,
             ...params
@@ -135,7 +140,7 @@ export class UsersComponent implements OnInit {
     }
 
     setPage(pageInfo) {
-        this.pageNumber = pageInfo.offset;
+        this.pageNumber = pageInfo.page - 1;
         this.getUsers({
             pageNumber: this.pageNumber
         });
@@ -159,4 +164,9 @@ export class UsersComponent implements OnInit {
         this.sorts = event.sorts.map(v => `${v.prop}:${v.dir}`);
         this.getUsers();
     }
+
+    min(x, y) {
+        return Math.min(x, y);
+    }
+
 }
