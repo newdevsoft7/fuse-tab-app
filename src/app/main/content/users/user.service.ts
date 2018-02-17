@@ -14,18 +14,17 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     /**
-     * GET api/users/{pageSize}/{pageNumber}/{filterGroups?}/{sorts?}
+     * GET api/users/{pageSize}/{pageNumber}/{filters}/{sorts?}
      */
     getUsers(param = null): Observable<any> {
-        let url = `${USERS_URL}/20/0`;
+        let url = `${USERS_URL}/20/0/${decodeURIComponent(JSON.stringify(["active:=:active"]))}`;
 
         if (param) {
             const filters = param.filters ? encodeURIComponent(JSON.stringify(param.filters)) : '';
             const sorts = param.sorts ? encodeURIComponent(JSON.stringify(param.sorts)) : '';
-            const paginate = param.paginate ? param.paginate : '';
             const pageSize = param.pageSize ? param.pageSize : 5;
             const pageNumber = param.pageNumber ? param.pageNumber : 0;
-            url = `${USERS_URL}/${pageSize}/${pageNumber}/${filters}/${sorts}/${paginate}`;
+            url = `${USERS_URL}/${pageSize}/${pageNumber}/${filters}/${sorts}`;
         }
 
         return this.http.get(url.replace(/\/+$/, ''))
