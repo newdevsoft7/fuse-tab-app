@@ -16,6 +16,7 @@ import { TokenStorage } from './token-storage.service';
 
 import { UsersChatService } from '../../main/content/users/chat/chat.service';
 import { SocketService } from '../socket.service';
+import { FavicoService } from '../favico.service';
 
 const BASE_URL = `${environment.apiUrl}`;
 const AUTH_URL = `${BASE_URL}/auth`;
@@ -35,7 +36,8 @@ export class AuthenticationService implements AuthService {
         private tokenStorage: TokenStorage,
         private router: Router,
         private usersChatService: UsersChatService,
-        private socketService: SocketService) { }
+        private socketService: SocketService,
+        private favicoService: FavicoService) { }
     
     /**
      * Check, if user already authorized.
@@ -99,6 +101,7 @@ export class AuthenticationService implements AuthService {
         }
         this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
         this.tokenStorage.clear();
+        this.favicoService.setBadge(0);
         this.router.navigate(['/login']);
     }
 

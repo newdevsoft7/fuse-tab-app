@@ -7,6 +7,7 @@ import { FuseNavigationService } from './core/components/navigation/navigation.s
 import { FuseNavigationModel } from './navigation/navigation.model';
 import { locale as navigationEnglish } from './navigation/i18n/en';
 import { locale as navigationTurkish } from './navigation/i18n/tr';
+import { SocketService } from './shared/socket.service';
 
 @Component({
     selector   : 'fuse-root',
@@ -19,7 +20,8 @@ export class AppComponent
         private fuseNavigationService: FuseNavigationService,
         private fuseSplashScreen: FuseSplashScreenService,
         private translate: TranslateService,
-        private translationLoader: FuseTranslationLoaderService
+        private translationLoader: FuseTranslationLoaderService,
+        private socketService: SocketService
     )
     {
         // Add languages
@@ -36,5 +38,8 @@ export class AppComponent
 
         // Set the navigation translations
         this.translationLoader.loadTranslations(navigationEnglish, navigationTurkish);
+
+        // listen socket open
+        this.socketService.opened();
     }
 }

@@ -71,13 +71,11 @@ export class FuseHomeComponent implements OnDestroy
         this.getUnreads();
     }
 
-    runSockets() {
-        if (this.socketService.isConnected) {
-            this.startSocket();
-        }
-
-        this.socketService.initialized().subscribe(() => {
-            this.startSocket();
+    async runSockets() {
+        this.socketService.connectionStatus.subscribe((connected: boolean) => {
+            if (connected) {
+                this.startSocket();
+            }
         });
 
         // listen data from web socket server
