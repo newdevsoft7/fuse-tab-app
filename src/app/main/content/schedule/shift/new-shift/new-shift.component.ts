@@ -5,8 +5,10 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatAutocompleteSelectedEvent, MatInput, MatDatepickerInputEvent } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
-import { startWith } from 'rxjs/operators/startWith';
-import { map } from 'rxjs/operators/map';
+import { 
+    debounceTime, distinctUntilChanged,
+    first, map, startWith, switchMap
+} from 'rxjs/operators';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -14,8 +16,7 @@ import * as moment from 'moment';
 import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { TokenStorage } from '../../../../../shared/authentication/token-storage.service';
-import { debounceTime } from 'rxjs/operators';
-import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
+import { Tab } from '../../../../tab/tab';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';
 
@@ -330,10 +331,11 @@ export class ScheduleNewShiftComponent implements OnInit {
             return false;
         }
         const isGroup = this.shiftForm.getRawValue().isGroup;
-        if (isGroup) {
+        
+        if (this.dates.length > 1) { // Multiple Shift
             const shifts = _.map(this.dates, date => {
                 let shift = this.makeShift(date);
-                shift = { ...shift, grouped: 1 };
+                if (isGroup) { shift = { ...shift, grouped: 1 }; }
                 return shift;
             });
             this.scheduleService.createShifts(shifts).subscribe(res => {
@@ -344,7 +346,7 @@ export class ScheduleNewShiftComponent implements OnInit {
                     this.toastr.error(errors[v]);
                 });
             });
-        } else {
+        } else { // Single Shift
             const shift = this.makeShift(this.dates[0]);
             this.scheduleService.createShift(shift).subscribe(res => {
                 this.tabService.closeTab(this.data.url);
