@@ -40,6 +40,7 @@
     "@swimlane/ngx-dnd": "3.1.0",
     "@types/lodash": "4.14.92",
     "angular-calendar": "0.23.0",
+    "angular-froala-wysiwyg": "2.7.5",
     "angular-in-memory-web-api": "0.5.2",
     "angular2-markdown": "1.6.0",
     "angular2-text-mask": "8.0.4",

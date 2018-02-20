@@ -1,21 +1,20 @@
-<div id="shift" class="page-layout simple fullwidth" fusePerfectScrollbar>
+<div id="shift" class="page-layout simple fullwidth" *ngIf="shift" fusePerfectScrollbar>
 
     <!-- HEADER -->
     <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-around stretch">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
             <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" >
                 <div class="h1 mt-16 date">
-                    Sunday Feburary 7
+                    {{shift.shift_start | date: 'EEEE, MMMM d, y, h:mm a'}}
                 </div>
                 <div class="h1 mt-16 title">
-                    Kmart Carousel Shoping Centre
+                    {{shift.location}}
                 </div>
             </div>
 
             <div fxLayout="column" fxLayoutAlign="start end">
-                <mat-icon class="s-36 mat-icon material-icons" [class.amber-600-fg]="value != 1">https</mat-icon>
-                <!-- <mat-icon class="s-36 mat-icon material-icons" [class.amber-600-fg]="value != 1" >lock_open</mat-icon> -->
-                <mat-icon class="s-24 mat-icon material-icons" [class.amber-600-fg]="value != 1" >flag</mat-icon>
+                <mat-icon class="s-36 mat-icon material-icons">https</mat-icon>
+                <mat-icon class="s-24 mat-icon material-icons">flag</mat-icon>
             </div>
         </div>
         <div class="more-details" fxLayout="column" fxLayoutAlign="center center">

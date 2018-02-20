@@ -149,22 +149,4 @@ export class FuseHomeComponent implements OnDestroy
         }
     }
 
-    openUsers() {
-        this.openTab(TAB.USERS_TAB);
-    }
-
-    openExports() {
-        this.openTab(TAB.USERS_EXPORTS_TAB);
-    }
-    openPresentations() {
-        this.openTab(TAB.USERS_PRESENTATIONS_TAB);
-    }
-
-    openSettingsProfileInfo() {
-        this.openTab(TAB.SETTINGS_PROFILE_INFO_TAB);
-    }
-
-    openShift(){
-        this.openTab(TAB.SCHEDULE_SHIFT_TAB);
-    }
 }

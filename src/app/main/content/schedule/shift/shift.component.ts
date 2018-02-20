@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
 import { ScheduleService } from '../schedule.service';
-
-
+import { UserService } from '../../users/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
 	selector: 'app-schedule-shift',
@@ -11,15 +11,33 @@ import { ScheduleService } from '../schedule.service';
 })
 export class ScheduleShiftComponent implements OnInit {
 
+	@Input() data;
+
+	get id() {
+		return this.data.id;
+	}
+	
 	currentUser: any;
-	value = 1;
+	shift: any;
+
 	constructor(
 		private tokenStorage: TokenStorage,
-		private userService: ScheduleService
+		private toastr: ToastrService,
+		private userService: UserService,
+		private scheduleService: ScheduleService
 	) { }
 
 	ngOnInit() {
 		this.currentUser = this.tokenStorage.getUser();
+		this.fetch();
+	}
+
+	private async fetch() {
+		try {
+			this.shift = await this.scheduleService.getShift(this.id);
+		} catch (e) {
+			this.toastr.error(e.message || 'Something is wrong while fetching events.');
+		}
 	}
 
 }

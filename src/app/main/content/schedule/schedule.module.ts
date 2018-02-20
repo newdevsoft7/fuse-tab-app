@@ -18,13 +18,15 @@ import { ScheduleShiftStaffSelectedComponent } from './shift/staff/selected/sele
 import { ScheduleShiftStaffNAComponent } from './shift/staff/na/na.component';
 import { ScheduleShiftStaffApplicantsComponent } from './shift/staff/applicants/applicants.component';
 import { ScheduleShiftStaffStandbyComponent } from './shift/staff/standby/standby.component';
-import { ScheduleNewShiftComponent } from './new-shift/new-shift.component';
+import { ScheduleNewShiftComponent } from './shift/new-shift/new-shift.component';
+import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
 
 @NgModule({
 	imports: [
         CommonModule,
         SCCalendarModule,
-        SharedModule
+        SharedModule,
+        CustomMultiSelectModule
     ],
     declarations: [
         ScheduleComponent,
@@ -40,7 +42,7 @@ import { ScheduleNewShiftComponent } from './new-shift/new-shift.component';
         ScheduleShiftStaffStandbyComponent,
         ScheduleShiftStaffApplicantsComponent,
         ScheduleShiftStaffNAComponent,
-        ScheduleNewShiftComponent
+        ScheduleNewShiftComponent,
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],

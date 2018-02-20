@@ -15,13 +15,6 @@ import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module'
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { TrackingModule } from '../tracking/tracking.module';
 
-// const routes = [
-//     {
-//         path: '',
-//         component: FuseHomeComponent
-//     }
-// ];
-
 @NgModule({
     declarations: [
         FuseHomeComponent
@@ -37,9 +30,7 @@ import { TrackingModule } from '../tracking/tracking.module';
         ScheduleModule,
         SettingsModule,
         TrackingModule,
-        AuthenticationModule,
-
-        // RouterModule.forChild(routes)
+        AuthenticationModule
     ],
     exports     : [
         FuseHomeComponent

@@ -8,10 +8,6 @@
             at tellus. Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada. Curabitur non nulla sit amet nisl
             tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla
             sit amet nisl tempus convallis quis ac lectus.</p>
-            <button mat-raised-button color="accent" (click)="openUsers()">Users</button>
-            <button mat-raised-button color="accent" (click)="openSettingsProfileInfo()">Profile Info</button>
-            <button mat-raised-button color="accent" (click)="openPresentations()">Presentations</button>
-            <button mat-raised-button color="accent" (click)="openShift()">Shift Page</button>
         </app-tab>
     </app-tabs>
 
@@ -57,12 +53,12 @@
         <app-users-chat></app-users-chat>
     </ng-template>
 
-    <ng-template #scheduleShiftTpl>
-        <app-schedule-shift></app-schedule-shift>
+    <ng-template #scheduleShiftTpl let-data="data">
+        <app-schedule-shift [data]="data"></app-schedule-shift>
     </ng-template>
 
-    <ng-template #scheduleNewShiftTpl>
-        <app-schedule-new-shift></app-schedule-new-shift>
+    <ng-template #scheduleNewShiftTpl let-data="data">
+        <app-schedule-new-shift [data]="data"></app-schedule-new-shift>
     </ng-template>
 
     <ng-template #settingsTpl>
