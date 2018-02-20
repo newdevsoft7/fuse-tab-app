@@ -11,10 +11,16 @@ export class TabService {
     tabActived: BehaviorSubject<TabComponent> = new BehaviorSubject(null);
     currentTab: TabComponent;
     
+    tabClosed: Subject<string> = new Subject();
+    
     constructor() { }
 
     openTab(newTab: Tab) {
         this.tab.next(newTab);
+    }
+
+    closeTab(url: string) {
+        this.tabClosed.next(url);
     }
 
     get tab$(): Observable<Tab> {

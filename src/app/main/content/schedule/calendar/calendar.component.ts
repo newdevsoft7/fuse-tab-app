@@ -26,7 +26,8 @@ export class ScheduleCalendarComponent implements OnInit {
       // put some logic here for styling event chips
     },
     dayClick: (date: Moment, jsEvent: Event): void => {
-      const tab = new Tab('New Shift', 'scheduleNewShiftTpl', `schedule/new-shift/${date.toString()}`, { date });
+      const url = `schedule/new-shift/${date.toString()}`;
+      const tab = new Tab('New Shift', 'scheduleNewShiftTpl', url, { date, url });
       this.tabService.openTab(tab);
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {

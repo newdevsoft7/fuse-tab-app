@@ -30,6 +30,7 @@ import { FavicoService } from '../../../shared/favico.service';
 export class FuseHomeComponent implements OnDestroy
 {
     tabSubscription: Subscription;
+    closeTabSubscription: Subscription;
     @ViewChild(TabsComponent) tabsComponent;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
@@ -62,6 +63,11 @@ export class FuseHomeComponent implements OnDestroy
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
         });
+
+        this.closeTabSubscription = this.tabService.tabClosed.subscribe(url => {
+            this.closeTab(url);
+        });
+
         this.loadFCMservices();
         this.runSockets();
 
@@ -132,6 +138,7 @@ export class FuseHomeComponent implements OnDestroy
 
     ngOnDestroy() {
         this.tabSubscription.unsubscribe();
+        this.closeTabSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {
@@ -144,9 +151,14 @@ export class FuseHomeComponent implements OnDestroy
         if (_tab.url == 'tracking'){
             let trackingCategory = _tab.data;
             if (JSON.stringify(_tab.data) != '{}' ){
-                this.trackingService.toggleSelectedCategory (trackingCategory as TrackingCategory);
+                this.trackingService.toggleSelectedCategory(trackingCategory as TrackingCategory);
             }
         }
+    }
+
+    closeTab(url: string) {
+        if (!url) { return false; }
+        this.tabsComponent.closeTabByURL(url);
     }
 
 }

@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators/map';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
+import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { TokenStorage } from '../../../../../shared/authentication/token-storage.service';
 import { debounceTime } from 'rxjs/operators';
@@ -76,6 +77,7 @@ export class ScheduleNewShiftComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,        
         private toastr: ToastrService,
+        private tabService: TabService,
         private scheduleService: ScheduleService,
         private tokenStorage: TokenStorage,
         differs: IterableDiffers) {
@@ -335,7 +337,7 @@ export class ScheduleNewShiftComponent implements OnInit {
                 return shift;
             });
             this.scheduleService.createShifts(shifts).subscribe(res => {
-                // TODO
+                this.tabService.closeTab(this.data.url);
             }, err => {
                 const errors = err.error.errors;
                 Object.keys(errors).forEach(v => {
@@ -345,7 +347,7 @@ export class ScheduleNewShiftComponent implements OnInit {
         } else {
             const shift = this.makeShift(this.dates[0]);
             this.scheduleService.createShift(shift).subscribe(res => {
-                // TODO
+                this.tabService.closeTab(this.data.url);
             }, err => {
                 const errors = err.error.errors;
                 Object.keys(errors).forEach(v => {
