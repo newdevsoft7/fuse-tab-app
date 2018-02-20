@@ -329,7 +329,11 @@ export class ScheduleNewShiftComponent implements OnInit {
         }
         const isGroup = this.shiftForm.getRawValue().isGroup;
         if (isGroup) {
-            const shifts = _.map(this.dates, date => this.makeShift(date));
+            const shifts = _.map(this.dates, date => {
+                let shift = this.makeShift(date);
+                shift = { ...shift, grouped: 1 };
+                return shift;
+            });
             this.scheduleService.createShifts(shifts).subscribe(res => {
                 // TODO
             }, err => {
