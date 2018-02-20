@@ -41,7 +41,7 @@ export class UsersChatService {
   }
 
   async removeDevice(): Promise<any> {
-    const url = `${USER_URL}/device/${this.Device}`;
+    const url = `${BASE_URL}/device/${this.Device}`;
     try {
       await this.http.delete(url).toPromise();
       this.Device = null;
@@ -51,7 +51,7 @@ export class UsersChatService {
   }
 
   async registerDevice(firebase_token: string): Promise<any> {
-    const url = `${USER_URL}/device`;
+    const url = `${BASE_URL}/device`;
     try {
       const deviceId = await this.http.post(url, { 
         firebase_token,
@@ -64,7 +64,7 @@ export class UsersChatService {
   }
 
   async updateDevice(firebase_token: string): Promise<any> {
-    const url = `${USER_URL}/device/${this.Device}`;
+    const url = `${BASE_URL}/device/${this.Device}`;
     try {
       await this.http.put(url, { 
         firebase_token,
@@ -75,13 +75,23 @@ export class UsersChatService {
     }
   }
 
+  async addContactSession(user_id: number) {
+    const url = `${BASE_URL}/sessions`;
+    return this.http.post(url, { user_id }).toPromise();
+  }
+
+  async getContactSessions() {
+    const url = `${BASE_URL}/sessions`;
+    return this.http.get(url).toPromise();
+  }
+
   async sendMessage(body: any): Promise<any> {
     const url = `${USER_URL}/message`;
     return this.http.post(url, body).toPromise();
   }
 
-  async getMessagesByUser(userId: number): Promise<any> {
-    const url = `${USER_URL}/${userId}/message`;
+  async getMessagesBySession(sessionId: number): Promise<any> {
+    const url = `${BASE_URL}/sessions/${sessionId}/message`;
     return this.http.get(url).toPromise();
   }
 

@@ -1,8 +1,11 @@
 <div class="views">
     <fuse-chat-chats-sidenav class="view"
                              [users]="users"
+                             [sessions]="sessions"
                              [unreads]="unreads"
                              (fetchChat)="fetchChat.next($event)"
+                             (searchUsers)="searchUsers.next($event)"
+                             (addContact)="addContact.next($event)"
                              [@slideInRight]>
     </fuse-chat-chats-sidenav>
 </div>

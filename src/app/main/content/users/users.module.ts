@@ -25,6 +25,7 @@ import { UsersChatService } from './chat/chat.service';
 import { FuseChatViewComponent } from './chat/chat-view/chat-view.component';
 import { FuseChatLeftSidenavComponent } from './chat/sidenavs/left/left.component';
 import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.component';
+import { BtnAddContactComponent } from './chat/sidenavs/left/btn-add-contact/btn-add-contact.component';
 import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
 import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
 import { UsersSearchBarComponent } from './search-bar/search-bar.component';
@@ -59,6 +60,7 @@ import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filte
         FuseChatViewComponent,
         FuseChatLeftSidenavComponent,
         FuseChatChatsSidenavComponent,
+        BtnAddContactComponent,
         UsersProfileAttributesComponent,
         UsersProfileWorkAreasComponent,
         UsersAddFilterDialogComponent
@@ -71,7 +73,8 @@ import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filte
         UsersChatComponent,
         FuseChatViewComponent,
         FuseChatLeftSidenavComponent,
-        FuseChatChatsSidenavComponent
+        FuseChatChatsSidenavComponent,
+        BtnAddContactComponent
     ],
     providers: [
         UserService,

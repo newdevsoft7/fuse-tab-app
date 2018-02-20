@@ -63,6 +63,10 @@
                 padding: 16px;
                 font-weight: 400;
 
+                &.filtered {
+                    min-height: 0;
+                }
+
                 .avatar-wrapper {
 
                     .avatar {

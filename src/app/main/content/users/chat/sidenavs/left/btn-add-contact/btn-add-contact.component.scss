@@ -1,0 +1,9 @@
+mat-progress-spinner {
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: 14px;
+  /deep/ svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}

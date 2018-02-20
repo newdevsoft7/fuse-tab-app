@@ -1,3 +1,32 @@
+<!-- SIDENAV HEADER -->
+<div class="sidenav-header">
+    <!-- CHATS TOOLBAR -->
+    <mat-toolbar>
+        <!-- TOOLBAR BOTTOM -->
+        <mat-toolbar-row>
+
+            <!-- SEARCH -->
+            <div class="search-wrapper" fxFlex fxLayout="row" fxLayoutAlign="start center">
+
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+
+                    <mat-icon>search</mat-icon>
+
+                    <input [(ngModel)]="searchText" type="text" placeholder="Search or start new chat" (ngModelChange)="searchUsers.next(searchText)" fxFlex>
+
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+        </mat-toolbar-row>
+        <!-- / TOOLBAR BOTTOM -->
+
+    </mat-toolbar>
+    <!-- / CHATS TOOLBAR -->
+
+</div>
+<!-- / SIDENAV HEADER -->
+
 <!-- SIDENAV CONTENT -->
 <div class="sidenav-content" fusePerfectScrollbar fxFlex>
 
@@ -5,15 +34,52 @@
     <div *fuseIfOnDom [@animateStagger]="{value:'50'}">
 
         <!-- CHATS LIST-->
-        <div class="chat-list" fxLayout="column">
+        <div class="chat-list" fxLayout="column" *ngIf="!searchText">
 
             <div matSubheader>
-                Chats
+                Sessions
             </div>
 
             <button mat-button class="contact"
+                    *ngFor="let session of sessions"
+                    (click)="fetchChat.next(session.id)"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+
+                <div fxLayout="row" fxLayoutAlign="start center">
+
+                    <div class="avatar-wrapper" fxFlex="0 1 auto" fxLayoutAlign="center center">
+                        <img [src]="getContact(session).ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'"
+                             class="avatar"
+                             [alt]="getContact(session).fname + ' ' + getContact(session).lname"/>
+                    </div>
+
+                    <div fxLayout="row" fxFlex>
+
+                        <div class="" fxFlex fxLayout="column" fxLayoutAlign="center start">
+                            <div class="contact-name">{{getContact(session).fname}} {{getContact(session).lname}}</div>
+                        </div>
+
+                        <div fxLayout="column" fxLayoutAlign="center end">
+                            <!-- <div *ngIf="getUnreadCounts(session.id)" class="unread-message-count">{{getUnreadCounts(user.id)}}</div> -->
+                        </div>
+                    </div>
+                </div>
+            </button>
+
+            <p *ngIf="sessions.length === 0" class="m-0 p-16">You don't have any contact yet. Please search and add ones.</p>
+
+        </div>
+        <!-- / CHATS LIST-->
+
+        <!-- SESSION LIST -->
+        <div class="chat-list" fxLayout="column" *ngIf="searchText">
+
+            <div matSubheader>
+                Search Result
+            </div>
+
+            <div class="contact filtered"
                     *ngFor="let user of users"
-                    (click)="fetchChat.next(user.id)"
                     [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -22,7 +88,6 @@
                         <img [src]="user.ppic_a"
                              class="avatar"
                              [alt]="user.fname + ' ' + user.lname"/>
-                        <!-- <mat-icon class="s-16 status"></mat-icon> -->
                     </div>
 
                     <div fxLayout="row" fxFlex>
@@ -32,14 +97,16 @@
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="center end">
-                            <div *ngIf="getUnreadCounts(user.id)" class="unread-message-count">{{getUnreadCounts(user.id)}}</div>
+                            <btn-add-contact [added]="userBelongToContacts(user.id)" (onTapped)="addContactInfo(user.id)"></btn-add-contact>
                         </div>
                     </div>
                 </div>
-            </button>
+            </div>
+
+            <p *ngIf="users.length === 0" class="m-0 p-16">You don't have any contact yet. Please search and add ones.</p>
 
         </div>
-        <!-- / CHATS LIST-->
+        <!-- / SESSION LIST -->
 
     </div>
     <!-- / CHATS CONTENT -->

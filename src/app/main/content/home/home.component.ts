@@ -84,9 +84,10 @@ export class FuseHomeComponent implements OnDestroy
         this.socketService.webSocketData.subscribe(res => {
             if (!res || !res.data) return;
             const payload = JSON.parse(res.data);
-            if (this.activityManagerService.isFocused && this.tabService.currentTab && this.tabService.currentTab.url === 'users/chat') {
+            if (this.tabService.currentTab && this.tabService.currentTab.url === 'users/chat') {
                 this.usersChatService.currentMessage.next(payload);
-            } else {
+            }
+            if (!this.activityManagerService.isFocused || !this.tabService.currentTab || this.tabService.currentTab.url !== 'users/chat') {
                 if (payload.type === 'newMessage') {
                     this.updateUnreadList([payload.data]);
                 }

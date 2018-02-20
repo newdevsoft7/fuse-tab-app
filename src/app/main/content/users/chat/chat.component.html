@@ -15,7 +15,13 @@
                 <!-- LEFT SIDENAV -->
                 <mat-sidenav class="sidenav" align="start" opened="true" mode="side"
                              fuseMatSidenavHelper="chat-left-sidenav" mat-is-locked-open="gt-md">
-                    <fuse-chat-left-sidenav [users]="users" [unreads]="getUnreads()" (fetchChat)="fetchChatByUser($event)"></fuse-chat-left-sidenav>
+                    <fuse-chat-left-sidenav 
+                        [users]="users"
+                        [sessions]="sessions"
+                        [unreads]="getUnreads()" 
+                        (fetchChat)="fetchChatBySession($event)"
+                        (searchUsers)="searchUsers($event)"
+                        (addContact)="addContact($event)"></fuse-chat-left-sidenav>
                 </mat-sidenav>
                 <!-- / LEFT SIDENAV -->
 
