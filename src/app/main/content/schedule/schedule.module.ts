@@ -20,6 +20,8 @@ import { ScheduleShiftStaffApplicantsComponent } from './shift/staff/applicants/
 import { ScheduleShiftStaffStandbyComponent } from './shift/staff/standby/standby.component';
 import { ScheduleNewShiftComponent } from './shift/new-shift/new-shift.component';
 import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
+import { ShiftRoleEditComponent } from './shift/role-edit/role-edit.component';
+import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-requirements/shift-role-requirements.component';
 
 @NgModule({
 	imports: [
@@ -43,6 +45,8 @@ import { CustomMultiSelectModule } from '../../../core/components/custom-multi-s
         ScheduleShiftStaffApplicantsComponent,
         ScheduleShiftStaffNAComponent,
         ScheduleNewShiftComponent,
+        ShiftRoleEditComponent,
+        ShiftRoleRequirementsComponent,
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],
@@ -51,6 +55,7 @@ import { CustomMultiSelectModule } from '../../../core/components/custom-multi-s
         ScheduleCalendarComponent,
         ScheduleShiftComponent,
         ScheduleNewShiftComponent,
+        ShiftRoleEditComponent,
         CalendarEventFormDialogComponent
     ]
 })

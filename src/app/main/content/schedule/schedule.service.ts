@@ -50,6 +50,11 @@ export class ScheduleService {
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
   }
 
+  getRoleRequirements(query): Observable<any> {
+    const url = `${AUTOCOMPLETE_URL}/roleRequirement/${query}`;
+    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
+  }
+
   getTrackingCategories(): Observable<any> {
     const url = `${TRACKING_URL}/category`;
     return this.http.get(url).catch(this.handleError);
@@ -87,6 +92,24 @@ export class ScheduleService {
     return Observable.forkJoin(
       shifts.map(shift => this.createShift(shift))
     );
+  }
+
+  createShiftRole(shiftId, role): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/role`;
+    return this.http.post(url, role)
+      .catch(this.handleError);
+  }
+
+  createShiftsRoles(shiftIds, role): Observable<any> {
+    return Observable.forkJoin(
+      shiftIds.map(shiftId => this.createShiftRole(shiftId, role))
+    );  
+  };
+
+  getPayLevelCategory(id?: number): Observable<any> {
+    const param = typeof id === 'undefined' ? '' : id;
+    const url = `${BASE_URL}/payLevel/category/${param}`;
+    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
   }
 
   private handleError(error: Response | any) {

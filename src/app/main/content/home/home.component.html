@@ -8,6 +8,8 @@
             at tellus. Donec sollicitudin molestie malesuada. Donec sollicitudin molestie malesuada. Curabitur non nulla sit amet nisl
             tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur non nulla
             sit amet nisl tempus convallis quis ac lectus.</p>
+            <button mat-raised-button color="accent" (click)="openShiftRole()">Single Shift Role</button>
+            <button mat-raised-button color="accent" (click)="openMultiShiftRole()">Multi Shift Role</button>
         </app-tab>
     </app-tabs>
 
@@ -59,6 +61,10 @@
 
     <ng-template #scheduleNewShiftTpl let-data="data">
         <app-schedule-new-shift [data]="data"></app-schedule-new-shift>
+    </ng-template>
+
+    <ng-template #shiftRoleEditTpl let-data="data">
+        <app-shift-role-edit [data]="data"></app-shift-role-edit>
     </ng-template>
 
     <ng-template #settingsTpl>

@@ -1,0 +1,204 @@
+<div id="shift-role-edit" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- CONTENT -->
+    <div class="content p-12 mat-white-bg">
+
+        <form [formGroup]="roleForm" novalidate fxLayout="column">
+
+            <!-- GENERAL INFORMATION -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">General Information</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <div class="info-line" fxLayout="row" fxLayoutGap="12px" fxLayout.xs="column">
+                        <mat-form-field>
+                            <input matInput placeholder="Number Required" type="number" formControlName="num_required" min="1">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput placeholder="Name" formControlName="rname" required maxlength="10">
+                            <mat-error *ngIf="formErrors.rname.required">
+                                Name is required!
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlexLayout="start center">
+                            <input matInput
+                                   [matDatepicker]="picker"
+                                   placeholder="Application Deadline"
+                                   formControlName="application_deadline"
+                                   fxFlex>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-line">
+                        <mat-form-field floatPlaceholder="never" fxFlexFill>
+                            <textarea matInput
+                                      placeholder="Enter any role specific notes here. They will be shown on the apply and confirm dialogues."
+                                      formControlName="notes">
+                            </textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            
+            </div>
+            <!-- / GENERAL INFORMATION -->
+
+            <!-- TIMES -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Times</div>
+                </header>
+            
+                <div class="content" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="12px">
+                    <mat-radio-group [ngClass.xs]="time-radio-group" [value]="sameAsShift" (change)="changeSameAsShift($event)">
+                        <mat-radio-button class="mr-12" [value]="true">Same as shift</mat-radio-button>
+                        <mat-radio-button [value]="false"></mat-radio-button>
+                    </mat-radio-group>
+                    
+                    <div fxFlex.gt-xs="80px">
+                        <w-mat-timepicker color="primary" [placeholder]="'From'" [(userTime)]="rolePeriod.from"
+                                          [class.disabled]="sameAsShift"></w-mat-timepicker>
+                    </div>
+                    <div fxFlex.gt-xs="80px">
+                        <w-mat-timepicker color="primary" [placeholder]="'To'" [(userTime)]="rolePeriod.to"
+                                         [class.disabled]="sameAsShift"></w-mat-timepicker>
+                    </div>
+                </div>
+            
+            </div>
+            <!-- / TIMES -->
+
+            <!-- REQUIREMENTS -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Requirements</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <div class="info-line">
+                        <app-shift-role-requirements formControlName="requirements"></app-shift-role-requirements>
+                    </div>
+                </div>
+            
+            </div>
+            <!-- / REQUIREMENTS -->
+
+            <!-- BILL RATE -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Bill Rate</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                        <mat-form-field>
+                            <input matInput type="number" formControlName="bill_rate" min="0">
+                            <button mat-icon-button matPrefix>
+                                <mat-icon>attach_money</mat-icon>
+                            </button>
+                        </mat-form-field>
+
+                        <mat-button-toggle-group #billRateTypeGroup="matButtonToggleGroup"
+                                                 [value]="billRateType"
+                                                 (change)="billRateType = billRateTypeGroup.value">
+                            <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                            <mat-button-toggle value="flat">flat</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                </div>
+            
+            </div>
+            <!-- / BILL RATE -->
+
+            <!-- PAY RATE -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Pay Rate</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <div class="info-line">
+                        <mat-form-field>
+                            <mat-label>Category</mat-label>
+                            <mat-select formControlName="pay_category_id">
+                                <mat-option [value]="'none'">None</mat-option>
+                                <mat-option *ngFor="let category of payCategories" [value]="category.id">{{category.cname}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                        <mat-form-field>
+                            <input matInput type="number" formControlName="pay_rate" min="0">
+                            <button mat-icon-button matPrefix>
+                                <mat-icon>attach_money</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    
+                        <mat-button-toggle-group #payRateTypeGroup="matButtonToggleGroup"
+                                                 [value]="payRateType"
+                                                 (change)="payRateType = payRateTypeGroup.value">
+                            <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                            <mat-button-toggle value="flat">flat</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                </div>
+            
+            </div>
+            <!-- / PAY RATE -->
+
+            <!-- COMPLETION -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Completion</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <mat-form-field floatPlaceholder="never" fxFlexFill>
+                        <textarea matInput
+                                  placeholder="Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues."
+                                  formControlName="completion_notes">
+                        </textarea>
+                    </mat-form-field>
+                </div>
+            
+            </div>
+            <!-- / COMPLETION -->
+
+            <!-- EXPENSES -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Expenses</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <mat-form-field class="expense-limit">
+                        <mat-label>Limit</mat-label>
+                        <input matInput type="number" formControlName="expense_limit" min="1">
+                        <button mat-icon-button matPrefix>
+                            <mat-icon>attach_money</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+            
+            </div>
+            <!-- / EXPENSES -->
+
+            <div>
+                <button mat-raised-button color="accent" (click)="onSave()" [disabled]="!validate">Save</button>
+            </div>
+
+        </form>
+    </div>
+    <!-- / CONTENT -->
+</div>

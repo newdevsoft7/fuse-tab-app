@@ -110,7 +110,7 @@ export class ScheduleNewShiftComponent implements OnInit {
 
         this.workAreas = (text: string): Observable<any> => {
             return this.scheduleService.getWorkAreas(text);
-        }
+        };
 
         this.dates.push(new ShiftDate(this.startDate));
 
@@ -338,7 +338,12 @@ export class ScheduleNewShiftComponent implements OnInit {
                 if (isGroup) { shift = { ...shift, grouped: 1 }; }
                 return shift;
             });
-            this.scheduleService.createShifts(shifts).subscribe(res => {
+            this.scheduleService.createShifts(shifts).subscribe(responses => {
+                this.toastr.success(`${responses.length} shifts created.`);
+                // Open Role Edit Tab
+                const shifts = responses.map(response => response.data.id);
+                this.openRoleTab(shifts);
+
                 this.tabService.closeTab(this.data.url);
             }, err => {
                 const errors = err.error.errors;
@@ -349,6 +354,12 @@ export class ScheduleNewShiftComponent implements OnInit {
         } else { // Single Shift
             const shift = this.makeShift(this.dates[0]);
             this.scheduleService.createShift(shift).subscribe(res => {
+                this.toastr.success('Shift created.');
+                
+                // Open Role Edit Tab
+                const shifts = [res.data.id];
+                this.openRoleTab(shifts);
+
                 this.tabService.closeTab(this.data.url);
             }, err => {
                 const errors = err.error.errors;
@@ -357,6 +368,16 @@ export class ScheduleNewShiftComponent implements OnInit {
                 });
             });
         }
+    }
+
+    private openRoleTab(shifts) {
+        const url = `shift/${shifts.join('-')}/role-edit`;
+        const tab = new Tab(
+            `Add Role (${shifts.length} ${shifts.length > 1 ? 'shifts' : 'shift'})`,
+            'shiftRoleEditTpl',
+            url,
+            { shifts, url });
+        this.tabService.openTab(tab);
     }
 
     private validate() {

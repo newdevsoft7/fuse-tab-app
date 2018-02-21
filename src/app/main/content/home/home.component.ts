@@ -44,6 +44,7 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('usersChatTpl') usersChatTpl;
     @ViewChild('scheduleShiftTpl') scheduleShiftTpl;
     @ViewChild('scheduleNewShiftTpl') scheduleNewShiftTpl;
+    @ViewChild('shiftRoleEditTpl') shiftRoleEditTpl;
     @ViewChild('settingsTpl') settingsTpl;
     @ViewChild('trackingTpl') trackingTpl;
 
@@ -159,6 +160,23 @@ export class FuseHomeComponent implements OnDestroy
     closeTab(url: string) {
         if (!url) { return false; }
         this.tabsComponent.closeTabByURL(url);
+    }
+
+
+
+    // SHOULD BE REMOVED
+    openShiftRole() {
+        const shifts = [4];
+        const url = `shift/${shifts.join('-')}/role-edit`;
+        const tab = new Tab('Add Role (1 shift)', 'shiftRoleEditTpl', url, { shifts, url });
+        this.openTab(tab);
+    }
+
+    openMultiShiftRole() {
+        const shifts = [4, 5];
+        const url = `shift/${shifts.join('-')}/role-edit`;
+        const tab = new Tab('Add Role (2 shifts)', 'shiftRoleEditTpl', url, { shifts, url });
+        this.openTab(tab);
     }
 
 }

@@ -16,6 +16,7 @@ import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '.
 import { FuseMatSidenavHelperService } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.service';
 import { FusePipesModule } from '../pipes/pipes.module';
 import { FuseConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
+import { FuseConfirmYesNoDialogComponent } from '../components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { FuseCountdownComponent } from '../components/countdown/countdown.component';
 import { FuseMatchMedia } from '../services/match-media.service';
 import { FuseNavbarVerticalService } from '../../main/navbar/vertical/navbar-vertical.service';
@@ -38,6 +39,7 @@ import { MaterialTimeControlModule } from '../components/material-time-control/m
         FuseMatSidenavHelperDirective,
         FuseMatSidenavTogglerDirective,
         FuseConfirmDialogComponent,
+        FuseConfirmYesNoDialogComponent,
         FuseCountdownComponent,
         FuseHljsComponent,
         FuseIfOnDomDirective,
@@ -85,7 +87,8 @@ import { MaterialTimeControlModule } from '../components/material-time-control/m
         MaterialTimeControlModule
     ],
     entryComponents: [
-        FuseConfirmDialogComponent
+        FuseConfirmDialogComponent,
+        FuseConfirmYesNoDialogComponent
     ],
     providers      : [
         CookieService,
