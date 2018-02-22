@@ -2,20 +2,18 @@ import { Component, OnInit, ViewEncapsulation, Input, DoCheck, IterableDiffers }
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
-import { CustomLoadingService } from '../../../../../shared/custom-loading.service';
+import { CustomLoadingService } from '../../../../../../../shared/custom-loading.service';
 
 import * as _ from 'lodash';
 
 
 @Component({
-    selector: 'app-schedule-shift-expenses',
-    templateUrl: './expenses.component.html',
-    styleUrls: ['./expenses.component.scss'],
+    selector: 'app-admin-shift-staff-standby',
+    templateUrl: './standby.component.html',
+    styleUrls: ['./standby.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScheduleShiftExpensesComponent implements OnInit, DoCheck {
-
-
+export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
 
     constructor(
         private loadingService: CustomLoadingService,

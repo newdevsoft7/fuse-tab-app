@@ -2,19 +2,19 @@ import { Component, OnInit, ViewEncapsulation, Input, DoCheck, IterableDiffers, 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
-import { CustomLoadingService } from '../../../../../shared/custom-loading.service';
+import { CustomLoadingService } from '../../../../../../shared/custom-loading.service';
 
 import * as _ from 'lodash';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-schedule-shift-staff',
+    selector: 'app-admin-shift-staff',
     templateUrl: './staff.component.html',
     styleUrls: ['./staff.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScheduleShiftStaffComponent implements OnInit, DoCheck {
+export class AdminShiftStaffComponent implements OnInit, DoCheck {
 
     @Input() currentUser;
     @ViewChild('adminNoteInput') adminNoteInput;

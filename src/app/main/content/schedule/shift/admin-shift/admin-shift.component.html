@@ -1,4 +1,4 @@
-<div id="shift" class="page-layout simple fullwidth" *ngIf="shift" fusePerfectScrollbar>
+<div id="admin-shift" class="page-layout simple fullwidth" *ngIf="shift" fusePerfectScrollbar>
 
     <!-- HEADER -->
     <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-around stretch">
@@ -29,23 +29,23 @@
         <mat-tab-group dynamicHeight="true">
 
             <mat-tab label="Staff">
-                <app-schedule-shift-staff [currentUser]="currentUser"></app-schedule-shift-staff>
+                <app-admin-shift-staff [currentUser]="currentUser"></app-admin-shift-staff>
             </mat-tab>
 
             <mat-tab label="Expenses">
-                <app-schedule-shift-expenses></app-schedule-shift-expenses>
+                <app-admin-shift-expenses></app-admin-shift-expenses>
             </mat-tab>
 
             <mat-tab label="Tracking">
-                <app-schedule-shift-tracking></app-schedule-shift-tracking>
+                <app-admin-shift-tracking></app-admin-shift-tracking>
             </mat-tab>
 
             <mat-tab label="Reports & Uploads">
-                <app-schedule-shift-reports-uploads></app-schedule-shift-reports-uploads>
+                <app-admin-shift-reports-uploads></app-admin-shift-reports-uploads>
             </mat-tab>
 
             <mat-tab label="Castings">
-                <app-schedule-shift-castings></app-schedule-shift-castings>
+                <app-admin-shift-castings></app-admin-shift-castings>
             </mat-tab>
         </mat-tab-group>
 

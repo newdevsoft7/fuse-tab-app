@@ -6,19 +6,19 @@ import { ScheduleComponent } from './schedule.component';
 import { ScheduleCalendarComponent } from './calendar/calendar.component';
 import { CalendarEventFormDialogComponent } from './calendar/event-form/event-form.component';
 
-import { ScheduleShiftComponent } from './shift/shift.component';
-import { ScheduleShiftStaffComponent } from './shift/staff/staff.component';
-import { ScheduleShiftExpensesComponent } from './shift/expenses/expenses.component';
-import { ScheduleShiftTrackingComponent } from './shift/tracking/tracking.component';
-import { ScheduleShiftReportsUploadsComponent } from './shift/reports-uploads/reports-uploads.component';
-import { ScheduleShiftCastingsComponent } from './shift/castings/castings.component';
+import { AdminShiftComponent } from './shift/admin-shift/admin-shift.component';
+import { AdminShiftStaffComponent } from './shift/admin-shift/staff/staff.component';
+import { AdminShiftExpensesComponent } from './shift/admin-shift/expenses/expenses.component';
+import { AdminShiftTrackingComponent } from './shift/admin-shift/tracking/tracking.component';
+import { AdminShiftReportsUploadsComponent } from './shift/admin-shift/reports-uploads/reports-uploads.component';
+import { AdminShiftCastingsComponent } from './shift/admin-shift/castings/castings.component';
 
 import { ScheduleService } from './schedule.service';
-import { ScheduleShiftStaffSelectedComponent } from './shift/staff/selected/selected.component';
-import { ScheduleShiftStaffNAComponent } from './shift/staff/na/na.component';
-import { ScheduleShiftStaffApplicantsComponent } from './shift/staff/applicants/applicants.component';
-import { ScheduleShiftStaffStandbyComponent } from './shift/staff/standby/standby.component';
-import { ScheduleNewShiftComponent } from './shift/new-shift/new-shift.component';
+import { AdminShiftStaffSelectedComponent } from './shift/admin-shift/staff/selected/selected.component';
+import { AdminShiftStaffNAComponent } from './shift/admin-shift/staff/na/na.component';
+import { AdminShiftStaffApplicantsComponent } from './shift/admin-shift/staff/applicants/applicants.component';
+import { AdminShiftStaffStandbyComponent } from './shift/admin-shift/staff/standby/standby.component';
+import { NewShiftComponent } from './shift/new-shift/new-shift.component';
 import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
 import { ShiftRoleEditComponent } from './shift/role-edit/role-edit.component';
 import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-requirements/shift-role-requirements.component';
@@ -34,17 +34,17 @@ import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-req
         ScheduleComponent,
         ScheduleCalendarComponent,
         CalendarEventFormDialogComponent,
-        ScheduleShiftComponent,
-        ScheduleShiftStaffComponent,
-        ScheduleShiftExpensesComponent,
-        ScheduleShiftTrackingComponent,
-        ScheduleShiftReportsUploadsComponent,
-        ScheduleShiftCastingsComponent,
-        ScheduleShiftStaffSelectedComponent,
-        ScheduleShiftStaffStandbyComponent,
-        ScheduleShiftStaffApplicantsComponent,
-        ScheduleShiftStaffNAComponent,
-        ScheduleNewShiftComponent,
+        AdminShiftComponent,
+        AdminShiftStaffComponent,
+        AdminShiftExpensesComponent,
+        AdminShiftTrackingComponent,
+        AdminShiftReportsUploadsComponent,
+        AdminShiftCastingsComponent,
+        AdminShiftStaffSelectedComponent,
+        AdminShiftStaffStandbyComponent,
+        AdminShiftStaffApplicantsComponent,
+        AdminShiftStaffNAComponent,
+        NewShiftComponent,
         ShiftRoleEditComponent,
         ShiftRoleRequirementsComponent,
     ],
@@ -53,8 +53,8 @@ import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-req
     exports: [
         ScheduleComponent,
         ScheduleCalendarComponent,
-        ScheduleShiftComponent,
-        ScheduleNewShiftComponent,
+        AdminShiftComponent,
+        NewShiftComponent,
         ShiftRoleEditComponent,
         CalendarEventFormDialogComponent
     ]

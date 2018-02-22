@@ -8,6 +8,7 @@ import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../
 import { ScheduleService } from '../schedule.service';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
+import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -18,6 +19,8 @@ export class ScheduleCalendarComponent implements OnInit {
 
   dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
+  currentUser;
+
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
       // put some logic here for styling the day cells
@@ -27,11 +30,15 @@ export class ScheduleCalendarComponent implements OnInit {
     },
     dayClick: (date: Moment, jsEvent: Event): void => {
       const url = `schedule/new-shift/${date.toString()}`;
-      const tab = new Tab('New Shift', 'scheduleNewShiftTpl', url, { date, url });
+      const tab = new Tab('New Shift', 'newShiftTpl', url, { date, url });
       this.tabService.openTab(tab);
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
-      const tab = new Tab(event.title, 'scheduleShiftTpl', `shift/${event.id}`, { id: event.id });
+      let template = 'shiftTpl';
+      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+        template = 'adminShiftTpl';
+      }
+      const tab = new Tab(event.title, template, `shift/${event.id}`, { id: event.id });
       this.tabService.openTab(tab);
     }
   };
@@ -113,9 +120,13 @@ export class ScheduleCalendarComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
+    private tokenStorage: TokenStorage,
     private tabService: TabService) { }
 
-  ngOnInit() {}
+  
+  ngOnInit() {
+    this.currentUser = this.tokenStorage.getUser();
+  }
 
   updateEvents(event: { startDate: string, endDate: string }) {
     this.fetchEvents(event.startDate, event.endDate);

@@ -1,15 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
-import { ScheduleService } from '../schedule.service';
-import { UserService } from '../../users/user.service';
+import { TokenStorage } from '../../../../../shared/authentication/token-storage.service';
+import { ScheduleService } from '../../schedule.service';
+import { UserService } from '../../../users/user.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-	selector: 'app-schedule-shift',
-	templateUrl: './shift.component.html',
-	styleUrls: ['./shift.component.scss']
+	selector: 'app-admin-shift',
+	templateUrl: './admin-shift.component.html',
+	styleUrls: ['./admin-shift.component.scss']
 })
-export class ScheduleShiftComponent implements OnInit {
+export class AdminShiftComponent implements OnInit {
 
 	@Input() data;
 

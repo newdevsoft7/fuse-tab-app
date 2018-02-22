@@ -2,20 +2,18 @@ import { Component, OnInit, ViewEncapsulation, Input, DoCheck, IterableDiffers }
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
-import { CustomLoadingService } from '../../../../../shared/custom-loading.service';
+import { CustomLoadingService } from '../../../../../../shared/custom-loading.service';
 
 import * as _ from 'lodash';
 
 
 @Component({
-    selector: 'app-schedule-shift-reports-uploads',
+    selector: 'app-admin-shift-reports-uploads',
     templateUrl: './reports-uploads.component.html',
     styleUrls: ['./reports-uploads.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScheduleShiftReportsUploadsComponent implements OnInit, DoCheck {
-
-
+export class AdminShiftReportsUploadsComponent implements OnInit, DoCheck {
 
     constructor(
         private loadingService: CustomLoadingService,

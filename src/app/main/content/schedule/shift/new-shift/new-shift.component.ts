@@ -32,12 +32,12 @@ export class ShiftDate {
 }
 
 @Component({
-    selector: 'app-schedule-new-shift',
+    selector: 'app-new-shift',
     templateUrl: './new-shift.component.html',
     styleUrls: ['./new-shift.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScheduleNewShiftComponent implements OnInit {
+export class NewShiftComponent implements OnInit {
 
     @Input() data;
     

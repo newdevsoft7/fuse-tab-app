@@ -8,14 +8,12 @@ import * as _ from 'lodash';
 
 
 @Component({
-    selector: 'app-schedule-shift-staff-na',
-    templateUrl: './na.component.html',
-    styleUrls: ['./na.component.scss'],
+    selector: 'app-admin-shift-expenses',
+    templateUrl: './expenses.component.html',
+    styleUrls: ['./expenses.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ScheduleShiftStaffNAComponent implements OnInit, DoCheck {
-
-
+export class AdminShiftExpensesComponent implements OnInit, DoCheck {
 
     constructor(
         private loadingService: CustomLoadingService,
