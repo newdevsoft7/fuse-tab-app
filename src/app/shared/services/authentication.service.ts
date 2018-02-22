@@ -84,7 +84,6 @@ export class AuthenticationService {
                 this.refreshing = false;
             })
             .catch((err) => {
-                this.logout();
                 this.refreshing = false;
                 return this.handleError(err);
             });
