@@ -162,21 +162,4 @@ export class FuseHomeComponent implements OnDestroy
         this.tabsComponent.closeTabByURL(url);
     }
 
-
-
-    // SHOULD BE REMOVED
-    openShiftRole() {
-        const shifts = [4];
-        const url = `shift/${shifts.join('-')}/role-edit`;
-        const tab = new Tab('Add Role (1 shift)', 'shiftRoleEditTpl', url, { shifts, url });
-        this.openTab(tab);
-    }
-
-    openMultiShiftRole() {
-        const shifts = [4, 5];
-        const url = `shift/${shifts.join('-')}/role-edit`;
-        const tab = new Tab('Add Role (2 shifts)', 'shiftRoleEditTpl', url, { shifts, url });
-        this.openTab(tab);
-    }
-
 }
