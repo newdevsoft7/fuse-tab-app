@@ -8,7 +8,7 @@ import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../
 import { ScheduleService } from '../schedule.service';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
-import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 
 @Component({
   selector: 'app-schedule-calendar',

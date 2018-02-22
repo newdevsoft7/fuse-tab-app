@@ -3,13 +3,13 @@ import { SharedModule } from '../../../../core/modules/shared.module';
 import { RouterModule } from '@angular/router';
 
 import { FuseLoginComponent } from './login.component';
-import { PublicGuard } from 'ngx-auth'
+import { UnauthGuardService } from '../../../../shared/guards/unauth-guard.service';
 
 const routes = [
     {
         path     : 'login',
         component: FuseLoginComponent,
-        canActivate: [ PublicGuard ]
+        canActivate: [ UnauthGuardService ]
     }
 ];
 

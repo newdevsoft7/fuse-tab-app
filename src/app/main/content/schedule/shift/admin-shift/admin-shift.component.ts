@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TokenStorage } from '../../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { ScheduleService } from '../../schedule.service';
 import { UserService } from '../../../users/user.service';
 import { ToastrService } from 'ngx-toastr';

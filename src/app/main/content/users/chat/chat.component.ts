@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
-import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { FuseChatViewComponent } from './chat-view/chat-view.component';
-import { SocketService } from '../../../../shared/socket.service';
+import { SocketService } from '../../../../shared/services/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-import { FavicoService } from '../../../../shared/favico.service';
+import { FavicoService } from '../../../../shared/services/favico.service';
 
 @Component({
   selector: 'app-users-chat',
@@ -20,6 +20,7 @@ export class UsersChatComponent {
   selectedChat: any;
   selectedUser: any;
   users: any = [];
+  sessions: any = [];
 
   constructor(
     private usersChatService: UsersChatService, 
@@ -58,27 +59,27 @@ export class UsersChatComponent {
       }
     });
 
-    this.fetchUsers();
+    this.fetchSessions();
   }
 
   getUnreads() {
     return this.usersChatService.unreadList;
   }
 
-  async fetchUsers() {
+  async fetchSessions() {
     try {
       const currentUserId = this.tokenStorage.getUser().id;
-      this.users = (await this.userService.getUsers().map(_ => _.data).toPromise()).filter(user => user.id !== currentUserId);
+      this.sessions = await this.usersChatService.getContactSessions();
     } catch (e) {
       this.handleError(e);
     }
   }
 
-  async fetchChatByUser(userId: number) {
+  async fetchChatBySession(sessionId: number) {
     this.selectedChat = [];
     try {
-      this.selectedChat = await this.usersChatService.getMessagesByUser(userId);
-      this.selectedUser = this.users.find(user => user.id === userId);
+      this.selectedChat = await this.usersChatService.getMessagesBySession(sessionId);
+      this.selectedUser = this.users.find(user => user.id === sessionId);
       this.chatView.readyToReply();
     } catch (e) {
       this.handleError(e);
@@ -116,6 +117,25 @@ export class UsersChatComponent {
         }
       }
       this.favicoService.setBadge(this.usersChatService.unreadList.length);
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  async searchUsers(searchText: string) {
+    if (!searchText) return;
+    try {
+      const currentUserId = this.tokenStorage.getUser().id;
+      this.users = (await this.userService.getUsers().map(_ => _.data).toPromise()).filter(user => user.id !== currentUserId);
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  async addContact(userId: number) {
+    try {
+      const session = await this.usersChatService.addContactSession(userId);
+      this.sessions.push(session);
     } catch (e) {
       this.handleError(e);
     }

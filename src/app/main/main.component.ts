@@ -3,7 +3,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { FuseConfigService } from '../core/services/config.service';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { CustomLoadingService } from '../shared/custom-loading.service';
+import { CustomLoadingService } from '../shared/services/custom-loading.service';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Component({
     selector     : 'fuse-main',
@@ -25,6 +26,7 @@ export class FuseMainComponent implements OnInit, OnDestroy
         private _elementRef: ElementRef,
         private fuseConfig: FuseConfigService,
         private platform: Platform,
+        private authService: AuthenticationService,
         @Inject(DOCUMENT) private document: any
     )
     {
@@ -64,5 +66,9 @@ export class FuseMainComponent implements OnInit, OnDestroy
     removeClass(className: string)
     {
         this._renderer.removeClass(this._elementRef.nativeElement, className);
+    }
+
+    get isAuthenticated(): boolean {
+        return this.authService.isAuthorized();
     }
 }

@@ -8,39 +8,34 @@ export class TokenStorage {
 
     /**
      * Get access token
-     * @returns {Observable<string>}
+     * @returns {string}
      */
-    public getAccessToken(): Observable<string> {
-        const token: string = <string>localStorage.getItem('accessToken');
-        return Observable.of(token);
+    public getAccessToken(): string {
+        return <string>localStorage.getItem('accessToken');
     }
 
     /**
      * Get refresh token
-     * @returns {Observable<string>}
+     * @returns {string}
      */
-    public getRefreshToken(): Observable<string> {
-        const token: string = <string>localStorage.getItem('refreshToken');
-        return Observable.of(token);
+    public getRefreshToken(): string {
+        return <string>localStorage.getItem('refreshToken');
     }
 
     /**
      * Set access token
-     * @returns {TokenStorage}
+     * @returns {void}
      */
-    public setAccessToken(token: string): TokenStorage {
+    public setAccessToken(token: string): void {
         localStorage.setItem('accessToken', token);
-
-        return this;
     }
 
     /**
     * Set refresh token
-    * @returns {TokenStorage}
+    * @returns {void}
     */
-    public setRefreshToken(token: string): TokenStorage {
+    public setRefreshToken(token: string): void {
         localStorage.setItem('refreshToken', token);
-        return this;
     }
 
 

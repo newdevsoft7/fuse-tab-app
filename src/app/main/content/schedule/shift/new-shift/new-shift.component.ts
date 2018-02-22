@@ -15,7 +15,7 @@ import * as moment from 'moment';
 
 import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
-import { TokenStorage } from '../../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { Tab } from '../../../../tab/tab';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';

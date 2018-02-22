@@ -4,9 +4,9 @@ import { FuseConfigService } from '../../core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TabService } from '../tab/tab.service';
 import { USERS_PROFILE_TAB } from '../../constants/tab';
-import { AuthenticationService } from '../../shared/authentication/authentication.service';
+import { AuthenticationService } from '../../shared/services/authentication.service';
 import { UserService } from '../content/users/user.service';
-import { TokenStorage } from '../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../shared/services/token-storage.service';
 import { fuseAnimations } from '../../core/animations';
 import { Tab } from '../tab/tab';
 

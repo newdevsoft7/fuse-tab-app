@@ -27,13 +27,17 @@ import { FuseMaterialColorPickerComponent } from '../components/material-color-p
 import { FuseTranslationLoaderService } from '../services/translation-loader.service';
 import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
-import { CustomLoadingService } from '../../shared/custom-loading.service';
-import { FCMService } from '../../shared/fcm.service';
-import { SocketService } from '../../shared/socket.service';
-import { FavicoService } from '../../shared/favico.service';
-import { ActivityManagerService } from '../../shared/activity-manager.service';
 import { MaterialTimeControlModule } from '../components/material-time-control/material-time-control.module';
-import { ActionService } from '../../shared/action.service';
+import { ActionService } from '../../shared/services/action.service';
+import { CustomLoadingService } from '../../shared/services/custom-loading.service';
+import { FCMService } from '../../shared/services/fcm.service';
+import { SocketService } from '../../shared/services/socket.service';
+import { FavicoService } from '../../shared/services/favico.service';
+import { ActivityManagerService } from '../../shared/services/activity-manager.service';
+import { AuthenticationService } from '../../shared/services/authentication.service';
+import { TokenStorage } from '../../shared/services/token-storage.service';
+import { AuthGuardService } from '../../shared/guards/auth-guard.service';
+import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
 
 @NgModule({
     declarations   : [
@@ -102,7 +106,12 @@ import { ActionService } from '../../shared/action.service';
         SocketService,
         FavicoService,
         ActivityManagerService,
-        ActionService
+        ActionService,
+        AuthenticationService,
+        TokenStorage,
+        // guards
+        AuthGuardService,
+        UnauthGuardService
     ]
 })
 

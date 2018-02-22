@@ -19,12 +19,12 @@ import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 
-import { CustomLoadingService } from '../../../../../../shared/custom-loading.service';
-import { TokenStorage } from '../../../../../../shared/authentication/token-storage.service';
+import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
+import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 import { UserService } from '../../../../users/user.service';
 import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
-import { ActionService } from '../../../../../../shared/action.service';
+import { ActionService } from '../../../../../../shared/services/action.service';
 
 export enum Section {
     Selected = 0,

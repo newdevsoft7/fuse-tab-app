@@ -13,10 +13,10 @@ import * as _ from 'lodash';
 
 import { TabService } from '../../tab/tab.service';
 import { UserService } from './user.service';
-import { ActionService } from '../../../shared/action.service';
+import { ActionService } from '../../../shared/services/action.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
 import { Tab } from '../../tab/tab';
-import { TokenStorage } from '../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../shared/services/token-storage.service';
 
 const DEFAULT_PAGE_SIZE = 5;
 const USERS_TAB = 'users';

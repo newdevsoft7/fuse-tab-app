@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
-import { UsersChatService } from '../main/content/users/chat/chat.service';
+import { environment } from '../../../environments/environment';
+import { UsersChatService } from '../../main/content/users/chat/chat.service';
 
 const SOCKET_SERVER_URL = environment.socketServerUrl;
 
@@ -10,6 +10,7 @@ const SOCKET_SERVER_URL = environment.socketServerUrl;
 export class SocketService {
   conn: WebSocket;
   webSocketData = new BehaviorSubject(null);
+  connectionStatus = new BehaviorSubject(false);
   isConnected: boolean;
 
   constructor(
@@ -18,14 +19,11 @@ export class SocketService {
     this.conn = new WebSocket(SOCKET_SERVER_URL);
   }
 
-  initialized(): Observable<any> {
-    return new Observable(observer => {
-      this.conn.onopen = () => {
-        this.isConnected = true;
-        observer.next();
-        observer.complete();
-      };
-    });
+  opened() {
+    this.conn.onopen = () => {
+      this.isConnected = true;
+      this.connectionStatus.next(true);
+    };
   }
 
   listenData(): void {
