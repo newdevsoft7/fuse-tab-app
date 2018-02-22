@@ -15,6 +15,8 @@ import * as _ from 'lodash';
 })
 export class AdminShiftReportsUploadsComponent implements OnInit, DoCheck {
 
+    @Input() shift;
+
     constructor(
         private loadingService: CustomLoadingService,
         private dialog: MatDialog,

@@ -1,14 +1,13 @@
 @import "src/app/core/scss/fuse";
 
-    #staff {
+    #admin-shift-staff {
         .staff-content {
 
-            .general {
+            .staff-box {
 
-            }
-
-            .full {
-
+                header {
+                    padding: 8px 16px;
+                }
             }
         }
 

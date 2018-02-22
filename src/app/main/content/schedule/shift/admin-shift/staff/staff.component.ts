@@ -1,12 +1,37 @@
-import { Component, OnInit, ViewEncapsulation, Input, DoCheck, IterableDiffers, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { 
+    Component, OnInit,
+    ViewEncapsulation, Input,
+    DoCheck, IterableDiffers,
+    ViewChild
+} from '@angular/core';
+
+import {
+    FormBuilder, FormGroup,
+    Validators
+} from '@angular/forms';
+
+import {
+    MatDialog, MatDialogRef,
+    MAT_DIALOG_DATA
+} from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
-import { CustomLoadingService } from '../../../../../../shared/custom-loading.service';
 
 import * as _ from 'lodash';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CustomLoadingService } from '../../../../../../shared/custom-loading.service';
+import { TokenStorage } from '../../../../../../shared/authentication/token-storage.service';
+import { UserService } from '../../../../users/user.service';
+import { Tab } from '../../../../../tab/tab';
+import { TabService } from '../../../../../tab/tab.service';
+import { ActionService } from '../../../../../../shared/action.service';
+
+export enum Section {
+    Selected = 0,
+    Standby = 1,
+    Applicants = 2,
+    NA = 3
+};
 
 @Component({
     selector: 'app-admin-shift-staff',
@@ -14,9 +39,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     styleUrls: ['./staff.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffComponent implements OnInit, DoCheck {
+export class AdminShiftStaffComponent implements OnInit {
 
-    @Input() currentUser;
+    currentUser;
+    userInfo: any;
+    roles: any[];
+
+    @Input() shift;
+    
     @ViewChild('adminNoteInput') adminNoteInput;
 
     canSavePost = false;
@@ -30,8 +60,12 @@ export class AdminShiftStaffComponent implements OnInit, DoCheck {
         private dialog: MatDialog,
         private toastr: ToastrService,
         private formBuilder: FormBuilder,
-        differs: IterableDiffers
-    ) {
+        private tokenStorage: TokenStorage,
+        private userService: UserService,
+        private actionService: ActionService,
+        private tabService: TabService,
+        differs: IterableDiffers) {
+            this.currentUser = this.tokenStorage.getUser();
     }
 
     ngOnInit() {
@@ -40,16 +74,27 @@ export class AdminShiftStaffComponent implements OnInit, DoCheck {
             note: ['', Validators.required]
         });
 
-        if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-            this.refreshAdminNotesView();
-        }
-
+        
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
-        });        
-    }
+        });
+        
+        this.userService.getUser(this.currentUser.id).subscribe(res => {
+            this.userInfo = res;
 
-    ngDoCheck() {
+            if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+                this.refreshAdminNotesView();
+            }
+        });
+
+        this.roles = this.shift.shift_roles.map(role => { 
+            return { ...role, section: Section.Selected, shiftTitle: this.shift.title };
+        });
+
+        this.actionService.usersToRole.subscribe(
+            ({ userIds, role, section }) => {
+               debugger; 
+            });
     }
 
     onAdminNoteFormValuesChanged() {
@@ -67,40 +112,62 @@ export class AdminShiftStaffComponent implements OnInit, DoCheck {
     }
 
     onPostAdminNote() {
-        // const data = this.adminNoteForm.value;
-        // this.userService.createAdminNote(this.currentUser.id, data)
-        //     .subscribe(res => {
-        //         const note = res.data;
-        //         note.creator_thumbnail = this.userInfo.ppic_a;
-        //         note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
+        const data = this.adminNoteForm.value;
+        this.userService.createAdminNote(this.currentUser.id, data)
+            .subscribe(res => {
+                const note = res.data;
+                note.creator_thumbnail = this.userInfo.ppic_a;
+                note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
 
-        //         this.userInfo.profile_admin_notes.unshift(note);
-        //         this.refreshAdminNotesView();
+                this.userInfo.profile_admin_notes.unshift(note);
+                this.refreshAdminNotesView();
 
-        //         this.adminNoteInput.nativeElement.value = '';
-        //         this.adminNoteInput.nativeElement.focus();
-        //     }, err => {
-        //         console.log(err);
-        //     });
+                this.adminNoteInput.nativeElement.value = '';
+                this.adminNoteInput.nativeElement.focus();
+            }, err => {
+                this.displayError(err);
+            });
     }
 
     onDeleteAdminNote(note) {
-        // const index = this.userInfo.profile_admin_notes.findIndex(v => v.id == note.id);
-        // this.userService.deleteAdminNote(note.id)
-        //     .subscribe(res => {
-        //         this.userInfo.profile_admin_notes.splice(index, 1);
-        //         this.refreshAdminNotesView();
-        //     }, err => {
+        const index = this.userInfo.profile_admin_notes.findIndex(v => v.id == note.id);
+        this.userService.deleteAdminNote(note.id)
+            .subscribe(res => {
+                this.userInfo.profile_admin_notes.splice(index, 1);
+                this.refreshAdminNotesView();
+            }, err => {
+                this.displayError(err);
+            });
+    }
 
-        //     });
+    onAddStaffToRole(role) {
+        // TODO
+        const filter = [];
+        const data = {
+            filter,
+            role,
+            tab: `admin-shift/${this.shift.id}`
+        };
+
+        this.tabService.closeTab('users');
+        const tab = new Tab('Users', 'usersTpl', 'users', data);
+
+        this.tabService.openTab(tab);
     }
 
     private refreshAdminNotesView() {
-        // if (this.isSeeAllAdminNotes) {
-        //     this.adminNotes = this.userInfo.profile_admin_notes;
-        // } else {
-        //     this.adminNotes = this.userInfo.profile_admin_notes.slice(0, 5);
-        // }
-    }    
+        if (this.isSeeAllAdminNotes) {
+            this.adminNotes = this.userInfo.profile_admin_notes;
+        } else {
+            this.adminNotes = this.userInfo.profile_admin_notes.slice(0, 5);
+        }
+    }
+
+    private displayError(err) {
+        const errors = err.error.errors;
+        Object.keys(errors).forEach(v => {
+            this.toastr.error(errors[v]);
+        });
+    }
 }

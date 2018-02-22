@@ -29,23 +29,23 @@
         <mat-tab-group dynamicHeight="true">
 
             <mat-tab label="Staff">
-                <app-admin-shift-staff [currentUser]="currentUser"></app-admin-shift-staff>
+                <app-admin-shift-staff [shift]="shift"></app-admin-shift-staff>
             </mat-tab>
 
             <mat-tab label="Expenses">
-                <app-admin-shift-expenses></app-admin-shift-expenses>
+                <app-admin-shift-expenses [shift]="shift"></app-admin-shift-expenses>
             </mat-tab>
 
             <mat-tab label="Tracking">
-                <app-admin-shift-tracking></app-admin-shift-tracking>
+                <app-admin-shift-tracking [shift]="shift"></app-admin-shift-tracking>
             </mat-tab>
 
             <mat-tab label="Reports & Uploads">
-                <app-admin-shift-reports-uploads></app-admin-shift-reports-uploads>
+                <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
             </mat-tab>
 
             <mat-tab label="Castings">
-                <app-admin-shift-castings></app-admin-shift-castings>
+                <app-admin-shift-castings [shift]="shift"></app-admin-shift-castings>
             </mat-tab>
         </mat-tab-group>
 

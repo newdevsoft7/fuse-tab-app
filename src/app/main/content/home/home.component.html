@@ -13,8 +13,8 @@
 
 
 
-    <ng-template #usersTpl>
-        <app-users></app-users>
+    <ng-template #usersTpl let-data="data">
+        <app-users [data]="data"></app-users>
     </ng-template>
 
     <ng-template #usersProfileTpl let-data="data">

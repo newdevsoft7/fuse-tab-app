@@ -1,28 +1,42 @@
-<div id="staff" class="pt-24" fxLayout="row" fxLayoutWrap>
+<div id="admin-shift-staff" class="pt-24" fxLayout="row" fxLayoutWrap>
     <div class="staff-content" fxLayout="column" [fxFlex]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
     
-        <div class="staff-box info-box general" fxLayout="column" *ngIf="currentUser.lvl == 'owner'">
+        <div *ngFor="let role of roles" class="staff-box info-box general" fxLayout="column">
     
-            <header class="mat-accent-bg">
-                <div class="title">Sampler 9:00 am - 5:30 pm</div>
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">{{role.rname}}</div>
+
+                <div>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                        <mat-icon class="material-icons">more_horiz</mat-icon>
+                    </button>
+                    
+                    <mat-menu #menu="matMenu">
+                    
+                        <button mat-menu-item (click)="onAddStaffToRole(role)">
+                            <span>Select staff</span>
+                        </button>
+                    
+                    </mat-menu>
+                </div>
             </header>
     
             <div class="content">
-                <mat-tab-group dynamicHeight="true">
+                <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section">
                 
-                    <mat-tab label="Selected 0/2">
+                    <mat-tab label="Selected">
                         <app-admin-shift-staff-selected></app-admin-shift-staff-selected>
                     </mat-tab>
                 
-                    <mat-tab label="Standby 0">
+                    <mat-tab label="Standby">
                         <app-admin-shift-staff-standby></app-admin-shift-staff-standby>
                     </mat-tab>
                 
-                    <mat-tab label="Applicants 13">
+                    <mat-tab label="Applicants">
                         <app-admin-shift-staff-applicants></app-admin-shift-staff-applicants>
                     </mat-tab>
 
-                    <mat-tab label="NA 23">
+                    <mat-tab label="NA">
                         <app-admin-shift-staff-na></app-admin-shift-staff-na>
                     </mat-tab>
                     

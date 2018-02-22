@@ -16,6 +16,10 @@ export class AdminShiftComponent implements OnInit {
 	get id() {
 		return this.data.id;
 	}
+
+	get url() {
+		return this.data.url;
+	}
 	
 	currentUser: any;
 	shift: any;

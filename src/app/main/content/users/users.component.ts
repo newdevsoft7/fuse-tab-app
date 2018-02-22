@@ -1,14 +1,31 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import {
+    Component, OnInit,
+    ViewEncapsulation, ViewChild,
+    ElementRef, Input
+} from '@angular/core';
+
 import { MatDialog } from '@angular/material';
+
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from './user.service';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+
 import * as _ from 'lodash';
+
+import { TabService } from '../../tab/tab.service';
+import { UserService } from './user.service';
+import { ActionService } from '../../../shared/action.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
 import { Tab } from '../../tab/tab';
-import { TabService } from '../../tab/tab.service';
+import { TokenStorage } from '../../../shared/authentication/token-storage.service';
 
 const DEFAULT_PAGE_SIZE = 5;
+const USERS_TAB = 'users';
+
+export enum Mode {
+    Normal, // Users
+    Shift,  // Add Users to Shift
+    Role
+}
 
 @Component({
     selector: 'app-users',
@@ -17,35 +34,58 @@ const DEFAULT_PAGE_SIZE = 5;
     encapsulation: ViewEncapsulation.None
 })
 export class UsersComponent implements OnInit {
+
+    currentUser;
     users: any[];
     selectedUsers: any[] = [];
     columns: any[];
-
+    
     pageNumber: number;
     pageSize = DEFAULT_PAGE_SIZE;
     total: number;
     pageLengths = [5, 10, 20, 50, 100];
-
+    
     filters = [];
     sorts: any[];
 
     typeFilters;
     selectedTypeFilter = 'utype:=:all'  // All Active Users
+    
+    mode: Mode = Mode.Normal; // Normal
+    public Mode = Mode;
 
     loadingIndicator = true;
     reorderable = true;
-
+    
     dialogRef: any;
-
+    
+    differ: any;
+    
     @ViewChild(DatatableComponent) table: DatatableComponent
+
+    _data;
+    @Input('data')
+    get data() {
+        return this._data;
+    }
+
+    set data(value) {
+        this._data = value;
+        if (this._data && this._data.role) {
+            this.mode = Mode.Role;
+        } 
+    }
 
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
         private userService: UserService,
+        private tokenStorage: TokenStorage,
+        private actionService: ActionService,
         private tabService: TabService) { }
 
     ngOnInit() {
+        this.currentUser = this.tokenStorage.getUser();
         this.init();
     }
 
@@ -134,6 +174,33 @@ export class UsersComponent implements OnInit {
                         });
                     });
             });
+    }
+
+    // Add users to roles
+    addUsersToShift() {
+        if (!this.selectedUsers.length) { return false; }
+        // TODO
+        this.tabService.closeTab(USERS_TAB);
+        this.tabService.openTab(this.data.tab);
+    }
+
+    addUsersToRole() {
+        if (!this.selectedUsers.length) { return false; }
+        // TODO
+        const userIds = this.selectedUsers.map(user => user.id);
+        const section = this.data.role.section;
+        const role = this.data.role;
+
+        this.actionService.addUsersToRole({ userIds, section, role });
+        this.tabService.closeTab(USERS_TAB);
+
+        // TODO - Select tab by user level
+        let template = 'shiftTpl';
+
+        if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+            template = 'adminShiftTpl';
+        }
+        this.tabService.openTab(new Tab(this.data.shiftTitle, template, this.data.tab, { id: this.data.role.shift_id, url: this.data.tab }));
     }
 
     onActivate(evt) {

@@ -33,6 +33,7 @@ import { SocketService } from '../../shared/socket.service';
 import { FavicoService } from '../../shared/favico.service';
 import { ActivityManagerService } from '../../shared/activity-manager.service';
 import { MaterialTimeControlModule } from '../components/material-time-control/material-time-control.module';
+import { ActionService } from '../../shared/action.service';
 
 @NgModule({
     declarations   : [
@@ -100,7 +101,8 @@ import { MaterialTimeControlModule } from '../components/material-time-control/m
         FCMService,
         SocketService,
         FavicoService,
-        ActivityManagerService
+        ActivityManagerService,
+        ActionService
     ]
 })
 
