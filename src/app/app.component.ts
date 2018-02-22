@@ -7,7 +7,7 @@ import { FuseNavigationService } from './core/components/navigation/navigation.s
 import { FuseNavigationModel } from './navigation/navigation.model';
 import { locale as navigationEnglish } from './navigation/i18n/en';
 import { locale as navigationTurkish } from './navigation/i18n/tr';
-import { SocketService } from './shared/socket.service';
+import { SocketService } from './shared/services/socket.service';
 
 @Component({
     selector   : 'fuse-root',

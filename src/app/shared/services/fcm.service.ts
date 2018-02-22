@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import { UsersChatService } from '../main/content/users/chat/chat.service';
+import { UsersChatService } from '../../main/content/users/chat/chat.service';
 
 firebase.initializeApp({
   messagingSenderId: '557767382630'
@@ -20,25 +20,28 @@ export class FCMService {
         throw new Error(e.message || 'Permission request denied');
       });
       if (token) {
-        if (this.usersChatService.isDeviceSaved) {
-          await this.usersChatService.updateDevice(token);
-        } else {
-          await this.usersChatService.registerDevice(token);
-        }
+        this.updateFirebaseToken(token);
       }
     } catch (e) {
       throw new Error(e.message || 'Permission request denied');
     }
   }
 
-  refreshToken() {
-    this.messaging.onTokenRefresh(async () => {
-      const token = await this.messaging.getToken();
+  async updateFirebaseToken(token: string) {
+    try {
       if (this.usersChatService.isDeviceSaved) {
         await this.usersChatService.updateDevice(token);
       } else {
-        await this.usersChatService.registerDevice(token);
+        const deviceId = await this.usersChatService.registerDevice(token);
+        this.usersChatService.Device = deviceId;
       }
+    } catch (e) { console.log(e); }
+  }
+
+  refreshToken() {
+    this.messaging.onTokenRefresh(async () => {
+      const token = await this.messaging.getToken();
+      this.updateFirebaseToken(token);
     });
   }
 }

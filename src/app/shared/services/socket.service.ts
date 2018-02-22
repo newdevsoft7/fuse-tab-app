@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
-import { UsersChatService } from '../main/content/users/chat/chat.service';
+import { environment } from '../../../environments/environment';
+import { UsersChatService } from '../../main/content/users/chat/chat.service';
 
 const SOCKET_SERVER_URL = environment.socketServerUrl;
 

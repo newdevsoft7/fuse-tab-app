@@ -1,22 +1,18 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from 'ngx-auth';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { map } from 'rxjs/operators';
-
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { environment } from '../../../environments/environment';
 import { TokenStorage } from './token-storage.service';
 
 import { UsersChatService } from '../../main/content/users/chat/chat.service';
-import { SocketService } from '../socket.service';
-import { FavicoService } from '../favico.service';
+import { SocketService } from './socket.service';
+import { FavicoService } from './favico.service';
 
 const BASE_URL = `${environment.apiUrl}`;
 const AUTH_URL = `${BASE_URL}/auth`;
@@ -29,7 +25,10 @@ interface AccessData {
 }
 
 @Injectable()
-export class AuthenticationService implements AuthService {
+export class AuthenticationService {
+
+    refreshing: boolean = false;
+    tokenRefreshed$: BehaviorSubject<any> = new BehaviorSubject(null);
 
     constructor(
         private http: HttpClient,
@@ -41,47 +40,55 @@ export class AuthenticationService implements AuthService {
     
     /**
      * Check, if user already authorized.
-     * @description Should return Observable with true or false values
-     * @returns {Observable<boolean>}
+     * @description Should return true or false
+     * @returns {boolean}
      * @memberOf AuthService
      */
-    public isAuthorized(): Observable<boolean> {
-        return this.tokenStorage
-            .getAccessToken()
-            .map(token => !!token);
+    public isAuthorized(): boolean {
+        return !!this.getAccessToken();
     }
 
     /**
      * Get access token
-     * @description Should return access token in Observable from e.g.
+     * @description Should return access token
      * localStorage
-     * @returns {Observable<string>}
+     * @returns {string}
      */
-    public getAccessToken(): Observable<string> {
+    public getAccessToken(): string {
         return this.tokenStorage.getAccessToken();
     }
 
     /**
      * Function, that should perform refresh token verifyTokenRequest
-     * @description Should be successfully completed so interceptor
-     * can execute pending requests or retry original one
      * @returns {Observable<any>}
      */
     public refreshToken(): Observable<AccessData> {
-        return this.tokenStorage
-            .getRefreshToken()
-            .switchMap((refreshToken: string) => {
-                if (refreshToken) {
-                    return this.http.post(`${AUTH_URL}/refresh`, {
-                        refresh_token: refreshToken
-                    });
-                }
+        if (this.refreshing) {
+            return new Observable(observer => {
+                this.tokenRefreshed$.subscribe((res) => {
+                    if (res) {
+                        observer.next();
+                        observer.complete();
+                    }
+                });
+            });
+        } else {
+            this.refreshing = true;
+
+            return this.http.post(`${AUTH_URL}/refresh`, {
+                refresh_token: this.tokenStorage.getRefreshToken()
             })
-            .do(this.saveAccessData.bind(this))
+            .map((tokens: AccessData) => {
+                this.saveAccessData(tokens);
+                this.tokenRefreshed$.next(true);
+                this.refreshing = false;
+            })
             .catch((err) => {
                 this.logout();
-                return Observable.throw(err);
+                this.refreshing = false;
+                return this.handleError(err);
             });
+        }
     }
 
     public refreshShouldHappen(response: HttpErrorResponse): boolean {
@@ -94,8 +101,11 @@ export class AuthenticationService implements AuthService {
             .catch(this.handleError);
     }
 
-    public logout() {
-        this.usersChatService.removeDevice();
+    public async logout() {
+        try {
+            await this.usersChatService.removeDevice();
+            this.usersChatService.Device = null;
+        } catch (e) {}
         if (this.tokenStorage.getUser()) {
             this.disconnectSocket();
         }

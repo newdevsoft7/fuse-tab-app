@@ -2,7 +2,7 @@ import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
-import { AuthenticationService } from '../../../shared/authentication/authentication.service';
+import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
@@ -15,12 +15,12 @@ import * as TAB from '../../../constants/tab';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingCategory } from '../tracking/tracking.models';
 
-import { FCMService } from '../../../shared/fcm.service';
-import { SocketService } from '../../../shared/socket.service';
-import { TokenStorage } from '../../../shared/authentication/token-storage.service';
-import { ActivityManagerService } from '../../../shared/activity-manager.service';
+import { FCMService } from '../../../shared/services/fcm.service';
+import { SocketService } from '../../../shared/services/socket.service';
+import { TokenStorage } from '../../../shared/services/token-storage.service';
+import { ActivityManagerService } from '../../../shared/services/activity-manager.service';
 import { UsersChatService } from '../users/chat/chat.service';
-import { FavicoService } from '../../../shared/favico.service';
+import { FavicoService } from '../../../shared/services/favico.service';
 
 @Component({
     selector   : 'fuse-home',
@@ -57,7 +57,6 @@ export class FuseHomeComponent implements OnDestroy
         private activityManagerService: ActivityManagerService,
         private usersChatService: UsersChatService,
         private favicoService: FavicoService) {
-        // this.authService.refreshToken().subscribe(_ => {});
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
@@ -68,7 +67,7 @@ export class FuseHomeComponent implements OnDestroy
         // listen window activity/inactivity change
         this.activityManagerService.detectActivityChange();
 
-        this.getUnreads();
+        // this.getUnreads();
     }
 
     async runSockets() {

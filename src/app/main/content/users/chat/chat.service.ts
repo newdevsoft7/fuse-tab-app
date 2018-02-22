@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { environment } from '../../../../../environments/environment';
 
 import 'rxjs/add/operator/map';
@@ -41,38 +41,24 @@ export class UsersChatService {
   }
 
   async removeDevice(): Promise<any> {
-    const url = `${BASE_URL}/device/${this.Device}`;
-    try {
-      await this.http.delete(url).toPromise();
-      this.Device = null;
-    } catch (e) {
-      await Promise.reject(e);
-    }
+    const url = `${USER_URL}/device/${this.Device}`;
+    return this.http.delete(url).toPromise();
   }
 
   async registerDevice(firebase_token: string): Promise<any> {
-    const url = `${BASE_URL}/device`;
-    try {
-      const deviceId = await this.http.post(url, { 
-        firebase_token,
-        user_id: this.getUserId()
-      }).map((_: any) => _.id).toPromise();
-      this.Device = deviceId;
-    } catch (e) {
-      await this.handleError(e);
-    }
+    const url = `${USER_URL}/device`;
+    return this.http.post(url, { 
+      firebase_token,
+      user_id: this.getUserId()
+    }).map((_: any) => _.id).toPromise();
   }
 
   async updateDevice(firebase_token: string): Promise<any> {
-    const url = `${BASE_URL}/device/${this.Device}`;
-    try {
-      await this.http.put(url, { 
-        firebase_token,
-        user_id: this.getUserId()
-      }).toPromise();
-    } catch (e) {
-      await this.handleError(e);
-    }
+    const url = `${USER_URL}/device/${this.Device}`;
+    return this.http.put(url, { 
+      firebase_token,
+      user_id: this.getUserId()
+    }).toPromise();
   }
 
   async addContactSession(user_id: number) {

@@ -4,7 +4,6 @@ import { UsersComponent } from './users.component';
 import { UsersExportsComponent } from './exports/exports.component';
 import { UsersPresentationsComponent } from './presentations/presentations.component';
 import { SharedModule } from '../../../core/modules/shared.module';
-import { AuthenticationModule } from '../../../shared/authentication/authentication.module';
 import { UserService } from './user.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
 import { UsersProfileComponent } from './profile/profile.component';
@@ -34,8 +33,7 @@ import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filte
 @NgModule({
     imports: [
         CommonModule,
-        SharedModule,
-        AuthenticationModule
+        SharedModule
     ],
     declarations: [
         UsersComponent,

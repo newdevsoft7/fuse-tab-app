@@ -25,11 +25,15 @@ import { FuseMaterialColorPickerComponent } from '../components/material-color-p
 import { FuseTranslationLoaderService } from '../services/translation-loader.service';
 import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
-import { CustomLoadingService } from '../../shared/custom-loading.service';
-import { FCMService } from '../../shared/fcm.service';
-import { SocketService } from '../../shared/socket.service';
-import { FavicoService } from '../../shared/favico.service';
-import { ActivityManagerService } from '../../shared/activity-manager.service';
+import { CustomLoadingService } from '../../shared/services/custom-loading.service';
+import { FCMService } from '../../shared/services/fcm.service';
+import { SocketService } from '../../shared/services/socket.service';
+import { FavicoService } from '../../shared/services/favico.service';
+import { ActivityManagerService } from '../../shared/services/activity-manager.service';
+import { AuthenticationService } from '../../shared/services/authentication.service';
+import { TokenStorage } from '../../shared/services/token-storage.service';
+import { AuthGuardService } from '../../shared/guards/auth-guard.service';
+import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
 
 @NgModule({
     declarations   : [
@@ -89,7 +93,12 @@ import { ActivityManagerService } from '../../shared/activity-manager.service';
         FCMService,
         SocketService,
         FavicoService,
-        ActivityManagerService
+        ActivityManagerService,
+        AuthenticationService,
+        TokenStorage,
+        // guards
+        AuthGuardService,
+        UnauthGuardService
     ]
 })
 

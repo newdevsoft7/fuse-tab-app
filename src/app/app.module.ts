@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule, Routes } from '@angular/router';
@@ -14,18 +14,17 @@ import { FuseNavigationService } from './core/components/navigation/navigation.s
 import { FuseHomeModule } from './main/content/home/home.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { LoginModule } from './main/content/authentication/login/login.module';
-import { AuthenticationModule } from './shared/authentication/authentication.module';
 import { FuseHomeComponent } from './main/content/home/home.component';
-import { ProtectedGuard, PublicGuard } from 'ngx-auth';
-import { CustomToastComponent } from './shared/custom-toast.component';
+import { CustomToastComponent } from './shared/services/custom-toast.component';
+import { AuthGuardService } from './shared/guards/auth-guard.service';
+import { SCHttpInterceptor } from './shared/interceptor/http-interceptor';
 
 
 const appRoutes: Routes = [
     {
         path: 'home',
         component: FuseHomeComponent,
-        canActivate: [ProtectedGuard]
-
+        canActivate: [AuthGuardService]
     },
     {
         path: '**',
@@ -52,12 +51,16 @@ const appRoutes: Routes = [
         FuseMainModule,
         FuseHomeModule,
         LoginModule,
-        AuthenticationModule
     ],
     providers   : [
         FuseSplashScreenService,
         FuseConfigService,
-        FuseNavigationService
+        FuseNavigationService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: SCHttpInterceptor,
+            multi: true
+        }
     ],
     entryComponents: [
         CustomToastComponent

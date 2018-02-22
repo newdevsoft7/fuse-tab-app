@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { fuseAnimations } from '../../../../../../../core/animations';
-import { TokenStorage } from '../../../../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 
 @Component({
     selector   : 'fuse-chat-chats-sidenav',

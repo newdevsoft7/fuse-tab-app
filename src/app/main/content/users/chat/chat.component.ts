@@ -1,12 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
-import { TokenStorage } from '../../../../shared/authentication/token-storage.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { FuseChatViewComponent } from './chat-view/chat-view.component';
-import { SocketService } from '../../../../shared/socket.service';
+import { SocketService } from '../../../../shared/services/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-import { FavicoService } from '../../../../shared/favico.service';
+import { FavicoService } from '../../../../shared/services/favico.service';
 
 @Component({
   selector: 'app-users-chat',

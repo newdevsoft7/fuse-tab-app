@@ -12,7 +12,7 @@
         <!-- NAVBAR: Top -->
         <fuse-navbar-horizontal class="top-navbar" fxHide fxShow.gt-md
                                 [ngClass]="fuseSettings.colorClasses.navbar"
-                                *ngIf="fuseSettings.layout.navigation === 'top'">
+                                *ngIf="fuseSettings.layout.navigation === 'top' && isAuthenticated">
         </fuse-navbar-horizontal>
         <!-- / NAVBAR: Top -->
 
@@ -22,7 +22,7 @@
             <fuse-navbar-vertical [folded]="fuseSettings.layout.navigationFolded"
                                   class="left-navbar"
                                   [ngClass]="fuseSettings.colorClasses.navbar"
-                                  *ngIf="fuseSettings.layout.navigation === 'left' || fuseSettings.layout.navigation === 'top'">
+                                  *ngIf="(fuseSettings.layout.navigation === 'left' || fuseSettings.layout.navigation === 'top') && isAuthenticated">
             </fuse-navbar-vertical>
             <!-- / NAVBAR: Left -->
 

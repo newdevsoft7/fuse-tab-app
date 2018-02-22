@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
-import { AuthenticationService } from '../../../../shared/authentication/authentication.service';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
