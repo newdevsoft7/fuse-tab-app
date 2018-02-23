@@ -23,7 +23,7 @@ export class SCHttpInterceptor implements HttpInterceptor {
             authService.logout();
           } else {
             return authService.refreshToken()
-                .switchMap((token) => {
+                .switchMap(() => {
                     req = this.getRequestWithToken(req, authService.getAccessToken());
                     return next.handle(req);
                 });
