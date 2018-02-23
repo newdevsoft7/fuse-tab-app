@@ -1,8 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { MatTab, MatTabChangeEvent } from '@angular/material';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { ScheduleService } from '../../schedule.service';
 import { UserService } from '../../../users/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { AdminShiftMapComponent } from './map/map.component';
+import { AdminShiftStaffComponent } from './staff/staff.component';
+
+export enum TAB {
+	Staff,
+	Expenses,
+	Tracking,
+	Reports,
+	Casting,
+	Map
+};
 
 @Component({
 	selector: 'app-admin-shift',
@@ -12,6 +24,8 @@ import { ToastrService } from 'ngx-toastr';
 export class AdminShiftComponent implements OnInit {
 
 	@Input() data;
+	@ViewChild('staffTab') staffTab: AdminShiftStaffComponent;
+	@ViewChild('mapTab') mapTab: AdminShiftMapComponent;
 
 	get id() {
 		return this.data.id;
@@ -34,6 +48,17 @@ export class AdminShiftComponent implements OnInit {
 	ngOnInit() {
 		this.currentUser = this.tokenStorage.getUser();
 		this.fetch();
+	}
+
+	selectedTabChange(event: MatTabChangeEvent) {
+		switch (event.index) {
+			case TAB.Map:
+				this.mapTab.refreshMap();
+				break;
+		
+			default:
+				break;
+		}
 	}
 
 	private async fetch() {

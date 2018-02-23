@@ -1,0 +1,16 @@
+#shift-admin-map {
+
+    .fuse-card {
+
+        &.auto-width {
+            min-width: 0;
+            max-width: none;
+        }
+    }
+
+    .h-640 {
+        height: 640px !important;
+        min-height: 640px !important;
+        max-height: 640px !important;
+    }
+}

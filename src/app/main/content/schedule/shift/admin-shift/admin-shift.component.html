@@ -26,10 +26,10 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <mat-tab-group dynamicHeight="true">
+        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
 
             <mat-tab label="Staff">
-                <app-admin-shift-staff [shift]="shift"></app-admin-shift-staff>
+                <app-admin-shift-staff [shift]="shift" #staffTab></app-admin-shift-staff>
             </mat-tab>
 
             <mat-tab label="Expenses">
@@ -46,6 +46,10 @@
 
             <mat-tab label="Castings">
                 <app-admin-shift-castings [shift]="shift"></app-admin-shift-castings>
+            </mat-tab>
+
+            <mat-tab label="Map">
+                <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
             </mat-tab>
         </mat-tab-group>
 

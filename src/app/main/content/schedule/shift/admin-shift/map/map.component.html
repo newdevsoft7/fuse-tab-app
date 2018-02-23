@@ -1,0 +1,33 @@
+<div id="shift-admin-map" class="p-24">
+
+    <div class="fuse-card auto-width p-16">
+
+        <agm-map class="h-640 w-100-p" [minZoom]="2" [maxZoom]="24" [zoom]="8"
+            [latitude]="shift.lat" [longitude]="shift.lon"
+            [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
+            [scaleControl]="false" [streetViewControl]="false" [scrollwheel]="false" [styles]="styles">
+
+            <agm-marker [latitude]="shift.lat" [longitude]="shift.lon" [markerDraggable]="true"
+                 (dragEnd)="changePosition($event)">
+            
+                <agm-info-window>
+                    <strong>Title: {{shift.title}}</strong>
+                </agm-info-window>
+            
+            </agm-marker>
+
+            <agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'">
+                <agm-marker *ngFor="let marker of markers"
+                    [latitude]="marker.lat" [longitude]="marker.lng"
+                    [iconUrl]="marker.icon">
+                    <agm-info-window>
+                        <strong>{{marker.label}}</strong>
+                    </agm-info-window>
+                </agm-marker>
+            </agm-marker-cluster>
+
+        </agm-map>
+
+    </div>
+
+</div>

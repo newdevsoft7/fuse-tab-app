@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { AgmCoreModule } from '@agm/core';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { SCCalendarModule } from '../../../core/components/sc-calendar/sc-calendar.module';
@@ -12,6 +14,7 @@ import { AdminShiftExpensesComponent } from './shift/admin-shift/expenses/expens
 import { AdminShiftTrackingComponent } from './shift/admin-shift/tracking/tracking.component';
 import { AdminShiftReportsUploadsComponent } from './shift/admin-shift/reports-uploads/reports-uploads.component';
 import { AdminShiftCastingsComponent } from './shift/admin-shift/castings/castings.component';
+import { AdminShiftMapComponent } from './shift/admin-shift/map/map.component';
 
 import { ScheduleService } from './schedule.service';
 import { AdminShiftStaffSelectedComponent } from './shift/admin-shift/staff/selected/selected.component';
@@ -28,7 +31,11 @@ import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-req
         CommonModule,
         SCCalendarModule,
         SharedModule,
-        CustomMultiSelectModule
+        CustomMultiSelectModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
+        }),
+        AgmJsMarkerClustererModule
     ],
     declarations: [
         ScheduleComponent,
@@ -47,6 +54,7 @@ import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-req
         NewShiftComponent,
         ShiftRoleEditComponent,
         ShiftRoleRequirementsComponent,
+        AdminShiftMapComponent,
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],
