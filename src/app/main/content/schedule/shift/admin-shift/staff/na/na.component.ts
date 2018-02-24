@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, Input, DoCheck, IterableDiffers } from '@angular/core';
+import {
+    Component, OnInit,
+    ViewEncapsulation, Input,
+    DoCheck, IterableDiffers,
+    Output, EventEmitter
+} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +19,19 @@ import * as _ from 'lodash';
     encapsulation: ViewEncapsulation.None
 })
 export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
+
+    _staffs;
+
+    @Input()
+    get staffs() {
+        return this._staffs;
+    }
+
+    @Output() staffsChange = new EventEmitter();
+    set staffs(staffs) {
+        this._staffs = staffs;
+        this.staffsChange.emit(staffs);
+    }
 
     constructor(
         private loadingService: CustomLoadingService,

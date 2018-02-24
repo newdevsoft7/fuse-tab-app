@@ -112,6 +112,15 @@ export class ScheduleService {
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
   }
 
+
+  assignStaffsToRole(userIds, roleId, staffStatusId) {
+    const url = `${BASE_URL}/role/${roleId}`;
+    return this.http.post(url, {
+      user_ids: userIds,
+      staff_status_id: staffStatusId
+    }).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

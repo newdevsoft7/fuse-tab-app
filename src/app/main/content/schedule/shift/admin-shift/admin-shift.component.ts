@@ -8,12 +8,12 @@ import { AdminShiftMapComponent } from './map/map.component';
 import { AdminShiftStaffComponent } from './staff/staff.component';
 
 export enum TAB {
-	Staff,
-	Expenses,
-	Tracking,
-	Reports,
-	Casting,
-	Map
+	Staff = 0,
+	Expenses = 1,
+	Tracking = 2,
+	Reports = 3,
+	Casting = 4,
+	Map = 5
 };
 
 @Component({

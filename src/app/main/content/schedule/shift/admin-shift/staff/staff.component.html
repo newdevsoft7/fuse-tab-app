@@ -22,22 +22,27 @@
             </header>
     
             <div class="content">
-                <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section">
+                <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section"
+                    (selectedTabChange)="onSelectedTabChange(role, $event)">
                 
                     <mat-tab label="Selected">
-                        <app-admin-shift-staff-selected></app-admin-shift-staff-selected>
+                        <app-admin-shift-staff-selected [(staffs)]="role.role_staff" 
+                            (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-selected>
                     </mat-tab>
                 
                     <mat-tab label="Standby">
-                        <app-admin-shift-staff-standby></app-admin-shift-staff-standby>
+                        <app-admin-shift-staff-standby [(staffs)]="role.standby_staffs"
+                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-standby>
                     </mat-tab>
                 
                     <mat-tab label="Applicants">
-                        <app-admin-shift-staff-applicants></app-admin-shift-staff-applicants>
+                        <app-admin-shift-staff-applicants [(staffs)]="role.applicants"
+                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-applicants>
                     </mat-tab>
 
                     <mat-tab label="NA">
-                        <app-admin-shift-staff-na></app-admin-shift-staff-na>
+                        <app-admin-shift-staff-na [(staffs)]="role.na"
+                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-na>
                     </mat-tab>
                     
                 </mat-tab-group>
@@ -45,7 +50,6 @@
             </div>
     
         </div>
-    
     
     </div>
     
