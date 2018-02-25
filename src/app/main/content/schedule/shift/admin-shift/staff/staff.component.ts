@@ -125,16 +125,13 @@ export class AdminShiftStaffComponent implements OnInit {
             ({ userIds, role, section }) => {
                 const staffStatusId = mapSectionToStaffStatus(section);
                 this.loadingSerivce.showLoadingSpinner();
-                debugger;
                 this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
                     .subscribe(res => {
-                        debugger;
                         this.loadingSerivce.hideLoadingSpinner();
                         this.refreshTabByRole(role, section);
                         this.updateStaffsCount(role.id);
                         this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
                     }, err => {
-                        debugger;
                         this.loadingSerivce.hideLoadingSpinner();
                         this.updateStaffsCount(role.id);
                         this.refreshTabByRole(role, section);

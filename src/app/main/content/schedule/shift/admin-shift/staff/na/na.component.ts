@@ -8,8 +8,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import { CustomLoadingService } from '../../../../../../../shared/services/custom-loading.service';
+import { TabService } from '../../../../../../tab/tab.service';
+import { UserService } from '../../../../../users/user.service';
 
 import * as _ from 'lodash';
+import { Tab } from '../../../../../../tab/tab';
 
 
 @Component({
@@ -35,6 +38,8 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
 
     constructor(
         private loadingService: CustomLoadingService,
+        private tabService: TabService,
+        private userService: UserService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         differs: IterableDiffers
@@ -50,6 +55,16 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
             default:
                 return value;
         }
+    }
+
+    openUser(staff, event: Event) {
+        event.stopPropagation();
+        this.userService.getUser(staff.user_id)
+            .subscribe(res => {
+                const user = res;
+                const tab = new Tab(`${user.fname} ${user.lname}`, 'usersProfileTpl', `users/user/${user.id}`, user);
+                this.tabService.openTab(tab);
+            });
     }
 
     ngOnInit() {
