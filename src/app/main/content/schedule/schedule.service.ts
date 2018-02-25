@@ -113,12 +113,27 @@ export class ScheduleService {
   }
 
 
-  assignStaffsToRole(userIds, roleId, staffStatusId) {
-    const url = `${BASE_URL}/role/${roleId}`;
+  assignStaffsToRole(userIds, roleId, staffStatusId): Observable<any> {
+    return Observable.forkJoin(
+      userIds.map(userId => this.assignStaffToRole(userId, roleId, staffStatusId))
+    );
+  }
+
+  assignStaffToRole(userId, roleId, staffStatusId): Observable<any> {
+    const url = `${BASE_URL}/role/${roleId}/assign`;
     return this.http.post(url, {
-      user_ids: userIds,
+      user_id: userId,
       staff_status_id: staffStatusId
     }).catch(this.handleError);
+  }
+
+  getRoleStaffs(roleId, query): Observable<any> {
+    const url = `${BASE_URL}/shift/role/${roleId}/${query}`;
+    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
+  }
+
+  getRoleStaffsCounts(roleId): Observable<any> {
+    return this.getRoleStaffs(roleId, 'counts');
   }
 
   private handleError(error: Response | any) {

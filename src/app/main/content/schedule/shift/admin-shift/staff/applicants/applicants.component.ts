@@ -8,9 +8,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import { CustomLoadingService } from '../../../../../../../shared/services/custom-loading.service';
+import { ScheduleService } from '../../../../schedule.service';
 
 import * as _ from 'lodash';
 import { FuseConfirmDialogComponent } from '../../../../../../../core/components/confirm-dialog/confirm-dialog.component';
+
+import { STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_SELECTED, STAFF_STATUS_REJECTED, STAFF_STATUS_STANDBY } from '../../../../../../../constants/shift-status';
 
 
 @Component({
@@ -41,6 +44,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
 
     constructor(
         private loadingService: CustomLoadingService,
+        private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         differs: IterableDiffers
@@ -56,8 +60,11 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                // TODO
-                this.updateStaffCount();
+                this.scheduleService.assignStaffToRole(staff.user_id, staff.shift_role_id, STAFF_STATUS_SELECTED)
+                    .subscribe(res => {
+                        this.staffs = this._staffs.filter(v => v.id !== staff.id);
+                        this.updateStaffCount();
+                    });
             }
         });     
     }
@@ -71,8 +78,11 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                // TODO
-                this.updateStaffCount();
+                this.scheduleService.assignStaffToRole(staff.user_id, staff.shift_role_id, STAFF_STATUS_STANDBY)
+                    .subscribe(res => {
+                        this.staffs = this._staffs.filter(v => v.id !== staff.id);
+                        this.updateStaffCount();
+                    });
             }
         });    
     }
@@ -86,8 +96,11 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                // TODO
-                this.updateStaffCount();
+                this.scheduleService.assignStaffToRole(staff.user_id, staff.shift_role_id, STAFF_STATUS_HIDDEN_REJECTED)
+                    .subscribe(res => {
+                        this.staffs = this._staffs.filter(v => v.id !== staff.id);
+                        this.updateStaffCount();
+                    });
             }
         });
         
@@ -102,7 +115,11 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.updateStaffCount();
+                this.scheduleService.assignStaffToRole(staff.user_id, staff.shift_role_id, STAFF_STATUS_REJECTED)
+                    .subscribe(res => {
+                        this.staffs = this._staffs.filter(v => v.id !== staff.id);
+                        this.updateStaffCount();
+                    });
             }
         });
     }
@@ -111,9 +128,19 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
         this.onStaffCountChanged.next(true);
     }
 
+    getAvatar(value) {
+        switch (value) {
+            case 'male_tthumb.jpg':
+            case 'female_tthumb.jpg':
+            case 'nosex_tthumb.jpg':
+                return `/assets/images/avatars/${value}`;
+            default:
+                return value;
+        }
+    }
+
 
     ngOnInit() {
-        console.log(`applicants`);
     }
 
     ngDoCheck() {

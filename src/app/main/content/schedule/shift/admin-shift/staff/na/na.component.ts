@@ -41,6 +41,17 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
     ) {
     }
 
+    getAvatar(value) {
+        switch (value) {
+            case 'male_tthumb.jpg':
+            case 'female_tthumb.jpg':
+            case 'nosex_tthumb.jpg':
+                return `/assets/images/avatars/${value}`;
+            default:
+                return value;
+        }
+    }
+
     ngOnInit() {
     }
 

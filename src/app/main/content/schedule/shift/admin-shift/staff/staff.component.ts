@@ -37,9 +37,13 @@ export enum Section {
     NA = 3
 };
 
-export enum StaffStatus {
-    selected
-} 
+export enum Query {
+    Counts = 'counts',
+    Selected = 'selected',
+    Standby = 'standby',
+    Applicant = 'applicant',
+    Na = 'na'
+};
 
 @Component({
     selector: 'app-admin-shift-staff',
@@ -97,10 +101,23 @@ export class AdminShiftStaffComponent implements OnInit {
             }
         });
 
-        this.roles = this.shift.shift_roles.map(role => { 
-            return { ...role, section: Section.Selected, shiftTitle: this.shift.title };
+        this.roles = this.shift.shift_roles.map(role => {
+            const selected = role.role_staff.filter(rs => rs.staff_status_id === 3);    // Get selected from shift role staff
+            return {
+                ...role,
+                selected,
+                section: Section.Selected,
+                shiftTitle: this.shift.title,
+                num_selected: 0,
+                num_standby: 0,
+                num_applicants: 0,
+                num_na: 0
+            };
         });
 
+        this.roles.forEach(role => {
+            this.updateStaffsCount(role.id);
+        });
 
 
         // Add Users to Role
@@ -108,12 +125,20 @@ export class AdminShiftStaffComponent implements OnInit {
             ({ userIds, role, section }) => {
                 const staffStatusId = mapSectionToStaffStatus(section);
                 this.loadingSerivce.showLoadingSpinner();
+                debugger;
                 this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
                     .subscribe(res => {
-                        const selectedRole = this.roles.filter(v => v.id === role.id);
-                        // TODO
+                        debugger;
+                        this.loadingSerivce.hideLoadingSpinner();
+                        this.refreshTabByRole(role, section);
+                        this.updateStaffsCount(role.id);
+                        this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
                     }, err => {
-                        this.displayError(err);
+                        debugger;
+                        this.loadingSerivce.hideLoadingSpinner();
+                        this.updateStaffsCount(role.id);
+                        this.refreshTabByRole(role, section);
+                        this.toastr.error('Error!');
                     })
             });
     }
@@ -123,18 +148,49 @@ export class AdminShiftStaffComponent implements OnInit {
         const roleId = role.id;
         const shiftId = this.shift.id;
 
-        // TODO - Get staffs when selecting a tab
+        this.refreshTabByRole(role, selectedTab);
+    }
+
+    private refreshTabByRole(role, selectedTab: Section) {
         switch (selectedTab) {
             case Section.Selected:
+                this.scheduleService.getRoleStaffs(role.id, Query.Selected)
+                    .subscribe(res => {
+                        const index = this.roles.findIndex(v => v.id === role.id);
+                        this.roles[index].selected = res.role_staff;
+                    }, err => {
+                        this.toastr.error(err.error.message);
+                    });
                 break;
-            
+
             case Section.Standby:
+                this.scheduleService.getRoleStaffs(role.id, Query.Standby)
+                    .subscribe(res => {
+                        const index = this.roles.findIndex(v => v.id === role.id);
+                        this.roles[index].standby = res.role_staff;
+                    }, err => {
+                        this.toastr.error(err.error.message);
+                    });
                 break;
 
             case Section.Applicants:
+                this.scheduleService.getRoleStaffs(role.id, Query.Applicant)
+                    .subscribe(res => {
+                        const index = this.roles.findIndex(v => v.id === role.id);
+                        this.roles[index].applicants = res.role_staff;
+                    }, err => {
+                        this.toastr.error(err.error.message);
+                    });
                 break;
 
             case Section.NA:
+                this.scheduleService.getRoleStaffs(role.id, Query.Na)
+                    .subscribe(res => {
+                        const index = this.roles.findIndex(v => v.id === role.id);
+                        this.roles[index].na = res.role_staff;
+                    }, err => {
+                        this.toastr.error(err.error.message);
+                    });
                 break;
 
             default:
@@ -159,7 +215,16 @@ export class AdminShiftStaffComponent implements OnInit {
 
     updateStaffsCount(roleId) {
         // TODO - Update Staffs count of a role
-        console.log(roleId);
+        this.scheduleService.getRoleStaffsCounts(roleId)
+            .subscribe(res => {
+                const role = this.roles.find(r => r.id === roleId);
+                if (role) {
+                    role['num_selected'] = res.num_selected;
+                    role['num_standby'] = res.num_standby;
+                    role['num_applicants'] = res.num_applicants;
+                    role['num_na'] = res.num_na;
+                }
+            })
     }
 
     private refreshAdminNotesView() {

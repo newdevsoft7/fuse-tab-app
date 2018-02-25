@@ -25,22 +25,38 @@
                 <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section"
                     (selectedTabChange)="onSelectedTabChange(role, $event)">
                 
-                    <mat-tab label="Selected">
-                        <app-admin-shift-staff-selected [(staffs)]="role.role_staff" 
+                    <mat-tab [label]="Selected">
+                        <ng-template mat-tab-label>
+                            Selected&nbsp;
+                            <strong>{{role.num_selected}} / {{role.num_required}}</strong>
+                        </ng-template>
+                        <app-admin-shift-staff-selected [(staffs)]="role.selected" 
                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-selected>
                     </mat-tab>
                 
                     <mat-tab label="Standby">
-                        <app-admin-shift-staff-standby [(staffs)]="role.standby_staffs"
+                        <ng-template mat-tab-label>
+                             Standby&nbsp;
+                            <strong>{{role.num_standby}}</strong>
+                        </ng-template>
+                        <app-admin-shift-staff-standby [(staffs)]="role.standby"
                              (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-standby>
                     </mat-tab>
                 
                     <mat-tab label="Applicants">
+                        <ng-template mat-tab-label>
+                            Applicants&nbsp;
+                            <strong>{{role.num_applicants}}</strong>
+                        </ng-template>
                         <app-admin-shift-staff-applicants [(staffs)]="role.applicants"
                              (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-applicants>
                     </mat-tab>
 
                     <mat-tab label="NA">
+                        <ng-template mat-tab-label>
+                            NA&nbsp;
+                            <strong>{{role.num_na}}</strong>
+                        </ng-template>
                         <app-admin-shift-staff-na [(staffs)]="role.na"
                              (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-na>
                     </mat-tab>
