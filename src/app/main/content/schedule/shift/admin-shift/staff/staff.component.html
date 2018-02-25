@@ -11,13 +11,101 @@
                         <mat-icon class="material-icons">more_horiz</mat-icon>
                     </button>
                     
+
                     <mat-menu #menu="matMenu">
-                    
+                        
                         <button mat-menu-item (click)="onAddStaffToRole(role)">
+                            <mat-icon>person_add</mat-icon>
                             <span>Select staff</span>
                         </button>
+                        
+                        <!-- DOTS BUTTON CONTENT -->
+                        <ng-container [ngSwitch]="role.section">
+                            
+                            <ng-container *ngSwitchCase="Section.Selected">
+                                <button mat-menu-item>
+                                    <mat-icon>person</mat-icon>
+                                    <span>Add all to presentation</span>
+                                </button>
+
+                                <button mat-menu-item>
+                                    <mat-icon>person</mat-icon>
+                                    <span>Add all to submission</span>
+                                </button>
+
+                                <button mat-menu-item>
+                                    <mat-icon>refresh</mat-icon>
+                                    <span>Force re-confirmation</span>
+                                </button>
+
+                                <button mat-menu-item>
+                                    <mat-icon>sync</mat-icon>
+                                    <span>Reset times to role</span>
+                                </button>
+
+                                <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                                    <mat-icon>edit</mat-icon>
+                                    <span>Change statuses</span>
+                                </button>
+
+                                <button mat-menu-item>
+                                    <mat-icon>mail_outline</mat-icon>
+                                    <span>Message users</span>
+                                </button>
+
+                                <button mat-menu-item>
+                                    <mat-icon>call_made</mat-icon>
+                                    <span>Export users</span>
+                                </button>
+                            </ng-container>
+
+                            <ng-container *ngSwitchDefault>
+                                <button mat-menu-item>
+                                    <mat-icon>person</mat-icon>
+                                    <span>Add all to presentation</span>
+                                </button>
+                            
+                                <button mat-menu-item>
+                                    <mat-icon>person</mat-icon>
+                                    <span>Add all to submission</span>
+                                </button>
+                            
+                                <button mat-menu-item>
+                                    <mat-icon>mail_outline</mat-icon>
+                                    <span>Message users</span>
+                                </button>
+                            
+                                <button mat-menu-item>
+                                    <mat-icon>call_made</mat-icon>
+                                    <span>Export users</span>
+                                </button>
+                            
+                            </ng-container>
+
+                        </ng-container>
+                        <!-- / DOTS BUTTON CONTENT -->
+                        
+                    </mat-menu>
+
+                    <!-- CHANGE STATUS SUBMENU -->
+                    <mat-menu #statusMenu="matMenu">
+                    
+                        <button mat-menu-item>Applied</button>
+                        <button mat-menu-item>Standby</button>
+                        <button mat-menu-item>Selected</button>
+                        <button mat-menu-item>Confirmed</button>
+                        <button mat-menu-item>Checked In</button>
+                        <button mat-menu-item>Checked Out</button>
+                        <button mat-menu-item>Completed</button>
+                        <button mat-menu-item>Invoiced</button>
+                        <button mat-menu-item>Paid</button>
+                        <button mat-menu-item>No Show</button>
+                        <button mat-menu-item>No Pay</button>
+                        <button mat-menu-item>Other</button>
                     
                     </mat-menu>
+                    <!-- / CHANGE STATUS SUBMENU -->
+                    
                 </div>
             </header>
     

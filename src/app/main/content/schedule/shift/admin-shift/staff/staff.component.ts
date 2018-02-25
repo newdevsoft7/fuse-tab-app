@@ -57,6 +57,8 @@ export class AdminShiftStaffComponent implements OnInit {
     userInfo: any;
     roles: any[];
 
+    public Section = Section;
+
     @Input() shift;
     
     @ViewChild('adminNoteInput') adminNoteInput;
