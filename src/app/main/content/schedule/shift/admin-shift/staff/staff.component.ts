@@ -127,7 +127,8 @@ export class AdminShiftStaffComponent implements OnInit {
             }
         });
 
-        this.roles = this.shift.shift_roles.map(role => {
+        
+        this.roles = this.shift.shift_roles.map((role, index) => {
 
             // Get selected from shift role staff
             const selected = role.role_staff.filter(rs => {
@@ -135,6 +136,7 @@ export class AdminShiftStaffComponent implements OnInit {
             });
             return {
                 ...role,
+                index,
                 selected,
                 section: Section.Selected,
                 shiftTitle: this.shift.title,
@@ -161,12 +163,33 @@ export class AdminShiftStaffComponent implements OnInit {
             });
     }
 
+
     onSelectedTabChange(role, event: MatTabChangeEvent) {
         const selectedTab = event.index;
         const roleId = role.id;
         const shiftId = this.shift.id;
 
         this.refreshTabByRole(role, selectedTab);
+    }
+
+    moveup(role) {
+        const index = role.index;
+        if (index === 0) return;
+        this.scheduleService.UpdateRoleDisplayOrder(role.id, 'up').subscribe(res => {
+            this.roles[index].index = index - 1;
+            this.roles[index - 1].index = index;
+            this.roles = this.roles.sort((a, b) => a.index - b.index);
+        });
+    }
+
+    movedown(role) {
+        const index = role.index;
+        if (index === this.roles.length - 1) return;
+        this.scheduleService.UpdateRoleDisplayOrder(role.id, 'down').subscribe(res => {
+            this.roles[index].index = index + 1;
+            this.roles[index + 1].index = index;
+            this.roles = this.roles.sort((a, b) => a.index - b.index);
+        });
     }
 
     private refreshTabByRole(role, selectedTab: Section) {
@@ -246,8 +269,6 @@ export class AdminShiftStaffComponent implements OnInit {
     }
 
     changeStatus(role, statusId) {
-
-        debugger;
         const section = role.section;
         let staffs = [];
         switch (section) {
@@ -309,6 +330,7 @@ export class AdminShiftStaffComponent implements OnInit {
             if (result) {
                 this.scheduleService.updateRoleStaffs(staffs.map(v => v.id), { staff_status_id: statusId })
                     .subscribe(res => {
+                        this.toastr.success(`Status${res.length > 1 ? 'es' : ''} updated.`);
                         this.updateStaffsBySection(role);
                     }, err => {
                         this.updateStaffsBySection(role);

@@ -147,6 +147,11 @@ export class ScheduleService {
     );
   }
 
+  UpdateRoleDisplayOrder(roleId, direction): Observable<any> {
+    const url = `${BASE_URL}/shift/role/${roleId}/${direction}`;
+    return this.http.put(url, {}).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

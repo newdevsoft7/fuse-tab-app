@@ -112,8 +112,8 @@ export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
-                        this.staffs = this._staffs.filter(v => v.id !== staff.id);
-                        this.updateStaffCount(); this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Standby)
+                        this.toastr.success(res.message);
+                        this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Standby)
                             .subscribe(res => {
                                 this.staffs = res.role_staff;
                             })

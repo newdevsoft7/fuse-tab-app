@@ -84,11 +84,23 @@
                                     <mat-icon>edit</mat-icon>
                                     <span>Change statuses</span>
                                 </button>
-                                
+
                             </ng-container>
 
                         </ng-container>
                         <!-- / DOTS BUTTON CONTENT -->
+
+                        <ng-container *ngIf="roles.length > 1">
+                            <button mat-menu-item (click)="moveup(role)">
+                                <mat-icon>arrow_upward</mat-icon>
+                                Move up
+                            </button>
+
+                            <button mat-menu-item (click)="movedown(role)">
+                                <mat-icon>arrow_downward</mat-icon>
+                                Move down
+                            </button>
+                        </ng-container>
                         
                     </mat-menu>
 
@@ -96,7 +108,7 @@
                     <mat-menu #statusMenu="matMenu">
                     
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_APPLIED')">Applied</button>
-                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_TANDBY')">Standby</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_STANDBY')">Standby</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_SELECTED')">Selected</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>

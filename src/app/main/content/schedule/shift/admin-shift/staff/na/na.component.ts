@@ -137,6 +137,7 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
+                        this.toastr.success(res.message);
                         this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Na)
                             .subscribe(res => {
                                 this.staffs = res.role_staff;
