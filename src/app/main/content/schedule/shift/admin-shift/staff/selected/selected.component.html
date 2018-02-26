@@ -8,7 +8,13 @@
                 <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"
                     [ngClass]="{
                         'confirmed': row.staff_status_id === StaffStatus.Confirmed,
-                        'selected': row.staff_status_id === StaffStatus.Selected
+                        'selected': row.staff_status_id === StaffStatus.Selected,
+                        'checked-in': row.staff_status_id === StaffStatus.CheckedIn,
+                        'checked-out': row.staff_status_id === StaffStatus.CheckedOut,
+                        'completed': row.staff_status_id === StaffStatus.Completed,
+                        'invoiced': row.staff_status_id === StaffStatus.Invoiced,
+                        'paid': row.staff_status_id === StaffStatus.Paid,
+                        'noshow': row.staff_status_id === StaffStatus.NoShow
                     }"/>
             </ng-template>
         </ngx-datatable-column>
