@@ -38,7 +38,7 @@ export enum Section {
     NA = 3
 };
 
-export enum Query {
+enum Query {
     Counts = 'counts',
     Selected = 'selected',
     Standby = 'standby',

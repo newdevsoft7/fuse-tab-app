@@ -10,44 +10,6 @@
         margin: 5px;
         border-radius: 5px;
 
-        &.confirmed {
-            border: 3px solid #009900;
-        }
-
-        &.selected {
-            border: 3px solid #00a0f4;
-        }
-
-        &.checked-in {
-            border: 3px solid #004400;
-        }
-
-        &.checked-out {
-            border: 3px solid #014282;
-        }
-
-        &.completed {
-            border: 3px solid #000000;
-        }
-
-        &.invoiced {
-            border: 3px solid #766e65;
-        }
-
-        &.paid {
-            border: 3px solid #d5d5d5;
-        }
-
-        &.noshow {
-            border: 3px solid #ff0000;
-        }
-
-        &.nopay {
-            border: 3px solid #ffa500;
-        }
-
-        &.other { }
-
         &:hover {
             cursor: pointer;
         }

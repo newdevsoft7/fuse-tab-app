@@ -4,7 +4,9 @@
     
         <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="100" [sortable]="false" [canAutoResize]="false">
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"/>
+                <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"
+                    [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
+                    [matTooltip]="row.staff_status.status" />
             </ng-template>
         </ngx-datatable-column>
     
@@ -18,7 +20,7 @@
 
         <ngx-datatable-column name="Select" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="select(row)" matTooltip="Select">
+                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')" matTooltip="Select">
                     <mat-icon>add</mat-icon>
                 </button>
             </ng-template>
@@ -26,7 +28,7 @@
 
         <ngx-datatable-column name="Standby" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="standby(row)" matTooltip="Standby">
+                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')" matTooltip="Standby">
                     <mat-icon>flag</mat-icon>
                 </button>
             </ng-template>
@@ -34,15 +36,15 @@
         
         <ngx-datatable-column name="Hidden Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="hiddenReject(row)" matTooltip="Hidden Reject">
+                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_HIDDEN_REJECTED')" matTooltip="Hidden Reject">
                     <mat-icon>block</mat-icon>
                 </button>
             </ng-template>
         </ngx-datatable-column>
         
-        <ngx-datatable-column name="Hidden Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
+        <ngx-datatable-column name="Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="reject(row)" matTooltip="Reject">
+                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_REJECTED')" matTooltip="Reject">
                     <mat-icon>clear</mat-icon>
                 </button>
             </ng-template>
@@ -114,16 +116,16 @@
                 <!-- CHANGE STATUS SUBMENU -->
                 <mat-menu #statusMenu="matMenu">
                 
-                    <button mat-menu-item>Applied</button>
-                    <button mat-menu-item (click)="standby(row)">Standby</button>
-                    <button mat-menu-item (click)="select(row)">Selected</button>
-                    <button mat-menu-item>Confirmed</button>
-                    <button mat-menu-item>Checked In</button>
-                    <button mat-menu-item>Checked Out</button>
-                    <button mat-menu-item>Completed</button>
-                    <button mat-menu-item>Invoiced</button>
-                    <button mat-menu-item>Paid</button>
-                    <button mat-menu-item>No Show</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_APPLIED')">Applied</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')">Standby</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')">Selected</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_COMPLETED')">Completed</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVOICED')">Invoiced</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_PAID')">Paid</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_NO_SHOW')">No Show</button>
                     <button mat-menu-item>No Pay</button>
                     <button mat-menu-item>Other</button>
                 

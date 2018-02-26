@@ -136,6 +136,11 @@ export class ScheduleService {
     return this.getRoleStaffs(roleId, 'counts');
   }
 
+  updateRoleStaff(staffId, data): Observable<any> {
+    const url = `${BASE_URL}/role/update/${staffId}`;
+    return this.http.put(url, data).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
