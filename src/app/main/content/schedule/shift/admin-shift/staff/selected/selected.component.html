@@ -5,7 +5,11 @@
 
         <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="100" [sortable]="false" [canAutoResize]="false">
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"/>
+                <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"
+                    [ngClass]="{
+                        'confirmed': row.staff_status_id === StaffStatus.Confirmed,
+                        'selected': row.staff_status_id === StaffStatus.Selected
+                    }"/>
             </ng-template>
         </ngx-datatable-column>
 
@@ -14,6 +18,97 @@
                 <strong>{{row.name}}</strong>
                 <br/>
                 <strong>{{row.email}}</strong>
+            </ng-template>
+        </ngx-datatable-column>
+        
+        <ngx-datatable-column name="Times Locked" prop="times_locked" [sortable]="true" [canAutoResize]="false"
+            [width]="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button (click)="changeTimesLock(row)">
+                    <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
+                    <mat-icon *ngIf="!row.times_locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+                </button>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon class="material-icons">more_horiz</mat-icon>
+                </button>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>mail_outline</mat-icon>
+                        <span>Send Message</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>vpn_key</mat-icon>
+                        <span>Login as user</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>event_note</mat-icon>
+                        <span>View Calender</span>
+                    </button>
+                
+                    <button mat-menu-item>
+                        <mat-icon>refresh</mat-icon>
+                        <span>Force re-confirmation</span>
+                    </button>
+
+                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                        <mat-icon>edit</mat-icon>
+                        <span>Change Status</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Toggle Leader</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Add to presentation</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Add to submission</span>
+                    </button>
+        
+        
+                    <button mat-menu-item>
+                        <mat-icon>clear</mat-icon>
+                        <span>Remove</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>clear</mat-icon>
+                        <span>Remove (edit email)</span>
+                    </button>
+                </mat-menu>
+                
+                <!-- CHANGE STATUS SUBMENU -->
+                <mat-menu #statusMenu="matMenu">
+                
+                    <button mat-menu-item>Applied</button>
+                    <button mat-menu-item>Standby</button>
+                    <button mat-menu-item>Selected</button>
+                    <button mat-menu-item>Confirmed</button>
+                    <button mat-menu-item>Checked In</button>
+                    <button mat-menu-item>Checked Out</button>
+                    <button mat-menu-item>Completed</button>
+                    <button mat-menu-item>Invoiced</button>
+                    <button mat-menu-item>Paid</button>
+                    <button mat-menu-item>No Show</button>
+                    <button mat-menu-item>No Pay</button>
+                    <button mat-menu-item>Other</button>
+                
+                </mat-menu>
+                <!-- / CHANGE STATUS SUBMENU -->
+
             </ng-template>
         </ngx-datatable-column>
 

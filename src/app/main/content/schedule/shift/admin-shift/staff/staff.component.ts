@@ -16,7 +16,7 @@ import {
     MatTabChangeEvent
 } from '@angular/material';
 
-import { STAFF_STATUS_SELECTED, STAFF_STATUS_STANDBY, STAFF_STATUS_APPLIED, STAFF_STATUS_REJECTED } from '../../../../../../constants/shift-status';
+import { STAFF_STATUS_SELECTED, STAFF_STATUS_STANDBY, STAFF_STATUS_APPLIED, STAFF_STATUS_REJECTED } from '../../../../../../constants/staff-status';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -29,6 +29,7 @@ import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
 import { ActionService } from '../../../../../../shared/services/action.service';
 import { ScheduleService } from '../../../schedule.service';
+import { StaffStatus } from '../../../../../../constants/staff-status-id';
 
 export enum Section {
     Selected = 0,
@@ -69,6 +70,8 @@ export class AdminShiftStaffComponent implements OnInit {
     isSeeAllAdminNotes = false;
     adminNoteForm: FormGroup;
 
+    public StaffStatus = StaffStatus;
+
     constructor(
         private loadingService: CustomLoadingService,
         private dialog: MatDialog,
@@ -104,7 +107,11 @@ export class AdminShiftStaffComponent implements OnInit {
         });
 
         this.roles = this.shift.shift_roles.map(role => {
-            const selected = role.role_staff.filter(rs => rs.staff_status_id === 3);    // Get selected from shift role staff
+
+            // Get selected from shift role staff
+            const selected = role.role_staff.filter(rs => {
+               return true; 
+            });
             return {
                 ...role,
                 selected,

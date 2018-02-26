@@ -10,6 +10,14 @@
         margin: 5px;
         border-radius: 5px;
 
+        &.confirmed {
+            border: 3px solid #009900;
+        }
+
+        &.selected {
+            border: 3px solid #00a0f4;
+        }
+
         &:hover {
             cursor: pointer;
         }

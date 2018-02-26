@@ -13,7 +13,7 @@ import { UserService } from '../../../../../users/user.service';
 
 import * as _ from 'lodash';
 import { Tab } from '../../../../../../tab/tab';
-
+import { StaffStatus } from '../../../../../../../constants/staff-status-id';
 
 @Component({
     selector: 'app-admin-shift-staff-selected',
@@ -24,7 +24,6 @@ import { Tab } from '../../../../../../tab/tab';
 export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
 
     _staffs;
-
     @Input()
     get staffs() {
         return this._staffs;
@@ -35,6 +34,8 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
         this._staffs = staffs;
         this.staffsChange.emit(staffs);
     }
+
+    public StaffStatus = StaffStatus;
 
     constructor(
         private loadingService: CustomLoadingService,
@@ -71,6 +72,11 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
             default:
                 return value;
         }
+    }
+
+    changeTimesLock(staff) {
+        staff.times_locked = staff.times_locked === 1 ? 0 : 1;
+        // TODO
     }
 
 

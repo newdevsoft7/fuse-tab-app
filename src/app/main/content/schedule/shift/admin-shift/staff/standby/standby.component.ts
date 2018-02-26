@@ -15,7 +15,7 @@ import { UserService } from '../../../../../users/user.service';
 import * as _ from 'lodash';
 import { FuseConfirmDialogComponent } from '../../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
-import { STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED } from '../../../../../../../constants/shift-status';
+import { STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED } from '../../../../../../../constants/staff-status';
 import { Tab } from '../../../../../../tab/tab';
 
 
@@ -28,7 +28,6 @@ import { Tab } from '../../../../../../tab/tab';
 export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
 
     _staffs;
-
     @Input()
     get staffs() {
         return this._staffs;

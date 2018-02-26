@@ -15,6 +15,91 @@
                 <strong>{{row.email}}</strong>
             </ng-template>
         </ngx-datatable-column>
+
+        <ngx-datatable-column name="Action" [width]="100" [sortable]="false" [resizeable]="false" [draggable]="false" [canAutoResize]="false">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                    <mat-icon class="material-icons">more_horiz</mat-icon>
+                </button>
+        
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>mail_outline</mat-icon>
+                        <span>Send Message</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>vpn_key</mat-icon>
+                        <span>Login as user</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>event_note</mat-icon>
+                        <span>View Calender</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>refresh</mat-icon>
+                        <span>Force re-confirmation</span>
+                    </button>
+        
+                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                        <mat-icon>edit</mat-icon>
+                        <span>Change Status</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Toggle Leader</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Add to presentation</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Add to submission</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>insert_drive_file</mat-icon>
+                        <span>Complete Reports</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>clear</mat-icon>
+                        <span>Remove</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>clear</mat-icon>
+                        <span>Remove (edit email)</span>
+                    </button>
+                </mat-menu>
+        
+                <!-- CHANGE STATUS SUBMENU -->
+                <mat-menu #statusMenu="matMenu">
+        
+                    <button mat-menu-item>Applied</button>
+                    <button mat-menu-item>Standby</button>
+                    <button mat-menu-item>Selected</button>
+                    <button mat-menu-item>Confirmed</button>
+                    <button mat-menu-item>Checked In</button>
+                    <button mat-menu-item>Checked Out</button>
+                    <button mat-menu-item>Completed</button>
+                    <button mat-menu-item>Invoiced</button>
+                    <button mat-menu-item>Paid</button>
+                    <button mat-menu-item>No Show</button>
+                    <button mat-menu-item>No Pay</button>
+                    <button mat-menu-item>Other</button>
+        
+                </mat-menu>
+                <!-- / CHANGE STATUS SUBMENU -->
+        
+            </ng-template>
+        </ngx-datatable-column>
     
     </ngx-datatable>
 </div>
