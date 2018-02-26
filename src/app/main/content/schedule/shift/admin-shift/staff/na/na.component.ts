@@ -10,10 +10,13 @@ import { ToastrService } from 'ngx-toastr';
 import { CustomLoadingService } from '../../../../../../../shared/services/custom-loading.service';
 import { TabService } from '../../../../../../tab/tab.service';
 import { UserService } from '../../../../../users/user.service';
+import { ScheduleService } from '../../../../schedule.service';
 
 import * as _ from 'lodash';
+import { FuseConfirmDialogComponent } from '../../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { Tab } from '../../../../../../tab/tab';
 
+import { STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_SELECTED, STAFF_STATUS_REJECTED, STAFF_STATUS_STANDBY } from '../../../../../../../constants/staff-status';
 
 @Component({
     selector: 'app-admin-shift-staff-na',
@@ -36,10 +39,15 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
         this.staffsChange.emit(staffs);
     }
 
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+    @Output() onStaffCountChanged = new EventEmitter();
+
     constructor(
         private loadingService: CustomLoadingService,
         private tabService: TabService,
         private userService: UserService,
+        private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         differs: IterableDiffers
@@ -71,6 +79,28 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
     }
 
     ngDoCheck() {
+    }
+
+    private updateStaffCount() {
+        this.onStaffCountChanged.next(true);
+    }
+
+    select(staff) {
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = 'Really select this applicant?';
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.scheduleService.assignStaffToRole(staff.user_id, staff.shift_role_id, STAFF_STATUS_SELECTED)
+                    .subscribe(res => {
+                        this.staffs = this._staffs.filter(v => v.id !== staff.id);
+                        this.updateStaffCount();
+                    });
+            }
+        });
     }
 
 

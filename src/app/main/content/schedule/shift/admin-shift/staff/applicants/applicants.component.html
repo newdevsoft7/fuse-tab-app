@@ -115,8 +115,8 @@
                 <mat-menu #statusMenu="matMenu">
                 
                     <button mat-menu-item>Applied</button>
-                    <button mat-menu-item>Standby</button>
-                    <button mat-menu-item>Selected</button>
+                    <button mat-menu-item (click)="standby(row)">Standby</button>
+                    <button mat-menu-item (click)="select(row)">Selected</button>
                     <button mat-menu-item>Confirmed</button>
                     <button mat-menu-item>Checked In</button>
                     <button mat-menu-item>Checked Out</button>

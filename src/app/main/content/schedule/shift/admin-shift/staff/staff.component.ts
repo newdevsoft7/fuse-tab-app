@@ -42,7 +42,7 @@ export enum Query {
     Counts = 'counts',
     Selected = 'selected',
     Standby = 'standby',
-    Applicant = 'applicant',
+    Applicants = 'applicants',
     Na = 'na'
 };
 
@@ -71,6 +71,18 @@ export class AdminShiftStaffComponent implements OnInit {
     adminNoteForm: FormGroup;
 
     public StaffStatus = StaffStatus;
+
+    readonly StaffStatusesSelected = [
+        StaffStatus.Selected,
+        StaffStatus.Confirmed,
+        StaffStatus.CheckedInAttempted,
+        StaffStatus.CheckedIn,
+        StaffStatus.NoShow,
+        StaffStatus.CheckedOut,
+        StaffStatus.Completed,
+        StaffStatus.Invoiced,
+        StaffStatus.Paid
+    ];
 
     constructor(
         private loadingService: CustomLoadingService,
@@ -117,17 +129,8 @@ export class AdminShiftStaffComponent implements OnInit {
                 selected,
                 section: Section.Selected,
                 shiftTitle: this.shift.title,
-                num_selected: 0,
-                num_standby: 0,
-                num_applicants: 0,
-                num_na: 0
             };
         });
-
-        this.roles.forEach(role => {
-            this.updateStaffsCount(role.id);
-        });
-
 
         // Add Users to Role
         this.actionService.usersToRole.subscribe(
@@ -180,7 +183,7 @@ export class AdminShiftStaffComponent implements OnInit {
                 break;
 
             case Section.Applicants:
-                this.scheduleService.getRoleStaffs(role.id, Query.Applicant)
+                this.scheduleService.getRoleStaffs(role.id, Query.Applicants)
                     .subscribe(res => {
                         const index = this.roles.findIndex(v => v.id === role.id);
                         this.roles[index].applicants = res.role_staff;
