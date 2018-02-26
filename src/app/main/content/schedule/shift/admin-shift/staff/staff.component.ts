@@ -16,7 +16,12 @@ import {
     MatTabChangeEvent
 } from '@angular/material';
 
-import { STAFF_STATUS_SELECTED, STAFF_STATUS_STANDBY, STAFF_STATUS_APPLIED, STAFF_STATUS_REJECTED } from '../../../../../../constants/staff-status';
+import {
+    STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
+    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
+    STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
+    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
+} from '../../../../../../constants/staff-status';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -30,6 +35,8 @@ import { TabService } from '../../../../../tab/tab.service';
 import { ActionService } from '../../../../../../shared/services/action.service';
 import { ScheduleService } from '../../../schedule.service';
 import { StaffStatus } from '../../../../../../constants/staff-status-id';
+import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
+
 
 export enum Section {
     Selected = 0,
@@ -63,6 +70,8 @@ export class AdminShiftStaffComponent implements OnInit {
     @Input() shift;
     
     @ViewChild('adminNoteInput') adminNoteInput;
+
+    confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     canSavePost = false;
 
@@ -234,6 +243,105 @@ export class AdminShiftStaffComponent implements OnInit {
                     role['num_na'] = res.num_na;
                 }
             })
+    }
+
+    changeStatus(role, statusId) {
+
+        debugger;
+        const section = role.section;
+        let staffs = [];
+        switch (section) {
+            case Section.Selected:
+                staffs = role.selected;
+                break;
+        
+            case Section.Standby:
+                staffs = role.standby;
+                break;
+
+            case Section.Applicants:
+                staffs = role.applicants;
+                break;
+
+            default:
+                staffs = role.na;
+                break;
+        }
+
+        const count = staffs.length;
+        if (count === 0) { return false; }
+
+        const applicantsMsg = count > 1 ? 'these applicants' : 'this applicant';
+        let message = '';
+        switch (statusId) {
+            case STAFF_STATUS_SELECTED:
+                message = `Really select ${applicantsMsg}?`;
+                break;
+
+            case STAFF_STATUS_APPLIED:
+                message = `Really put ${applicantsMsg} on applied?`;
+                break;
+
+            case STAFF_STATUS_STANDBY:
+                message = `Really put ${applicantsMsg} on standby?`;
+                break;
+
+            case STAFF_STATUS_HIDDEN_REJECTED:
+                message = `Really hidden reject ${applicantsMsg}?`;
+                break;
+
+            case STAFF_STATUS_REJECTED:
+                message = `Really reject ${applicantsMsg}?`;
+                break;
+
+            default:
+                message = `Really update ${applicantsMsg}?`;
+                break;
+        }
+
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = message;
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.scheduleService.updateRoleStaffs(staffs.map(v => v.id), { staff_status_id: statusId })
+                    .subscribe(res => {
+                        this.updateStaffsBySection(role);
+                    }, err => {
+                        this.updateStaffsBySection(role);
+                    });
+            }
+        });
+    };
+
+    private updateStaffsBySection(role) {
+        let query = '';
+        switch (role.section) {
+            case Section.Selected:
+                query = Query.Selected;
+                break;
+
+            case Section.Standby:
+                query = Query.Standby;
+                break;
+
+            case Section.Applicants:
+                query = Query.Applicants;
+                break;
+
+            default:
+                query = Query.Na;
+                break;
+        }
+
+        this.scheduleService.getRoleStaffs(role.id, query)
+            .subscribe(res => {
+                role[query] = res.role_staff;
+            });
+        this.updateStaffsCount(role.id);
     }
 
     private refreshAdminNotesView() {

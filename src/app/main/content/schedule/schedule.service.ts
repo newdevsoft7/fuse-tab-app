@@ -141,6 +141,12 @@ export class ScheduleService {
     return this.http.put(url, data).catch(this.handleError);
   }
 
+  updateRoleStaffs(staffIds, data): Observable<any> {
+    return Observable.forkJoin(
+      staffIds.map(staffId => this.updateRoleStaff(staffId, data))
+    );
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

@@ -79,7 +79,12 @@
                                     <mat-icon>call_made</mat-icon>
                                     <span>Export users</span>
                                 </button>
-                            
+                                
+                                <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                                    <mat-icon>edit</mat-icon>
+                                    <span>Change statuses</span>
+                                </button>
+                                
                             </ng-container>
 
                         </ng-container>
@@ -90,16 +95,16 @@
                     <!-- CHANGE STATUS SUBMENU -->
                     <mat-menu #statusMenu="matMenu">
                     
-                        <button mat-menu-item>Applied</button>
-                        <button mat-menu-item>Standby</button>
-                        <button mat-menu-item>Selected</button>
-                        <button mat-menu-item>Confirmed</button>
-                        <button mat-menu-item>Checked In</button>
-                        <button mat-menu-item>Checked Out</button>
-                        <button mat-menu-item>Completed</button>
-                        <button mat-menu-item>Invoiced</button>
-                        <button mat-menu-item>Paid</button>
-                        <button mat-menu-item>No Show</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_APPLIED')">Applied</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_TANDBY')">Standby</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_SELECTED')">Selected</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_COMPLETED')">Completed</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_INVOICED')">Invoiced</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_PAID')">Paid</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_NO_SHOW')">No Show</button>
                         <button mat-menu-item>No Pay</button>
                         <button mat-menu-item>Other</button>
                     
