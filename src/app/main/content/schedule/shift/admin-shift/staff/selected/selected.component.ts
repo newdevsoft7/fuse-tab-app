@@ -55,7 +55,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
         this.staffsChange.emit(staffs);
     }
 
-    @Input() showBillInfo = 1;
+    @Input() showBillInfo = 0;
 
     public StaffStatus = StaffStatus;
 
