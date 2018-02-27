@@ -25,7 +25,7 @@
         <ngx-datatable-column name="Times Locked" prop="times_locked" [sortable]="true" [canAutoResize]="false"
             [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="changeTimesLock(row)">
+                <button mat-icon-button (click)="changeTimesLock(row)" [disabled]="editable !== 1">
                     <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"
                         matTooltip="Locked - Staff cannot change times"></mat-icon>
                     <mat-icon *ngIf="!row.times_locked" fontSet="fa" fontIcon="fa-unlock"
@@ -38,8 +38,10 @@
         <!-- TIMES & BREAK -->
         <ngx-datatable-column name="Time" [sortable]="false" [canAutoResize]="true">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <app-admin-shift-edit-time [staff]="row" (onTimeChanged)="onTimeChanged($event, row)"></app-admin-shift-edit-time>
+                <app-admin-shift-edit-time [staff]="row" (onTimeChanged)="onTimeChanged($event, row)"
+                    [editable]="editable"></app-admin-shift-edit-time>
                 <app-admin-shift-edit-break [staff]="row"
+                    [editable]="editable"
                     (onBreakChanged)="OnBreakChanged($event, row)">
                 </app-admin-shift-edit-break>
             </ng-template>
@@ -53,15 +55,18 @@
                     
                     <div>
                         <app-admin-shift-edit-payitems [staff]="row" *ngIf="!row.showBillInfo"
+                            [editable]="editable"
                             (onPayItemsChanged)="onPayItemsChanged($event, row)">
                         </app-admin-shift-edit-payitems>
 
                         <app-admin-shift-edit-billitems [staff]="row" *ngIf="row.showBillInfo"
+                            [editable]="editable"
                             (onBillItemsChanged)="onBillItemsChanged($event, row)">
                         </app-admin-shift-edit-billitems>
                     </div>
 
-                    <button mat-icon-button (click)="row.showBillInfo = !row.showBillInfo;" *ngIf="showBillInfo === 1">
+                    <button mat-icon-button (click)="row.showBillInfo = !row.showBillInfo;" *ngIf="showBillInfo === 1"
+                        [disabled]="editable !== 1">
                         <mat-icon>compare_arrows</mat-icon>
                     </button>
 
@@ -72,7 +77,7 @@
 
         <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button [matMenuTriggerFor]="menu">
+                <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
                     <mat-icon class="material-icons">more_horiz</mat-icon>
                 </button>
 

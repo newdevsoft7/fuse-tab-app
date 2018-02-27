@@ -39,6 +39,8 @@ enum Query {
 })
 export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
 
+    @Input() editable;
+    
     _staffs;
     @Input()
     get staffs() {

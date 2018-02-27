@@ -20,6 +20,8 @@ export class AdminShiftEditBillitemsComponent implements OnInit {
         { value: 'flat', label: 'flat' },
     ];
 
+    @Input() editable;
+
     formActive = false;
     form: FormGroup;
 

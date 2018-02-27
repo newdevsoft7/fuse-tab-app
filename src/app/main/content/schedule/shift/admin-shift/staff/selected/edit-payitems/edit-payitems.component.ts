@@ -23,6 +23,8 @@ export class AdminShiftEditPayitemsComponent implements OnInit {
     formActive = false;
     form: FormGroup;
 
+    @Input() editable;
+
     @Input() staff;
     @Output() onPayItemsChanged = new EventEmitter;
 

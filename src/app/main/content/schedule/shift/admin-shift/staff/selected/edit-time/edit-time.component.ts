@@ -65,6 +65,7 @@ export class AdminShiftEditTimeComponent implements OnInit {
 
     formActive = false;
     @Input() staff;
+    @Input() editable;
 
     @Output() onTimeChanged = new EventEmitter;
 

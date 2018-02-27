@@ -20,6 +20,8 @@ export class AdminShiftEditBreakComponent implements OnInit {
     form: FormGroup;
     @ViewChild('breakInput') breakInputField;
 
+    @Input() editable;
+
     @Input() staff;
     @Output() onBreakChanged = new EventEmitter;
 

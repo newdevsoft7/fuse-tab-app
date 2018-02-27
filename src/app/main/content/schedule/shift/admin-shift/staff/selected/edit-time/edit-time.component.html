@@ -1,6 +1,6 @@
 <div id="selected-staff-time-picker" class="mb-8">
-    <div fxFlex="1 0 auto" *ngIf="!formActive" class="text-field" (click)="openForm()">
-        <span class="info">
+    <div fxFlex="1 0 auto" *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
+        <span class="info" (click)="openForm()">
             <span matTooltip="Start time">{{display(staff.staff_start)}}</span> 
             &nbsp;-&nbsp;
             <span matTooltip="End time">{{display(staff.staff_end)}}</span>

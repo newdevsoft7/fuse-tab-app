@@ -7,7 +7,7 @@
                 <div class="title">{{role.rname}}</div>
 
                 <div>
-                    <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                    <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" [disabled]="shift.editable !== 1">
                         <mat-icon class="material-icons">more_horiz</mat-icon>
                     </button>
                     
@@ -135,7 +135,8 @@
                             Selected&nbsp;
                             <strong>{{role.num_selected}} / {{role.num_required}}</strong>
                         </ng-template>
-                        <app-admin-shift-staff-selected [(staffs)]="role.selected" 
+                        <app-admin-shift-staff-selected [(staffs)]="role.selected"
+                            [editable]="shift.editable"
                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-selected>
                     </mat-tab>
                 
@@ -145,7 +146,8 @@
                             <strong>{{role.num_standby}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-standby [(staffs)]="role.standby"
-                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-standby>
+                            [editable]="shift.editable"
+                            (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-standby>
                     </mat-tab>
                 
                     <mat-tab label="Applicants">
@@ -154,7 +156,8 @@
                             <strong>{{role.num_applicants}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-applicants [(staffs)]="role.applicants"
-                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-applicants>
+                            [editable]="shift.editable"
+                            (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-applicants>
                     </mat-tab>
 
                     <mat-tab label="NA">
@@ -163,7 +166,8 @@
                             <strong>{{role.num_na}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-na [(staffs)]="role.na"
-                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-na>
+                            [editable]="shift.editable"
+                            (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-na>
                     </mat-tab>
                     
                 </mat-tab-group>
