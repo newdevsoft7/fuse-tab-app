@@ -61,6 +61,25 @@ export class AdminShiftComponent implements OnInit {
 		}
 	}
 
+	toggleLive() {
+		const live = this.shift.live === 1 ? 0 : 1;
+		this.scheduleService.publishShift(this.shift.id, live)
+			.subscribe(res => {
+				this.shift.live = live;
+				this.toastr.success(res.message);
+			});
+	}
+
+	toggleLock() {
+		const lock = this.shift.locked === 1 ? 0 : 1;
+		this.scheduleService.lockShift(this.shift.id, lock)
+			.subscribe(res => {
+				this.shift.locked = lock;
+				this.toastr.success(res.message);
+			});
+	}
+
+
 	private async fetch() {
 		try {
 			this.shift = await this.scheduleService.getShift(this.id);

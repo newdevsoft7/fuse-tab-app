@@ -12,10 +12,24 @@
                 </div>
             </div>
 
+            <!-- HEADER BUTTONS -->
             <div fxLayout="column" fxLayoutAlign="start end">
-                <mat-icon class="s-36 mat-icon material-icons">https</mat-icon>
-                <mat-icon class="s-24 mat-icon material-icons">flag</mat-icon>
+                <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
+                    <mat-icon *ngIf="shift.live === 1">visibility</mat-icon>
+                    <mat-icon *ngIf="shift.live !== 1">visibility_off</mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
+                    <mat-icon *ngIf="shift.locked === 1">lock_outline</mat-icon>
+                    <mat-icon *ngIf="shift.locked !== 1">lock_open</mat-icon>
+                </button>
+
+                <button mat-icon-button>
+                    <mat-icon>flag</mat-icon>
+                </button>
             </div>
+            <!-- / HEADER BUTTONS -->
+
         </div>
         <div class="more-details" fxLayout="column" fxLayoutAlign="center center">
             <a mat-button href="#" target="_blank">More Details</a>

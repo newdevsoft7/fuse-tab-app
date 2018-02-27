@@ -112,6 +112,15 @@ export class ScheduleService {
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
   }
 
+  publishShift(shiftId, setPublish = 1): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/publish/${setPublish}`;
+    return this.http.put(url, {}).catch(this.handleError);
+  }
+
+  lockShift(shiftId, setLock = 1): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/lock/${setLock}`;
+    return this.http.put(url, {}).catch(this.handleError);
+  }
 
   assignStaffsToRole(userIds, roleId, staffStatusId): Observable<any> {
     return Observable.forkJoin(
