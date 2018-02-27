@@ -26,6 +26,7 @@ import { CustomMultiSelectModule } from '../../../core/components/custom-multi-s
 import { ShiftRoleEditComponent } from './shift/role-edit/role-edit.component';
 import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-requirements/shift-role-requirements.component';
 import { AdminShiftEditTimeComponent } from './shift/admin-shift/staff/selected/edit-time/edit-time.component';
+import { AdminShiftEditBreakComponent } from './shift/admin-shift/staff/selected/edit-break/edit-break.component';
 
 @NgModule({
 	imports: [
@@ -57,6 +58,7 @@ import { AdminShiftEditTimeComponent } from './shift/admin-shift/staff/selected/
         ShiftRoleRequirementsComponent,
         AdminShiftMapComponent,
         AdminShiftEditTimeComponent,
+        AdminShiftEditBreakComponent,
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],

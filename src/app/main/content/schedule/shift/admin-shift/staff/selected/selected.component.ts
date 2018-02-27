@@ -159,6 +159,14 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
             });
     }
 
+    OnBreakChanged(value, staff) {
+        this.scheduleService.updateRoleStaff(staff.id, { unpaid_break: value })
+            .subscribe(res => {
+                this.toastr.success(res.message);
+                staff.unpaid_break = value;
+            });
+    }
+
     private updateStaffCount() {
         this.onStaffCountChanged.next(true);
     }

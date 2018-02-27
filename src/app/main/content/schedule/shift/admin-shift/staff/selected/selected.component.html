@@ -11,7 +11,7 @@
             </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="Name" prop="name" [sortable]="true" [canAutoResize]="true">
+        <ngx-datatable-column name="Name" prop="name" [sortable]="true" [width]="150" [canAutoResize]="false">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <strong>{{row.name}}</strong>
                 <br/>
@@ -32,6 +32,9 @@
         <ngx-datatable-column name="Time" [sortable]="false" [canAutoResize]="true">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <app-admin-shift-edit-time [staff]="row" (onTimeChanged)="onTimeChanged($event, row)"></app-admin-shift-edit-time>
+                <app-admin-shift-edit-break [staff]="row"
+                    (onBreakChanged)="OnBreakChanged($event, row)">
+                </app-admin-shift-edit-break>
             </ng-template>
         </ngx-datatable-column>
 
