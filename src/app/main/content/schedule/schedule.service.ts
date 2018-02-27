@@ -152,6 +152,11 @@ export class ScheduleService {
     return this.http.put(url, {}).catch(this.handleError);
   }
 
+  getShiftChecks(shiftId): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/checks`;
+    return this.http.get(url).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

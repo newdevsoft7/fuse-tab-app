@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { AgmMap } from '@agm/core';
 
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { ScheduleService } from '../../../schedule.service';
 
 
 @Component({
@@ -109,29 +110,20 @@ export class AdminShiftMapComponent implements OnInit {
 
     coords: any = {};    // For shift marker cancellation
 
-    markers = [
-        {
-            lat: -32,
-            lng: 117.9355114,
-            label: '120',
-            icon:"https://staffconnect.net/images/nopic_thumb_female.jpg"
-        },
-        {
-            lat: -31,
-            lng: 116.9355114,
-            label: '498',
-            icon: "https://staffconnect.net/images/nopic_thumb_female.jpg"
-        }
-        
-    ];
+    markers = [];
 
-    constructor(public dialog: MatDialog) { }
+    constructor(
+        private scheduleService: ScheduleService,
+        public dialog: MatDialog) { }
 
     ngOnInit() {
     }
     
     refreshMap() {
-        this.agmMap.triggerResize();
+        this.scheduleService.getShiftChecks(this.shift.id).subscribe(res => {
+            this.markers = res;
+            this.agmMap.triggerResize();
+        })
     }
 
     changePosition(event) {
