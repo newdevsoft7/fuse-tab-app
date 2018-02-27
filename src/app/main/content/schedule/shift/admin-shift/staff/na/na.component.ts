@@ -148,6 +148,13 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
         });
     }
 
-    
+    toggleTeamLeader(staff) {
+        const team_leader = staff.team_leader === 1 ? 0 : 1;
+        this.scheduleService.updateRoleStaff(staff.id, { team_leader })
+            .subscribe(res => {
+                staff.team_leader = team_leader;
+                this.toastr.success(res.message);
+            });
+    }
 
 }

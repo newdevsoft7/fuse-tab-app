@@ -164,8 +164,21 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
     }
 
     changeTimesLock(staff) {
-        staff.times_locked = staff.times_locked === 1 ? 0 : 1;
-        // TODO
+        const times_locked = staff.times_locked === 1 ? 0 : 1;
+        this.scheduleService.updateRoleStaff(staff.id, { times_locked })
+            .subscribe(res => {
+                staff.times_locked = times_locked;
+                this.toastr.success(res.message);
+            });
+    }
+
+    toggleTeamLeader(staff) {
+        const team_leader = staff.team_leader === 1 ? 0 : 1;
+        this.scheduleService.updateRoleStaff(staff.id, { team_leader })
+            .subscribe(res => {
+                staff.team_leader = team_leader;
+                this.toastr.success(res.message);
+            });
     }
 
 
