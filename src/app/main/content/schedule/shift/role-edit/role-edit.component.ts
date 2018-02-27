@@ -29,7 +29,7 @@ import { ScheduleService } from '../../schedule.service';
 import { Tab } from '../../../../tab/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 
-export class TimeRange {
+class TimeRange {
     from;
     to;
     constructor(from = null, to = null) {

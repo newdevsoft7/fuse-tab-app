@@ -20,7 +20,7 @@ import { Tab } from '../../../../tab/tab';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';
 
-export class ShiftDate {
+class ShiftDate {
     date;
     from;
     to;

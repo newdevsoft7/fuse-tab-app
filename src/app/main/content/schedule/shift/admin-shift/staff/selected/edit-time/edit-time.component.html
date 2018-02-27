@@ -1,0 +1,25 @@
+<div id="selected-staff-time-picker">
+    <div fxFlex="1 0 auto" *ngIf="!formActive" class="text-field" (click)="openForm()">
+        <span class="info">
+            {{display(staff.staff_start)}} - {{display(staff.staff_end)}}
+        </span>
+    </div>
+
+    <div class="" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive" fxLayoutAlign="start center">
+
+        <div fxFlex="60px" class="mr-8">
+            <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="start.time"></w-mat-timepicker>
+        </div>
+        <div fxFlex="60px">
+            <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="end.time"></w-mat-timepicker>
+        </div>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

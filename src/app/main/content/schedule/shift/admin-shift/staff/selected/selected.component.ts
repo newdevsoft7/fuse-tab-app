@@ -13,6 +13,8 @@ import { UserService } from '../../../../../users/user.service';
 import { ScheduleService } from '../../../../schedule.service';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
+
 import { FuseConfirmDialogComponent } from '../../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { Tab } from '../../../../../../tab/tab';
 import { StaffStatus } from '../../../../../../../constants/staff-status-id';
@@ -142,6 +144,19 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
                     });
             }
         });
+    }
+
+    onTimeChanged(event, staff) {
+        staff.staff_start = event.start;
+        staff.staff_end = event.end;
+
+        const staff_start = moment(staff.staff_start).format('HH:mm');
+        const staff_end = moment(staff.staff_end).format('HH:mm');
+
+        this.scheduleService.updateRoleStaff(staff.id, { staff_start, staff_end })
+            .subscribe(res => {
+                this.toastr.success(res.message);
+            });
     }
 
     private updateStaffCount() {
