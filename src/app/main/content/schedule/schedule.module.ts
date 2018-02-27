@@ -27,6 +27,8 @@ import { ShiftRoleEditComponent } from './shift/role-edit/role-edit.component';
 import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-requirements/shift-role-requirements.component';
 import { AdminShiftEditTimeComponent } from './shift/admin-shift/staff/selected/edit-time/edit-time.component';
 import { AdminShiftEditBreakComponent } from './shift/admin-shift/staff/selected/edit-break/edit-break.component';
+import { AdminShiftEditPayitemsComponent } from './shift/admin-shift/staff/selected/edit-payitems/edit-payitems.component';
+import { AdminShiftEditBillitemsComponent } from './shift/admin-shift/staff/selected/edit-billitems/edit-billitems.component';
 
 @NgModule({
 	imports: [
@@ -59,6 +61,8 @@ import { AdminShiftEditBreakComponent } from './shift/admin-shift/staff/selected
         AdminShiftMapComponent,
         AdminShiftEditTimeComponent,
         AdminShiftEditBreakComponent,
+        AdminShiftEditPayitemsComponent,
+        AdminShiftEditBillitemsComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],

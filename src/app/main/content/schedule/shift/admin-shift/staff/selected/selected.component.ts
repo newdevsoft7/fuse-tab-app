@@ -53,6 +53,8 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
         this.staffsChange.emit(staffs);
     }
 
+    @Input() showBillInfo = 1;
+
     public StaffStatus = StaffStatus;
 
     @Output() onStaffCountChanged = new EventEmitter();
@@ -70,6 +72,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
     }
 
     ngOnInit() {
+        this.staffs.forEach(s => s.showBillInfo = false);
     }
 
     ngDoCheck() {
@@ -139,6 +142,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
                         this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Selected)
                             .subscribe(res => {
                                 this.staffs = res.role_staff;
+                                this.staffs.forEach(s => s.showBillInfo = false);
                             })
                         this.updateStaffCount();
                     });
@@ -164,6 +168,28 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
             .subscribe(res => {
                 this.toastr.success(res.message);
                 staff.unpaid_break = value;
+            });
+    }
+
+    onPayItemsChanged(event, staff) {
+        const pay_rate = event.payRate;
+        const pay_rate_type = event.payRateType;
+        this.scheduleService.updateRoleStaff(staff.id, { pay_rate, pay_rate_type })
+            .subscribe(res => {
+                this.toastr.success(res.message);
+                staff.pay_rate = pay_rate;
+                staff.pay_rate_type = pay_rate_type;
+            });
+    }
+
+    onBillItemsChanged(event, staff) {
+        const bill_rate = event.billRate;
+        const bill_rate_type = event.billRateType;
+        this.scheduleService.updateRoleStaff(staff.id, { bill_rate, bill_rate_type })
+            .subscribe(res => {
+                this.toastr.success(res.message);
+                staff.bill_rate = bill_rate;
+                staff.bill_rate_type = bill_rate_type;
             });
     }
 

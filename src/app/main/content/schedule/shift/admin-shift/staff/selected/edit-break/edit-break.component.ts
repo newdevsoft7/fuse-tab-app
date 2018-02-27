@@ -24,7 +24,7 @@ export class AdminShiftEditBreakComponent implements OnInit {
     @Output() onBreakChanged = new EventEmitter;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: FormBuilder
     ) { }
 
     ngOnInit() {

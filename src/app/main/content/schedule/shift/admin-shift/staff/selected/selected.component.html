@@ -11,6 +11,7 @@
             </ng-template>
         </ngx-datatable-column>
 
+        <!-- NAME, EMAIL -->
         <ngx-datatable-column name="Name" prop="name" [sortable]="true" [width]="150" [canAutoResize]="false">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <strong>{{row.name}}</strong>
@@ -18,17 +19,23 @@
                 <strong>{{row.email}}</strong>
             </ng-template>
         </ngx-datatable-column>
+        <!-- / NAME, EMAIL -->
         
+        <!-- TIMES LOCK -->
         <ngx-datatable-column name="Times Locked" prop="times_locked" [sortable]="true" [canAutoResize]="false"
             [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button (click)="changeTimesLock(row)">
-                    <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
-                    <mat-icon *ngIf="!row.times_locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+                    <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"
+                        matTooltip="Locked - Staff cannot change times"></mat-icon>
+                    <mat-icon *ngIf="!row.times_locked" fontSet="fa" fontIcon="fa-unlock"
+                         matTooltip="Unlocked - Staff can change times"></mat-icon>
                 </button>
             </ng-template>
         </ngx-datatable-column>
+        <!-- / TIMES LOCK -->
 
+        <!-- TIMES & BREAK -->
         <ngx-datatable-column name="Time" [sortable]="false" [canAutoResize]="true">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <app-admin-shift-edit-time [staff]="row" (onTimeChanged)="onTimeChanged($event, row)"></app-admin-shift-edit-time>
@@ -37,7 +44,31 @@
                 </app-admin-shift-edit-break>
             </ng-template>
         </ngx-datatable-column>
+        <!-- / TIMES & BREAK -->
+        
+        <!-- PAY & BILL -->
+        <ngx-datatable-column name="Pay and Bill" [sortable]="false" [canAutoResize]="true">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                    
+                    <div>
+                        <app-admin-shift-edit-payitems [staff]="row" *ngIf="!row.showBillInfo"
+                            (onPayItemsChanged)="onPayItemsChanged($event, row)">
+                        </app-admin-shift-edit-payitems>
 
+                        <app-admin-shift-edit-billitems [staff]="row" *ngIf="row.showBillInfo"
+                            (onBillItemsChanged)="onBillItemsChanged($event, row)">
+                        </app-admin-shift-edit-billitems>
+                    </div>
+
+                    <button mat-icon-button (click)="row.showBillInfo = !row.showBillInfo;" *ngIf="showBillInfo === 1">
+                        <mat-icon>compare_arrows</mat-icon>
+                    </button>
+
+                </div>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / PAY * BILL -->
 
         <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
