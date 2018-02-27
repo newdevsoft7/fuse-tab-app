@@ -54,3 +54,7 @@
 .toast-warning::after {
     border-left: 4px solid #f89406;
 }
+
+app-tab .pane {
+    height: calc(-113px + 100vh) !important;
+}

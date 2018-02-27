@@ -7,6 +7,9 @@ import { SocketService } from '../../../../shared/services/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import { FavicoService } from '../../../../shared/services/favico.service';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { NewThreadFormDialogComponent } from './dialogs';
+import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
 
 @Component({
   selector: 'app-users-chat',
@@ -18,69 +21,66 @@ export class UsersChatComponent {
   @ViewChild(FuseChatViewComponent) chatView: FuseChatViewComponent;
   content: string;
   selectedChat: any;
-  selectedUser: any;
+  selectedThread: any;
   users: any = [];
-  sessions: any = [];
+  threads: any = [];
+  dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
 
   constructor(
     private usersChatService: UsersChatService, 
     private userService: UserService, 
     private tokenStorage: TokenStorage, 
     private socketService: SocketService,
-    private favicoService: FavicoService) {
+    private favicoService: FavicoService,
+    private activityManagerService: ActivityManagerService,
+    private dialog: MatDialog) {
 
     usersChatService.currentMessage.subscribe(res => {
       if (!res || !res.type) return;
       switch (res.type) {
         case 'newMessage':
-          res.data.sent = 1;
-          if (!this.selectedChat) {
+          if (!this.selectedThread) {
             this.usersChatService.unreadList.push(res.data);
             this.favicoService.setBadge(this.usersChatService.unreadList.length);
             return;
           }
-          if (parseInt(res.data.sender_id) === this.selectedUser.id) {
+          if (parseInt(res.data.thread_id) === this.selectedThread.id) {
             this.selectedChat.push(res.data);
             this.chatView.readyToReply();
+            if (this.activityManagerService.isFocused) {
+              this.updateRead();
+            }
           } else {
             this.usersChatService.unreadList.push(res.data);
             this.favicoService.setBadge(this.usersChatService.unreadList.length);
           }
           break;
-        case 'unread':
-          if (!this.selectedChat) return;
-          for (let i = 0; i < this.selectedChat.length; i++) {
-            const message = this.selectedChat[i];
-            if (res.data.indexOf(message.id) !== -1) {
-              message.read = 1;
-            }
-          }
-          break;
       }
     });
 
-    this.fetchSessions();
+    this.fetchThreads();
   }
 
   getUnreads() {
     return this.usersChatService.unreadList;
   }
 
-  async fetchSessions() {
+  async fetchThreads() {
     try {
-      const currentUserId = this.tokenStorage.getUser().id;
-      this.sessions = await this.usersChatService.getContactSessions();
+      this.threads = await this.usersChatService.getThreads();
     } catch (e) {
       this.handleError(e);
     }
   }
 
-  async fetchChatBySession(sessionId: number) {
+  async fetchChatByThread(threadId: number) {
+    if (this.selectedThread && this.selectedThread.id === threadId) return;
     this.selectedChat = [];
     try {
-      this.selectedChat = await this.usersChatService.getMessagesBySession(sessionId);
-      this.selectedUser = this.users.find(user => user.id === sessionId);
+      this.selectedChat = await this.usersChatService.getMessagesByThread(threadId);
+      this.selectedThread = this.threads.find(thread => thread.id === threadId);
       this.chatView.readyToReply();
+      this.updateRead();
     } catch (e) {
       this.handleError(e);
     }
@@ -88,28 +88,35 @@ export class UsersChatComponent {
 
   async sendMessage(message: any) {
     try {
-      const payload = await this.usersChatService.sendMessage(message);
+      const savedMessage = await this.usersChatService.sendMessage(message);
       this.socketService.sendData(JSON.stringify({
         type: 'message',
-        payload
+        payload: {
+          receipts: this.selectedThread.participantList.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
+          sender: this.tokenStorage.getUser().id,
+          content: savedMessage
+        }
       }));
-      this.selectedChat.push(payload);
+      this.selectedChat.push(savedMessage);
       this.chatView.readyToReply();
     } catch (e) {
       this.handleError(e);
     }
   }
 
+  updateRead() {
+    for (let i = this.usersChatService.unreadList.length - 1; i >= 0; i--) {
+      const threadId = this.usersChatService.unreadList[i].thread_id;
+      if (this.selectedThread.id === threadId) {
+        this.usersChatService.unreadList.splice(i, 1);
+      }
+    }
+    this.favicoService.setBadge(this.usersChatService.unreadList.length);
+  }
+
   async updateReadStatus(msgIds: number[]) {
     try {
       await this.usersChatService.updateReadStatus(msgIds);
-      this.socketService.sendData(JSON.stringify({
-        type: 'unread',
-        payload: {
-          receiver_id: this.selectedUser.id,
-          ids: msgIds
-        }
-      }));
       for (let i = this.usersChatService.unreadList.length - 1; i >= 0; i--) {
         const id = this.usersChatService.unreadList[i].id;
         if (msgIds.indexOf(id) !== -1) {
@@ -125,20 +132,33 @@ export class UsersChatComponent {
   async searchUsers(searchText: string) {
     if (!searchText) return;
     try {
-      const currentUserId = this.tokenStorage.getUser().id;
-      this.users = (await this.userService.getUsers().map(_ => _.data).toPromise()).filter(user => user.id !== currentUserId);
+      this.users = await this.usersChatService.searchRecipient(searchText);
     } catch (e) {
       this.handleError(e);
     }
   }
 
-  async addContact(userId: number) {
-    try {
-      const session = await this.usersChatService.addContactSession(userId);
-      this.sessions.push(session);
-    } catch (e) {
-      this.handleError(e);
-    }
+  addContact(userId: number) {    
+    this.dialogRef = this.dialog.open(NewThreadFormDialogComponent, {
+      panelClass: 'thread-form-dialog'
+    });
+    this.dialogRef.afterClosed().subscribe(async message => {
+      if (!message) {
+        return;
+      }
+      try {
+        const payload = await this.usersChatService.sendMessage({
+          recipient_id: userId,
+          content: message
+        });
+        this.threads = await this.usersChatService.getThreads();
+        this.selectedChat = [payload];
+        this.selectedThread = this.threads.find(thread => thread.id === payload.thread_id);
+        this.chatView.readyToReply();
+      } catch (e) {
+        this.handleError(e);
+      }
+    });
   }
 
   handleError(e) {

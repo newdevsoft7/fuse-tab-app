@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter } from '@angular/core';
-import { UsersChatService } from '../chat.service';
 import { NgForm } from '@angular/forms';
 import { FusePerfectScrollbarDirective } from '../../../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
+import { UserService } from '../../user.service';
 
 @Component({
     selector   : 'fuse-chat-view',
@@ -11,7 +12,13 @@ import { FusePerfectScrollbarDirective } from '../../../../../core/directives/fu
 export class FuseChatViewComponent implements OnInit, AfterViewInit
 {
     @Input() messages: any = [];
-    @Input() user: any;
+    @Input('thread') set updateThread(thread) {
+        if (thread) {
+            this.thread = thread;
+            this.updateParticipants();
+        }
+    }
+
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
     @Output() updateReadStatus: EventEmitter<any> = new EventEmitter();
     replyInput: any;
@@ -19,13 +26,32 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @ViewChild(FusePerfectScrollbarDirective) directiveScroll: FusePerfectScrollbarDirective;
     @ViewChildren('replyInput') replyInputField;
     @ViewChild('replyForm') replyForm: NgForm;
+    
+    thread: any;
+    participants: any = [];
 
-    constructor(private chatService: UsersChatService)
+    authenticatedUser: any;
+
+    constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
+        this.authenticatedUser = tokenStorage.getUser();
     }
 
-    ngOnInit() {
+    getParticipant(userId: number) {
+        return this.participants.find(user => user.id === userId);
     }
+
+    updateParticipants() {
+        try {
+            this.thread.participantList.forEach(async (id: number) => {
+                this.participants.push(await this.userService.getUser(id).toPromise());
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    ngOnInit() {}
 
     ngAfterViewInit()
     {
@@ -59,22 +85,14 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
 
             setTimeout(() => {
                 this.directiveScroll.scrollToBottom(0, speed);
-                this.updateRead();
             });
-        }
-    }
-
-    updateRead() {
-        const unreads = this.messages.filter(message => parseInt(message.read) === 0 && parseInt(message.sender_id) === this.user.id).map(message => parseInt(message.id));
-        if (unreads.length > 0) {
-            this.updateReadStatus.next(unreads);
         }
     }
 
     reply(event)
     {
         const message = {
-            receiver: this.user.id,
+            thread_id: this.thread.id,
             content: this.replyForm.form.value.message
         };
 
