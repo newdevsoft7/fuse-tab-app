@@ -15,12 +15,14 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @Input('thread') set updateThread(thread) {
         if (thread) {
             this.thread = thread;
+            console.log(this.thread);
             this.updateParticipants();
         }
     }
 
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
     @Output() updateReadStatus: EventEmitter<any> = new EventEmitter();
+    @Output() addUser: EventEmitter<any> = new EventEmitter();
     replyInput: any;
     selectedChat: any;
     @ViewChild(FusePerfectScrollbarDirective) directiveScroll: FusePerfectScrollbarDirective;

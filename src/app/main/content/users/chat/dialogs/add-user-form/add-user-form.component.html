@@ -1,0 +1,53 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar matDialogTitle class="mat-accent m-0">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="title dialog-title">New users</span>
+          <button mat-button class="mat-icon-button"
+                  (click)="dialogRef.close()"
+                  aria-label="Close dialog">
+              <mat-icon>close</mat-icon>
+          </button>
+      </div>
+  </mat-toolbar>
+
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar fxLayout="column">
+    <mat-form-field class="" fxFlex floatPlaceholder="never">
+        <textarea matInput placeholder="Search users here..." [(ngModel)]="searchText" (ngModelChange)="searchUsers()"></textarea>
+    </mat-form-field>
+
+    <div class="user-list" fxLayout="column">
+
+      <div mat-button class="user" *ngFor="let user of users" fxLayout="row" fxLayoutAlign="space-between center">
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+              <div class="avatar-wrapper" fxFlex="0 1 auto" fxLayoutAlign="center center">
+                  <img [src]="user.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar"/>
+              </div>
+
+              <div fxLayout="row" fxFlex>
+                  <div class="" fxFlex fxLayout="column" fxLayoutAlign="center start">
+                      <div class="user-name">{{user.name}}</div>
+                  </div>
+              </div>
+          </div>
+
+          <btn-add-contact [added]="isUserSelected(user)" (onTapped)="select(user)"></btn-add-contact>
+
+      </div>
+
+      <p *ngIf="users.length === 0" class="m-0 p-16">No results.</p>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+    <button mat-raised-button
+            [disabled]="selectedUsers.length === 0"
+            (click)="dialogRef.close(selectedUsers)"
+            color="accent"
+            aria-label="Send">
+        ADD
+    </button>
+  </div>
+</div>

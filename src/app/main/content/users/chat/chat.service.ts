@@ -98,6 +98,11 @@ export class UsersChatService {
     }
   }
 
+  async addUserIntoThread(threadId: number, userId: number) {
+    const url = `${CHAT_URL}/thread/${threadId}/user/${userId}`;
+    return this.http.post(url, {}).toPromise();
+  }
+
   private handleError(error): Promise<any> {
     return Promise.reject(error);
   }

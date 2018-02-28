@@ -9,7 +9,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/takeWhile';
 import { FavicoService } from '../../../../shared/services/favico.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { NewThreadFormDialogComponent } from './dialogs';
+import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './dialogs';
 import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
 import { TabService } from '../../../tab/tab.service';
 
@@ -27,6 +27,7 @@ export class UsersChatComponent {
   users: any = [];
   threads: any = [];
   dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
+  userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
   alive: boolean = true;
 
   constructor(
@@ -96,7 +97,12 @@ export class UsersChatComponent {
   watchTabChange() {
     this.tabService.tabActived.subscribe(activeTab => {
       if (activeTab.url === 'users/chat' && this.selectedThread) {
-        this.updateRead();
+        if (this.usersChatService.unreadList.length > 0) {
+          const unreads = this.usersChatService.unreadList.filter(message => message.thread_id === this.selectedThread.id);
+          this.selectedChat = [...this.selectedChat, ...unreads];
+          this.chatView.readyToReply();
+          this.updateRead();
+        }
       }
     });
   }
@@ -183,6 +189,27 @@ export class UsersChatComponent {
         this.selectedChat = [payload];
         this.selectedThread = this.threads.find(thread => thread.id === payload.thread_id);
         this.chatView.readyToReply();
+      } catch (e) {
+        this.handleError(e);
+      }
+    });
+  }
+
+  triggerAddUserModal() {
+    this.userDialogRef = this.dialog.open(AddUserFormDialogComponent, {
+      panelClass: 'add-user-form-dialog'
+    });
+    this.userDialogRef.afterClosed().subscribe(selectedUsers => {
+      if (!selectedUsers) {
+        return;
+      }
+      try {
+        const threadId = this.selectedThread.id;
+        selectedUsers.forEach(async (userId: number) => {
+          await this.usersChatService.addUserIntoThread(this.selectedThread.id, userId);
+        });
+        this.fetchThreads();
+        this.selectedThread = this.threads.find(thread => thread.id === threadId);
       } catch (e) {
         this.handleError(e);
       }

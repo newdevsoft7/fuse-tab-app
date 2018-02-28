@@ -8,7 +8,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class BtnAddContactComponent
 {
   isAdded: boolean = false;
-  @Input() set added(value: boolean) {
+  @Input('added') set added(value: boolean) {
     this.loaded = true;
     this.isAdded = value;
   };

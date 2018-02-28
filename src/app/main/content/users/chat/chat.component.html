@@ -32,7 +32,8 @@
                     [messages]="selectedChat" 
                     [thread]="selectedThread" 
                     (sendMessage)="sendMessage($event)"
-                    (updateReadStatus)="updateReadStatus($event)"></fuse-chat-view>
+                    (updateReadStatus)="updateReadStatus($event)"
+                    (addUser)="triggerAddUserModal($event)"></fuse-chat-view>
                 </mat-sidenav-content>
                 <!-- / CONTENT -->
 

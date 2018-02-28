@@ -1,0 +1,49 @@
+@import "src/app/core/scss/fuse";
+
+.add-user-form-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up('xs') {
+        width: 480px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+
+        .user {
+          white-space: normal;
+          text-align: left;
+          letter-spacing: .010em;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+          padding: 16px;
+          font-weight: 400;
+
+          .avatar-wrapper {
+
+              .avatar {
+                  margin-right: 16px;
+              }
+          }
+
+          .user-name {
+              font-size: 16px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+          }
+        }
+    }
+
+    .primary-color-input,
+    .secondary-color-input {
+        padding: 6px 8px;
+    }
+}
