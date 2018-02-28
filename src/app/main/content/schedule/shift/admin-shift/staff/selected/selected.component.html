@@ -1,9 +1,9 @@
-<div id="admin-shift-staff-selected">
+<div id="admin-shift-staff-selected" #tableWrapper>
 
-    <ngx-datatable class="material striped" [rows]="staffs" [columnMode]="'force'" [headerHeight]="0"
-        [footerHeight]="50" [rowHeight]="'auto'" [limit]="10">
+    <ngx-datatable class="material striped" [rows]="staffs" [columnMode]="'force'" [headerHeight]="0" #table
+        [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true">
 
-        <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="100" [sortable]="false" [canAutoResize]="false">
+        <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="80" [sortable]="false" [canAutoResize]="false">
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                 <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"
                     [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
@@ -23,7 +23,7 @@
         
         <!-- TIMES LOCK -->
         <ngx-datatable-column name="Times Locked" prop="times_locked" [sortable]="true" [canAutoResize]="false"
-            [width]="100">
+            [width]="70">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button (click)="changeTimesLock(row)" [disabled]="editable !== 1">
                     <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"
@@ -48,34 +48,27 @@
         </ngx-datatable-column>
         <!-- / TIMES & BREAK -->
         
-        <!-- PAY & BILL -->
-        <ngx-datatable-column name="Pay and Bill" [sortable]="false" [canAutoResize]="true">
+        <!-- PAY RATE -->
+        <ngx-datatable-column name="Pay" [sortable]="false" [canAutoResize]="true">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-                    
-                    <div>
-                        <app-admin-shift-edit-payitems [staff]="row" *ngIf="!row.showBillInfo"
-                            [editable]="editable"
-                            (onPayItemsChanged)="onPayItemsChanged($event, row)">
-                        </app-admin-shift-edit-payitems>
-
-                        <app-admin-shift-edit-billitems [staff]="row" *ngIf="row.showBillInfo"
-                            [editable]="editable"
-                            (onBillItemsChanged)="onBillItemsChanged($event, row)">
-                        </app-admin-shift-edit-billitems>
-                    </div>
-
-                    <button mat-icon-button (click)="row.showBillInfo = !row.showBillInfo;" *ngIf="showBillInfo === 1"
-                        [disabled]="editable !== 1">
-                        <mat-icon>compare_arrows</mat-icon>
-                    </button>
-
-                </div>
+                <app-admin-shift-edit-payitems [staff]="row" [editable]="editable"
+                    (onPayItemsChanged)="onPayItemsChanged($event, row)">
+                </app-admin-shift-edit-payitems>
             </ng-template>
         </ngx-datatable-column>
-        <!-- / PAY * BILL -->
+        <!-- / PAY RATE-->
 
-        <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="100">
+        <!-- BILL RATE -->
+        <ngx-datatable-column name="Bill" [sortable]="false" [canAutoResize]="true" *ngIf="showBillInfo === 1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <app-admin-shift-edit-billitems [staff]="row" [editable]="editable"
+                    (onBillItemsChanged)="onBillItemsChanged($event, row)">
+                </app-admin-shift-edit-billitems>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / BILL RATE -->
+
+        <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="80">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
                     <mat-icon class="material-icons">more_horiz</mat-icon>

@@ -2,7 +2,9 @@ import {
     Component, OnInit,
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
-    Output, EventEmitter
+    Output, EventEmitter,
+    ViewChild,
+    ChangeDetectorRef
 } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -24,6 +26,7 @@ import {
     STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
 } from '../../../../../../../constants/staff-status';
+import { DatatableComponent } from '@swimlane/ngx-datatable';
 
 enum Query {
     Counts = 'counts',
@@ -42,6 +45,10 @@ enum Query {
 export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
 
     @Input() editable;
+
+    @ViewChild('tableWrapper') tableWrapper;
+    @ViewChild('table') table: DatatableComponent;
+    private currentComponentWidth;
 
     _staffs;
     @Input()
@@ -69,12 +76,21 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
+        private changeDetectorRef: ChangeDetectorRef,
         differs: IterableDiffers
     ) {
     }
 
+    ngAfterViewChecked() {
+        // Check if the table size has changed,
+        if (this.table && this.table.recalculate && (this.tableWrapper.nativeElement.clientWidth !== this.currentComponentWidth)) {
+            this.currentComponentWidth = this.tableWrapper.nativeElement.clientWidth;
+            this.table.recalculate();
+            this.changeDetectorRef.detectChanges();
+        }
+    }
+
     ngOnInit() {
-        this.staffs.forEach(s => s.showBillInfo = false);
     }
 
     ngDoCheck() {
@@ -144,7 +160,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
                         this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Selected)
                             .subscribe(res => {
                                 this.staffs = res.role_staff;
-                                this.staffs.forEach(s => s.showBillInfo = false);
                             })
                         this.updateStaffCount();
                     });
