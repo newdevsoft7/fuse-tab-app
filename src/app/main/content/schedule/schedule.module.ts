@@ -29,6 +29,11 @@ import { AdminShiftEditTimeComponent } from './shift/admin-shift/staff/selected/
 import { AdminShiftEditBreakComponent } from './shift/admin-shift/staff/selected/edit-break/edit-break.component';
 import { AdminShiftEditPayitemsComponent } from './shift/admin-shift/staff/selected/edit-payitems/edit-payitems.component';
 import { AdminShiftEditBillitemsComponent } from './shift/admin-shift/staff/selected/edit-billitems/edit-billitems.component';
+import { AdminShiftEditGenericTitleComponent } from './shift/admin-shift/edit-generic-title/edit-generic-title.component';
+import { AdminShiftEditGenericLocationComponent } from './shift/admin-shift/edit-generic-location/edit-generic-location.component';
+import { AdminShiftEditAddressComponent } from './shift/admin-shift/edit-address/edit-address.component';
+import { AdminShiftEditContactComponent } from './shift/admin-shift/edit-contact/edit-contact.component';
+import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edit-title.component';
 
 @NgModule({
 	imports: [
@@ -62,7 +67,12 @@ import { AdminShiftEditBillitemsComponent } from './shift/admin-shift/staff/sele
         AdminShiftEditTimeComponent,
         AdminShiftEditBreakComponent,
         AdminShiftEditPayitemsComponent,
-        AdminShiftEditBillitemsComponent
+        AdminShiftEditBillitemsComponent,
+        AdminShiftEditGenericTitleComponent,
+        AdminShiftEditGenericLocationComponent,
+        AdminShiftEditAddressComponent,
+        AdminShiftEditContactComponent,
+        AdminShiftEditTitleComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],

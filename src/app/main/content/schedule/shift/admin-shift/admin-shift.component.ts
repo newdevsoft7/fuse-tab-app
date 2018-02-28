@@ -27,6 +27,8 @@ export class AdminShiftComponent implements OnInit {
 	@ViewChild('staffTab') staffTab: AdminShiftStaffComponent;
 	@ViewChild('mapTab') mapTab: AdminShiftMapComponent;
 
+	showMoreBtn = true;
+
 	get id() {
 		return this.data.id;
 	}
@@ -48,6 +50,10 @@ export class AdminShiftComponent implements OnInit {
 	ngOnInit() {
 		this.currentUser = this.tokenStorage.getUser();
 		this.fetch();
+	}
+
+	toggleMoreBtn() {
+		this.showMoreBtn = !this.showMoreBtn;
 	}
 
 	selectedTabChange(event: MatTabChangeEvent) {
@@ -77,6 +83,26 @@ export class AdminShiftComponent implements OnInit {
 				this.shift.locked = lock;
 				this.toastr.success(res.message);
 			});
+	}
+
+	onAddressChanged(address) {
+		this.shift.address = address;
+	}
+
+	onContactChanged(contact) {
+		this.shift.contact = contact;
+	}
+
+	onGenericLocationChanged(genericLocation) {
+		this.shift.generic_location = genericLocation;
+	}
+
+	onGenericTitleChanged(genericTitle) {
+		this.shift.generic_title = genericTitle;
+	}
+
+	onTitleChanged(title) {
+		this.shift.title = title;
 	}
 
 

@@ -1,0 +1,31 @@
+:host() {
+
+    #admin-shift-edit-address {
+    
+        .text-field {
+            margin-bottom: 12px;
+            margin-top: 12px;
+    
+            &.disabled {
+                pointer-events: none;
+                .info {
+                    border-bottom: none;
+                }
+            }
+    
+            .info {
+                // border-bottom: dashed 1px #d0d0d0;
+                font-size: 16px;
+
+                &:hover {
+                    cursor: text;
+                }
+            }
+        }
+    
+        .address-width {
+            width: 500px;
+        }
+    
+    }
+}

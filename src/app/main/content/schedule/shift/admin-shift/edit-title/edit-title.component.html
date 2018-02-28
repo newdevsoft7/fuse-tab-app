@@ -1,0 +1,22 @@
+<div id="admin-shift-edit-title">
+    <div *ngIf="!formActive"  (click)="openForm()" class="text-field" [class.disabled]="shift.editable !== 1">
+        <div class="info" matTooltip="Shift Title" fxLayoutAlign="start center">
+            {{display()}}
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-form-field class="title-width">
+            <input matInput type="text" #titleInput fxFlex required formControlName="title">
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>

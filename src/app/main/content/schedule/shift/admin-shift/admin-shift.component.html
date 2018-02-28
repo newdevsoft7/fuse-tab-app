@@ -7,9 +7,19 @@
                 <div class="h1 mt-16 date">
                     {{shift.shift_start | date: 'EEEE, MMMM d, y, h:mm a'}}
                 </div>
-                <div class="h1 mt-16 title" matTooltip="Shift Title">
-                    {{shift.title}}
-                </div>
+                <app-admin-shift-edit-title [shift]="shift"
+                    (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
+
+                <ng-container *ngIf="!showMoreBtn">
+                    <app-admin-shift-edit-generic-title [shift]="shift"
+                        (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
+                    <app-admin-shift-edit-generic-location [shift]="shift"
+                        (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>
+                    <app-admin-shift-edit-address [shift]="shift"
+                        (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
+                    <app-admin-shift-edit-contact [shift]="shift"
+                        (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
+                </ng-container>
             </div>
 
             <!-- HEADER BUTTONS -->
@@ -31,8 +41,10 @@
             <!-- / HEADER BUTTONS -->
 
         </div>
-        <div class="more-details" fxLayout="column" fxLayoutAlign="center center">
-            <a mat-button href="#" target="_blank">More Details</a>
+
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
+            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
         </div>
     </div>
     <!-- / HEADER -->
