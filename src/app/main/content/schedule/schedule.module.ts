@@ -34,6 +34,7 @@ import { AdminShiftEditGenericLocationComponent } from './shift/admin-shift/edit
 import { AdminShiftEditAddressComponent } from './shift/admin-shift/edit-address/edit-address.component';
 import { AdminShiftEditContactComponent } from './shift/admin-shift/edit-contact/edit-contact.component';
 import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edit-title.component';
+import { AdminShiftEditPeriodComponent } from './shift/admin-shift/edit-period/edit-period.component';
 
 @NgModule({
 	imports: [
@@ -72,7 +73,8 @@ import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edi
         AdminShiftEditGenericLocationComponent,
         AdminShiftEditAddressComponent,
         AdminShiftEditContactComponent,
-        AdminShiftEditTitleComponent
+        AdminShiftEditTitleComponent,
+        AdminShiftEditPeriodComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],

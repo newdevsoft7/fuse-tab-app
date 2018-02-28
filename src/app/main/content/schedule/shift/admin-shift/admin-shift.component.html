@@ -4,9 +4,9 @@
     <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
             <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" >
-                <div class="h1 mt-16 date">
-                    {{shift.shift_start | date: 'EEEE, MMMM d, y, h:mm a'}}
-                </div>
+
+                <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones"
+                    (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
                 <app-admin-shift-edit-title [shift]="shift"
                     (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
 

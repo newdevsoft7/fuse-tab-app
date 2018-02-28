@@ -39,6 +39,7 @@ export class AdminShiftComponent implements OnInit {
 	
 	currentUser: any;
 	shift: any;
+	timezones = [];
 
 	constructor(
 		private tokenStorage: TokenStorage,
@@ -50,6 +51,14 @@ export class AdminShiftComponent implements OnInit {
 	ngOnInit() {
 		this.currentUser = this.tokenStorage.getUser();
 		this.fetch();
+
+		this.scheduleService.getTimezones()
+			.subscribe(res => {
+				Object.keys(res).forEach(key => {
+					this.timezones.push({ value: key, label: res[key] });
+				});
+			});
+
 	}
 
 	toggleMoreBtn() {
@@ -67,6 +76,7 @@ export class AdminShiftComponent implements OnInit {
 		}
 	}
 
+	
 	toggleLive() {
 		const live = this.shift.live === 1 ? 0 : 1;
 		this.scheduleService.publishShift(this.shift.id, live)
@@ -103,6 +113,12 @@ export class AdminShiftComponent implements OnInit {
 
 	onTitleChanged(title) {
 		this.shift.title = title;
+	}
+
+	onPeriodChanged({ start, end, timezone }) {
+		this.shift.shift_start = start;
+		this.shift.shift_end = end;
+		this.shift.timezone= timezone;
 	}
 
 

@@ -170,6 +170,12 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
+  getTimezones(): Observable<any> {
+    const url = `${BASE_URL}/helpers/timezones`;
+    return this.http.get(url)
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
