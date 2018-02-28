@@ -121,6 +121,10 @@ export class AdminShiftComponent implements OnInit {
 		this.shift.timezone= timezone;
 	}
 
+	onManagersChanged(managers: any[]) {
+		this.shift.managers = managers;
+	}
+
 
 	private async fetch() {
 		try {

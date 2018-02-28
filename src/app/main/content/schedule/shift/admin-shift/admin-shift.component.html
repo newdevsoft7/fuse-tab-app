@@ -3,7 +3,7 @@
     <!-- HEADER -->
     <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
-            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" >
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-80-p">
 
                 <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones"
                     (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
@@ -19,6 +19,8 @@
                         (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
                     <app-admin-shift-edit-contact [shift]="shift"
                         (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
+                    <app-admin-shift-edit-managers [shift]="shift" class="w-100-p"
+                        (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
                 </ng-container>
             </div>
 

@@ -1,0 +1,25 @@
+<div id="admin-shift-edit-managers">
+    <div *ngIf="!formActive" (click)="openForm()" class="text-field" [class.disabled]="shift.editable !== 1">
+        <div class="info" matTooltip="Managers" fxLayoutAlign="start center">
+            <mat-icon class="mr-8">person</mat-icon>
+            {{display()}}
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <div class="w-100-p">
+            <app-custom-multi-select [autocompleteObservable]="managersObservable" [placeholder]="'Managers'"
+                [labelBy]="'name'" [valueBy]="'id'" formControlName="manager_ids">
+            </app-custom-multi-select>
+        </div>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>
