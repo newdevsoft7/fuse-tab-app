@@ -11,7 +11,6 @@ export class FuseChatLeftSidenavComponent
 {
     @Input() users: any = [];
     @Input() threads: any = [];
-    @Input() unreads: any= [];
     @Output() fetchChat: EventEmitter<number> = new EventEmitter();
     @Output() searchUsers: EventEmitter<string> = new EventEmitter();
     @Output() addContact: EventEmitter<number> = new EventEmitter();

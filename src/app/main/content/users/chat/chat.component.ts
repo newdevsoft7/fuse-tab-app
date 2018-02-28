@@ -6,10 +6,12 @@ import { FuseChatViewComponent } from './chat-view/chat-view.component';
 import { SocketService } from '../../../../shared/services/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/takeWhile';
 import { FavicoService } from '../../../../shared/services/favico.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { NewThreadFormDialogComponent } from './dialogs';
 import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
+import { TabService } from '../../../tab/tab.service';
 
 @Component({
   selector: 'app-users-chat',
@@ -25,8 +27,10 @@ export class UsersChatComponent {
   users: any = [];
   threads: any = [];
   dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
+  alive: boolean = true;
 
   constructor(
+    private tabService: TabService,
     private usersChatService: UsersChatService, 
     private userService: UserService, 
     private tokenStorage: TokenStorage, 
@@ -35,13 +39,15 @@ export class UsersChatComponent {
     private activityManagerService: ActivityManagerService,
     private dialog: MatDialog) {
 
-    usersChatService.currentMessage.subscribe(res => {
+    usersChatService.currentMessage.takeWhile(() => this.alive).subscribe(res => {
       if (!res || !res.type) return;
       switch (res.type) {
         case 'newMessage':
           if (!this.selectedThread) {
-            this.usersChatService.unreadList.push(res.data);
-            this.favicoService.setBadge(this.usersChatService.unreadList.length);
+            if (this.activityManagerService.isFocused) {
+              this.usersChatService.unreadList.push(res.data);
+              this.favicoService.setBadge(this.usersChatService.unreadList.length);
+            }
             return;
           }
           if (parseInt(res.data.thread_id) === this.selectedThread.id) {
@@ -51,18 +57,24 @@ export class UsersChatComponent {
               this.updateRead();
             }
           } else {
-            this.usersChatService.unreadList.push(res.data);
-            this.favicoService.setBadge(this.usersChatService.unreadList.length);
+            if (this.activityManagerService.isFocused) {
+              this.usersChatService.unreadList.push(res.data);
+              this.favicoService.setBadge(this.usersChatService.unreadList.length);
+            }
           }
           break;
       }
     });
 
     this.fetchThreads();
+    this.watchActivityChange();
+    this.watchTabChange();
   }
 
-  getUnreads() {
-    return this.usersChatService.unreadList;
+  ngOnDestroy() {
+    this.alive = false;
+    this.selectedThread = null;
+    this.selectedChat = null;
   }
 
   async fetchThreads() {
@@ -71,6 +83,22 @@ export class UsersChatComponent {
     } catch (e) {
       this.handleError(e);
     }
+  }
+
+  watchActivityChange() {
+    this.activityManagerService.focusWatcher.takeWhile(() => this.alive).subscribe((active: boolean) => {
+      if (active && this.tabService.currentTab.url === 'users/chat' && this.selectedThread) {
+        this.updateRead();
+      }
+    });
+  }
+
+  watchTabChange() {
+    this.tabService.tabActived.subscribe(activeTab => {
+      if (activeTab.url === 'users/chat' && this.selectedThread) {
+        this.updateRead();
+      }
+    });
   }
 
   async fetchChatByThread(threadId: number) {

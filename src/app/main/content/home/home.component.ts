@@ -66,8 +66,6 @@ export class FuseHomeComponent implements OnDestroy
 
         // listen window activity/inactivity change
         this.activityManagerService.detectActivityChange();
-
-        // this.getUnreads();
     }
 
     async runSockets() {
@@ -85,6 +83,7 @@ export class FuseHomeComponent implements OnDestroy
             const payload = JSON.parse(res.data);
             if (this.tabService.currentTab && this.tabService.currentTab.url === 'users/chat') {
                 this.usersChatService.currentMessage.next(payload);
+                this.usersChatService.currentMessage.complete();
             }
             if (!this.activityManagerService.isFocused || !this.tabService.currentTab || this.tabService.currentTab.url !== 'users/chat') {
                 if (payload.type === 'newMessage') {

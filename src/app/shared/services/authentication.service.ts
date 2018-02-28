@@ -106,19 +106,12 @@ export class AuthenticationService {
             this.usersChatService.Device = null;
         } catch (e) {}
         if (this.tokenStorage.getUser()) {
-            this.disconnectSocket();
+            this.socketService.closeConnection();
         }
         this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
         this.tokenStorage.clear();
         this.favicoService.setBadge(0);
         this.router.navigate(['/login']);
-    }
-
-    public disconnectSocket() {
-        this.socketService.sendData(JSON.stringify({
-            type: 'disconnect',
-            payload: this.tokenStorage.getUser().id
-        }));
     }
 
     public verifyTokenRequest(url: string): boolean {
