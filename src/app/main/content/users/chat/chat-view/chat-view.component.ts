@@ -15,7 +15,6 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @Input('thread') set updateThread(thread) {
         if (thread) {
             this.thread = thread;
-            console.log(this.thread);
             this.updateParticipants();
         }
     }
@@ -45,7 +44,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
 
     updateParticipants() {
         try {
-            this.thread.participantList.forEach(async (id: number) => {
+            this.thread.participant_ids.forEach(async (id: number) => {
                 this.participants.push(await this.userService.getUser(id).toPromise());
             });
         } catch (e) {

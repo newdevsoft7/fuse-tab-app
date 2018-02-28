@@ -126,7 +126,7 @@ export class UsersChatComponent {
       this.socketService.sendData(JSON.stringify({
         type: 'message',
         payload: {
-          receipts: this.selectedThread.participantList.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
+          receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
           sender: this.tokenStorage.getUser().id,
           content: savedMessage
         }
