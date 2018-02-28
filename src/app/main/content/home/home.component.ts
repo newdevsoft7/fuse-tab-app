@@ -2,6 +2,8 @@ import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
+import { FuseNavigationService } from '../../../core/components/navigation/navigation.service';
+import { FuseNavigationModel } from '../../../navigation/navigation.model';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 import { locale as english } from './i18n/en';
@@ -50,6 +52,7 @@ export class FuseHomeComponent implements OnDestroy
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
+        private fuseNavigationService: FuseNavigationService,
         private tabService: TabService,
         private fcmService: FCMService,
         private socketService: SocketService,
@@ -75,6 +78,8 @@ export class FuseHomeComponent implements OnDestroy
         this.activityManagerService.detectActivityChange();
 
         // this.getUnreads();
+
+        this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl))
     }
 
     async runSockets() {
@@ -147,7 +152,8 @@ export class FuseHomeComponent implements OnDestroy
         };
 
         this.tabsComponent.openTab(_tab);
-        if (_tab.url == 'tracking'){
+
+        if (_tab.url == 'tracking') {
             let trackingCategory = _tab.data;
             if (JSON.stringify(_tab.data) != '{}' ){
                 this.trackingService.toggleSelectedCategory(trackingCategory as TrackingCategory);

@@ -18,8 +18,7 @@ export const SCHEDULE_IMPORT_SHIFTS_TAB = new Tab('Import Shifts', '', 'schedule
 export const SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY_TAB = new Tab('Import History', '', 'schedule/import-shifts/import-history', {});
 export const SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING_TAB = new Tab('Column Mapping', '', 'schedule/import-shifts/column-mapping', {});
 export const SCHEDULE_EXPORT_SHIFTS_TAB = new Tab('Export Shifts', '', 'schedule/export-shift', {});
-export const SCHEDULE_NEW_SHIFT_TAB = new Tab('New Shift', 'newShiftTpl', 'schedule/new-shift', {
-    url: 'schedule/new-shift'});
+export const SCHEDULE_NEW_SHIFT_TAB = new Tab('New Shift', 'newShiftTpl', 'schedule/new-shift', { url: 'schedule/new-shift'});
 export const SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB = new Tab('Excel Spreadsheet', '', 'schedule/export-shift/excel-spreadsheet', {});
 export const SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB = new Tab('PDF Overview', '', 'schedule/export-shift/pdf-overview', {});
 
