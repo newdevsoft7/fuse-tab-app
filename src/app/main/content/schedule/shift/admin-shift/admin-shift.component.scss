@@ -2,11 +2,19 @@
 
 #admin-shift {
 
+    &.page-layout {
+        overflow: unset !important;
+    }
+
     .header {
-        height: 240px;
-        min-height: 240px;
-        max-height: 240px;
+        max-width: inherit !important;
+        margin: -1em;
+        min-height: 200px;
+        position: relative;
         background-size: 100% auto;
+        background-repeat: no-repeat;
+        margin-bottom: 25px;
+
 
         .shift-info {
             width: 100%;

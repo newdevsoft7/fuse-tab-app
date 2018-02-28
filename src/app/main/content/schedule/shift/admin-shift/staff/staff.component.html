@@ -1,4 +1,4 @@
-<div id="admin-shift-staff" class="pt-24" fxLayout="row" fxLayoutWrap>
+<div id="admin-shift-staff" class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
     <div class="staff-content" fxLayout="column" [fxFlex]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
     
         <div *ngFor="let role of roles" class="staff-box info-box general" fxLayout="column">

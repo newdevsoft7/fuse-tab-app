@@ -51,6 +51,8 @@ export class ShiftRoleEditComponent implements OnInit {
     shifts: number[];
     url: string;
 
+    role: any;  // EDIT ROLE FROM SHIFT TAB
+
     roleForm: FormGroup;
     formErrors: any;
     
@@ -79,6 +81,9 @@ export class ShiftRoleEditComponent implements OnInit {
     ngOnInit() {
         this.shifts = this.data.shifts;
         this.url = this.data.url;
+
+        // TODO - EDIT ROLE
+        this.role = this.data.role;
 
         this.roleForm = this.formBuilder.group({
             num_required: [1],

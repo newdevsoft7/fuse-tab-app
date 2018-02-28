@@ -1,14 +1,14 @@
-<div id="admin-shift" class="page-layout simple fullwidth" *ngIf="shift" fusePerfectScrollbar>
+<div id="admin-shift" class="page-layout simple fullwidth" *ngIf="shift">
 
     <!-- HEADER -->
-    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-around stretch">
+    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
             <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" >
                 <div class="h1 mt-16 date">
                     {{shift.shift_start | date: 'EEEE, MMMM d, y, h:mm a'}}
                 </div>
-                <div class="h1 mt-16 title">
-                    {{shift.location}}
+                <div class="h1 mt-16 title" matTooltip="Shift Title">
+                    {{shift.title}}
                 </div>
             </div>
 
