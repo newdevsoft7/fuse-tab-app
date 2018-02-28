@@ -10,10 +10,6 @@
             <agm-marker [latitude]="shift.lat" [longitude]="shift.lon" [markerDraggable]="true"
                  (dragEnd)="changePosition($event)">
             
-                <agm-info-window>
-                    <strong>Title: {{shift.title}}</strong>
-                </agm-info-window>
-            
             </agm-marker>
 
             <agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'">

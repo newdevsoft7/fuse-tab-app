@@ -7,6 +7,7 @@ import {
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { AgmMap } from '@agm/core';
+import { ToastrService } from 'ngx-toastr';
 
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { ScheduleService } from '../../../schedule.service';
@@ -114,7 +115,9 @@ export class AdminShiftMapComponent implements OnInit {
 
     constructor(
         private scheduleService: ScheduleService,
-        public dialog: MatDialog) { }
+        private toastr: ToastrService,
+        public dialog: MatDialog
+    ) { }
 
     ngOnInit() {
     }
@@ -147,7 +150,10 @@ export class AdminShiftMapComponent implements OnInit {
             if (!result) {  // Cancel shift move
                 this.shift.lat = this.coords.lat;
                 this.shift.lon = this.coords.lon;
-            } 
+            } else {    // Ok
+                this.scheduleService.updateShift(this.shift.id, { lat: this.shift.lat, lon: this.shift.lon })
+                    .subscribe(res => this.toastr.success(res.message));
+            }
         });
     }
 

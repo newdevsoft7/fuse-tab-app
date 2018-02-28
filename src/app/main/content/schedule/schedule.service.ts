@@ -17,12 +17,16 @@ export class ScheduleService {
 
   async getEvents(fromDate: string, toDate: string): Promise<EventEntity[]> {
     const url = `${SHIFT_URL}/${fromDate}/${toDate}/calendar`;
-
     return this.http.get<EventEntity[]>(url).toPromise();
   }
 
   async getShift(id: number): Promise<any> {
     return this.http.get(`${BASE_URL}/shift/${id}`).toPromise();
+  }
+
+  updateShift(id: number, data): Observable<any> {
+    const url = `${BASE_URL}/shift/${id}`;
+    return this.http.put(url, data).catch(this.handleError);
   }
 
   getManagers(query): Observable<any> {
