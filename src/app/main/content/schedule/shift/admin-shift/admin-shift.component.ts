@@ -76,6 +76,13 @@ export class AdminShiftComponent implements OnInit {
 		}
 	}
 
+	toggleFlag(flag) {
+		const value = flag.set === 1 ? 0 : 1;
+		this.scheduleService.setShiftFlag(this.shift.id, flag.id, value)
+			.subscribe(res => {
+				flag.set = value;
+			});
+	}
 	
 	toggleLive() {
 		const live = this.shift.live === 1 ? 0 : 1;

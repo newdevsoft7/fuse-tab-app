@@ -3,7 +3,7 @@
     <!-- HEADER -->
     <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
-            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-80-p">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-70-p">
 
                 <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones"
                     (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
@@ -36,9 +36,12 @@
                     <mat-icon *ngIf="shift.locked !== 1">lock_open</mat-icon>
                 </button>
 
-                <button mat-icon-button>
-                    <mat-icon>flag</mat-icon>
-                </button>
+                <div fxLayout="row" fxLayoutAlign="end" fxLayoutWrap>
+                    <button mat-icon-button *ngFor="let flag of shift.flags" (click)="toggleFlag(flag)"
+                        [matTooltip]="flag.fname">
+                        <mat-icon [ngStyle]="{'color': flag.set !== 0 ? flag.color : 'white'}">flag</mat-icon>
+                    </button>
+                </div>
             </div>
             <!-- / HEADER BUTTONS -->
 

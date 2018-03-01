@@ -198,6 +198,12 @@ export class ScheduleService {
     return this.http.delete(url).catch(this.handleError);
   }
 
+  // Shift flag set/unset
+  setShiftFlag(shiftId, flagId, flag = 1): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/flag/${flagId}/${flag}`;
+    return this.http.put(url, {}).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
