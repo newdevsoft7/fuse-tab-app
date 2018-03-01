@@ -82,6 +82,14 @@
             <mat-tab label="Map">
                 <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
             </mat-tab>
+
+            <mat-tab label="Notes">
+                <div class="p-24 shift-notes">
+                    <div [froalaEditor] [(froalaModel)]="notes" class="mb-12"></div>
+                    <button mat-raised-button color="accent" (click)="saveNotes()" [disabled]="!notes">Save</button>
+                </div>
+            </mat-tab>
+
         </mat-tab-group>
 
     </div>

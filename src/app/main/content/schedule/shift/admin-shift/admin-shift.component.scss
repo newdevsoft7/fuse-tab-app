@@ -63,4 +63,8 @@
             }
         }
     }
+
+    .shift-notes /deep/ .fr-quick-insert {
+        display: none;
+    }
 }

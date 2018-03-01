@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AdminShiftMapComponent } from './map/map.component';
 import { AdminShiftStaffComponent } from './staff/staff.component';
 
+import * as _ from 'lodash';
+
 export enum TAB {
 	Staff = 0,
 	Expenses = 1,
@@ -40,6 +42,7 @@ export class AdminShiftComponent implements OnInit {
 	currentUser: any;
 	shift: any;
 	timezones = [];
+	notes; // For Shift notes tab
 
 	constructor(
 		private tokenStorage: TokenStorage,
@@ -102,6 +105,16 @@ export class AdminShiftComponent implements OnInit {
 			});
 	}
 
+	saveNotes(notes) {
+		this.scheduleService.updateShift(this.shift.id, { notes })
+			.subscribe(res => {
+				this.toastr.success(res.message);
+				this.shift.notes = _.clone(this.notes);
+			}, err => {
+				this.notes = _.clone(this.shift.notes);
+			});
+	}
+
 	onAddressChanged(address) {
 		this.shift.address = address;
 	}
@@ -136,6 +149,7 @@ export class AdminShiftComponent implements OnInit {
 	private async fetch() {
 		try {
 			this.shift = await this.scheduleService.getShift(this.id);
+			this.notes = _.clone(this.shift.notes);
 		} catch (e) {
 			this.toastr.error(e.message || 'Something is wrong while fetching events.');
 		}
