@@ -86,17 +86,19 @@ export class FuseNavigationComponent implements OnDestroy
     
     addTrackingCategoriesToMenu(trackingCategories: TrackingCategory[]) {
         let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
-        trackingNav.children = [];
-        trackingCategories.forEach( category => {
-            let navigation:any = {};
-            navigation.id = category.id;
-            navigation.title = category.cname;
-            navigation.type = 'item';
-            const tab = new Tab(`Tracking`, 'trackingTpl', `tracking`, { ...category });
-            navigation.tab = tab;
-
-            trackingNav.children.push(navigation);
-        });
+        if (trackingNav) {
+            trackingNav.children = [];
+            trackingCategories.forEach( category => {
+                let navigation:any = {};
+                navigation.id = category.id;
+                navigation.title = category.cname;
+                navigation.type = 'item';
+                const tab = new Tab(`Tracking`, 'trackingTpl', `tracking`, { ...category });
+                navigation.tab = tab;
+    
+                trackingNav.children.push(navigation);
+            });
+        }
     }
 
 }

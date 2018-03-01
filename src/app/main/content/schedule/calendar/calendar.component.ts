@@ -6,6 +6,9 @@ import { FormGroup } from '@angular/forms/src/model';
 import { CalendarEventFormDialogComponent } from './event-form/event-form.component';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
 import { ScheduleService } from '../schedule.service';
+import { Tab } from '../../../tab/tab';
+import { TabService } from '../../../tab/tab.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -16,6 +19,8 @@ export class ScheduleCalendarComponent implements OnInit {
 
   dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
+  currentUser;
+
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
       // put some logic here for styling the day cells
@@ -24,13 +29,21 @@ export class ScheduleCalendarComponent implements OnInit {
       // put some logic here for styling event chips
     },
     dayClick: (date: Moment, jsEvent: Event): void => {
-      this.triggerEventModal({
-        action: 'new',
-        date
-      });
+      const url = `schedule/new-shift/${date.toString()}`;
+      const tab = new Tab('New Shift', 'newShiftTpl', url, { date, url });
+      this.tabService.openTab(tab);
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
-      
+      const id = event.id;
+      let template = 'shiftTpl';
+      let url = `shift/${id}`;
+
+      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+        template = 'adminShiftTpl';
+        url = `admin-shift/${id}`;
+      }
+      const tab = new Tab(event.title, template, url, { id, url });
+      this.tabService.openTab(tab);
     }
   };
 
@@ -110,9 +123,14 @@ export class ScheduleCalendarComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private scheduleService: ScheduleService) { }
+    private scheduleService: ScheduleService,
+    private tokenStorage: TokenStorage,
+    private tabService: TabService) { }
 
-  ngOnInit() {}
+  
+  ngOnInit() {
+    this.currentUser = this.tokenStorage.getUser();
+  }
 
   updateEvents(event: { startDate: string, endDate: string }) {
     this.fetchEvents(event.startDate, event.endDate);

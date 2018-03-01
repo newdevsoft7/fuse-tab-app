@@ -197,6 +197,28 @@ export class TabsComponent implements AfterContentInit {
 		}
 	}
 
+	closeTabByURL(url: string) {
+		for (let i = 0; i < this.dynamicTabs.length; i++) {
+			if (this.dynamicTabs[i].url === url) {
+				// remove the tab from our array
+				this.dynamicTabs.splice(i, 1);
+
+				// destroy our dynamically created component again
+				let viewContainerRef = this.dynamicTabPlaceholder.viewContainer;
+				// let viewContainerRef = this.dynamicTabPlaceholder;
+				viewContainerRef.remove(i);
+
+				// set tab index to 1st one
+				if (i > 0) {
+					this.selectTab(this.dynamicTabs[i - 1]);
+				} else {
+					this.selectTab(this.tabs.last);
+				}
+				break;
+			}
+		}
+	}
+
 	closeActiveTab() {
 		let activeTabs = this.dynamicTabs.filter((tab) => tab.active);
 		if (activeTabs.length > 0) {

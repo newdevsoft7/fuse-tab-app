@@ -1,0 +1,23 @@
+#selected-staff-payrate {
+
+    .text-field {
+
+        &.disabled {
+            pointer-events: none;
+            .info {
+                border-bottom: none;
+            }
+        }
+
+        .info {
+            border-bottom: dashed 1px #d0d0d0;
+            &:hover {
+                cursor: text;
+            }
+        }
+    }
+
+    .payrate-width {
+        width: 50px;
+    }
+}

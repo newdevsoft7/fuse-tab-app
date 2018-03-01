@@ -13,12 +13,12 @@ export const USERS_CHAT_TAB = new Tab('Chat', 'usersChatTpl', 'users/chat', {});
 export const SCHEDULE_TAB = new Tab('Schedule', 'scheduleTpl', 'schedule', {});
 export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {});
 export const SCHEDULE_LIST_TAB = new Tab('List', '', 'schedule/list', {});
-export const SCHEDULE_SHIFT_TAB = new Tab('Shift','scheduleShiftTpl', 'schedule/shift', {});
+export const SCHEDULE_ADMIN_SHIFT_TAB = new Tab('Shift','scheduleAdminShiftTpl', 'schedule/shift', {});
 export const SCHEDULE_IMPORT_SHIFTS_TAB = new Tab('Import Shifts', '', 'schedule/import-shifts', {});
 export const SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY_TAB = new Tab('Import History', '', 'schedule/import-shifts/import-history', {});
 export const SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING_TAB = new Tab('Column Mapping', '', 'schedule/import-shifts/column-mapping', {});
 export const SCHEDULE_EXPORT_SHIFTS_TAB = new Tab('Export Shifts', '', 'schedule/export-shift', {});
-export const SCHEDULE_NEW_SHIFT_TAB = new Tab('New Shift', 'scheduleNewShiftTpl', 'schedule/new-shift', {});
+export const SCHEDULE_NEW_SHIFT_TAB = new Tab('New Shift', 'newShiftTpl', 'schedule/new-shift', { url: 'schedule/new-shift'});
 export const SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB = new Tab('Excel Spreadsheet', '', 'schedule/export-shift/excel-spreadsheet', {});
 export const SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB = new Tab('PDF Overview', '', 'schedule/export-shift/pdf-overview', {});
 

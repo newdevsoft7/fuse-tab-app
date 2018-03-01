@@ -1,0 +1,21 @@
+#selected-staff-time-picker {
+
+    .text-field {
+        margin-top: 16px;
+
+        &.disabled {
+            pointer-events: none;
+            .info {
+                border-bottom: none;
+            }
+        }
+
+        .info {
+            border-bottom: dashed 1px #d0d0d0;
+            &:hover {
+                cursor: text;
+            }
+        }
+    }
+
+}

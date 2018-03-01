@@ -1,0 +1,87 @@
+<div id="admin-shift" class="page-layout simple fullwidth" *ngIf="shift">
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-80-p">
+
+                <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones"
+                    (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
+                <app-admin-shift-edit-title [shift]="shift"
+                    (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
+
+                <ng-container *ngIf="!showMoreBtn">
+                    <app-admin-shift-edit-generic-title [shift]="shift"
+                        (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
+                    <app-admin-shift-edit-generic-location [shift]="shift"
+                        (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>
+                    <app-admin-shift-edit-address [shift]="shift"
+                        (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
+                    <app-admin-shift-edit-contact [shift]="shift"
+                        (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
+                    <app-admin-shift-edit-managers [shift]="shift" class="w-100-p"
+                        (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
+                </ng-container>
+            </div>
+
+            <!-- HEADER BUTTONS -->
+            <div fxLayout="column" fxLayoutAlign="start end">
+                <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
+                    <mat-icon *ngIf="shift.live === 1">visibility</mat-icon>
+                    <mat-icon *ngIf="shift.live !== 1">visibility_off</mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
+                    <mat-icon *ngIf="shift.locked === 1">lock_outline</mat-icon>
+                    <mat-icon *ngIf="shift.locked !== 1">lock_open</mat-icon>
+                </button>
+
+                <button mat-icon-button>
+                    <mat-icon>flag</mat-icon>
+                </button>
+            </div>
+            <!-- / HEADER BUTTONS -->
+
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
+            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
+
+            <mat-tab label="Staff">
+                <app-admin-shift-staff [shift]="shift" #staffTab></app-admin-shift-staff>
+            </mat-tab>
+
+            <mat-tab label="Expenses">
+                <app-admin-shift-expenses [shift]="shift"></app-admin-shift-expenses>
+            </mat-tab>
+
+            <mat-tab label="Tracking">
+                <app-admin-shift-tracking [shift]="shift"></app-admin-shift-tracking>
+            </mat-tab>
+
+            <mat-tab label="Reports & Uploads">
+                <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
+            </mat-tab>
+
+            <mat-tab label="Castings">
+                <app-admin-shift-castings [shift]="shift"></app-admin-shift-castings>
+            </mat-tab>
+
+            <mat-tab label="Map">
+                <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

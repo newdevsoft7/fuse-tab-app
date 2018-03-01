@@ -1,0 +1,221 @@
+<div id="new-shift" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- CONTENT -->
+    <div class="content p-12 mat-white-bg">
+
+        <form [formGroup]="shiftForm" novalidate fxLayout="column">
+
+            <div fxLayout.gt-md="row"
+                 fxLayout="column"
+                 fxLayoutGap="24px">
+
+                <!-- BASIC -->
+                <div class="shift-box info-box" fxLayout="column" fxFlex="50">
+                    
+                    <header class="mat-accent-bg">
+                        <div class="title">General Information</div>
+                    </header>
+
+                    <div class="content" fxLayout="column">
+                        <div class="info-line">
+                            <div fxLayout="row">
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="Title" formControlName="title" required>
+                                    <mat-error *ngIf="formErrors.title.required">
+                                        Title is required!
+                                    </mat-error>
+                                </mat-form-field>
+                                <button mat-icon-button *ngIf="!generic_title_show" (click)="generic_title_show = true;">
+                                    <mat-icon class="mat-24">add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="info-line" *ngIf="generic_title_show">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Generic Title" formControlName="generic_title">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="info-line">
+                            <div fxLayout="row">
+                                <mat-form-field class="full-width">
+                                    <input type="hidden" formControlName="location_id">
+                                    <input matInput
+                                        placeholder="Location"
+                                        formControlName="location"
+                                        [matAutocomplete]="auto"
+                                        [formControl]="locationControl">
+
+                                    <mat-autocomplete #auto="matAutocomplete"
+                                                    [displayWith]="locationDisplayFn"
+                                                    (optionSelected)="selectLocation($event)">
+                                        <mat-option *ngFor="let option of filteredLocations" [value]="option">
+                                            {{option.lname}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <button mat-icon-button *ngIf="!generic_location_show" (click)="generic_location_show = true;">
+                                    <mat-icon class="mat-24">add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="info-line" *ngIf="generic_location_show">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Generic Location" formControlName="generic_location">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="info-line">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Address" formControlName="address">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="info-line">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Venue Contact" formControlName="contact">
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- / BASIC -->
+
+
+                <!-- DATE & TIMES -->
+                <div class="shift-box info-box" fxLayout="column" fxFlex="50">
+
+                    <header class="mat-accent-bg">
+                        <div class="title">Date & Times</div>
+                    </header>
+                
+                    <div class="content" fxLayout="column">
+                        <div class="info-line">
+                            <div *ngFor="let item of dates; let i = index"
+                                 fxLayout="row"
+                                 fxLayoutGap="12px">
+                                <mat-form-field fxFlexLayout="start center" fxFlex="160px">
+                                    <input matInput
+                                           [matDatepicker]="picker" 
+                                           placeholder="Date"
+                                           fxFlex
+                                           (dateInput)="changeDate(i, $event)"
+                                           (dateChange)="changeDate(i, $event)"
+                                           [value]="item.date">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                                <div fxFlex="120px">
+                                    <w-mat-timepicker color="primary" [placeholder]="'From'" [(userTime)]="item.from"></w-mat-timepicker>
+                                </div>
+                                <div fxFlex="120px">
+                                    <w-mat-timepicker color="primary" [placeholder]="'To'" [(userTime)]="item.to"></w-mat-timepicker>
+                                </div>
+                                <button mat-icon-button *ngIf="i === 0" (click)="addNewDate()">
+                                    <mat-icon class="mat-24">add</mat-icon>
+                                </button>
+
+                                <button mat-icon-button *ngIf="i > 0" (click)="removeDate(i)">
+                                    <mat-icon class="mat-24">remove</mat-icon>
+                                </button>
+                            </div>
+
+                            <mat-checkbox *ngIf="dates.length > 1" formControlName="isGroup">Group shifts</mat-checkbox>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- / DATE & TIMES -->
+            </div>
+
+            <!-- TRACKING -->
+            <div class="shift-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Tracking</div>
+                </header>
+            
+                <div class="content" fxLayout="column">
+                    <div class="info-line">
+                        <app-custom-multi-select [autocompleteObservable]="managers"
+                                                 [placeholder]="'Managers'"
+                                                 [labelBy]="'name'"
+                                                 [valueBy]="'id'"
+                                                 formControlName="manager_ids"></app-custom-multi-select>
+                    </div>
+
+                    <div class="info-line">
+                        <mat-form-field class="full-width">
+                            <input type="hidden" formControlName="location_id">
+                            <input matInput
+                                   placeholder="Client"
+                                   [matAutocomplete]="autoClient"
+                                   [formControl]="clientControl">
+                    
+                            <mat-autocomplete #autoClient="matAutocomplete"
+                                              [displayWith]="clientDisplayFn"
+                                              (optionSelected)="selectClient($event)">
+
+                                <mat-option *ngFor="let option of filteredClients" [value]="option">
+                                    {{option.cname}}
+                                </mat-option>
+                            </mat-autocomplete>
+                    
+                        </mat-form-field>
+                    </div>
+
+                    <div class="info-line">
+                        <app-custom-multi-select [autocompleteObservable]="workAreas"
+                                                 [placeholder]="'Work Areas'"
+                                                 [labelBy]="'aname'"
+                                                 [valueBy]="'id'"
+                                                 formControlName="work_area_ids"></app-custom-multi-select>
+                    </div>
+
+                    <div class="info-line" *ngFor="let category of trackingCategories; let i = index">
+                        <mat-form-field class="full-width">
+                            <input matInput [placeholder]="category.cname" [matAutocomplete]="auto" [formControl]="categoryControls[i]">
+                        
+                            <mat-autocomplete #auto="matAutocomplete"
+                                              [displayWith]="trackingOptionDisplayFn"
+                                              (optionSelected)="selectTrackingOption($event, i)">
+                                <mat-option *ngFor="let option of filteredTrackingOptions[i]" [value]="option">
+                                    {{option.oname}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </div>
+            <!-- / TRACKING -->
+
+            <!-- SHIFT NOTES -->
+            <div class="shift-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Shift Notes</div>
+                </header>
+            
+                <div class="content p-0" fxLayout="column">
+                    <div class="info-line">
+                        <textarea [froalaEditor] formControlName="notes"></textarea>
+                    </div>
+                </div>
+
+            </div>
+            <!-- / SHIFT NOTES -->
+                
+            <div>
+                <button mat-raised-button color="accent" (click)="onSave()">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

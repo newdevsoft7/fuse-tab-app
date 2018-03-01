@@ -2,6 +2,8 @@ import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
+import { FuseNavigationService } from '../../../core/components/navigation/navigation.service';
+import { FuseNavigationModel } from '../../../navigation/navigation.model';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 import { locale as english } from './i18n/en';
@@ -30,6 +32,7 @@ import { FavicoService } from '../../../shared/services/favico.service';
 export class FuseHomeComponent implements OnDestroy
 {
     tabSubscription: Subscription;
+    closeTabSubscription: Subscription;
     @ViewChild(TabsComponent) tabsComponent;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
@@ -41,13 +44,15 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('usersChatTpl') usersChatTpl;
-    @ViewChild('scheduleShiftTpl') scheduleShiftTpl;
-    @ViewChild('scheduleNewShiftTpl') scheduleNewShiftTpl;
+    @ViewChild('adminShiftTpl') adminShiftTpl;
+    @ViewChild('newShiftTpl') newShiftTpl;
+    @ViewChild('shiftRoleEditTpl') shiftRoleEditTpl;
     @ViewChild('settingsTpl') settingsTpl;
     @ViewChild('trackingTpl') trackingTpl;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
+        private fuseNavigationService: FuseNavigationService,
         private tabService: TabService,
         private fcmService: FCMService,
         private socketService: SocketService,
@@ -61,11 +66,20 @@ export class FuseHomeComponent implements OnDestroy
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
         });
+
+        this.closeTabSubscription = this.tabService.tabClosed.subscribe(url => {
+            this.closeTab(url);
+        });
+
         this.loadFCMservices();
         this.runSockets();
 
         // listen window activity/inactivity change
         this.activityManagerService.detectActivityChange();
+
+        // this.getUnreads();
+
+        this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl))
     }
 
     async runSockets() {
@@ -128,6 +142,7 @@ export class FuseHomeComponent implements OnDestroy
 
     ngOnDestroy() {
         this.tabSubscription.unsubscribe();
+        this.closeTabSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {
@@ -137,30 +152,18 @@ export class FuseHomeComponent implements OnDestroy
         };
 
         this.tabsComponent.openTab(_tab);
-        if (_tab.url == 'tracking'){
+
+        if (_tab.url == 'tracking') {
             let trackingCategory = _tab.data;
             if (JSON.stringify(_tab.data) != '{}' ){
-                this.trackingService.toggleSelectedCategory (trackingCategory as TrackingCategory);
+                this.trackingService.toggleSelectedCategory(trackingCategory as TrackingCategory);
             }
         }
     }
 
-    openUsers() {
-        this.openTab(TAB.USERS_TAB);
+    closeTab(url: string) {
+        if (!url) { return false; }
+        this.tabsComponent.closeTabByURL(url);
     }
 
-    openExports() {
-        this.openTab(TAB.USERS_EXPORTS_TAB);
-    }
-    openPresentations() {
-        this.openTab(TAB.USERS_PRESENTATIONS_TAB);
-    }
-
-    openSettingsProfileInfo() {
-        this.openTab(TAB.SETTINGS_PROFILE_INFO_TAB);
-    }
-
-    openShift(){
-        this.openTab(TAB.SCHEDULE_SHIFT_TAB);
-    }
 }

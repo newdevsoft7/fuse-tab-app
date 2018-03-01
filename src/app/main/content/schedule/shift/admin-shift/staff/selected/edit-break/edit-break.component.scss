@@ -1,0 +1,25 @@
+#selected-staff-break {
+
+    .text-field {
+        margin-bottom: 16px;
+
+        &.disabled {
+            pointer-events: none;
+            .info {
+                border-bottom: none;
+            }
+        }
+
+        .info {
+            border-bottom: dashed 1px #d0d0d0;
+            &:hover {
+                cursor: text;
+            }
+        }
+    }
+
+    .break-width {
+        width: 40px;
+    }
+
+}

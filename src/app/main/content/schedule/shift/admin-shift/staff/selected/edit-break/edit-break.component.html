@@ -1,0 +1,20 @@
+<div id="selected-staff-break">
+    <div fxFlex="1 0 auto" *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
+        <span>{{duration}} hrs - </span>
+        <span class="info" (click)="openForm()">{{break}}</span> mins break
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-form-field class="break-width">
+            <input matInput type="number" #breakInput fxFlex required formControlName="break">
+        </mat-form-field>
+        <div class="ml-4">mins break</div>
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+</div>

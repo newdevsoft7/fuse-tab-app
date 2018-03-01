@@ -1,0 +1,154 @@
+<div id="admin-shift-staff-selected" #tableWrapper>
+
+    <ngx-datatable class="material striped" [rows]="staffs" [columnMode]="'force'" [headerHeight]="0" #table
+        [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true">
+
+        <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="80" [sortable]="false" [canAutoResize]="false">
+            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"
+                    [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
+                    [matTooltip]="row.staff_status.status"/>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- NAME, EMAIL -->
+        <ngx-datatable-column name="Name" prop="name" [sortable]="true" [width]="120" [canAutoResize]="false">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <strong>{{row.name}}</strong>
+                <br/>
+                <strong>{{row.email}}</strong>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / NAME, EMAIL -->
+        
+        <!-- TIMES LOCK -->
+        <ngx-datatable-column name="Times Locked" prop="times_locked" [sortable]="true" [canAutoResize]="false"
+            [width]="70">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button (click)="changeTimesLock(row)" [disabled]="editable !== 1">
+                    <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"
+                        matTooltip="Locked - Staff cannot change times"></mat-icon>
+                    <mat-icon *ngIf="!row.times_locked" fontSet="fa" fontIcon="fa-unlock"
+                         matTooltip="Unlocked - Staff can change times"></mat-icon>
+                </button>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / TIMES LOCK -->
+
+        <!-- TIMES & BREAK -->
+        <ngx-datatable-column name="Time" [sortable]="false" [canAutoResize]="true">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <app-admin-shift-edit-time [staff]="row" (onTimeChanged)="onTimeChanged($event, row)"
+                    [editable]="editable"></app-admin-shift-edit-time>
+                <app-admin-shift-edit-break [staff]="row"
+                    [editable]="editable"
+                    (onBreakChanged)="OnBreakChanged($event, row)">
+                </app-admin-shift-edit-break>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / TIMES & BREAK -->
+        
+        <!-- PAY RATE -->
+        <ngx-datatable-column name="Pay" [sortable]="false" [canAutoResize]="true">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <app-admin-shift-edit-payitems [staff]="row" [editable]="editable"
+                    (onPayItemsChanged)="onPayItemsChanged($event, row)">
+                </app-admin-shift-edit-payitems>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / PAY RATE-->
+
+        <!-- BILL RATE -->
+        <ngx-datatable-column name="Bill" [sortable]="false" [canAutoResize]="true" *ngIf="showBillInfo === 1">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <app-admin-shift-edit-billitems [staff]="row" [editable]="editable"
+                    (onBillItemsChanged)="onBillItemsChanged($event, row)">
+                </app-admin-shift-edit-billitems>
+            </ng-template>
+        </ngx-datatable-column>
+        <!-- / BILL RATE -->
+
+        <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="80">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
+                    <mat-icon class="material-icons">more_horiz</mat-icon>
+                </button>
+
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>mail_outline</mat-icon>
+                        <span>Send Message</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>vpn_key</mat-icon>
+                        <span>Login as user</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>event_note</mat-icon>
+                        <span>View Calender</span>
+                    </button>
+                
+                    <button mat-menu-item>
+                        <mat-icon>refresh</mat-icon>
+                        <span>Force re-confirmation</span>
+                    </button>
+
+                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                        <mat-icon>edit</mat-icon>
+                        <span>Change Status</span>
+                    </button>
+
+                    <button mat-menu-item (click)="toggleTeamLeader(row)">
+                        <mat-icon>person</mat-icon>
+                        <span>Toggle Leader</span>
+                    </button>
+
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Add to presentation</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>person</mat-icon>
+                        <span>Add to submission</span>
+                    </button>
+        
+        
+                    <button mat-menu-item>
+                        <mat-icon>clear</mat-icon>
+                        <span>Remove</span>
+                    </button>
+        
+                    <button mat-menu-item>
+                        <mat-icon>clear</mat-icon>
+                        <span>Remove (edit email)</span>
+                    </button>
+                </mat-menu>
+                
+                <!-- CHANGE STATUS SUBMENU -->
+                <mat-menu #statusMenu="matMenu">
+
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_APPLIED')">Applied</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')">Standby</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')">Selected</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_COMPLETED')">Completed</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVOICED')">Invoiced</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_PAID')">Paid</button>
+                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_NO_SHOW')">No Show</button>
+                    <button mat-menu-item>No Pay</button>
+                    <button mat-menu-item>Other</button>
+                
+                </mat-menu>
+                <!-- / CHANGE STATUS SUBMENU -->
+
+            </ng-template>
+        </ngx-datatable-column>
+
+    </ngx-datatable>
+    
+</div>

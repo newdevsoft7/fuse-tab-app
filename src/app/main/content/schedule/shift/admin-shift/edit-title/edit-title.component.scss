@@ -1,0 +1,35 @@
+:host() {
+
+    #admin-shift-edit-title {
+    
+        .text-field {
+            margin-bottom: 12px;
+            margin-top: 12px;
+    
+            &.disabled {
+                pointer-events: none;
+                .info {
+                    border-bottom: none;
+                }
+            }
+    
+            .info {
+                // border-bottom: dashed 1px #d0d0d0;
+                font-size: 24px;
+
+                &:hover {
+                    cursor: text;
+                }
+            }
+        }
+    
+        .title-width {
+            width: 300px;
+            
+            & /deep/ input {
+                font-size: 24px;
+            }
+        }
+    
+    }
+}

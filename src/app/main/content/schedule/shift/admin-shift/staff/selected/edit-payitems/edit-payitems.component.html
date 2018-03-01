@@ -1,0 +1,30 @@
+<div id="selected-staff-payrate">
+
+    <div fxFlex="1 0 auto" *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
+        <span class="info" (click)="openForm()" matTooltip="Staff Pay">{{display()}}</span>
+    </div>
+
+    <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+        <mat-form-field class="payrate-width mr-4">
+            <input matInput formControlName="payRate" type="number" min="0" required>
+        </mat-form-field>
+
+        <mat-form-field floatPlaceholder="never" class="payrate-type-width">
+            <mat-select formControlName="payRateType">
+                <mat-option *ngFor="let item of TYPE" [value]="item.value">
+                    {{item.label}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+</div>

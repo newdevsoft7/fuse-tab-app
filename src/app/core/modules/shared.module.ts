@@ -10,11 +10,13 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TextMaskModule } from 'angular2-text-mask';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.directive';
 import { FuseMatSidenavHelperService } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.service';
 import { FusePipesModule } from '../pipes/pipes.module';
 import { FuseConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
+import { FuseConfirmYesNoDialogComponent } from '../components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { FuseCountdownComponent } from '../components/countdown/countdown.component';
 import { FuseMatchMedia } from '../services/match-media.service';
 import { FuseNavbarVerticalService } from '../../main/navbar/vertical/navbar-vertical.service';
@@ -25,6 +27,8 @@ import { FuseMaterialColorPickerComponent } from '../components/material-color-p
 import { FuseTranslationLoaderService } from '../services/translation-loader.service';
 import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
+import { MaterialTimeControlModule } from '../components/material-time-control/material-time-control.module';
+import { ActionService } from '../../shared/services/action.service';
 import { CustomLoadingService } from '../../shared/services/custom-loading.service';
 import { FCMService } from '../../shared/services/fcm.service';
 import { SocketService } from '../../shared/services/socket.service';
@@ -40,6 +44,7 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         FuseMatSidenavHelperDirective,
         FuseMatSidenavTogglerDirective,
         FuseConfirmDialogComponent,
+        FuseConfirmYesNoDialogComponent,
         FuseCountdownComponent,
         FuseHljsComponent,
         FuseIfOnDomDirective,
@@ -57,7 +62,10 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         NgxDnDModule,
         NgxDatatableModule,
         NgSelectModule,
-        TextMaskModule
+        TextMaskModule,
+        FroalaEditorModule.forRoot(),
+        FroalaViewModule.forRoot(),
+        MaterialTimeControlModule
     ],
     exports        : [
         FlexLayoutModule,
@@ -78,10 +86,14 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         FuseMaterialColorPickerComponent,
         TranslateModule,
         NgSelectModule,
-        TextMaskModule
+        TextMaskModule,
+        FroalaEditorModule,
+        FroalaViewModule,
+        MaterialTimeControlModule
     ],
     entryComponents: [
-        FuseConfirmDialogComponent
+        FuseConfirmDialogComponent,
+        FuseConfirmYesNoDialogComponent
     ],
     providers      : [
         CookieService,
@@ -94,6 +106,7 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         SocketService,
         FavicoService,
         ActivityManagerService,
+        ActionService,
         AuthenticationService,
         TokenStorage,
         // guards

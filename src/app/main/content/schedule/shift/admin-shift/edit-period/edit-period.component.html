@@ -1,0 +1,45 @@
+<div id="admin-shift-edit-period">
+    <div *ngIf="!formActive" (click)="openForm()" class="text-field" [class.disabled]="shift.editable !== 1">
+        <div class="info" matTooltip="">
+            <span matTooltip="Date">{{shift.shift_start | date: 'EEEE, MMMM d, y'}}</span>,
+            <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a'}}</span>&nbsp;-&nbsp;
+            <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a'}}</span>
+            <span matTooltip="Timezone" class="timezone">{{getTimezone()}}</span>
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center" fxLayoutGap="8px">
+
+        <mat-form-field fxFlexLayout="start center">
+            <input matInput [matDatepicker]="picker"
+                formControlName="date" fxFlex>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div fxFlex="80px">
+            <w-mat-timepicker color="primary" [placeholder]="'From'" [(userTime)]="start.time"></w-mat-timepicker>
+        </div>
+
+        <div fxFlex="80px">
+            <w-mat-timepicker color="primary" [placeholder]="'To'" [(userTime)]="end.time"></w-mat-timepicker>
+        </div>
+
+        <mat-form-field>
+            <mat-select formControlName="timezone" placeholder="Timezone">
+                <mat-option *ngFor="let timezone of timezones" [value]="timezone.value">
+                    {{timezone.label}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>
