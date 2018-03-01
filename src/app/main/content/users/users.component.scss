@@ -3,6 +3,23 @@
     .page-length-selector {
         height: 60px;
     }
+
+    &.page-layout {
+        overflow: unset !important;
+    }
+
+    .header {
+        max-width: inherit !important;
+        margin: -1em;
+        min-height: 200px;
+        position: relative;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        margin-bottom: 25px;
+
+        height: auto !important;
+        max-height: inherit !important;
+    }
     
     .avatar {
         width: 50px;

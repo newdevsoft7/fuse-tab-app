@@ -17,6 +17,8 @@ import { ActionService } from '../../../shared/services/action.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
 import { Tab } from '../../tab/tab';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
+import { fuseAnimations } from '../../../core/animations';
+
 
 const DEFAULT_PAGE_SIZE = 5;
 const USERS_TAB = 'users';
@@ -31,7 +33,8 @@ export enum Mode {
     selector: 'app-users',
     templateUrl: './users.component.html',
     styleUrls: ['./users.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations
 })
 export class UsersComponent implements OnInit {
 

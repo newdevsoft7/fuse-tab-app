@@ -3,13 +3,10 @@
     <!-- HEADER -->
     <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
 
-        <div fxLayout="row"
-             fxLayout.xs="column"
-             fxLayoutAlign="start"
-             fxLayoutGap.gt-xs="12px"
-             fxLayoutGap.xs="4px"
-             fxLayoutWrap
-             class="action-btns">
+        <ng-container *ngIf="selectedUsers.length > 0">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom
+            [@animate]="{value:'*',params:{delay:'50ms'}}"
+            fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
 
             <button mat-raised-button class="mat-white-bg my-4">
                     <mat-icon>mail</mat-icon>
@@ -41,6 +38,7 @@
                 <span>Add to submission</span>
             </button>
         </div>
+        </ng-container>
 
         <!-- SEARCHBAR -->
         <app-users-search-bar (onFiltersChange)="onFiltersChange($event)"
