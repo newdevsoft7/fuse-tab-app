@@ -39,6 +39,7 @@ import { AdminShiftEditManagersComponent } from './shift/admin-shift/edit-manage
 
 // Staff Shift Components
 import { StaffShiftComponent } from './shift/staff-shift/staff-shift.component';
+import { StaffShiftInfoComponent } from './shift/staff-shift/info/info.component';
 
 @NgModule({
 	imports: [
@@ -80,7 +81,8 @@ import { StaffShiftComponent } from './shift/staff-shift/staff-shift.component';
         AdminShiftEditTitleComponent,
         AdminShiftEditPeriodComponent,
         AdminShiftEditManagersComponent,
-        StaffShiftComponent
+        StaffShiftComponent,
+        StaffShiftInfoComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [ CalendarEventFormDialogComponent ],
