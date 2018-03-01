@@ -1,5 +1,6 @@
 import { Tab } from "../main/tab/tab";
 
+// Admin tabs
 export const USERS_TAB = new Tab('Users', 'usersTpl', 'users', {});
 export const USERS_EXPORTS_TAB = new Tab('Exports', 'usersExportsTpl', 'users/exports', {});
 export const USERS_PRESENTATIONS_TAB = new Tab('Presentations', 'usersPresentationsTpl', 'users/presentations', {});
@@ -55,3 +56,8 @@ export const SETTINGS_HELP_QUICKSTART_GUIDE_TAB = new Tab('QuickStart Guide', ''
 export const SETTINGS_HELP_VIDEO_SYSTEM_SETUP_TAB = new Tab('Video - System Setup', '', 'settings/help/video-system-setup', {});
 export const SETTINGS_HELP_VIDEO_SCHEDULING_TAB = new Tab('Video Scheduling', '', 'settings/help/video-scheduling', {});
 export const SETTINGS_HELP_UPDATES_CHANGELOG_TAB = new Tab('Updates & Changelog', '', 'settings/help/updates-changelog', {});
+
+
+// Staff tabs
+export const STAFF_INVOICES_TAB = new Tab('Invoices', '', 'staff/invoices', {});
+export const STAFF_NEW_INVOICE_TAB = new Tab('New Invoice', '', 'staff/new-invoce', {});
