@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
@@ -6,7 +6,7 @@ import { FuseChatViewComponent } from './chat-view/chat-view.component';
 import { SocketService } from '../../../../shared/services/socket.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/takeWhile';
+import 'rxjs/add/operator/skipWhile';
 import { FavicoService } from '../../../../shared/services/favico.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './dialogs';
@@ -18,7 +18,7 @@ import { TabService } from '../../../tab/tab.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class UsersChatComponent {
+export class UsersChatComponent implements OnInit, OnDestroy {
 
   @ViewChild(FuseChatViewComponent) chatView: FuseChatViewComponent;
   content: string;
@@ -28,7 +28,7 @@ export class UsersChatComponent {
   threads: any = [];
   dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
   userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
-  alive: boolean = true;
+  alive: boolean = false;
 
   constructor(
     private tabService: TabService,
@@ -40,7 +40,18 @@ export class UsersChatComponent {
     private activityManagerService: ActivityManagerService,
     private dialog: MatDialog) {
 
-    usersChatService.currentMessage.takeWhile(() => this.alive).subscribe(res => {
+    this.fetchThreads();
+    this.watchActivityChange();
+    this.watchTabChange();
+  }
+
+  ngOnInit() {
+    this.listenIncomingMessages();
+    this.alive = true;
+  }
+
+  listenIncomingMessages() {
+    this.usersChatService.currentMessage.skipWhile(() => !this.alive).subscribe(res => {
       if (!res || !res.type) return;
       switch (res.type) {
         case 'newMessage':
@@ -66,10 +77,6 @@ export class UsersChatComponent {
           break;
       }
     });
-
-    this.fetchThreads();
-    this.watchActivityChange();
-    this.watchTabChange();
   }
 
   ngOnDestroy() {
@@ -87,9 +94,11 @@ export class UsersChatComponent {
   }
 
   watchActivityChange() {
-    this.activityManagerService.focusWatcher.takeWhile(() => this.alive).subscribe((active: boolean) => {
+    this.activityManagerService.focusWatcher.skipWhile(() => !this.alive).subscribe((active: boolean) => {
       if (active && this.tabService.currentTab.url === 'users/chat' && this.selectedThread) {
-        this.updateRead();
+        if (this.usersChatService.unreadList.length > 0) {
+          this.updateRead();
+        }
       }
     });
   }
@@ -188,7 +197,6 @@ export class UsersChatComponent {
         this.threads = await this.usersChatService.getThreads();
         this.selectedChat = [payload];
         this.selectedThread = this.threads.find(thread => thread.id === payload.thread_id);
-        this.chatView.readyToReply();
       } catch (e) {
         this.handleError(e);
       }

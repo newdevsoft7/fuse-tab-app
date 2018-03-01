@@ -9,5 +9,5 @@ export const environment = {
     apiUrl: 'https://api.demo.staffconnect-app.com/api',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com'
     // apiUrl:   'http://localhost:8000/api',
-    //socketServerUrl: 'wss://localhost:8080'
+    //socketServerUrl: 'ws://localhost:8080'
 };

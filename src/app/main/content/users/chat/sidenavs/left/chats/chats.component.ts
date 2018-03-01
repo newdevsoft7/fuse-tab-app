@@ -10,12 +10,16 @@ import { fuseAnimations } from '../../../../../../../core/animations';
 export class FuseChatChatsSidenavComponent
 {
     @Input() users: any = [];
-    @Input() threads: any = [];
+    @Input('threads') set updateThreads(value: any) {
+        this.threads = value;
+        this.searchText = '';
+    }
     @Output() fetchChat: EventEmitter<number> = new EventEmitter();
     @Output() addContact: EventEmitter<number> = new EventEmitter();
     @Output() searchUsers: EventEmitter<string> = new EventEmitter();
 
     searchText: string;
+    threads: any = [];
 
     constructor() {}
 }
