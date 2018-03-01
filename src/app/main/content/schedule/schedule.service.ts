@@ -176,6 +176,22 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+
+  getShiftAdminNotes(shiftId): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/adminNote`;
+    return this.http.get(url).catch(this.handleError);
+  }
+
+  createShiftAdminNote(shiftId, data): Observable<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/adminNote`;
+    return this.http.post(url, data).catch(this.handleError);
+  }
+
+  deleteShiftAdminNote(noteId): Observable<any> {
+    const url = `${BASE_URL}/shift/adminNote/${noteId}`;
+    return this.http.delete(url).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

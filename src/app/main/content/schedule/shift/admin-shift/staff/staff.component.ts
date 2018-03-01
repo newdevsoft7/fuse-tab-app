@@ -75,11 +75,22 @@ export class AdminShiftStaffComponent implements OnInit {
 
     canSavePost = false;
 
-    adminNotes: any[];
+    adminNotes = [];
+    viewedAdminNotes: any[];
     isSeeAllAdminNotes = false;
     adminNoteForm: FormGroup;
+    noteTemp: any; // Note template for update
 
     public StaffStatus = StaffStatus;
+
+    readonly noteTypes = [
+        { value: 0, label: 'Default' }
+    ]
+
+    readonly noteClientVisibles = [
+        { value: 0, label: 'Admin Only' },
+        { value: 1, label: 'Admin & Client' }
+    ];
 
     readonly StaffStatusesSelected = [
         StaffStatus.Selected,
@@ -110,7 +121,8 @@ export class AdminShiftStaffComponent implements OnInit {
 
     ngOnInit() {
         this.adminNoteForm = this.formBuilder.group({
-            type: ['info', Validators.required],
+            type: [1, Validators.required],
+            client_visible: [0, Validators.required],
             note: ['', Validators.required]
         });
 
@@ -119,13 +131,17 @@ export class AdminShiftStaffComponent implements OnInit {
             this.onAdminNoteFormValuesChanged();
         });
         
+        // Get current user information
         this.userService.getUser(this.currentUser.id).subscribe(res => {
             this.userInfo = res;
-
-            if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-                this.refreshAdminNotesView();
-            }
         });
+
+        // Get shift admin notes
+        this.scheduleService.getShiftAdminNotes(this.shift.id)
+            .subscribe(res => {
+                this.adminNotes = res;
+                this.refreshAdminNotesView();
+            });
 
         
         this.roles = this.shift.shift_roles.map((role, index) => {
@@ -366,11 +382,21 @@ export class AdminShiftStaffComponent implements OnInit {
         this.updateStaffsCount(role.id);
     }
 
+    getNoteClientVisible(noteClientVisible) {
+        const visible = this.noteClientVisibles.find(v => v.value === noteClientVisible);
+        return visible ? visible.label : '';
+    }
+
+    getNoteType(noteType) {
+        const type = this.noteTypes.find(t => t.value === noteType);
+        return type ? type.label : '';
+    };
+
     private refreshAdminNotesView() {
         if (this.isSeeAllAdminNotes) {
-            this.adminNotes = this.userInfo.profile_admin_notes;
+            this.viewedAdminNotes = this.adminNotes;
         } else {
-            this.adminNotes = this.userInfo.profile_admin_notes.slice(0, 5);
+            this.viewedAdminNotes = this.adminNotes.slice(0, 5);
         }
     }
 
@@ -390,14 +416,13 @@ export class AdminShiftStaffComponent implements OnInit {
 
     onPostAdminNote() {
         const data = this.adminNoteForm.value;
-        this.userService.createAdminNote(this.currentUser.id, data)
+        this.scheduleService.createShiftAdminNote(this.shift.id, data)
             .subscribe(res => {
                 const note = res.data;
-                note.creator_thumbnail = this.userInfo.ppic_a;
+                note.creator_ppic_a = this.userInfo.ppic_a;
                 note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
-
-                this.userInfo.profile_admin_notes.unshift(note);
+                this.adminNotes.unshift(note);
                 this.refreshAdminNotesView();
 
                 this.adminNoteInput.nativeElement.value = '';
@@ -408,14 +433,36 @@ export class AdminShiftStaffComponent implements OnInit {
     }
 
     onDeleteAdminNote(note) {
-        const index = this.userInfo.profile_admin_notes.findIndex(v => v.id == note.id);
-        this.userService.deleteAdminNote(note.id)
+        const index = this.adminNotes.findIndex(v => v.id == note.id);
+        this.scheduleService.deleteShiftAdminNote(note.id)
             .subscribe(res => {
-                this.userInfo.profile_admin_notes.splice(index, 1);
+                this.adminNotes.splice(index, 1);
                 this.refreshAdminNotesView();
             }, err => {
                 this.displayError(err);
             });
+    }
+
+    onEditAdminNote(note) {
+        note.editMode = true;
+        this.noteTemp = _.cloneDeep(note);
+    }
+
+    onCancelEditAdminNote(note) {
+        note.editMode = false;
+    }
+
+    onUpdateAdminNote(note) {
+
+        // TODO - Update shift admin note
+        const index = this.adminNotes.findIndex(v => v.id === note.id);
+
+        // Update note
+        note.type_id = this.noteTemp.type_id;
+        note.client_visible = this.noteTemp.client_visible;
+        note.note = this.noteTemp.note;
+        note.editMode = false;
+        
     }
 
     private displayError(err) {
