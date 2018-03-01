@@ -1,6 +1,6 @@
 @import "src/app/core/scss/fuse";
 
-#admin-shift {
+#staff-shift {
 
     &.page-layout {
         overflow: unset !important;
@@ -18,14 +18,19 @@
         height: auto !important;
         max-height: inherit !important;
 
+        .info {
+            font-size: 24px;
+            margin-bottom: 12px;
+            margin-top: 12px;
 
-        .name {
-            font-size: 34px;
-            color: #FFFFFF;
-
-            @include media-breakpoint('sm') {
-                margin-bottom: 32px;
+            &.sub {
+                font-size: 16px;
             }
+        }
+
+        .timezone {
+            font-size: 16px;
+            color: #cccccc;
         }
 
     }

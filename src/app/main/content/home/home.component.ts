@@ -33,6 +33,8 @@ export class FuseHomeComponent implements OnDestroy
 {
     tabSubscription: Subscription;
     closeTabSubscription: Subscription;
+
+    // Admin view templates
     @ViewChild(TabsComponent) tabsComponent;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
@@ -49,6 +51,10 @@ export class FuseHomeComponent implements OnDestroy
     @ViewChild('shiftRoleEditTpl') shiftRoleEditTpl;
     @ViewChild('settingsTpl') settingsTpl;
     @ViewChild('trackingTpl') trackingTpl;
+
+    // Staff view templates
+    @ViewChild('staffShiftTpl') staffShiftTpl;
+    
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,

@@ -262,7 +262,7 @@ export class AdminShiftStaffComponent implements OnInit {
         const data = {
             filter,
             role,
-            tab: `admin-shift/${this.shift.id}`
+            tab: `admin/shift/${this.shift.id}`
         };
 
         this.tabService.closeTab('users');

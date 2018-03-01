@@ -29,18 +29,19 @@ export class ScheduleCalendarComponent implements OnInit {
       // put some logic here for styling event chips
     },
     dayClick: (date: Moment, jsEvent: Event): void => {
+      if (!['owner', 'admin'].includes(this.currentUser.lvl)) return;
       const url = `schedule/new-shift/${date.toString()}`;
       const tab = new Tab('New Shift', 'newShiftTpl', url, { date, url });
       this.tabService.openTab(tab);
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
       const id = event.id;
-      let template = 'shiftTpl';
-      let url = `shift/${id}`;
+      let template = 'staffShiftTpl';
+      let url = `staff/shift/${id}`;
 
       if (['owner', 'admin'].includes(this.currentUser.lvl)) {
         template = 'adminShiftTpl';
-        url = `admin-shift/${id}`;
+        url = `admin/shift/${id}`;
       }
       const tab = new Tab(event.title, template, url, { id, url });
       this.tabService.openTab(tab);
