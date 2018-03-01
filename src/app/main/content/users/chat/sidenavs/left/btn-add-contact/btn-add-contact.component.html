@@ -1,5 +1,7 @@
-<mat-icon class="mr-8" *ngIf="loaded && isAdded">check</mat-icon>
 <mat-progress-spinner *ngIf="!loaded" mode="indeterminate"></mat-progress-spinner>
 <button mat-icon-button *ngIf="loaded && !isAdded" color="accent" (click)="trigger()">
     <mat-icon>add</mat-icon>
+</button>
+<button mat-icon-button *ngIf="loaded && isAdded" color="accent" (click)="trigger()">
+    <mat-icon>check</mat-icon>
 </button>

@@ -5,9 +5,11 @@ import { TokenStorage } from '../../../../shared/services/token-storage.service'
 import { environment } from '../../../../../environments/environment';
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 
 const BASE_URL = `${environment.apiUrl}`;
 const USER_URL = `${BASE_URL}/user`;
+const CHAT_URL = `${BASE_URL}/chat`;
 
 @Injectable()
 export class UsersChatService {
@@ -61,23 +63,13 @@ export class UsersChatService {
     }).toPromise();
   }
 
-  async addContactSession(user_id: number) {
-    const url = `${BASE_URL}/sessions`;
-    return this.http.post(url, { user_id }).toPromise();
-  }
-
-  async getContactSessions() {
-    const url = `${BASE_URL}/sessions`;
-    return this.http.get(url).toPromise();
-  }
-
   async sendMessage(body: any): Promise<any> {
-    const url = `${USER_URL}/message`;
+    const url = `${CHAT_URL}/message`;
     return this.http.post(url, body).toPromise();
   }
 
-  async getMessagesBySession(sessionId: number): Promise<any> {
-    const url = `${BASE_URL}/sessions/${sessionId}/message`;
+  async getMessagesByThread(threadId: number): Promise<any> {
+    const url = `${CHAT_URL}/thread/${threadId}`;
     return this.http.get(url).toPromise();
   }
 
@@ -89,6 +81,26 @@ export class UsersChatService {
   async updateReadStatus(ids: number[]): Promise<any> {
     const url = `${USER_URL}/message/unread`;
     return this.http.post(url, { ids }).toPromise();
+  }
+
+  async getThreads() {
+    const url = `${CHAT_URL}/threads`;
+    return this.http.get(url).toPromise();
+  }
+
+  async searchRecipient(searchText: string, type?: string) {
+    type = type || 'user';
+    const url = `${BASE_URL}/autocomplete/chatThread/${searchText}`;
+    if (type === 'all') {
+      return this.http.get(url).toPromise();
+    } else {
+      return this.http.get(url).map((_: any) => _.filter(user => user.type === type)).toPromise();
+    }
+  }
+
+  async addUserIntoThread(threadId: number, userId: number) {
+    const url = `${CHAT_URL}/thread/${threadId}/user/${userId}`;
+    return this.http.post(url, {}).toPromise();
   }
 
   private handleError(error): Promise<any> {

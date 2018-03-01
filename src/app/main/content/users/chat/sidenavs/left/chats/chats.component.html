@@ -37,36 +37,34 @@
         <div class="chat-list" fxLayout="column" *ngIf="!searchText">
 
             <div matSubheader>
-                Sessions
+                Chat
             </div>
 
             <button mat-button class="contact"
-                    *ngFor="let session of sessions"
-                    (click)="fetchChat.next(session.id)"
+                    *ngFor="let thread of threads"
+                    (click)="fetchChat.next(thread.id)"
                     [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
 
                     <div class="avatar-wrapper" fxFlex="0 1 auto" fxLayoutAlign="center center">
-                        <img [src]="getContact(session).ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'"
-                             class="avatar"
-                             [alt]="getContact(session).fname + ' ' + getContact(session).lname"/>
+                        <img [src]="thread.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar"/>
                     </div>
 
                     <div fxLayout="row" fxFlex>
 
                         <div class="" fxFlex fxLayout="column" fxLayoutAlign="center start">
-                            <div class="contact-name">{{getContact(session).fname}} {{getContact(session).lname}}</div>
+                            <div class="contact-name">{{thread.name}}</div>
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="center end">
-                            <!-- <div *ngIf="getUnreadCounts(session.id)" class="unread-message-count">{{getUnreadCounts(user.id)}}</div> -->
+                            <div *ngIf="unread > 0" class="unread-message-count">{{unread}}</div>
                         </div>
                     </div>
                 </div>
             </button>
 
-            <p *ngIf="sessions.length === 0" class="m-0 p-16">You don't have any contact yet. Please search and add ones.</p>
+            <p *ngIf="threads.length === 0" class="m-0 p-16">You don't have any contact yet. Please search and add ones.</p>
 
         </div>
         <!-- / CHATS LIST-->
@@ -78,32 +76,25 @@
                 Search Result
             </div>
 
-            <div class="contact filtered"
+            <button mat-button class="contact"
                     *ngFor="let user of users"
+                    (click)="addContact.next(user.id)"
                     [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
-
                     <div class="avatar-wrapper" fxFlex="0 1 auto" fxLayoutAlign="center center">
-                        <img [src]="user.ppic_a"
-                             class="avatar"
-                             [alt]="user.fname + ' ' + user.lname"/>
+                        <img [src]="user.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar"/>
                     </div>
 
                     <div fxLayout="row" fxFlex>
-
                         <div class="" fxFlex fxLayout="column" fxLayoutAlign="center start">
-                            <div class="contact-name">{{user.fname}} {{user.lname}}</div>
-                        </div>
-
-                        <div fxLayout="column" fxLayoutAlign="center end">
-                            <btn-add-contact [added]="userBelongToContacts(user.id)" (onTapped)="addContactInfo(user.id)"></btn-add-contact>
+                            <div class="contact-name">{{user.name}}</div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </button>
 
-            <p *ngIf="users.length === 0" class="m-0 p-16">You don't have any contact yet. Please search and add ones.</p>
+            <p *ngIf="users.length === 0" class="m-0 p-16">No results.</p>
 
         </div>
         <!-- / SESSION LIST -->

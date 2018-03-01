@@ -20,6 +20,7 @@ export class SCHttpInterceptor implements HttpInterceptor {
     return next.handle(req).catch(error => {
       if (error.status === 401) {
           if (req.url.endsWith('refresh')) {
+            authService.refreshing = false;
             authService.logout();
           } else {
             return authService.refreshToken()

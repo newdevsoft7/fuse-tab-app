@@ -13,10 +13,12 @@ export class SocketService {
   connectionStatus = new BehaviorSubject(false);
   isConnected: boolean;
 
-  constructor(
-    private usersChatService: UsersChatService) {
+  constructor() {
+    this.connect();
+  }
 
-    this.conn = new WebSocket(SOCKET_SERVER_URL);
+  getState() {
+    return this.conn.readyState;
   }
 
   opened() {
@@ -33,6 +35,25 @@ export class SocketService {
   }
 
   sendData(data: any): void {
-    this.conn.send(data);
+    if (this.getState() === WebSocket.OPEN) {
+      this.conn.send(data);
+    } else {
+      this.connect();
+      const interval = setInterval(() => {
+        console.log('========Reconnecting: ', this.getState());
+        if (this.getState() === WebSocket.OPEN) {
+          clearInterval(interval);
+          this.conn.send(data);
+        }
+      }, 1000);
+    }
+  }
+
+  closeConnection(): void {
+    this.conn.close();
+  }
+
+  connect(): void {
+    this.conn = new WebSocket(SOCKET_SERVER_URL);
   }
 }

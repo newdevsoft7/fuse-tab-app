@@ -17,9 +17,8 @@
                              fuseMatSidenavHelper="chat-left-sidenav" mat-is-locked-open="gt-md">
                     <fuse-chat-left-sidenav 
                         [users]="users"
-                        [sessions]="sessions"
-                        [unreads]="getUnreads()" 
-                        (fetchChat)="fetchChatBySession($event)"
+                        [threads]="threads"
+                        (fetchChat)="fetchChatByThread($event)"
                         (searchUsers)="searchUsers($event)"
                         (addContact)="addContact($event)"></fuse-chat-left-sidenav>
                 </mat-sidenav>
@@ -31,9 +30,10 @@
                   <fuse-chat-view
                     *ngIf="selectedChat" 
                     [messages]="selectedChat" 
-                    [user]="selectedUser" 
+                    [thread]="selectedThread" 
                     (sendMessage)="sendMessage($event)"
-                    (updateReadStatus)="updateReadStatus($event)"></fuse-chat-view>
+                    (updateReadStatus)="updateReadStatus($event)"
+                    (addUser)="triggerAddUserModal($event)"></fuse-chat-view>
                 </mat-sidenav-content>
                 <!-- / CONTENT -->
 

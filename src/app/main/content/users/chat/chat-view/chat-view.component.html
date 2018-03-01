@@ -17,12 +17,12 @@
                 <!-- / RESPONSIVE CHATS BUTTON-->
 
                 <!-- CHAT CONTACT-->
-                <div class="chat-contact" fxLayout="row" fxLayoutAlign="start center" *ngIf="user">
+                <div class="chat-contact" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="thread">
                     <div class="avatar-wrapper">
 
-                        <img [src]="user?.ppic_a"
+                        <img [src]="thread?.ppic_a"
                              class="avatar"
-                             [alt]="user?.fname + ' ' + user?.lname"/>
+                             [alt]="thread?.name"/>
 
                         <!-- <mat-icon class="s-16 status"
                                   [ngClass]="contact.status">
@@ -30,13 +30,14 @@
                     </div>
 
                     <div class="chat-contact-name">
-                        {{user?.fname}} {{user?.lname}}
+                        {{thread?.name}}
                     </div>
-
                 </div>
                 <!-- / CHAT CONTACT-->
             </div>
-
+            <button mat-icon-button aria-label="new user" (click)="addUser.next()">
+                <mat-icon>add</mat-icon>
+            </button>
         </div>
     </mat-toolbar>
     <!-- / CHAT TOOLBAR -->
@@ -49,20 +50,20 @@
 
             <!-- MESSAGE -->
             <div fxLayout="row" *ngFor="let message of messages" class="message-row"
-                 [ngClass]="{'user': message.receiver_id == user.id}">
+                 [ngClass]="{'user': message.sender_id == authenticatedUser.id}">
 
-                <img *ngIf="message.sender_id == user.id"
-                     [src]="user?.ppic_a"
+                <img *ngIf="message.sender_id != authenticatedUser.id"
+                     [src]="getParticipant(message.sender_id)?.ppic_a || (getParticipant(message.sender_id)?.sex === 'male'? 'https://staffconnect.net/images/nopic_thumb_male.jpg' : 'https://staffconnect.net/images/nopic_thumb_female.jpg')"
                      class="avatar"
-                     [alt]="user?.fname + ' ' + user?.lname"/>
+                     [alt]="getParticipant(message.sender_id)?.fname + ' ' + getParticipant(message.sender_id)?.lname"/>
 
-                <img *ngIf="message.receiver_id == user.id" class="avatar" [src]="user?.ppic_a">
+                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="getParticipant(authenticatedUser.id)?.ppic_a || (getParticipant(authenticatedUser.id)?.sex === 'male'? 'https://staffconnect.net/images/nopic_thumb_male.jpg' : 'https://staffconnect.net/images/nopic_thumb_female.jpg')">
 
                 <div class="bubble">
                     <div class="message">{{message.content}}</div>
                     <div>
                         <div class="time secondary-text pull-left">{{message.created_at | date:'medium'}}</div>
-                        <mat-icon class="pull-right font-size-16 h-16 w-16 mt-8 ml-12" *ngIf="message.read == 1 && message.receiver_id == user.id">done</mat-icon>
+                        <!-- <mat-icon class="pull-right font-size-16 h-16 w-16 mt-8 ml-12" *ngIf="message.read == 1 && message.receiver_id == user.id">done</mat-icon> -->
                     </div>
                 </div>
 
