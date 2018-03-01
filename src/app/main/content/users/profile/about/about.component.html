@@ -157,20 +157,8 @@
                     <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="canSavePost">
                         <mat-form-field>
                             <mat-select formControlName="type" placeholder="Note Type">
-                                <mat-option [value]="'info'">
-                                    Info
-                                </mat-option>
-                                <mat-option [value]="'interview'">
-                                    Interview
-                                </mat-option>
-                                <mat-option [value]="'system'">
-                                    System
-                                </mat-option>
-                                <mat-option [value]="'positive'">
-                                    Positive
-                                </mat-option>
-                                <mat-option [value]="'negative'">
-                                    Negative
+                                <mat-option *ngFor="let option of noteTypes" [value]="option.value">
+                                    {{option.label}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -184,30 +172,55 @@
                             POST
                         </button>
                     </div>
-
-                    <div class="notes">
-                        <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes">
-                            <img [src]="note.creator_thumbnail" class="avatar" alt="{{note.creator_name}}" />
-                    
-                            <div fxLayout="column">
-                                
-                                <div>
-                                    <div class="username">{{note.creator_name}}</div>
-                                    <div>
-                                        <strong class="mr-8">{{note.type}}</strong>
-                                        <span class="message"> {{note.note}}</span>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <span class="time secondary-text mr-8">{{note.created_at | date: 'medium'}}</span>
-                                    <span class="delete-note" (click)="onDeleteAdminNote(note)">Delete</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </form>
                 <!-- / ADMIN NOTE FORM -->
+
+                <!-- ADMIN NOTES LIST -->
+                <div class="notes" fxLayout="column">
+                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of viewedAdminNotes">
+                        <img [src]="note.creator_ppic_a" class="avatar" alt="{{note.creator_name}}" />
+                
+                        <div fxLayout="column" class="w-100-p">
+                            
+                            <div>
+                                <div class="username">{{note.creator_name}}</div>
+                                <div *ngIf="!note.editMode">
+                                    <strong class="mr-8">{{getNoteType(note.type)}}</strong>
+                                    <span class="message">{{note.note}}</span>
+                                </div>
+
+                                <div *ngIf="note.editMode">
+                                    <mat-form-field class="w-100-p">
+                                        <textarea matInput [(ngModel)]="noteTemp.note"></textarea>
+                                    </mat-form-field>
+                                
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                                        <mat-form-field>
+                                            <mat-select [(ngModel)]="noteTemp.type" placeholder="Type">
+                                                <mat-option *ngFor="let option of noteTypes" [value]="option.value">
+                                                    {{option.label}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                
+                                        <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)" [disabled]="!noteTemp.note">Update</button>
+                                        <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
+                                    </div>
+                                
+                                </div>
+                            </div>
+
+                            <div *ngIf="!note.editMode">
+                                <span class="time secondary-text mr-8">{{note.updated_at | date: 'medium'}}</span>
+                                <span class="delete-note mr-8" (click)="onEditAdminNote(note)">Edit</span>
+                                <span class="delete-note" (click)="onDeleteAdminNote(note)">Delete</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- / ADMIN NOTES LIST -->
+                
                 
             </div>
 

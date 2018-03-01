@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { UserService } from '../../user.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -17,9 +18,19 @@ export class UsersProfileAboutComponent implements OnInit {
     
     canSavePost = false;
 
-    adminNotes: any[];
+    adminNotes = [];
+    viewedAdminNotes: any[];
     isSeeAllAdminNotes = false;
     adminNoteForm: FormGroup;
+    noteTemp: any; // Note template for update
+
+    readonly noteTypes = [
+        { value: 'info', label: 'Info' },
+        { value: 'interview', label: 'Interview' },
+        { value: 'system', label: 'System' },
+        { value: 'positive', label: 'Positive' },
+        { value: 'negative', label: 'Negative' }
+    ]
 
     constructor(
         private userService: UserService,
@@ -32,8 +43,12 @@ export class UsersProfileAboutComponent implements OnInit {
             note: ['', Validators.required]
         });
 
+        // Get profile admin notes
         if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-            this.refreshAdminNotesView();
+            this.userService.getAdminNotes(this.userInfo.id).subscribe(res => {
+                this.adminNotes = res;
+                this.refreshAdminNotesView();
+            });
         }
 
         this.adminNoteForm.valueChanges.subscribe(() => {
@@ -50,6 +65,11 @@ export class UsersProfileAboutComponent implements OnInit {
         }
     }
 
+    getNoteType(noteType) {
+        const type = this.noteTypes.find(t => t.value === noteType);
+        return type ? type.label : '';
+    };
+
     onSeeAllAdminNotes() {
         this.isSeeAllAdminNotes = true;
         this.refreshAdminNotesView();
@@ -61,11 +81,11 @@ export class UsersProfileAboutComponent implements OnInit {
         this.userService.createAdminNote(this.currentUser.id, data)
             .subscribe(res => {
                 const note = res.data;
-                note.creator_thumbnail = this.userInfo.ppic_a;
+                note.creator_ppic_a = this.userInfo.ppic_a;
                 note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
                 
-                this.userInfo.profile_admin_notes.unshift(note);
+                this.adminNotes.unshift(note);
                 this.refreshAdminNotesView();
 
                 this.adminNoteInput.nativeElement.value = '';
@@ -76,21 +96,50 @@ export class UsersProfileAboutComponent implements OnInit {
     }
 
     onDeleteAdminNote(note) {
-        const index = this.userInfo.profile_admin_notes.findIndex(v => v.id == note.id);
+        const index = this.adminNotes.findIndex(v => v.id == note.id);
         this.userService.deleteAdminNote(note.id)
             .subscribe(res => {
-                this.userInfo.profile_admin_notes.splice(index, 1);
+                this.adminNotes.splice(index, 1);
                 this.refreshAdminNotesView();
             }, err => {
-
             });      
+    }
+
+    onEditAdminNote(note) {
+        note.editMode = true;
+        this.noteTemp = _.cloneDeep(note);
+    }
+
+    onCancelEditAdminNote(note) {
+        note.editMode = false;
+    }
+
+    onUpdateAdminNote(note) {
+
+        // TODO - Update shift admin note
+        const index = this.adminNotes.findIndex(v => v.id === note.id);
+
+        // Update note
+        this.userService.updateAdminNote(
+            note.id,
+            {
+                note: this.noteTemp.note,
+                type: this.noteTemp.type
+            }
+        ).subscribe(res => {
+            note.type = this.noteTemp.type;
+            note.note = this.noteTemp.note;
+            note.updated_at = res.data.updated_at;
+        });
+        note.editMode = false;
+
     }
 
     private refreshAdminNotesView() {
         if (this.isSeeAllAdminNotes) {
-            this.adminNotes = this.userInfo.profile_admin_notes;
+            this.viewedAdminNotes = this.adminNotes;
         } else {
-            this.adminNotes = this.userInfo.profile_admin_notes.slice(0, 5);
+            this.viewedAdminNotes = this.adminNotes.slice(0, 5);
         }
     }
 }

@@ -187,6 +187,12 @@ export class ScheduleService {
     return this.http.post(url, data).catch(this.handleError);
   }
 
+  updateAdminNote(noteId: number, data: any): Observable<any> {
+    const url = `${BASE_URL}/shift/adminNote/${noteId}`;
+    return this.http.put(url, { ...data })
+      .catch(this.handleError);
+  }
+
   deleteShiftAdminNote(noteId): Observable<any> {
     const url = `${BASE_URL}/shift/adminNote/${noteId}`;
     return this.http.delete(url).catch(this.handleError);

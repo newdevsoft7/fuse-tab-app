@@ -120,8 +120,9 @@ export class AdminShiftStaffComponent implements OnInit {
     }
 
     ngOnInit() {
+        const type_id = this.shift.admin_note_types.length > 0 ? this.shift.admin_note_types[0].id : '';
         this.adminNoteForm = this.formBuilder.group({
-            type: [1, Validators.required],
+            type_id: [type_id],
             client_visible: [0, Validators.required],
             note: ['', Validators.required]
         });
@@ -387,11 +388,6 @@ export class AdminShiftStaffComponent implements OnInit {
         return visible ? visible.label : '';
     }
 
-    getNoteType(noteType) {
-        const type = this.noteTypes.find(t => t.value === noteType);
-        return type ? type.label : '';
-    };
-
     private refreshAdminNotesView() {
         if (this.isSeeAllAdminNotes) {
             this.viewedAdminNotes = this.adminNotes;
@@ -421,6 +417,12 @@ export class AdminShiftStaffComponent implements OnInit {
                 const note = res.data;
                 note.creator_ppic_a = this.userInfo.ppic_a;
                 note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
+
+                if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
+                    const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
+                    note.color = noteType.color;
+                    note.tname = noteType.tname;
+                }
 
                 this.adminNotes.unshift(note);
                 this.refreshAdminNotesView();
@@ -458,9 +460,26 @@ export class AdminShiftStaffComponent implements OnInit {
         const index = this.adminNotes.findIndex(v => v.id === note.id);
 
         // Update note
-        note.type_id = this.noteTemp.type_id;
-        note.client_visible = this.noteTemp.client_visible;
-        note.note = this.noteTemp.note;
+        this.scheduleService.updateAdminNote(
+            note.id,
+            {
+                note: this.noteTemp.note,
+                type_id: this.noteTemp.type_id === null ? '' : this.noteTemp.type_id,
+                client_visible: this.noteTemp.client_visible
+            }
+        ).subscribe(res => {
+            const data = res.data;
+            note.type_id = this.noteTemp.type_id;
+            note.client_visible = this.noteTemp.client_visible;
+            note.note = this.noteTemp.note;
+            note.updated_at = data.updated_at;
+            
+            if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
+                const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
+                note.color = noteType.color;
+                note.tname = noteType.tname;
+            }
+        })
         note.editMode = false;
         
     }
