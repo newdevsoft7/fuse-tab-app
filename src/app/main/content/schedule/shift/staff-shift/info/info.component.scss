@@ -10,6 +10,21 @@
             line-height: 50px;
             border-radius: 5px;
         }
+
+        .message {
+            line-height: 50px;
+        }
+
+        .staff {
+            margin: 8px 12px 0 0;
+
+            .phone {
+
+                mat-icon {
+                    vertical-align: middle;
+                }
+            }
+        }
     }
 
     .info-sidebar {

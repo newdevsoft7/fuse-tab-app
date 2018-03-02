@@ -1,0 +1,22 @@
+<div class="dialog-content-wrapper">
+
+    <h1 mat-dialog-title>Request a replacement</h1>
+        <form [formGroup]="form">
+
+        <div mat-dialog-content>
+            <mat-form-field floatPlaceholder="never" fxFlex>
+                <textarea matInput formControlName="reason"
+                    placeholder="Please enter a reason for your replacement request"></textarea>
+                <mat-error *ngIf="formErrors.reason.required">
+                    Reason is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div mat-dialog-actions>
+            <button mat-button (click)="saveForm()" cdkFocusInitial>Request replacement</button>
+            <button mat-button mat-dialog-close>Cancel</button>
+        </div>
+    </form>
+
+</div>

@@ -17,18 +17,36 @@
             <div class="content w-100-p" fxLayout="column" fxLayoutGap="8px">
 
                 <!-- ROLE THUMBNAIL PAY RATE, ACTION -->
-                <div class="first" fxLayout="row" fxLayoutWrap fxLayoutGap="8px">
+                <div class="first" fxLayout="row" fxLayoutWrap fxLayoutGap="8px" fxLayoutAlign="start center">
                     <div class="role">
                         <img class="avatar" [src]="role.role_thumb"/>
                         <div></div>
                     </div>
                     
                     <div class="message">{{role.message}}</div>
+                    <button mat-button *ngFor="let action of role.actions" (click)="doAction(action, role)"
+                        [style.background-color]="'#0000001f'">
+                        {{action.split('_').join(' ') | ucwords}}
+                    </button> 
                 </div>
                 <!-- / ROLE THUMBNAIL PAY RATE, ACTION -->
                 
                 <!-- OTHER STAFF -->
-                <div class="other-staff" fxLayout="row" fxLayoutWrap>
+                <div class="other-staffs" fxLayout="row" fxLayoutWrap fxLayoutAlign="start ceneter">
+
+                    <div class="staff" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap
+                        *ngFor="let staff of role.role_staff">
+
+                        <img class="avatar" [src]="staff.ppic_a" />
+
+                        <div>
+                            <strong>{{staff.name}}</strong><br>
+                            <a href="{{'tel:' + staff.mob}}" *ngIf="staff.mob" class="phone">
+                                <mat-icon class="s-16">phone</mat-icon>
+                                {{staff.mob}}
+                            </a>
+                        </div>
+                    </div>
 
                 </div>
                 <!-- / OTHER STAFF -->
