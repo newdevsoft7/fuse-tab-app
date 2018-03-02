@@ -12,12 +12,7 @@ import { UserService } from '../../user.service';
 export class FuseChatViewComponent implements OnInit, AfterViewInit
 {
     @Input() messages: any = [];
-    @Input('thread') set updateThread(thread) {
-        if (thread) {
-            this.thread = thread;
-            this.updateParticipants();
-        }
-    }
+    @Input() thread: any;
 
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
     @Output() updateReadStatus: EventEmitter<any> = new EventEmitter();
@@ -27,29 +22,12 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @ViewChild(FusePerfectScrollbarDirective) directiveScroll: FusePerfectScrollbarDirective;
     @ViewChildren('replyInput') replyInputField;
     @ViewChild('replyForm') replyForm: NgForm;
-    
-    thread: any;
-    participants: any = [];
 
     authenticatedUser: any;
 
     constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
         this.authenticatedUser = tokenStorage.getUser();
-    }
-
-    getParticipant(userId: number) {
-        return this.participants.find(user => user.id === userId);
-    }
-
-    updateParticipants() {
-        try {
-            this.thread.participant_ids.forEach(async (id: number) => {
-                this.participants.push(await this.userService.getUser(id).toPromise());
-            });
-        } catch (e) {
-            console.error(e);
-        }
     }
 
     ngOnInit() {}

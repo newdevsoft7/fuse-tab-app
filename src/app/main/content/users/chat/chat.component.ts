@@ -51,14 +51,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   listenIncomingMessages() {
-    this.usersChatService.currentMessage.skipWhile(() => !this.alive).subscribe(res => {
+    this.usersChatService.currentMessage.skipWhile(() => !this.alive).subscribe(async res => {
       if (!res || !res.type) return;
       switch (res.type) {
         case 'newMessage':
           if (!this.selectedThread) {
             if (this.activityManagerService.isFocused) {
               this.usersChatService.unreadList.push(res.data);
-              this.favicoService.setBadge(this.usersChatService.unreadList.length);
+              this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
             }
             return;
           }
@@ -71,8 +71,15 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           } else {
             if (this.activityManagerService.isFocused) {
               this.usersChatService.unreadList.push(res.data);
-              this.favicoService.setBadge(this.usersChatService.unreadList.length);
+              this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
             }
+          }
+          break;
+        case 'newThread':
+          this.fetchThreads();
+          if (this.activityManagerService.isFocused) {
+            this.usersChatService.unreadThreads.push(parseInt(res.data));
+            this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
           }
           break;
       }
@@ -118,6 +125,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async fetchChatByThread(threadId: number) {
     if (this.selectedThread && this.selectedThread.id === threadId) return;
+    this.readThread(threadId);
     this.selectedChat = [];
     try {
       this.selectedChat = await this.usersChatService.getMessagesByThread(threadId);
@@ -147,6 +155,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  readThread(threadId: number) {
+    const index = this.usersChatService.unreadThreads.indexOf(threadId);
+    if (index > -1) {
+      this.usersChatService.unreadThreads.splice(index, 1);
+      this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
+    }
+  }
+
   updateRead() {
     for (let i = this.usersChatService.unreadList.length - 1; i >= 0; i--) {
       const threadId = this.usersChatService.unreadList[i].thread_id;
@@ -154,7 +170,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         this.usersChatService.unreadList.splice(i, 1);
       }
     }
-    this.favicoService.setBadge(this.usersChatService.unreadList.length);
+    this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
   }
 
   async updateReadStatus(msgIds: number[]) {
@@ -166,7 +182,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           this.usersChatService.unreadList.splice(i, 1);
         }
       }
-      this.favicoService.setBadge(this.usersChatService.unreadList.length);
+      this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
     } catch (e) {
       this.handleError(e);
     }
@@ -195,8 +211,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           content: message
         });
         this.threads = await this.usersChatService.getThreads();
-        this.selectedChat = [payload];
-        this.selectedThread = this.threads.find(thread => thread.id === payload.thread_id);
+        await this.fetchChatByThread(payload.thread_id);
+        this.socketService.sendData(JSON.stringify({
+          type: 'thread',
+          payload: {
+            thread: payload.thread_id,
+            receipt: this.selectedThread.participant_ids.find(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+          }
+        }));
       } catch (e) {
         this.handleError(e);
       }

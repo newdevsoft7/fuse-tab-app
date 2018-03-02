@@ -35,18 +35,7 @@ export class SocketService {
   }
 
   sendData(data: any): void {
-    if (this.getState() === WebSocket.OPEN) {
-      this.conn.send(data);
-    } else {
-      this.connect();
-      const interval = setInterval(() => {
-        console.log('========Reconnecting: ', this.getState());
-        if (this.getState() === WebSocket.OPEN) {
-          clearInterval(interval);
-          this.conn.send(data);
-        }
-      }, 1000);
-    }
+    this.conn.send(data);
   }
 
   closeConnection(): void {

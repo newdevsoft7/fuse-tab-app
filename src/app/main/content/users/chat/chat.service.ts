@@ -16,6 +16,7 @@ export class UsersChatService {
 
   currentMessage = new BehaviorSubject(null);
   unreadList: any = [];
+  unreadThreads: number[] = [];
 
   constructor(
     private http: HttpClient,
