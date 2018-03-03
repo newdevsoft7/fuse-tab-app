@@ -97,8 +97,13 @@
 
                 <!-- FILES LIST -->
                 <div class="files" fxLayout="column">
-                    <div class="file" *ngFor="let file of shift.files">
-
+                    <div class="file" *ngFor="let file of files" fxLayout="row">
+                        <div fxFlex>
+                            <mat-icon class="type-icon" [ngClass]="file.type"></mat-icon>
+                        </div>
+                        <div fxFlex>{{file.name}}</div>
+                        <div fxFlex>{{file.size}}</div>
+                        <div fxFlex>{{file.created_at}}</div>
                     </div>
                 </div>
                 <!-- / FILES LIST -->

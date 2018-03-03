@@ -59,9 +59,32 @@
             .files {
 
                 .file {
-                    padding: 16px 0;
-                    width: 100%;
+                    border-bottom: 1px solid #cccccc;
                     margin-bottom: 4px;
+                    padding: 12px 0;
+                    width: 100%;
+
+                    &:last-child {
+                        border-bottom: none;
+                        padding-bottom: 0;
+                    } 
+
+                    .type-icon {
+
+                        &.document {
+                            &:before {
+                                content: 'insert_drive_file';
+                                color: #1565C0;
+                            }
+                        }
+
+                        &.spreadsheet {
+                            &:before {
+                                content: 'insert_chart';
+                                color: #4CAF50;
+                            }
+                        }
+                    }
 
                 }
             }

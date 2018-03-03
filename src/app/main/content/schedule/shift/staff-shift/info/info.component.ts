@@ -66,6 +66,15 @@ export class StaffShiftInfoComponent implements OnInit {
 
 	ngOnInit() {
     }
+
+    readonly files = [
+        { type: 'document', name: 'work', size: '1.2 MB', created_at: 'June 8, 2018' },
+        { type: 'spreadsheet', name: 'tax', size: '1.9 MB', created_at: 'June 8, 2018' },
+        { type: 'spreadsheet', name: 'offer', size: '45 MB', created_at: 'June 8, 2018' },
+        { type: 'document', name: 'work', size: '1.8 Mb', created_at: 'June 8, 2018' },
+        { type: 'spreadsheet', name: 'intro', size: '3.2 Mb', created_at: 'June 8, 2018' },
+        { type: 'document', name: 'work', size: '22 Mb', created_at: 'June 8, 2018' }
+    ]
     
     openPayItemDialog(payItems) {
         this.dialogRef = this.dialog.open(StaffShiftPayItemDialogComponent, {
