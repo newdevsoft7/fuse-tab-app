@@ -2,6 +2,15 @@
 
     <div class="info-content" fxLayout="column" fxFlex="65">
 
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                <div class="title">Notes</div>
+            </header>
+
+            <div class="content w-100-0" [innerHTML]="shift.notes">
+            </div>
+        </div>
+
         <!-- ROLES -->
         <div *ngFor="let role of shift.shift_roles" class="box info-box" fxLayout="column">
 
@@ -9,7 +18,11 @@
                 <div class="title">{{role.rname}}</div>
                 <div matTooltip="Number required" *ngIf="role.num_required > 0"
                     fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon class="mr-4">group</mat-icon>
+                    <ng-container [ngSwitch]="role.sex">
+                        <mat-icon *ngSwitchCase="'male'" fontSet="fa" fontIcon="fa-male" class="mr-4 s-20"></mat-icon>
+                        <mat-icon *ngSwitchCase="'female'" fontSet="fa" fontIcon="fa-female" class="mr-4 s-20"></mat-icon>
+                        <mat-icon *ngSwitchDefault class="mr-4 s-20">wc</mat-icon>
+                    </ng-container>
                     {{role.num_required}}
                 </div>
             </header>
@@ -17,18 +30,59 @@
             <div class="content w-100-p" fxLayout="column" fxLayoutGap="8px">
 
                 <!-- ROLE THUMBNAIL PAY RATE, ACTION -->
-                <div class="first" fxLayout="row" fxLayoutWrap fxLayoutGap="8px">
-                    <div class="role">
+                <div class="first" fxLayout="row" fxLayoutWrap fxLayoutGap="8px" fxLayoutAlign="start center">
+                    <div class="role" fxLayout="row" fxLayoutAlign="start center">
                         <img class="avatar" [src]="role.role_thumb"/>
-                        <div></div>
+
+                        <div fxLayout="column" fxLayoutAlign="start">
+
+                            <div class="times" *ngIf="shift.shift_start" matTooltip="Times">
+                                {{shift.shift_start | date: 'h:mm a'}} - {{shift.shift_end | date: 'h:mm a'}}
+                            </div>
+
+                            <div *ngIf="role.pay_items.length === 0" class="pay-rate" matTooltip="Pay rate">
+                                <ng-container *ngIf="role.pay_rate">
+                                    {{role.pay_rate | currency}} {{role.pay_rate_type === 'phr' ? '/hr' : 'flat'}}
+                                </ng-container>
+                            </div>
+                            
+                            <div *ngIf="role.pay_items.length > 0" class="pay-rate">
+                                <span *ngIf="role.pay_rate" matTooltip="Pay rate">
+                                    {{role.pay_rate | currency}} {{role.pay_rate_type === 'phr' ? '/hr' : 'flat'}}
+                                </span>
+                                <span matTooltip="Pay item" class="pay-item" (click)="openPayItemDialog(role.pay_items)">
+                                     + {{ sum(role.pay_items) | currency}}
+                                </span>
+                            </div>
+
+                        </div>
+                        
                     </div>
                     
                     <div class="message">{{role.message}}</div>
+                    <button mat-button *ngFor="let action of role.actions" (click)="doAction(action, role)"
+                        [style.background-color]="'#0000001f'">
+                        {{action.split('_').join(' ') | ucwords}}
+                    </button> 
                 </div>
                 <!-- / ROLE THUMBNAIL PAY RATE, ACTION -->
                 
                 <!-- OTHER STAFF -->
-                <div class="other-staff" fxLayout="row" fxLayoutWrap>
+                <div class="other-staffs" fxLayout="row" fxLayoutWrap fxLayoutAlign="start ceneter">
+
+                    <div class="staff" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap
+                        *ngFor="let staff of role.role_staff">
+
+                        <img class="avatar" [src]="staff.ppic_a" />
+
+                        <div>
+                            <strong>{{staff.name}}</strong><br>
+                            <a href="{{'tel:' + staff.mob}}" *ngIf="staff.mob" class="phone">
+                                <mat-icon class="s-16">phone</mat-icon>
+                                {{staff.mob}}
+                            </a>
+                        </div>
+                    </div>
 
                 </div>
                 <!-- / OTHER STAFF -->
@@ -52,8 +106,13 @@
 
                 <!-- FILES LIST -->
                 <div class="files" fxLayout="column">
-                    <div class="file" *ngFor="let file of shift.files">
-
+                    <div class="file" *ngFor="let file of files" fxLayout="row">
+                        <div fxFlex>
+                            <mat-icon class="type-icon" [ngClass]="file.type"></mat-icon>
+                        </div>
+                        <div fxFlex>{{file.name}}</div>
+                        <div fxFlex>{{file.size}}</div>
+                        <div fxFlex>{{file.created_at}}</div>
                     </div>
                 </div>
                 <!-- / FILES LIST -->

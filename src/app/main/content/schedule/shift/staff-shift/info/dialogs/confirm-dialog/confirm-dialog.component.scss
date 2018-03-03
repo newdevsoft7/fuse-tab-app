@@ -1,0 +1,23 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up('xs') {
+        width: 100%;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+
+        .heading {
+            margin: 0 0 4px;
+            font-size: 1em;
+            border-radius: 3px;
+            padding: 3px;
+        }
+    }
+}

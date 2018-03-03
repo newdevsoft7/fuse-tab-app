@@ -11,6 +11,7 @@ import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TextMaskModule } from 'angular2-text-mask';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { NgPipesModule } from 'ngx-pipes';
 
 import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.directive';
 import { FuseMatSidenavHelperService } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.service';
@@ -65,7 +66,8 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         TextMaskModule,
         FroalaEditorModule.forRoot(),
         FroalaViewModule.forRoot(),
-        MaterialTimeControlModule
+        MaterialTimeControlModule,
+        NgPipesModule
     ],
     exports        : [
         FlexLayoutModule,
@@ -89,7 +91,8 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         TextMaskModule,
         FroalaEditorModule,
         FroalaViewModule,
-        MaterialTimeControlModule
+        MaterialTimeControlModule,
+        NgPipesModule
     ],
     entryComponents: [
         FuseConfirmDialogComponent,

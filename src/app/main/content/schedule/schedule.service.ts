@@ -204,6 +204,33 @@ export class ScheduleService {
     return this.http.put(url, {}).catch(this.handleError);
   }
 
+
+  // Staff Shift Actions
+  replaceShiftRole(roleStaffId, reason: string): Observable<any> {
+    const url = `${BASE_URL}/role/replace/${roleStaffId}`;
+    return this.http.post(url, { reason }).catch(this.handleError);
+  }
+
+  replaceCancelShiftRole(roleStaffId): Observable<any> {
+    const url = `${BASE_URL}/role/replaceCancel/${roleStaffId}`;
+    return this.http.post(url, {}).catch(this.handleError);
+  }
+
+  notAvailableShiftRole(roleId: number): Observable<any> {
+    const url = `${BASE_URL}/role/${roleId}/notavailable`;
+    return this.http.post(url, {}).catch(this.handleError);
+  }
+
+  checkOutShiftRole(roleStaffId: number): Observable<any> {
+    const url = `${BASE_URL}/role/checkOut/${roleStaffId}`;
+    return this.http.post(url, {}).catch(this.handleError);
+  }
+
+  confirmStaffSelection(roleStaffId: number): Observable<any> {
+    const url = `${BASE_URL}/role/confirm/${roleStaffId}`;
+    return this.http.post(url, {}).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
