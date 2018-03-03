@@ -2,6 +2,15 @@
 
     <div class="info-content" fxLayout="column" fxFlex="65">
 
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                <div class="title">Notes</div>
+            </header>
+
+            <div class="content w-100-0" [innerHTML]="shift.notes">
+            </div>
+        </div>
+
         <!-- ROLES -->
         <div *ngFor="let role of shift.shift_roles" class="box info-box" fxLayout="column">
 
