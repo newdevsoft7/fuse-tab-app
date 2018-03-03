@@ -52,12 +52,9 @@
             <div fxLayout="row" *ngFor="let message of messages" class="message-row"
                  [ngClass]="{'user': message.sender_id == authenticatedUser.id}">
 
-                <img *ngIf="message.sender_id != authenticatedUser.id"
-                     [src]="getParticipant(message.sender_id)?.ppic_a || (getParticipant(message.sender_id)?.sex === 'male'? 'https://staffconnect.net/images/nopic_thumb_male.jpg' : 'https://staffconnect.net/images/nopic_thumb_female.jpg')"
-                     class="avatar"
-                     [alt]="getParticipant(message.sender_id)?.fname + ' ' + getParticipant(message.sender_id)?.lname"/>
+                <img *ngIf="message.sender_id != authenticatedUser.id" [src]="message.ppic_a" class="avatar"/>
 
-                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="getParticipant(authenticatedUser.id)?.ppic_a || (getParticipant(authenticatedUser.id)?.sex === 'male'? 'https://staffconnect.net/images/nopic_thumb_male.jpg' : 'https://staffconnect.net/images/nopic_thumb_female.jpg')">
+                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="message.ppic_a">
 
                 <div class="bubble">
                     <div class="message">{{message.content}}</div>

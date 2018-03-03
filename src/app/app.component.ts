@@ -8,6 +8,10 @@ import { FuseNavigationModel } from './navigation/navigation.model';
 import { locale as navigationEnglish } from './navigation/i18n/en';
 import { locale as navigationTurkish } from './navigation/i18n/tr';
 import { SocketService } from './shared/services/socket.service';
+import { UsersChatService } from './main/content/users/chat/chat.service';
+import { FavicoService } from './shared/services/favico.service';
+import { ActivityManagerService } from './shared/services/activity-manager.service';
+import { TabService } from './main/tab/tab.service';
 
 @Component({
     selector   : 'fuse-root',
@@ -21,7 +25,11 @@ export class AppComponent
         private fuseSplashScreen: FuseSplashScreenService,
         private translate: TranslateService,
         private translationLoader: FuseTranslationLoaderService,
-        private socketService: SocketService
+        private socketService: SocketService,
+        private usersChatService: UsersChatService,
+        private favicoService: FavicoService,
+        private activityManagerService: ActivityManagerService,
+        private tabService: TabService
     )
     {
         // Add languages
@@ -39,7 +47,43 @@ export class AppComponent
         // Set the navigation translations
         this.translationLoader.loadTranslations(navigationEnglish, navigationTurkish);
 
+        // listen window activity/inactivity change
+        this.activityManagerService.detectActivityChange();
+
         // listen socket open
         this.socketService.opened();
+
+        // listen data from web socket server
+        this.socketService.listenData();
+
+        this.socketService.webSocketData.subscribe(res => {
+            if (!res || !res.data) return;
+            const payload = JSON.parse(res.data);
+            if (this.tabService.currentTab && this.tabService.currentTab.url === 'users/chat') {
+                this.usersChatService.currentMessage.next(payload);
+            }
+            if (!this.activityManagerService.isFocused || !this.tabService.currentTab || this.tabService.currentTab.url !== 'users/chat') {
+                if (payload.type === 'newMessage') {
+                    this.updateUnreadList([payload.data]);
+                }
+                if (payload.type === 'newThread') {
+                    this.updateUnreadThread(parseInt(payload.data));
+                }
+            }
+        });
+    }
+
+    updateUnreadList(newList: any) {
+        this.usersChatService.unreadList = [...this.usersChatService.unreadList, ...newList];
+        if (this.usersChatService.unreadList.length > 0) {
+            this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
+        }
+    }
+
+    updateUnreadThread(newThreadId: number) {
+        this.usersChatService.unreadThreads.push(newThreadId);
+        if (this.usersChatService.unreadThreads.length > 0) {
+            this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
+        }
     }
 }

@@ -103,11 +103,11 @@ export class AuthenticationService {
     public async logout() {
         try {
             await this.usersChatService.removeDevice();
-            this.usersChatService.Device = null;
         } catch (e) {}
-        if (this.tokenStorage.getUser()) {
-            this.socketService.closeConnection();
-        }
+        this.usersChatService.Device = null;
+        this.socketService.sendData(JSON.stringify({
+            type: 'disconnect'
+        }));
         this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
         this.tokenStorage.clear();
         this.favicoService.setBadge(0);
