@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit, Injector } from '@angular/core';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
@@ -29,16 +29,19 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
   userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
   alive: boolean = false;
+  socketService: SocketService;
 
   constructor(
     private tabService: TabService,
     private usersChatService: UsersChatService, 
     private userService: UserService, 
     private tokenStorage: TokenStorage, 
-    private socketService: SocketService,
+    private injector: Injector,
     private favicoService: FavicoService,
     private activityManagerService: ActivityManagerService,
     private dialog: MatDialog) {
+
+    this.socketService = injector.get(SocketService);
 
     this.fetchThreads();
     this.watchActivityChange();

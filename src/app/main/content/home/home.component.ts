@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Injector } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
@@ -21,12 +21,14 @@ import { FCMService } from '../../../shared/services/fcm.service';
 import { SocketService } from '../../../shared/services/socket.service';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
 
+import 'rxjs/add/operator/skipWhile';
+
 @Component({
     selector   : 'fuse-home',
     templateUrl: './home.component.html',
     styleUrls  : ['./home.component.scss']
 })
-export class FuseHomeComponent implements OnDestroy
+export class FuseHomeComponent implements OnInit, OnDestroy
 {
     tabSubscription: Subscription;
     closeTabSubscription: Subscription;
@@ -52,16 +54,21 @@ export class FuseHomeComponent implements OnDestroy
     // Staff view templates
     @ViewChild('staffShiftTpl') staffShiftTpl;
     
+    socketService: SocketService;
+    alive: boolean = false;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private fuseNavigationService: FuseNavigationService,
         private tabService: TabService,
         private fcmService: FCMService,
-        private socketService: SocketService,
+        private injector: Injector,
         private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
         private authService: AuthenticationService) {
+
+        this.socketService = injector.get(SocketService);
+
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
             this.openTab(tab);
@@ -72,13 +79,12 @@ export class FuseHomeComponent implements OnDestroy
         });
 
         this.loadFCMservices();
-        this.runSockets();
 
         this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl))
     }
 
     async runSockets() {
-        this.socketService.connectionStatus.subscribe((connected: boolean) => {
+        this.socketService.connectionStatus.skipWhile(() => !this.alive).subscribe((connected: boolean) => {
             if (connected) {
                 this.startSocket();
             }
@@ -86,6 +92,7 @@ export class FuseHomeComponent implements OnDestroy
     }
 
     startSocket() {
+        if (!this.authService.isAuthorized()) return; 
         this.socketService.sendData(JSON.stringify({
             type: 'init',
             payload: this.tokenStorage.getUser().id
@@ -100,7 +107,13 @@ export class FuseHomeComponent implements OnDestroy
        this.fcmService.refreshToken();
     }
 
+    ngOnInit() {
+        this.runSockets();
+        this.alive = true;
+    }
+
     ngOnDestroy() {
+        this.alive = false;
         this.tabSubscription.unsubscribe();
         this.closeTabSubscription.unsubscribe();
     }

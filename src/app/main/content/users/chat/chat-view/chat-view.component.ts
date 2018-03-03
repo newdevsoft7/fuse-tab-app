@@ -12,7 +12,12 @@ import { UserService } from '../../user.service';
 export class FuseChatViewComponent implements OnInit, AfterViewInit
 {
     @Input() messages: any = [];
-    @Input() thread: any;
+    @Input('thread') set updateThread(thread: any) {
+        if (thread) {
+            this.thread = thread;
+            this.updateParticipants();
+        }
+    }
 
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
     @Output() updateReadStatus: EventEmitter<any> = new EventEmitter();
@@ -24,6 +29,8 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @ViewChild('replyForm') replyForm: NgForm;
 
     authenticatedUser: any;
+    thread: any;
+    participants: any = [];
 
     constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
@@ -36,6 +43,20 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     {
         this.replyInput = this.replyInputField.first.nativeElement;
         this.readyToReply();
+    }
+
+    getParticipant(userId: number) {
+        return this.participants.find(user => user.id === userId);
+    }
+
+    updateParticipants() {
+        try {
+            this.thread.participant_ids.forEach(async (id: number) => {
+                this.participants.push(await this.userService.getUser(id).toPromise());
+            });
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     readyToReply()
@@ -70,6 +91,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
 
     reply(event)
     {
+        if (!this.replyForm.form.value.message) return;
         const message = {
             thread_id: this.thread.id,
             content: this.replyForm.form.value.message
