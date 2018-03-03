@@ -38,6 +38,15 @@ class TimeRange {
     }
 }
 
+// Convert Time to TimeRange
+function processTime(dateTime) {
+    if (!dateTime) return;
+    const date = moment(dateTime, 'YYYY-MM-DD HH:mm:ss');
+    const minute = date.minute();
+    const { hour, meriden } = hours24to12(date.hour());
+    return { hour, minute, meriden, format: 12 };
+}
+
 @Component({
     selector: 'app-shift-role-edit',
     templateUrl: './role-edit.component.html',
@@ -79,24 +88,58 @@ export class ShiftRoleEditComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        // FOR ROLE CREATE
         this.shifts = this.data.shifts;
         this.url = this.data.url;
 
-        // TODO - EDIT ROLE
+        // FOR ROLE EDIT
         this.role = this.data.role;
 
-        this.roleForm = this.formBuilder.group({
-            num_required: [1],
-            rname: ['', Validators.required],
-            application_deadline: [null],
-            notes: [''],
-            bill_rate: [0],
-            pay_rate: [0],
-            pay_category_id: ['none'],
-            expense_limit: [0],
-            completion_notes: [''],
-            requirements: [[]]
-        });
+
+        if (this.role) { // ROLE EDIT
+            this.roleForm = this.formBuilder.group({
+                num_required: [this.role.num_required],
+                rname: [this.role.rname, Validators.required],
+                application_deadline: [moment(this.role.application_deadline)],
+                notes: [this.role.notes],
+                bill_rate: [this.role.bill_rate],
+                pay_rate: [this.role.pay_rate],
+                pay_category_id: [this.role.pay_category_id ? this.role.pay_category_id : 'none'],
+                expense_limit: [this.role.expense_limit],
+                completion_notes: [this.role.completion_notes],
+                requirements: [[]] // TODO - ROLE REQUIREMENTS
+            });
+
+            // SET RATE TYPE
+            this.billRateType = this.role.bill_rate_type;
+            this.payRateType = this.role.pay_rate_type;
+
+            // SET ROLE REQUIREMENTS
+            this.scheduleService.getRoleRequirements(this.role.id).subscribe(requirements => {
+                this.roleForm.patchValue({ requirements });
+            });
+            
+            // SET ROLE PERIOD
+            this.rolePeriod = new TimeRange(
+                processTime(this.role.role_start),
+                processTime(this.role.role_end)
+            );
+
+        } else { // ROLE CREATE
+            this.roleForm = this.formBuilder.group({
+                num_required: [1],
+                rname: ['', Validators.required],
+                application_deadline: [null],
+                notes: [''],
+                bill_rate: [0],
+                pay_rate: [0],
+                pay_category_id: ['none'],
+                expense_limit: [0],
+                completion_notes: [''],
+                requirements: [[]]
+            });
+        }
 
         this.sameAsShift = true;
         this.scheduleService.getPayLevelCategory().subscribe(res => {
@@ -185,28 +228,32 @@ export class ShiftRoleEditComponent implements OnInit {
             };
         } 
 
-        this.scheduleService.createShiftsRoles(this.shifts, role)
-            .subscribe(res => {
-                this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles': 'Role'} created.`);
-
-                // Confirm Dialog to ask whether to add another role or not
-                this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
-                    disableClose: false
+        if (this.shifts) { // ROLE CREATE
+            this.scheduleService.createShiftsRoles(this.shifts, role)
+                .subscribe(res => {
+                    this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles': 'Role'} created.`);
+    
+                    // Confirm Dialog to ask whether to add another role or not
+                    this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+                        disableClose: false
+                    });
+    
+                    this.confirmDialogRef.componentInstance.confirmMessage = 'Do you want to add another role?';
+                    this.confirmDialogRef.componentInstance.confirmTitle = 'Confirm';
+                    this.confirmDialogRef.afterClosed().subscribe(result => {
+                        if (result) {
+                            this.resetForm();
+                        } else {
+                            this.tabService.closeTab(this.url);
+                        }
+                    });
+    
+                }, err => {
+                    this.displayError(err);
                 });
-
-                this.confirmDialogRef.componentInstance.confirmMessage = 'Do you want to add another role?';
-                this.confirmDialogRef.componentInstance.confirmTitle = 'Confirm';
-                this.confirmDialogRef.afterClosed().subscribe(result => {
-                    if (result) {
-                        this.resetForm();
-                    } else {
-                        this.tabService.closeTab(this.url);
-                    }
-                });
-
-            }, err => {
-                this.displayError(err);
-            });
+        } else { // ROLE UPDATE
+            // TODO
+        }
     }
 
     private resetForm() {
@@ -241,6 +288,13 @@ export class ShiftRoleEditComponent implements OnInit {
 
 function hours12to24(h, meridiem) {
     return h == 12 ? (meridiem.toUpperCase() == 'PM' ? 12 : 0) : (meridiem.toUpperCase() == 'PM' ? h + 12 : h);
+}
+
+function hours24to12(h) {
+    return {
+        hour: (h + 11) % 12 + 1,
+        meriden: h >= 12 ? 'PM' : 'AM'
+    }
 }
 
 function convertTime({ hour, minute, format, meriden }) {

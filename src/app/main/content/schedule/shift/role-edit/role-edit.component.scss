@@ -81,5 +81,19 @@
                 }
             }
         }
+
+        .fr-toolbar.fr-top {
+            border-top: 0;
+            border-bottom: 1px solid #ebebeb;
+            box-shadow: none;
+        }
+
+        .fr-box.fr-basic.fr-top .fr-wrapper {
+            box-shadow: none;
+        }
+
+        .fr-quick-insert {
+            display: none;
+        }
     }
 }

@@ -35,18 +35,27 @@
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
                     </div>
-                    <div class="info-line">
-                        <mat-form-field floatPlaceholder="never" fxFlexFill>
-                            <textarea matInput
-                                      placeholder="Enter any role specific notes here. They will be shown on the apply and confirm dialogues."
-                                      formControlName="notes">
-                            </textarea>
-                        </mat-form-field>
-                    </div>
                 </div>
-            
+
             </div>
             <!-- / GENERAL INFORMATION -->
+
+            <!-- NOTES -->
+            <div class="role-box info-box" fxLayout="column">
+            
+                <header class="mat-accent-bg">
+                    <div class="title">Notes</div>
+                </header>
+            
+                <div class="content p-0" fxLayout="column">
+                    <div class="info-line">
+                        <textarea matInput [froalaEditor]="{placeholderText: 'Enter any role specific notes here. They will be shown on the apply and confirm dialogues.'}"
+                            formControlName="notes">
+                                        </textarea>
+                    </div>
+                </div>
+            </div>
+            <!-- / NOTES -->
 
             <!-- TIMES -->
             <div class="role-box info-box" fxLayout="column">
@@ -162,13 +171,13 @@
                     <div class="title">Completion</div>
                 </header>
             
-                <div class="content" fxLayout="column">
-                    <mat-form-field floatPlaceholder="never" fxFlexFill>
+                <div class="content p-0" fxLayout="column">
+                    <div class="info-line">
                         <textarea matInput
-                                  placeholder="Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues."
-                                  formControlName="completion_notes">
+                            [froalaEditor]="{placeholderText: 'Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues.'}"
+                            formControlName="completion_notes">
                         </textarea>
-                    </mat-form-field>
+                    </div>
                 </div>
             
             </div>

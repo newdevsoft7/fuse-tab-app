@@ -181,6 +181,12 @@ export class AdminShiftStaffComponent implements OnInit {
     }
 
 
+    onEditRole(role) {
+        const url = `shift/role/${role.id}/role-edit`;
+        const roleTab = new Tab('Edit Role', 'shiftRoleEditTpl', url, { url, role });
+        this.tabService.openTab(roleTab);
+    }
+    
     onSelectedTabChange(role, event: MatTabChangeEvent) {
         const selectedTab = event.index;
         const roleId = role.id;
