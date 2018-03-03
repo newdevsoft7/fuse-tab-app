@@ -15,6 +15,26 @@
             line-height: 50px;
         }
 
+        .times {
+            height: 16px;
+        }
+
+        .pay-rate {
+            height: 12px;
+            font-size: 12px;
+
+            span {
+                font-size: 12px;
+            }
+
+            .pay-item {
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
         .staff {
             margin: 8px 12px 0 0;
 

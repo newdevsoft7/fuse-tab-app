@@ -23,6 +23,7 @@ import * as _ from 'lodash';
 // Action Dialogs
 import { StaffShiftReplaceDialogComponent } from './dialogs/replace-dialog/replace-dialog.component';
 import { StaffShiftConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { StaffShiftPayItemDialogComponent } from './dialogs/pay-item-dialog/pay-item-dialog.component';
 
 enum Action {
     apply = 'apply',
@@ -66,6 +67,17 @@ export class StaffShiftInfoComponent implements OnInit {
 	ngOnInit() {
     }
     
+    openPayItemDialog(payItems) {
+        this.dialogRef = this.dialog.open(StaffShiftPayItemDialogComponent, {
+            data: { payItems }
+        });
+        this.dialogRef.afterClosed.subscribe(_ => {});
+    }
+
+    sum(payItems: any[]) {
+        return payItems.reduce((ac, item) => ac + item.total, 0);
+    }
+
     doAction(action, role) {
         switch (action) {
             case Action.apply:
