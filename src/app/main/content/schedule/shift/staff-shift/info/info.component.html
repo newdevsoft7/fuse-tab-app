@@ -9,7 +9,11 @@
                 <div class="title">{{role.rname}}</div>
                 <div matTooltip="Number required" *ngIf="role.num_required > 0"
                     fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon class="mr-4">group</mat-icon>
+                    <ng-container [ngSwitch]="role.sex">
+                        <mat-icon *ngSwitchCase="'male'" fontSet="fa" fontIcon="fa-male" class="mr-4 s-20"></mat-icon>
+                        <mat-icon *ngSwitchCase="'female'" fontSet="fa" fontIcon="fa-female" class="mr-4 s-20"></mat-icon>
+                        <mat-icon *ngSwitchDefault class="mr-4 s-20">wc</mat-icon>
+                    </ng-container>
                     {{role.num_required}}
                 </div>
             </header>
