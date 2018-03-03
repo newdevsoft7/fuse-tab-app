@@ -80,7 +80,7 @@ export class StaffShiftInfoComponent implements OnInit {
         this.dialogRef = this.dialog.open(StaffShiftPayItemDialogComponent, {
             data: { payItems }
         });
-        this.dialogRef.afterClosed.subscribe(_ => {});
+        this.dialogRef.afterClosed().subscribe(_ => {});
     }
 
     sum(payItems: any[]) {
