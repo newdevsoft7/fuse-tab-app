@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { FuseSplashScreenService } from './core/services/splash-screen.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FuseTranslationLoaderService } from './core/services/translation-loader.service';
@@ -20,12 +20,14 @@ import { TabService } from './main/tab/tab.service';
 })
 export class AppComponent
 {
+    socketService: SocketService;
+
     constructor(
         private fuseNavigationService: FuseNavigationService,
         private fuseSplashScreen: FuseSplashScreenService,
         private translate: TranslateService,
         private translationLoader: FuseTranslationLoaderService,
-        private socketService: SocketService,
+        private injector: Injector,
         private usersChatService: UsersChatService,
         private favicoService: FavicoService,
         private activityManagerService: ActivityManagerService,
@@ -50,12 +52,12 @@ export class AppComponent
         // listen window activity/inactivity change
         this.activityManagerService.detectActivityChange();
 
-        // listen socket open
-        this.socketService.opened();
+        this.socketService = this.injector.get(SocketService);
 
-        // listen data from web socket server
-        this.socketService.listenData();
+        this.listenSocketMessage();
+    }
 
+    listenSocketMessage() {
         this.socketService.webSocketData.subscribe(res => {
             if (!res || !res.data) return;
             const payload = JSON.parse(res.data);

@@ -15,6 +15,13 @@ export class SocketService {
 
   constructor() {
     this.connect();
+    this.init();
+  }
+
+  init() {
+    this.opened();
+    this.listenData();
+    this.closed();
   }
 
   getState() {
@@ -23,9 +30,26 @@ export class SocketService {
 
   opened() {
     this.conn.onopen = () => {
+      console.log('=====Connection is open');
       this.isConnected = true;
       this.connectionStatus.next(true);
     };
+  }
+
+  closed() {
+    this.conn.onclose = () => {
+      console.log('=====Connection is closed');
+      this.isConnected = false;
+      this.connectionStatus.next(false);
+      this.connect();
+      this.init();
+      const interval = setInterval(() => {
+        console.log('========Reconnecting... Current status is ', this.getState());
+        if (this.getState() === WebSocket.OPEN) {
+          clearInterval(interval);
+        }
+      }, 1000);
+    }
   }
 
   listenData(): void {
@@ -35,7 +59,17 @@ export class SocketService {
   }
 
   sendData(data: any): void {
-    this.conn.send(data);
+    if (this.getState() === WebSocket.OPEN) {
+      this.conn.send(data);
+    } else {
+      console.log('connection is not ready. please wait...');
+      this.connectionStatus.subscribe((connected: boolean) => {
+        if (connected) {
+          console.log('connection is ready! please send data');
+          this.conn.send(data);
+        }
+      });
+    }
   }
 
   closeConnection(): void {
