@@ -24,6 +24,7 @@ import * as _ from 'lodash';
 import { StaffShiftReplaceDialogComponent } from './dialogs/replace-dialog/replace-dialog.component';
 import { StaffShiftConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { StaffShiftPayItemDialogComponent } from './dialogs/pay-item-dialog/pay-item-dialog.component';
+import { StaffShiftApplyDialogComponent } from './dialogs/apply-dialog/apply-dialog.component';
 
 enum Action {
     apply = 'apply',
@@ -90,11 +91,40 @@ export class StaffShiftInfoComponent implements OnInit {
     doAction(action, role) {
         switch (action) {
             case Action.apply:
-                
+                this.dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
+                    panelClass: 'staff-shift-apply-dialog'
+                });
+                this.dialogRef.afterClosed().subscribe(reason => {
+                    if (reason !== false) {
+                        this.scheduleService.applyShiftRole(role.id, reason)
+                            .subscribe(res => {
+                                this.toastr.success(res.message);
+                                role.message = res.role_message;
+                                role.actions = [...res.actions];
+                                role.role_staff_id = res.id;
+                            });
+                    }
+                });
                 break;
 
             case Action.cancel_application:
-
+                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
+                    data: {
+                        title: 'Really cancel your application?'
+                    }
+                });
+                this.dialogRef.afterClosed().subscribe(result => {
+                    if (result) {
+                        const roleStaffId = role.role_staff_id;
+                        this.scheduleService.applyCancelShiftRole(roleStaffId)
+                            .subscribe(res => {
+                                this.toastr.success(res.message);
+                                role.message = res.role_message;
+                                role.actions = [...res.actions];
+                                delete role.role_staff_id;
+                            });
+                    }
+                });
                 break;
 
             case Action.not_available:

@@ -6,6 +6,7 @@ import { UserService } from '../../../users/user.service';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
+import { StaffShiftMapComponent } from './map/map.component';
 
 enum TAB {
     Info = 0,
@@ -27,6 +28,8 @@ export class StaffShiftComponent implements OnInit {
     showMoreBtn = true;
     timezones: any;
     managers = '';
+
+    @ViewChild('mapTab') mapTab: StaffShiftMapComponent;
 
     constructor(
         private tokenStorage: TokenStorage,
@@ -65,7 +68,7 @@ export class StaffShiftComponent implements OnInit {
     selectedTabChange(event: MatTabChangeEvent) {
         switch (event.index) {
             case TAB.Map:
-                // TODO - Refresh Map
+                this.mapTab.refreshMap();
                 break;
 
             default:

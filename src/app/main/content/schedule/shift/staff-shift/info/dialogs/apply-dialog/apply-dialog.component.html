@@ -1,0 +1,20 @@
+<div class="dialog-content-wrapper">
+
+    <h1 mat-dialog-title>Really apply for this role?</h1>
+    <form [formGroup]="form">
+
+        <div mat-dialog-content>
+            <p>Tell us why you're applying for this role</p>
+            <mat-form-field floatPlaceholder="never" class="w-100-p">
+                <textarea matInput formControlName="reason"
+                    placeholder="Optional - tell us why you're applying for this role"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div mat-dialog-actions>
+            <button mat-button (click)="saveForm()" cdkFocusInitial>Apply</button>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+        </div>
+    </form>
+
+</div>

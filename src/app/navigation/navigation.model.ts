@@ -74,7 +74,6 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.SCHEDULE',
         'type': 'collapse',
         'icon': 'schedule',
-        'tab': TAB.SCHEDULE_TAB,
         'children': [
             {
                 'id': 'calendar',

@@ -11,7 +11,6 @@ export const USERS_RECENT_ACTIVITY_TAB = new Tab('Recent Activity', '', 'users/r
 export const USERS_NEW_MESSAGE_TAB = new Tab('New Message', '', 'users/new-message', {});
 export const USERS_CHAT_TAB = new Tab('Chat', 'usersChatTpl', 'users/chat', {});
 
-export const SCHEDULE_TAB = new Tab('Schedule', 'scheduleTpl', 'schedule', {});
 export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {});
 export const SCHEDULE_LIST_TAB = new Tab('List', '', 'schedule/list', {});
 export const SCHEDULE_ADMIN_SHIFT_TAB = new Tab('Shift','scheduleAdminShiftTpl', 'schedule/shift', {});

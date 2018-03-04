@@ -206,6 +206,16 @@ export class ScheduleService {
 
 
   // Staff Shift Actions
+  applyShiftRole(roleId, reason): Observable<any> {
+    const url = `${BASE_URL}/role/${roleId}/apply`;
+    return this.http.post(url, { reason }).catch(this.handleError);
+  }
+
+  applyCancelShiftRole(roleStaffId): Observable<any> {
+    const url = `${BASE_URL}/role/applyCancel/${roleStaffId}`;
+    return this.http.post(url, {}).catch(this.handleError);
+  }
+
   replaceShiftRole(roleStaffId, reason: string): Observable<any> {
     const url = `${BASE_URL}/role/replace/${roleStaffId}`;
     return this.http.post(url, { reason }).catch(this.handleError);

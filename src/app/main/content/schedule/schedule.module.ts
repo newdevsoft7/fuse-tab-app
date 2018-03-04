@@ -43,6 +43,8 @@ import { StaffShiftInfoComponent } from './shift/staff-shift/info/info.component
 import { StaffShiftReplaceDialogComponent } from './shift/staff-shift/info/dialogs/replace-dialog/replace-dialog.component';
 import { StaffShiftConfirmDialogComponent } from './shift/staff-shift/info/dialogs/confirm-dialog/confirm-dialog.component';
 import { StaffShiftPayItemDialogComponent } from './shift/staff-shift/info/dialogs/pay-item-dialog/pay-item-dialog.component';
+import { StaffShiftMapComponent } from './shift/staff-shift/map/map.component';
+import { StaffShiftApplyDialogComponent } from './shift/staff-shift/info/dialogs/apply-dialog/apply-dialog.component';
 
 @NgModule({
 	imports: [
@@ -90,7 +92,9 @@ import { StaffShiftPayItemDialogComponent } from './shift/staff-shift/info/dialo
         StaffShiftInfoComponent,
         StaffShiftReplaceDialogComponent,
         StaffShiftConfirmDialogComponent,
-        StaffShiftPayItemDialogComponent
+        StaffShiftPayItemDialogComponent,
+        StaffShiftMapComponent,
+        StaffShiftApplyDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -99,7 +103,8 @@ import { StaffShiftPayItemDialogComponent } from './shift/staff-shift/info/dialo
         // Staff view of shift
         StaffShiftReplaceDialogComponent,
         StaffShiftConfirmDialogComponent,
-        StaffShiftPayItemDialogComponent
+        StaffShiftPayItemDialogComponent,
+        StaffShiftApplyDialogComponent
     ],
     exports: [
         ScheduleComponent,
