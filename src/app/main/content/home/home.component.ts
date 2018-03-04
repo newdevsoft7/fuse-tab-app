@@ -57,6 +57,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     socketService: SocketService;
     alive: boolean = false;
 
+    socketSubscription: Subscription;
+
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private fuseNavigationService: FuseNavigationService,
@@ -84,7 +86,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     async runSockets() {
-        this.socketService.connectionStatus.skipWhile(() => !this.alive).subscribe((connected: boolean) => {
+        this.startSocket();
+        this.socketSubscription = this.socketService.connectionStatus.skipWhile(() => !this.alive).subscribe((connected: boolean) => {
             if (connected) {
                 this.startSocket();
             }
@@ -92,7 +95,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     startSocket() {
-        if (!this.authService.isAuthorized()) return; 
         this.socketService.sendData(JSON.stringify({
             type: 'init',
             payload: this.tokenStorage.getUser().id
@@ -114,6 +116,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     ngOnDestroy() {
         this.alive = false;
+        this.socketSubscription.unsubscribe();
         this.tabSubscription.unsubscribe();
         this.closeTabSubscription.unsubscribe();
     }

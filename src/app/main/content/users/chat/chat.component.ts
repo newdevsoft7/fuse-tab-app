@@ -1,4 +1,5 @@
 import { Component, ViewChild, OnDestroy, OnInit, Injector } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
@@ -31,6 +32,10 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   alive: boolean = false;
   socketService: SocketService;
 
+  messageSubscription: Subscription;
+  activitySubscription: Subscription;
+  tabSubscription: Subscription;
+
   constructor(
     private tabService: TabService,
     private usersChatService: UsersChatService, 
@@ -42,19 +47,18 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     private dialog: MatDialog) {
 
     this.socketService = injector.get(SocketService);
-
     this.fetchThreads();
     this.watchActivityChange();
-    this.watchTabChange();
+    this.watchTabChange();    
+    this.listenIncomingMessages();
   }
 
   ngOnInit() {
-    this.listenIncomingMessages();
     this.alive = true;
   }
 
   listenIncomingMessages() {
-    this.usersChatService.currentMessage.skipWhile(() => !this.alive).subscribe(async res => {
+    this.messageSubscription = this.usersChatService.currentMessage.skipWhile(() => !this.alive).subscribe(async res => {
       if (!res || !res.type) return;
       switch (res.type) {
         case 'newMessage':
@@ -91,6 +95,9 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+    this.messageSubscription.unsubscribe();
+    this.activitySubscription.unsubscribe();
+    this.tabSubscription.unsubscribe();
     this.selectedThread = null;
     this.selectedChat = null;
   }
@@ -104,7 +111,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   watchActivityChange() {
-    this.activityManagerService.focusWatcher.skipWhile(() => !this.alive).subscribe((active: boolean) => {
+    this.activitySubscription = this.activityManagerService.focusWatcher.skipWhile(() => !this.alive).subscribe((active: boolean) => {
       if (active && this.tabService.currentTab.url === 'users/chat' && this.selectedThread) {
         if (this.usersChatService.unreadList.length > 0) {
           this.updateRead();
@@ -114,7 +121,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   watchTabChange() {
-    this.tabService.tabActived.subscribe(activeTab => {
+    this.tabSubscription = this.tabService.tabActived.skipWhile(() => !this.alive).subscribe(activeTab => {
       if (activeTab.url === 'users/chat' && this.selectedThread) {
         if (this.usersChatService.unreadList.length > 0) {
           const unreads = this.usersChatService.unreadList.filter(message => message.thread_id === this.selectedThread.id);
