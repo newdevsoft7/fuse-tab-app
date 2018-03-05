@@ -39,6 +39,8 @@ import { AuthenticationService } from '../../shared/services/authentication.serv
 import { TokenStorage } from '../../shared/services/token-storage.service';
 import { AuthGuardService } from '../../shared/guards/auth-guard.service';
 import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
+import { StarRatingModule } from 'angular-star-rating';
+
 
 @NgModule({
     declarations   : [
@@ -67,7 +69,8 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         FroalaEditorModule.forRoot(),
         FroalaViewModule.forRoot(),
         MaterialTimeControlModule,
-        NgPipesModule
+        NgPipesModule,
+        StarRatingModule.forRoot()
     ],
     exports        : [
         FlexLayoutModule,
@@ -92,7 +95,8 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
         FroalaEditorModule,
         FroalaViewModule,
         MaterialTimeControlModule,
-        NgPipesModule
+        NgPipesModule,
+        StarRatingModule
     ],
     entryComponents: [
         FuseConfirmDialogComponent,

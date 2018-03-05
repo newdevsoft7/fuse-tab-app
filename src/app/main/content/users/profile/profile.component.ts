@@ -14,6 +14,7 @@ export class UsersProfileComponent implements OnInit {
 
 	currentUser: any;
 	userInfo: any;
+	ratings = [];
 
 	constructor(
 		private tokenStorage: TokenStorage,
@@ -43,11 +44,15 @@ export class UsersProfileComponent implements OnInit {
 	}
 
 	private getUserInfo() {
-		this.user = this.userService
+		this.userService
 			.getUser(this.user.id)
 			.subscribe(res => {
 				this.userInfo = res;
 			});
+
+		this.userService.getUserRatings(this.user.id).subscribe(ratings => {
+			this.ratings = ratings;
+		});
 	}
 
 }
