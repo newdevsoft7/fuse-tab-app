@@ -45,6 +45,7 @@ export class ScheduleCalendarComponent implements OnInit {
       icon: 'open_in_new',
       callback: (event: EventEntity): void => {
         // put some logic here
+        this.openEventTab(event);
       }
     },
     {
