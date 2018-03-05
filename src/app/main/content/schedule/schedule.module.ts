@@ -36,6 +36,7 @@ import { AdminShiftEditContactComponent } from './shift/admin-shift/edit-contact
 import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edit-title.component';
 import { AdminShiftEditPeriodComponent } from './shift/admin-shift/edit-period/edit-period.component';
 import { AdminShiftEditManagersComponent } from './shift/admin-shift/edit-managers/edit-managers.component';
+import { ShiftListComponent } from './shift-list/shift-list.component';
 
 // Staff Shift Components
 import { StaffShiftComponent } from './shift/staff-shift/staff-shift.component';
@@ -86,6 +87,7 @@ import { StaffShiftApplyDialogComponent } from './shift/staff-shift/info/dialogs
         AdminShiftEditTitleComponent,
         AdminShiftEditPeriodComponent,
         AdminShiftEditManagersComponent,
+        ShiftListComponent,
 
         // Staff view of shift
         StaffShiftComponent,
@@ -113,7 +115,8 @@ import { StaffShiftApplyDialogComponent } from './shift/staff-shift/info/dialogs
         NewShiftComponent,
         ShiftRoleEditComponent,
         CalendarEventFormDialogComponent,
-        StaffShiftComponent
+        StaffShiftComponent,
+        ShiftListComponent
     ]
 })
 export class ScheduleModule { }
