@@ -29,14 +29,17 @@
                         </mat-icon> -->
                     </div>
 
-                    <div class="chat-contact-name">
-                        {{thread?.name}}
+                    <div class="chat-contact-name" fxLayout="column" fxLayoutAlign="center start">
+                        <p class="m-0 name">{{thread?.name}}</p>
+                        <p class="font-size-14 m-0" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon class="mr-8">group</mat-icon>{{thread.participant_ids.length}} members
+                        </p>
                     </div>
                 </div>
                 <!-- / CHAT CONTACT-->
             </div>
-            <button mat-icon-button aria-label="new user" (click)="addUser.next()">
-                <mat-icon>add</mat-icon>
+            <button mat-icon-button aria-label="new user" *ngIf="thread" (click)="addUser.next()">
+                <mat-icon>group_add</mat-icon>
             </button>
         </div>
     </mat-toolbar>

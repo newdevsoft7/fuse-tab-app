@@ -17,6 +17,7 @@ export class SCCalendarComponent implements OnInit, DoCheck {
   eventOptions: EventOptionEntity = new EventOptionEntity();
 
   oldOptions: EventOptionEntity;
+  dateRange: any;
 
   constructor() {}
 
@@ -29,7 +30,7 @@ export class SCCalendarComponent implements OnInit, DoCheck {
     };
 
     if (this.ajax) {
-      this.loadAjaxEvents(this.eventOptions);
+      setTimeout(() => this.loadAjaxEvents());
     }
   }
 
@@ -61,13 +62,15 @@ export class SCCalendarComponent implements OnInit, DoCheck {
         break;
     }
     if (this.ajax) {
-      this.loadAjaxEvents(this.options);
+      setTimeout(() => this.loadAjaxEvents());
     }
   }
 
-  loadAjaxEvents(options: EventOptionEntity) {
-    const startDate = moment(options.defaultDate).startOf(<any>this.eventOptions.defaultView).format('YYYY-MM-DD');
-    const endDate = moment(options.defaultDate).endOf(<any>this.eventOptions.defaultView).format('YYYY-MM-DD');
-    this.optionChanged.next({ startDate, endDate });
+  updateMonthRange(dateRange: any) {
+    this.dateRange = dateRange;
+  }
+
+  loadAjaxEvents() {
+    this.optionChanged.next(this.dateRange);
   }
 }

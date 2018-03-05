@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
   @ViewChild('monthView') monthView: any;
   @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;
   @HostListener('window:resize', ['$event'])
@@ -28,6 +29,9 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   hoverPopupEvent: any;
   menuEvent: any;
+
+  viewStartDate: any;
+  viewEndDate: any;
 
   constructor(private renderer: Renderer2) {}
 
@@ -49,6 +53,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     this.initPositions();
     this.rowData = [];
     this.monthDays = this.getMonthDays(this.options.defaultDate);
+    this.updateMonthRange.next({ startDate: this.viewStartDate, endDate: this.viewEndDate });
     if (this.monthDays) {
       for (let i = 0; i < this.monthDays.length; i++) {
         const row = this.getRenderedEvents(this.monthDays[i][0].date, this.monthDays[i][6].date);
@@ -81,6 +86,9 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       };
       tempDay.isToday = moment().isSame(tempDay.date, 'day');
       monthDays.splice(0, 0, tempDay);
+      if (i === moment(currentDate).startOf('month').day() - 1) {
+        this.viewStartDate = tempDay.date.format('YYYY-MM-DD');
+      }
     }
     for (let i = 1; i <= moment(currentDate).daysInMonth(); i++) {
       const tempDay:any = {
@@ -99,7 +107,12 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
         };
         tempDay.isToday = moment().isSame(tempDay.date, 'day');
         monthDays.push(tempDay);
+        if (i === 6) {
+          this.viewEndDate = tempDay.date.format('YYYY-MM-DD');
+        }
       }
+    } else {
+      this.viewEndDate = moment(currentDate).endOf('month').format('YYYY-MM-DD');
     }
     for (let i = 0; i < monthDays.length / 7; i++) {
       res.push([]);

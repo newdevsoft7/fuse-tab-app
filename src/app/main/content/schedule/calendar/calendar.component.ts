@@ -35,16 +35,7 @@ export class ScheduleCalendarComponent implements OnInit {
       this.tabService.openTab(tab);
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
-      const id = event.id;
-      let template = 'staffShiftTpl';
-      let url = `staff/shift/${id}`;
-
-      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-        template = 'adminShiftTpl';
-        url = `admin/shift/${id}`;
-      }
-      const tab = new Tab(event.title, template, url, { id, url });
-      this.tabService.openTab(tab);
+      this.openEventTab(event);
     }
   };
 
@@ -186,5 +177,18 @@ export class ScheduleCalendarComponent implements OnInit {
         }
       }
     });
+  }
+
+  openEventTab(event: EventEntity) {
+    const id = event.id;
+    let template = 'staffShiftTpl';
+    let url = `staff/shift/${id}`;
+
+    if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+      template = 'adminShiftTpl';
+      url = `admin/shift/${id}`;
+    }
+    const tab = new Tab(event.title, template, url, { id, url });
+    this.tabService.openTab(tab);
   }
 }

@@ -83,10 +83,13 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           }
           break;
         case 'newThread':
-          this.fetchThreads();
           if (this.activityManagerService.isFocused) {
             this.usersChatService.unreadThreads.push(parseInt(res.data));
             this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
+          }
+          await this.fetchThreads();
+          if (this.selectedThread && this.selectedThread.id === parseInt(res.data)) {
+            this.selectedThread = this.threads.find(thread => thread.id === parseInt(res.data));
           }
           break;
       }
@@ -116,6 +119,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         if (this.usersChatService.unreadList.length > 0) {
           this.updateRead();
         }
+        this.readThread(this.selectedThread.id);
       }
     });
   }
@@ -129,6 +133,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           this.chatView.readyToReply();
           this.updateRead();
         }
+        this.readThread(this.selectedThread.id);
       }
     });
   }
@@ -237,19 +242,29 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   triggerAddUserModal() {
     this.userDialogRef = this.dialog.open(AddUserFormDialogComponent, {
-      panelClass: 'add-user-form-dialog'
+      panelClass: 'add-user-form-dialog',
+      data: this.selectedThread.participant_ids
     });
-    this.userDialogRef.afterClosed().subscribe(selectedUsers => {
+    this.userDialogRef.afterClosed().subscribe(async selectedUsers => {
       if (!selectedUsers) {
         return;
       }
       try {
         const threadId = this.selectedThread.id;
-        selectedUsers.forEach(async (userId: number) => {
-          await this.usersChatService.addUserIntoThread(this.selectedThread.id, userId);
+        const promiseList = [];
+        selectedUsers.forEach(async (user: any) => {
+          promiseList.push(this.usersChatService.addUserIntoThread(this.selectedThread.id, user.id));
         });
-        this.fetchThreads();
+        await Promise.all(promiseList);
+        await this.fetchThreads();
         this.selectedThread = this.threads.find(thread => thread.id === threadId);
+        this.socketService.sendData(JSON.stringify({
+          type: 'thread',
+          payload: {
+            thread: this.selectedThread.id,
+            receipt: this.selectedThread.participant_ids.find(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+          }
+        }));
       } catch (e) {
         this.handleError(e);
       }

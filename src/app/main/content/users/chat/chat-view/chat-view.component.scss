@@ -25,7 +25,13 @@
                 }
 
                 .chat-contact-name {
-
+                    height: 55px;
+                    .name {                    
+                        width: 400px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 40vw;
+                    }
                 }
             }
         }
