@@ -3,6 +3,7 @@ import { UserService } from '../../user.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as _ from 'lodash';
+import { OnRatingChangeEven } from 'angular-star-rating';
 
 
 @Component({
@@ -32,6 +33,8 @@ export class UsersProfileAboutComponent implements OnInit {
         { value: 'negative', label: 'Negative' }
     ]
 
+    @Input() ratings = [];
+
     constructor(
         private userService: UserService,
         private formBuilder: FormBuilder
@@ -50,6 +53,7 @@ export class UsersProfileAboutComponent implements OnInit {
                 this.refreshAdminNotesView();
             });
         }
+
 
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
@@ -142,4 +146,15 @@ export class UsersProfileAboutComponent implements OnInit {
             this.viewedAdminNotes = this.adminNotes.slice(0, 5);
         }
     }
+
+    changeRate(event: OnRatingChangeEven, rating) {
+        const score = event.rating;
+        this.userService.setUserRatings(this.currentUser.id, rating.id, score).subscribe(_ => {});
+    }
+
+    resetRate(rating) {
+        this.userService.setUserRatings(this.currentUser.id, rating.id, 0).subscribe(_ => {});
+    }
+
+    
 }

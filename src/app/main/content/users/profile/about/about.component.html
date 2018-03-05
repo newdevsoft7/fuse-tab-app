@@ -4,6 +4,21 @@
         fxLayout="column"
         [fxFlex]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
 
+        <div fxLayout="row" fxLayoutWrap *ngIf="ratings.length > 0">
+            <fieldset class="rating" *ngFor="let rating of ratings">
+                <legend>{{rating.rname}}</legend>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <button mat-icon-button (click)="resetRate(rating)">
+                        <mat-icon class="s-20">do_not_disturb_on</mat-icon>
+                    </button>
+                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="rating.score"
+                        [step]="0.5" [showHalfStars]="true" (onRatingChange)="changeRate($event, rating)">
+                    </star-rating-comp>
+                </div>
+            </fieldset>
+        </div>
+        <!-- / RATINGS --> 
+
         <div class="profile-box info-box general" fxLayout="column" *ngIf="userInfo.lvl == 'owner'">
 
             <header class="mat-accent-bg">

@@ -43,6 +43,7 @@
     "angular-calendar": "0.23.0",
     "angular-froala-wysiwyg": "2.7.5",
     "angular-in-memory-web-api": "0.5.2",
+    "angular-star-rating": "github:newdevsoft7/angular-star-rating",
     "angular2-markdown": "1.6.0",
     "angular2-text-mask": "8.0.4",
     "classlist.js": "1.1.20150312",

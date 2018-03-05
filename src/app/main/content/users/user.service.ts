@@ -120,6 +120,18 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getUserRatings(userId: number): Observable<any> {
+        const url = `${BASE_URL}/user/${userId}/rating`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    setUserRatings(userId, ratingId, score): Observable<any> {
+        const url = `${BASE_URL}/user/${userId}/rating/${ratingId}/${score}`;
+        return this.http.put(url, {})
+            .catch(this.handleError);
+    }
+
     uploadProfileVideo(userId: number, data: any): Observable<any> {
         const url = `${BASE_URL}/profile/${userId}/video`;
         return this.http.post(url, data)

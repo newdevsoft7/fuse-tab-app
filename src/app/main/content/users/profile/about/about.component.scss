@@ -13,6 +13,32 @@
             .full {
 
             }
+
+            .rating {
+                border-color: #ccc;
+                border-radius: 2px;
+                margin-bottom: 12px;
+                margin-right: 12px;
+                width: 170px;
+
+                legend {
+                    padding: 0 10px;
+                }
+
+                button {
+                    margin-right: -8px;
+                    mat-icon {
+    
+                        &:hover {
+                            color: #f44336;
+                        }
+                    }
+                }
+
+                star-rating-comp {
+                    margin-top: 6px;
+                }
+            }
         }
 
         .about-sidebar {
