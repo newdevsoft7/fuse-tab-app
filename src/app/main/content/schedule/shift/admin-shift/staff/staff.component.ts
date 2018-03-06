@@ -2,7 +2,7 @@ import {
     Component, OnInit,
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
-    ViewChild
+    ViewChild, OnDestroy
 } from '@angular/core';
 
 import {
@@ -16,13 +16,8 @@ import {
     MatTabChangeEvent
 } from '@angular/material';
 
-import {
-    STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
-    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
-    STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
-    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
-} from '../../../../../../constants/staff-status';
 
+import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
@@ -37,6 +32,12 @@ import { ScheduleService } from '../../../schedule.service';
 import { StaffStatus } from '../../../../../../constants/staff-status-id';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
+import {
+    STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
+    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
+    STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
+    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
+} from '../../../../../../constants/staff-status';
 
 export enum Section {
     Selected = 0,
@@ -59,7 +60,7 @@ enum Query {
     styleUrls: ['./staff.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffComponent implements OnInit {
+export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     currentUser;
     userInfo: any;
@@ -104,6 +105,8 @@ export class AdminShiftStaffComponent implements OnInit {
         StaffStatus.Paid
     ];
 
+    usersToRoleSubscription: Subscription;
+
     constructor(
         private loadingService: CustomLoadingService,
         private dialog: MatDialog,
@@ -115,8 +118,28 @@ export class AdminShiftStaffComponent implements OnInit {
         private actionService: ActionService,
         private tabService: TabService,
         private loadingSerivce: CustomLoadingService,
-        differs: IterableDiffers) {
-            this.currentUser = this.tokenStorage.getUser();
+        differs: IterableDiffers
+    ) {
+        this.currentUser = this.tokenStorage.getUser();
+
+        // Add Users to Role
+        this.usersToRoleSubscription = this.actionService.usersToRole.subscribe(
+            ({ userIds, role, section }) => {
+                const staffStatusId = mapSectionToStaffStatus(section);
+                this.loadingSerivce.showLoadingSpinner();
+                this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
+                    .subscribe(res => {
+                        this.loadingSerivce.hideLoadingSpinner();
+                        this.refreshTabByRole(role, section);
+                        this.updateStaffsCount(role.id);
+                        this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
+                    }, err => {
+                        this.loadingSerivce.hideLoadingSpinner();
+                        this.updateStaffsCount(role.id);
+                        this.refreshTabByRole(role, section);
+                        this.toastr.error('Error!');
+                    })
+            });
     }
 
     ngOnInit() {
@@ -159,25 +182,10 @@ export class AdminShiftStaffComponent implements OnInit {
                 shiftTitle: this.shift.title,
             };
         });
+    }
 
-        // Add Users to Role
-        this.actionService.usersToRole.subscribe(
-            ({ userIds, role, section }) => {
-                const staffStatusId = mapSectionToStaffStatus(section);
-                this.loadingSerivce.showLoadingSpinner();
-                this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
-                    .subscribe(res => {
-                        this.loadingSerivce.hideLoadingSpinner();
-                        this.refreshTabByRole(role, section);
-                        this.updateStaffsCount(role.id);
-                        this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
-                    }, err => {
-                        this.loadingSerivce.hideLoadingSpinner();
-                        this.updateStaffsCount(role.id);
-                        this.refreshTabByRole(role, section);
-                        this.toastr.error('Error!');
-                    })
-            });
+    ngOnDestroy() {
+        this.usersToRoleSubscription.unsubscribe();
     }
 
 
