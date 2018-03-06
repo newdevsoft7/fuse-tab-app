@@ -3,42 +3,72 @@
     <!-- HEADER -->
     <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
 
-        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms'}}"
-            fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
+        <ng-container *ngIf="selectedShifts.length > 0">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms'}}"
+                fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
 
-            <button mat-raised-button class="mat-white-bg my-4">
-                <mat-icon>mail</mat-icon>
-                <span>Email</span>
-            </button>
+                <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon>mail</mat-icon>
+                    <span>Email</span>
+                </button>
 
-            <button mat-raised-button class="mat-white-bg my-4">
-                <mat-icon>edit</mat-icon>
-                <span>Edit Selected</span>
-            </button>
+                <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit Selected</span>
+                </button>
 
-            <button mat-raised-button class="mat-white-bg my-4">
-                <mat-icon fontSet="fa" fontIcon="fa-object-group" class="s-18 mr-4"></mat-icon>
-                <span>Group</span>
-            </button>
+                <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon fontSet="fa" fontIcon="fa-object-group" class="s-18 mr-4"></mat-icon>
+                    <span>Group</span>
+                </button>
 
-            <button mat-raised-button class="mat-white-bg my-4">
-                <mat-icon fontSet="fa" fontIcon="fa-object-ungroup" class="s-18 mr-4"></mat-icon>
-                <span>Ungroup</span>
-            </button>
+                <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon fontSet="fa" fontIcon="fa-object-ungroup" class="s-18 mr-4"></mat-icon>
+                    <span>Ungroup</span>
+                </button>
 
-            <button mat-raised-button class="mat-white-bg my-4">
-                <mat-icon>add_to_photos</mat-icon>
-                <span>Export</span>
-            </button>
+                <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon>add_to_photos</mat-icon>
+                    <span>Export</span>
+                </button>
 
-            <button mat-raised-button class="mat-white-bg my-4">
-                <mat-icon>delete</mat-icon>
-                <span>Delete</span>
-            </button>
-        </div>
+                <button mat-raised-button class="mat-white-bg my-4">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </div>
+        </ng-container>
 
         <!-- SEARCHBAR -->
-        
+        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
+
+            <!-- FILTER BAR -->
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-icon fxFlex="0 1 auto">search</mat-icon>
+                <div fxFlex>
+                    <app-custom-multi-select [autocompleteObservable]="filtersObservable"
+                        [labelBy]="'text'" [valueBy]="'id'"
+                        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select>
+                </div>
+            </div>
+            <!-- / FILTER BAR -->
+
+            <!-- DATE RANGE SELECTOR -->
+            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="8px" fxFlex="250px">
+                <mat-form-field class="date-picker">
+                    <input matInput [matDatepicker]="fromPicker" placeholder="From" [value]="period.from" (dateChange)="changeDate($event, 'from')">
+                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="date-picker">
+                    <input matInput [matDatepicker]="toPicker" placeholder="To" [value]="period.to" (dateChange)="changeDate($event, 'to')">
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <!-- / DATE RANGE SELECTOR -->
+        </div>
         <!-- / SEARCHBAR -->
 
     </div>
@@ -48,11 +78,112 @@
     <div class="content p-24 pt-40 pb-56">
 
         <!-- TABLE -->
-        <div *ngIf="shifts" class="shifts-table">
+        <div *ngIf="shifts" class="shifts-table" #tableWrapper>
+            <ngx-datatable #table class="material striped" [rows]="shifts" [columnMode]="'force'" [headerHeight]="48" [footerHeight]="56"
+                [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true"
+                [selected]="selectedShifts" [loadingIndicator]="loadingIndicator" [reorderable]="true"
+                [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize"
+                [sortType]="'multi'" (page)="setPage($event)"
+                (sort)="onSort($event)" (select)="onSelect($event)">
 
+                <!-- CHECKBOX -->
+                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true">
+
+                    <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+                        <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+                    </ng-template>
+
+                    <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+                        <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- / CHECKBOX -->
+
+                <ng-container *ngFor="let column of columns">
+                    <ngx-datatable-column *ngIf="!['id', 'shift_status_id'].includes(column.key_name)" [name]="column.display_name" [prop]="column.key_name"
+                        [sortable]="column.sortable == 1 ? true : false">
+
+                        <!-- DATE COLUMN -->
+                        <ng-template *ngIf="column.key_name === 'shift_start'" ngx-datatable-cell-template let-value="value" let-row="row">
+                            <span class="shift-date" [ngStyle]="{
+                                'background-color': row.shift_status.bg_color,
+                                'color': row.shift_status.font_color,
+                                'border': '1px solid ' + row.shift_status.border_color
+                            }" [matTooltip]="row.shift_status.status">{{value}}</span>
+                        </ng-template>
+                        <!-- / DATE COLUMN -->
+
+                        <!-- TODO - ON CLICK TO GO SHIFT -->
+                        <!-- / TODO - ON CLICK TO GO SHIFT -->
+
+                    </ngx-datatable-column>
+                </ng-container>
+
+                <!-- ACTIONS MENU -->
+                <ngx-datatable-column [width]="100" [sortable]="false" [resizeable]="false"
+                    [draggable]="false" [canAutoResize]="false">
+
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+
+                        <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                            <mat-icon class="material-icons">more_horiz</mat-icon>
+                        </button>
+
+                        <mat-menu #menu="matMenu">
+
+                            <button mat-menu-item>
+                                <mat-icon>content_copy</mat-icon>
+                                <span>Copy</span>
+                            </button>
+
+                            <button mat-menu-item>
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
+
+                            <button mat-menu-item>
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+
+                        </mat-menu>
+
+                    </ng-template>
+
+                </ngx-datatable-column>
+                <!-- / ACTIONS MENU -->
+
+                <!-- FOOTER -->
+                <ngx-datatable-footer>
+                    <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-selectedCount="selectedCount"
+                        let-curPage="curPage" let-offset="offset">
+                        <div class="page-count h-60">
+                            Show
+                            <mat-form-field class="mx-8">
+                                <mat-select (change)="onPageLengthChange($event)" [value]="10">
+                                    <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            entries
+                            <span class="mx-48">
+                                Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of {{rowCount}} entries
+                            </span>
+                        </div>
+
+                        <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+                            [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
+                            (change)="setPage($event)">
+                        </datatable-pager>
+
+                    </ng-template>
+                </ngx-datatable-footer>
+                <!-- / FOOTER -->
+
+            </ngx-datatable>
         </div>
         <!-- / TABLE -->
 
     </div>
     <!-- CONTENT -->
+
 </div>

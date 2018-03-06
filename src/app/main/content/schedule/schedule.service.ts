@@ -24,6 +24,25 @@ export class ScheduleService {
     return this.http.get(`${BASE_URL}/shift/${id}`).toPromise();
   }
 
+  getShifts(params): Observable<any> {
+    const filters = params.filters ? encodeURIComponent(JSON.stringify(params.filters)) : '';
+    const sorts = params.sorts ? encodeURIComponent(JSON.stringify(params.sorts)) : '';
+    const pageSize = params.pageSize ? params.pageSize : 5;
+    const pageNumber = params.pageNumber ? params.pageNumber : 0;
+    const fromDate = params.from;
+    const toDate = params.to;
+
+    const url = `${SHIFT_URL}/${fromDate}/${toDate}/list/${pageSize}/${pageNumber}/${filters}/${sorts}`;
+    return this.http.get(url.replace(/\/+$/, ''))
+      .catch(this.handleError);
+  }
+
+  getShiftFilters(fromDate: string, toDate: string, query = '') {
+    const url = `${SHIFT_URL}/filter/${fromDate}/${toDate}/${query}`;
+    return this.http.get(url.replace(/\/+$/, ''))
+      .catch(this.handleError);
+  }
+
   updateShift(id: number, data): Observable<any> {
     const url = `${BASE_URL}/shift/${id}`;
     return this.http.put(url, data).catch(this.handleError);
