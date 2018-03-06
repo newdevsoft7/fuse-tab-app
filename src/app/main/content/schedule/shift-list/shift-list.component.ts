@@ -1,5 +1,4 @@
 import {
-    AfterViewChecked, ChangeDetectorRef,
 	Component, OnInit,
 	ViewEncapsulation, ViewChild,
 	ElementRef, Input
@@ -18,6 +17,9 @@ import { fuseAnimations } from '../../../../core/animations';
 
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { ScheduleService } from '../schedule.service';
+import { TabService } from '../../../tab/tab.service';
+import { ActionService } from '../../../../shared/services/action.service';
+import { Tab } from '../../../tab/tab';
 
 @Component({
     selector: 'app-shift-list',
@@ -26,7 +28,7 @@ import { ScheduleService } from '../schedule.service';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class ShiftListComponent implements OnInit, AfterViewChecked {
+export class ShiftListComponent implements OnInit {
     
     loadingIndicator: boolean = true; // Datatable loading indicator
 
@@ -36,17 +38,17 @@ export class ShiftListComponent implements OnInit, AfterViewChecked {
     filters = ["manager:=:1"];
     sorts: any[];
 
+    hiddenColumns = ['id', 'status', 'border_color', 'bg_color', 'font_color'];
+
     pageNumber: number;
     pageSize = 10;
     total: number;
-    pageLengths = [1, 10, 25, 50, 100, 200, 300];
+    pageLengths = [10, 25, 50, 100, 200, 300];
 
     dialogRef: any;
     differ: any;
 
-    @ViewChild('tableWrapper') tableWrapper;
     @ViewChild(DatatableComponent) table: DatatableComponent;
-    private currentComponentWidth;
 
     // Initialize date range selector
     period = {
@@ -57,10 +59,11 @@ export class ShiftListComponent implements OnInit, AfterViewChecked {
     filtersObservable; // Filters
 
 	constructor(
-        private changeDetectorRef: ChangeDetectorRef,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private tabService: TabService,
+        private actionService: ActionService
     ) { 
     }
 
@@ -72,22 +75,13 @@ export class ShiftListComponent implements OnInit, AfterViewChecked {
             return this.scheduleService.getShiftFilters(from, to, text);
         };
     }
-
-    ngAfterViewChecked() {
-
-        // Check if the table size changed
-        if (this.table && this.table.recalculate && (this.tableWrapper.nativeElement.clientWidth !== this.currentComponentWidth)) {
-            this.currentComponentWidth = this.tableWrapper.nativeElement.clientWidth;
-            this.table.recalculate();
-            this.changeDetectorRef.detectChanges();
-        }
-    }
     
     // GET SHIFTS BY FILTERS, PAGE, SORTS
     getShifts(params = null) {
         const query = {
             filters: this.filters,
             pageSize: this.pageSize,
+            pageNumber: this.pageNumber,
             sorts: this.sorts,
             from: moment(this.period.from).format('YYYY-MM-DD'),
             to: moment(this.period.to).format('YYYY-MM-DD'),
@@ -100,7 +94,6 @@ export class ShiftListComponent implements OnInit, AfterViewChecked {
             res => {
                 this.loadingIndicator = false;
                 this.shifts = res.data;
-                console.log(this.shifts.length);
                 this.columns = res.columns;
                 this.pageSize = res.page_size;
                 this.pageNumber = res.page_number;
@@ -149,6 +142,21 @@ export class ShiftListComponent implements OnInit, AfterViewChecked {
 
     onFiltersChanged(filters) {
         // TODO
+    }
+
+    // Open Shifts edit tab for multiple shifts
+    editShifts() {
+        const tab = new Tab('Shifts Edit', 'editShiftTpl', 'admin/shift/edit', { shifts: this.selectedShifts });
+        this.tabService.openTab(tab);
+        this.actionService.addShiftsToEdit(this.selectedShifts);
+    }
+
+    // Open Shifts edit tab for a shift
+    editShift(shift) {
+        const shifts = [shift];
+        const tab = new Tab('Shifts Edit', 'editShiftTpl', 'admin/shift/edit', { shifts });
+        this.tabService.openTab(tab);
+        this.actionService.addShiftsToEdit(shifts);
     }
 
 }

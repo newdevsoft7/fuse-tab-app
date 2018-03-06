@@ -12,7 +12,7 @@
                     <span>Email</span>
                 </button>
 
-                <button mat-raised-button class="mat-white-bg my-4">
+                <button mat-raised-button class="mat-white-bg my-4" (click)="editShifts()">
                     <mat-icon>edit</mat-icon>
                     <span>Edit Selected</span>
                 </button>
@@ -100,16 +100,17 @@
                 <!-- / CHECKBOX -->
 
                 <ng-container *ngFor="let column of columns">
-                    <ngx-datatable-column *ngIf="!['id', 'shift_status_id'].includes(column.key_name)" [name]="column.display_name" [prop]="column.key_name"
+                    <ngx-datatable-column
+                        *ngIf="!hiddenColumns.includes(column.key_name)" [name]="column.display_name" [prop]="column.key_name"
                         [sortable]="column.sortable == 1 ? true : false">
 
                         <!-- DATE COLUMN -->
                         <ng-template *ngIf="column.key_name === 'shift_start'" ngx-datatable-cell-template let-value="value" let-row="row">
                             <span class="shift-date" [ngStyle]="{
-                                'background-color': row.shift_status.bg_color,
-                                'color': row.shift_status.font_color,
-                                'border': '1px solid ' + row.shift_status.border_color
-                            }" [matTooltip]="row.shift_status.status">{{value}}</span>
+                                'background-color': row.bg_color,
+                                'color': row.font_color,
+                                'border': '1px solid ' + row.border_color
+                            }" [matTooltip]="row.status">{{value}}</span>
                         </ng-template>
                         <!-- / DATE COLUMN -->
 
@@ -136,7 +137,7 @@
                                 <span>Copy</span>
                             </button>
 
-                            <button mat-menu-item>
+                            <button mat-menu-item (click)="editShift(row)">
                                 <mat-icon>edit</mat-icon>
                                 <span>Edit</span>
                             </button>

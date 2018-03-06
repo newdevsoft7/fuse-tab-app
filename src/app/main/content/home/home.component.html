@@ -65,6 +65,10 @@
         <app-new-shift [data]="data"></app-new-shift>
     </ng-template>
 
+    <ng-template #editShiftTpl let-data="data">
+        <app-edit-shift [data]="data"></app-edit-shift>
+    </ng-template>
+
     <ng-template #shiftRoleEditTpl let-data="data">
         <app-shift-role-edit [data]="data"></app-shift-role-edit>
     </ng-template>

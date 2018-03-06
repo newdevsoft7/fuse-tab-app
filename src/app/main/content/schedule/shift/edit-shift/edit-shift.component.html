@@ -1,0 +1,59 @@
+<div id="edit-shift-container">
+
+    <!-- SHIFTS LIST -->
+    <div class="shift-list">
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                <div class="title">Shifts to edit</div>
+            </header>
+        
+            <div class="content">
+
+                <!-- SHIFT -->
+                <div class="shift w-100-p" *ngFor="let shift of shifts; let odd=odd; let even=even; let i=index;"
+                    fxLayout="row" fxLayoutAlign="start center"
+                    [ngClass]="{'odd': odd, 'even': even}">
+
+                    <div class="date" fxFlex="1 0 auto">{{shift.shift_start}}</div>
+                    <div class="times" fxFlex="1 0 auto">{{shift.shift_end}}</div>
+                    <div class="title" fxFlex="1 0 auto">{{shift.title}}</div>
+                    <div class="location" fxFlex="1 0 auto">{{shift.location}}</div>
+
+                    <button mat-icon-button class="clear" fxFlex="0 1 auto" (click)="removeShift(i)">
+                        <mat-icon>block</mat-icon>
+                    </button>
+
+                </div>
+                <!-- / SHIFT -->
+            </div>
+
+        </div>
+    </div>
+    <!-- / SHIFTS LIST -->
+
+    <!-- SHIFT & ROLE EDIT ACCORDION -->
+    <mat-accordion>
+
+        <!-- SHIFT EDIT PANEL -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Edit Shift Details
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <!-- / SHIFT EDIT PANEL -->
+
+        <!-- ROLE DETAILS EDIT PANEL -->
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Edit Role Details
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <!-- / ROLE DETAILS EDIT PANEL -->
+
+    </mat-accordion>
+    <!-- / SHIFT & ROLE EDIT ACCORDION -->
+</div>
