@@ -49,17 +49,31 @@
 
     <!-- DATE -->
     <div class="info-line">
-        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
             <div fxFlex="0 1 auto">
                 <mat-checkbox [checked]="list.shift_date.checked" (change)="list.shift_date.checked = $event.checked">Date:</mat-checkbox>
             </div>
     
-            <div fxFlex="1 0 auto">
+            <div fxFlex="0 1 auto" class="mr-120">
                 <mat-form-field class="date-picker">
                     <input matInput [matDatepicker]="picker"
                         [disabled]="!list.shift_date.checked" [(ngModel)]="list.shift_date.value">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.timezone.checked" (change)="list.timezone.checked = $event.checked">Timezone:</mat-checkbox>
+            </div>
+            
+            <div fxFlex="0 1 auto">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="list.timezone.value" [disabled]="!list.timezone.checked">
+                        <mat-option *ngFor="let timezone of timezones" [value]="timezone.value">
+                            {{timezone.label}}
+                        </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
     
@@ -215,16 +229,6 @@
             <div fxFlex="0 0 auto">
                 <mat-slide-toggle [(ngModel)]="list.live.value" [disabled]="!list.live.checked"></mat-slide-toggle>
             </div>
-    
-            <div fxFlex="0 1 auto" class="ml-120">
-                <mat-checkbox [checked]="list.publish.checked" (change)="list.publish.checked = $event.checked">
-                    Publish:
-                </mat-checkbox>
-            </div>
-    
-            <div fxFlex="0 1 auto">
-                <mat-slide-toggle [(ngModel)]="list.publish.value" [disabled]="!list.publish.checked"></mat-slide-toggle>
-            </div>
 
             <div fxFlex="0 1 auto" class="ml-120">
                 <mat-checkbox [checked]="list.locked.checked" (change)="list.locked.checked = $event.checked">
@@ -257,6 +261,6 @@
     <!-- / FLAGS -->
 
     <div class="info-line mt-20">
-        <button mat-raised-button color="accent" (click)="applyShift()">Apply</button>
+        <button mat-raised-button color="accent" (click)="applyShift()" [disabled]="shifts.length === 0">Apply</button>
     </div>
 </div>

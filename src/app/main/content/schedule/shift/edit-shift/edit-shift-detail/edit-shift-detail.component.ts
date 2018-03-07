@@ -42,26 +42,27 @@ export class EditShiftDetailComponent implements OnInit {
 
     list = {
         title:              { checked: false, value: '' },
-        generic_title:       { checked: false, value: '' },
-        work_area_ids:          { checked: false, value: [] },
-        shift_date:               { checked: false, value: '' },
-        shift_start_time:         { checked: false, value: new ShiftTime(8, 0, 'AM') },
-        shift_end_time:           { checked: false, value: new ShiftTime(5, 0, 'PM') },
+        generic_title:      { checked: false, value: '' },
+        work_area_ids:      { checked: false, value: [] },
+        shift_date:         { checked: false, value: '' },
+        shift_start_time:   { checked: false, value: new ShiftTime(8, 0, 'AM') },
+        shift_end_time:     { checked: false, value: new ShiftTime(5, 0, 'PM') },
         location:           { checked: false, value: '' },
-        generic_location:    { checked: false, value: '' },
+        generic_location:   { checked: false, value: '' },
         address:            { checked: false, value: '' },
         contact:            { checked: false, value: '' },
-        manager_ids:           { checked: false, value: [] },
+        manager_ids:        { checked: false, value: [] },
         notes:              { checked: false, value: ''},
         live:               { checked: false, value: false },
-        publish:            { checked: false, value: false },
-        locked:               { checked: false, value: false }
+        locked:             { checked: false, value: false },
+        timezone:           { checked: false, value: '' }
     };
 
     data; // Shifts data for multiple edit
 
     flags = [];
     categories = [];
+    timezones = [];
 
     workAreas$;
     managers$;
@@ -102,6 +103,13 @@ export class EditShiftDetailComponent implements OnInit {
                 });
             }
         });
+
+        this.scheduleService.getTimezones()
+            .subscribe(res => {
+                Object.keys(res).forEach(key => {
+                    this.timezones.push({ value: key, label: res[key] });
+                });
+            });
     }
 
     applyShift() {
@@ -131,14 +139,13 @@ export class EditShiftDetailComponent implements OnInit {
                     params = { ...params, [key]: value };
                     break;
 
-                case 'publish':
                 case 'locked':
                 case 'live':
                     value = this.list[key].value ? 1 : 0;
                     params = { ...params, [key]: value };
                     break;
             
-                default: // If key is one of title, location, generic_location, generic_title, address, contact, notes
+                default: // If key is one of title, location, generic_location, generic_title, address, contact, notes, timezone
                     params = { ...params, [key]: this.list[key].value};
                     break;
             }
