@@ -33,26 +33,26 @@ export function arrayDiffObj(s: any[], v: any[], key: string) {
 
 const CUSTOM_INPUT_VALIDATORS: any = {
     provide: NG_VALIDATORS,
-    useExisting: forwardRef(() => CustomMultiSelectComponent),
+    useExisting: forwardRef(() => StaticMultiSelectComponent),
     multi: true
 };
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CustomMultiSelectComponent),
+    useExisting: forwardRef(() => StaticMultiSelectComponent),
     multi: true
 };
 
 
 @Component({
-    selector: 'app-custom-multi-select',
-    templateUrl: './custom-multi-select.component.html',
-    styleUrls: ['./custom-multi-select.component.scss'],
+    selector: 'app-static-multi-select',
+    templateUrl: './static-multi-select.component.html',
+    styleUrls: ['./static-multi-select.component.scss'],
     providers: [
         CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR
     ]
 })
 
-export class CustomMultiSelectComponent implements ControlValueAccessor, AfterViewInit, OnInit, DoCheck {
+export class StaticMultiSelectComponent implements ControlValueAccessor, AfterViewInit, OnInit, DoCheck {
 
     @ViewChild('chipInput') chipInput: MatInput;
 
@@ -61,9 +61,10 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
     @Input() valueBy;
     @Input() disabled = false;
 
-    source = [];
+    @Input() source = [];
+    filteredSource = [];
 
-    @Input() autocompleteObservable: (text: string) => Observable<any>;
+    // @Input() autocompleteObservable: (text: string) => Observable<any>;
 
     @Output() valueChange = new EventEmitter();
 
@@ -74,14 +75,8 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
     _selected = [];
     get selected() {
         return this._value.map((v, i) => {
-            const idx = this._selected.findIndex(s => s[this.valueBy] === v);
-            if (idx > -1) {
-                return this._selected[idx];
-            } else {
                 const idx2 = this.source.findIndex(r => r[this.valueBy] === v);
-                this._selected[idx] = idx2 > -1 ? this.source[idx2] : null;
-                return this._selected[idx];
-            }
+                return this.source[idx2];
         });
     }
 
@@ -101,6 +96,7 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
     ngDoCheck() {
         const change = this.differ.diff(this.source);
         if (change) {
+            this.filteredSource = this.source;
             this.sourceFiltered();
         }
     }
@@ -118,7 +114,6 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
     }
 
     ngOnInit() {
-        this.getItemsFromObservable('');
     }
 
     ngAfterViewInit() {
@@ -128,13 +123,13 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
             .subscribe((event: KeyboardEvent) => {
                 if (![UP_ARROW, DOWN_ARROW].includes(event.keyCode)) {
                     const value = this.chipInput['nativeElement'].value.toLowerCase();
-                    this.getItemsFromObservable(value);
+                    this.filteredSource = this.source.filter(v => v[this.labelBy].toLowerCase().indexOf(value) > -1)
                 }
             });
     }
 
     sourceFiltered() {
-        return arrayDiffObj(this.source, this._value, this.valueBy);
+        return arrayDiffObj(this.filteredSource, this._value, this.valueBy);
     }
 
     registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
@@ -158,12 +153,10 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
 
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
-        this.getItemsFromObservable('');
     }
 
     addNew(input: MatInput): void {
         this.chipInput['nativeElement'].value = '';
-        this.getItemsFromObservable('');
     }
 
     remove(tag): void {
@@ -171,19 +164,8 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
         this._value = this._value.filter((i) => i !== tag[this.valueBy]);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
-        this.getItemsFromObservable('');
     }
 
-    private getItemsFromObservable = (text: string): void => {
-
-        const subscribeFn = (data: any[]) => {
-            this.source = data;
-        };
-
-        this.autocompleteObservable(text)
-            .pipe(first())
-            .subscribe(subscribeFn);
-    }
 
     displayFn(value: any): string {
         return value && typeof value === 'object' ? value[this.labelBy] : value;

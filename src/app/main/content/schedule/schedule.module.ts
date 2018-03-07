@@ -23,6 +23,7 @@ import { AdminShiftStaffApplicantsComponent } from './shift/admin-shift/staff/ap
 import { AdminShiftStaffStandbyComponent } from './shift/admin-shift/staff/standby/standby.component';
 import { NewShiftComponent } from './shift/new-shift/new-shift.component';
 import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
+import { StaticMultiSelectModule } from '../../../core/components/static-multi-select/static-multi-select.module';
 import { ShiftRoleEditComponent } from './shift/role-edit/role-edit.component';
 import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-requirements/shift-role-requirements.component';
 import { AdminShiftEditTimeComponent } from './shift/admin-shift/staff/selected/edit-time/edit-time.component';
@@ -47,6 +48,8 @@ import { StaffShiftPayItemDialogComponent } from './shift/staff-shift/info/dialo
 import { StaffShiftMapComponent } from './shift/staff-shift/map/map.component';
 import { StaffShiftApplyDialogComponent } from './shift/staff-shift/info/dialogs/apply-dialog/apply-dialog.component';
 import { EditShiftComponent } from './shift/edit-shift/edit-shift.component';
+import { EditShiftDetailComponent } from './shift/edit-shift/edit-shift-detail/edit-shift-detail.component';
+import { EditShiftRoleDetailComponent } from './shift/edit-shift/edit-shift-role-detail/edit-shift-role-detail.component';
 
 @NgModule({
 	imports: [
@@ -54,6 +57,7 @@ import { EditShiftComponent } from './shift/edit-shift/edit-shift.component';
         SCCalendarModule,
         SharedModule,
         CustomMultiSelectModule,
+        StaticMultiSelectModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
         }),
@@ -98,7 +102,9 @@ import { EditShiftComponent } from './shift/edit-shift/edit-shift.component';
         StaffShiftConfirmDialogComponent,
         StaffShiftPayItemDialogComponent,
         StaffShiftMapComponent,
-        StaffShiftApplyDialogComponent
+        StaffShiftApplyDialogComponent,
+        EditShiftDetailComponent,
+        EditShiftRoleDetailComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [

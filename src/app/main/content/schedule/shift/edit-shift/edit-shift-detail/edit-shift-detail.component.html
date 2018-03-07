@@ -1,0 +1,262 @@
+<div id="edit-shift-detail-container" fxLayout="column">
+
+    <!-- TITLE & GENERIC TITLE -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.title.checked" (change)="list.title.checked = $event.checked">Title:</mat-checkbox>
+            </div>
+
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-100-p">
+                    <input matInput [disabled]="!list.title.checked" [(ngModel)]="list.title.value">
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.generic_title.checked" (change)="list.generic_title.checked = $event.checked">
+                    Generic Title:
+                </mat-checkbox>
+            </div>
+            
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-100-p">
+                    <input matInput [disabled]="!list.generic_title.checked" [(ngModel)]="list.generic_title.value">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / TITLE & GENERIC TITLE -->
+
+    <!-- Work Areas -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.work_area_ids.checked" (change)="list.work_area_ids.checked = $event.checked">
+                    Work Areas:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <app-custom-multi-select [autocompleteObservable]="workAreas$"
+                    [labelBy]="'aname'" [valueBy]="'id'" [class.disabled]="!list.work_area_ids.checked"
+                    [(value)]="list.work_area_ids.value"></app-custom-multi-select>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / Work Areas -->
+
+    <!-- DATE -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.shift_date.checked" (change)="list.shift_date.checked = $event.checked">Date:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="date-picker">
+                    <input matInput [matDatepicker]="picker"
+                        [disabled]="!list.shift_date.checked" [(ngModel)]="list.shift_date.value">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / DATE -->
+
+    <!-- START & END TIME -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.shift_start_time.checked" (change)="list.shift_start_time.checked = $event.checked">
+                    Start time:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="list.shift_start_time.value.time"
+                    [class.disabled]="!list.shift_start_time.checked"></w-mat-timepicker>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.shift_end_time.checked" (change)="list.shift_end_time.checked = $event.checked">
+                    End time:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="list.shift_end_time.value.time"
+                    [class.disabled]="!list.shift_end_time.checked"></w-mat-timepicker>
+            </div>
+        </div>
+    </div>
+    <!-- / START & END TIME -->
+
+    <!-- TRACKING CATEGORIES -->
+    <div class="info-line" *ngFor="let category of categories">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="category.checked" (change)="category.checked = $event.checked">
+                    {{category.cname}}
+                </mat-checkbox>
+            </div>
+
+            <div fxFlex="1 0 auto">
+                <app-static-multi-select [source]="category.tracking_options"
+                    [labelBy]="'oname'" [valueBy]="'id'" [class.disabled]="!category.checked"
+                    [(value)]="category.value"></app-static-multi-select>
+            </div>
+        </div>
+        
+    </div>
+    <!-- / TRACKING CATEGORIES -->
+
+    <!-- LOCATION & GENERIC LOCATION -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.location.checked" (change)="list.location.checked = $event.checked">Location:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-100-p">
+                    <input matInput [disabled]="!list.location.checked" [(ngModel)]="list.location.value">
+                </mat-form-field>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.generic_location.checked" (change)="list.generic_location.checked = $event.checked">
+                    Generic Location:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-100-p">
+                    <input matInput [disabled]="!list.generic_location.checked" [(ngModel)]="list.generic_location.value">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / LOCATION & GENERIC LOCATION -->
+
+    <!-- ADDRESS & CONTACT -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.address.checked" (change)="list.address.checked = $event.checked">Address:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-100-p">
+                    <input matInput [disabled]="!list.address.checked" [(ngModel)]="list.address.value">
+                </mat-form-field>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.contact.checked" (change)="list.contact.checked = $event.checked">
+                    Contact:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-100-p">
+                    <input matInput [disabled]="!list.contact.checked" [(ngModel)]="list.contact.value">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / ADDRESS & CONTACT -->
+
+    <!-- MANAGERS -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.manager_ids.checked" (change)="list.manager_ids.checked = $event.checked">
+                    Manager(s):
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <app-custom-multi-select [autocompleteObservable]="managers$" [labelBy]="'name'" [valueBy]="'id'"
+                    [class.disabled]="!list.manager_ids.checked" [(value)]="list.manager_ids.value"></app-custom-multi-select>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / MANAGERS -->
+
+    <!-- NOTES -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.notes.checked" (change)="list.notes.checked = $event.checked">
+                    Notes:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <textarea [froalaEditor] [(froalaModel)]="list.notes.value" *ngIf="list.notes.checked"></textarea>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / NOTES -->
+
+    <!-- LIVE & PUBLISH & LOCK -->
+    <div class="info-line mt-20">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [checked]="list.live.checked" (change)="list.live.checked = $event.checked">Live:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 0 auto">
+                <mat-slide-toggle [(ngModel)]="list.live.value" [disabled]="!list.live.checked"></mat-slide-toggle>
+            </div>
+    
+            <div fxFlex="0 1 auto" class="ml-120">
+                <mat-checkbox [checked]="list.publish.checked" (change)="list.publish.checked = $event.checked">
+                    Publish:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <mat-slide-toggle [(ngModel)]="list.publish.value" [disabled]="!list.publish.checked"></mat-slide-toggle>
+            </div>
+
+            <div fxFlex="0 1 auto" class="ml-120">
+                <mat-checkbox [checked]="list.locked.checked" (change)="list.locked.checked = $event.checked">
+                    Lock:
+                </mat-checkbox>
+            </div>
+            
+            <div fxFlex="0 1 auto">
+                <mat-slide-toggle [(ngModel)]="list.locked.value" [disabled]="!list.locked.checked"></mat-slide-toggle>
+            </div>
+
+        </div>
+    </div>
+    <!-- / LIVE & PUBLISH -->
+
+    <!-- FLAGS -->
+    <div class="info-line mt-20">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <ng-container *ngFor="let flag of flags">
+                <div fxFlex="0 1 auto">
+                    <mat-checkbox [checked]="flag.checked" (change)="flag.checked = $event.checked">{{flag.fname}}</mat-checkbox>
+                </div>
+        
+                <div fxFlex="0 0 auto" class="mr-120">
+                    <mat-slide-toggle [(ngModel)]="flag.value" [disabled]="!flag.checked"></mat-slide-toggle>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <!-- / FLAGS -->
+
+    <div class="info-line mt-20">
+        <button mat-raised-button color="accent" (click)="applyShift()">Apply</button>
+    </div>
+</div>

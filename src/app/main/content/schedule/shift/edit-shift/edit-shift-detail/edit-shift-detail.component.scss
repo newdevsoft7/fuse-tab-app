@@ -1,0 +1,18 @@
+#edit-shift-detail-container {
+
+    .info-line {
+        margin-bottom: 4px;
+    }
+
+    w-mat-timepicker.disabled {
+        pointer-events: none;
+
+        .mat-form-field-infix {
+            color: grey;
+        }
+    }
+
+    .disabled {
+        pointer-events: none;
+    }
+}

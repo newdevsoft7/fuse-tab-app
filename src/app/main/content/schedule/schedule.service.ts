@@ -43,9 +43,22 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  /**
+   * Get data for shifts multiple edit
+   */
+  getShiftsData() {
+    const url = `${SHIFT_URL}/edit`;
+    return this.http.get(url).catch(this.handleError);
+  }
+
   updateShift(id: number, data): Observable<any> {
     const url = `${BASE_URL}/shift/${id}`;
     return this.http.put(url, data).catch(this.handleError);
+  }
+
+  updateMultipleShifts(params): Observable<any> {
+    const url = `${SHIFT_URL}/edit`;
+    return this.http.post(url, params).catch(this.handleError);
   }
 
   getManagers(query): Observable<any> {
