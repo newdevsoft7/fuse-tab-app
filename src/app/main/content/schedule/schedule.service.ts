@@ -124,12 +124,6 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
-  createShifts(shifts): Observable<any> {
-    return Observable.forkJoin(
-      shifts.map(shift => this.createShift(shift))
-    );
-  }
-
   createShiftRole(shiftId, role): Observable<any> {
     const url = `${BASE_URL}/shift/${shiftId}/role`;
     return this.http.post(url, role)
