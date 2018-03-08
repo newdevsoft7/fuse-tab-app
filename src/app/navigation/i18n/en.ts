@@ -71,6 +71,11 @@ export const locale = {
                 'FILES': 'Files',
                 'HELP': '',
                 'QUICKSTART_GUIDE': 'QuickStart Guide'
+            },
+
+            'CLIENT': {
+                'NEW_BOOKING': 'New Booking',
+                'REPORTS': 'Reports'
             }
 
         },

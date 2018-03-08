@@ -51,6 +51,9 @@ import { EditShiftComponent } from './shift/edit-shift/edit-shift.component';
 import { EditShiftDetailComponent } from './shift/edit-shift/edit-shift-detail/edit-shift-detail.component';
 import { EditShiftRoleDetailComponent } from './shift/edit-shift/edit-shift-role-detail/edit-shift-role-detail.component';
 
+// Client
+import { ClientShiftListComponent } from './shift-list/client-shift-list/client-shift-list.component';
+
 @NgModule({
 	imports: [
         CommonModule,
@@ -104,7 +107,10 @@ import { EditShiftRoleDetailComponent } from './shift/edit-shift/edit-shift-role
         StaffShiftMapComponent,
         StaffShiftApplyDialogComponent,
         EditShiftDetailComponent,
-        EditShiftRoleDetailComponent
+        EditShiftRoleDetailComponent,
+
+        // Client view
+        ClientShiftListComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -125,7 +131,8 @@ import { EditShiftRoleDetailComponent } from './shift/edit-shift/edit-shift-role
         ShiftRoleEditComponent,
         CalendarEventFormDialogComponent,
         StaffShiftComponent,
-        AdminShiftListComponent
+        AdminShiftListComponent,
+        ClientShiftListComponent
     ]
 })
 export class ScheduleModule { }

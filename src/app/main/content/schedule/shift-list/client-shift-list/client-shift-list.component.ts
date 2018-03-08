@@ -22,13 +22,13 @@ import { ActionService } from '../../../../../shared/services/action.service';
 import { Tab } from '../../../../tab/tab';
 
 @Component({
-    selector: 'app-admin-shift-list',
-	templateUrl: './admin-shift-list.component.html',
-    styleUrls: ['./admin-shift-list.component.scss'],
+    selector: 'app-client-shift-list',
+	templateUrl: './client-shift-list.component.html',
+    styleUrls: ['./client-shift-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class AdminShiftListComponent implements OnInit {
+export class ClientShiftListComponent implements OnInit {
     
     loadingIndicator: boolean = true; // Datatable loading indicator
 
@@ -70,9 +70,7 @@ export class AdminShiftListComponent implements OnInit {
 	ngOnInit() {
         this.getShifts();
         this.filtersObservable = (text: string): Observable<any> => {
-            const from = moment(this.period.from).format('YYYY-MM-DD');
-            const to = moment(this.period.to).format('YYYY-MM-DD');
-            return this.scheduleService.getShiftFilters(from, to, text);
+            return this.scheduleService.getWorkAreas(text);
         };
     }
     
@@ -126,6 +124,11 @@ export class AdminShiftListComponent implements OnInit {
         this.selectedShifts.push(...selected);
     }
 
+    onFiltersChanged(filters) {
+        this.filters = filters;
+        this.getShifts();
+    }
+
     // PAGE LENGTH SELECTOR
     onPageLengthChange(event) {
         this.getShifts({ pageSize: event.value });
@@ -138,26 +141,6 @@ export class AdminShiftListComponent implements OnInit {
     changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
         this.period[selector] = event.value;
         this.getShifts();
-    }
-
-    onFiltersChanged(filters) {
-        this.filters = filters;
-        this.getShifts();
-    }
-
-    // Open Shifts edit tab for multiple shifts
-    editShifts() {
-        const tab = new Tab('Shifts Edit', 'editShiftTpl', 'admin/shift/edit', { shifts: this.selectedShifts });
-        this.tabService.openTab(tab);
-        this.actionService.addShiftsToEdit(this.selectedShifts);
-    }
-
-    // Open Shifts edit tab for a shift
-    editShift(shift) {
-        const shifts = [shift];
-        const tab = new Tab('Shifts Edit', 'editShiftTpl', 'admin/shift/edit', { shifts });
-        this.tabService.openTab(tab);
-        this.actionService.addShiftsToEdit(shifts);
     }
 
 }

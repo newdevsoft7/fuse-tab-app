@@ -423,6 +423,71 @@ export const STAFF_MODEL = [
     }
 
 ];
+
+export const CLIENT_MODEL = [
+    {
+        'id': 'schedule',
+        'title': 'Schedule',
+        'translate': 'NAV.ADMIN.SCHEDULE',
+        'type': 'collapse',
+        'icon': 'schedule',
+        'children': [
+            {
+                'id': 'calendar',
+                'title': 'Calendar',
+                'translate': 'NAV.ADMIN.SCHEDULE_CALENDAR',
+                'type': 'item',
+                'tab': TAB.SCHEDULE_CALENDAR_TAB
+
+            },
+            {
+                'id': 'list',
+                'title': 'List',
+                'translate': 'NAV.ADMIN.SCHEDULE_LIST',
+                'type': 'item',
+                'tab': TAB.SCHEDULE_CLIENT_LIST_TAB
+            },
+            {
+                'id': 'export_shifts',
+                'title': 'Export Shifts',
+                'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS',
+                'type': 'collapse',
+                'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
+                'children': [
+                    {
+                        'id': 'excel_spreadsheet',
+                        'title': 'Excel Spreadsheet',
+                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
+                        'type': 'item',
+                        'tab': TAB.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB
+                    },
+                    {
+                        'id': 'pdf_overview',
+                        'title': 'PDF Overview',
+                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
+                        'type': 'item',
+                        'tab': TAB.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB
+                    }
+                ]
+            },
+            {
+                'id': 'new_shift',
+                'title': 'New Shift',
+                'translate': 'NAV.ADMIN.SCHEDULE_NEW_SHIFT',
+                'type': 'item',
+                'tab': TAB.SCHEDULE_NEW_SHIFT_TAB
+            }
+        ]
+    },
+    {
+        'id': 'reports',
+        'title': 'Repports',
+        'translate': 'NAV.CLIENT.REPORTS',
+        'type': 'item',
+        'icon': 'schedule'
+    }
+];
+
 export class FuseNavigationModel implements FuseNavigationModelInterface
 {
     public model: any[];
@@ -433,6 +498,10 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
             case Level.Owner:
             case Level.Admin:
                 this.model = ADMIN_MODEL;
+                break;
+
+            case Level.Client:
+                this.model = CLIENT_MODEL;
                 break;
                 
             default:
