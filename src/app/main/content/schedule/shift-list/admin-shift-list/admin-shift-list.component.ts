@@ -35,7 +35,7 @@ export class AdminShiftListComponent implements OnInit {
     shifts: any[];
     selectedShifts: any[] = [];
     columns: any[];
-    filters = ["manager:=:1"];
+    filters = [];
     sorts: any[];
 
     hiddenColumns = ['id', 'status', 'border_color', 'bg_color', 'font_color'];
