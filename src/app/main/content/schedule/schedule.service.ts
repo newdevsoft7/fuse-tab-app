@@ -51,6 +51,14 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
+  /**
+   * Get role data for shift multiple edit
+   */
+  getRoleData(shift_ids) {
+    const url = `${BASE_URL}/helpers/roles/edit`;
+    return this.http.post(url, { shift_ids }).catch(this.handleError);
+  }
+
   updateShift(id: number, data): Observable<any> {
     const url = `${BASE_URL}/shift/${id}`;
     return this.http.put(url, data).catch(this.handleError);
