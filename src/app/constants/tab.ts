@@ -12,7 +12,7 @@ export const USERS_NEW_MESSAGE_TAB = new Tab('New Message', '', 'users/new-messa
 export const USERS_CHAT_TAB = new Tab('Chat', 'usersChatTpl', 'users/chat', {});
 
 export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {});
-export const SCHEDULE_LIST_TAB = new Tab('List', 'scheduleListTpl', 'schedule/list', {});
+export const SCHEDULE_ADMIN_LIST_TAB = new Tab('List', 'adminShiftListTpl', 'schedule/admin/list', {});
 export const SCHEDULE_ADMIN_SHIFT_TAB = new Tab('Shift','scheduleAdminShiftTpl', 'schedule/shift', {});
 export const SCHEDULE_IMPORT_SHIFTS_TAB = new Tab('Import Shifts', '', 'schedule/import-shifts', {});
 export const SCHEDULE_IMPORT_SHIFTS_IMPORT_HISTORY_TAB = new Tab('Import History', '', 'schedule/import-shifts/import-history', {});

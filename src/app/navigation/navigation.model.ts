@@ -88,7 +88,7 @@ export const ADMIN_MODEL = [
                 'title': 'List',
                 'translate': 'NAV.ADMIN.SCHEDULE_LIST',
                 'type': 'item',
-                'tab': TAB.SCHEDULE_LIST_TAB
+                'tab': TAB.SCHEDULE_ADMIN_LIST_TAB
             },
             {
                 'id': 'import_shifts',

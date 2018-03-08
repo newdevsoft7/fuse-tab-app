@@ -13,22 +13,22 @@ import { Observable } from 'rxjs/Observable';
 import { ToastrService } from 'ngx-toastr';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 
-import { fuseAnimations } from '../../../../core/animations';
+import { fuseAnimations } from '../../../../../core/animations';
 
-import { TokenStorage } from '../../../../shared/services/token-storage.service';
-import { ScheduleService } from '../schedule.service';
-import { TabService } from '../../../tab/tab.service';
-import { ActionService } from '../../../../shared/services/action.service';
-import { Tab } from '../../../tab/tab';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
+import { ScheduleService } from '../../schedule.service';
+import { TabService } from '../../../../tab/tab.service';
+import { ActionService } from '../../../../../shared/services/action.service';
+import { Tab } from '../../../../tab/tab';
 
 @Component({
-    selector: 'app-shift-list',
-	templateUrl: './shift-list.component.html',
-    styleUrls: ['./shift-list.component.scss'],
+    selector: 'app-admin-shift-list',
+	templateUrl: './admin-shift-list.component.html',
+    styleUrls: ['./admin-shift-list.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations
 })
-export class ShiftListComponent implements OnInit {
+export class AdminShiftListComponent implements OnInit {
     
     loadingIndicator: boolean = true; // Datatable loading indicator
 
