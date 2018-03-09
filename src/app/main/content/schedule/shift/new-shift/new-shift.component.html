@@ -108,10 +108,10 @@
                                     <mat-datepicker #picker></mat-datepicker>
                                 </mat-form-field>
                                 <div fxFlex="120px">
-                                    <w-mat-timepicker color="primary" [placeholder]="'From'" [(userTime)]="item.from"></w-mat-timepicker>
+                                    <w-mat-timepicker color="accent" [placeholder]="'From'" [(userTime)]="item.from"></w-mat-timepicker>
                                 </div>
                                 <div fxFlex="120px">
-                                    <w-mat-timepicker color="primary" [placeholder]="'To'" [(userTime)]="item.to"></w-mat-timepicker>
+                                    <w-mat-timepicker color="accent" [placeholder]="'To'" [(userTime)]="item.to"></w-mat-timepicker>
                                 </div>
                                 <button mat-icon-button *ngIf="i === 0" (click)="addNewDate()">
                                     <mat-icon class="mat-24">add</mat-icon>

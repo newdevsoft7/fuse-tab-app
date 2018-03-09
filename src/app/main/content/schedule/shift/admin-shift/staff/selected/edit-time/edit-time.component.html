@@ -10,10 +10,10 @@
     <div class="" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive" fxLayoutAlign="start center" fxLayoutWrap>
 
         <div fxFlex="70px" class="mr-8">
-            <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="start.time"></w-mat-timepicker>
+            <w-mat-timepicker color="accent" [placeholder]="''" [(userTime)]="start.time"></w-mat-timepicker>
         </div>
         <div fxFlex="70px">
-            <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="end.time"></w-mat-timepicker>
+            <w-mat-timepicker color="accent" [placeholder]="''" [(userTime)]="end.time"></w-mat-timepicker>
         </div>
 
         <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">

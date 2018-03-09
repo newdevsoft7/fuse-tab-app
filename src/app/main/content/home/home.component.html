@@ -53,10 +53,6 @@
         <app-admin-shift-list></app-admin-shift-list>
     </ng-template>
 
-    <ng-template #clientShiftListTpl>
-        <app-client-shift-list></app-client-shift-list>
-    </ng-template>
-
     <ng-template #shiftsImportTpl>
         <app-shifts-import></app-shifts-import>
     </ng-template>
@@ -95,5 +91,15 @@
         <app-staff-shift [data]="data"></app-staff-shift>
     </ng-template>
     <!-- / STAFF VIEW TEMPLATES -->
+
+    <!-- CLIENT VIEW TEMPLATES -->
+    <ng-template #clientShiftListTpl>
+        <app-client-shift-list></app-client-shift-list>
+    </ng-template>
+
+    <ng-template #clientNewBookingTpl>
+        <app-client-new-booking></app-client-new-booking>
+    </ng-template>
+    <!--  / CLIENT VIEW TEMPLATES-->
 
 </div>

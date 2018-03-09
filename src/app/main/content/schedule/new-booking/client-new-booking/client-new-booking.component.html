@@ -1,0 +1,156 @@
+<div id="client-new-booking-container" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- CONTENT -->
+    <div class="content p-12 mat-white-bg">
+
+        <!-- BASIC -->
+        <div class="box info-box" fxLayout="column">
+                    
+            <div class="content" fxLayout="column">
+
+                <!-- TITLE -->
+                <div class="info-line">
+                    <mat-form-field class="general">
+                        <mat-label>Title</mat-label>
+                        <input matInput type="text" [(ngModel)]="title" required>
+                    </mat-form-field>
+                </div>
+                <!-- / TITLE -->
+
+                <!-- LOCATION -->
+                <div class="info-line">
+                    <mat-form-field class="general">
+                        <mat-label>Location</mat-label>
+                        <input matInput type="text" [(ngModel)]="location" required>
+                    </mat-form-field>
+                </div>
+                <!-- / LOCATION -->
+
+                <!-- ADDRESS -->
+                <div class="info-line">
+                    <mat-form-field class="general">
+                        <mat-label>Address</mat-label>
+                        <input matInput type="text" [(ngModel)]="address" required>
+                    </mat-form-field>
+                </div>
+                <!-- / ADDRESS -->
+
+                <!-- Work Areas -->
+                <div class="info-line">
+                    <app-custom-multi-select [autocompleteObservable]="workareas$" [labelBy]="'aname'" [valueBy]="'id'"
+                        placeholder="Work areas"
+                        [(value)]="workareas"></app-custom-multi-select>
+                </div>
+                <!-- / Work Areas -->
+
+                <!-- VENUE CONTACT -->
+                <div class="info-line">
+                    <mat-form-field  class="general">
+                        <mat-label>Venue Contact</mat-label>
+                        <input matInput type="text" [(ngModel)]="contact" required>
+                    </mat-form-field>
+                </div>
+                <!-- / VENUE CONTACT -->
+
+            </div>
+        </div>
+        <!-- / BASIC -->
+
+        <!-- DATE & TIMES -->
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                Date & Times
+            </header>
+
+            <div class="content" fxLayout="column">
+                <div class="info-line">
+                    <div *ngFor="let item of dates; let i = index" fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
+                        <mat-form-field fxFlexLayout="start center" fxFlex="160px">
+                            <input matInput [matDatepicker]="picker" placeholder="Date" fxFlex [(ngModel)]="item.date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <div fxFlex="120px">
+                            <w-mat-timepicker color="accent" [placeholder]="'From'" [(userTime)]="item.from"></w-mat-timepicker>
+                        </div>
+
+                        <div fxFlex="120px">
+                            <w-mat-timepicker color="accent" [placeholder]="'To'" [(userTime)]="item.to"></w-mat-timepicker>
+                        </div>
+
+                        <button mat-icon-button *ngIf="i === 0" (click)="addDate()" matTooltip="Add another date/time">
+                            <mat-icon class="mat-24">add</mat-icon>
+                        </button>
+                    
+                        <button mat-icon-button *ngIf="i > 0" (click)="removeDate(i)" matTooltip="Remove">
+                            <mat-icon class="mat-24">remove</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / DATE & TIMES -->
+
+        <!-- STAFF REQUIRED -->
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                Staff required
+            </header>
+        
+            <div class="content" fxLayout="column">
+                <div class="info-line">
+                    <div *ngFor="let role of roles; let i = index" fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
+                        <mat-form-field fxFlex="120px">
+                            <mat-label>Number</mat-label>
+                            <input matInput type="number" min="1" [(ngModel)]="role.num_required">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Role</mat-label>
+                            <input matInput type="text" [(ngModel)]="role.name">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-select [(ngModel)]="role.sex">
+                                <mat-option *ngFor="let option of SEX" [value]="option.value">{{option.label}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <button mat-icon-button *ngIf="i === 0" (click)="addRole()" matTooltip="Add another role">
+                            <mat-icon class="mat-24">add</mat-icon>
+                        </button>
+                        
+                        <button mat-icon-button *ngIf="i > 0" (click)="removeRole(i)" matTooltip="Remove">
+                            <mat-icon class="mat-24">remove</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / STAFF REQUIRED -->
+
+        <!-- NOTES -->
+        <div class="box info-box" fxLayout="column">
+        
+            <header class="mat-accent-bg">
+                <div class="title">Notes</div>
+            </header>
+        
+            <div class="content p-0" fxLayout="column">
+                <div class="info-line">
+                    <textarea [froalaEditor] [(froalaModel)]="notes"></textarea>
+                </div>
+            </div>
+        
+        </div>
+        <!-- / NOTES -->
+
+        <div class="mt-20">
+            <button mat-raised-button color="accent" (click)="save()">Save</button>
+        </div>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

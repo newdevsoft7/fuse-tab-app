@@ -463,11 +463,11 @@ export const CLIENT_MODEL = [
                 ]
             },
             {
-                'id': 'new_shift',
-                'title': 'New Shift',
-                'translate': 'NAV.ADMIN.SCHEDULE_NEW_SHIFT',
+                'id': 'new_booking',
+                'title': 'New Booking',
+                'translate': 'NAV.CLIENT.NEW_BOOKING',
                 'type': 'item',
-                'tab': TAB.SCHEDULE_NEW_SHIFT_TAB
+                'tab': TAB.CLIENT_NEW_BOOKING_TAB
             }
         ]
     },

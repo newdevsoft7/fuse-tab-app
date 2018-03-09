@@ -63,3 +63,4 @@ export const STAFF_NEW_INVOICE_TAB = new Tab('New Invoice', '', 'staff/new-invoc
 
 // Client tabs
 export const SCHEDULE_CLIENT_LIST_TAB = new Tab('List', 'clientShiftListTpl', 'schedule/client-list', {});
+export const CLIENT_NEW_BOOKING_TAB = new Tab('New Booking', 'clientNewBookingTpl', 'schedule/client-new-booking', {})
