@@ -88,7 +88,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     async runSockets() {
-        this.startSocket();
+        this.socketService.enableReconnect();
         this.socketSubscription = this.socketService.connectionStatus.skipWhile(() => !this.alive).subscribe((connected: boolean) => {
             if (connected) {
                 this.startSocket();

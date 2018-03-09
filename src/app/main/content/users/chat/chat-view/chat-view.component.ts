@@ -16,12 +16,25 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
         if (thread) {
             this.thread = thread;
             this.updateParticipants();
+            this.readyToReply(true);
         }
     }
 
+    @Input('replyMessage') set updateReply(value: string) {
+        value = value || '';
+        setTimeout(() => {
+            this.replyForm.form.setValue({ message: value })
+        });
+    }
+
+    @Input() typingUsers: number[] = [];
+
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
-    @Output() updateReadStatus: EventEmitter<any> = new EventEmitter();
+    @Output() updateReadStatus: EventEmitter<number> = new EventEmitter();
     @Output() addUser: EventEmitter<any> = new EventEmitter();
+    @Output() updatePendingMessage: EventEmitter<string> = new EventEmitter();
+    @Output() updateTypingStatus: EventEmitter<boolean> = new EventEmitter();
+
     replyInput: any;
     selectedChat: any;
     @ViewChild(FusePerfectScrollbarDirective) directiveScroll: FusePerfectScrollbarDirective;
@@ -31,6 +44,9 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     authenticatedUser: any;
     thread: any;
     participants: any = [];
+
+    isTyping: boolean = false;
+    typingSentence: string = '';
 
     constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
@@ -42,7 +58,14 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     ngAfterViewInit()
     {
         this.replyInput = this.replyInputField.first.nativeElement;
-        this.readyToReply();
+    }
+
+    getTypingText() {
+        if (this.typingUsers.length === 0) {
+            return '';
+        }
+        let namePrefix = this.typingUsers.map(id => `${this.getParticipant(id).fname} ${this.getParticipant(id).lname}`).join(' and ');
+        return `${namePrefix.charAt(0).toUpperCase() + namePrefix.slice(1)} ${this.typingUsers.length > 1? 'are' : 'is'} typing...`;
     }
 
     getParticipant(userId: number) {
@@ -59,14 +82,16 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
         }
     }
 
-    readyToReply()
+    readyToReply(read?: boolean)
     {
+        read = read || false;
         setTimeout(() => {
-            this.replyForm.reset();
             this.focusReplyInput();
             this.scrollToBottom();
+            if (read) {
+                this.updateReadStatus.next(this.thread.id);
+            }
         });
-
     }
 
     focusReplyInput()
@@ -96,7 +121,19 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
             thread_id: this.thread.id,
             content: this.replyForm.form.value.message
         };
-
+        this.stopTyping();
         this.sendMessage.next(message);
+    }
+
+    continueTyping() {
+        if (!this.isTyping) {
+            this.updateTypingStatus.next(true);
+            this.isTyping = true;
+        }
+    }
+
+    stopTyping() {
+        this.updateTypingStatus.next(false);
+        this.isTyping = false;
     }
 }

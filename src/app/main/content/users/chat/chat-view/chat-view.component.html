@@ -18,17 +18,6 @@
 
                 <!-- CHAT CONTACT-->
                 <div class="chat-contact" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="thread">
-                    <div class="avatar-wrapper">
-
-                        <img [src]="thread?.ppic_a"
-                             class="avatar"
-                             [alt]="thread?.name"/>
-
-                        <!-- <mat-icon class="s-16 status"
-                                  [ngClass]="contact.status">
-                        </mat-icon> -->
-                    </div>
-
                     <div class="chat-contact-name" fxLayout="column" fxLayoutAlign="center start">
                         <p class="m-0 name">{{thread?.name}}</p>
                         <p class="font-size-14 m-0" fxLayout="row" fxLayoutAlign="start center">
@@ -66,22 +55,20 @@
                     <div class="message">{{message.content}}</div>
                     <div>
                         <div class="time secondary-text pull-left">{{message.created_at | date:'medium'}}</div>
-                        <!-- <mat-icon class="pull-right font-size-16 h-16 w-16 mt-8 ml-12" *ngIf="message.read == 1 && message.receiver_id == user.id">done</mat-icon> -->
+                        <mat-icon class="pull-right font-size-16 h-16 w-16 mt-8 ml-12" *ngIf="message.read && message.sender_id === authenticatedUser.id">done</mat-icon>
                     </div>
                 </div>
 
             </div>
             <!-- / MESSAGE -->
-
         </div>
         <!-- CHAT MESSAGES -->
-
     </div>
     <!-- / CHAT CONTENT -->
 
     <!-- CHAT FOOTER -->
     <div class="chat-footer" fxLayout="row" fxLayoutAlign="center center">
-
+        <span class="typing" *ngIf="typingUsers.length > 0">{{getTypingText()}}</span>
         <!-- REPLY FORM -->
         <form #replyForm="ngForm"
               (ngSubmit)="reply($event)"
@@ -91,8 +78,17 @@
               fxLayoutAlign="start center">
 
             <mat-form-field class="" fxFlex floatPlaceholder="never">
-                <textarea matInput #replyInput placeholder="Type and hit enter to send message"
-                          ngModel name="message"></textarea>
+                <textarea
+                    matInput 
+                    #replyInput
+                    debounce
+                    [delay]="2000"
+                    ngModel
+                    placeholder="Type and hit enter to send message"
+                    (onValueChange)="stopTyping()"
+                    (keyup)="continueTyping()" 
+                    (blur)="updatePendingMessage.next(replyForm.form.value.message)" 
+                    name="message"></textarea>
             </mat-form-field>
 
             <button mat-fab class="" type="submit" [disabled]="!replyForm.form.value.message" aria-label="Send message">
