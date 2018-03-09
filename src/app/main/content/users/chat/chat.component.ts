@@ -13,6 +13,8 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './dialogs';
 import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
 import { TabService } from '../../../tab/tab.service';
+import { FCMService } from '../../../../shared/services/fcm.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users-chat',
@@ -31,13 +33,17 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
   alive: boolean = false;
   socketService: SocketService;
+  fcmService: FCMService;
 
   messageSubscription: Subscription;
   activitySubscription: Subscription;
   tabSubscription: Subscription;
+  socketSubscription: Subscription;
 
   pendingMessages: any = {};
   typingUsers: number[] = [];
+
+  socketTimer: NodeJS.Timer;
 
   constructor(
     private tabService: TabService,
@@ -47,9 +53,11 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private favicoService: FavicoService,
     private activityManagerService: ActivityManagerService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private toastr: ToastrService) {
 
     this.socketService = injector.get(SocketService);
+    this.fcmService = injector.get(FCMService);
     this.fetchThreads();
     this.watchActivityChange();
     this.watchTabChange();    
@@ -58,6 +66,23 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.alive = true;
+
+    if (!this.fcmService.notificationAllowed) {
+      setTimeout(() => this.toastr.warning('Notification is not allowed for this domain.'));      
+    }
+
+    this.tabSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
+      if (!connected) {
+        this.socketTimer = setInterval(() => {
+          this.toastr.warning('Web socket is not connected yet. Connecting now...');
+        }, 10000);
+      } else {
+        if (this.socketTimer) {
+          clearInterval(this.socketTimer);
+          this.socketTimer = null;
+        }
+      }
+    });
   }
 
   listenIncomingMessages() {
@@ -125,6 +150,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.alive = false;
     this.messageSubscription.unsubscribe();
     this.activitySubscription.unsubscribe();
+    this.tabSubscription.unsubscribe();
     this.tabSubscription.unsubscribe();
     this.selectedThread = null;
     this.selectedChat = null;

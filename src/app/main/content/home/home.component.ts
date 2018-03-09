@@ -57,6 +57,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('staffShiftTpl') staffShiftTpl;
     
     socketService: SocketService;
+    fcmService: FCMService;
     alive: boolean = false;
 
     socketSubscription: Subscription;
@@ -65,13 +66,13 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         private translationLoader: FuseTranslationLoaderService,
         private fuseNavigationService: FuseNavigationService,
         private tabService: TabService,
-        private fcmService: FCMService,
         private injector: Injector,
         private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
         private authService: AuthenticationService) {
 
         this.socketService = injector.get(SocketService);
+        this.fcmService = injector.get(FCMService);
 
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {

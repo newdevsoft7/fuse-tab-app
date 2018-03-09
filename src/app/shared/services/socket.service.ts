@@ -15,6 +15,9 @@ export class SocketService {
 
   reconnectable: boolean = false;
 
+  duration: number = 1000;
+  disconnectedTime: number = 0;
+
   constructor() {
     this.connect();
     this.init();
@@ -52,13 +55,22 @@ export class SocketService {
   reconnect() {
     this.enableReconnect();
     this.connect();
-    this.init();
+    this.opened();
     const interval = setInterval(() => {
       console.log('========Reconnecting... Current status is ', this.getState());
       if (this.getState() === WebSocket.OPEN) {
         clearInterval(interval);
+        this.listenData();
+        this.closed();
+        this.disconnectedTime = 0;
+        this.duration = 1000;
+      } else {
+        this.disconnectedTime++;
+        if (this.disconnectedTime > 10) {
+          this.duration = 10000;
+        }
       }
-    }, 1000);
+    }, this.duration);
   }
 
   listenData(): void {
