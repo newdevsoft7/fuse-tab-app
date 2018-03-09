@@ -112,6 +112,7 @@ export class UsersComponent implements OnInit {
             sorts: this.sorts,
             ...params
         };
+        this.loadingIndicator = true;
         this.userService.getUsers(query).subscribe(
             res => {
                 this.loadingIndicator = false;
@@ -122,6 +123,7 @@ export class UsersComponent implements OnInit {
                 this.total = res.total_counts;
             },
             err => {
+                this.loadingIndicator = false;
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
                 }
