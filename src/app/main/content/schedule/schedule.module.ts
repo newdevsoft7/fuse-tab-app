@@ -55,6 +55,9 @@ import { EditShiftRoleDetailComponent } from './shift/edit-shift/edit-shift-role
 import { ClientShiftListComponent } from './shift-list/client-shift-list/client-shift-list.component';
 import { ShiftsImportComponent } from './shifts-import/shifts-import.component';
 import { ClientNewBookingComponent } from './new-booking/client-new-booking/client-new-booking.component';
+import { ClientShiftComponent } from './shift/client-shift/client-shift.component';
+import { ClientShiftMapComponent } from './shift/client-shift/map/map.component';
+import { ClientShiftInfoComponent } from './shift/client-shift/info/info.component';
 
 @NgModule({
 	imports: [
@@ -114,7 +117,10 @@ import { ClientNewBookingComponent } from './new-booking/client-new-booking/clie
 
         // Client view
         ClientShiftListComponent,
-        ClientNewBookingComponent
+        ClientNewBookingComponent,
+        ClientShiftComponent,
+        ClientShiftMapComponent,
+        ClientShiftInfoComponent
 
     ],
     providers: [ ScheduleService ],
@@ -139,6 +145,7 @@ import { ClientNewBookingComponent } from './new-booking/client-new-booking/clie
         AdminShiftListComponent,
         ClientShiftListComponent,
         ClientNewBookingComponent,
+        ClientShiftComponent,
         ShiftsImportComponent
     ]
 })

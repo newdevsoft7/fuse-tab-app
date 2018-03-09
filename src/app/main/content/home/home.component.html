@@ -97,6 +97,10 @@
         <app-client-shift-list></app-client-shift-list>
     </ng-template>
 
+    <ng-template #clientShiftTpl let-data="data">
+        <app-client-shift [data]="data"></app-client-shift>
+    </ng-template>
+
     <ng-template #clientNewBookingTpl>
         <app-client-new-booking></app-client-new-booking>
     </ng-template>

@@ -1,0 +1,53 @@
+@import "src/app/core/scss/fuse";
+
+#client-shift {
+
+    &.page-layout {
+        overflow: unset !important;
+    }
+
+    .header {
+        max-width: inherit !important;
+        margin: -1em;
+        min-height: 200px;
+        position: relative;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        margin-bottom: 25px;
+
+        height: auto !important;
+        max-height: inherit !important;
+
+        .info {
+            font-size: 24px;
+            margin-bottom: 12px;
+            margin-top: 12px;
+
+            &.sub {
+                font-size: 16px;
+            }
+        }
+
+        .timezone {
+            font-size: 16px;
+            color: #cccccc;
+        }
+
+    }
+
+    .content {
+        flex: 1;
+
+        mat-tab-group {
+            height: 100%;
+
+            .mat-tab-body-wrapper {
+                flex-grow: 1;
+            }
+        }
+    }
+
+    .shift-notes /deep/ .fr-quick-insert {
+        display: none;
+    }
+}

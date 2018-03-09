@@ -1,0 +1,135 @@
+@import "src/app/core/scss/fuse";
+
+#client-shift-info {
+    .info-content {
+
+        .avatar {
+            width: 50px;
+            min-width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 5px;
+        }
+
+        .message {
+            line-height: 50px;
+        }
+
+        .times {
+            height: 16px;
+        }
+
+        .staff {
+            margin: 8px 12px 0 0;
+
+            .phone {
+
+                mat-icon {
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+
+    .info-sidebar {
+        padding-left: 32px;
+
+        @include media-breakpoint('sm') {
+            padding: 8px
+        }
+
+        .content {
+
+            .files {
+
+                .file {
+                    border-bottom: 1px solid #cccccc;
+                    margin-bottom: 4px;
+                    padding: 12px 0;
+                    width: 100%;
+
+                    &:last-child {
+                        border-bottom: none;
+                        padding-bottom: 0;
+                    } 
+
+                    .type-icon {
+
+                        &.document {
+                            &:before {
+                                content: 'insert_drive_file';
+                                color: #1565C0;
+                            }
+                        }
+
+                        &.spreadsheet {
+                            &:before {
+                                content: 'insert_chart';
+                                color: #4CAF50;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    .box {
+        margin-bottom: 16px;
+        @include mat-elevation(2);
+
+        header {
+            padding: 16px;
+
+            .title {
+                font-size: 17px;
+            }
+
+            .more {
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            padding: 16px;
+            background-color: #FFF;
+        }
+
+        footer {
+            padding: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        &.info-box {
+
+            .info-line {
+                margin-bottom: 24px;
+
+                .title {
+                    font-size: 15px;
+                    font-weight: 500;
+                    padding-bottom: 4px;
+                    position: relative;
+                    padding-left: 8px;
+
+                    span.required {
+                        color: #f44336;
+                        position: absolute;
+                        left: -2px;
+                    }
+                }
+
+                .info {
+                    padding-left: 8px;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+

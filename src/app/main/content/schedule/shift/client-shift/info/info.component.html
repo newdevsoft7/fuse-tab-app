@@ -1,0 +1,137 @@
+<div id="client-shift-info" class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
+
+    <div class="info-content" fxLayout="column" fxFlex="65">
+
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                <div class="title">Notes</div>
+            </header>
+
+            <div class="content w-100-0" [innerHTML]="shift.notes">
+            </div>
+        </div>
+
+        <!-- ROLES -->
+        <div *ngFor="let role of shift.shift_roles" class="box info-box" fxLayout="column">
+
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">{{role.rname}}</div>
+                <div matTooltip="Number required" *ngIf="role.num_required > 0"
+                    fxLayout="row" fxLayoutAlign="start center">
+                    <ng-container [ngSwitch]="role.sex">
+                        <mat-icon *ngSwitchCase="'male'" fontSet="fa" fontIcon="fa-male" class="mr-4 s-20"></mat-icon>
+                        <mat-icon *ngSwitchCase="'female'" fontSet="fa" fontIcon="fa-female" class="mr-4 s-20"></mat-icon>
+                        <mat-icon *ngSwitchDefault class="mr-4 s-20">wc</mat-icon>
+                    </ng-container>
+                    {{role.num_required}}
+                </div>
+            </header>
+
+            <div class="content w-100-p" fxLayout="column" fxLayoutGap="8px">
+                
+                <!-- STAFF -->
+                <div class="other-staffs" fxLayout="row" fxLayoutWrap fxLayoutAlign="start ceneter">
+
+                    <div class="staff" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap
+                        *ngFor="let staff of role.role_staff">
+
+                        <img class="avatar" [src]="staff.ppic_a" />
+
+                        <div>
+                            <strong>{{staff.name}}</strong><br>
+                            <a href="{{'tel:' + staff.mob}}" *ngIf="staff.mob" class="phone">
+                                <mat-icon class="s-16">phone</mat-icon>
+                                {{staff.mob}}
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- / STAFF -->
+
+            </div>
+
+        </div>
+        <!-- / ROLES -->
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="info-sidebar" fxLayout="column" fxFlex="35">
+
+        <!-- FILES BOX -->
+        <div class="box info-box" fxLayout="column">
+
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Files</div>
+
+                <!-- ADD FILE BUTTON -->
+                <div class="more">
+                    <input hidden type="file" #fileInput (change)="uploadFiles($event)" multiple />
+                    <button mat-icon-button (click)="fileInput.click()" matTooltip="Add files">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <!-- / ADD FILE BUTTON -->
+
+            </header>
+
+            <div class="content">
+
+                <!-- FILES LIST -->
+                <div class="files" fxLayout="column">
+                    <div class="file" *ngFor="let file of files" fxLayout="row">
+                        <div fxFlex>
+                            <mat-icon class="type-icon" [ngClass]="file.type"></mat-icon>
+                        </div>
+                        <div fxFlex>{{file.name}}</div>
+                        <div fxFlex>{{file.size}}</div>
+                        <div fxFlex>{{file.created_at}}</div>
+                    </div>
+                </div>
+                <!-- / FILES LIST -->
+
+
+            </div>
+
+        </div>
+        <!-- FILES BOX -->
+
+        <!-- REPORTS BOX -->
+        <div class="box info-box" fxLayout="column">
+        
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Reports</div>
+            </header>
+        
+            <div class="content">
+        
+                <!-- REPORTS LIST -->
+                <!-- / REPORTS LIST -->
+        
+            </div>
+        
+        </div>
+        <!--/ REPORTS BOX -->
+
+        <!-- UPLOADS BOX -->
+        <div class="box info-box" fxLayout="column">
+        
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Uploads</div>
+            </header>
+        
+            <div class="content">
+        
+                <!-- UPLOADS LIST -->
+                <!-- / UPLOADS LIST -->
+        
+            </div>
+        
+        </div>
+        <!-- / UPLOADS BOX-->
+
+    </div>
+    <!-- / RIGHT SIDEBAR -->
+
+</div>

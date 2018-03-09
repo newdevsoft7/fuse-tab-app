@@ -1,0 +1,96 @@
+<div id="client-shift" class="page-layout simple fullwidth" *ngIf="shift">
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start">
+
+                <!-- DATE, TIME, TIMEZONE -->
+                <div class="info">
+                    <span matTooltip="Date">{{shift.shift_start | date: 'EEEE, MMMM d, y'}}</span>,
+                    <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a'}}</span>
+                    &nbsp;-&nbsp;
+                    <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a'}}</span>
+                    <span matTooltip="Timezone" class="timezone" *ngIf="timezones">{{timezones[shift.timezone]}}</span>
+                </div>
+                <!-- / DATE, TIME, TIMEZONE -->
+                
+                <!-- TITLE -->
+                <div class="info" matTooltip="Shift Title" fxLayoutAlign="start center">
+                    {{shift.title}}
+                </div>
+                <!-- / TITLE -->
+
+                <ng-container *ngIf="!showMoreBtn">
+                    <!-- GENERIC TITLE -->
+                    <div class="info sub" matTooltip="Generic Title" fxLayoutAlign="start center" *ngIf="shift.generic_title">
+                        <mat-icon class="mr-8">visibility</mat-icon>
+                        {{shift.generic_title}}
+                    </div>
+                    <!-- GENERIC TITLE -->
+
+                    <!-- GENERIC LOCATION -->
+                    <div class="info sub" matTooltip="Generic Location" fxLayoutAlign="start center" *ngIf="shift.generic_location">
+                        <mat-icon class="mr-8">location_city</mat-icon>
+                        {{shift.generic_location}}
+                    </div>
+                    <!-- / GENERIC LOCATION -->
+
+                    <!-- ADDRESS -->
+                    <div class="info sub" matTooltip="Address" fxLayoutAlign="start center" *ngIf="shift.address">
+                        <mat-icon class="mr-8">location_on</mat-icon>
+                        {{shift.address}}
+                    </div>
+                    <!-- / ADDRESS -->
+
+                    <!-- CONTACT -->
+                    <div class="info sub" matTooltip="Contact" fxLayoutAlign="start center" *ngIf="shift.contact">
+                        <mat-icon class="mr-8">contacts</mat-icon>
+                        {{shift.contact}}
+                    </div>
+                    <!-- / CONTACT -->
+
+                    <!-- MANAGERS -->
+                    <div class="info sub" matTooltip="Managers" fxLayoutAlign="start center" *ngIf="managers">
+                        <mat-icon class="mr-8">person</mat-icon>
+                        {{managers}}
+                    </div>
+                    <!-- / MANAGERS -->
+                </ng-container>
+
+            </div>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="center center"
+            *ngIf="managers || shift.contact ||shift.address || shift.generic_location || shift.generic_title">
+            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
+            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
+
+            <mat-tab label="Info">
+                <app-client-shift-info [shift]="shift"></app-client-shift-info>
+            </mat-tab>
+
+            <mat-tab label="Map">
+                <app-client-shift-map [shift]="shift"  #mapTab></app-client-shift-map>
+            </mat-tab>
+
+            <mat-tab label="Expenses">
+            </mat-tab>
+
+            <mat-tab label="Reports & Uploads">
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

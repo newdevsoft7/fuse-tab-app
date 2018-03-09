@@ -60,6 +60,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     // Client view templates clientShiftListTpl
     @ViewChild('clientShiftListTpl') clientShiftListTpl; 
     @ViewChild('clientNewBookingTpl') clientNewBookingTpl;
+    @ViewChild('clientShiftTpl') clientShiftTpl;
 
     socketService: SocketService;
     alive: boolean = false;
