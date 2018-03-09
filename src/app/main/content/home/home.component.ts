@@ -45,6 +45,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
+    @ViewChild('shiftsImportTpl') shiftsImportTpl;
     @ViewChild('usersChatTpl') usersChatTpl;
     @ViewChild('adminShiftTpl') adminShiftTpl;
     @ViewChild('newShiftTpl') newShiftTpl;

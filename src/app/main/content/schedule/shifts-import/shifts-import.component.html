@@ -1,0 +1,38 @@
+<div id="shifts-import-container" class="page-layout simple">
+
+    <!-- HEADER -->
+    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column" fxLayoutAlign="center">
+        <h1>Import Shifts</h1>
+
+        <!-- ADD FILE BUTTON -->
+        <div class="file-uploader">
+            <input hidden type="file" #fileInput (change)="uploadShifts($event)" multiple
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+            <button mat-fab class="add-file-button mat-warn" (click)="fileInput.click()" aria-label="Add file"
+                *fuseIfOnDom [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <!-- / ADD FILE BUTTON -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SHIFT LIST -->
+        <div class="shifts-list" fxLayout="column" fxLayout="start">
+            
+            <!-- SHIFT -->
+            <div class="shift" *ngFor="let shift of shifts">
+
+            </div>
+            <!-- / SHIFT -->
+        </div>
+        <!-- / SHIFT LIST -->
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

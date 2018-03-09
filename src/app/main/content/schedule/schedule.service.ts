@@ -46,7 +46,7 @@ export class ScheduleService {
   /**
    * Get data for shifts multiple edit
    */
-  getShiftsData() {
+  getShiftsData(): Observable<any> {
     const url = `${SHIFT_URL}/edit`;
     return this.http.get(url).catch(this.handleError);
   }
@@ -54,9 +54,15 @@ export class ScheduleService {
   /**
    * Get role data for shift multiple edit
    */
-  getRoleData(shift_ids) {
+  getRoleData(shift_ids): Observable<any> {
     const url = `${BASE_URL}/helpers/roles/edit`;
     return this.http.post(url, { shift_ids }).catch(this.handleError);
+  }
+
+  // TODO - Upload shifts
+  importShifts(params): Observable<any> {
+    const url = `${BASE_URL}/`;
+    return this.http.post(url, params).catch(this.handleError);
   }
 
   updateShift(id: number, data): Observable<any> {
