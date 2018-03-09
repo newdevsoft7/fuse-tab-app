@@ -35,14 +35,6 @@ export const ADMIN_MODEL = [
 
             },
             {
-                'id': 'new_user',
-                'title': 'New User',
-                'translate': 'NAV.ADMIN.USERS_NEW_USER',
-                'type': 'item',
-                'tab': TAB.USERS_NEW_USER_TAB
-
-            },
-            {
                 'id': 'recent_activity',
                 'title': 'Recent Activity',
                 'translate': 'NAV.ADMIN.USERS_RECENT_ACTIVITY',

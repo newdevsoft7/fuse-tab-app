@@ -14,11 +14,21 @@ export class UserFormDialogComponent implements OnInit
     userForm: FormGroup;
     userFormErrors: any;
 
+    readonly types = [
+        { label: 'API', value: 'api' },
+        { label: 'Owner', value: 'owner' },
+        { label: 'Admin', value: 'admin' },
+        { label: 'Supervisor', value: 'supervisor' },
+        { label: 'Staff', value: 'staff' },
+        { label: 'Client', value: 'client' }
+    ];
+
     constructor(
         public dialogRef: MatDialogRef<UserFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private formBuilder: FormBuilder) {
         this.userFormErrors = {
+            lvl: {},
             fname: {},
             lname: {},
             sex: {},
@@ -30,6 +40,7 @@ export class UserFormDialogComponent implements OnInit
 
     ngOnInit() {
         this.userForm = this.formBuilder.group({
+            lvl     : ['staff'],
             fname   : ['', Validators.required],
             lname   : ['', Validators.required],
             sex     : ['', Validators.required],

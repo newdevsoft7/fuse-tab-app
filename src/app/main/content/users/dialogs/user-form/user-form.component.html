@@ -14,6 +14,17 @@
 
         <form [formGroup]="userForm" novalidate>
 
+            <div class="mb-24">
+                <mat-icon class="mr-12 mt-12">person_outline</mat-icon>
+                <mat-form-field fxFlex="1 0 auto">
+                    <mat-select formControlName="lvl" placeholder="User Type">
+                        <mat-option *ngFor="let option of types" [value]="option.value">
+                            {{option.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
             <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
                 <mat-icon class="mr-12 mt-12">account_circle</mat-icon>
                 <mat-form-field fxFlex>
