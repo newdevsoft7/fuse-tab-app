@@ -148,7 +148,7 @@
 
                     <div class="info-line">
                         <mat-form-field class="full-width">
-                            <input type="hidden" formControlName="location_id">
+                            <input type="hidden" formControlName="client_id">
                             <input matInput
                                    placeholder="Client"
                                    [matAutocomplete]="autoClient"
@@ -174,19 +174,10 @@
                                                  formControlName="work_area_ids"></app-custom-multi-select>
                     </div>
 
-                    <div class="info-line" *ngFor="let category of trackingCategories; let i = index">
-                        <mat-form-field class="full-width">
-                            <input matInput [placeholder]="category.cname" [matAutocomplete]="auto" [formControl]="categoryControls[i]">
-                        
-                            <mat-autocomplete #auto="matAutocomplete"
-                                              [displayWith]="trackingOptionDisplayFn"
-                                              (optionSelected)="selectTrackingOption($event, i)">
-                                <mat-option *ngFor="let option of filteredTrackingOptions[i]" [value]="option">
-                                    {{option.oname}}
-                                </mat-option>
-                            </mat-autocomplete>
-                        
-                        </mat-form-field>
+                    <div class="info-line" *ngFor="let category of categories">
+                        <app-static-multi-select [source]="category.tracking_options" [placeholder]="category.cname"
+                            [labelBy]="'oname'" [valueBy]="'id'" [(value)]="category.value">
+                        </app-static-multi-select>
                     </div>
                 </div>
 

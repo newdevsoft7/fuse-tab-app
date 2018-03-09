@@ -1,1 +1,312 @@
-Hello
+<div id="edit-shift-role-detail-container" fxLayout="column">
+    
+    <!-- ROLE -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" fxLayoutWrap>
+            <div>
+                <span class="role-selector">Role</span>
+
+                <mat-form-field>
+                    <mat-select [(ngModel)]="role">
+                        <mat-option *ngFor="let option of roles" [value]="option">
+                            {{option}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <!-- ADD & DELETE BUTTONS -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-raised-button color="accent" class="mr-20" (click)="addNewRole()"
+                    [disabled]="shifts.length === 0">Add a New Role</button>
+                <button mat-raised-button color="accent" (click)="deleteRole()"
+                    [disabled]="shifts.length === 0">Delete Role</button>
+            </div>
+            <!-- / ADD & DELETE BUTTONS -->
+
+        </div>
+    </div>
+    <!-- / ROLE -->
+
+    <!-- NUMBER REQUIRED & ROLE NAME -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.num_required.checked">Number required:</mat-checkbox>
+            </div>
+            
+            <div fxFlex="0 1 auto" class="mr-20">
+                <mat-form-field>
+                    <input matInput type="number" [disabled]="!list.num_required.checked"
+                        [(ngModel)]="list.num_required.value" min="0">
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.rname.checked">Name:</mat-checkbox>
+            </div>
+            
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-300">
+                    <input matInput [disabled]="!list.rname.checked" [(ngModel)]="list.rname.value">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / NUMBER REQUIRED & ROLE NAME -->
+
+    <!-- ROLE TIMES -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.times.checked">Role Times:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 1 auto" class="mr-20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <mat-radio-group [(ngModel)]="list.times.value.same_as_shift" [disabled]="!list.times.checked">
+                    <mat-radio-button class="mr-12" [value]="true">Same as shift</mat-radio-button>
+                    <mat-radio-button [value]="false"></mat-radio-button>
+                </mat-radio-group>
+                
+                <div fxFlex.gt-xs="120px">
+                    <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="list.times.value.from.time"
+                        [class.disabled]="list.times.value.same_as_shift || !list.times.checked"></w-mat-timepicker>
+                </div>
+                <div fxFlex.gt-xs="120px">
+                    <w-mat-timepicker color="primary" [placeholder]="''" [(userTime)]="list.times.value.to.time"
+                        [class.disabled]="list.times.value.same_as_shift || !list.times.checked"></w-mat-timepicker>
+                </div>
+            </div>
+    
+            <div fxFlex="0 1 auto" class="ml-20">
+                <mat-checkbox [(ngModel)]="list.unpaid_break.checked">Break:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="w-300">
+                    <input matInput type="number" [disabled]="!list.unpaid_break.checked" [(ngModel)]="list.unpaid_break.value" min="0">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / ROLE TIMES -->
+
+
+    <!-- ROLE NOTES -->
+    <div class="info-line my-20">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.notes.checked">
+                    Notes:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <textarea [froalaEditor] [(froalaModel)]="list.notes.value" *ngIf="list.notes.checked"></textarea>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / ROLE NOTES -->
+
+    <!-- REQUIREMENTS -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.requirements.checked">
+                    Requirements:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <app-shift-role-requirements [(value)]="list.requirements.value"
+                    [class.disabled]="!list.requirements.checked"></app-shift-role-requirements>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / REQUIREMENTS -->
+
+    <!-- BILL RATE & TRAVEL -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.bill_rate_group.checked">Bill Rate:</mat-checkbox>
+            </div>
+
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="mr-20">
+                    <input matInput type="number" [(ngModel)]="list.bill_rate_group.value.bill_rate" min="0"
+                        [disabled]="!list.bill_rate_group.checked">
+                    <button mat-icon-button matPrefix>
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                </mat-form-field>
+                
+                <mat-button-toggle-group [(ngModel)]="list.bill_rate_group.value.bill_rate_type"
+                    [disabled]="!list.bill_rate_group.checked">
+                    <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                    <mat-button-toggle value="flat">flat</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.bill_travel_group.checked">Travel:</mat-checkbox>
+            </div>
+            
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="mr-20">
+                    <input matInput type="number" [(ngModel)]="list.bill_travel_group.value.travel_rate" min="0" [disabled]="!list.bill_travel_group.checked">
+                    <button mat-icon-button matPrefix>
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                </mat-form-field>
+            
+                <mat-button-toggle-group
+                    [(ngModel)]="list.bill_travel_group.value.travel_type"
+                    [disabled]="!list.bill_travel_group.checked">
+                    <mat-button-toggle value="pkm">/km</mat-button-toggle>
+                    <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                    <mat-button-toggle value="flat">flat</mat-button-toggle>
+                </mat-button-toggle-group>
+
+                <mat-form-field class="mx-20">
+                    <input matInput type="number" [(ngModel)]="list.bill_travel_group.value.travel_value" min="0" [disabled]="!list.bill_travel_group.checked || list.bill_travel_group.value.travel_type === 'flat'">
+                </mat-form-field>
+
+                <span>
+                    {{list.bill_travel_group.value.travel_type === 'pkm' ? 'kms' :
+                         list.bill_travel_group.value.travel_type === 'phr' ? 'Hrs' : ''}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- / BILL RATE & TRAVEL -->
+    
+    <!-- PAY CATEGORY -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.pay_category_id.checked">Pay Category</mat-checkbox>
+            </div>
+
+            <div fxFlex="0 1 auto">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="list.pay_category_id.value" [disabled]="!list.pay_category_id.checked">
+                        <mat-option [value]="'none'">None</mat-option>
+                        <mat-option *ngFor="let category of payCategories" [value]="category.id">{{category.cname}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / PAY CATEGORY -->
+
+    <!-- PAY RATE & TRAVEL -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.pay_rate_group.checked">Pay Rate:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="mr-20">
+                    <input matInput type="number" [(ngModel)]="list.pay_rate_group.value.pay_rate" min="0" [disabled]="!list.pay_rate_group.checked">
+                    <button mat-icon-button matPrefix>
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                </mat-form-field>
+    
+                <mat-button-toggle-group [(ngModel)]="list.pay_rate_group.value.pay_rate_type" [disabled]="!list.pay_rate_group.checked">
+                    <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                    <mat-button-toggle value="flat">flat</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+    
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.pay_travel_group.checked">Travel:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field class="mr-20">
+                    <input matInput type="number" [(ngModel)]="list.pay_travel_group.value.travel_rate" min="0" [disabled]="!list.pay_travel_group.checked">
+                    <button mat-icon-button matPrefix>
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                </mat-form-field>
+    
+                <mat-button-toggle-group [(ngModel)]="list.pay_travel_group.value.travel_type" [disabled]="!list.pay_travel_group.checked">
+                    <mat-button-toggle value="pkm">/km</mat-button-toggle>
+                    <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                    <mat-button-toggle value="flat">flat</mat-button-toggle>
+                </mat-button-toggle-group>
+    
+                <mat-form-field class="mx-20">
+                    <input matInput type="number" [(ngModel)]="list.pay_travel_group.value.travel_value" min="0" [disabled]="!list.pay_travel_group.checked || list.pay_travel_group.value.travel_type === 'flat'">
+                </mat-form-field>
+    
+                <span>
+                    {{list.pay_travel_group.value.travel_type === 'pkm' ? 'kms' :
+                        list.pay_travel_group.value.travel_type === 'phr' ? 'Hrs' : ''}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- / PAY RATE & TRAVEL -->
+
+    <!-- EXPENSE LIMIT -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.expense_limit.checked">Expense Limit:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 1 auto" class="mr-20">
+                <mat-form-field>
+                    <input matInput type="number" [disabled]="!list.expense_limit.checked" [(ngModel)]="list.expense_limit.value" min="1">
+                    <button mat-icon-button matPrefix>
+                        <mat-icon>attach_money</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / EXPENSE LIMIT -->
+
+    <!-- COMPLETION NOTES -->
+    <div class="info-line my-20">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.completion_notes.checked">
+                    Completion:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <textarea [froalaEditor] [(froalaModel)]="list.completion_notes.value" *ngIf="list.completion_notes.checked"></textarea>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / COMPLETION NOTES -->
+
+    <!-- UPLOADS REQUIRED -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.uploads_required.checked">Uploads required:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="0 1 auto" class="mr-20">
+                <mat-form-field>
+                    <input matInput type="number" [disabled]="!list.uploads_required.checked" [(ngModel)]="list.uploads_required.value" min="0">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <!-- / UPLOADS REQUIRED -->
+    
+    <div class="info-line mt-20">
+        <button mat-raised-button color="accent" (click)="applyRole()" [disabled]="shifts.length === 0">Apply</button>
+    </div>
+</div>

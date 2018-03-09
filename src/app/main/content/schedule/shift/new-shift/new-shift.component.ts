@@ -65,15 +65,10 @@ export class NewShiftComponent implements OnInit {
     filteredClients = [];
     clientControl: FormControl = new FormControl();
 
-    trackingCategories = [];
-    trackingOptions = [];
-
-    categoryControls: FormControl[] = [];
-    filteredTrackingOptions: any[] = [];
-    selectedTrackingOptions: any[] = [];
-
     generic_title_show = false;
     generic_location_show = false;
+
+    categories: any[] = []; // Tracking Categories & Options
 
     constructor(
         private formBuilder: FormBuilder,        
@@ -156,43 +151,12 @@ export class NewShiftComponent implements OnInit {
                 }
             });
 
-        // Tracking Categories Autocomplete
-        this.scheduleService.getTrackingCategories().subscribe(res => {
-            this.trackingCategories = res;
-            this.selectedTrackingOptions = new Array(res.length);
-
-            this.trackingCategories.forEach((t, i) => {
-                this.filteredTrackingOptions.push([]);
-                
-                const control = new FormControl();
-                control.valueChanges.startWith('')
-                    .debounceTime(300)
-                    .distinctUntilChanged()
-                    .subscribe(val => {
-                        if (typeof val === 'string') {
-                            this.selectedTrackingOptions[i] = null;
-                            this.updateTrackingOptions();
-
-                            this.scheduleService.getAutoTrackingOptionsByCategory(t.id, val.trim().toLowerCase()).subscribe(res => {
-                                if (res.length > 0) {
-                                    this.filteredTrackingOptions[i] = res;
-                                } else {
-                                    this.filteredTrackingOptions[i] = val.trim().length > 0 ? [{
-                                        id: SHOULD_BE_ADDED_OPTION,
-                                        oname: val,
-                                        tracking_cat_id: t.id
-                                    }] : [];
-                                }
-                            });
-                        }
-                    });
-                this.categoryControls.push(control);
-            })
-        });
-
-        // Tracking Options
-        this.scheduleService.getTrackingOptions().subscribe(res => {
-            this.trackingOptions = res;
+        // Get Tracking Categories & Options
+        this.scheduleService.getShiftsData().subscribe(res => {
+            if (res.tracking) {
+                this.categories = res.tracking;
+                this.categories.forEach(c => c.value = []);
+            }
         });
 
         // Form Validation
@@ -233,40 +197,6 @@ export class NewShiftComponent implements OnInit {
         });
     }
 
-    selectTrackingOption(event: MatAutocompleteSelectedEvent, categoryIndex: number) {
-        const id = event.option.value.id;
-        const value = event.option.value.oname;
-        const tracking_cat_id = event.option.value.tracking_cat_id;
-
-        if (id === SHOULD_BE_ADDED_OPTION) {
-            const param = {
-                tracking_cat_id, 
-                oname: value
-            };
-            this.scheduleService.createTrackingOption(param).subscribe(res => {
-                const data = res.data;
-                this.selectedTrackingOptions[categoryIndex] = data.id;
-                this.updateTrackingOptions();
-                this.scheduleService.getAutoTrackingOptionsByCategory(data.tracking_cat_id, '')
-                    .subscribe(res => {
-                        this.filteredTrackingOptions[categoryIndex] = res;
-                    });
-            }, err => {
-                const errors = err.error.errors;
-                Object.keys(errors).forEach(v => {
-                    this.toastr.error(errors[v]);
-                });
-            });
-        } else {
-            this.selectedTrackingOptions[categoryIndex] = id;
-            this.updateTrackingOptions();
-        }
-    }
-
-    trackingOptionDisplayFn(value: any): string {
-        return value && typeof value === 'object' ? value.oname : value;
-    }
-
     selectClient(event: MatAutocompleteSelectedEvent) {
         const id = event.option.value.id;
         const value = event.option.value.cname;
@@ -301,13 +231,6 @@ export class NewShiftComponent implements OnInit {
         return value && typeof value === 'object' ? value.cname : value;
     }
 
-    private updateTrackingOptions() {
-        this.shiftForm.patchValue({
-            tracking_option_ids: this.selectedTrackingOptions.map(v => v).filter(x => x !== null)
-        });
-    }
-
-
     addNewDate() {
         const newDate = new ShiftDate();
         this.dates.push(newDate);
@@ -330,44 +253,42 @@ export class NewShiftComponent implements OnInit {
         if (!this.validate()) {
             return false;
         }
+
+        let params = _.cloneDeep(this.shiftForm.value);
+
         const isGroup = this.shiftForm.getRawValue().isGroup;
+        params = { ...params, grouped: isGroup ? 1 : 0 };
+
+        const shift_starts = [];
+        const shift_ends = [];
+
+        // Add shift start & end array to params
+        this.dates.forEach(date => {
+            let { shift_start, shift_end } = convertShiftDateTime(date);
+            shift_starts.push(shift_start);
+            shift_ends.push(shift_end);
+        });
+        params = { ...params, shift_start: shift_starts, shift_end: shift_ends };
+
+        // Add tracking options
+        const tracking_option_ids = _.flattenDeep(this.categories.map(c => c.value))
+        params = { ...params, tracking_option_ids };
+        removeNull(params);
+
+        this.scheduleService.createShift(params).subscribe(res => {
+            this.toastr.success(res.message);
+            // Open Role Edit Tab
+            const shifts = res.data.map(shift => shift.id);
+            this.openRoleTab(shifts);
+
+            this.tabService.closeTab(this.data.url);
+        }, err => {
+            const errors = err.error.errors;
+            Object.keys(errors).forEach(v => {
+                this.toastr.error(errors[v]);
+            });
+        });
         
-        if (this.dates.length > 1) { // Multiple Shift
-            const shifts = _.map(this.dates, date => {
-                let shift = this.makeShift(date);
-                if (isGroup) { shift = { ...shift, grouped: 1 }; }
-                return shift;
-            });
-            this.scheduleService.createShifts(shifts).subscribe(responses => {
-                this.toastr.success(`${responses.length} shifts created.`);
-                // Open Role Edit Tab
-                const shifts = responses.map(response => response.data.id);
-                this.openRoleTab(shifts);
-
-                this.tabService.closeTab(this.data.url);
-            }, err => {
-                const errors = err.error.errors;
-                Object.keys(errors).forEach(v => {
-                    this.toastr.error(errors[v]);
-                });
-            });
-        } else { // Single Shift
-            const shift = this.makeShift(this.dates[0]);
-            this.scheduleService.createShift(shift).subscribe(res => {
-                this.toastr.success('Shift created.');
-                
-                // Open Role Edit Tab
-                const shifts = [res.data.id];
-                this.openRoleTab(shifts);
-
-                this.tabService.closeTab(this.data.url);
-            }, err => {
-                const errors = err.error.errors;
-                Object.keys(errors).forEach(v => {
-                    this.toastr.error(errors[v]);
-                });
-            });
-        }
     }
 
     private openRoleTab(shifts) {
@@ -398,19 +319,7 @@ export class NewShiftComponent implements OnInit {
         
         return true;
     }
-
-    // Make a shift for request
-    private makeShift(date: ShiftDate) {
-        const { shift_start, shift_end } = convertShiftDateTime(date);
-        let shift = _.cloneDeep(this.shiftForm.value);
-        shift = {
-            ...shift,
-            shift_start,
-            shift_end
-        }
-        removeNull(shift);
-        return shift;
-    }    
+ 
 }
 
 // Return FROM and TO datetimes
@@ -424,13 +333,13 @@ function convertShiftDateTime(shiftDate: ShiftDate) {
         year, month, day,
         hour: hours12to24(shiftDate.from.hour, shiftDate.from.meriden),
         minute: shiftDate.from.minute
-    }).toDate();
+    }).format('YYYY-MM-DD HH:mm:ss');
 
     const shift_end = moment({
         year, month, day,
         hour: hours12to24(shiftDate.to.hour, shiftDate.to.meriden),
         minute: shiftDate.to.minute
-    }).toDate();
+    }).format('YYYY-MM-DD HH:mm:ss');
     
     return {
         shift_start,

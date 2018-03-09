@@ -1,0 +1,23 @@
+#edit-shift-role-detail-container {
+
+    .role-selector {
+        font-size: 16px;
+        margin-right: 20px;
+    }
+
+    .info-line {
+        margin-bottom: 4px;
+    }
+
+    w-mat-timepicker.disabled {
+        pointer-events: none;
+
+        .mat-form-field-infix {
+            color: grey;
+        }
+    }
+
+    .disabled {
+        pointer-events: none;
+    }
+}
