@@ -35,7 +35,7 @@
     <!-- / CHAT TOOLBAR -->
 
     <!-- CHAT CONTENT -->
-    <div id="chat-content" fxFlex fusePerfectScrollbar>
+    <div id="chat-content" fxFlex fusePerfectScrollbar (onScrollTop)="detectScrollTop($event)">
 
         <!-- CHAT MESSAGES -->
         <div class="chat-messages">

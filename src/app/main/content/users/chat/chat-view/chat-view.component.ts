@@ -16,7 +16,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
         if (thread) {
             this.thread = thread;
             this.updateParticipants();
-            this.readyToReply(true);
+            this.currentPage = 0;
         }
     }
 
@@ -34,6 +34,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     @Output() addUser: EventEmitter<any> = new EventEmitter();
     @Output() updatePendingMessage: EventEmitter<string> = new EventEmitter();
     @Output() updateTypingStatus: EventEmitter<boolean> = new EventEmitter();
+    @Output() fetchMessages: EventEmitter<number> = new EventEmitter();
 
     replyInput: any;
     selectedChat: any;
@@ -47,6 +48,9 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
 
     isTyping: boolean = false;
     typingSentence: string = '';
+
+    currentPage: number = 0;
+    
 
     constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
@@ -135,5 +139,12 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     stopTyping() {
         this.updateTypingStatus.next(false);
         this.isTyping = false;
+    }
+
+    detectScrollTop(event: CustomEvent) {
+        if (this.currentPage > 0) {
+            this.fetchMessages.next(this.currentPage);
+        }
+        this.currentPage++;
     }
 }

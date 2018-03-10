@@ -43,7 +43,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   pendingMessages: any = {};
   typingUsers: number[] = [];
 
-  socketTimer: NodeJS.Timer;
+  socketTimer: any;
 
   constructor(
     private tabService: TabService,
@@ -213,10 +213,22 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.readThread(threadId);
     this.selectedChat = [];
     try {
-      this.selectedChat = await this.usersChatService.getMessagesByThread(threadId);
+      this.selectedChat = await this.usersChatService.getMessagesByThread(threadId, 0);
       this.selectedThread = this.threads.find(thread => thread.id === threadId);
       this.chatView.readyToReply();
       this.updateRead();
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  async fetchMessages(page: number) {
+    try {
+      const newMessages = await this.usersChatService.getMessagesByThread(this.selectedThread.id, page);
+      if (newMessages.length > 0) {
+        this.selectedChat = [...newMessages, ...this.selectedChat];
+        this.chatView.directiveScroll.scrollToY(100);
+      }
     } catch (e) {
       this.handleError(e);
     }

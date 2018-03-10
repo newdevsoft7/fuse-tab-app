@@ -69,8 +69,8 @@ export class UsersChatService {
     return this.http.post(url, body).toPromise();
   }
 
-  async getMessagesByThread(threadId: number): Promise<any> {
-    const url = `${CHAT_URL}/thread/${threadId}`;
+  async getMessagesByThread(threadId: number, page: number): Promise<any> {
+    const url = `${CHAT_URL}/thread/${threadId}/${page}`;
     return this.http.get(url).map((_: any) => _.map(message => ({ ...message, ...{ read: true } }))).toPromise();
   }
 
