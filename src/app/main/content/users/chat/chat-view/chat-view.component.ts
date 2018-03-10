@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FusePerfectScrollbarDirective } from '../../../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
@@ -9,7 +9,7 @@ import { UserService } from '../../user.service';
     templateUrl: './chat-view.component.html',
     styleUrls  : ['./chat-view.component.scss']
 })
-export class FuseChatViewComponent implements OnInit, AfterViewInit
+export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
 {
     @Input() messages: any = [];
     @Input('thread') set updateThread(thread: any) {
@@ -28,6 +28,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     }
 
     @Input() typingUsers: number[] = [];
+    @Input() paginationDisabled: boolean = false;
 
     @Output() sendMessage: EventEmitter<any> = new EventEmitter();
     @Output() updateReadStatus: EventEmitter<number> = new EventEmitter();
@@ -50,7 +51,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     typingSentence: string = '';
 
     currentPage: number = 0;
-    
+    loading: boolean = false;    
 
     constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
@@ -58,6 +59,15 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     }
 
     ngOnInit() {}
+
+    ngOnChanges(changes: SimpleChanges) {
+        if ((changes.messages && !changes.messages.firstChange) || (changes.paginationDisabled && changes.paginationDisabled.currentValue)) {
+            this.loading = false;
+        }
+        if ((changes.messages && !changes.messages.firstChange && changes.messages.currentValue.length === 0 && !this.paginationDisabled)) {
+            this.loading = true;
+        }
+    }
 
     ngAfterViewInit()
     {
@@ -142,7 +152,8 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit
     }
 
     detectScrollTop(event: CustomEvent) {
-        if (this.currentPage > 0) {
+        if (this.currentPage > 0 && !this.paginationDisabled) {
+            this.loading = true;
             this.fetchMessages.next(this.currentPage);
         }
         this.currentPage++;

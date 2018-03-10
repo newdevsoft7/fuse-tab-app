@@ -1,5 +1,9 @@
 <!-- CHAT -->
 <div class="chat" fxFlex fxLayout="column">
+    <div class="chat-overlay" *ngIf="loading">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        Reading messages...
+    </div>
 
     <!-- CHAT TOOLBAR -->
     <mat-toolbar class="chat-toolbar">

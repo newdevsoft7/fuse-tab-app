@@ -33,6 +33,7 @@
                     [thread]="selectedThread"
                     [replyMessage]="pendingMessages[selectedThread?.id]"
                     [typingUsers]="typingUsers"
+                    [paginationDisabled]="paginationDisabled"
                     (sendMessage)="sendMessage($event)"
                     (updateReadStatus)="updateReadStatus($event)"
                     (addUser)="triggerAddUserModal($event)"

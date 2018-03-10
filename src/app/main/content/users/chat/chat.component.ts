@@ -44,6 +44,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   typingUsers: number[] = [];
 
   socketTimer: any;
+  paginationDisabled: boolean = false;
 
   constructor(
     private tabService: TabService,
@@ -210,6 +211,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async fetchChatByThread(threadId: number) {
     if (this.selectedThread && this.selectedThread.id === threadId) return;
+    this.paginationDisabled = false;
     this.readThread(threadId);
     this.selectedChat = [];
     try {
@@ -228,6 +230,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       if (newMessages.length > 0) {
         this.selectedChat = [...newMessages, ...this.selectedChat];
         this.chatView.directiveScroll.scrollToY(100);
+      } else {
+        this.paginationDisabled = true;
       }
     } catch (e) {
       this.handleError(e);
