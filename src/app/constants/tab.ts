@@ -28,7 +28,7 @@ export const REPORTS_AND_UPLOADS_SHARED_FILES_TAB = new Tab('Shared Files', '', 
 
 export const ACCOUNTING_TAB = new Tab('Accounting', '', 'accounting', {});
 export const ACCOUNTING_STAFF_INVOICES_TAB = new Tab('Staff Invoices', '', 'accounting/staff-invoices', {});
-export const ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES_TAB = new Tab('Generate Staff Invoices', '', 'accounting/staff-invoices/generate', {});
+export const ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES_TAB = new Tab('Generate Staff Invoices', 'adminGenStaffInvoicesTpl', 'accounting/admin/staff-invoices/generate', {});
 export const ACCOUNTING_STAFF_INVOICES_MY_INVOICES_TAB = new Tab('My Invoices', '', 'accounting/staff-invoices/my-invoices', {});
 export const ACCOUNTING_STAFF_INVOICES_MY_INVOICES_NEW_INVOICE_TAB = new Tab('New Invoice', '', 'accounting/staff-invoices/my-invoices/new', {});
 

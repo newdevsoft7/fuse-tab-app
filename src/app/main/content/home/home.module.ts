@@ -13,6 +13,7 @@ import { SettingsModule } from '../settings/settings.module';
 import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { TrackingModule } from '../tracking/tracking.module';
+import { AccountingModule } from '../accounting/accounting.module';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { TrackingModule } from '../tracking/tracking.module';
         ProfileRatingsModule,
         ScheduleModule,
         SettingsModule,
-        TrackingModule
+        TrackingModule,
+        AccountingModule
     ],
     exports     : [
         FuseHomeComponent

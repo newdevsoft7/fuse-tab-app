@@ -1,0 +1,45 @@
+<div id="staff-invoices-generation-container" class="page-layout simple fullwidth">
+
+    <!-- HEADER -->
+    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
+        
+        <!-- DATE RANGE SELECTOR  &  TRACKING OPTIONS -->
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="24px">
+            <mat-form-field>
+                <mat-label>From</mat-label>
+                <input matInput [matDatepicker]="fromPicker" [(ngModel)]="period.from">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>To</mat-label>
+                <input matInput [matDatepicker]="toPicker" [(ngModel)]="period.to">
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+
+        </div>
+        <!-- / DATE RANGE SELECTOR & TRACKING OPTIONS -->
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="checkboxes" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="4px">
+                <mat-checkbox [(ngModel)]="isOneInvoicePerShift">One invoice per shift</mat-checkbox>
+                <mat-checkbox [(ngModel)]="isOnlyStaffCompleted">Only staff with Completed status</mat-checkbox>
+                <mat-checkbox [(ngModel)]="isOnlyUninvoicedExpenses">Only Un-invoiced Expenses</mat-checkbox>
+            </div>
+
+            <button mat-raised-button class="mat-white-bg" (click)="generate()">
+                Generate
+            </button>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>
