@@ -13,6 +13,11 @@ export class SocketService {
   connectionStatus = new BehaviorSubject(false);
   isConnected: boolean;
 
+  reconnectable: boolean = false;
+
+  duration: number = 1000;
+  disconnectedTime: number = 0;
+
   constructor() {
     this.connect();
     this.init();
@@ -41,15 +46,31 @@ export class SocketService {
       console.log('=====Connection is closed');
       this.isConnected = false;
       this.connectionStatus.next(false);
-      this.connect();
-      this.init();
-      const interval = setInterval(() => {
-        console.log('========Reconnecting... Current status is ', this.getState());
-        if (this.getState() === WebSocket.OPEN) {
-          clearInterval(interval);
-        }
-      }, 1000);
+      if (this.reconnectable) {
+        this.reconnect();
+      }
     }
+  }
+
+  reconnect() {
+    this.enableReconnect();
+    this.connect();
+    this.opened();
+    const interval = setInterval(() => {
+      console.log('========Reconnecting... Current status is ', this.getState());
+      if (this.getState() === WebSocket.OPEN) {
+        clearInterval(interval);
+        this.listenData();
+        this.closed();
+        this.disconnectedTime = 0;
+        this.duration = 1000;
+      } else {
+        this.disconnectedTime++;
+        if (this.disconnectedTime > 10) {
+          this.duration = 10000;
+        }
+      }
+    }, this.duration);
   }
 
   listenData(): void {
@@ -69,6 +90,18 @@ export class SocketService {
           this.conn.send(data);
         }
       });
+    }
+  }
+
+  disableReconnect(): void {
+    if (this.reconnectable) {
+      this.reconnectable = false;
+    }
+  }
+
+  enableReconnect(): void {
+    if (!this.reconnectable) {
+      this.reconnectable = true;
     }
   }
 

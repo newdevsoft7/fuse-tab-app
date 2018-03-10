@@ -30,10 +30,16 @@
                   <fuse-chat-view
                     *ngIf="selectedChat" 
                     [messages]="selectedChat" 
-                    [thread]="selectedThread" 
+                    [thread]="selectedThread"
+                    [replyMessage]="pendingMessages[selectedThread?.id]"
+                    [typingUsers]="typingUsers"
+                    [paginationDisabled]="paginationDisabled"
                     (sendMessage)="sendMessage($event)"
                     (updateReadStatus)="updateReadStatus($event)"
-                    (addUser)="triggerAddUserModal($event)"></fuse-chat-view>
+                    (addUser)="triggerAddUserModal($event)"
+                    (updatePendingMessage)="updatePendingMessage($event)"
+                    (updateTypingStatus)="updateTypingStatus($event)"
+                    (fetchMessages)="fetchMessages($event)"></fuse-chat-view>
                 </mat-sidenav-content>
                 <!-- / CONTENT -->
 

@@ -40,7 +40,7 @@ import { TokenStorage } from '../../shared/services/token-storage.service';
 import { AuthGuardService } from '../../shared/guards/auth-guard.service';
 import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
 import { StarRatingModule } from 'angular-star-rating';
-
+import { DebounceDirective } from '../directives/debounce/debounce.directive';
 
 @NgModule({
     declarations   : [
@@ -52,6 +52,7 @@ import { StarRatingModule } from 'angular-star-rating';
         FuseHljsComponent,
         FuseIfOnDomDirective,
         FusePerfectScrollbarDirective,
+        DebounceDirective,
         FuseMaterialColorPickerComponent
     ],
     imports        : [
@@ -83,6 +84,7 @@ import { StarRatingModule } from 'angular-star-rating';
         FuseCountdownComponent,
         FuseHljsComponent,
         FusePerfectScrollbarDirective,
+        DebounceDirective,
         ReactiveFormsModule,
         ColorPickerModule,
         NgxDnDModule,

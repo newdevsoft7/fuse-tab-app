@@ -13,6 +13,8 @@ import { MatDialogRef, MatDialog } from '@angular/material';
 import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './dialogs';
 import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
 import { TabService } from '../../../tab/tab.service';
+import { FCMService } from '../../../../shared/services/fcm.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users-chat',
@@ -31,10 +33,18 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
   alive: boolean = false;
   socketService: SocketService;
+  fcmService: FCMService;
 
   messageSubscription: Subscription;
   activitySubscription: Subscription;
   tabSubscription: Subscription;
+  socketSubscription: Subscription;
+
+  pendingMessages: any = {};
+  typingUsers: number[] = [];
+
+  socketTimer: any;
+  paginationDisabled: boolean = false;
 
   constructor(
     private tabService: TabService,
@@ -44,9 +54,11 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private favicoService: FavicoService,
     private activityManagerService: ActivityManagerService,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private toastr: ToastrService) {
 
     this.socketService = injector.get(SocketService);
+    this.fcmService = injector.get(FCMService);
     this.fetchThreads();
     this.watchActivityChange();
     this.watchTabChange();    
@@ -55,6 +67,23 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.alive = true;
+
+    if (!this.fcmService.notificationAllowed) {
+      setTimeout(() => this.toastr.warning('Notification is not allowed for this domain.'));      
+    }
+
+    this.tabSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
+      if (!connected) {
+        this.socketTimer = setInterval(() => {
+          this.toastr.warning('Web socket is not connected yet. Connecting now...');
+        }, 10000);
+      } else {
+        if (this.socketTimer) {
+          clearInterval(this.socketTimer);
+          this.socketTimer = null;
+        }
+      }
+    });
   }
 
   listenIncomingMessages() {
@@ -74,6 +103,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
             this.chatView.readyToReply();
             if (this.activityManagerService.isFocused) {
               this.updateRead();
+              this.updateReadStatus(this.selectedThread.id);
             }
           } else {
             if (this.activityManagerService.isFocused) {
@@ -92,6 +122,27 @@ export class UsersChatComponent implements OnInit, OnDestroy {
             this.selectedThread = this.threads.find(thread => thread.id === parseInt(res.data));
           }
           break;
+        case 'typing':
+          if (this.selectedThread && res.data.thread === this.selectedThread.id) {
+            const index = this.typingUsers.indexOf(res.data.user);
+            if (res.data.status) {
+              if (index === -1) {
+                this.typingUsers.push(res.data.user);
+              }
+            } else {
+              if (index !== -1) {
+                this.typingUsers.splice(index, 1);
+              }
+            }
+          }
+          break;
+        case 'readThread':
+          if (this.selectedThread && res.data === this.selectedThread.id) {
+            this.selectedChat.filter(message => !message.read).forEach(message => {
+              message.read = true;
+            });
+          }
+          break;
       }
     });
   }
@@ -100,6 +151,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.alive = false;
     this.messageSubscription.unsubscribe();
     this.activitySubscription.unsubscribe();
+    this.tabSubscription.unsubscribe();
     this.tabSubscription.unsubscribe();
     this.selectedThread = null;
     this.selectedChat = null;
@@ -113,12 +165,30 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  updatePendingMessage(message: string) {
+    if (!this.selectedThread) return;
+    this.pendingMessages[this.selectedThread.id] = message;
+  }
+
+  updateTypingStatus(isTyping: boolean) {
+    this.socketService.sendData(JSON.stringify({
+      type: 'typing',
+      payload: {
+        status: isTyping,
+        user: this.tokenStorage.getUser().id,
+        thread: this.selectedThread.id,
+        receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+      }
+    }));
+  }
+
   watchActivityChange() {
     this.activitySubscription = this.activityManagerService.focusWatcher.skipWhile(() => !this.alive).subscribe((active: boolean) => {
       if (active && this.tabService.currentTab.url === 'users/chat' && this.selectedThread) {
         if (this.usersChatService.unreadList.length > 0) {
           this.updateRead();
         }
+        this.updateReadStatus(this.selectedThread.id);
         this.readThread(this.selectedThread.id);
       }
     });
@@ -131,6 +201,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           const unreads = this.usersChatService.unreadList.filter(message => message.thread_id === this.selectedThread.id);
           this.selectedChat = [...this.selectedChat, ...unreads];
           this.chatView.readyToReply();
+          this.updateReadStatus(this.selectedThread.id);
           this.updateRead();
         }
         this.readThread(this.selectedThread.id);
@@ -140,10 +211,11 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async fetchChatByThread(threadId: number) {
     if (this.selectedThread && this.selectedThread.id === threadId) return;
+    this.paginationDisabled = false;
     this.readThread(threadId);
     this.selectedChat = [];
     try {
-      this.selectedChat = await this.usersChatService.getMessagesByThread(threadId);
+      this.selectedChat = await this.usersChatService.getMessagesByThread(threadId, 0);
       this.selectedThread = this.threads.find(thread => thread.id === threadId);
       this.chatView.readyToReply();
       this.updateRead();
@@ -152,7 +224,25 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     }
   }
 
+  async fetchMessages(page: number) {
+    try {
+      const newMessages = await this.usersChatService.getMessagesByThread(this.selectedThread.id, page);
+      if (newMessages.length > 0) {
+        this.selectedChat = [...newMessages, ...this.selectedChat];
+        this.chatView.directiveScroll.scrollToY(100);
+      } else {
+        this.paginationDisabled = true;
+      }
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
   async sendMessage(message: any) {
+    message.sender_id = this.tokenStorage.getUser().id;    
+    this.selectedChat.push(message);
+    this.chatView.replyForm.reset();
+    this.chatView.readyToReply();
     try {
       const savedMessage = await this.usersChatService.sendMessage(message);
       this.socketService.sendData(JSON.stringify({
@@ -163,8 +253,10 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           content: savedMessage
         }
       }));
-      this.selectedChat.push(savedMessage);
-      this.chatView.readyToReply();
+      message.id = savedMessage.id;
+      message.created_at = savedMessage.created_at;
+      message.updated_at = savedMessage.updated_at;
+      message.read = false;
     } catch (e) {
       this.handleError(e);
     }
@@ -188,16 +280,17 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
   }
 
-  async updateReadStatus(msgIds: number[]) {
+  async updateReadStatus(threadId: number) {
     try {
-      await this.usersChatService.updateReadStatus(msgIds);
-      for (let i = this.usersChatService.unreadList.length - 1; i >= 0; i--) {
-        const id = this.usersChatService.unreadList[i].id;
-        if (msgIds.indexOf(id) !== -1) {
-          this.usersChatService.unreadList.splice(i, 1);
+      await this.usersChatService.updateReadStatus(threadId);
+      this.selectedThread.unread = 0;
+      this.socketService.sendData(JSON.stringify({
+        type: 'readThread',
+        payload: {
+          thread: threadId,
+          receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
         }
-      }
-      this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
+      }));
     } catch (e) {
       this.handleError(e);
     }

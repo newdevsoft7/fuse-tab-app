@@ -12,7 +12,7 @@
 
   <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar fxLayout="column">
     <mat-form-field class="" fxFlex floatPlaceholder="never">
-        <textarea matInput placeholder="Search users here..." [(ngModel)]="searchText" (ngModelChange)="searchUsers()"></textarea>
+        <textarea debounce matInput placeholder="Search users here..." [(ngModel)]="searchText" (onValueChange)="searchUsers()"></textarea>
     </mat-form-field>
 
     <div class="user-list" fxLayout="column">

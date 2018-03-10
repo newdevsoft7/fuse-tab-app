@@ -11,7 +11,6 @@ import { environment } from '../../../environments/environment';
 import { TokenStorage } from './token-storage.service';
 
 import { UsersChatService } from '../../main/content/users/chat/chat.service';
-import { SocketService } from './socket.service';
 import { FavicoService } from './favico.service';
 
 const BASE_URL = `${environment.apiUrl}`;
@@ -35,7 +34,6 @@ export class AuthenticationService {
         private tokenStorage: TokenStorage,
         private router: Router,
         private usersChatService: UsersChatService,
-        private socketService: SocketService,
         private favicoService: FavicoService) { }
     
     /**
@@ -105,9 +103,6 @@ export class AuthenticationService {
             await this.usersChatService.removeDevice();
         } catch (e) {}
         this.usersChatService.Device = null;
-        this.socketService.sendData(JSON.stringify({
-            type: 'disconnect'
-        }));
         this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
         this.tokenStorage.clear();
         this.favicoService.setBadge(0);

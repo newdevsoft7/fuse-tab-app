@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { FuseConfigService } from '../../services/config.service';
 import { Subscription } from 'rxjs/Subscription';
@@ -14,6 +14,8 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy
     isMobile = false;
     isInitialized = true;
     ps;
+
+    @Output() onScrollTop: EventEmitter<CustomEvent> = new EventEmitter();
 
     constructor(
         public element: ElementRef,
@@ -46,6 +48,10 @@ export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy
         // Initialize the perfect-scrollbar
         this.ps = new PerfectScrollbar(this.element.nativeElement, {
             wheelPropagation: true
+        });
+
+        this.element.nativeElement.addEventListener('ps-y-reach-start', (e: CustomEvent) => {
+            this.onScrollTop.next(e);
         });
     }
 

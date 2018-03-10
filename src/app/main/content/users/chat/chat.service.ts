@@ -69,9 +69,9 @@ export class UsersChatService {
     return this.http.post(url, body).toPromise();
   }
 
-  async getMessagesByThread(threadId: number): Promise<any> {
-    const url = `${CHAT_URL}/thread/${threadId}`;
-    return this.http.get(url).toPromise();
+  async getMessagesByThread(threadId: number, page: number): Promise<any> {
+    const url = `${CHAT_URL}/thread/${threadId}/${page}`;
+    return this.http.get(url).map((_: any) => _.map(message => ({ ...message, ...{ read: true } }))).toPromise();
   }
 
   async getUnreadMessages(): Promise<any> {
@@ -79,9 +79,9 @@ export class UsersChatService {
     return this.http.get(url).toPromise();
   }
 
-  async updateReadStatus(ids: number[]): Promise<any> {
-    const url = `${USER_URL}/message/unread`;
-    return this.http.post(url, { ids }).toPromise();
+  async updateReadStatus(id: number): Promise<any> {
+    const url = `${CHAT_URL}/thread/${id}/read`;
+    return this.http.put(url, {}).toPromise();
   }
 
   async getThreads() {

@@ -12,7 +12,7 @@
 
                     <mat-icon>search</mat-icon>
 
-                    <input [(ngModel)]="searchText" type="text" placeholder="Search or start new chat" (ngModelChange)="searchUsers.next(searchText)" fxFlex>
+                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search or start new chat" (onValueChange)="searchUsers.next($event)" fxFlex>
 
                 </div>
             </div>
@@ -58,7 +58,7 @@
                         </div>
 
                         <div fxLayout="column" fxLayoutAlign="center end">
-                            <div *ngIf="unread > 0" class="unread-message-count">{{unread}}</div>
+                            <div *ngIf="thread.unread > 0" class="unread-message-count">{{thread.unread}}</div>
                         </div>
                     </div>
                 </div>
