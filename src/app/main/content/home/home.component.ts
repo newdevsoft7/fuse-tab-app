@@ -1,4 +1,5 @@
 import { Component, ViewChild, OnInit, OnDestroy, Injector } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
@@ -22,6 +23,9 @@ import { SocketService } from '../../../shared/services/socket.service';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
 
 import 'rxjs/add/operator/skipWhile';
+
+import { ShiftsExportAsExcelDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
+import { ShiftsExportAsPdfDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
 
 @Component({
     selector   : 'fuse-home',
@@ -71,6 +75,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     socketSubscription: Subscription;
 
+    dialogRef: any;
+
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private fuseNavigationService: FuseNavigationService,
@@ -78,7 +84,9 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         private injector: Injector,
         private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
-        private authService: AuthenticationService) {
+        private authService: AuthenticationService,
+        private dialog: MatDialog,
+    ) {
 
         this.socketService = injector.get(SocketService);
         this.fcmService = injector.get(FCMService);
@@ -94,7 +102,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
         this.loadFCMservices();
 
-        this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl))
+        this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl));
+        
     }
 
     async runSockets() {
@@ -124,6 +133,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     ngOnInit() {
         this.runSockets();
         this.alive = true;
+        this.addMenuByUserLevel();
     }
 
     ngOnDestroy() {
@@ -154,4 +164,57 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         this.tabsComponent.closeTabByURL(url);
     }
 
+    private addMenuByUserLevel() {
+        const level = this.tokenStorage.getUser().lvl;
+        const navModel = this.fuseNavigationService.getNavigationModel();
+
+        switch (level) {
+            case 'client':
+
+                // Add dialog to menu
+                const exportShiftMenu = navModel[0].children[2];
+
+                // Excel Spreadsheet
+                exportShiftMenu.children.push(
+                    {
+                        'id': 'excel_spreadsheet',
+                        'title': 'Excel Spreadsheet',
+                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
+                        'type': 'item',
+                        'function': () => {
+                            this.dialogRef = this.dialog.open(ShiftsExportAsExcelDialogComponent, {
+                                panelClass: 'client-shifts-export-as-excel-dialog',
+                            });
+
+                            this.dialogRef.afterClosed().subscribe(res => {});
+                        }
+                    },
+
+                );
+
+                // PDF
+                exportShiftMenu.children.push(
+                    {
+                        'id': 'pdf_overview',
+                        'title': 'PDF Overview',
+                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
+                        'type': 'item',
+                        'function': () => {
+                            this.dialogRef = this.dialog.open(ShiftsExportAsPdfDialogComponent, {
+                                panelClass: 'client-shifts-export-as-pdf-dialog',
+                            });
+
+                            this.dialogRef.afterClosed().subscribe(res => { });
+                        }
+                    },
+
+                );
+                break;
+        
+            default:
+                break;
+        }   
+    }
+
 }
+

@@ -1,0 +1,51 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Export shifts as PDF</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <!-- DATE RANGE SELECTOR -->
+        <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutAlign="start" fxLayoutGap="8px">
+            <mat-form-field class="date-picker">
+                <input matInput [matDatepicker]="fromPicker" placeholder="From" [(ngModel)]="period.from">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="date-picker">
+                <input matInput [matDatepicker]="toPicker" placeholder="To" [(ngModel)]="period.to">
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <!-- / DATE RANGE SELECTOR -->
+
+        <!-- WORK AREAS -->
+        <div class="workareas">
+            <app-custom-multi-select [autocompleteObservable]="workareas$" [labelBy]="'aname'" [valueBy]="'id'" placeholder="Work areas"
+                [(value)]="workareas"></app-custom-multi-select>
+        </div>
+        <!-- / WORK AREAS -->
+
+        <!-- ORIENTATION -->
+        <div class="mt-16" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start" fxLayoutWrap>
+            <div class="mr-24 orientation">Orientation</div>
+            <mat-radio-group [(ngModel)]="orientation"
+                fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start start" fxLayoutWrap>
+                <mat-radio-button class="mr-8 mb-8" value="portrait">Portrait</mat-radio-button>
+                <mat-radio-button class="mr-8 mb-8" value="landscape">Landscape</mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <!-- / ORIENTATION -->
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="accent" (click)="export()" cdkFocusInitial>Export</button>
+    </div>
+
+</div>

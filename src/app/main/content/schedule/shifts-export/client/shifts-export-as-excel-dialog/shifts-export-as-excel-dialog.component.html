@@ -1,0 +1,40 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Export shifts as excel spreadsheet</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <!-- DATE RANGE SELECTOR -->
+        <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutAlign="start" fxLayoutGap="8px">
+            <mat-form-field class="date-picker">
+                <input matInput [matDatepicker]="fromPicker" placeholder="From" [(ngModel)]="period.from">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+            </mat-form-field>
+        
+            <mat-form-field class="date-picker">
+                <input matInput [matDatepicker]="toPicker" placeholder="To" [(ngModel)]="period.to">
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <!-- / DATE RANGE SELECTOR -->
+
+        <!-- WORK AREAS -->
+        <div class="workareas">
+            <app-custom-multi-select [autocompleteObservable]="workareas$" [labelBy]="'aname'"
+                [valueBy]="'id'" placeholder="Work areas" [(value)]="workareas"></app-custom-multi-select>
+        </div>
+        <!-- / WORK AREAS -->
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="accent" (click)="export()" cdkFocusInitial>Export</button>
+    </div>
+
+</div>
