@@ -46,6 +46,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
     @ViewChild('shiftsImportTpl') shiftsImportTpl;
+    @ViewChild('shiftsExportAsExcelTpl') shiftsExportAsExcelTpl;
     @ViewChild('usersChatTpl') usersChatTpl;
     @ViewChild('adminShiftTpl') adminShiftTpl;
     @ViewChild('newShiftTpl') newShiftTpl;
@@ -54,7 +55,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('settingsTpl') settingsTpl;
     @ViewChild('trackingTpl') trackingTpl;
     @ViewChild('adminGenStaffInvoicesTpl') adminGenStaffInvoicesTpl;
-
+    
     // Staff view templates
     @ViewChild('staffShiftTpl') staffShiftTpl;
 

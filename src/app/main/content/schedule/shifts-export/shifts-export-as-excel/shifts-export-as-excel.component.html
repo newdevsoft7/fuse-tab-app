@@ -1,0 +1,115 @@
+<div id="shifts-export-as-excel-container" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- CONTENT -->
+    <div class="content p-12 mat-white-bg">
+
+        <!-- BASIC -->
+        <div class="box info-box" fxLayout="column">
+
+            <div class="content" fxLayout="column">
+
+                <!-- DATE RANGE SELECTOR -->
+                <div class="info-line" fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="8px">
+                    <mat-form-field class="date-picker">
+                        <input matInput [matDatepicker]="fromPicker" placeholder="From" [(ngModel)]="period.from">
+                        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #fromPicker></mat-datepicker>
+                    </mat-form-field>
+                
+                    <mat-form-field class="date-picker">
+                        <input matInput [matDatepicker]="toPicker" placeholder="To" [(ngModel)]="period.to">
+                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #toPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <!-- / DATE RANGE SELECTOR -->
+
+                <!-- MANAGERS -->
+                <div class="info-line">
+                    <app-custom-multi-select [autocompleteObservable]="managers$" [placeholder]="'Managers'"
+                        [labelBy]="'name'" [valueBy]="'id'" [(value)]="managers"></app-custom-multi-select>
+                </div>
+                <!-- / MANAGERS -->
+
+                <!-- WORK AREAS -->
+                <div class="info-line">
+                    <app-custom-multi-select [autocompleteObservable]="workareas$" [labelBy]="'aname'" [valueBy]="'id'"
+                        placeholder="Work areas" [(value)]="workareas"></app-custom-multi-select>
+                </div>
+                <!-- / WORK AREAS -->
+
+                <!-- TRACKING CATEGORIES -->
+                <div class="info-line" *ngFor="let category of categories">
+                    <app-static-multi-select [source]="category.tracking_options" [labelBy]="'oname'" [valueBy]="'id'"
+                        [(value)]="category.value" [placeholder]="category.cname"></app-static-multi-select>
+                </div>
+                <!-- / TRACKING CATEGORIES -->
+
+            </div>
+        </div>
+        <!-- / BASIC -->
+
+        <!-- OPTIONS -->
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                Options
+            </header>
+        
+            <div class="content" fxLayout="column">
+                <div class="info-line mb-8" *ngFor="let option of options">
+                    <mat-checkbox [(ngModel)]="option.checked">{{option.label}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <!-- / OPTIONS -->
+
+        <!-- STAFF STATUSES -->
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                Staff Status
+            </header>
+        
+            <div class="content" [ngClass.gt-xs]="'h-160'" fxLayout="column wrap">
+                <div class="info-line" *ngFor="let status of staffStatues">
+                    <mat-checkbox [(ngModel)]="status.checked">{{status.label}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <!-- / STAFF STATUSES -->
+
+        <!-- EXTRA USER INFO -->
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                Extra User Info
+            </header>
+        
+            <div class="content">
+                <div class="info-line">
+                    <!-- TOOD -->
+                </div>
+            </div>
+        </div>
+        <!-- / EXTRA USER INFO -->
+
+        <!-- COLUMNS -->
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                Columns
+            </header>
+        
+            <div class="content" [ngClass.gt-xs]="'h-260'" fxLayout="column wrap">
+                <div class="info-line">
+                    <!-- TOOD -->
+                </div>
+            </div>
+        </div>
+        <!-- / COLUMNS -->
+        
+        <div class="mt-20">
+            <button mat-raised-button color="accent" (click)="export()">Export</button>
+        </div>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

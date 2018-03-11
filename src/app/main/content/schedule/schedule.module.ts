@@ -58,6 +58,7 @@ import { ClientNewBookingComponent } from './new-booking/client-new-booking/clie
 import { ClientShiftComponent } from './shift/client-shift/client-shift.component';
 import { ClientShiftMapComponent } from './shift/client-shift/map/map.component';
 import { ClientShiftInfoComponent } from './shift/client-shift/info/info.component';
+import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-excel/shifts-export-as-excel.component';
 
 @NgModule({
 	imports: [
@@ -103,6 +104,7 @@ import { ClientShiftInfoComponent } from './shift/client-shift/info/info.compone
         AdminShiftListComponent,
         EditShiftComponent,
         ShiftsImportComponent,
+        ShiftsExportAsExcelComponent,
         
         // Staff view of shift
         StaffShiftComponent,
@@ -120,7 +122,7 @@ import { ClientShiftInfoComponent } from './shift/client-shift/info/info.compone
         ClientNewBookingComponent,
         ClientShiftComponent,
         ClientShiftMapComponent,
-        ClientShiftInfoComponent
+        ClientShiftInfoComponent,
 
     ],
     providers: [ ScheduleService ],
@@ -146,7 +148,8 @@ import { ClientShiftInfoComponent } from './shift/client-shift/info/info.compone
         ClientShiftListComponent,
         ClientNewBookingComponent,
         ClientShiftComponent,
-        ShiftsImportComponent
+        ShiftsImportComponent,
+        ShiftsExportAsExcelComponent
     ]
 })
 export class ScheduleModule { }
