@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 import { ScheduleService } from '../../schedule.service';
 
 @Component({
-	selector: 'app-shifts-export-as-excel',
-	templateUrl: './shifts-export-as-excel.component.html',
-    styleUrls: ['./shifts-export-as-excel.component.scss'],
+    selector: 'app-shifts-export-as-pdf',
+    templateUrl: './shifts-export-as-pdf.component.html',
+    styleUrls: ['./shifts-export-as-pdf.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ShiftsExportAsExcelComponent implements OnInit {
+export class ShiftsExportAsPdfComponent implements OnInit {
 
     workareas$;
     workareas: any[] = [];
@@ -27,32 +27,11 @@ export class ShiftsExportAsExcelComponent implements OnInit {
         to: moment().add(7, 'day').format('YYYY-MM-DD')
     };
 
-    // Options
-    options = [
-        { label: 'Unfilled only', checked: false },
-        { label: 'Include reports', checked: false },
-        { label: 'Group by shift', checked: false }
-    ]
-
-    // Staff statues
-    staffStatues = [
-        { label: 'Selected', checked: true },
-        { label: 'Checked In', checked: true },
-        { label: 'Completed', checked: true },
-        { label: 'Other', checked: false },
-        { label: 'Confirmed', checked: true },
-        { label: 'Checked Out', checked: true },
-        { label: 'Invoiced', checked: true },
-        { label: 'No Show', checked: false },
-        { label: 'Replacement Requested', checked: true },
-        { label: 'Paid', checked: true },
-    ]
-
-	constructor(
+    constructor(
         private scheduleService: ScheduleService
     ) { }
 
-	ngOnInit() {
+    ngOnInit() {
         this.workareas$ = (text: string): Observable<any> => {
             return this.scheduleService.getWorkAreas(text);
         };
@@ -70,7 +49,7 @@ export class ShiftsExportAsExcelComponent implements OnInit {
             }
         });
     }
-    
+
     export() {
         // TODO
     }

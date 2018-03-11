@@ -38,6 +38,8 @@ import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edi
 import { AdminShiftEditPeriodComponent } from './shift/admin-shift/edit-period/edit-period.component';
 import { AdminShiftEditManagersComponent } from './shift/admin-shift/edit-managers/edit-managers.component';
 import { AdminShiftListComponent } from './shift-list/admin-shift-list/admin-shift-list.component';
+import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-excel/shifts-export-as-excel.component';
+import { ShiftsExportAsPdfComponent } from './shifts-export/shifts-export-as-pdf/shifts-export-as-pdf.component';
 
 // Staff Shift Components
 import { StaffShiftComponent } from './shift/staff-shift/staff-shift.component';
@@ -58,7 +60,7 @@ import { ClientNewBookingComponent } from './new-booking/client-new-booking/clie
 import { ClientShiftComponent } from './shift/client-shift/client-shift.component';
 import { ClientShiftMapComponent } from './shift/client-shift/map/map.component';
 import { ClientShiftInfoComponent } from './shift/client-shift/info/info.component';
-import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-excel/shifts-export-as-excel.component';
+
 
 @NgModule({
 	imports: [
@@ -105,6 +107,7 @@ import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-e
         EditShiftComponent,
         ShiftsImportComponent,
         ShiftsExportAsExcelComponent,
+        ShiftsExportAsPdfComponent,
         
         // Staff view of shift
         StaffShiftComponent,
@@ -122,7 +125,7 @@ import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-e
         ClientNewBookingComponent,
         ClientShiftComponent,
         ClientShiftMapComponent,
-        ClientShiftInfoComponent,
+        ClientShiftInfoComponent
 
     ],
     providers: [ ScheduleService ],
@@ -149,7 +152,8 @@ import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-e
         ClientNewBookingComponent,
         ClientShiftComponent,
         ShiftsImportComponent,
-        ShiftsExportAsExcelComponent
+        ShiftsExportAsExcelComponent,
+        ShiftsExportAsPdfComponent
     ]
 })
 export class ScheduleModule { }

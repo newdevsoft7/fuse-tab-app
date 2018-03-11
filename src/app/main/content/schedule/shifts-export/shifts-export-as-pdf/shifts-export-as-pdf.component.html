@@ -1,4 +1,4 @@
-<div id="shifts-export-as-excel-container" class="page-layout simple fullwidth" fusePerfectScrollbar>
+<div id="shifts-export-as-pdf-container" class="page-layout simple fullwidth" fusePerfectScrollbar>
 
     <!-- CONTENT -->
     <div class="content p-12 mat-white-bg">
@@ -18,7 +18,7 @@
                         <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                         <mat-datepicker #fromPicker></mat-datepicker>
                     </mat-form-field>
-                
+
                     <mat-form-field class="date-picker">
                         <input matInput [matDatepicker]="toPicker" placeholder="To" [(ngModel)]="period.to">
                         <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
@@ -29,8 +29,8 @@
 
                 <!-- MANAGERS -->
                 <div class="info-line">
-                    <app-custom-multi-select [autocompleteObservable]="managers$" [placeholder]="'Managers'"
-                        [labelBy]="'name'" [valueBy]="'id'" [(value)]="managers"></app-custom-multi-select>
+                    <app-custom-multi-select [autocompleteObservable]="managers$" [placeholder]="'Managers'" [labelBy]="'name'"
+                        [valueBy]="'id'" [(value)]="managers"></app-custom-multi-select>
                 </div>
                 <!-- / MANAGERS -->
 
@@ -57,35 +57,20 @@
             <header class="mat-accent-bg">
                 Options
             </header>
-        
+
             <div class="content" fxLayout="column">
-                <div class="info-line mb-8" *ngFor="let option of options">
-                    <mat-checkbox [(ngModel)]="option.checked">{{option.label}}</mat-checkbox>
+                <div class="info-line mb-8">
                 </div>
             </div>
         </div>
         <!-- / OPTIONS -->
-
-        <!-- STAFF STATUSES -->
-        <div class="box info-box" fxLayout="column">
-            <header class="mat-accent-bg">
-                Staff Status
-            </header>
-        
-            <div class="content" [ngClass.gt-xs]="'h-160'" fxLayout="column wrap">
-                <div class="info-line" *ngFor="let status of staffStatues">
-                    <mat-checkbox [(ngModel)]="status.checked">{{status.label}}</mat-checkbox>
-                </div>
-            </div>
-        </div>
-        <!-- / STAFF STATUSES -->
 
         <!-- EXTRA USER INFO -->
         <div class="box info-box" fxLayout="column">
             <header class="mat-accent-bg">
                 Extra User Info
             </header>
-        
+
             <div class="content">
                 <div class="info-line">
                     <!-- TOOD -->
@@ -94,20 +79,6 @@
         </div>
         <!-- / EXTRA USER INFO -->
 
-        <!-- COLUMNS -->
-        <div class="box info-box" fxLayout="column">
-            <header class="mat-accent-bg">
-                Columns
-            </header>
-        
-            <div class="content" [ngClass.gt-xs]="'h-260'" fxLayout="column wrap">
-                <div class="info-line">
-                    <!-- TOOD -->
-                </div>
-            </div>
-        </div>
-        <!-- / COLUMNS -->
-        
         <div class="mt-20">
             <button mat-raised-button color="accent" (click)="export()">Export</button>
         </div>

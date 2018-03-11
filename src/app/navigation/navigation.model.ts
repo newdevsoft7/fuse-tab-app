@@ -110,7 +110,7 @@ export const ADMIN_MODEL = [
                 'title': 'Export Shifts',
                 'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS',
                 'type': 'collapse',
-                'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
+                // 'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
                 'children': [
                     {
                         'id': 'excel_spreadsheet',
@@ -444,7 +444,7 @@ export const CLIENT_MODEL = [
                 'title': 'Export Shifts',
                 'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS',
                 'type': 'collapse',
-                'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
+                // 'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
                 'children': [
                     {
                         'id': 'excel_spreadsheet',
