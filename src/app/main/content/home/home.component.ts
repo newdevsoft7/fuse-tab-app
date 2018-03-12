@@ -26,6 +26,7 @@ import 'rxjs/add/operator/skipWhile';
 
 import { ShiftsExportAsExcelDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
 import { ShiftsExportAsPdfDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
+import { UsersExportDialogComponent } from '../users/users-export-dialog/users-export-dialog.component';
 
 @Component({
     selector   : 'fuse-home',
@@ -209,6 +210,28 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                     },
 
                 );
+                break;
+
+            case 'admin':
+            case 'owner':
+
+                // Add Users/Export Dialog
+                const usersMenu = navModel[0];
+                usersMenu.children.unshift(
+                    {
+                        'id': 'export',
+                        'title': 'Export',
+                        'translate': 'NAV.ADMIN.USERS_EXPORT',
+                        'type': 'item',
+                        'function': () => {
+                            this.dialogRef = this.dialog.open(UsersExportDialogComponent, {
+                                panelClass: 'users-export-dialog',
+                            });
+
+                            this.dialogRef.afterClosed().subscribe(res => { });
+                        }
+                    },
+                )
                 break;
         
             default:

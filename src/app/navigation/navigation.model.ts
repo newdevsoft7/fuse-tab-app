@@ -12,13 +12,6 @@ export const ADMIN_MODEL = [
         'tab': TAB.USERS_TAB,
         'children': [
             {
-                'id': 'export',
-                'title': 'Export',
-                'translate': 'NAV.ADMIN.USERS_EXPORT',
-                'type': 'item',
-                'tab': TAB.USERS_EXPORTS_TAB
-            },
-            {
                 'id': 'presentations',
                 'title': 'Presentations',
                 'translate': 'NAV.ADMIN.USERS_PRESENTATIONS',

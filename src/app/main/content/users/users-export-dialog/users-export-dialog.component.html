@@ -1,0 +1,56 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Export users</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div class="info-line">
+            <mat-form-field>
+                <mat-select [(ngModel)]="selectedType" placeholder="User Type">
+                    <ng-container *ngFor="let group of types">
+                        <mat-optgroup *ngIf="group.children.length > 0" [label]="group.text">
+                            <mat-option *ngFor="let option of group.children" [value]="option.id">
+                                {{option.text}}
+                            </mat-option>
+                        </mat-optgroup>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- FILTER -->
+        <div class="info-line">
+            <mat-form-field fxFlexFill>
+                <mat-label>Filters</mat-label>
+                <mat-chip-list #chipList>
+                    <mat-chip *ngFor="let item of filters" (remove)="remove(item)">
+                        {{item.text}}
+                        <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+        
+                    <input #chipInput [matChipInputFor]="chipList" [matChipInputAddOnBlur]="false" (matChipInputTokenEnd)="addNew($event)" [matAutocomplete]="auto"
+                    />
+                </mat-chip-list>
+            </mat-form-field>
+        
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
+                <ng-container *ngFor="let group of source">
+                    <mat-optgroup *ngIf="sourceFiltered(group.children).length > 0" [label]="group.text">
+                        <mat-option *ngFor="let option of sourceFiltered(group.children)" [value]="option">
+                            {{option.text}}
+                        </mat-option>
+                    </mat-optgroup>
+                </ng-container>
+            </mat-autocomplete>
+        </div>
+        <!-- / FILTER -->
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="accent" (click)="export()" cdkFocusInitial>Export</button>
+    </div>
+
+</div>

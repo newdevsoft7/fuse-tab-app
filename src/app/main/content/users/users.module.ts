@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersComponent } from './users.component';
-import { UsersExportsComponent } from './exports/exports.component';
-import { UsersPresentationsComponent } from './presentations/presentations.component';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { UserService } from './user.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
@@ -30,6 +28,7 @@ import { UsersProfileAttributesComponent } from './profile/attributes/attributes
 import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
 import { UsersSearchBarComponent } from './search-bar/search-bar.component';
 import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filter.component';
+import { UsersExportDialogComponent } from './users-export-dialog/users-export-dialog.component';
 
 @NgModule({
     imports: [
@@ -39,8 +38,6 @@ import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filte
     declarations: [
         UsersComponent,
         UsersSearchBarComponent,
-        UsersExportsComponent,
-        UsersPresentationsComponent,
         UserFormDialogComponent,
         UsersProfileComponent,
         UsersProfileAboutComponent,
@@ -64,12 +61,11 @@ import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filte
         AddUserFormDialogComponent,
         UsersProfileAttributesComponent,
         UsersProfileWorkAreasComponent,
-        UsersAddFilterDialogComponent
+        UsersAddFilterDialogComponent,
+        UsersExportDialogComponent
     ],
     exports: [
         UsersComponent,
-        UsersExportsComponent,
-        UsersPresentationsComponent,
         UsersProfileComponent,
         UsersChatComponent,
         FuseChatViewComponent,
@@ -89,7 +85,8 @@ import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filte
         UsersProfileVideoGalleryDialogComponent,
         UsersAddFilterDialogComponent,
         NewThreadFormDialogComponent,
-        AddUserFormDialogComponent
+        AddUserFormDialogComponent,
+        UsersExportDialogComponent
     ]
 })
 export class UsersModule { }

@@ -2,8 +2,7 @@ import { Tab } from "../main/tab/tab";
 
 // Admin tabs
 export const USERS_TAB = new Tab('Users', 'usersTpl', 'users', {});
-export const USERS_EXPORTS_TAB = new Tab('Exports', 'usersExportsTpl', 'users/exports', {});
-export const USERS_PRESENTATIONS_TAB = new Tab('Presentations', 'usersPresentationsTpl', 'users/presentations', {});
+export const USERS_PRESENTATIONS_TAB = new Tab('Presentations', '', 'users/presentations', {});
 export const USERS_PROFILE_TAB = new Tab('Profile', 'profileTpl', 'users/profile', {});
 export const USERS_NEW_SUBMISSION_TAB = new Tab('New Submission', '', 'users/new-submission', {});
 export const USERS_NEW_USER_TAB = new Tab('New User', '', 'users/new-user', {});
