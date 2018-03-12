@@ -2,6 +2,8 @@ import { Component, ViewChild, OnInit, OnDestroy, Injector } from '@angular/core
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
+import * as _ from 'lodash';
+
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
 import { FuseNavigationService } from '../../../core/components/navigation/navigation.service';
 import { FuseNavigationModel } from '../../../navigation/navigation.model';
@@ -105,6 +107,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
         this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl));
         
+        this.addMenuByUserLevel();
     }
 
     async runSockets() {
@@ -134,7 +137,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     ngOnInit() {
         this.runSockets();
         this.alive = true;
-        this.addMenuByUserLevel();
     }
 
     ngOnDestroy() {
@@ -176,40 +178,44 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                 const exportShiftMenu = navModel[0].children[2];
 
                 // Excel Spreadsheet
-                exportShiftMenu.children.push(
-                    {
-                        'id': 'excel_spreadsheet',
-                        'title': 'Excel Spreadsheet',
-                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
-                        'type': 'item',
-                        'function': () => {
-                            this.dialogRef = this.dialog.open(ShiftsExportAsExcelDialogComponent, {
-                                panelClass: 'client-shifts-export-as-excel-dialog',
-                            });
-
-                            this.dialogRef.afterClosed().subscribe(res => {});
-                        }
-                    },
-
-                );
+                if (_.findIndex(exportShiftMenu.children, ['id', 'excel_spreadsheet']) < 0) {
+                    exportShiftMenu.children.push(
+                        {
+                            'id': 'excel_spreadsheet',
+                            'title': 'Excel Spreadsheet',
+                            'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
+                            'type': 'item',
+                            'function': () => {
+                                this.dialogRef = this.dialog.open(ShiftsExportAsExcelDialogComponent, {
+                                    panelClass: 'client-shifts-export-as-excel-dialog',
+                                });
+    
+                                this.dialogRef.afterClosed().subscribe(res => {});
+                            }
+                        },
+    
+                    );
+                }
 
                 // PDF
-                exportShiftMenu.children.push(
-                    {
-                        'id': 'pdf_overview',
-                        'title': 'PDF Overview',
-                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
-                        'type': 'item',
-                        'function': () => {
-                            this.dialogRef = this.dialog.open(ShiftsExportAsPdfDialogComponent, {
-                                panelClass: 'client-shifts-export-as-pdf-dialog',
-                            });
-
-                            this.dialogRef.afterClosed().subscribe(res => { });
-                        }
-                    },
-
-                );
+                if (_.findIndex(exportShiftMenu.children, ['id', 'pdf_overview']) < 0) {
+                    exportShiftMenu.children.push(
+                        {
+                            'id': 'pdf_overview',
+                            'title': 'PDF Overview',
+                            'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
+                            'type': 'item',
+                            'function': () => {
+                                this.dialogRef = this.dialog.open(ShiftsExportAsPdfDialogComponent, {
+                                    panelClass: 'client-shifts-export-as-pdf-dialog',
+                                });
+    
+                                this.dialogRef.afterClosed().subscribe(res => { });
+                            }
+                        },
+    
+                    );
+                }
                 break;
 
             case 'admin':
@@ -217,21 +223,23 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
                 // Add Users/Export Dialog
                 const usersMenu = navModel[0];
-                usersMenu.children.unshift(
-                    {
-                        'id': 'export',
-                        'title': 'Export',
-                        'translate': 'NAV.ADMIN.USERS_EXPORT',
-                        'type': 'item',
-                        'function': () => {
-                            this.dialogRef = this.dialog.open(UsersExportDialogComponent, {
-                                panelClass: 'users-export-dialog',
-                            });
-
-                            this.dialogRef.afterClosed().subscribe(res => { });
-                        }
-                    },
-                )
+                if (_.findIndex(usersMenu.children, ['id', 'export']) < 0) {
+                    usersMenu.children.unshift(
+                        {
+                            'id': 'export',
+                            'title': 'Export',
+                            'translate': 'NAV.ADMIN.USERS_EXPORT',
+                            'type': 'item',
+                            'function': () => {
+                                this.dialogRef = this.dialog.open(UsersExportDialogComponent, {
+                                    panelClass: 'users-export-dialog',
+                                });
+    
+                                this.dialogRef.afterClosed().subscribe(res => { });
+                            }
+                        },
+                    );
+                }
                 break;
         
             default:
