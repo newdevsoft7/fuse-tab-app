@@ -1,0 +1,46 @@
+.client-invoice-list-container {
+
+    .page-length-selector {
+        height: 60px;
+    }
+
+    &.page-layout {
+        overflow: unset !important;
+    }
+
+    .header {
+        max-width: inherit !important;
+        margin: -1em;
+        min-height: 200px;
+        position: relative;
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        margin-bottom: 25px;
+
+        height: auto !important;
+        max-height: inherit !important;
+    }
+
+    .search-bar {
+
+        .date-picker {
+            width: 120px;
+        }
+    }
+
+    .datatable-checkbox input[type='checkbox'] {
+        &:after, &:before {
+            width: 16px;
+            height: 16px;
+        }
+
+        &:checked:before {
+            height: 8px;
+        }
+    }
+
+    .content {
+        min-height: 150px;
+    }
+
+}

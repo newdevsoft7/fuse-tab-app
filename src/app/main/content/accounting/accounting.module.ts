@@ -30,7 +30,8 @@ import { StaffInvoicesGenerationComponent } from './admin/staff-invoices-generat
     ],
     exports: [
         // For Admin User
-        StaffInvoicesGenerationComponent
+        StaffInvoicesGenerationComponent,
+        ClientInvoiceListComponent
     ]
 })
 export class AccountingModule { }
