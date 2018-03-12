@@ -64,6 +64,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('trackingTpl') trackingTpl;
     @ViewChild('adminGenStaffInvoicesTpl') adminGenStaffInvoicesTpl;
     @ViewChild('adminClientInvoiceListTpl') adminClientInvoiceListTpl; 
+    @ViewChild('adminStaffInvoiceListTpl') adminStaffInvoiceListTpl; 
     
     // Staff view templates
     @ViewChild('staffShiftTpl') staffShiftTpl;

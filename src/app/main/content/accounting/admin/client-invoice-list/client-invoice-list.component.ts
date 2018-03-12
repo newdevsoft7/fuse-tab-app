@@ -97,4 +97,8 @@ export class ClientInvoiceListComponent implements OnInit {
 		this.getInvoices({ pageSize: event.value });
 	}
 
+	min(x, y) {
+        return Math.min(x, y);
+    }
+
 }

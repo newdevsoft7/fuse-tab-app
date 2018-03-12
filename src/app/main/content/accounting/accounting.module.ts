@@ -9,6 +9,7 @@ import { ClientInvoiceListComponent } from './admin/client-invoice-list/client-i
 import { ClientInvoiceDetailComponent } from './admin/client-invoice-detail/client-invoice-detail.component';
 import { ClientNewInvoiceComponent } from './admin/client-new-invoice/client-new-invoice.component';
 import { StaffInvoicesGenerationComponent } from './admin/staff-invoices-generation/staff-invoices-generation.component';
+import { StaffInvoiceListComponent } from './admin/staff-invoice-list/staff-invoice-list.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { StaffInvoicesGenerationComponent } from './admin/staff-invoices-generat
         ClientInvoiceListComponent,
         ClientInvoiceDetailComponent,
         ClientNewInvoiceComponent,
-        StaffInvoicesGenerationComponent
+        StaffInvoicesGenerationComponent,
+        StaffInvoiceListComponent
     ],
     providers: [
         ScheduleService
@@ -31,7 +33,8 @@ import { StaffInvoicesGenerationComponent } from './admin/staff-invoices-generat
     exports: [
         // For Admin User
         StaffInvoicesGenerationComponent,
-        ClientInvoiceListComponent
+        ClientInvoiceListComponent,
+        StaffInvoiceListComponent
     ]
 })
 export class AccountingModule { }

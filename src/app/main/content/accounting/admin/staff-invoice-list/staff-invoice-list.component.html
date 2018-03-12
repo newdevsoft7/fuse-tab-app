@@ -1,0 +1,124 @@
+<div class="staff-invoice-list-container page-layout simple">
+
+    <!-- HEADER -->
+    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
+
+        <!-- SEARCHBAR -->
+        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
+
+            <!-- FILTER BAR -->
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-icon fxFlex="0 1 auto">search</mat-icon>
+                <div fxFlex>
+                    <!-- TOOD -->
+                </div>
+            </div>
+            <!-- / FILTER BAR -->
+
+            <!-- DATE RANGE SELECTOR -->
+            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="8px" fxFlex="250px">
+                <mat-form-field class="date-picker">
+                    <mat-label>From</mat-label>
+                    <input matInput [matDatepicker]="fromPicker" [(ngModel)]="period.from">
+                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+                
+                <mat-form-field class="date-picker">
+                    <mat-label>To</mat-label>
+                    <input matInput [matDatepicker]="toPicker" [(ngModel)]="period.to">
+                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <!-- / DATE RANGE SELECTOR -->
+
+        </div>
+        <!-- / SEARCHBAR -->
+
+        <!-- BUTTONS -->
+        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="space-between center" fxLayoutWrapf class="buttons">
+            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutGap="4px">
+                <!-- TODO -->
+            </div>
+
+            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutGap="4px">
+                <button mat-raised-button class="mat-white-bg">Download (Excel)</button>
+                <button mat-raised-button class="mat-white-bg">Download PDFs (ZIP)</button>
+                <button mat-raised-button class="mat-white-bg">Download PDFs (combined)</button>
+            </div>
+        </div>
+        <!-- / BUTTONS -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24 pt-40 pb-56">
+
+        <!-- TABLE -->
+        <div *ngIf="invoices" class="invoice-table" #tableWrapper>
+            <ngx-datatable #table class="material striped" [rows]="invoices" [columnMode]="'force'" [headerHeight]="48" [footerHeight]="56"
+                [rowHeight]="'auto'" [scrollbarH]="true"  [selectionType]="'checkbox'" [selectAllRowsOnPage]="true"
+                [selectAllRowsOnPage]="true" [selected]="selectedInvoices" [loadingIndicator]="loadingIndicator" [reorderable]="true"
+                [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize" [sortType]="'multi'" (page)="setPage($event)"
+                (sort)="onSort($event)">
+
+                <!-- CHECKBOX -->
+                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                    [resizeable]="false" [headerCheckboxable]="true">
+                
+                    <ng-template ngx-datatable-header-template let-value="value"
+                        let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+                        <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+                    </ng-template>
+                
+                    <ng-template ngx-datatable-cell-template let-value="value"
+                        let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+                        <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+                    </ng-template>
+                </ngx-datatable-column>
+                <!-- / CHECKBOX -->
+
+                <ng-container *ngFor="let column of columns">
+                    <ngx-datatable-column *ngIf="!hiddenColumns.includes(column.key_name)" [name]="column.display_name"
+                        [prop]="column.key_name"
+                        [sortable]="column.sortable == 1 ? true : false">
+                        <!-- TODO -->
+                    </ngx-datatable-column>
+                </ng-container>
+
+                <!-- FOOTER -->
+                <ngx-datatable-footer>
+                    <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-selectedCount="selectedCount"
+                        let-curPage="curPage" let-offset="offset">
+                        <div class="page-count h-60">
+                            Show
+                            <mat-form-field class="mx-8">
+                                <mat-select (change)="onPageLengthChange($event)" [value]="10">
+                                    <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            entries
+                            <span class="mx-48">
+                                Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of {{rowCount}} entries
+                            </span>
+                        </div>
+
+                        <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+                            [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
+                            (change)="setPage($event)">
+                        </datatable-pager>
+
+                    </ng-template>
+                </ngx-datatable-footer>
+                <!-- / FOOTER -->
+
+            </ngx-datatable>
+        </div>
+        <!-- / TABLE -->
+
+    </div>
+    <!-- CONTENT -->
+
+</div>
