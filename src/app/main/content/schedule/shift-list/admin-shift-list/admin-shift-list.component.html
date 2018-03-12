@@ -110,7 +110,7 @@
                                 'background-color': row.bg_color,
                                 'color': row.font_color,
                                 'border': '1px solid ' + row.border_color
-                            }" [matTooltip]="row.status">{{value}}</span>
+                            }" [matTooltip]="row.status" (click)="openShift(row)">{{value}}</span>
                         </ng-template>
                         <!-- / DATE COLUMN -->
 

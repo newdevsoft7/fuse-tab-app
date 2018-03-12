@@ -160,4 +160,11 @@ export class AdminShiftListComponent implements OnInit {
         this.actionService.addShiftsToEdit(shifts);
     }
 
+    openShift(shift) {
+        const id = shift.id;
+        const url = `admin/shift/${id}`;
+        const tab = new Tab(shift.title, 'adminShiftTpl', url, { id, url });
+        this.tabService.openTab(tab);
+    }
+
 }
