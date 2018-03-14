@@ -22,4 +22,13 @@ export class FuseChatChatsSidenavComponent
     threads: any = [];
 
     constructor() {}
+
+    tapContact(user: any) {
+        if (user.type === 'user') {
+            this.addContact.next(user.id);
+        } else {
+            this.fetchChat.next(user.id);
+            this.searchText = '';
+        }
+    }
 }

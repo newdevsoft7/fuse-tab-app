@@ -217,7 +217,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     try {
       this.selectedChat = await this.usersChatService.getMessagesByThread(threadId, 0);
       this.selectedThread = this.threads.find(thread => thread.id === threadId);
-      this.chatView.readyToReply();
+      this.updateReadStatus(threadId);
       this.updateRead();
     } catch (e) {
       this.handleError(e);
@@ -282,13 +282,16 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async updateReadStatus(threadId: number) {
     try {
+      const receipts = this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
       await this.usersChatService.updateReadStatus(threadId);
-      this.selectedThread.unread = 0;
+      if (this.selectedThread) {
+        this.selectedThread.unread = 0;
+      }
       this.socketService.sendData(JSON.stringify({
         type: 'readThread',
         payload: {
           thread: threadId,
-          receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+          receipts: receipts
         }
       }));
     } catch (e) {
@@ -296,10 +299,11 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     }
   }
 
-  async searchUsers(searchText: string) {
-    if (!searchText) return;
+  async searchUsers(data: {searchText: string, type: string}) {
+    if (!data.searchText) return;
+    this.users = [];
     try {
-      this.users = await this.usersChatService.searchRecipient(searchText);
+      this.users = await this.usersChatService.searchRecipient(data.searchText, data.type);
     } catch (e) {
       this.handleError(e);
     }
@@ -355,7 +359,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           type: 'thread',
           payload: {
             thread: this.selectedThread.id,
-            receipt: this.selectedThread.participant_ids.find(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+            receipt: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
         }));
       } catch (e) {

@@ -17,6 +17,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
             this.thread = thread;
             this.updateParticipants();
             this.currentPage = 0;
+            this.readyToReply();
         }
     }
 
@@ -51,7 +52,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     typingSentence: string = '';
 
     currentPage: number = 0;
-    loading: boolean = false;    
+    loading: boolean = true;    
 
     constructor(private tokenStorage: TokenStorage, private userService: UserService)
     {
