@@ -16,7 +16,7 @@ import { MatSidenav } from '@angular/material';
 })
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    selectedSideNav:any;
+    selectedSideNav: any;
     
     private onSideNavChanged: Subscription;
 

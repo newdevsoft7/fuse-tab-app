@@ -3,7 +3,7 @@
 
         <a class="nav-link" matRipple 
             (click)="changeSideNav(sidenav)" 
-            [ngClass]="{'active':sidenav.id === selectedSideNav.id }" >
+            [class.active]="sidenav.id === selectedSideNav.id" >
 
             <mat-icon class="nav-link-icon" *ngIf="sidenav.icon">{{sidenav.icon}}</mat-icon>
             <span>{{sidenav.title}}</span>
