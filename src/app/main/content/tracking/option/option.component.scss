@@ -1,15 +1,21 @@
 @import "src/app/core/scss/fuse";
-:host{
+
+:host {
+
     .option-wrapper{
+
         .header{
             background-image: none !important;
         }
+        
         .option-table{
             width:100%;
+        
             mat-icon{
                 border-radius: 50%;
             }
         }
+        
         .datatable-checkbox input[type='checkbox'] {
             &:after, &:before {
                 width: 16px;
