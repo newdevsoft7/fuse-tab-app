@@ -16,6 +16,27 @@ import { SettingsWorkAreasEditNameComponent } from './work-areas/edit-workarea-n
 import { SettingsWorkAreasEditCategoryComponent } from './work-areas/edit-workarea-category/edit-workarea-category.component';
 import { SettingsWorkAreasEditTimezoneComponent } from './work-areas/edit-workarea-timezone/edit-workarea-timezone.component';
 import { WorkAreaFormDialogComponent } from './work-areas/dialogs/workarea-form/workarea-form.component';
+import { SettingsCheckInOutComponent } from './check-in-out/check-in-out.component';
+import { SettingsClientComponent } from './client/client.component';
+import { SettingsClientInvoicesComponent } from './client-invoices/client-invoices.component';
+import { SettingsEmailComponent } from './email/email.component';
+import { SettingsExpensesComponent } from './expenses/expenses.component';
+import { SettingsFormsComponent } from './forms/forms.component';
+import { SettingsLocationsComponent } from './locations/locations.component';
+import { SettingsOutsourcingComponent } from './outsourcing/outsourcing.component';
+import { SettingsPayLevelsComponent } from './pay-levels/pay-levels.component';
+import { SettingsProfileDocumentsComponent } from './profile-documents/profile-documents.component';
+import { SettingsProfilePhotosComponent } from './profile-photos/profile-photos.component';
+import { SettingsProfileVideosComponent } from './profile-videos/profile-videos.component';
+import { SettingsQuizsComponent } from './quizs/quizs.component';
+import { SettingsRegistrationComponent } from './registration/registration.component';
+import { SettingsSchedulingComponent } from './scheduling/scheduling.component';
+import { SettingsShowcasesComponent } from './showcases/showcases.component';
+import { SettingsStaffComponent } from './staff/staff.component';
+import { SettingsStaffInvoicesComponent } from './staff-invoices/staff-invoices.component';
+import { SettingsSurveysComponent } from './surveys/surveys.component';
+import { SettingsSystemComponent } from './system/system.component';
+import { SettingsTrackingComponent } from './tracking/tracking.component';
 
 
 @NgModule({
@@ -37,7 +58,28 @@ import { WorkAreaFormDialogComponent } from './work-areas/dialogs/workarea-form/
         WorkAreaFormDialogComponent,
         SettingsWorkAreasCategoriesComponent,
         SettingsWorkAreasAddCategoryComponent,
-        SettingsWorkAreasEditCatNameComponent
+        SettingsWorkAreasEditCatNameComponent,
+        SettingsCheckInOutComponent,
+        SettingsClientComponent,
+        SettingsClientInvoicesComponent,
+        SettingsEmailComponent,
+        SettingsExpensesComponent,
+        SettingsFormsComponent,
+        SettingsLocationsComponent,
+        SettingsOutsourcingComponent,
+        SettingsPayLevelsComponent,
+        SettingsProfileDocumentsComponent,
+        SettingsProfilePhotosComponent,
+        SettingsProfileVideosComponent,
+        SettingsQuizsComponent,
+        SettingsRegistrationComponent,
+        SettingsSchedulingComponent,
+        SettingsShowcasesComponent,
+        SettingsStaffComponent,
+        SettingsStaffInvoicesComponent,
+        SettingsSurveysComponent,
+        SettingsSystemComponent,
+        SettingsTrackingComponent
     ],
 
     providers: [SettingsService],
