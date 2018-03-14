@@ -12,7 +12,7 @@
 
                     <mat-icon>search</mat-icon>
 
-                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search or start new chat" (onValueChange)="searchUsers.next($event)" fxFlex>
+                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search or start new chat" (onValueChange)="searchUsers.next({searchText: $event, type: 'all'})" fxFlex>
 
                 </div>
             </div>
@@ -78,7 +78,7 @@
 
             <button mat-button class="contact"
                     *ngFor="let user of users"
-                    (click)="addContact.next(user.id)"
+                    (click)="tapContact(user)"
                     [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
