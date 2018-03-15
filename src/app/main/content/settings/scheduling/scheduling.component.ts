@@ -7,8 +7,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SettingsSchedulingComponent implements OnInit {
 
-	@Input() settings = [];
-	@Input() options = [];
+    @Input() settings = [];
+    @Input() options = [];
 
     constructor() { }
 
