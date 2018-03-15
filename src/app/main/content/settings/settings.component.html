@@ -87,7 +87,7 @@
                     <app-settings-staff-invoices *ngSwitchCase="'staff_invoices'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-staff-invoices>
                     
-                    <app-settings-surveys *ngSwitchCase="'surveys'" [options]="options" [settings]= "settings" fxFill>
+                    <app-settings-surveys *ngSwitchCase="'surveys'" [options]="options" [(settings)]= "settings" fxFill>
                     </app-settings-surveys>
                     
                     <app-settings-system *ngSwitchCase="'system'" [options]="options" [settings]= "settings" fxFill>
