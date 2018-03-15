@@ -109,6 +109,13 @@ export class SettingsSideNavModel {
                 'url': '/scheduling'
             },
             {
+                'id': 'shift_flags',
+                'title': 'Shift Flags',
+                'translate': 'SETTINGS.SIDE_NAV.SHIFT_FLAGS',
+                'icon': 'flag',
+                'url': '/shift_flags'
+            },
+            {
                 'id': 'showcases',
                 'title': 'Showcases',
                 'translate': 'SETTINGS.SIDE_NAV.SHOWCASES',
@@ -151,12 +158,33 @@ export class SettingsSideNavModel {
                 'url': '/tracking'
             },
             {
+                'id': 'user_table',
+                'title': 'User Table',
+                'translate': 'SETTINGS.SIDE_NAV.USER_TABLE',
+                'icon': 'view_list',
+                'url': '/user_table'
+            },
+            {
                 'id': 'work_areas',
                 'title': 'Work Areas',
                 'translate': 'SETTINGS.SIDE_NAV.WORK_AREAS',
                 'icon': 'public',
                 'url': '/work_areas'
-            }                                                   
+            },
+            {
+                'id': 'work_market',
+                'title': 'Work Market',
+                'translate': 'SETTINGS.SIDE_NAV.WORK_MARKET',
+                'icon': 'wc',
+                'url': '/work_market'
+            },
+            {
+                'id': 'xero',
+                'title': 'Xero',
+                'translate': 'SETTINGS.SIDE_NAV.XERO',
+                'icon': 'toc',
+                'url': '/xero'
+            },
         ];
     }
 }

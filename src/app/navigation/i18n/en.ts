@@ -96,13 +96,17 @@ export const locale = {
                 'QUIZS': 'Quizs',
                 'REGISTRATION': 'Registration',
                 'SCHEDULING': 'Scheduling',
+                'SHIFT_FLAGS': 'Shift Flags',
                 'SHOWCASES': 'Showcases',
                 'STAFF': 'Staff',
                 'STAFF_INVOICES': 'Staff Invoices',
                 'SURVEYS': 'Surveys',
                 'SYSTEM': 'System',
                 'TRACKING': 'Tracking',
-                'WORK_AREAS': 'Work Areas'
+                'USER_TABLE': 'User Table',
+                'WORK_AREAS': 'Work Areas',
+                'WORK_MARKET': 'Work Market',
+                'XERO': 'Xero'
             }
         }
     }

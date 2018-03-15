@@ -77,6 +77,9 @@
                     
                     <app-settings-scheduling *ngSwitchCase="'scheduling'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-scheduling>
+
+                    <app-settings-shift-flags *ngSwitchCase="'shift_flags'" [options]="options" [(settings)]= "settings" fxFill>
+                    </app-settings-shift-flags>
                     
                     <app-settings-showcases *ngSwitchCase="'showcases'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-showcases>
@@ -95,9 +98,18 @@
                     
                     <app-settings-tracking *ngSwitchCase="'tracking'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-tracking>
+
+                    <app-settings-user-table *ngSwitchCase="'user_table'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-user-table>
                     
                     <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-work-areas>
+
+                    <app-settings-work-market *ngSwitchCase="'work_market'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-work-market>
+
+                    <app-settings-xero *ngSwitchCase="'xero'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-xero>
                     
                 </ng-container>
             </div>

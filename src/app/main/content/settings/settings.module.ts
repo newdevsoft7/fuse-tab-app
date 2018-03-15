@@ -37,6 +37,10 @@ import { SettingsStaffInvoicesComponent } from './staff-invoices/staff-invoices.
 import { SettingsSurveysComponent } from './surveys/surveys.component';
 import { SettingsSystemComponent } from './system/system.component';
 import { SettingsTrackingComponent } from './tracking/tracking.component';
+import { SettingsUserTableComponent } from './user-table/user-table.component';
+import { SettingsWorkMarketComponent } from './work-market/work-market.component';
+import { SettingsXeroComponent } from './xero/xero.component';
+import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component';
 
 
 @NgModule({
@@ -79,7 +83,11 @@ import { SettingsTrackingComponent } from './tracking/tracking.component';
         SettingsStaffInvoicesComponent,
         SettingsSurveysComponent,
         SettingsSystemComponent,
-        SettingsTrackingComponent
+        SettingsTrackingComponent,
+        SettingsUserTableComponent,
+        SettingsWorkMarketComponent,
+        SettingsXeroComponent,
+        SettingsShiftFlagsComponent
     ],
 
     providers: [SettingsService],
