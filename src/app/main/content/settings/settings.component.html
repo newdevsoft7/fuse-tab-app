@@ -39,7 +39,7 @@
                     <app-settings-check-in-out *ngSwitchCase="'check_in_out'" [options]="options" [(settings)]= "settings" fxFill>
                     </app-settings-check-in-out>
 
-                    <app-settings-client *ngSwitchCase="'client'" [options]="options" [settings]= "settings" fxFill>
+                    <app-settings-client *ngSwitchCase="'client'" [options]="options" [(settings)]= "settings" fxFill>
                     </app-settings-client>
 
                     <app-settings-client-invoices *ngSwitchCase="'client_invoices'" [options]="options" [settings]= "settings" fxFill>

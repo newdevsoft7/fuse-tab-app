@@ -32,9 +32,9 @@ export class SettingsCheckInOutComponent implements OnInit {
     readonly Setting = Setting;
 
     constructor(
-		private settingsService: SettingsService,
-		private toastr: ToastrService
-	) { }
+        private settingsService: SettingsService,
+        private toastr: ToastrService
+    ) { }
 
     ngOnInit() {
     }
@@ -52,19 +52,19 @@ export class SettingsCheckInOutComponent implements OnInit {
     onChange(id: Setting, event: MatSlideToggleChange | MatSelectChange) {
         if (_.isEmpty(this.settings)) return;
 
-		const setting = _.find(this.settings, ['id', id]);
-		let value;
+        const setting = _.find(this.settings, ['id', id]);
+        let value;
 
         if (event instanceof MatSlideToggleChange) { // Slide Toggle
             value = event.checked ? 1 : 0;
         } else { // Select
             value = event.value;
-		}
-		this.settingsService.setSetting(id, value).subscribe(res => {
-			setting.value = value;
-			this.settingsChange.next(this.settings);
-			this.toastr.success(res.message);
-		});
+        }
+        this.settingsService.setSetting(id, value).subscribe(res => {
+            setting.value = value;
+            this.settingsChange.next(this.settings);
+            this.toastr.success(res.message);
+        });
     }
 
 }

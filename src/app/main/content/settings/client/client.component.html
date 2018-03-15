@@ -1,0 +1,27 @@
+<div fxLayout="column">
+
+    <!-- CLIENTS MODULE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Clients Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.client_enable)"
+                (change)="onChange(Setting.client_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable the client module if you are a staffing agency. This allows you to assign a client to your shifts, manage client users, track billing information and produce client invoices.
+            </div>            
+        </div>
+    </div>
+    <!-- / CLIENTS MODULE  -->
+
+    <!-- CLIENT BOOKINGS -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Client Bookings</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.client_booking)"
+                fxFlex="15" (change)="onChange(Setting.client_booking, $event)"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">Enable to allow your clients to create bookings online using the calendar.</div>
+        </div>
+    </div>
+    <!-- / CLIENT BOOKINGS -->
+
+</div>
