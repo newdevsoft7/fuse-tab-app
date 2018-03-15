@@ -65,16 +65,6 @@ export class  SettingsClientInvoicesComponent implements OnInit, OnChanges {
 
     ngOnInit() {
     }
-    
-    value(id: Setting) {
-        if (_.isEmpty(this.settings)) return;
-        const value = _.find(this.settings, ['id', id]);
-        if ([Setting.client_invoice_enable].includes(id)) {
-            return _.toInteger(value.value) === 0 ? false : true;
-        } else {
-            return value.value;            
-        }
-    }
 
     onChange(id: Setting, event: MatSlideToggleChange | string) {
         if (_.isEmpty(this.settings)) return;

@@ -1,0 +1,52 @@
+<div fxLayout="column">
+
+    <!-- MAIN EMAIL SENDER NAME -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Main Email Sender Name</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items.company_email_from" [delay]="1000"
+                    (onValueChange)="onChange(Setting.company_email_from, $event)"
+                    placeholder="Enter the sender name to be displayed for notification emails" />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / MAIN EMAIL SENDER NAME -->
+
+    <!-- MAIN EMAIL ADDRESS -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Main Email Address</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items.company_email_address" [delay]="1000"
+                    (onValueChange)="onChange(Setting.company_email_address, $event)" type="email"
+                    placeholder="Enter the email address notification emails should come from."/>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / MAIN EMAIL ADDRESS -->
+
+    <!-- MAIN EMAIL SIGNATURE-->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Main Email Signature</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <div class="w-100-p">
+                <textarea [froalaEditor]="{placeholderText: 'Enter any signature to be appended to outgoing emails. This may be overwritten by personal signatures entered on the settings tab of administrator profiles.'}"
+                    [(froalaModel)]="items.company_email_signature" [formControl]="signature"></textarea>
+            </div>
+        </div>
+    </div>
+    <!-- / MAIN EMAIL SIGNATURE-->
+
+    <!-- OTHER EMAIL ADDRESSES -->
+    <div class="box info-box mt-16">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Other Email Addresses</div>
+        </header>
+        <div class="content" fxLayout="column">
+        <!-- TODO -->
+        </div>
+    </div>
+    <!-- / OTHER EMAIL ADDRESSES -->
+
+</div>

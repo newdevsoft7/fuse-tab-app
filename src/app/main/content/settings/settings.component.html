@@ -45,7 +45,7 @@
                     <app-settings-client-invoices *ngSwitchCase="'client_invoices'" [options]="options" [(settings)]= "settings" fxFill>
                     </app-settings-client-invoices>
 
-                    <app-settings-email *ngSwitchCase="'email'" [options]="options" [settings]= "settings" fxFill>
+                    <app-settings-email *ngSwitchCase="'email'" [options]="options" [(settings)]= "settings" fxFill>
                     </app-settings-email>
 
                     <app-settings-expenses *ngSwitchCase="'expenses'" [options]="options" [(settings)]= "settings" fxFill></app-settings-expenses>
