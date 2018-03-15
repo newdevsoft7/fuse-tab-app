@@ -6,7 +6,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.locations_enable)"
                 (change)="onChange(Setting.locations_enable, $event)" fxFlex="15"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">
+            <div class="desc secondary-text" fxFlex="85">
                 Enable the locations module to assign different locations to shifts
             </div>            
         </div>
@@ -19,7 +19,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.location_address)"
                 fxFlex="15" (change)="onChange(Setting.location_address, $event)"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">Enable to assign different addresses to shifts</div>
+            <div class="desc secondary-text" fxFlex="85">Enable to assign different addresses to shifts</div>
         </div>
     </div>
     <!-- / ADDRESS -->
@@ -30,7 +30,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.location_contact)"
                 fxFlex="15" (change)="onChange(Setting.location_contact, $event)"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">Enable to assign a contact to shifts</div>
+            <div class="desc secondary-text" fxFlex="85">Enable to assign a contact to shifts</div>
         </div>
     </div>
     <!-- / CONTACT -->
@@ -41,7 +41,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.location_geocode)"
                 fxFlex="15" (change)="onChange(Setting.location_geocode, $event)"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">Enable to atomatically geocode shift locations</div>
+            <div class="desc secondary-text" fxFlex="85">Enable to atomatically geocode shift locations</div>
         </div>
     </div>
     <!-- / GEOCODING -->

@@ -6,7 +6,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.check_in_out_enable)"
                 (change)="onChange(Setting.check_in_out_enable, $event)" fxFlex="15"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">Enable the check in / out module to allow your staff to check in and out of shifts to indicate their arrival and departure.</div>            
+            <div class="desc secondary-text" fxFlex="85">Enable the check in / out module to allow your staff to check in and out of shifts to indicate their arrival and departure.</div>            
         </div>
     </div>
     <!-- / CHECK IN OUT ENABLE  -->
@@ -24,7 +24,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="desc" fxFlex="85">Enter the amount in minutes before a shift start time after which a staff can check in.</div>
+            <div class="desc secondary-text" fxFlex="85">Enter the amount in minutes before a shift start time after which a staff can check in.</div>
         </div>
     </div>
     <!-- / CHECK IN OPEN -->
@@ -35,7 +35,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.check_in_photo_enable)"
                 fxFlex="15" (change)="onChange(Setting.check_in_photo_enable, $event)"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">Enable to require staff to upload a photo upon check in.</div>
+            <div class="desc secondary-text" fxFlex="85">Enable to require staff to upload a photo upon check in.</div>
         </div>
     </div>
     <!-- / CHECK IN PHOTO -->
@@ -46,7 +46,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="value(Setting.check_out_photo_enable)"
                 fxFlex="15" (change)="onChange(Setting.check_out_photo_enable, $event)"></mat-slide-toggle>
-            <div class="desc" fxFlex="85">Enable to require staff to upload a photo upon check out.</div>
+            <div class="desc secondary-text" fxFlex="85">Enable to require staff to upload a photo upon check out.</div>
         </div>
     </div>
     <!-- / CHECK OUT PHOTO -->
@@ -64,7 +64,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="desc" fxFlex="85">
+            <div class="desc secondary-text" fxFlex="85">
                 Enter the amount in minutes after a shift start time after which a staff who has not checked in will be assigned the 'No Show' status.
             </div>
         </div>
