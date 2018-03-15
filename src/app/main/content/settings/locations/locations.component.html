@@ -1,0 +1,48 @@
+<div fxLayout="column">
+
+    <!-- LOCATIONS MODULE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Locations Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.locations_enable)"
+                (change)="onChange(Setting.locations_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable the locations module to assign different locations to shifts
+            </div>            
+        </div>
+    </div>
+    <!-- / LOCATIONS MODULE  -->
+
+    <!-- ADDRESS -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Address</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.location_address)"
+                fxFlex="15" (change)="onChange(Setting.location_address, $event)"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">Enable to assign different addresses to shifts</div>
+        </div>
+    </div>
+    <!-- / ADDRESS -->
+
+    <!-- CONTACT -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Contact</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.location_contact)"
+                fxFlex="15" (change)="onChange(Setting.location_contact, $event)"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">Enable to assign a contact to shifts</div>
+        </div>
+    </div>
+    <!-- / CONTACT -->
+
+    <!-- GEOCODING -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Geocoding</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.location_geocode)"
+                fxFlex="15" (change)="onChange(Setting.location_geocode, $event)"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">Enable to atomatically geocode shift locations</div>
+        </div>
+    </div>
+    <!-- / GEOCODING -->
+</div>

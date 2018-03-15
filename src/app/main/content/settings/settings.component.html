@@ -52,7 +52,7 @@
                     
                     <app-settings-forms *ngSwitchCase="'forms'" [options]="options" [settings]= "settings" fxFill></app-settings-forms>
                     
-                    <app-settings-locations *ngSwitchCase="'locations'" [options]="options" [settings]= "settings" fxFill></app-settings-locations>
+                    <app-settings-locations *ngSwitchCase="'locations'" [options]="options" [(settings)]= "settings" fxFill></app-settings-locations>
                     
                     <app-settings-outsourcing *ngSwitchCase="'outsourcing'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-outsourcing>
