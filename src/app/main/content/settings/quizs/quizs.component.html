@@ -1,0 +1,16 @@
+<div fxLayout="column">
+
+    <!-- QUIZ MODULE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Quiz Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.quiz_enable)"
+                (change)="onChange(Setting.quiz_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable the quiz module to create and assign scored quizs to staff as requirements for shift applications
+            </div>
+        </div>
+    </div>
+    <!-- / QUIZ MODULE  -->
+
+</div>
