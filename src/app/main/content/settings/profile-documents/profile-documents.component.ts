@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-settings-profile-documents',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./profile-documents.component.scss']
 })
 export class SettingsProfileDocumentsComponent implements OnInit {
+
+	@Input() settings = [];
+	@Input() options = [];
 
     constructor() { }
 

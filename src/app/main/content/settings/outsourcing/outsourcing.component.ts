@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-settings-outsourcing',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./outsourcing.component.scss']
 })
 export class SettingsOutsourcingComponent implements OnInit {
+
+	@Input() settings = [];
+	@Input() options = [];
 
     constructor() { }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-settings-tracking',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./tracking.component.scss']
 })
 export class SettingsTrackingComponent implements OnInit {
+
+	@Input() settings = [];
+	@Input() options = [];
 
     constructor() { }
 

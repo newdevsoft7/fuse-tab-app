@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-settings-pay-levels',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./pay-levels.component.scss']
 })
 export class SettingsPayLevelsComponent implements OnInit {
+
+	@Input() settings = [];
+	@Input() options = [];
 
     constructor() { }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-settings-system',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./system.component.scss']
 })
 export class SettingsSystemComponent implements OnInit {
+
+    @Input() settings = [];
+    @Input() options = [];
 
     constructor() { }
 

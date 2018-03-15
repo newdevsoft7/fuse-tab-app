@@ -17,8 +17,10 @@ import { MatSidenav } from '@angular/material';
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedSideNav: any;
-    
     private onSideNavChanged: Subscription;
+
+    settings: any[] = [];
+    options: any = {};
 
     @ViewChild('sidenav') private sidenav: MatSidenav;
 
@@ -31,7 +33,16 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-  
+        this.getData();
+    }
+
+    private async getData() {
+        try {
+            this.settings = await this.settingsService.getSetting();
+            this.options = await this.settingsService.getSettingOptions();
+        } catch (error) {
+            this.toastr.error(error.message || 'Something is wrong while fetching events.');
+        }
     }
 
     ngAfterViewInit(): void {

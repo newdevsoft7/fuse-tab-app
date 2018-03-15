@@ -35,28 +35,70 @@
             <!-- CONTENT -->
             <div class="content mat-elevation-z4 mat-white-bg p-24">
                 <ng-container [ngSwitch]="selectedSideNav.id">
-                    <app-settings-check-in-out *ngSwitchCase="'check_in_out'" fxFill></app-settings-check-in-out>
-                    <app-settings-client *ngSwitchCase="'client'" fxFill></app-settings-client>
-                    <app-settings-client-invoices *ngSwitchCase="'client_invoices'" fxFill></app-settings-client-invoices>
-                    <app-settings-email *ngSwitchCase="'email'" fxFill></app-settings-email>
-                    <app-settings-expenses *ngSwitchCase="'expenses'" fxFill></app-settings-expenses>
-                    <app-settings-forms *ngSwitchCase="'forms'" fxFill></app-settings-forms>
-                    <app-settings-locations *ngSwitchCase="'locations'" fxFill></app-settings-locations>
-                    <app-settings-outsourcing *ngSwitchCase="'outsourcing'" fxFill></app-settings-outsourcing>
-                    <app-settings-pay-levels *ngSwitchCase="'pay_levels'" fxFill></app-settings-pay-levels>
-                    <app-settings-profile-documents *ngSwitchCase="'profile_documents'" fxFill></app-settings-profile-documents>
-                    <app-settings-profile-photos *ngSwitchCase="'profile_photos'" fxFill></app-settings-profile-photos>
-                    <app-settings-profile-videos *ngSwitchCase="'profile_videos'" fxFill></app-settings-profile-videos>
-                    <app-settings-quizs *ngSwitchCase="'quizs'" fxFill></app-settings-quizs>
-                    <app-settings-registration *ngSwitchCase="'registration'" fxFill></app-settings-registration>
-                    <app-settings-scheduling *ngSwitchCase="'scheduling'" fxFill></app-settings-scheduling>
-                    <app-settings-showcases *ngSwitchCase="'showcases'" fxFill></app-settings-showcases>
-                    <app-settings-staff *ngSwitchCase="'staff'" fxFill></app-settings-staff>
-                    <app-settings-staff-invoices *ngSwitchCase="'staff_invoices'" fxFill></app-settings-staff-invoices>
-                    <app-settings-surveys *ngSwitchCase="'surveys'" fxFill></app-settings-surveys>
-                    <app-settings-system *ngSwitchCase="'system'" fxFill></app-settings-system>
-                    <app-settings-tracking *ngSwitchCase="'tracking'" fxFill></app-settings-tracking>
-                    <app-settings-work-areas *ngSwitchCase="'work_areas'" fxFill></app-settings-work-areas>
+
+                    <app-settings-check-in-out *ngSwitchCase="'check_in_out'" [options]="options" [(settings)]= "settings" fxFill>
+                    </app-settings-check-in-out>
+
+                    <app-settings-client *ngSwitchCase="'client'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-client>
+
+                    <app-settings-client-invoices *ngSwitchCase="'client_invoices'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-client-invoices>
+
+                    <app-settings-email *ngSwitchCase="'email'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-email>
+
+                    <app-settings-expenses *ngSwitchCase="'expenses'" [options]="options" [settings]= "settings" fxFill></app-settings-expenses>
+                    
+                    <app-settings-forms *ngSwitchCase="'forms'" [options]="options" [settings]= "settings" fxFill></app-settings-forms>
+                    
+                    <app-settings-locations *ngSwitchCase="'locations'" [options]="options" [settings]= "settings" fxFill></app-settings-locations>
+                    
+                    <app-settings-outsourcing *ngSwitchCase="'outsourcing'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-outsourcing>
+                    
+                    <app-settings-pay-levels *ngSwitchCase="'pay_levels'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-pay-levels>
+
+                    <app-settings-profile-documents *ngSwitchCase="'profile_documents'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-profile-documents>
+                    
+                    <app-settings-profile-photos *ngSwitchCase="'profile_photos'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-profile-photos>
+                    
+                    <app-settings-profile-videos *ngSwitchCase="'profile_videos'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-profile-videos>
+                    
+                    <app-settings-quizs *ngSwitchCase="'quizs'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-quizs>
+                    
+                    <app-settings-registration *ngSwitchCase="'registration'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-registration>
+                    
+                    <app-settings-scheduling *ngSwitchCase="'scheduling'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-scheduling>
+                    
+                    <app-settings-showcases *ngSwitchCase="'showcases'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-showcases>
+                    
+                    <app-settings-staff *ngSwitchCase="'staff'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-staff>
+                    
+                    <app-settings-staff-invoices *ngSwitchCase="'staff_invoices'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-staff-invoices>
+                    
+                    <app-settings-surveys *ngSwitchCase="'surveys'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-surveys>
+                    
+                    <app-settings-system *ngSwitchCase="'system'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-system>
+                    
+                    <app-settings-tracking *ngSwitchCase="'tracking'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-tracking>
+                    
+                    <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]= "settings" fxFill>
+                    </app-settings-work-areas>
+                    
                 </ng-container>
             </div>
             <!-- / CONTENT -->

@@ -1,4 +1,7 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
+import {
+    Component, Input, OnInit,
+    ViewEncapsulation, ViewChild, ElementRef
+} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import * as _ from 'lodash';
@@ -13,6 +16,9 @@ import { SettingsService } from '../settings.service';
     encapsulation: ViewEncapsulation.None
 })
 export class SettingsWorkAreasComponent implements OnInit {
+
+    @Input() settings = [];
+    @Input() options = [];
 
     constructor(
         private dialog: MatDialog,

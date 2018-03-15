@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
     selector: 'app-settings-client-invoices',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./client-invoices.component.scss']
 })
 export class  SettingsClientInvoicesComponent implements OnInit {
+
+	@Input() settings = [];
+    @Input() options = [];
 
     constructor() { }
 

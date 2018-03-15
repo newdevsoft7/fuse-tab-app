@@ -6,6 +6,8 @@ import { environment } from '../../../../environments/environment';
 import { Subject } from 'rxjs/Subject';
 import { SettingsSideNavModel } from './sidenav/sidenav.model';
 
+import * as _ from 'lodash';
+
 const BASE_URL = `${environment.apiUrl}`;
 const WORK_AREA_URL = `${environment.apiUrl}/workArea`;
 
@@ -85,6 +87,22 @@ export class SettingsService {
     getTimezones(): Observable<any> {
         const url = `${BASE_URL}/helpers/timezones`;
         return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    async getSetting(id?: number): Promise<any> {
+        const url = `${BASE_URL}/setting/${_.isUndefined(id) ? '' : id}`;
+        return this.http.get(url.replace(/\/+$/, '')).toPromise();
+    }
+
+    async getSettingOptions(id?: number): Promise<any> {
+        const url = `${BASE_URL}/setting/${_.isUndefined(id) ? 0 : id}/options`;
+        return this.http.get(url).toPromise();
+    }
+
+    setSetting(id: number, value): Observable<any> {
+        const url = `${BASE_URL}/setting/${id}`;
+        return this.http.put(url, { value })
             .catch(this.handleError);
     }
 
