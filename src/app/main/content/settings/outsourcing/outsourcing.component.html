@@ -1,0 +1,16 @@
+<div fxLayout="column">
+
+    <!-- OUTSOURCE MODULE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Outsource Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.outsource_enable)"
+                (change)="onChange(Setting.outsource_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable to allow outsourcing shifts to external companies
+            </div>
+        </div>
+    </div>
+    <!-- / OUTSOURCE MODULE  -->
+
+</div>
