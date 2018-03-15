@@ -27,7 +27,7 @@ enum Setting {
     templateUrl: './email.component.html',
     styleUrls: ['./email.component.scss']
 })
-export class SettingsEmailComponent implements OnInit {
+export class SettingsEmailComponent implements OnInit, OnChanges {
 
 	_settings = [];
 
