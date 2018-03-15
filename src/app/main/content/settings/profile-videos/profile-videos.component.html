@@ -1,0 +1,43 @@
+<div fxLayout="column">
+
+    <!-- VIDEOS MODULE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Videos Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items.profile_video_enable"
+                (change)="onChange(Setting.profile_video_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="85">Enable to allow uploading videos to staff profiles</div>            
+        </div>
+    </div>
+    <!-- / VIDEOS MODULE  -->
+
+    <!-- MESSAGE -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items.profile_video_msg" [delay]="1000"
+                    (onValueChange)="onChange(Setting.profile_video_msg, $event)"
+                    placeholder="Enter any text you would like displayed in the videos section of staff profiles" />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / MESSAGE -->
+
+    <!-- NUMBER REQUIRED -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Number Required</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <div  fxFlex="15">
+                <mat-form-field floatPlaceholder="never" [style.width.px]="40">
+                    <input matInput type="number" min="0" max="10" [formControl]="videoRequired"/>
+                </mat-form-field>
+            </div>
+            <div class="desc secondary-text" fxFlex="85">
+                Enter the minimum number of videos required to be uploaded.
+            </div>  
+        </div>
+    </div>
+    <!-- / NUMBER REQUIRED -->
+
+</div>
