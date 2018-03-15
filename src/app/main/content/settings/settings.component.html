@@ -48,7 +48,7 @@
                     <app-settings-email *ngSwitchCase="'email'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-email>
 
-                    <app-settings-expenses *ngSwitchCase="'expenses'" [options]="options" [settings]= "settings" fxFill></app-settings-expenses>
+                    <app-settings-expenses *ngSwitchCase="'expenses'" [options]="options" [(settings)]= "settings" fxFill></app-settings-expenses>
                     
                     <app-settings-forms *ngSwitchCase="'forms'" [options]="options" [settings]= "settings" fxFill></app-settings-forms>
                     

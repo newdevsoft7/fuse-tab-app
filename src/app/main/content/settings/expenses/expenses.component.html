@@ -1,0 +1,38 @@
+<div fxLayout="column">
+
+    <!-- EXPENSES MODULE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Expenses Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.expenses_enable)"
+                (change)="onChange(Setting.expenses_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable to allow saving of expenses to shifts
+            </div>
+        </div>
+    </div>
+    <!-- / EXPENSES MODULE  -->
+
+    <!-- STAFF EXPENSES -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Staff Expenses</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.expenses_staff)"
+                fxFlex="15" (change)="onChange(Setting.expenses_staff, $event)"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">Enable to allow staff to claim expenses</div>
+        </div>
+    </div>
+    <!-- / STAFF EXPENSES -->
+
+    <!-- RECEIPT REQUIRED -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Receipt Required</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.expense_receipt_required)"
+                fxFlex="15" (change)="onChange(Setting.expense_receipt_required, $event)"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">Enable to force uploading a receipt to any expense claimed</div>
+        </div>
+    </div>
+    <!-- / RECEIPT REQUIRED -->
+
+</div>
