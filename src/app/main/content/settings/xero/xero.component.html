@@ -1,0 +1,55 @@
+<div fxLayout="column">
+
+    <!-- XERO ENABLE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Xero Integration</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_enable)"
+                (change)="onChange(Setting.xero_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable the Xero Module to sync accouting data with Xero
+            </div>
+        </div>
+    </div>
+    <!-- / XERO ENABLE -->
+
+    <!-- XERO CLIENT INVOICE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_client_invoice)"
+                (change)="onChange(Setting.xero_client_invoice, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable to transfer client invoices to Xero
+            </div>
+        </div>
+    </div>
+    <!-- / XERO CLIENT INVOICE -->
+
+    <!-- XERO STAFF INVOICE -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_staff_invoice)"
+                (change)="onChange(Setting.xero_staff_invoice, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable to transfer staff invoices to Xero
+            </div>
+        </div>
+    </div>
+    <!-- / XERO STAFF INVOICE -->
+
+    <!-- XERO PAYROLL -->
+    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_payroll)"
+                (change)="onChange(Setting.xero_payroll, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc" fxFlex="85">
+                Enable to transfer timesheets to Xero
+            </div>
+        </div>
+    </div>
+    <!-- / XERO PAYROLL -->
+
+</div>

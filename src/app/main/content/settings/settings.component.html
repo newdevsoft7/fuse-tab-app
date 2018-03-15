@@ -108,7 +108,7 @@
                     <app-settings-work-market *ngSwitchCase="'work_market'" [options]="options" [settings]= "settings" fxFill>
                     </app-settings-work-market>
 
-                    <app-settings-xero *ngSwitchCase="'xero'" [options]="options" [settings]= "settings" fxFill>
+                    <app-settings-xero *ngSwitchCase="'xero'" [options]="options" [(settings)]= "settings" fxFill>
                     </app-settings-xero>
                     
                 </ng-container>
