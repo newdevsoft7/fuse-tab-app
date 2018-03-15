@@ -49,7 +49,6 @@ export class SettingsProfileDocumentsComponent implements OnInit, OnChanges, OnD
     items: any = {};
 
     // Form Controls
-    message = new FormControl();
     docRequired = new FormControl();
 
     componentDestroyed = new Subject(); // Component Destroy
@@ -66,33 +65,15 @@ export class SettingsProfileDocumentsComponent implements OnInit, OnChanges, OnD
                 const item = _.find(this.settings, ['setting', v]);
                 if (!_.isUndefined(item)) {
                     this.items = { ...this.items, [item.setting]: item.value };
-                    switch (item.setting) {
-                        case 'profile_doc_message': // Patch FroalaEditor form control value 
-                            this.message.patchValue(this.items.profile_doc_message);
-                            break;
-
-                        case 'profile_doc_required':
-                            this.docRequired.patchValue(this.items.profile_doc_required);
-
-                        default:
-                            break;
+                    if (item.setting === 'profile_doc_required') {
+                        this.docRequired.patchValue(this.items.profile_doc_required);
                     }
-                    
                 }
             });
         }
     }
 
     ngOnInit() {
-
-        // Message
-        this.message.valueChanges
-            .debounceTime(1000)
-            .distinctUntilChanged()
-            .takeUntil(this.componentDestroyed)
-            .subscribe(value => {
-                this.onChange(Setting.profile_doc_message, value);
-            });
 
         // Number required
         this.docRequired.valueChanges

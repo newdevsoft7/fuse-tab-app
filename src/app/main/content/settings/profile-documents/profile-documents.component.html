@@ -4,9 +4,11 @@
     <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Message</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <div class="w-100-p">
-                <textarea [froalaEditor]="{placeholderText: 'Enter any text you would like displayed in the documents section of staff profiles'}" [(froalaModel)]="items.profile_doc_message" [formControl]="message"></textarea>
-            </div>
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items.profile_doc_message" [delay]="1000"
+                    (onValueChange)="onChange(Setting.profile_doc_message, $event)"
+                    placeholder="Enter any text you would like displayed in the documents section of staff profiles" />
+            </mat-form-field>
         </div>
     </div>
     <!-- / MESSAGE -->

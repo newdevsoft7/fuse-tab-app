@@ -68,7 +68,6 @@ export class SettingsProfilePhotosComponent implements OnInit, OnChanges, OnDest
                     if (item.setting === 'profile_photo_required') {
                         this.photoRequired.patchValue(this.items.profile_photo_required);
                     }
-                    
                 }
             });
         }
