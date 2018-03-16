@@ -1,0 +1,16 @@
+<div id="settings-pay-levels-container" fxLayout="column">
+
+    <!-- PAY LEVELS MODULE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Pay Levels Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.paylvl_enable]"
+                (change)="onChange(Setting.paylvl_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="85">
+                Enable to create and assign different levels of pay rates to your staff
+            </div>            
+        </div>
+    </div>
+    <!-- / PAY LEVELS MODULE -->
+
+</div>
