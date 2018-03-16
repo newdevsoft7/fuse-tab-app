@@ -46,6 +46,10 @@ export class  SettingsClientInvoicesComponent implements OnInit, OnChanges {
 
     items: any = {};
 
+    checkableItems = [
+        Setting.client_invoice_enable
+    ];
+
     constructor(
         private settingsService: SettingsService,
         private toastr: ToastrService
@@ -53,11 +57,15 @@ export class  SettingsClientInvoicesComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
-            const keys = Object.keys(this.Setting).filter(v => typeof v === 'string') as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
-                    this.items = { ...this.items, [item.setting]: item.value };
+                    if (this.checkableItems.includes(item.id)) {
+                        this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
+                    } else {
+                        this.items = { ...this.items, [item.id]: item.value };
+                    }
                 }
             });
         }

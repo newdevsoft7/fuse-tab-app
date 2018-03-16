@@ -61,11 +61,11 @@ export class SettingsSystemComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
-                    this.items = { ...this.items, [item.setting]: item.value };
+                    this.items = { ...this.items, [item.id]: item.value };
                 }
             });
         }

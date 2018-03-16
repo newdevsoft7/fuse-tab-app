@@ -5,7 +5,7 @@
         <div class="name" fxFlex="20">Message</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.profile_photo_msg" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.profile_photo_msg]" [delay]="1000"
                     (onValueChange)="onChange(Setting.profile_photo_msg, $event)"
                     placeholder="Enter any text you would like displayed in the photos section of staff profiles" />
             </mat-form-field>

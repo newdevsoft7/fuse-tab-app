@@ -5,7 +5,7 @@
         <div class="name" fxFlex="20">Company Name</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.company_name" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.company_name]" [delay]="1000"
                     (onValueChange)="onChange(Setting.company_name, $event)"
                     placeholder="Enter the name of your company" />
             </mat-form-field>
@@ -18,7 +18,7 @@
         <div class="name" fxFlex="20">System Name</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.system_name" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.system_name]" [delay]="1000"
                     (onValueChange)="onChange(Setting.system_name, $event)"
                     placeholder="Enter the name of this system" />
             </mat-form-field>
@@ -31,7 +31,7 @@
         <div class="name" fxFlex="20">Website</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.company_website" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.company_website]" [delay]="1000"
                     (onValueChange)="onChange(Setting.company_website, $event)"
                     placeholder="Enter the URL of your website" />
             </mat-form-field>
@@ -51,7 +51,7 @@
                 <div class="name" fxFlex="20">Address</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-form-field floatPlaceholder="never" fxFill>
-                        <input debounce matInput [(ngModel)]="items.company_address" [delay]="1000"
+                        <input debounce matInput [(ngModel)]="items[Setting.company_address]" [delay]="1000"
                             (onValueChange)="onChange(Setting.company_address, $event)"
                             placeholder="Address" />
                     </mat-form-field>
@@ -64,7 +64,7 @@
                 <div class="name" fxFlex="20">City</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-form-field floatPlaceholder="never" fxFill>
-                        <input debounce matInput [(ngModel)]="items.company_city" [delay]="1000"
+                        <input debounce matInput [(ngModel)]="items[Setting.company_city]" [delay]="1000"
                             (onValueChange)="onChange(Setting.company_city, $event)"
                             placeholder="City / Suburb" />
                     </mat-form-field>
@@ -77,7 +77,7 @@
                 <div class="name" fxFlex="20">State</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-form-field floatPlaceholder="never" fxFill>
-                        <input debounce matInput [(ngModel)]="items.company_state" [delay]="1000"
+                        <input debounce matInput [(ngModel)]="items[Setting.company_state]" [delay]="1000"
                             (onValueChange)="onChange(Setting.company_state, $event)"
                             placeholder="State" />
                     </mat-form-field>
@@ -90,7 +90,7 @@
                 <div class="name" fxFlex="20">Postcode</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-form-field floatPlaceholder="never" fxFill>
-                        <input debounce matInput [(ngModel)]="items.company_postcode" [delay]="1000"
+                        <input debounce matInput [(ngModel)]="items[Setting.company_postcode]" [delay]="1000"
                             (onValueChange)="onChange(Setting.company_postcode, $event)"
                             placeholder="Postcode / Zipcode" />
                     </mat-form-field>
@@ -104,7 +104,7 @@
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <div fxFlex.gt-xs="25">
                         <mat-form-field [style.width.px]="150">
-                            <mat-select [value]="items.company_country" (selectionChange)="onChange(Setting.company_country, $event)">
+                            <mat-select [value]="items[Setting.company_country]" (selectionChange)="onChange(Setting.company_country, $event)">
                                 <mat-option *ngFor="let option of countries" [value]="option">
                                   {{option}}
                                 </mat-option>

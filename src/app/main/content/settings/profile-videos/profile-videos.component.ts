@@ -60,17 +60,17 @@ export class SettingsProfileVideosComponent implements OnInit, OnChanges, OnDest
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
-                    if (item.setting === 'profile_video_enable') {
-                        this.items = { ...this.items, [item.setting]: _.toInteger(item.value) === 0 ? false : true };
+                    if (item.id === Setting.profile_video_enable) {
+                        this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
                     } else {
-                        this.items = { ...this.items, [item.setting]: item.value };
+                        this.items = { ...this.items, [item.id]: item.value };
                     }
-                    if (item.setting === 'profile_video_required') {
-                        this.videoRequired.patchValue(this.items.profile_video_required);
+                    if (item.id === Setting.profile_video_required) {
+                        this.videoRequired.patchValue(item.value);
                     }
                 }
             });

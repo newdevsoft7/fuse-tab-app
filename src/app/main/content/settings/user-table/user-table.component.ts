@@ -60,10 +60,10 @@ export class SettingsUserTableComponent implements OnInit, OnChanges {
         if (changes.settings || changes.options) {
             
             // Sets columns to display
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
 
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
 
                     // User Table Columns

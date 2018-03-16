@@ -5,7 +5,7 @@
         <div class="name" fxFlex="20">Main Email Sender Name</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.company_email_from" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.company_email_from]" [delay]="1000"
                     (onValueChange)="onChange(Setting.company_email_from, $event)"
                     placeholder="Enter the sender name to be displayed for notification emails" />
             </mat-form-field>
@@ -18,7 +18,7 @@
         <div class="name" fxFlex="20">Main Email Address</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.company_email_address" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.company_email_address]" [delay]="1000"
                     (onValueChange)="onChange(Setting.company_email_address, $event)" type="email"
                     placeholder="Enter the email address notification emails should come from."/>
             </mat-form-field>
@@ -32,7 +32,7 @@
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <div class="w-100-p">
                 <textarea [froalaEditor]="{placeholderText: 'Enter any signature to be appended to outgoing emails. This may be overwritten by personal signatures entered on the settings tab of administrator profiles.'}"
-                    [(froalaModel)]="items.company_email_signature" [formControl]="signature"></textarea>
+                    [(froalaModel)]="items[Setting.company_email_signature]" [formControl]="signature"></textarea>
             </div>
         </div>
     </div>

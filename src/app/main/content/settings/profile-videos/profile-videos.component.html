@@ -4,7 +4,7 @@
     <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Videos Module</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items.profile_video_enable"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.profile_video_enable]"
                 (change)="onChange(Setting.profile_video_enable, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">Enable to allow uploading videos to staff profiles</div>            
         </div>
@@ -16,7 +16,7 @@
         <div class="name" fxFlex="20">Message</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.profile_video_msg" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.profile_video_msg]" [delay]="1000"
                     (onValueChange)="onChange(Setting.profile_video_msg, $event)"
                     placeholder="Enter any text you would like displayed in the videos section of staff profiles" />
             </mat-form-field>

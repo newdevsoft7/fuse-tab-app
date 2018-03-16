@@ -94,17 +94,17 @@ export class SettingsStaffComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
                     if (this.checkableItems.includes(item.id)) { // Checkable Items
-                        this.items = { ...this.items, [item.setting]: _.toInteger(item.value) === 0 ? false : true };
+                        this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
                     } else {
-                        this.items = { ...this.items, [item.setting]: item.value };
+                        this.items = { ...this.items, [item.id]: item.value };
                     }
-                    if (item.setting === 'staff_inactive_after') {
-                        this.automaticInactive.patchValue(this.items.staff_inactive_after);
+                    if (item.id === Setting.staff_inactive_after) {
+                        this.automaticInactive.patchValue(item.value);
                     }
                 }
             });

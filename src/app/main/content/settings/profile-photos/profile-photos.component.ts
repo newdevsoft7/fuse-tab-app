@@ -60,13 +60,13 @@ export class SettingsProfilePhotosComponent implements OnInit, OnChanges, OnDest
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
-                    this.items = { ...this.items, [item.setting]: item.value };
-                    if (item.setting === 'profile_photo_required') {
-                        this.photoRequired.patchValue(this.items.profile_photo_required);
+                    this.items = { ...this.items, [item.id]: item.value };
+                    if (item.id === Setting.profile_photo_required) {
+                        this.photoRequired.patchValue(item.value);
                     }
                 }
             });
