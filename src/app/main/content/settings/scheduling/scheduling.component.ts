@@ -62,6 +62,9 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
 
     items: any = {}; // All Settings
 
+    // Form Controls
+    deadline = new FormControl();
+
     // List View Columns
     displayedColumns = [];
     availableColumns = [];
@@ -94,13 +97,13 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
 
         if (changes.settings || changes.options) {
             
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
 
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
                     if (this.checkableItems.includes(item.id)) { // Slide Togglable Items
-                        this.items = { ...this.items, [item.setting]: _.toInteger(item.value) === 0 ? false : true };
+                        this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
                     } else if (item.id === Setting.shift_table_columns) {
 
                         // Set columns to display
@@ -117,14 +120,14 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
                     } else if (this.numberItems.includes(item.id)) { // Number Fields
                         switch (item.id) {
                             case Setting.shift_replacement_request_deadline:
-                                // TODO
+                                this.deadline.patchValue(item.value);
                                 break;
                             
                             default:
                                 break;
                         }
                     } else { // Text Fields
-                        this.items = { ...this.items, [item.setting]: item.value };
+                        this.items = { ...this.items, [item.id]: item.value };
                     }
                 }
             });
@@ -148,6 +151,14 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
 
     ngOnInit() {
 
+        // Deadline Control
+        this.deadline.valueChanges
+            .debounceTime(1000)
+            .distinctUntilChanged()
+            .takeUntil(this.componentDestroyed)
+            .subscribe(value => {
+                this.onChange(Setting.shift_replacement_request_deadline, value);
+            });
     }
 
     ngOnDestroy() {
