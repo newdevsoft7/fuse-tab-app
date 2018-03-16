@@ -1,0 +1,27 @@
+<div fxLayout="column">
+
+    <!-- REGISTRATION MODULE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Registration Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.registration_enable]"
+                (change)="onChange(Setting.registration_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="85">Enable registration to allow people to sign up to work for you</div>            
+        </div>
+    </div>
+    <!-- / REGISTRATION MODULE -->
+
+    <!-- WELCOME MESSAGE -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Welcome message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.registration_msg_welcome]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.registration_msg_welcome, $event)"
+                    placeholder="Enter any text to be displayed on the first registration page." />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / WELCOME MESSAGE -->
+
+</div>
