@@ -75,7 +75,7 @@
                     <app-settings-registration *ngSwitchCase="'registration'" [options]="options" [settings]="settings" fxFill>
                     </app-settings-registration>
                     
-                    <app-settings-scheduling *ngSwitchCase="'scheduling'" [options]="options" [settings]="settings" fxFill>
+                    <app-settings-scheduling *ngSwitchCase="'scheduling'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-scheduling>
 
                     <app-settings-shift-flags *ngSwitchCase="'shift_flags'" [options]="options" [(settings)]="settings" fxFill>

@@ -1,0 +1,47 @@
+<div id="settings-scheduling-container" fxLayout="column">
+
+    <!-- LIST VIEW -->
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">List View</div>
+        </header>
+
+        <div class="content" fxLayout.gt-xs="row" fxLayoutGap="24px" fxLayout="column" fxLayoutAlign="start start" >
+
+            <!-- AVAILABLE COLUMNS -->
+            <div class="box info-box">
+                <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="title">Available columns</div>
+                </header>
+
+                <div class="content" fxLayout="column">
+                    <div class="ngx-dnd-container" ngxDroppable="group" [model]="availableColumns" (drop)="onDrop($event)">
+                        <div class="ngx-dnd-item" ngxDraggable *ngFor="let column of availableColumns" [model]="column">
+                            <div class="field">{{column.label}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / AVAILABLE COLUMNS -->
+
+            <!-- COLUMNS TO DISPLAY  -->
+            <div class="box info-box">
+                <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="title">Columns to display</div>
+                </header>
+
+                <div class="content" fxLayout="column">
+                    <div class="ngx-dnd-container" ngxDroppable="group" [model]="displayedColumns" (drop)="onDrop($event)">
+                        <div class="ngx-dnd-item"  ngxDraggable *ngFor="let column of displayedColumns" [model]="column">
+                            <div class="field">{{column.label}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / COLUMNS TO DISPLAY -->
+
+        </div>
+    </div>
+    <!-- / LIST VIEW -->
+    
+</div>
