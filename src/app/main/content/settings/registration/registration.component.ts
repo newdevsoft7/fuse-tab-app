@@ -26,7 +26,7 @@ enum Setting {
     templateUrl: './registration.component.html',
     styleUrls: ['./registration.component.scss']
 })
-export class SettingsRegistrationComponent implements OnInit {
+export class SettingsRegistrationComponent implements OnInit, OnChanges {
 
     _settings = [];
 
@@ -75,7 +75,7 @@ export class SettingsRegistrationComponent implements OnInit {
                     if (this.checkableItems.includes(item.id)) { // Slide Togglable Items
                         this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
                     } else if (this.numberItems.includes(item.id)) { // Number Fields
-                        
+
                     } else { // Text Fields
                         this.items = { ...this.items, [item.id]: item.value };
                     }
