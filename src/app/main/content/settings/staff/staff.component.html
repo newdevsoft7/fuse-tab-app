@@ -1,0 +1,270 @@
+<div fxLayout="column">
+
+    <!-- LOGIN -->
+    <div class="box info-box mt-16">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Login</div>
+        </header>
+        <div class="content" fxLayout="column">
+
+            <!-- AUTOMATIC INACTIVE -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Automatic Inactive</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div  fxFlex="15">
+                        <mat-form-field floatPlaceholder="never" [style.width.px]="40">
+                            <input matInput type="number" min="0" max="24" [formControl]="automaticInactive"/>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex="85">
+                        Staff who do not login after this number of months will be made inactive.
+                    </div>  
+                </div>
+            </div>
+            <!-- / AUTOMATIC INACTIVE -->
+
+            <!-- INACTIVE MESSAGE -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Inactive Message</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-form-field floatPlaceholder="never" fxFill>
+                        <input debounce matInput [(ngModel)]="items.staff_inactive_message" [delay]="1000"
+                            (onValueChange)="onChange(Setting.staff_inactive_message, $event)"
+                            placeholder="Enter the text to be displayed to an inactive user who attempts to log in." />
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- / INACTIVE MESSAGE -->
+
+            <!-- BLACKLISTED LOGIN -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Blacklisted Login</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items.staff_blacklisted_login"
+                        (change)="onChange(Setting.staff_blacklisted_login, $event)" fxFlex="15"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="85">
+                        Enable to allow blacklisted staff to access the system as normal. They will not have any indication they've been blacklisted.
+                    </div>            
+                </div>
+            </div>
+            <!-- / BLACKLISTED LOGIN  -->
+
+            <!-- BLACKLISTED MESSAGE -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Blacklisted Message</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-form-field floatPlaceholder="never" fxFill>
+                        <input debounce matInput [(ngModel)]="items.staff_blacklisted_msg" [delay]="1000"
+                            (onValueChange)="onChange(Setting.staff_blacklisted_msg, $event)"
+                            placeholder="Enter the text to be displayed to a blacklisted user who attempts to log in." />
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- / BLACKLISTED MESSAGE -->
+        </div>
+    </div>
+    <!-- / LOGIN -->
+
+    <!-- PERMISSIONS -->
+    <div class="box info-box mt-16">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Permissions</div>
+        </header>
+        <div class="content" fxLayout="column">
+
+            <!-- SEE OTHERS IN SHIFT -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See others in shift</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_others" (selectionChange)="onChange(Setting.staff_see_others, $event)">
+                                <mat-option *ngFor="let option of selection1" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75">Allow staff to see other staff in a shift</div>
+                </div>
+            </div>
+            <!-- / SEE OTHERS IN SHIFT -->
+
+            <!-- SEE OTHERS' PROFILE PHOTO -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="20">See others' profile photo</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items.staff_see_others_photo"
+                        (change)="onChange(Setting.staff_see_others_photo, $event)" fxFlex="25"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="75">
+                        Allow staff to see other users' main profile photo
+                    </div>            
+                </div>
+            </div>
+            <!-- / SEE OTHERS' PROFILE PHOTO  -->
+
+            <!-- SEE OTHERS' FULL NAMES -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="20">See others' full names</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items.staff_see_others_name"
+                        (change)="onChange(Setting.staff_see_others_name, $event)" fxFlex=25></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="75">
+                        Allow staff to see other users' full names
+                    </div>            
+                </div>
+            </div>
+            <!-- / SEE OTHERS' FULL NAMES  -->
+
+            <!-- SEE OTHERS' MOBILE NUMBERS -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="20">See others' mobile numbers</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items.staff_see_others_mob"
+                        (change)="onChange(Setting.staff_see_others_mob, $event)" fxFlex="25"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="75">
+                        Allow staff to see other users' mobile numbers
+                    </div>            
+                </div>
+            </div>
+            <!-- / SEE OTHERS' MOBILE NUMBERS  -->
+
+            <!-- SEE SHIFT ADDRESS -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See shift address</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_shift_address" (selectionChange)="onChange(Setting.staff_see_shift_address, $event)">
+                                <mat-option *ngFor="let option of selection1" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75">Allow staff to see the shift address field</div>
+                </div>
+            </div>
+            <!-- / SEE SHIFT ADDRESS -->
+
+            <!-- SEE SHIFT CONTACT -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See shift contact</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_shift_contact" (selectionChange)="onChange(Setting.staff_see_shift_contact, $event)">
+                                <mat-option *ngFor="let option of selection1" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75">Allow staff to see the shift contact field</div>
+                </div>
+            </div>
+            <!-- / SEE SHIFT CONTACT -->
+
+            <!-- SEE SHIFT MANAGER -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See shift manager</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_shift_manager" (selectionChange)="onChange(Setting.staff_see_shift_manager, $event)">
+                                <mat-option *ngFor="let option of selection1" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75">Allow staff to see the shift managers</div>
+                </div>
+            </div>
+            <!-- / SEE SHIFT MANAGER -->
+
+            <!-- SEE SHIFT NOTES -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See shift notes</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_shift_notes" (selectionChange)="onChange(Setting.staff_see_shift_notes, $event)">
+                                <mat-option *ngFor="let option of selection2" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75"></div>
+                </div>
+            </div>
+            <!-- / SEE SHIFT NOTES -->
+
+            <!-- SEE ROLE NOTES -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See role notes</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_role_notes" (selectionChange)="onChange(Setting.staff_see_role_notes, $event)">
+                                <mat-option *ngFor="let option of selection2" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75"></div>
+                </div>
+            </div>
+            <!-- / SEE ROLE NOTES -->
+
+            <!-- SEE ROLE REQUIRED NUMBER -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+                <div class="name" fxFlex="20">See role required number</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div fxFlex.gt-xs="25">
+                        <mat-form-field [style.width.px]="150">
+                            <mat-select [value]="items.staff_see_role_required" (selectionChange)="onChange(Setting.staff_see_role_required, $event)">
+                                <mat-option *ngFor="let option of selection1" [value]="option.value">
+                                  {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex.gt-xs="75"></div>
+                </div>
+            </div>
+            <!-- / SEE ROLE REQUIRED NUMBER -->
+
+            <!-- CHANGE WORK AREAS -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="20">Change work areas</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items.staff_change_work_areas"
+                        (change)="onChange(Setting.staff_change_work_areas, $event)" fxFlex="25"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="75">
+                        Allow staff to set their work areas
+                    </div>            
+                </div>
+            </div>
+            <!-- / CHANGE WORK AREAS  -->
+
+            <!-- UPLOAD SHIFT FILES -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Upload shift files</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items.staff_upload_shift_files"
+                        (change)="onChange(Setting.staff_upload_shift_files, $event)" fxFlex="25"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="75">
+                        Allow staff to upload files to shifts upon completion
+                    </div>            
+                </div>
+            </div>
+            <!-- / UPLOAD SHIFT FILES  -->
+
+        </div>
+    </div>
+    <!-- / PERMISSIONS -->
+
+</div>
