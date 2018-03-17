@@ -5,11 +5,10 @@ import {
     ViewChild,
     forwardRef,
     ChangeDetectionStrategy,
-    AfterViewInit,
     OnInit,
-    DoCheck,
     EventEmitter,
-    IterableDiffers
+    OnChanges,
+    SimpleChanges
 } from '@angular/core';
 import { MatAutocompleteSelectedEvent, MatInput } from '@angular/material';
 import {
@@ -52,7 +51,7 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     ]
 })
 
-export class CustomMultiSelectComponent implements ControlValueAccessor, AfterViewInit, OnInit, DoCheck {
+export class CustomMultiSelectComponent implements ControlValueAccessor, OnInit, OnChanges {
 
     @ViewChild('chipInput') chipInput: MatInput;
 
@@ -93,15 +92,15 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
         this.onChange(this._value);
     }
 
+    constructor() {}
 
-    constructor(differs: IterableDiffers) {
-        this.differ = differs.find([]).create(null);
-    }
-
-    ngDoCheck() {
-        const change = this.differ.diff(this.source);
-        if (change) {
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.source && !changes.source.firstChange) {
             this.sourceFiltered();
+        }
+
+        if (changes.autocompleteObservable && !changes.autocompleteObservable.firstChange) {
+            this.getItemsFromObservable('');
         }
     }
 
@@ -121,16 +120,8 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, AfterVi
         this.getItemsFromObservable('');
     }
 
-    ngAfterViewInit() {
-        Observable.fromEvent(this.chipInput['nativeElement'], 'keyup')
-            .debounceTime(300)
-            .distinctUntilChanged()
-            .subscribe((event: KeyboardEvent) => {
-                if (![UP_ARROW, DOWN_ARROW].includes(event.keyCode)) {
-                    const value = this.chipInput['nativeElement'].value.toLowerCase();
-                    this.getItemsFromObservable(value);
-                }
-            });
+    onkeyUpChange(value: string) {
+        this.getItemsFromObservable(value);
     }
 
     sourceFiltered() {

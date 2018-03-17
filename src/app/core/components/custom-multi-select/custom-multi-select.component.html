@@ -8,12 +8,16 @@
             </mat-chip>
         </ng-container>
         <input #chipInput
+               ngModel
+               debounce
+               [delay]="300"
                [placeholder]="placeholder"
                [matChipInputFor]="chipList"
                [matChipInputAddOnBlur]="false"
                (matChipInputTokenEnd)="addNew($event)"
                [matAutocomplete]="auto"
-               [disabled]="disabled">
+               [disabled]="disabled"
+               (onValueChange)="onkeyUpChange($event)">
     </mat-chip-list>
 
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
