@@ -1,0 +1,56 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    .info {
+        margin-bottom: 24px;
+
+        .name {
+            font-weight: 400;
+        }
+
+        .desc {
+            @include media-breakpoint-up('xs') {
+            }
+        }
+    }
+
+    .box {
+        margin-bottom: 16px;
+        @include mat-elevation(2);
+
+        header {
+            padding: 16px;
+
+            .title {
+                font-size: 17px;
+            }
+
+            .more {
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            padding: 16px;
+            background-color: #FFF;
+        }
+
+        footer {
+            padding: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        &.info-box {
+
+            .info-line {
+                margin-bottom: 24px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
