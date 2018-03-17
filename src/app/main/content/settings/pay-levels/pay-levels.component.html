@@ -13,4 +13,84 @@
     </div>
     <!-- / PAY LEVELS MODULE -->
 
+    <div fxFlex="1 0 auto" class="nav" fxLayout="column">
+        <mat-drawer-container class="draw-container" autosize fxFlex="1 0 auto">
+            <mat-drawer #drawer class="draw-sidenav" mode="side" [disableClose]="true">
+                <div fusePerfectScrollbar class="pt-16">
+
+                    <!-- CATEGORY LIST -->
+                    <app-settings-pay-category-item *ngFor="let category of categories"
+                        [category]="category" (click)="selectCategory(category)"
+                        [selected]="category.id === selectedCategory?.id">
+                    </app-settings-pay-category-item>
+                    <!-- / CATEGORY LIST -->
+                    
+                    <!-- EDIT FORM -->
+                    <div>
+                        <form [formGroup]="categoryForm" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                            class="px-24">
+
+                            <mat-form-field floatPlaceholder="never" class="cname-field">
+                                <input matInput formControlName="cname" placeholder="Write a category name" required>
+                            </mat-form-field>
+
+                            <div fxLayout="row">
+                                <button mat-icon-button fxFlex="0 1 auto" (click)="addCategory()"
+                                    [disabled]="categoryForm.invalid">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- / EDIT FORM -->
+                </div>
+            </mat-drawer>
+
+            <!-- PAY LEVELS CONTAINER -->
+            <div class="levels-container">
+
+                <!-- PAY LEVELS -->
+                <app-settings-pay-level-item *ngFor="let level of levels; let odd=odd; let even=even"
+                    [level]="level" [ngClass]="{'odd': odd, 'even': even}"></app-settings-pay-level-item>
+                <!-- /PAY LEVELS -->
+
+                <!-- PAY LEVEL FORM -->
+                <div  *ngIf="selectedCategory">
+                    <form [formGroup]="levelForm" fxLayout="row" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" fxLayoutGap="16px" class="level-form">
+
+                        <input type="hidden" formControlName="pay_cat_id" />
+
+                        <mat-form-field floatPlaceholder="never" fxFlex>
+                            <input matInput formControlName="pname" placeholder="Write a pay level name" required>
+                        </mat-form-field>
+
+                        <mat-form-field floatPlaceholder="never" class="w-40">
+                            <input matInput formControlName="pay_rate" placeholder="Pay Rate" type="number" required min="0">
+                        </mat-form-field>
+
+                        <mat-form-field floatPlaceholder="never" class="w-60">
+                            <mat-select formControlName="pay_rate_type" placeholder="Pay Rate Type">
+                                <mat-option *ngFor="let item of TYPE" [value]="item.value">
+                                    {{item.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <div class="w-80">
+                            <button mat-icon-button fxFlex="0 1 auto" (click)="addPayLevel()"
+                                [disabled]="levelForm.invalid">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- / PAY LEVEL FORM -->
+
+            </div>
+            <!-- / PAY LEVELS CONTAINER -->
+
+        </mat-drawer-container>
+    </div>
+
 </div>

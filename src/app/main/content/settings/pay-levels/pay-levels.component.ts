@@ -5,7 +5,9 @@ import {
     ViewChild, OnDestroy
 } from '@angular/core';
 
-import { FormControl, Validators } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators, FormControl,  } from '@angular/forms';
+
+import { MatDrawer } from '@angular/material';
 
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
@@ -29,6 +31,8 @@ enum Setting {
 })
 export class SettingsPayLevelsComponent implements OnInit {
 
+    @ViewChild('drawer') drawer: MatDrawer; 
+
     _settings = [];
 
     @Input('settings')
@@ -46,6 +50,11 @@ export class SettingsPayLevelsComponent implements OnInit {
 
     readonly Setting = Setting;
 
+    readonly TYPE = [
+        { label: '/hr', value: 'phr' },
+        { label: 'flat', value: 'flat' }
+    ];
+
     items: any = {}; // All Settings
 
     // Slide Togglable Items
@@ -59,7 +68,15 @@ export class SettingsPayLevelsComponent implements OnInit {
 
     componentDestroyed = new Subject();
 
+    categories = []; // Pay Categories
+    levels = []; // Pay Levels by Category
+    selectedCategory;
+
+    levelForm: FormGroup;
+    categoryForm: FormGroup;
+
     constructor(
+        private formBuilder: FormBuilder,
         private settingsService: SettingsService,
         private toastr: ToastrService
     ) {}
@@ -87,6 +104,32 @@ export class SettingsPayLevelsComponent implements OnInit {
     }
 
     ngOnInit() {
+        // Get all pay categories
+        this.settingsService.getPayCategories().subscribe(res => {
+            this.categories = res;
+            if (res.length > 0) {
+                this.selectCategory(this.categories[0]); // Select first pay category
+            }
+            this.drawer.open();
+        });
+
+        this.resetLevelForm();
+        this.resetCategoryForm();
+    }
+
+    resetCategoryForm() {
+        this.categoryForm = this.formBuilder.group({
+            cname: ['', Validators.required]
+        });
+    }
+
+    resetLevelForm() {
+        this.levelForm = this.formBuilder.group({
+            pname: ['', Validators.required],
+            pay_rate: [0, Validators.required],
+            pay_rate_type: ['phr', Validators.required],
+            pay_cat_id: []
+        });
     }
 
     onChange(id: Setting, event: MatSlideToggleChange | MatSelectChange | string) {
@@ -106,6 +149,48 @@ export class SettingsPayLevelsComponent implements OnInit {
             setting.value = value;
             this.settingsChange.next(this.settings);
             this.toastr.success(res.message);
+        });
+    }
+
+    // Select Category
+    selectCategory(category) {
+        this.selectedCategory = category;
+        this.getLevels(category.id);
+    }
+
+    getLevels(categoryId) {
+        this.settingsService.getPayLevelsByCategory(categoryId).subscribe(res => {
+            this.levels = res;
+        });
+    }
+
+    addCategory() {
+        const cname = this.categoryForm.getRawValue().cname;
+        this.settingsService.createPayCategory(cname).subscribe(res => {
+            this.toastr.success(res.message);
+            this.categories.push(res.data);
+            this.resetCategoryForm();
+        }, err => {
+            this.displayError(err);
+        });
+    }
+
+    addPayLevel() {
+        let params = this.levelForm.getRawValue();
+        params = { ...params, pay_cat_id: this.selectedCategory.id };
+        this.settingsService.createPayLevel(params).subscribe(res => {
+            this.toastr.success(res.message);
+            this.levels.push(res.data);
+            this.resetLevelForm();
+        }, err => {
+            this.displayError(err);
+        });
+    }
+
+    private displayError(err) {
+        const errors = err.error.errors;
+        Object.keys(errors).forEach(v => {
+            this.toastr.error(errors[v]);
         });
     }
 

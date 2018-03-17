@@ -41,6 +41,8 @@ import { SettingsUserTableComponent } from './user-table/user-table.component';
 import { SettingsWorkMarketComponent } from './work-market/work-market.component';
 import { SettingsXeroComponent } from './xero/xero.component';
 import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component';
+import { SettingsPayLevelItemComponent } from './pay-levels/pay-level-item/pay-level-item.component';
+import { SettingsPayCategoryItemComponent } from './pay-levels/pay-category-item/pay-category-item.component';
 
 
 @NgModule({
@@ -87,7 +89,9 @@ import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component
         SettingsUserTableComponent,
         SettingsWorkMarketComponent,
         SettingsXeroComponent,
-        SettingsShiftFlagsComponent
+        SettingsShiftFlagsComponent,
+        SettingsPayLevelItemComponent,
+        SettingsPayCategoryItemComponent
     ],
 
     providers: [SettingsService],

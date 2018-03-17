@@ -106,6 +106,54 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    getPayCategories(): Observable<any> {
+        const url = `${BASE_URL}/payLevel/category`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    getPayLevelsByCategory(categoryId: number) {
+        const url = `${BASE_URL}/payLevel/${categoryId}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    updatePayLevel(id: number, params) {
+        const url = `${BASE_URL}/payLevel/${id}`;
+        return this.http.put(url, params)
+            .catch(this.handleError);
+    }
+
+    updatePayCategory(id: number, cname) {
+        const url = `${BASE_URL}/payLevel/category/${id}`;
+        return this.http.put(url, { cname })
+            .catch(this.handleError);   
+    }
+
+    deletePayLevel(id: number) {
+        const url = `${BASE_URL}/payLevel/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
+    deletePayCategory(id: number) {
+        const url = `${BASE_URL}/payLevel/category/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
+    createPayCategory(cname) {
+        const url = `${BASE_URL}/payLevel/category`;
+        return this.http.post(url, { cname })
+            .catch(this.handleError);
+    }
+
+    createPayLevel(params) {
+        const url = `${BASE_URL}/payLevel`;
+        return this.http.post(url, params)
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }    

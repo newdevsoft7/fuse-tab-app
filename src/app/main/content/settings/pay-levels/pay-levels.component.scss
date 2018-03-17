@@ -1,6 +1,7 @@
 @import "src/app/core/scss/fuse";
 
 #settings-pay-levels-container {
+    height: 100%;
 
     .info {
         margin-bottom: 24px;
@@ -13,6 +14,17 @@
             @include media-breakpoint-up('xs') {
             }
         }
+    }
+
+    .nav-link {
+    }
+
+    .levels-container {
+        padding: 16px;
+    }
+
+    .level-form {
+        padding: 0 16px;
     }
 
     .box {

@@ -18,7 +18,7 @@
     
         <!-- SIDENAV -->
         <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3"
-            mat-is-locked-open="gt-md" #sidenav>
+            mat-is-locked-open="gt-md" #sidenav [disableClose]="true">
     
             <div class="sidenav-content pt-16" fusePerfectScrollbar>
         
@@ -57,7 +57,7 @@
                     <app-settings-outsourcing *ngSwitchCase="'outsourcing'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-outsourcing>
                     
-                    <app-settings-pay-levels *ngSwitchCase="'pay_levels'" [options]="options" [(settings)]="settings" fxFill>
+                    <app-settings-pay-levels *ngSwitchCase="'pay_levels'" [options]="options" [(settings)]="settings" class="w-100-p">
                     </app-settings-pay-levels>
 
                     <app-settings-profile-documents *ngSwitchCase="'profile_documents'" [options]="options" [(settings)]="settings" fxFill>
