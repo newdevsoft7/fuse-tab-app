@@ -15,8 +15,8 @@
 
     <div class="nav" fxFlex="1 0 auto" fxLayout="column">
         <mat-drawer-container class="draw-container" autosize fxFlex="1 0 auto">
-            <mat-drawer #drawer class="draw-sidenav" mode="side" [disableClose]="true">
-                <div fusePerfectScrollbar class="pt-16">
+            <mat-drawer #drawer class="draw-sidenav" mode="side" [disableClose]="true" fusePerfectScrollbar>
+                <div class="pt-16">
 
                     <!-- CATEGORY LIST -->
                     <app-settings-work-group-item *ngFor="let category of categories"
