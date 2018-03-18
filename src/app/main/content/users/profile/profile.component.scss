@@ -4,15 +4,13 @@
 
     &.page-layout {
         overflow: unset !important;
+        margin: -1em;
+        width: inherit;
     }
 
     .header {
-        max-width: inherit !important;
-        margin: -1em;
-        min-height: 200px;
-        position: relative;
-        background-repeat: no-repeat;
-        margin-bottom: 25px;
+        height: auto !important;
+        min-height: 200px !important;
         background: url('/assets/images/backgrounds/dark-material-bg.jpg') no-repeat 0 45%;
         background-size: 100% auto;
 
