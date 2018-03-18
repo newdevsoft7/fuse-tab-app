@@ -7,12 +7,11 @@ import {
 
 import { FormBuilder, FormGroup, Validators, FormControl,  } from '@angular/forms';
 
-import { MatDrawer } from '@angular/material';
+import { MatDrawer, MatSlideToggleChange, MatSelectChange } from '@angular/material';
 
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-import { MatSlideToggleChange, MatSelectChange } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
@@ -185,6 +184,17 @@ export class SettingsPayLevelsComponent implements OnInit {
         }, err => {
             this.displayError(err);
         });
+    }
+
+    onLevelDeleted(level) {
+        const index = _.findIndex(this.levels, ['id', level.id]);
+        this.levels.splice(index, 1);
+    }
+
+    onCategoryDeleted(category) {
+        const index = _.findIndex(this.categories, ['id', category.id]);
+        this.categories.splice(index, 1);
+        this.selectedCategory = null;
     }
 
     private displayError(err) {

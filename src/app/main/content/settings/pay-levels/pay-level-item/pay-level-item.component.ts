@@ -1,7 +1,13 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import {
+    Component, OnInit, Input,
+    ViewChild, EventEmitter, Output
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
+
+import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 import { SettingsService } from '../../settings.service';
 
@@ -14,9 +20,12 @@ export class SettingsPayLevelItemComponent implements OnInit {
 
     @ViewChild('nameInput') nameInputField;
     @Input() level;
+    @Output() onLevelDeleted = new EventEmitter;
 
     formActive = false;
     form: FormGroup;
+
+    dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     readonly TYPE = [
         { label: '/hr', value: 'phr' },
@@ -26,7 +35,8 @@ export class SettingsPayLevelItemComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private dialog: MatDialog
     ) { }
 
     ngOnInit() {
@@ -54,7 +64,19 @@ export class SettingsPayLevelItemComponent implements OnInit {
     }
 
     delete() {
-        this.formActive = false;
+        this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        this.dialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
+        this.dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.settingsService.deletePayLevel(this.level.id).subscribe(res => {
+                    this.toastr.success(res.message);
+                    this.onLevelDeleted.next(this.level);
+                });
+            }
+        });
+
     }
 
     saveForm() {
