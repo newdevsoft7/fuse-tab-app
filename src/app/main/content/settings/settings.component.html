@@ -18,7 +18,7 @@
     
         <!-- SIDENAV -->
         <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3"
-            mat-is-locked-open="gt-md" #sidenav [disableClose]="true">
+            mat-is-locked-open="gt-md" #sidenav>
     
             <div class="sidenav-content pt-16" fusePerfectScrollbar>
         
@@ -102,7 +102,7 @@
                     <app-settings-user-table *ngSwitchCase="'user_table'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-user-table>
                     
-                    <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]="settings" fxFill>
+                    <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]="(settings)" class="w-100-p">
                     </app-settings-work-areas>
 
                     <app-settings-work-market *ngSwitchCase="'work_market'" [options]="options" [(settings)]="settings" fxFill>

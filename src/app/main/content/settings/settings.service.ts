@@ -43,19 +43,19 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
-    createWorkArea(workarea): Observable<any> {
-        return this.http.post(WORK_AREA_URL, workarea)
+    createWorkArea(params): Observable<any> {
+        return this.http.post(WORK_AREA_URL, params)
             .catch(this.handleError);
     }
 
-    updateWorkArea(workareaId: number, data: any): Observable<any> {
-        const url = `${WORK_AREA_URL}/${workareaId}`;
-        return this.http.put(url, { ...data })
+    updateWorkArea(id: number, params): Observable<any> {
+        const url = `${WORK_AREA_URL}/${id}`;
+        return this.http.put(url, params)
             .catch(this.handleError);
     }
 
-    deleteWorkArea(workareaId: number): Observable<any> {
-        const url = `${WORK_AREA_URL}/${workareaId}`;
+    deleteWorkArea(id: number): Observable<any> {
+        const url = `${WORK_AREA_URL}/${id}`;
         return this.http.delete(url)
             .catch(this.handleError);
     }
@@ -66,20 +66,20 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
-    createWorkAreaCategory(workareaCategory): Observable<any> {
+    createWorkAreaCategory(cname): Observable<any> {
         const url = `${WORK_AREA_URL}/category`;
-        return this.http.post(url, workareaCategory)
+        return this.http.post(url, { cname })
             .catch(this.handleError);
     }
 
-    updateWorkAreaCategory(workareaCategoryId: number, data: any): Observable<any> {
-        const url = `${WORK_AREA_URL}/category/${workareaCategoryId}`;
-        return this.http.put(url, { ...data })
+    updateWorkAreaCategory(id: number, cname): Observable<any> {
+        const url = `${WORK_AREA_URL}/category/${id}`;
+        return this.http.put(url, { cname })
             .catch(this.handleError);
     }
 
-    deleteWorkAreaCategory(workareaCategoryId: number): Observable<any> {
-        const url = `${WORK_AREA_URL}/category/${workareaCategoryId}`;
+    deleteWorkAreaCategory(id: number): Observable<any> {
+        const url = `${WORK_AREA_URL}/category/${id}`;
         return this.http.delete(url)
             .catch(this.handleError);
     }

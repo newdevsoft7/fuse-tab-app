@@ -1,11 +1,94 @@
-<mat-tab-group dynamicHeight="true">
+<div id="settings-work-areas-container" fxLayout="column">
 
-    <mat-tab label="Work Areas">
-        <app-settings-work-areas-main></app-settings-work-areas-main>
-    </mat-tab>
+    <!-- WORK AREAS MODULE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Work Areas Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.work_areas_enable]"
+                (change)="onChange(Setting.work_areas_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="85">
+                Enable to create and assign different levels of pay rates to your staffEnable the work areas module to create and allow staff to choose different defined or geographic areas they're willing to travel to for work.
+            </div>            
+        </div>
+    </div>
+    <!-- / WORK AREAS MODULE -->
 
-    <mat-tab label="Categories">
-        <app-settings-work-areas-categories></app-settings-work-areas-categories>
-    </mat-tab>
-    
-</mat-tab-group>
+    <div class="nav" fxFlex="1 0 auto" fxLayout="column">
+        <mat-drawer-container class="draw-container" autosize fxFlex="1 0 auto">
+            <mat-drawer #drawer class="draw-sidenav" mode="side" [disableClose]="true">
+                <div fusePerfectScrollbar class="pt-16">
+
+                    <!-- CATEGORY LIST -->
+                    <app-settings-work-group-item *ngFor="let category of categories"
+                        [category]="category" (click)="selectCategory(category)"
+                        [selected]="category.id === selectedCategory?.id"
+                        (onCategoryDeleted)="onCategoryDeleted($event)">
+                    </app-settings-work-group-item>
+                    <!-- / CATEGORY LIST -->
+                    
+                    <!-- EDIT FORM -->
+                    <div>
+                        <form [formGroup]="categoryForm" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                            class="px-24">
+
+                            <mat-form-field floatPlaceholder="never" class="cname-field">
+                                <input matInput formControlName="cname" placeholder="Write a group name" required>
+                            </mat-form-field>
+
+                            <div fxLayout="row">
+                                <button mat-icon-button fxFlex="0 1 auto" (click)="addCategory()"
+                                    [disabled]="categoryForm.invalid">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- / EDIT FORM -->
+                </div>
+            </mat-drawer>
+
+            <!-- WORK AREAS CONTAINER -->
+            <div class="work-areas-container">
+
+                <!-- WORK AREAS -->
+                <app-settings-work-area-item *ngFor="let workArea of workAreas; let odd=odd; let even=even"
+                    [workArea]="workArea" [ngClass]="{'odd': odd, 'even': even}" [timezones]="timezones"
+                    (onWorkAreaDeleted)="onWorkAreaDeleted($event)"></app-settings-work-area-item>
+                <!-- / WORK AREAS -->
+
+                <!-- WORK AREA FORM -->
+                <div  *ngIf="selectedCategory" class="px-16">
+                    <form [formGroup]="workAreaForm" fxLayout="row" fxLayoutAlign="start center"
+                        fxLayoutGap="16px">
+
+                        <input type="hidden" formControlName="work_area_cat_id" />
+
+                        <mat-form-field floatPlaceholder="never" fxFlex>
+                            <input matInput formControlName="aname" placeholder="Write an area name" required>
+                        </mat-form-field>
+
+                        <mat-form-field floatPlaceholder="never" class="w-300">
+                            <mat-select formControlName="php_tz" placeholder="Timezone">
+                                <mat-option *ngFor="let option of timezones" [value]="option.value">
+                                    {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <div class="w-80">
+                            <button mat-icon-button fxFlex="0 1 auto" (click)="addWorkArea()"
+                                [disabled]="workAreaForm.invalid">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- / WORK AREA FORM -->
+
+            </div>
+            <!-- / WORK AREAS CONTAINER -->
+
+        </mat-drawer-container>
+    </div>
+
+</div>
