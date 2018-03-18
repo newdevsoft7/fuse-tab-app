@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 import { FormGroup } from '@angular/forms/src/model';
+import { Observable } from 'rxjs/Observable';
 import { CalendarEventFormDialogComponent } from './event-form/event-form.component';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
 import { ScheduleService } from '../schedule.service';
@@ -19,7 +20,13 @@ export class ScheduleCalendarComponent implements OnInit {
 
   dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
-  currentUser;
+  currentUser: any;
+
+  filtersObservable: any;
+  filters: any;
+
+  startDate: string;
+  endDate: string;
 
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
@@ -59,10 +66,7 @@ export class ScheduleCalendarComponent implements OnInit {
       title: 'Edit',
       icon: 'mode_edit',
       callback: (event: EventEntity): void => {
-        this.triggerEventModal({
-          action: 'edit',
-          event
-        });
+        this.openEventTab(event);
       }
     },
     {
@@ -123,15 +127,35 @@ export class ScheduleCalendarComponent implements OnInit {
   
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser();
+    this.filtersObservable = (text: string): Observable<any> => {
+      return Observable.of([]);
+    };
+  }
+
+  onFiltersChanged(filters: any) {
+    this.filters = filters;
+    this.fetchEvents();
   }
 
   updateEvents(event: { startDate: string, endDate: string }) {
-    this.fetchEvents(event.startDate, event.endDate);
+    this.filtersObservable = (text: string): Observable<any> => {
+      return this.scheduleService.getShiftFilters(event.startDate, event.endDate, text);
+    };
+    this.startDate = event.startDate;
+    this.endDate = event.endDate;
+    this.fetchEvents();
   }
 
-  async fetchEvents(startDate: string, endDate: string) {
+  async fetchEvents() {
+    const query = {
+      filters: this.filters,
+      from: this.startDate,
+      to: this.endDate,
+      view: 'calendar'
+    };
+
     try {
-      this.options.events = await this.scheduleService.getEvents(startDate, endDate);
+      this.options.events = await this.scheduleService.getShifts(query).toPromise();
     } catch (e) {
       this.snackBar.open(e.message || 'Something is wrong while fetching events.', 'Ok', {
         duration: 2000

@@ -15,7 +15,6 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     @Input('thread') set updateThread(thread: any) {
         if (thread) {
             this.thread = thread;
-            this.updateParticipants();
             this.currentPage = 0;
             this.readyToReply();
         }
@@ -54,7 +53,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     currentPage: number = 0;
     loading: boolean = true;    
 
-    constructor(private tokenStorage: TokenStorage, private userService: UserService)
+    constructor(private tokenStorage: TokenStorage)
     {
         this.authenticatedUser = tokenStorage.getUser();
     }
@@ -84,17 +83,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     }
 
     getParticipant(userId: number) {
-        return this.participants.find(user => user.id === userId);
-    }
-
-    updateParticipants() {
-        try {
-            this.thread.participant_ids.forEach(async (id: number) => {
-                this.participants.push(await this.userService.getUser(id).toPromise());
-            });
-        } catch (e) {
-            console.error(e);
-        }
+        return this.thread.participants.find(user => user.id === userId);
     }
 
     readyToReply(read?: boolean)

@@ -72,7 +72,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       setTimeout(() => this.toastr.warning('Notification is not allowed for this domain.'));      
     }
 
-    this.tabSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
+    this.socketSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
       if (!connected) {
         this.socketTimer = setInterval(() => {
           this.toastr.warning('Web socket is not connected yet. Connecting now...');
@@ -152,7 +152,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.messageSubscription.unsubscribe();
     this.activitySubscription.unsubscribe();
     this.tabSubscription.unsubscribe();
-    this.tabSubscription.unsubscribe();
+    this.socketSubscription.unsubscribe();
     this.selectedThread = null;
     this.selectedChat = null;
   }
@@ -177,7 +177,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         status: isTyping,
         user: this.tokenStorage.getUser().id,
         thread: this.selectedThread.id,
-        receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+        receipts: this.selectedThread.participants.map(user => user.id).filter(id => id !== this.tokenStorage.getUser().id)
       }
     }));
   }
@@ -248,7 +248,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       this.socketService.sendData(JSON.stringify({
         type: 'message',
         payload: {
-          receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
+          receipts: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
           sender: this.tokenStorage.getUser().id,
           content: savedMessage
         }
@@ -282,7 +282,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async updateReadStatus(threadId: number) {
     try {
-      const receipts = this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
+      const receipts = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
       await this.usersChatService.updateReadStatus(threadId);
       if (this.selectedThread) {
         this.selectedThread.unread = 0;
@@ -328,7 +328,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           type: 'thread',
           payload: {
             thread: payload.thread_id,
-            receipt: this.selectedThread.participant_ids.find(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+            receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
         }));
       } catch (e) {
@@ -340,7 +340,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   triggerAddUserModal() {
     this.userDialogRef = this.dialog.open(AddUserFormDialogComponent, {
       panelClass: 'add-user-form-dialog',
-      data: this.selectedThread.participant_ids
+      data: this.selectedThread.participants.map(user => user.id)
     });
     this.userDialogRef.afterClosed().subscribe(async selectedUsers => {
       if (!selectedUsers) {
@@ -359,7 +359,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           type: 'thread',
           payload: {
             thread: this.selectedThread.id,
-            receipt: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+            receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
         }));
       } catch (e) {

@@ -2,5 +2,16 @@
   [options]="options"
   [contextMenu]="contextMenu"
   [ajax]="true"
-  (optionChanged)="updateEvents($event)"
-  ></sc-calendar>
+  (optionChanged)="updateEvents($event)">
+  <div calendar-header fxLayout="row" fxLayoutAlign="start center">
+    <mat-icon class="mr-8 mb-8" fxFlex="0 1 auto">search</mat-icon>
+    <div fxFlex>
+      <app-custom-multi-select 
+        [autocompleteObservable]="filtersObservable"
+        [labelBy]="'text'" 
+        [valueBy]="'id'"
+        placeholder="Filter shifts..."
+        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select>
+    </div>
+  </div>
+</sc-calendar>
