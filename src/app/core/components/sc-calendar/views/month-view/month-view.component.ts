@@ -86,9 +86,6 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       };
       tempDay.isToday = moment().isSame(tempDay.date, 'day');
       monthDays.splice(0, 0, tempDay);
-      if (i === moment(currentDate).startOf('month').day() - 1) {
-        this.viewStartDate = tempDay.date.format('YYYY-MM-DD');
-      }
     }
     for (let i = 1; i <= moment(currentDate).daysInMonth(); i++) {
       const tempDay:any = {
@@ -107,12 +104,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
         };
         tempDay.isToday = moment().isSame(tempDay.date, 'day');
         monthDays.push(tempDay);
-        if (i === 6) {
-          this.viewEndDate = tempDay.date.format('YYYY-MM-DD');
-        }
       }
-    } else {
-      this.viewEndDate = moment(currentDate).endOf('month').format('YYYY-MM-DD');
     }
     for (let i = 0; i < monthDays.length / 7; i++) {
       res.push([]);
@@ -120,6 +112,8 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     for (let i = 0; i < monthDays.length; i++) {
       res[Math.floor(i / 7)].push(monthDays[i]);
     }
+    this.viewStartDate = monthDays[0].date.format('YYYY-MM-DD');
+    this.viewEndDate = monthDays[monthDays.length - 1].date.format('YYYY-MM-DD');
     return res;
   }
 

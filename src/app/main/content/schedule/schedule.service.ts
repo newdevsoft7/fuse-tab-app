@@ -31,8 +31,9 @@ export class ScheduleService {
     const pageNumber = params.pageNumber ? params.pageNumber : 0;
     const fromDate = params.from;
     const toDate = params.to;
+    const view = params.view || 'list';
 
-    const url = `${SHIFT_URL}/${fromDate}/${toDate}/list/${pageSize}/${pageNumber}/${filters}/${sorts}`;
+    const url = `${SHIFT_URL}/${fromDate}/${toDate}/${view}/${pageSize}/${pageNumber}/${filters}/${sorts}`;
     return this.http.get(url.replace(/\/+$/, ''))
       .catch(this.handleError);
   }

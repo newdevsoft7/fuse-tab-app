@@ -2,7 +2,7 @@
 <div class="chat" fxFlex fxLayout="column">
     <div class="chat-overlay" *ngIf="loading">
         <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-        Reading messages...
+        Loading messages...
     </div>
 
     <!-- CHAT TOOLBAR -->
@@ -25,18 +25,35 @@
                     <div class="chat-contact-name" fxLayout="column" fxLayoutAlign="center start">
                         <p class="m-0 name">{{thread?.name}}</p>
                         <p class="font-size-14 m-0" fxLayout="row" fxLayoutAlign="start center">
-                            <mat-icon class="mr-8">group</mat-icon>{{thread.participant_ids.length}} members
+                            <mat-icon class="mr-8">group</mat-icon>{{thread.participants.length}} members
                         </p>
                     </div>
                 </div>
                 <!-- / CHAT CONTACT-->
             </div>
-            <button mat-icon-button aria-label="new user" *ngIf="thread" (click)="addUser.next()">
-                <mat-icon>group_add</mat-icon>
-            </button>
+            <div>
+                <button mat-icon-button aria-label="rename name" *ngIf="thread?.participants.length > 2" (click)="renameThread.next(thread?.name)">
+                    <mat-icon>mode_edit</mat-icon>
+                </button>
+                <button mat-icon-button aria-label="new user" *ngIf="thread" (click)="addUser.next()">
+                    <mat-icon>group_add</mat-icon>
+                </button>
+            </div>
         </div>
     </mat-toolbar>
     <!-- / CHAT TOOLBAR -->
+    <!-- MEMBER TOOLBAR -->
+    <mat-toolbar class="member-toolbar">
+        <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <ng-container *ngFor="let user of thread?.participants">
+                <span class="member font-size-14" [class.pr-8]="thread.participants.length === 2" fxLayout="row" fxLayoutAlign="center center" *ngIf="user.id !== authenticatedUser.id">
+                    {{user.name}}
+                    <mat-icon class="font-size-18" *ngIf="thread.participants.length > 2" (click)="removeUser.next(user.id)">clear</mat-icon>
+                </span>
+            </ng-container>
+        </div>
+    </mat-toolbar>
+    <!-- / MEMBER TOOLBAR -->
 
     <!-- CHAT CONTENT -->
     <div id="chat-content" fxFlex fusePerfectScrollbar (onScrollTop)="detectScrollTop($event)">
@@ -49,20 +66,23 @@
                  [ngClass]="{'user': message.sender_id == authenticatedUser.id}">
 
                 <img *ngIf="message.sender_id != authenticatedUser.id"
-                     [src]="getParticipant(message.sender_id)?.ppic_a || (getParticipant(message.sender_id)?.sex === 'male'? 'https://staffconnect.net/images/nopic_thumb_male.jpg' : 'https://staffconnect.net/images/nopic_thumb_female.jpg')"
+                     [src]="message?.ppic_a"
                      class="avatar"
-                     [alt]="getParticipant(message.sender_id)?.fname + ' ' + getParticipant(message.sender_id)?.lname"/>
+                     [alt]="message?.name"/>
 
-                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="getParticipant(authenticatedUser.id)?.ppic_a || (getParticipant(authenticatedUser.id)?.sex === 'male'? 'https://staffconnect.net/images/nopic_thumb_male.jpg' : 'https://staffconnect.net/images/nopic_thumb_female.jpg')">
+                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="message?.ppic_a">
 
                 <div class="bubble">
                     <div class="message">{{message.content}}</div>
-                    <div>
+                    <div class="clearfix">
                         <div class="time secondary-text pull-left">{{message.created_at | date:'medium'}}</div>
-                        <mat-icon class="pull-right font-size-16 h-16 w-16 mt-8 ml-12" *ngIf="message.read && message.sender_id === authenticatedUser.id">done</mat-icon>
+                    </div>
+                    <div class="seen-status mt-8" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
+                        <ng-container *ngFor="let seenId of message.seen_by_ids">
+                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId) && message.sender_id !== seenId"/>
+                        </ng-container>
                     </div>
                 </div>
-
             </div>
             <!-- / MESSAGE -->
         </div>

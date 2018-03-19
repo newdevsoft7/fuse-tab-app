@@ -84,6 +84,11 @@ export class UsersChatService {
     return this.http.put(url, {}).toPromise();
   }
 
+  async renameThread(id: number, name: string): Promise<any> {
+    const url = `${CHAT_URL}/thread/${id}`;
+    return this.http.put(url, { tname: name }).toPromise();
+  }
+
   async getThreads() {
     const url = `${CHAT_URL}/threads`;
     return this.http.get(url).toPromise();
@@ -102,6 +107,11 @@ export class UsersChatService {
   async addUserIntoThread(threadId: number, userId: number) {
     const url = `${CHAT_URL}/thread/${threadId}/user/${userId}`;
     return this.http.post(url, {}).toPromise();
+  }
+
+  async removeUserFromThread(threadId: number, userId: number) {
+    const url = `${CHAT_URL}/thread/${threadId}/user/${userId}`;
+    return this.http.delete(url).toPromise();
   }
 
   private handleError(error): Promise<any> {

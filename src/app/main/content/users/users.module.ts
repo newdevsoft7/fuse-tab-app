@@ -23,7 +23,7 @@ import { FuseChatViewComponent } from './chat/chat-view/chat-view.component';
 import { FuseChatLeftSidenavComponent } from './chat/sidenavs/left/left.component';
 import { FuseChatChatsSidenavComponent } from './chat/sidenavs/left/chats/chats.component';
 import { BtnAddContactComponent } from './chat/sidenavs/left/btn-add-contact/btn-add-contact.component';
-import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './chat/dialogs';
+import { NewThreadFormDialogComponent, AddUserFormDialogComponent, RenameThreadFormDialogComponent } from './chat/dialogs';
 import { UsersProfileAttributesComponent } from './profile/attributes/attributes.component';
 import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.component';
 import { UsersSearchBarComponent } from './search-bar/search-bar.component';
@@ -62,6 +62,7 @@ import { UsersSettingsClientComponent } from './profile/settings/client/client.c
         BtnAddContactComponent,
         NewThreadFormDialogComponent,
         AddUserFormDialogComponent,
+        RenameThreadFormDialogComponent,
         UsersProfileAttributesComponent,
         UsersProfileWorkAreasComponent,
         UsersAddFilterDialogComponent,
@@ -79,7 +80,8 @@ import { UsersSettingsClientComponent } from './profile/settings/client/client.c
         FuseChatChatsSidenavComponent,
         BtnAddContactComponent,
         NewThreadFormDialogComponent,
-        AddUserFormDialogComponent
+        AddUserFormDialogComponent,
+        RenameThreadFormDialogComponent
     ],
     providers: [
         UserService,
@@ -92,6 +94,7 @@ import { UsersSettingsClientComponent } from './profile/settings/client/client.c
         UsersAddFilterDialogComponent,
         NewThreadFormDialogComponent,
         AddUserFormDialogComponent,
+        RenameThreadFormDialogComponent,
         UsersExportDialogComponent
     ]
 })

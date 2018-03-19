@@ -39,7 +39,9 @@
                     (addUser)="triggerAddUserModal($event)"
                     (updatePendingMessage)="updatePendingMessage($event)"
                     (updateTypingStatus)="updateTypingStatus($event)"
-                    (fetchMessages)="fetchMessages($event)"></fuse-chat-view>
+                    (fetchMessages)="fetchMessages($event)"
+                    (renameThread)="triggerRenameThreadModal($event)"
+                    (removeUser)="removeUser($event)"></fuse-chat-view>
                 </mat-sidenav-content>
                 <!-- / CONTENT -->
 

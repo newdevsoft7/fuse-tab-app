@@ -10,7 +10,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/skipWhile';
 import { FavicoService } from '../../../../shared/services/favico.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './dialogs';
+import { NewThreadFormDialogComponent, AddUserFormDialogComponent, RenameThreadFormDialogComponent } from './dialogs';
 import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
 import { TabService } from '../../../tab/tab.service';
 import { FCMService } from '../../../../shared/services/fcm.service';
@@ -31,6 +31,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   threads: any = [];
   dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
   userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
+  renameThreadDialogRef: MatDialogRef<RenameThreadFormDialogComponent>;
   alive: boolean = false;
   socketService: SocketService;
   fcmService: FCMService;
@@ -72,10 +73,10 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       setTimeout(() => this.toastr.warning('Notification is not allowed for this domain.'));      
     }
 
-    this.tabSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
+    this.socketSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
       if (!connected) {
         this.socketTimer = setInterval(() => {
-          this.toastr.warning('Web socket is not connected yet. Connecting now...');
+          this.toastr.warning('Chat server is not connected yet. Connecting now...');
         }, 10000);
       } else {
         if (this.socketTimer) {
@@ -99,6 +100,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
             return;
           }
           if (parseInt(res.data.thread_id) === this.selectedThread.id) {
+            res.data.seen_by_ids = [res.data.sender_id];
+            res.data.ppic_a = this.selectedThread.participants.find(user => user.id === res.data.sender_id).ppic_a;
             this.selectedChat.push(res.data);
             this.chatView.readyToReply();
             if (this.activityManagerService.isFocused) {
@@ -137,10 +140,35 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           }
           break;
         case 'readThread':
-          if (this.selectedThread && res.data === this.selectedThread.id) {
-            this.selectedChat.filter(message => !message.read).forEach(message => {
-              message.read = true;
+          if (this.selectedThread && res.data.thread === this.selectedThread.id) {
+            this.selectedChat.forEach(message => {
+              if (message.seen_by_ids.indexOf(res.data.reader) === -1) {
+                message.seen_by_ids.push(res.data.reader);
+              }
             });
+          }
+          break;
+        case 'renameThread':
+          const changedThread = this.threads.find(thread => thread.id === res.data.thread);
+          if (changedThread) {
+            changedThread.name = res.data.name;
+          }
+          break;
+        case 'removeUser':
+          const index = this.threads.findIndex(thread => thread.id === res.data.thread);
+          if (index !== -1) {
+            if (this.tokenStorage.getUser().id === res.data.user) {
+              this.threads.splice(index, 1);
+              if (this.selectedThread && this.selectedThread.id === res.data.thread) {
+                this.selectedThread = null;
+                this.selectedChat = null
+              }
+            } else {
+              await this.fetchThreads();
+              if (this.selectedThread && this.selectedThread.id === res.data.thread) {
+                this.selectedThread = this.threads[index];
+              }
+            }
           }
           break;
       }
@@ -152,7 +180,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.messageSubscription.unsubscribe();
     this.activitySubscription.unsubscribe();
     this.tabSubscription.unsubscribe();
-    this.tabSubscription.unsubscribe();
+    this.socketSubscription.unsubscribe();
     this.selectedThread = null;
     this.selectedChat = null;
   }
@@ -177,7 +205,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         status: isTyping,
         user: this.tokenStorage.getUser().id,
         thread: this.selectedThread.id,
-        receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+        receipts: this.selectedThread.participants.map(user => user.id).filter(id => id !== this.tokenStorage.getUser().id)
       }
     }));
   }
@@ -239,7 +267,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   async sendMessage(message: any) {
-    message.sender_id = this.tokenStorage.getUser().id;    
+    message.sender_id = this.tokenStorage.getUser().id;
+    message.ppic_a = this.selectedThread.participants.find(user => user.id === message.sender_id).ppic_a;
     this.selectedChat.push(message);
     this.chatView.replyForm.reset();
     this.chatView.readyToReply();
@@ -248,7 +277,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       this.socketService.sendData(JSON.stringify({
         type: 'message',
         payload: {
-          receipts: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
+          receipts: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
           sender: this.tokenStorage.getUser().id,
           content: savedMessage
         }
@@ -256,7 +285,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       message.id = savedMessage.id;
       message.created_at = savedMessage.created_at;
       message.updated_at = savedMessage.updated_at;
-      message.read = false;
+      message.seen_by_ids = [];
     } catch (e) {
       this.handleError(e);
     }
@@ -282,7 +311,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async updateReadStatus(threadId: number) {
     try {
-      const receipts = this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
+      const receipts = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
       await this.usersChatService.updateReadStatus(threadId);
       if (this.selectedThread) {
         this.selectedThread.unread = 0;
@@ -291,7 +320,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         type: 'readThread',
         payload: {
           thread: threadId,
-          receipts: receipts
+          receipts: receipts,
+          reader: this.tokenStorage.getUser().id
         }
       }));
     } catch (e) {
@@ -328,7 +358,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           type: 'thread',
           payload: {
             thread: payload.thread_id,
-            receipt: this.selectedThread.participant_ids.find(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+            receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
         }));
       } catch (e) {
@@ -340,7 +370,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   triggerAddUserModal() {
     this.userDialogRef = this.dialog.open(AddUserFormDialogComponent, {
       panelClass: 'add-user-form-dialog',
-      data: this.selectedThread.participant_ids
+      data: this.selectedThread.participants.map(user => user.id)
     });
     this.userDialogRef.afterClosed().subscribe(async selectedUsers => {
       if (!selectedUsers) {
@@ -359,13 +389,63 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           type: 'thread',
           payload: {
             thread: this.selectedThread.id,
-            receipt: this.selectedThread.participant_ids.filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+            receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
         }));
       } catch (e) {
         this.handleError(e);
       }
     });
+  }
+
+  triggerRenameThreadModal(name: string) {
+    this.renameThreadDialogRef = this.dialog.open(RenameThreadFormDialogComponent, {
+      panelClass: 'rename-thread-form-dialog',
+      data: name
+    });
+    this.renameThreadDialogRef.afterClosed().subscribe(async name => {
+      if (!name) {
+        return;
+      }
+      try {
+        const thread = this.selectedThread.id;
+        const receipt = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
+        await this.usersChatService.renameThread(thread, name);
+        if (this.selectedThread) {
+          this.selectedThread.name = name;
+        }
+        this.socketService.sendData(JSON.stringify({
+          type: 'renameThread',
+          payload: {
+            thread,
+            name,
+            receipt
+          }
+        }));
+      } catch (e) {
+        this.handleError(e);
+      }
+    });
+  }
+
+  async removeUser(userId: number) {
+    try {
+      const threadId = this.selectedThread.id;
+      const receipt = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
+      await this.usersChatService.removeUserFromThread(threadId, userId);
+      await this.fetchThreads();
+      this.selectedThread = this.threads.find(thread => thread.id === threadId);
+      this.socketService.sendData(JSON.stringify({
+        type: 'removeUser',
+        payload: {
+          thread: threadId,
+          userId,
+          receipt
+        }
+      }));
+    } catch (e) {
+      this.handleError(e);
+    }
   }
 
   handleError(e) {
