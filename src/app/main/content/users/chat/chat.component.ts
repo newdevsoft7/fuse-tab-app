@@ -76,7 +76,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.socketSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
       if (!connected) {
         this.socketTimer = setInterval(() => {
-          this.toastr.warning('Web socket is not connected yet. Connecting now...');
+          this.toastr.warning('Chat server is not connected yet. Connecting now...');
         }, 10000);
       } else {
         if (this.socketTimer) {
@@ -164,9 +164,10 @@ export class UsersChatComponent implements OnInit, OnDestroy {
                 this.selectedChat = null
               }
             } else {
-              const thread = this.threads[index];
-              const deletedIndex = thread.participants.findIndex(user => user.id === res.data.user);
-              thread.participants.splice(deletedIndex, 1);
+              await this.fetchThreads();
+              if (this.selectedThread && this.selectedThread.id === res.data.thread) {
+                this.selectedThread = this.threads[index];
+              }
             }
           }
           break;
@@ -429,21 +430,19 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async removeUser(userId: number) {
     try {
-      const thread = this.selectedThread.id;
+      const threadId = this.selectedThread.id;
       const receipt = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
-      await this.usersChatService.removeUserFromThread(thread, userId);
+      await this.usersChatService.removeUserFromThread(threadId, userId);
+      await this.fetchThreads();
+      this.selectedThread = this.threads.find(thread => thread.id === threadId);
       this.socketService.sendData(JSON.stringify({
         type: 'removeUser',
         payload: {
-          thread,
+          thread: threadId,
           userId,
           receipt
         }
       }));
-      if (this.selectedThread) {
-        const index = this.selectedThread.participants.findIndex(user => user.id === userId);
-        this.selectedThread.participants.splice(index, 1);
-      }
     } catch (e) {
       this.handleError(e);
     }
