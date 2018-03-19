@@ -1,0 +1,21 @@
+<div id="shift-flags-container">
+    <app-settings-flag-item *ngFor="let flag of flags" [flag]="flag"
+        (onFlagDeleted)="onFlagDeleted($event)"></app-settings-flag-item>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <mat-form-field floatPlaceholder="never" class="name" fxFlex="200px">
+            <input matInput [(ngModel)]="flag.fname" placeholder="Write a flag name" required>
+        </mat-form-field>
+
+        <div class="color" fxFlex="150px" [style.background]="flag.color">
+            <input [(colorPicker)]="flag.color" [value]="flag.color" [style.background]="flag.color"
+                placeholder="Choose a color"/>
+        </div>
+
+        <div fxLayout="row">
+            <button mat-icon-button fxFlex="0 1 auto" (click)="addFlag()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

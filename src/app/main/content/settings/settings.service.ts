@@ -154,6 +154,30 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    getFlags(): Observable<any> {
+        const url = `${BASE_URL}/flag`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    createFlag(params): Observable<any> {
+        const url = `${BASE_URL}/flag`;
+        return this.http.post(url, params)
+            .catch(this.handleError);
+    }
+
+    updateFlag(id: number, params): Observable<any> {
+        const url = `${BASE_URL}/flag/${id}`;
+        return this.http.put(url, params)
+            .catch(this.handleError);
+    }
+
+    deleteFlag(id: number): Observable<any> {
+        const url = `${BASE_URL}/flag/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }    

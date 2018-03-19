@@ -36,6 +36,7 @@ import { SettingsXeroComponent } from './xero/xero.component';
 import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component';
 import { SettingsPayLevelItemComponent } from './pay-levels/pay-level-item/pay-level-item.component';
 import { SettingsPayCategoryItemComponent } from './pay-levels/pay-category-item/pay-category-item.component';
+import { ItemComponent } from './shift-flags/item/item.component';
 
 @NgModule({
     imports: [
@@ -76,7 +77,8 @@ import { SettingsPayCategoryItemComponent } from './pay-levels/pay-category-item
         SettingsXeroComponent,
         SettingsShiftFlagsComponent,
         SettingsPayLevelItemComponent,
-        SettingsPayCategoryItemComponent
+        SettingsPayCategoryItemComponent,
+        ItemComponent
     ],
 
     providers: [
