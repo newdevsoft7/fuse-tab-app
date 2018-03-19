@@ -101,6 +101,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           }
           if (parseInt(res.data.thread_id) === this.selectedThread.id) {
             res.data.seen_by_ids = [res.data.sender_id];
+            res.data.ppic_a = this.selectedThread.participants.find(user => user.id === res.data.sender_id).ppic_a;
             this.selectedChat.push(res.data);
             this.chatView.readyToReply();
             if (this.activityManagerService.isFocused) {
@@ -265,7 +266,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   async sendMessage(message: any) {
-    message.sender_id = this.tokenStorage.getUser().id;    
+    message.sender_id = this.tokenStorage.getUser().id;
+    message.ppic_a = this.selectedThread.participants.find(user => user.id === message.sender_id).ppic_a;
     this.selectedChat.push(message);
     this.chatView.replyForm.reset();
     this.chatView.readyToReply();

@@ -80,7 +80,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
         if (this.typingUsers.length === 0) {
             return '';
         }
-        let namePrefix = this.typingUsers.map(id => `${this.getParticipant(id).fname} ${this.getParticipant(id).lname}`).join(' and ');
+        let namePrefix = this.typingUsers.map(id => `${this.getParticipant(id).name}`).join(' and ');
         return `${namePrefix.charAt(0).toUpperCase() + namePrefix.slice(1)} ${this.typingUsers.length > 1? 'are' : 'is'} typing...`;
     }
 

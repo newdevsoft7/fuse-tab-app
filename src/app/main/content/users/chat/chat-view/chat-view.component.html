@@ -32,7 +32,7 @@
                 <!-- / CHAT CONTACT-->
             </div>
             <div>
-                <button mat-icon-button aria-label="rename name" (click)="renameThread.next(thread?.name)">
+                <button mat-icon-button aria-label="rename name" *ngIf="thread?.participants.length > 2" (click)="renameThread.next(thread?.name)">
                     <mat-icon>mode_edit</mat-icon>
                 </button>
                 <button mat-icon-button aria-label="new user" *ngIf="thread" (click)="addUser.next()">
@@ -79,7 +79,7 @@
                     </div>
                     <div class="seen-status mt-8" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
                         <ng-container *ngFor="let seenId of message.seen_by_ids">
-                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId)"/>
+                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId) && message.sender_id !== seenId"/>
                         </ng-container>
                     </div>
                 </div>
