@@ -10,7 +10,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/skipWhile';
 import { FavicoService } from '../../../../shared/services/favico.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { NewThreadFormDialogComponent, AddUserFormDialogComponent } from './dialogs';
+import { NewThreadFormDialogComponent, AddUserFormDialogComponent, RenameThreadFormDialogComponent } from './dialogs';
 import { ActivityManagerService } from '../../../../shared/services/activity-manager.service';
 import { TabService } from '../../../tab/tab.service';
 import { FCMService } from '../../../../shared/services/fcm.service';
@@ -31,6 +31,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   threads: any = [];
   dialogRef: MatDialogRef<NewThreadFormDialogComponent>;
   userDialogRef: MatDialogRef<AddUserFormDialogComponent>;
+  renameThreadDialogRef: MatDialogRef<RenameThreadFormDialogComponent>;
   alive: boolean = false;
   socketService: SocketService;
   fcmService: FCMService;
@@ -99,6 +100,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
             return;
           }
           if (parseInt(res.data.thread_id) === this.selectedThread.id) {
+            res.data.seen_by_ids = [res.data.sender_id];
             this.selectedChat.push(res.data);
             this.chatView.readyToReply();
             if (this.activityManagerService.isFocused) {
@@ -137,10 +139,18 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           }
           break;
         case 'readThread':
-          if (this.selectedThread && res.data === this.selectedThread.id) {
-            this.selectedChat.filter(message => !message.read).forEach(message => {
-              message.read = true;
+          if (this.selectedThread && res.data.thread === this.selectedThread.id) {
+            this.selectedChat.forEach(message => {
+              if (message.seen_by_ids.indexOf(res.data.reader) === -1) {
+                message.seen_by_ids.push(res.data.reader);
+              }
             });
+          }
+          break;
+        case 'renameThread':
+          const changedThread = this.threads.find(thread => thread.id === res.data.thread);
+          if (changedThread) {
+            changedThread.name = res.data.name;
           }
           break;
       }
@@ -256,7 +266,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       message.id = savedMessage.id;
       message.created_at = savedMessage.created_at;
       message.updated_at = savedMessage.updated_at;
-      message.read = false;
+      message.seen_by_ids = [];
     } catch (e) {
       this.handleError(e);
     }
@@ -291,7 +301,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         type: 'readThread',
         payload: {
           thread: threadId,
-          receipts: receipts
+          receipts: receipts,
+          reader: this.tokenStorage.getUser().id
         }
       }));
     } catch (e) {
@@ -359,6 +370,32 @@ export class UsersChatComponent implements OnInit, OnDestroy {
           type: 'thread',
           payload: {
             thread: this.selectedThread.id,
+            receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+          }
+        }));
+      } catch (e) {
+        this.handleError(e);
+      }
+    });
+  }
+
+  triggerRenameThreadModal(name: string) {
+    this.renameThreadDialogRef = this.dialog.open(RenameThreadFormDialogComponent, {
+      panelClass: 'rename-thread-form-dialog',
+      data: name
+    });
+    this.renameThreadDialogRef.afterClosed().subscribe(async name => {
+      if (!name) {
+        return;
+      }
+      try {
+        await this.usersChatService.renameThread(this.selectedThread.id, name);
+        this.selectedThread.name = name;
+        this.socketService.sendData(JSON.stringify({
+          type: 'renameThread',
+          payload: {
+            thread: this.selectedThread.id,
+            name,
             receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
         }));

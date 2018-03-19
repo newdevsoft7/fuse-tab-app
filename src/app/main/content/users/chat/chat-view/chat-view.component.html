@@ -31,9 +31,14 @@
                 </div>
                 <!-- / CHAT CONTACT-->
             </div>
-            <button mat-icon-button aria-label="new user" *ngIf="thread" (click)="addUser.next()">
-                <mat-icon>group_add</mat-icon>
-            </button>
+            <div>
+                <button mat-icon-button aria-label="rename name" (click)="renameThread.next(thread?.name)">
+                    <mat-icon>mode_edit</mat-icon>
+                </button>
+                <button mat-icon-button aria-label="new user" *ngIf="thread" (click)="addUser.next()">
+                    <mat-icon>group_add</mat-icon>
+                </button>
+            </div>
         </div>
     </mat-toolbar>
     <!-- / CHAT TOOLBAR -->
@@ -57,12 +62,15 @@
 
                 <div class="bubble">
                     <div class="message">{{message.content}}</div>
-                    <div>
+                    <div class="clearfix">
                         <div class="time secondary-text pull-left">{{message.created_at | date:'medium'}}</div>
-                        <mat-icon class="pull-right font-size-16 h-16 w-16 mt-8 ml-12" *ngIf="message.read && message.sender_id === authenticatedUser.id">done</mat-icon>
+                    </div>
+                    <div class="seen-status mt-8" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
+                        <ng-container *ngFor="let seenId of message.seen_by_ids">
+                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name"/>
+                        </ng-container>
                     </div>
                 </div>
-
             </div>
             <!-- / MESSAGE -->
         </div>

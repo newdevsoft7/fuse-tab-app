@@ -96,6 +96,18 @@
                         margin-top: 8px;
                         text-align: right;
                     }
+
+                    .seen-status {
+                        img {
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                            margin-left: 5px;
+                            &:first-child {
+                                margin-left: 0;
+                            }
+                        }
+                    }
                 }
 
                 &.contact {

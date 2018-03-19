@@ -84,6 +84,11 @@ export class UsersChatService {
     return this.http.put(url, {}).toPromise();
   }
 
+  async renameThread(id: number, name: string): Promise<any> {
+    const url = `${CHAT_URL}/thread/${id}`;
+    return this.http.put(url, { tname: name }).toPromise();
+  }
+
   async getThreads() {
     const url = `${CHAT_URL}/threads`;
     return this.http.get(url).toPromise();
