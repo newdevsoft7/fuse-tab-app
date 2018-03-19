@@ -23,6 +23,7 @@ import { AdminShiftStaffApplicantsComponent } from './shift/admin-shift/staff/ap
 import { AdminShiftStaffStandbyComponent } from './shift/admin-shift/staff/standby/standby.component';
 import { NewShiftComponent } from './shift/new-shift/new-shift.component';
 import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
+import { CustomMultiSelectGroupModule } from '../../../core/components/custom-multi-select-group/custom-multi-select-group.module';
 import { StaticMultiSelectModule } from '../../../core/components/static-multi-select/static-multi-select.module';
 import { ShiftRoleEditComponent } from './shift/role-edit/role-edit.component';
 import { ShiftRoleRequirementsComponent } from './shift/role-edit/shift-role-requirements/shift-role-requirements.component';
@@ -70,6 +71,7 @@ import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-
         SCCalendarModule,
         SharedModule,
         CustomMultiSelectModule,
+        CustomMultiSelectGroupModule,
         StaticMultiSelectModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
