@@ -42,6 +42,18 @@
         </div>
     </mat-toolbar>
     <!-- / CHAT TOOLBAR -->
+    <!-- MEMBER TOOLBAR -->
+    <mat-toolbar class="member-toolbar">
+        <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <ng-container *ngFor="let user of thread?.participants">
+                <span class="member font-size-14" [class.pr-8]="thread.participants.length === 2" fxLayout="row" fxLayoutAlign="center center" *ngIf="user.id !== authenticatedUser.id">
+                    {{user.name}}
+                    <mat-icon class="font-size-18" *ngIf="thread.participants.length > 2" (click)="removeUser.next(user.id)">clear</mat-icon>
+                </span>
+            </ng-container>
+        </div>
+    </mat-toolbar>
+    <!-- / MEMBER TOOLBAR -->
 
     <!-- CHAT CONTENT -->
     <div id="chat-content" fxFlex fusePerfectScrollbar (onScrollTop)="detectScrollTop($event)">
@@ -54,11 +66,11 @@
                  [ngClass]="{'user': message.sender_id == authenticatedUser.id}">
 
                 <img *ngIf="message.sender_id != authenticatedUser.id"
-                     [src]="getParticipant(message.sender_id)?.ppic_a"
+                     [src]="message?.ppic_a"
                      class="avatar"
-                     [alt]="getParticipant(message.sender_id)?.name"/>
+                     [alt]="message?.name"/>
 
-                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="getParticipant(authenticatedUser.id)?.ppic_a">
+                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="message?.ppic_a">
 
                 <div class="bubble">
                     <div class="message">{{message.content}}</div>
@@ -67,7 +79,7 @@
                     </div>
                     <div class="seen-status mt-8" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
                         <ng-container *ngFor="let seenId of message.seen_by_ids">
-                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name"/>
+                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId)"/>
                         </ng-container>
                     </div>
                 </div>

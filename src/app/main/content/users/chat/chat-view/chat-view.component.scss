@@ -59,6 +59,26 @@
             }
         }
 
+        .member-toolbar {
+            height: 36px;
+            .member {
+                background-color: lightgrey;
+                padding-left: 8px;
+                border-radius: 16px;
+                height: 24px;
+                margin-left: 5px;
+
+                mat-icon {
+                    margin: 5px 0 0 5px;
+                    cursor: pointer;
+                }
+
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+
         #chat-content {
             background: transparent;
             overflow: auto;

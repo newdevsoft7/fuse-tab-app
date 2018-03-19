@@ -153,6 +153,22 @@ export class UsersChatComponent implements OnInit, OnDestroy {
             changedThread.name = res.data.name;
           }
           break;
+        case 'removeUser':
+          const index = this.threads.findIndex(thread => thread.id === res.data.thread);
+          if (index !== -1) {
+            if (this.tokenStorage.getUser().id === res.data.user) {
+              this.threads.splice(index, 1);
+              if (this.selectedThread && this.selectedThread.id === res.data.thread) {
+                this.selectedThread = null;
+                this.selectedChat = null
+              }
+            } else {
+              const thread = this.threads[index];
+              const deletedIndex = thread.participants.findIndex(user => user.id === res.data.user);
+              thread.participants.splice(deletedIndex, 1);
+            }
+          }
+          break;
       }
     });
   }
@@ -389,20 +405,46 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         return;
       }
       try {
-        await this.usersChatService.renameThread(this.selectedThread.id, name);
-        this.selectedThread.name = name;
+        const thread = this.selectedThread.id;
+        const receipt = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
+        await this.usersChatService.renameThread(thread, name);
+        if (this.selectedThread) {
+          this.selectedThread.name = name;
+        }
         this.socketService.sendData(JSON.stringify({
           type: 'renameThread',
           payload: {
-            thread: this.selectedThread.id,
+            thread,
             name,
-            receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
+            receipt
           }
         }));
       } catch (e) {
         this.handleError(e);
       }
     });
+  }
+
+  async removeUser(userId: number) {
+    try {
+      const thread = this.selectedThread.id;
+      const receipt = this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id));
+      await this.usersChatService.removeUserFromThread(thread, userId);
+      this.socketService.sendData(JSON.stringify({
+        type: 'removeUser',
+        payload: {
+          thread,
+          userId,
+          receipt
+        }
+      }));
+      if (this.selectedThread) {
+        const index = this.selectedThread.participants.findIndex(user => user.id === userId);
+        this.selectedThread.participants.splice(index, 1);
+      }
+    } catch (e) {
+      this.handleError(e);
+    }
   }
 
   handleError(e) {

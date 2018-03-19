@@ -109,6 +109,11 @@ export class UsersChatService {
     return this.http.post(url, {}).toPromise();
   }
 
+  async removeUserFromThread(threadId: number, userId: number) {
+    const url = `${CHAT_URL}/thread/${threadId}/user/${userId}`;
+    return this.http.delete(url).toPromise();
+  }
+
   private handleError(error): Promise<any> {
     return Promise.reject(error);
   }

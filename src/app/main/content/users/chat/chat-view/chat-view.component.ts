@@ -37,6 +37,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     @Output() updateTypingStatus: EventEmitter<boolean> = new EventEmitter();
     @Output() fetchMessages: EventEmitter<number> = new EventEmitter();
     @Output() renameThread: EventEmitter<any> = new EventEmitter();
+    @Output() removeUser: EventEmitter<any> = new EventEmitter();
 
     replyInput: any;
     selectedChat: any;
