@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { TokenStorage } from '../../../../../../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-staff-shift-replace-dialog',
@@ -12,8 +13,10 @@ export class StaffShiftReplaceDialogComponent implements OnInit {
 
     form: FormGroup;
     formErrors: any;
+    settings: any = {};
 
     constructor(
+        private tokenStorage: TokenStorage,
         private formBuilder: FormBuilder,
         public dialogRef: MatDialogRef<StaffShiftReplaceDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
@@ -31,6 +34,7 @@ export class StaffShiftReplaceDialogComponent implements OnInit {
         this.form.valueChanges.subscribe(() => {
             this.onFormValuesChanged();
         });
+        this.settings = this.tokenStorage.getSettings();
     }
 
     saveForm() {

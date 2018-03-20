@@ -25,6 +25,7 @@ import { StaffShiftReplaceDialogComponent } from './dialogs/replace-dialog/repla
 import { StaffShiftConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { StaffShiftPayItemDialogComponent } from './dialogs/pay-item-dialog/pay-item-dialog.component';
 import { StaffShiftApplyDialogComponent } from './dialogs/apply-dialog/apply-dialog.component';
+import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 
 enum Action {
     apply = 'apply',
@@ -58,14 +59,17 @@ export class StaffShiftInfoComponent implements OnInit {
     dialogRef: any;
 
     readonly Action = Action;
+    settings: any = {};
 
 	constructor(
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private tokenStorage: TokenStorage
     ) { }
 
 	ngOnInit() {
+        this.settings = this.tokenStorage.getSettings();
     }
 
     readonly files = [
@@ -76,7 +80,7 @@ export class StaffShiftInfoComponent implements OnInit {
         { type: 'spreadsheet', name: 'intro', size: '3.2 Mb', created_at: 'June 8, 2018' },
         { type: 'document', name: 'work', size: '22 Mb', created_at: 'June 8, 2018' }
     ]
-    
+
     openPayItemDialog(payItems) {
         this.dialogRef = this.dialog.open(StaffShiftPayItemDialogComponent, {
             data: { payItems }
@@ -142,7 +146,7 @@ export class StaffShiftInfoComponent implements OnInit {
                 this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
                     data: {
                         title: 'Really confirm this role?',
-                        heading: 'Thank you for confirming your shift.'
+                        heading: this.settings.shift_msg_confirmation
                     }
                 });
                 this.dialogRef.afterClosed().subscribe(result => {
@@ -234,7 +238,7 @@ export class StaffShiftInfoComponent implements OnInit {
             case Action.view_invoice:
 
                 break;
-                
+
             case Action.view_pay:
 
                 break;
