@@ -1,5 +1,14 @@
 <div id="documents" class="p-24">
 
+    <div class="mb-24" *ngIf="settings.profile_doc_message">
+        <h3>
+            {{settings.profile_doc_message}}
+            <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
+                ({{settings.profile_doc_required}}&nbsp; {{settings.profile_doc_required > 1 ? 'documents' : 'document'}} required)
+            </span>
+        </h3>
+    </div>
+
     <!-- BASIC SECTION -->
     <div class="group">
 
@@ -21,7 +30,7 @@
                     </ng-container>
                 </div>
             </div>
-            
+
         </div>
 
     </div>
@@ -35,7 +44,7 @@
                 <span class="name">Admin Only</span>
                 <span class="info"></span>
             </div>
-            
+
             <!-- ADD FILE BUTTON -->
             <div class="file-uploader">
                 <input hidden type="file" #adminFileInput (change)="onUploadDocument($event, 1)" multiple/>
@@ -52,7 +61,7 @@
                     </ng-container>
                 </div>
             </div>
-            
+
         </div>
 
     </div>
@@ -65,7 +74,7 @@
         <img class="preview" [src]="document.thumbnail">
     </a>
     <div class="title" fxLayout="row" fxLayoutAlign="end center">
-        
+
             <button mat-icon-button (click)="onLockedChanged(document)">
                 <mat-icon *ngIf="document.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
                 <mat-icon *ngIf="!document.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
@@ -74,6 +83,6 @@
             <button mat-icon-button (click)="deleteProfileDocument(document)">
                 <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
             </button>
-            
+
     </div>
 </ng-template>

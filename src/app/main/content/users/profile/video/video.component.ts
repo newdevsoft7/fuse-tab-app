@@ -22,6 +22,7 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
 
     @Input('userInfo') user;
     @Input() currentUser;
+    @Input() settings: any = {};
 
     videos: any[];
     basicVideos: any[];

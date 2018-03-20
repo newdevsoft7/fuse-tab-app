@@ -16,6 +16,8 @@ export class UsersProfileComponent implements OnInit {
 	userInfo: any;
 	ratings = [];
 
+	settings: any = {};
+
 	constructor(
 		private tokenStorage: TokenStorage,
 		private userService: UserService
@@ -24,6 +26,7 @@ export class UsersProfileComponent implements OnInit {
 	ngOnInit() {
 		this.getUserInfo();
 		this.currentUser = this.tokenStorage.getUser();
+		this.settings = this.tokenStorage.getSettings();
 	}
 
 	getAvatar(userInfo) {

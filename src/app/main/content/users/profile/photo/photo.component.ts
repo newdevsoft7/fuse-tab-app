@@ -20,6 +20,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	@Input('userInfo') user;
 	@Input() currentUser;
+	@Input() settings: any = {};
 
 	@Output() onAvatarChanged = new EventEmitter();
 
@@ -29,14 +30,14 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	differ: any;
 
 	dialogRef: any;
-	
+
 	constructor(
 		private loadingService: CustomLoadingService,
 		private dialog: MatDialog,
 		private userService: UserService,
 		private toastr: ToastrService,
 		differs: IterableDiffers
-	) { 
+	) {
 		this.differ = differs.find([]).create(null);
 	}
 
@@ -173,7 +174,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 		const photo = event.value;
 		const isDroppedInAdmin = (this.adminPhotos.findIndex(v => v.id == photo.id) > -1) && (photo.admin_only != 1);
 		const isDroppedInBasic = (this.basicPhotos.findIndex(v => v.id == photo.id) > -1) && (photo.admin_only == 1);
-		
+
 		if (isDroppedInAdmin || isDroppedInBasic) {
 			const adminOnly = isDroppedInAdmin ? 1 : 0;
 			this.userService.setProfilePhotoAsAdmin(photo.id, adminOnly)
