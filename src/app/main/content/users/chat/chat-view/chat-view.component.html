@@ -31,7 +31,7 @@
                 </div>
                 <!-- / CHAT CONTACT-->
             </div>
-            <div>
+            <div *ngIf="userLevel === 'admin' || userLevel === 'owner'">
                 <button mat-icon-button aria-label="rename name" *ngIf="thread?.participants.length > 2" (click)="renameThread.next(thread?.name)">
                     <mat-icon>mode_edit</mat-icon>
                 </button>
@@ -46,9 +46,9 @@
     <mat-toolbar class="member-toolbar">
         <div fxFlex fxLayout="row" fxLayoutAlign="start center">
             <ng-container *ngFor="let user of thread?.participants">
-                <span class="member font-size-14" [class.pr-8]="thread.participants.length === 2" fxLayout="row" fxLayoutAlign="center center" *ngIf="user.id !== authenticatedUser.id">
+                <span class="member font-size-14" [class.pr-8]="thread.participants.length === 2 || (userLevel !== 'admin' && userLevel !== 'owner')" fxLayout="row" fxLayoutAlign="center center" *ngIf="user.id !== authenticatedUser.id">
                     {{user.name}}
-                    <mat-icon class="font-size-18" *ngIf="thread.participants.length > 2" (click)="removeUser.next(user.id)">clear</mat-icon>
+                    <mat-icon class="font-size-18" *ngIf="thread.participants.length > 2 && (userLevel === 'admin' || userLevel === 'owner')" (click)="removeUser.next(user.id)">clear</mat-icon>
                 </span>
             </ng-container>
         </div>

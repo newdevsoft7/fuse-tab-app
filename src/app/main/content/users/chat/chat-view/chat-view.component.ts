@@ -76,6 +76,10 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
         this.replyInput = this.replyInputField.first.nativeElement;
     }
 
+    get userLevel(): string {
+        return this.tokenStorage.getUser().lvl;
+    }
+
     getTypingText() {
         if (this.typingUsers.length === 0) {
             return '';

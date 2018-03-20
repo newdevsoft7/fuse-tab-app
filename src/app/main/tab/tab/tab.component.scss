@@ -1,7 +1,14 @@
-.pane {
-    padding: 1em;
-    border: 1px solid rgba(197, 198, 203, 0.3);
-    border-top: none;
-    height: calc(-49px + 100%);
-    overflow-y: auto;
+:host {
+    &.users-chat {
+        .pane {
+            padding: 0;
+        }
+    }
+    .pane {
+        padding: 1em;
+        border: 1px solid rgba(197, 198, 203, 0.3);
+        border-top: none;
+        height: calc(-49px + 100%);
+        overflow-y: auto;
+    }
 }

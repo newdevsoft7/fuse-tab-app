@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, HostBinding } from '@angular/core';
 
 @Component({
 	selector: 'app-tab',
@@ -19,6 +19,10 @@ export class TabComponent {
 	@Input() template;
 	@Input() data;
 	@Input() url;
+
+	@HostBinding('class') get classes() {
+		return this.url? this.url.replace('/', '-') : '';
+	}
 
 	constructor(public element: ElementRef) { }
 
