@@ -11,7 +11,7 @@
 
                 <!-- BASIC -->
                 <div class="shift-box info-box" fxLayout="column" fxFlex="50">
-                    
+
                     <header class="mat-accent-bg">
                         <div class="title">General Information</div>
                     </header>
@@ -67,13 +67,13 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="info-line">
+                        <div class="info-line" *ngIf="settings.location_address === '1'">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Address" formControlName="address">
                             </mat-form-field>
                         </div>
 
-                        <div class="info-line">
+                        <div class="info-line" *ngIf="settings.location_contact === '1'">
                             <mat-form-field class="full-width">
                                 <input matInput placeholder="Venue Contact" formControlName="contact">
                             </mat-form-field>
@@ -90,7 +90,7 @@
                     <header class="mat-accent-bg">
                         <div class="title">Date & Times</div>
                     </header>
-                
+
                     <div class="content" fxLayout="column">
                         <div class="info-line">
                             <div *ngFor="let item of dates; let i = index"
@@ -98,7 +98,7 @@
                                  fxLayoutGap="12px">
                                 <mat-form-field fxFlexLayout="start center" fxFlex="160px">
                                     <input matInput
-                                           [matDatepicker]="picker" 
+                                           [matDatepicker]="picker"
                                            placeholder="Date"
                                            fxFlex
                                            (dateInput)="changeDate(i, $event)"
@@ -131,12 +131,15 @@
             </div>
 
             <!-- TRACKING -->
-            <div class="shift-box info-box" fxLayout="column">
-            
+            <div class="shift-box info-box" fxLayout="column"
+                *ngIf="settings.work_areas_enable === '1' ||
+                       settings.client_enable === '1' ||
+                       settings.tracking_enable === '1'">
+
                 <header class="mat-accent-bg">
                     <div class="title">Tracking</div>
                 </header>
-            
+
                 <div class="content" fxLayout="column">
                     <div class="info-line">
                         <app-custom-multi-select [autocompleteObservable]="managers"
@@ -146,14 +149,14 @@
                                                  formControlName="manager_ids"></app-custom-multi-select>
                     </div>
 
-                    <div class="info-line">
+                    <div class="info-line" *ngIf="settings.client_enable === '1'">
                         <mat-form-field class="full-width">
                             <input type="hidden" formControlName="client_id">
                             <input matInput
                                    placeholder="Client"
                                    [matAutocomplete]="autoClient"
                                    [formControl]="clientControl">
-                    
+
                             <mat-autocomplete #autoClient="matAutocomplete"
                                               [displayWith]="clientDisplayFn"
                                               (optionSelected)="selectClient($event)">
@@ -162,11 +165,11 @@
                                     {{option.cname}}
                                 </mat-option>
                             </mat-autocomplete>
-                    
+
                         </mat-form-field>
                     </div>
 
-                    <div class="info-line">
+                    <div class="info-line" *ngIf="settings.work_areas_enable === '1'">
                         <app-custom-multi-select [autocompleteObservable]="workAreas"
                                                  [placeholder]="'Work Areas'"
                                                  [labelBy]="'aname'"
@@ -174,11 +177,13 @@
                                                  formControlName="work_area_ids"></app-custom-multi-select>
                     </div>
 
-                    <div class="info-line" *ngFor="let category of categories">
-                        <app-static-multi-select [source]="category.tracking_options" [placeholder]="category.cname"
-                            [labelBy]="'oname'" [valueBy]="'id'" [(value)]="category.value">
-                        </app-static-multi-select>
-                    </div>
+                    <ng-container *ngIf="settings.tracking_enable === '1'">
+                        <div class="info-line" *ngFor="let category of categories">
+                            <app-static-multi-select [source]="category.tracking_options" [placeholder]="category.cname"
+                                [labelBy]="'oname'" [valueBy]="'id'" [(value)]="category.value">
+                            </app-static-multi-select>
+                        </div>
+                    </ng-container>
                 </div>
 
             </div>
@@ -186,11 +191,11 @@
 
             <!-- SHIFT NOTES -->
             <div class="shift-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">Shift Notes</div>
                 </header>
-            
+
                 <div class="content p-0" fxLayout="column">
                     <div class="info-line">
                         <textarea [froalaEditor] formControlName="notes"></textarea>
@@ -199,7 +204,7 @@
 
             </div>
             <!-- / SHIFT NOTES -->
-                
+
             <div>
                 <button mat-raised-button color="accent" (click)="onSave()">Save</button>
             </div>

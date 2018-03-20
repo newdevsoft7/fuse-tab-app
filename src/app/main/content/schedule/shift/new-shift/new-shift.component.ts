@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatAutocompleteSelectedEvent, MatInput, MatDatepickerInputEvent } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
-import { 
+import {
     debounceTime, distinctUntilChanged,
     first, map, startWith, switchMap
 } from 'rxjs/operators';
@@ -40,7 +40,7 @@ class ShiftDate {
 export class NewShiftComponent implements OnInit {
 
     @Input() data;
-    
+
     get startDate() {
         if (this.data.date) {
             return this.data.date.toISOString();
@@ -69,9 +69,10 @@ export class NewShiftComponent implements OnInit {
     generic_location_show = false;
 
     categories: any[] = []; // Tracking Categories & Options
+    settings: any = {};
 
     constructor(
-        private formBuilder: FormBuilder,        
+        private formBuilder: FormBuilder,
         private toastr: ToastrService,
         private tabService: TabService,
         private scheduleService: ScheduleService,
@@ -157,6 +158,8 @@ export class NewShiftComponent implements OnInit {
                 this.categories = res.tracking;
                 this.categories.forEach(c => c.value = []);
             }
+
+            this.settings = res.settings;
         });
 
         // Form Validation
@@ -288,7 +291,7 @@ export class NewShiftComponent implements OnInit {
                 this.toastr.error(errors[v]);
             });
         });
-        
+
     }
 
     private openRoleTab(shifts) {
@@ -310,16 +313,16 @@ export class NewShiftComponent implements OnInit {
 
             if (date.from.meriden === date.to.meriden) {
                 return date.from.hour < date.to.hour ? true :
-                    (date.from.hour === date.to.hour ? (date.from.minute < date.to.minute ? true : false) : false); 
+                    (date.from.hour === date.to.hour ? (date.from.minute < date.to.minute ? true : false) : false);
             }
             return true;
         });
 
         if (!dates_validation || !this.shiftForm.valid) { return false; }
-        
+
         return true;
     }
- 
+
 }
 
 // Return FROM and TO datetimes
@@ -340,7 +343,7 @@ function convertShiftDateTime(shiftDate: ShiftDate) {
         hour: hours12to24(shiftDate.to.hour, shiftDate.to.meriden),
         minute: shiftDate.to.minute
     }).format('YYYY-MM-DD HH:mm:ss');
-    
+
     return {
         shift_start,
         shift_end
@@ -354,4 +357,3 @@ function hours12to24(h, meridiem) {
 function removeNull(obj) {
     Object.keys(obj).forEach((key) => (obj[key] == null) && delete obj[key]);
 }
-
