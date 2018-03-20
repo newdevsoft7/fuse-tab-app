@@ -90,8 +90,10 @@ export class FuseLoginComponent implements OnInit
         const password = this.loginForm.getRawValue().password;
         try {
             await this.authService.login(username, password).toPromise();
-            this.socketService.enableReconnect();
-            this.socketService.reconnect();
+            if (this.authService.isUserCompleted()) {
+                this.socketService.enableReconnect();
+                this.socketService.reconnect();
+            }
             this.router.navigate(['/home']);
         } catch (err) {
             this.isSuccess = false;

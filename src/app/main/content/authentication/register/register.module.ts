@@ -3,11 +3,13 @@ import { SharedModule } from '../../../../core/modules/shared.module';
 import { RouterModule } from '@angular/router';
 
 import { FuseRegisterComponent } from './register.component';
+import { UnauthGuardService } from '../../../../shared/guards/unauth-guard.service';
 
 const routes = [
     {
-        path     : 'pages/auth/register',
-        component: FuseRegisterComponent
+        path     : 'register',
+        component: FuseRegisterComponent,
+        canActivate: [ UnauthGuardService ]
     }
 ];
 

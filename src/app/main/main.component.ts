@@ -5,6 +5,7 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { CustomLoadingService } from '../shared/services/custom-loading.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector     : 'fuse-main',
@@ -21,6 +22,7 @@ export class FuseMainComponent implements OnInit, OnDestroy
     loading = false;
 
     constructor(
+        private router: Router,
         private loadingService: CustomLoadingService,
         private _renderer: Renderer2,
         private _elementRef: ElementRef,
@@ -68,7 +70,7 @@ export class FuseMainComponent implements OnInit, OnDestroy
         this._renderer.removeClass(this._elementRef.nativeElement, className);
     }
 
-    get isAuthenticated(): boolean {
-        return this.authService.isAuthorized();
+    get visibleNavbar(): boolean {
+        return this.authService.isAuthorized() && !this.router.url.startsWith('/complete/');
     }
 }

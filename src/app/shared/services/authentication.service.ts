@@ -114,6 +114,15 @@ export class AuthenticationService {
         return url.endsWith('refresh');
     }
 
+    public isUserCompleted(): boolean {
+        const userLevel = this.tokenStorage.getUser().lvl;
+        return userLevel.indexOf('registrant') === -1;
+    }
+
+    public getCurrentCompletedStep(): number {
+        return this.isUserCompleted()? 0 : parseInt(this.tokenStorage.getUser().lvl.replace('registrant', ''));
+    }
+
     // public getHeaders(token) {
     //     return  {'X-Auth-Token': token};
     // }
