@@ -4,7 +4,7 @@
         <ngx-loading [show]="loading"></ngx-loading>
 
         <!-- TOOLBAR: Above -->
-        <ng-container *ngIf="fuseSettings.layout.toolbar === 'above'">
+        <ng-container *ngIf="fuseSettings.layout.toolbar === 'above' && visibleToolbar">
             <fuse-toolbar class="above" [ngClass]="fuseSettings.colorClasses.toolbar"></fuse-toolbar>
         </ng-container>
         <!-- / TOOLBAR: Above -->
@@ -29,7 +29,7 @@
             <div class="content-wrapper">
 
                 <!-- TOOLBAR: Below -->
-                <ng-container *ngIf="fuseSettings.layout.toolbar === 'below'">
+                <ng-container *ngIf="fuseSettings.layout.toolbar === 'below' && visibleToolbar">
                     <fuse-toolbar class="below" [ngClass]="fuseSettings.colorClasses.toolbar"></fuse-toolbar>
                 </ng-container>
                 <!-- / TOOLBAR: Below -->

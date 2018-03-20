@@ -16,13 +16,13 @@ export class AuthGuardService implements CanActivate {
       this.router.navigate(['login']);
       return false;
     }
-    if (state.url.startsWith('/complete')) {
+    if (state.url.startsWith('/register')) {
       this.step = parseInt(route.firstChild.params.step);
     } else {
       this.step = null;
     }
     if (!this.authService.isUserCompleted() && this.step !== this.authService.getCurrentCompletedStep()) {
-      this.router.navigate(['complete', this.authService.getCurrentCompletedStep()]);
+      this.router.navigate(['register', this.authService.getCurrentCompletedStep()]);
       return false;
     }
     return true;

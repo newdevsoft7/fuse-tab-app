@@ -1,101 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FuseConfigService } from '../../../../core/services/config.service';
-import { fuseAnimations } from '../../../../core/animations';
+import { Component, ViewChild, OnInit } from "@angular/core";
+import { MatHorizontalStepper } from "@angular/material";
+import { Router, ActivatedRoute } from "@angular/router";
+import { FuseConfigService } from "../../../../core/services/config.service";
 
 @Component({
-    selector   : 'fuse-register',
-    templateUrl: './register.component.html',
-    styleUrls  : ['./register.component.scss'],
-    animations : fuseAnimations
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class FuseRegisterComponent implements OnInit
-{
-    registerForm: FormGroup;
-    registerFormErrors: any;
+export class RegisterComponent implements OnInit {
 
-    constructor(
-        private fuseConfig: FuseConfigService,
-        private formBuilder: FormBuilder
-    )
-    {
-        this.fuseConfig.setSettings({
-            layout: {
-                navigation: 'none',
-                toolbar   : 'none',
-                footer    : 'none'
-            }
-        });
+  @ViewChild('stepper') stepper: MatHorizontalStepper;
 
-        this.registerFormErrors = {
-            name           : {},
-            email          : {},
-            password       : {},
-            passwordConfirm: {}
-        };
-    }
+  currentStep: number;
 
-    ngOnInit()
-    {
-        this.registerForm = this.formBuilder.group({
-            name           : ['', Validators.required],
-            email          : ['', [Validators.required, Validators.email]],
-            password       : ['', Validators.required],
-            passwordConfirm: ['', [Validators.required, confirmPassword]]
-        });
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private fuseConfig: FuseConfigService
+  ) {
 
-        this.registerForm.valueChanges.subscribe(() => {
-            this.onRegisterFormValuesChanged();
-        });
-    }
+  }
 
-    onRegisterFormValuesChanged()
-    {
-        for ( const field in this.registerFormErrors )
-        {
-            if ( !this.registerFormErrors.hasOwnProperty(field) )
-            {
-                continue;
-            }
+  ngOnInit() {
+    this.route.firstChild.params.subscribe((res: {step: string}) => {
+      const step = parseInt(res.step);
+      this.currentStep = step;
+      if (this.stepper.selectedIndex !== step - 1) {
+        this.stepper.selectedIndex = step - 1;
+      }
+    });
 
-            // Clear previous errors
-            this.registerFormErrors[field] = {};
+    this.stepper.selectionChange.subscribe(res => {
+      const step = res.selectedIndex + 1;
+      if (step === this.currentStep) return;
+      this.router.navigate(['/register', step]);
+    });
+  }
 
-            // Get the control
-            const control = this.registerForm.get(field);
+  nextStep() {
+    this.router.navigate(['/register', this.currentStep + 1]);
+  }
 
-            if ( control && control.dirty && !control.valid )
-            {
-                this.registerFormErrors[field] = control.errors;
-            }
-        }
-    }
-}
+  prevStep() {
+    this.router.navigate(['/register', this.currentStep - 1]);
+  }
 
-function confirmPassword(control: AbstractControl)
-{
-    if ( !control.parent || !control )
-    {
-        return;
-    }
-
-    const password = control.parent.get('password');
-    const passwordConfirm = control.parent.get('passwordConfirm');
-
-    if ( !password || !passwordConfirm )
-    {
-        return;
-    }
-
-    if ( passwordConfirm.value === '' )
-    {
-        return;
-    }
-
-    if ( password.value !== passwordConfirm.value )
-    {
-        return {
-            passwordsNotMatch: true
-        };
-    }
+  doSubmit() {
+    // @todo
+  }
 }

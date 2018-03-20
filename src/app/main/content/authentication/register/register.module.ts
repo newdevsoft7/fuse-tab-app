@@ -1,29 +1,38 @@
-import { NgModule } from '@angular/core';
-import { SharedModule } from '../../../../core/modules/shared.module';
-import { RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { SharedModule } from "../../../../core/modules/shared.module";
 
-import { FuseRegisterComponent } from './register.component';
-import { UnauthGuardService } from '../../../../shared/guards/unauth-guard.service';
+import { RegisterComponent } from "./register.component";
+import {
+  RegisterStepComponent, RegisterStep1Component,
+  RegisterStep2Component, RegisterStep3Component,
+  RegisterStep4Component, RegisterStep5Component,
+  RegisterStep6Component, RegisterStep7Component,
+  RegisterStep8Component,
+} from "./steps";
+import { RegisterRoutingModule } from "./register-routing.module";
 
-const routes = [
-    {
-        path     : 'register',
-        component: FuseRegisterComponent,
-        canActivate: [ UnauthGuardService ]
-    }
+const stepComponents = [
+  RegisterStep1Component,
+  RegisterStep2Component,
+  RegisterStep3Component,
+  RegisterStep4Component,
+  RegisterStep5Component,
+  RegisterStep6Component,
+  RegisterStep7Component,
+  RegisterStep8Component
 ];
 
 @NgModule({
-    declarations: [
-        FuseRegisterComponent
-    ],
-    imports     : [
-        SharedModule,
-        RouterModule.forChild(routes)
-    ]
+  imports: [
+    SharedModule,
+    RegisterRoutingModule
+  ],
+  declarations: [
+    RegisterComponent,
+    RegisterStepComponent,
+    ...stepComponents
+  ]
 })
-
-export class RegisterModule
-{
+export class RegisterModule {
 
 }
