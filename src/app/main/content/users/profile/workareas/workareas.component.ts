@@ -12,6 +12,7 @@ export class UsersProfileWorkAreasComponent implements OnInit {
 
     @Input() userInfo;
     @Input() currentUser;
+    @Input() settings: any = {};
 
     workAreas = [];
 

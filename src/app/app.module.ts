@@ -20,6 +20,7 @@ import { AuthGuardService } from './shared/guards/auth-guard.service';
 import { SCHttpInterceptor } from './shared/interceptor/http-interceptor';
 import { RegisterModule } from './main/content/authentication/register/register.module';
 import { CompleteModule } from './main/content/complete/complete.module';
+import { AppSettingService } from './shared/services/app-setting.service';
 
 
 const appRoutes: Routes = [
@@ -60,6 +61,7 @@ const appRoutes: Routes = [
         FuseSplashScreenService,
         FuseConfigService,
         FuseNavigationService,
+        AppSettingService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: SCHttpInterceptor,

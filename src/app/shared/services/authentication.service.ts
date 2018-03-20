@@ -20,6 +20,7 @@ interface AccessData {
     access_token: string;
     refresh_token: string;
     user: any;
+    settings: any;
     message: string;
 }
 
@@ -35,7 +36,7 @@ export class AuthenticationService {
         private router: Router,
         private usersChatService: UsersChatService,
         private favicoService: FavicoService) { }
-    
+
     /**
      * Check, if user already authorized.
      * @description Should return true or false
@@ -92,7 +93,7 @@ export class AuthenticationService {
     public refreshShouldHappen(response: HttpErrorResponse): boolean {
         return response.status === 401;
     }
-    
+
     public login(username: string, password: string) {
         return this.http.post(`${AUTH_URL}/login`, { username, password, client_id: 2 })
             .map((tokens: AccessData) => this.saveAccessData(tokens))
@@ -137,9 +138,10 @@ export class AuthenticationService {
      * @private
      * @param {AccessData} data
      */
-    private saveAccessData({ access_token, refresh_token, user }: AccessData) {
+    private saveAccessData({ access_token, refresh_token, user, settings }: AccessData) {
         if (access_token) { this.tokenStorage.setAccessToken(access_token); }
         if (refresh_token) { this.tokenStorage.setRefreshToken(refresh_token); }
+        if (settings) { this.tokenStorage.setSettings(settings); }
         if (user) { this.tokenStorage.setUser(user); }
     }
 

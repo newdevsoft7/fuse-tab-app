@@ -38,6 +38,21 @@ export class TokenStorage {
         localStorage.setItem('refreshToken', token);
     }
 
+    /**
+    * Set settings
+    * @returns {void}
+    */
+    public setSettings(settings: string): void {
+        localStorage.setItem('settings', JSON.stringify(settings));
+    }
+
+    /**
+     * Get settings
+     * @returns {any}
+     */
+    public getSettings(): any {
+        return JSON.parse(localStorage.getItem('settings'));
+    }
 
     /**
     * Set user information
@@ -63,5 +78,6 @@ export class TokenStorage {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
+        localStorage.removeItem('settings');
     }
 }

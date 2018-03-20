@@ -15,8 +15,9 @@ export class UsersProfileAboutComponent implements OnInit {
 
     @Input() userInfo;
     @Input() currentUser;
+    @Input() settings: any = {};
     @ViewChild('adminNoteInput') adminNoteInput;
-    
+
     canSavePost = false;
 
     adminNotes = [];
@@ -88,7 +89,7 @@ export class UsersProfileAboutComponent implements OnInit {
                 note.creator_ppic_a = this.userInfo.ppic_a;
                 note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
-                
+
                 this.adminNotes.unshift(note);
                 this.refreshAdminNotesView();
 
@@ -106,7 +107,7 @@ export class UsersProfileAboutComponent implements OnInit {
                 this.adminNotes.splice(index, 1);
                 this.refreshAdminNotesView();
             }, err => {
-            });      
+            });
     }
 
     onEditAdminNote(note) {

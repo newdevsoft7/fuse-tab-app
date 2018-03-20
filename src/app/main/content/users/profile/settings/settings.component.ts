@@ -17,6 +17,7 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     @Input('userInfo') user;
     @Input() currentUser;
+    @Input() settings: any = {};
 
     // Left Side Navs
     categories = [

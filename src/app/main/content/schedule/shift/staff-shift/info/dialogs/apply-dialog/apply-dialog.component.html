@@ -4,10 +4,11 @@
     <form [formGroup]="form">
 
         <div mat-dialog-content>
-            <p>Tell us why you're applying for this role</p>
+            <p *ngIf="settings.shift_msg_application !== ''">
+                {{settings.shift_msg_application}}
+            </p>
             <mat-form-field floatPlaceholder="never" class="w-100-p">
-                <textarea matInput formControlName="reason"
-                    placeholder="Optional - tell us why you're applying for this role"></textarea>
+                <textarea matInput formControlName="reason"></textarea>
             </mat-form-field>
         </div>
 

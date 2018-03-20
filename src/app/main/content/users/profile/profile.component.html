@@ -20,35 +20,42 @@
         <mat-tab-group dynamicHeight="true">
 
             <mat-tab label="About">
-                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings"></app-users-profile-about>
+                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser"
+                    [ratings]="ratings" [settings]="settings"></app-users-profile-about>
             </mat-tab>
 
             <mat-tab label="Skills & Qualifications">
-                <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-attributes>
+                <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser"
+                    [settings]="settings"></app-users-profile-attributes>
             </mat-tab>
 
             <mat-tab label="Photos">
                 <app-users-profile-photo
                     [userInfo]="userInfo"
                     [currentUser]="currentUser"
+                    [settings]="settings"
                     (onAvatarChanged)="onAvatarChanged($event)">
                 </app-users-profile-photo>
             </mat-tab>
 
-            <mat-tab label="Videos">
-                <app-users-profile-video [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-video>
+            <mat-tab label="Videos" *ngIf="settings.profile_video_enable === '1'">
+                <app-users-profile-video [userInfo]="userInfo" [currentUser]="currentUser"
+                    [settings]="settings"></app-users-profile-video>
             </mat-tab>
 
             <mat-tab label="Documents">
-                <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-document>
+                <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser"
+                    [settings]="settings"></app-users-profile-document>
             </mat-tab>
 
             <mat-tab label="Work Areas">
-                <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-workareas>
+                <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser"
+                    [settings]="settings"></app-users-profile-workareas>
             </mat-tab>
 
             <mat-tab label="Settings">
-                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser"></app-users-profile-settings>
+                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser"
+                    [settings]="settings"></app-users-profile-settings>
             </mat-tab>
 
         </mat-tab-group>

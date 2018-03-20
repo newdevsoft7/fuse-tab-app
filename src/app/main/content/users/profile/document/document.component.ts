@@ -17,6 +17,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 
 	@Input('userInfo') user;
 	@Input() currentUser;
+	@Input() settings: any = {};
 
 	documents: any[];
 	basicDocuments: any[];
@@ -24,14 +25,14 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 	differ: any;
 
 	dialogRef: any;
-	
+
 	constructor(
 		private loadingService: CustomLoadingService,
 		private dialog: MatDialog,
 		private userService: UserService,
 		private toastr: ToastrService,
 		differs: IterableDiffers
-	) { 
+	) {
 		this.differ = differs.find([]).create(null);
 	}
 
@@ -58,7 +59,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 			});
 	}
 
-	
+
 	onLockedChanged(document) {
 		const lock = document.locked ? 0 : 1;
 		this.userService.lockProfileDocument(document.id, lock)
@@ -117,7 +118,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 		const document = event.value;
 		const isDroppedInAdmin = (this.adminDocuments.findIndex(v => v.id == document.id) > -1) && (document.admin_only != 1);
 		const isDroppedInBasic = (this.basicDocuments.findIndex(v => v.id == document.id) > -1) && (document.admin_only == 1);
-		
+
 		if (isDroppedInAdmin || isDroppedInBasic) {
 			const adminOnly = isDroppedInAdmin ? 1 : 0;
 			this.userService.setProfileDocumentAsAdmin(document.id, adminOnly)

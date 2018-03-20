@@ -12,6 +12,7 @@ export class UsersProfileAttributesComponent implements OnInit {
 
     @Input() userInfo;
     @Input() currentUser;
+    @Input() settings: any = {};
 
     attributes = [];
 

@@ -1,4 +1,5 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { FuseSplashScreenService } from './core/services/splash-screen.service';
 import { TranslateService } from '@ngx-translate/core';
 import { FuseTranslationLoaderService } from './core/services/translation-loader.service';
@@ -12,13 +13,14 @@ import { UsersChatService } from './main/content/users/chat/chat.service';
 import { FavicoService } from './shared/services/favico.service';
 import { ActivityManagerService } from './shared/services/activity-manager.service';
 import { TabService } from './main/tab/tab.service';
+import { AppSettingService } from './shared/services/app-setting.service';
 
 @Component({
     selector   : 'fuse-root',
     templateUrl: './app.component.html',
     styleUrls  : ['./app.component.scss']
 })
-export class AppComponent
+export class AppComponent implements OnInit
 {
     socketService: SocketService;
 
@@ -31,7 +33,9 @@ export class AppComponent
         private usersChatService: UsersChatService,
         private favicoService: FavicoService,
         private activityManagerService: ActivityManagerService,
-        private tabService: TabService
+        private tabService: TabService,
+        private appSetting: AppSettingService,
+        private titleService: Title
     )
     {
         // Add languages
@@ -88,4 +92,13 @@ export class AppComponent
             this.favicoService.setBadge(this.usersChatService.unreadList.length + this.usersChatService.unreadThreads.length);
         }
     }
+
+    ngOnInit() {
+
+        // Load Global Settings
+        this.appSetting.getGlobalSettings().then(settings => {
+            this.titleService.setTitle(settings.system_name);
+        });
+    }
+
 }
