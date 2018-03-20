@@ -58,7 +58,7 @@ export class EditShiftDetailComponent implements OnInit {
         timezone:           { checked: false, value: '' }
     };
 
-    data; // Shifts data for multiple edit
+    data: any = {}; // Shifts data for multiple edit
 
     flags = [];
     categories = [];
@@ -144,7 +144,7 @@ export class EditShiftDetailComponent implements OnInit {
                     value = this.list[key].value ? 1 : 0;
                     params = { ...params, [key]: value };
                     break;
-            
+
                 default: // If key is one of title, location, generic_location, generic_title, address, contact, notes, timezone
                     params = { ...params, [key]: this.list[key].value};
                     break;
@@ -156,7 +156,7 @@ export class EditShiftDetailComponent implements OnInit {
             const tracking = this.categories.filter(c => c.checked).map(v => {
                 return { cat_id: v.id, options: v.value.length > 0 ? v.value : null };
             });
-            
+
             params = { ...params, tracking };
         }
 
