@@ -16,7 +16,7 @@ export class FuseChatChatsSidenavComponent
     }
     @Output() fetchChat: EventEmitter<number> = new EventEmitter();
     @Output() addContact: EventEmitter<number> = new EventEmitter();
-    @Output() searchUsers: EventEmitter<string> = new EventEmitter();
+    @Output() searchUsers: EventEmitter<any> = new EventEmitter();
 
     searchText: string;
     threads: any = [];
