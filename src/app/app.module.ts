@@ -24,8 +24,8 @@ import { AppSettingService } from './shared/services/app-setting.service';
 
 const appRoutes: Routes = [
     {
-        path: 'complete',
-        loadChildren: './main/content/complete/complete.module#CompleteModule'
+        path: 'register',
+        loadChildren: './main/content/authentication/register/register.module#RegisterModule'
     },
     {
         path: 'home',

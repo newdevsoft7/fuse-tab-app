@@ -1,19 +1,19 @@
 <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper" class="w-100-p">
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Register</ng-template>
     <app-register-step1></app-register-step1>
     <div>
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Profile</ng-template>
     <app-register-step2></app-register-step2>
     <div>
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Skills & Qualifications</ng-template>
     <app-register-step3></app-register-step3>
     <div>
@@ -21,7 +21,7 @@
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Upload photos</ng-template>
     <app-register-step4></app-register-step4>
     <div>
@@ -29,7 +29,7 @@
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Upload documents</ng-template>
     <app-register-step5></app-register-step5>
     <div>
@@ -37,7 +37,7 @@
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Upload videos</ng-template>
     <app-register-step6></app-register-step6>
     <div>
@@ -45,7 +45,7 @@
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [editable]="false">
     <ng-template matStepLabel>Choose work areas</ng-template>
     <app-register-step7></app-register-step7>
     <div>

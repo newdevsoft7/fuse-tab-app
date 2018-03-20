@@ -5,7 +5,7 @@ import { RegisterStepComponent } from "./steps";
 
 export const routes: Routes = [
   {
-    path: 'register',
+    path: '',
     component: RegisterComponent,
     children: [
       { path: '', redirectTo: '1', pathMatch: 'full' },
