@@ -1,0 +1,45 @@
+<div fxLayout="row" fxLayoutAlign="start center" *ngIf="!formActive" fxLayoutGap="16px" class="item">
+    <div class="name" fxFlex>{{level.pname}}</div>
+    <div class="pay-rate w-40">{{level.pay_rate}}</div>
+    <div class="pay-rate-type w-60">{{level.pay_rate_type === 'phr' ? '/hr' : 'flat'}}</div>
+    <div fxLayout="row">
+        <button mat-icon-button (click)="openForm()">
+            <mat-icon class="s-20">edit</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="delete()">
+            <mat-icon class="s-20">delete</mat-icon>
+        </button>
+    </div>
+</div>
+
+<form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center"
+    fxFlex="1 0 auto" fxLayoutGap="16px">
+
+    <input type="hidden" formControlName="pay_cat_id" />
+
+    <mat-form-field floatPlaceholder="never" fxFlex>
+        <input matInput formControlName="pname" #nameInput placeholder="Write a pay level name" required>
+    </mat-form-field>
+
+    <mat-form-field floatPlaceholder="never" class="w-40">
+        <input matInput formControlName="pay_rate" placeholder="Pay Rate" type="number" required min="0">
+    </mat-form-field>
+
+    <mat-form-field floatPlaceholder="never" class="w-60">
+        <mat-select formControlName="pay_rate_type" placeholder="Pay Rate Type">
+            <mat-option *ngFor="let item of TYPE" [value]="item.value">
+                {{item.label}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <div fxLayout="row">
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()" [disabled]="form.invalid">
+            <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,269 @@
+<div id="settings-scheduling-container" fxLayout="column">
+
+    <!-- SCHEDULING MODULE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Scheduling Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_enable]"
+                (change)="onChange(Setting.shift_enable, $event)" fxFlex="20"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="80">
+                Enable for scheduling
+            </div>            
+        </div>
+    </div>
+    <!-- / SCHEDULING MODULE -->
+
+    <!-- DEFAULT TIMES LOCKED -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Default times locked</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_default_times_locked]"
+                (change)="onChange(Setting.shift_default_times_locked, $event)" fxFlex="20"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="80">
+                Enable to lock staff times by default to disallow changes upon completion
+            </div>            
+        </div>
+    </div>
+    <!-- / DEFAULT TIMES LOCKED -->
+
+    <!-- DISPLAY TIMEZONE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Display Timezone</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_timezone_display]"
+                (change)="onChange(Setting.shift_timezone_display, $event)" fxFlex="20"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="80">
+                Enable to display the timezone on the shift
+            </div>            
+        </div>
+    </div>
+    <!-- / DISPLAY TIMEZONE -->
+
+    <!-- STANDBY STAFF UNAVAILABLE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Standby Staff Unavailable</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_standby_unavailable]"
+                (change)="onChange(Setting.shift_standby_unavailable, $event)" fxFlex="20"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="80">
+                Enable to treat staff on standby as unavailable
+            </div>            
+        </div>
+    </div>
+    <!-- / STANDBY STAFF UNAVAILABLE -->
+
+    <!-- APPLICATION REASON REQUIRED -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Application Reason Required</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_application_reason]"
+                (change)="onChange(Setting.shift_application_reason, $event)" fxFlex="20"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="80">
+                Enable to require staff to enter a reason for role application
+            </div>            
+        </div>
+    </div>
+    <!-- / APPLICATION REASON REQUIRED -->
+
+    <!-- CONFIRMATION REQUIRED -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">Confirmation Required</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_staff_confirm]"
+                (change)="onChange(Setting.shift_staff_confirm, $event)" fxFlex="20"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="80">
+                Enable to request staff confirmation after shift selection
+            </div>            
+        </div>
+    </div>
+    <!-- / CONFIRMATION REQUIRED -->
+
+    <!-- APPLICATION MESSAGE -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Application Message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.shift_msg_application]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.shift_msg_application, $event)"
+                    placeholder="Enter any text to be displayed to staff at shift application." />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / APPLICATION MESSAGE -->
+
+    <!-- CONFIRMATION MESSAGE -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Confirmation Message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.shift_msg_confirmation]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.shift_msg_confirmation, $event)"
+                    placeholder="Enter any text to be displayed to staff at shift confirmation." />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / CONFIRMATION MESSAGE -->
+
+    <!-- COMPLETION MESSAGE -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Completion Message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.shift_msg_completion]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.shift_msg_completion, $event)"
+                    placeholder="Enter any text to be displayed to staff at shift completion." />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / COMPLETION MESSAGE -->
+
+    <!-- CALENDAR VIEW -->
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Calendar View</div>
+        </header>
+
+        <div class="content">
+
+            <!-- DISPLAY OVERNIGHT SHIFTS AS ONE DAY -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="w-100-p">
+                <div class="name mr-24" fxFlex="0 1 auto">Display Overnight Shifts As One Day</div>
+                <div fxLayout="row wrap" fxFlex="1 0 auto" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items[Setting.shift_calendar_overnight_single]"
+                        (change)="onChange(Setting.shift_calendar_overnight_single, $event)" fxFlex="20"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="80">
+                        Enable to display overnight events on a single day.
+                    </div>            
+                </div>
+            </div>
+            <!-- / DISPLAY OVERNIGHT SHIFTS AS ONE DAY  -->
+
+        </div>
+    </div>
+    <!-- CALENDAR VIEW -->
+
+    <!-- LIST VIEW -->
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">List View</div>
+        </header>
+
+        <div class="content" fxLayout.gt-xs="row" fxLayoutGap="24px" fxLayout="column" fxLayoutAlign="start start">
+
+            <!-- AVAILABLE COLUMNS -->
+            <div class="box info-box">
+                <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="title">Available columns</div>
+                </header>
+
+                <div class="content" fxLayout="column">
+                    <div class="ngx-dnd-container" ngxDroppable="group" [model]="availableColumns" (drop)="onDrop($event)">
+                        <div class="ngx-dnd-item" ngxDraggable *ngFor="let column of availableColumns" [model]="column">
+                            <div class="field">{{column.label}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / AVAILABLE COLUMNS -->
+
+            <!-- COLUMNS TO DISPLAY  -->
+            <div class="box info-box">
+                <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div class="title">Columns to display</div>
+                </header>
+
+                <div class="content" fxLayout="column">
+                    <div class="ngx-dnd-container" ngxDroppable="group" [model]="displayedColumns" (drop)="onDrop($event)">
+                        <div class="ngx-dnd-item"  ngxDraggable *ngFor="let column of displayedColumns" [model]="column">
+                            <div class="field">{{column.label}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / COLUMNS TO DISPLAY -->
+
+        </div>
+    </div>
+    <!-- / LIST VIEW -->
+
+    <!-- REPLACEMENT REQUESTS -->
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Replacement Requests</div>
+        </header>
+
+        <div class="content" fxLayout="column">
+
+            <!-- REPLACEMENT REQUESTS ALLOWED -->
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="20">Replacement Requests Allowed</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items[Setting.shift_replacement_request]"
+                        (change)="onChange(Setting.shift_replacement_request, $event)" fxFlex="20"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="80">
+                        Enable to allow replacement requests for roles
+                    </div>            
+                </div>
+            </div>
+            <!-- / REPLACEMENT REQUESTS ALLOWED -->
+
+            <!-- REPLACEMENT REQUEST MESSAGE -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Replacement Request Message</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-form-field floatPlaceholder="never" fxFill>
+                        <input debounce matInput [(ngModel)]="items[Setting.shift_msg_replacement_request]" [delay]="1000"
+                            (onValueChange)="onChange(Setting.shift_msg_replacement_request, $event)"
+                            placeholder="Enter any text to be displayed to staff upon replacement request." />
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- / REPLACEMENT REQUEST MESSAGE -->
+
+            <!-- DEADLINE -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Deadline</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <div  fxFlex="20">
+                        <mat-form-field floatPlaceholder="never" [style.width.px]="40">
+                            <input matInput type="number" min="0" max="72" [formControl]="deadline"/>
+                        </mat-form-field>
+                    </div>
+                    <div class="desc secondary-text" fxFlex="80">
+                        Any replacement requests less than this amount of hours before a shift's start time will result in the replacement request error message displayed.
+                    </div>  
+                </div>
+            </div>
+            <!-- / DEADLINE -->
+
+            <!-- DEADLINE PAST MESSAGE -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Deadline Past Message</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-form-field floatPlaceholder="never" fxFill>
+                        <input debounce matInput [(ngModel)]="items[Setting.shift_msg_replacement_request_na]" [delay]="1000"
+                            (onValueChange)="onChange(Setting.shift_msg_replacement_request_na, $event)"
+                            placeholder="Enter the error message to display when a replacement request is attempted after the replacement request deadline." />
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- / DEADLINE PAST MESSAGE -->
+
+            <!-- NOTIFICATION EMAIL ADDRESSES -->
+            <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+                <div class="name" fxFlex="20">Notification Email Addresses</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-form-field floatPlaceholder="never" fxFill>
+                        <input debounce matInput [(ngModel)]="items[Setting.shift_replacement_request_email]" [delay]="1000"
+                            (onValueChange)="onChange(Setting.shift_replacement_request_email, $event)"
+                            placeholder="Enter comma seperated email addresses to send replacement request notifications to." />
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- / NOTIFICATION EMAIL ADDRESSES -->
+
+        </div>
+    </div>
+    <!-- REPLACEMENT REQUESTS -->
+
+</div>

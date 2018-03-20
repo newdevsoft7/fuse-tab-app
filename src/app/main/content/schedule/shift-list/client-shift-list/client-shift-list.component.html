@@ -10,9 +10,9 @@
             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                 <mat-icon fxFlex="0 1 auto">search</mat-icon>
                 <div fxFlex>
-                    <app-custom-multi-select [autocompleteObservable]="filtersObservable"
+                    <app-custom-multi-select-group [autocompleteObservable]="filtersObservable"
                         [labelBy]="'aname'" [valueBy]="'id'"
-                        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select>
+                        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select-group>
                 </div>
             </div>
             <!-- / FILTER BAR -->

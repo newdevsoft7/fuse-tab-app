@@ -82,7 +82,7 @@ export class SettingsSideNavModel {
             },
             {
                 'id': 'profile_videos',
-                'title': 'Proifle Videos',
+                'title': 'Profile Videos',
                 'translate': 'SETTINGS.SIDE_NAV.PROFILE_VIDEOS',
                 'icon': 'videocam',
                 'url': '/profile_videos'

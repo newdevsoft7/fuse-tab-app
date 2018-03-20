@@ -6,12 +6,12 @@
   <div calendar-header fxLayout="row" fxLayoutAlign="start center">
     <mat-icon class="mr-8 mb-8" fxFlex="0 1 auto">search</mat-icon>
     <div fxFlex>
-      <app-custom-multi-select 
+      <app-custom-multi-select-group 
         [autocompleteObservable]="filtersObservable"
         [labelBy]="'text'" 
         [valueBy]="'id'"
         placeholder="Filter shifts..."
-        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select>
+        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select-group>
     </div>
   </div>
 </sc-calendar>

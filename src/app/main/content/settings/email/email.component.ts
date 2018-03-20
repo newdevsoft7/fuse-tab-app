@@ -27,7 +27,7 @@ enum Setting {
     templateUrl: './email.component.html',
     styleUrls: ['./email.component.scss']
 })
-export class SettingsEmailComponent implements OnInit {
+export class SettingsEmailComponent implements OnInit, OnChanges {
 
 	_settings = [];
 
@@ -56,14 +56,14 @@ export class SettingsEmailComponent implements OnInit {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
-            const keys = Object.keys(this.Setting).filter(v => _.isNaN(_.toNumber(v))) as string[];
+            const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
             _.forEach(keys, (v) => {
-                const item = _.find(this.settings, ['setting', v]);
+                const item = _.find(this.settings, ['id', _.toNumber(v)]);
                 if (!_.isUndefined(item)) {
-                    this.items = { ...this.items, [item.setting]: item.value };
-                    if (v === 'company_email_signature') {
+                    this.items = { ...this.items, [item.id]: item.value };
+                    if (item.id === Setting.company_email_signature) {
                         // Patch FroalaEditor form control value 
-                        this.signature.patchValue(this.items.company_email_signature);
+                        this.signature.patchValue(item.value);
                     }
                 }
             });

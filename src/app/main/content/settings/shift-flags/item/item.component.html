@@ -1,0 +1,32 @@
+<div fxLayout="row" fxLayoutAlign="start center" *ngIf="!formActive" fxLayoutGap="16px" class="item">
+    <div class="name" fxFlex="200px">{{flag.fname}}</div>
+    <div class="color" fxFlex="150px" [style.background]="flag.color">{{flag.color}}</div>
+    <div fxLayout="row">
+        <button mat-icon-button (click)="openForm()">
+            <mat-icon class="s-20">edit</mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="delete()">
+            <mat-icon class="s-20">delete</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" *ngIf="formActive">
+    <mat-form-field floatPlaceholder="never" class="name" fxFlex="200px">
+        <input matInput [value]="form.fname" #nameInput placeholder="Write a flag name" required>
+    </mat-form-field>
+
+    <div class="color" fxFlex="150px" [style.background]="form.color">
+        <input [(colorPicker)]="form.color" [value]="form.color" [style.background]="form.color"/>
+    </div>
+
+    <div fxLayout="row">
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

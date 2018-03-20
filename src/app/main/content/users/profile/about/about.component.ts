@@ -149,12 +149,16 @@ export class UsersProfileAboutComponent implements OnInit {
 
     changeRate(event: OnRatingChangeEven, rating) {
         const score = event.rating;
-        this.userService.setUserRatings(this.currentUser.id, rating.id, score).subscribe(_ => {});
+        this.userService.setUserRatings(this.currentUser.id, rating.id, score).subscribe(res => {
+            const index = _.findIndex(this.ratings, ['id', rating.id]);
+            this.ratings[index].score = score;
+        });
     }
 
     resetRate(rating) {
-        this.userService.setUserRatings(this.currentUser.id, rating.id, 0).subscribe(_ => {});
+        this.userService.setUserRatings(this.currentUser.id, rating.id, 0).subscribe(res => {
+            const index = _.findIndex(this.ratings, ['id', rating.id]);
+            this.ratings[index].score = 0;
+        });
     }
-
-    
 }

@@ -1,0 +1,43 @@
+<div class="settings-pay-category-item">
+    <div class="nav-item">
+        <ng-container *ngIf="!formActive">
+            <div matRipple class="nav-link" fxLayout="row" fxLayoutAlign="space-between center"
+                [class.active]="selected">
+                <span class="name">
+                    {{category.cname}}
+                </span>
+
+                <div fxLayout="row">
+                    <button mat-icon-button (click)="openForm()" fxFlex="0 1 auto">
+                        <mat-icon class="s-20">edit</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="delete(category, $event)" fxFlex="0 1 auto">
+                        <mat-icon class="s-20">delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+        </ng-container>
+
+        <!-- EDIT FORM -->
+        <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+            class="px-24">
+
+            <mat-form-field floatPlaceholder="never" class="cname-field">
+                <input matInput formControlName="cname" #nameInput required>
+            </mat-form-field>
+
+            <div fxLayout="row">
+                <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()" [disabled]="form.invalid">
+                    <mat-icon>check</mat-icon>
+                </button>
+                <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </form>
+        <!-- / EDIT FORM -->
+    </div>
+</div>

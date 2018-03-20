@@ -7,15 +7,8 @@ import { SharedModule } from '../../../core/modules/shared.module';
 import { SettingsComponent } from './settings.component';
 import { SettingsSidenavComponent } from './sidenav/sidenav.component';
 import { SettingsWorkAreasComponent } from './work-areas/work-areas.component';
-import { SettingsWorkAreasMainComponent } from './work-areas/main/main.component';
-import { SettingsWorkAreasCategoriesComponent } from './work-areas/categories/categories.component';
-import { SettingsWorkAreasAddCategoryComponent } from './work-areas/add-category/add-category.component';
-import { SettingsWorkAreasEditCatNameComponent } from './work-areas/edit-category-name/edit-category-name.component';
-import { SettingsWorkAreasAddComponent } from './work-areas/add-workarea/add-workarea.component';
-import { SettingsWorkAreasEditNameComponent } from './work-areas/edit-workarea-name/edit-workarea-name.component';
-import { SettingsWorkAreasEditCategoryComponent } from './work-areas/edit-workarea-category/edit-workarea-category.component';
-import { SettingsWorkAreasEditTimezoneComponent } from './work-areas/edit-workarea-timezone/edit-workarea-timezone.component';
-import { WorkAreaFormDialogComponent } from './work-areas/dialogs/workarea-form/workarea-form.component';
+import { SettingsWorkAreaItemComponent } from './work-areas/work-area-item/work-area-item.component';
+import { SettingsWorkGroupItemComponent } from './work-areas/work-group-item/work-group-item.component';
 import { SettingsCheckInOutComponent } from './check-in-out/check-in-out.component';
 import { SettingsClientComponent } from './client/client.component';
 import { SettingsClientInvoicesComponent } from './client-invoices/client-invoices.component';
@@ -41,7 +34,9 @@ import { SettingsUserTableComponent } from './user-table/user-table.component';
 import { SettingsWorkMarketComponent } from './work-market/work-market.component';
 import { SettingsXeroComponent } from './xero/xero.component';
 import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component';
-
+import { SettingsPayLevelItemComponent } from './pay-levels/pay-level-item/pay-level-item.component';
+import { SettingsPayCategoryItemComponent } from './pay-levels/pay-category-item/pay-category-item.component';
+import { ItemComponent } from './shift-flags/item/item.component';
 
 @NgModule({
     imports: [
@@ -54,15 +49,8 @@ import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component
         SettingsComponent,
         SettingsSidenavComponent,
         SettingsWorkAreasComponent,
-        SettingsWorkAreasMainComponent,
-        SettingsWorkAreasAddComponent,
-        SettingsWorkAreasEditNameComponent,
-        SettingsWorkAreasEditCategoryComponent,
-        SettingsWorkAreasEditTimezoneComponent,
-        WorkAreaFormDialogComponent,
-        SettingsWorkAreasCategoriesComponent,
-        SettingsWorkAreasAddCategoryComponent,
-        SettingsWorkAreasEditCatNameComponent,
+        SettingsWorkAreaItemComponent,
+        SettingsWorkGroupItemComponent,
         SettingsCheckInOutComponent,
         SettingsClientComponent,
         SettingsClientInvoicesComponent,
@@ -87,11 +75,18 @@ import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component
         SettingsUserTableComponent,
         SettingsWorkMarketComponent,
         SettingsXeroComponent,
-        SettingsShiftFlagsComponent
+        SettingsShiftFlagsComponent,
+        SettingsPayLevelItemComponent,
+        SettingsPayCategoryItemComponent,
+        ItemComponent
     ],
 
-    providers: [SettingsService],
-    entryComponents: [WorkAreaFormDialogComponent],
+    providers: [
+        SettingsService
+    ],
+    entryComponents: [
+        
+    ],
     exports: [
         SettingsComponent
     ]

@@ -4,7 +4,7 @@
     <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Client Invoices</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items.client_invoice_enable"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.client_invoice_enable]"
                 (change)="onChange(Setting.client_invoice_enable, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable to generate invoices for your clients
@@ -18,7 +18,7 @@
         <div class="name" fxFlex="20">Invoice Top</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.client_invoice_top" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.client_invoice_top]" [delay]="1000"
                     (onValueChange)="onChange(Setting.client_invoice_top, $event)"
                     placeholder="Enter any text you would like displayed at the top of client invoices" />
             </mat-form-field>
@@ -31,7 +31,7 @@
         <div class="name" fxFlex="20">Invoice Notes</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.client_invoice_notes" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.client_invoice_notes]" [delay]="1000"
                     (onValueChange)="onChange(Setting.client_invoice_notes, $event)"
                     placeholder="Enter any text you would like displayed in the notes area of client invoices"/>
             </mat-form-field>
@@ -44,7 +44,7 @@
         <div class="name" fxFlex="20">Invoice Bottom</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items.client_invoice_bottom" [delay]="1000"
+                <input debounce matInput [(ngModel)]="items[Setting.client_invoice_bottom]" [delay]="1000"
                     (onValueChange)="onChange(Setting.client_invoice_bottom, $event)"
                     placeholder="Enter any text you would like displayed at the bottom of client invoices" />
             </mat-form-field>
@@ -64,7 +64,7 @@
                 <div class="name" fxFlex="20">API Key</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-form-field floatPlaceholder="never" fxFill>
-                        <input debounce matInput [(ngModel)]="items.client_invoice_stripe_key" [delay]="1000"
+                        <input debounce matInput [(ngModel)]="items[Setting.client_invoice_stripe_key]" [delay]="1000"
                             (onValueChange)="onChange(Setting.client_invoice_stripe_key, $event)"
                             placeholder="Enter your Stripe API Key" />
                     </mat-form-field>
@@ -77,7 +77,7 @@
                 <div class="name" fxFlex="20">API Secret</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-form-field floatPlaceholder="never" fxFill>
-                        <input debounce matInput [(ngModel)]="items.client_invoice_stripe_secret" [delay]="1000"
+                        <input debounce matInput [(ngModel)]="items[Setting.client_invoice_stripe_secret]" [delay]="1000"
                             (onValueChange)="onChange(Setting.client_invoice_stripe_secret, $event)"
                             placeholder="Enter your Stripe API Secret" />
                     </mat-form-field>

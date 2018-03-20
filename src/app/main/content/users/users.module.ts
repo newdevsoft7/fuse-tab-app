@@ -29,6 +29,9 @@ import { UsersProfileWorkAreasComponent } from './profile/workareas/workareas.co
 import { UsersSearchBarComponent } from './search-bar/search-bar.component';
 import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filter.component';
 import { UsersExportDialogComponent } from './users-export-dialog/users-export-dialog.component';
+import { UsersProfileSettingsComponent } from './profile/settings/settings.component';
+import { UsersSettingsAdminComponent } from './profile/settings/admin/admin.component';
+import { UsersSettingsClientComponent } from './profile/settings/client/client.component';
 
 @NgModule({
     imports: [
@@ -63,7 +66,10 @@ import { UsersExportDialogComponent } from './users-export-dialog/users-export-d
         UsersProfileAttributesComponent,
         UsersProfileWorkAreasComponent,
         UsersAddFilterDialogComponent,
-        UsersExportDialogComponent
+        UsersExportDialogComponent,
+        UsersProfileSettingsComponent,
+        UsersSettingsAdminComponent,
+        UsersSettingsClientComponent
     ],
     exports: [
         UsersComponent,
