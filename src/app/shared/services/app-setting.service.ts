@@ -9,7 +9,7 @@ const BASE_URL = `${environment.apiUrl}`;
 @Injectable()
 export class AppSettingService {
 
-    private globalPromise = null;
+    private globalPromise = null; // Global Settings
     constructor(
         private http: HttpClient
     ) {
