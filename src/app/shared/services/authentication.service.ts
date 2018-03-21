@@ -120,16 +120,10 @@ export class AuthenticationService {
         return userLevel.indexOf('registrant') === -1;
     }
 
-    // original code
-    // public getCurrentCompletedStep(): number {
-    //     return this.isUserCompleted() ? 0 : parseInt(this.tokenStorage.getUser().lvl.replace('registrant', ''));
-    // }
-
-
     public getCurrentStep(): number {
-        if (!this.isUserCompleted()) return 0;
+        if (this.isUserCompleted()) return 0;
         const step = parseInt(this.tokenStorage.getUser().lvl.replace('registrant', ''));
-        return step < 8 ? step : 7
+        return step < 8 ? step : 7;
     }
 
     // public getHeaders(token) {

@@ -24,18 +24,29 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.route.firstChild.params.subscribe((res: {step: string}) => {
-      const step = parseInt(res.step);
-      this.currentStep = step;
-      if (this.stepper.selectedIndex !== step) {
-        this.stepper.selectedIndex = step;
+      let step = parseInt(res.step) || 0;
+      if (step >= 8) {
+        step = 7;
       }
+      this.changeStep(step);
     });
 
     this.stepper.selectionChange.subscribe(res => {
-      const step = res.selectedIndex + 1;
+      const step = res.selectedIndex;
       if (step === this.currentStep) return;
-      this.router.navigate(['/register', step]);
+      if (step === 0) {
+        this.router.navigate(['/register']);
+      } else {
+        this.router.navigate(['/register', step]);
+      }
     });
+  }
+
+  changeStep(step: number) {
+    this.currentStep = step;
+    if (this.stepper.selectedIndex !== step) {
+      this.stepper.selectedIndex = step;
+    }
   }
 
   nextStep() {
@@ -43,7 +54,11 @@ export class RegisterComponent implements OnInit {
   }
 
   prevStep() {
-    this.router.navigate(['/register', this.currentStep - 1]);
+    if (this.currentStep === 1) {
+      this.router.navigate(['/register']);
+    } else {
+      this.router.navigate(['/register', this.currentStep - 1]);
+    }
   }
 
   doSubmit() {

@@ -8,7 +8,7 @@ export const routes: Routes = [
     path: '',
     component: RegisterComponent,
     children: [
-      { path: '', redirectTo: '0', pathMatch: 'full' },
+      { path: '', component: RegisterStepComponent },
       { path: ':step', component: RegisterStepComponent }
     ]
   }
