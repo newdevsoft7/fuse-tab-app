@@ -1,0 +1,19 @@
+<div class="dialog-content-wrapper">
+    
+    <div mat-dialog-content class="p-24 m-0">
+        <video controls="" preload="auto" [src]="videos[index].path" width="100%"></video>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-24"  fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-mini-fab (click)="onPrev()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="index px-8">{{index + 1}} / {{videos.length}}</div>
+            <button mat-mini-fab (click)="onNext()">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+        </div>
+        <div class="pr-8">Uploaded {{videos[index].created_at | date: 'medium'}}</div>
+    </div>
+</div>

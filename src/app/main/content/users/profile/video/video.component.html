@@ -25,7 +25,7 @@
             <!-- / ADD FILE BUTTON -->
 
             <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicVideos" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of videos" [model]="video">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of basicVideos" [model]="video">
                     <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
                     </ng-container>
                 </div>

@@ -13,6 +13,7 @@ import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
 import { RegisterService } from "./register.service";
 import { RegisterPhotoGalleryDialogComponent } from "./steps/3/photo-gallery-dialog/photo-gallery-dialog.component";
+import { RegisterVideoGalleryDialogComponent } from "./steps/5/video-gallery-dialog/video-gallery-dialog.component";
 
 const stepComponents = [
   RegisterStep0Component,
@@ -34,7 +35,8 @@ const stepComponents = [
     RegisterComponent,
     RegisterStepComponent,
     ...stepComponents,
-    RegisterPhotoGalleryDialogComponent
+    RegisterPhotoGalleryDialogComponent,
+    RegisterVideoGalleryDialogComponent
   ],
   providers: [
     UserService,
