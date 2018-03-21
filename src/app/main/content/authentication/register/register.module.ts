@@ -10,6 +10,9 @@ import {
   RegisterStep0Component,
 } from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
+import { UserService } from "../../users/user.service";
+import { RegisterService } from "./register.service";
+import { RegisterPhotoGalleryDialogComponent } from "./steps/3/photo-gallery-dialog/photo-gallery-dialog.component";
 
 const stepComponents = [
   RegisterStep0Component,
@@ -30,7 +33,12 @@ const stepComponents = [
   declarations: [
     RegisterComponent,
     RegisterStepComponent,
-    ...stepComponents
+    ...stepComponents,
+    RegisterPhotoGalleryDialogComponent
+  ],
+  providers: [
+    UserService,
+    RegisterService
   ]
 })
 export class RegisterModule {

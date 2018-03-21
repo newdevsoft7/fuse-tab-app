@@ -12,6 +12,8 @@ export class RegisterComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatHorizontalStepper;
 
+  user;
+
   currentStep: number;
 
   constructor(
@@ -62,6 +64,5 @@ export class RegisterComponent implements OnInit {
   }
 
   doSubmit() {
-    // @todo
   }
 }
