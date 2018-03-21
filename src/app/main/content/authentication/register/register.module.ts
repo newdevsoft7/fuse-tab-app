@@ -7,19 +7,19 @@ import {
   RegisterStep2Component, RegisterStep3Component,
   RegisterStep4Component, RegisterStep5Component,
   RegisterStep6Component, RegisterStep7Component,
-  RegisterStep8Component,
+  RegisterStep0Component,
 } from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
 
 const stepComponents = [
+  RegisterStep0Component,
   RegisterStep1Component,
   RegisterStep2Component,
   RegisterStep3Component,
   RegisterStep4Component,
   RegisterStep5Component,
   RegisterStep6Component,
-  RegisterStep7Component,
-  RegisterStep8Component
+  RegisterStep7Component
 ];
 
 @NgModule({

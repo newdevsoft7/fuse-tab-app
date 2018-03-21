@@ -18,7 +18,7 @@ import { FuseHomeComponent } from './main/content/home/home.component';
 import { CustomToastComponent } from './shared/services/custom-toast.component';
 import { AuthGuardService } from './shared/guards/auth-guard.service';
 import { SCHttpInterceptor } from './shared/interceptor/http-interceptor';
-import { RegisterModule } from './main/content/authentication/register/register.module';
+// import { RegisterModule } from './main/content/authentication/register/registesr.module';
 import { AppSettingService } from './shared/services/app-setting.service';
 
 
@@ -56,8 +56,7 @@ const appRoutes: Routes = [
         TranslateModule.forRoot(),
         FuseMainModule,
         FuseHomeModule,
-        LoginModule,
-        RegisterModule
+        LoginModule
     ],
     providers   : [
         FuseSplashScreenService,

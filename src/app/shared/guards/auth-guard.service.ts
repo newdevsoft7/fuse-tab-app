@@ -21,8 +21,8 @@ export class AuthGuardService implements CanActivate {
     } else {
       this.step = null;
     }
-    if (!this.authService.isUserCompleted() && this.step !== this.authService.getCurrentCompletedStep()) {
-      this.router.navigate(['register', this.authService.getCurrentCompletedStep()]);
+    if (!this.authService.isUserCompleted() && this.step !== this.authService.getCurrentStep()) {
+      this.router.navigate(['register', this.authService.getCurrentStep()]);
       return false;
     }
     return true;

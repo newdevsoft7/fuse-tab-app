@@ -26,8 +26,8 @@ export class RegisterComponent implements OnInit {
     this.route.firstChild.params.subscribe((res: {step: string}) => {
       const step = parseInt(res.step);
       this.currentStep = step;
-      if (this.stepper.selectedIndex !== step - 1) {
-        this.stepper.selectedIndex = step - 1;
+      if (this.stepper.selectedIndex !== step) {
+        this.stepper.selectedIndex = step;
       }
     });
 
