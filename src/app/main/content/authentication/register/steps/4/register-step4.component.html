@@ -1,1 +1,52 @@
-<h2>step4</h2>
+<div id="register-step4-container">
+
+    <div class="mb-24" *ngIf="settings.profile_doc_message">
+        <h3>
+            {{settings.profile_doc_message}}
+            <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
+                ({{settings.profile_doc_required}}&nbsp; {{settings.profile_doc_required > 1 ? 'documents' : 'document'}} required)
+            </span>
+        </h3>
+    </div>
+
+    <!-- ADD FILE BUTTON -->
+    <div class="file-uploader">
+        <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
+        <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+            <mat-icon>file_upload</mat-icon>
+            <span>Upload</span>
+        </button>
+    </div>
+    <!-- / ADD FILE BUTTON -->
+
+    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="documents">
+        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of documents" [model]="document">
+            <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button type="button" color="accent" class="mr-12">
+            Quit
+        </button>
+
+        <button mat-raised-button type="button" color="accent">
+            Save & Continue
+        </button>
+    </div>
+
+</div>
+
+<!-- DOCUMENT TEMPLATE -->
+<ng-template #documentTpl let-document="document">
+    <a [href]="document.path" target="blank">
+        <img class="preview" [src]="document.thumbnail">
+    </a>
+    <div class="title" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-icon-button (click)="deleteDocument(document)">
+            <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+        </button>
+    </div>
+</ng-template>
+<!-- / DOCUMENT TEMPLATE -->
