@@ -1,1 +1,30 @@
-<h2>step6</h2>
+<div id="register-step6-container">
+    <div class="content" fxLayout="column" fxFlex="100">
+
+        <div *ngFor="let category of workAreas" class="profile-box info-box general" fxLayout="column">
+
+            <header class="mat-accent-bg">
+                <div class="title">{{category.cname == '' ? 'Uncategorised' : category.cname}}</div>
+            </header>
+
+            <div class="content" fxLayout="row" fxLayoutWrap>
+                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex="25">
+                    <mat-checkbox [(ngModel)]="workarea.set" (change)="onUpdateWorkArea(workarea)">
+                        {{workarea.aname}}
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
+            <button mat-raised-button type="button" color="accent" class="mr-12">
+                Quit
+            </button>
+
+            <button mat-raised-button type="button" color="accent">
+                Save & Continue
+            </button>
+        </div>
+
+    </div>
+</div>
