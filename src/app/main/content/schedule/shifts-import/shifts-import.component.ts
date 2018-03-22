@@ -19,7 +19,7 @@ export class ShiftsImportComponent implements OnInit {
     shifts: any[] = [];
 
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private scheduleService: ScheduleService
     ) { }
@@ -45,7 +45,7 @@ export class ShiftsImportComponent implements OnInit {
                 return;
             }
 
-            this.loadingService.showLoadingSpinner();
+            this.spinner.show();
 
             let formData = new FormData();
 
@@ -53,17 +53,6 @@ export class ShiftsImportComponent implements OnInit {
                 formData.append('shift[]', files[i], files[i].name);
             }
 
-            // this.scheduleService.importShifts(formData)
-            //     .subscribe(res => {
-            //         this.loadingService.hideLoadingSpinner();
-            //         this.toastr.success(res.message);
-            //         res.data.map(shift => {
-            //             this.shifts.push(shift);
-            //         });
-            //     }, err => {
-            //         this.loadingService.hideLoadingSpinner();
-            //         // TODO - Error Message
-            //     });
         }
     }
 

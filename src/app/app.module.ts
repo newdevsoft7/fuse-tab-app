@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { RouterModule, Routes } from '@angular/router';
 import 'hammerjs';
+import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 import { SharedModule } from './core/modules/shared.module';
 import { AppComponent } from './app.component';
 import { FuseMainModule } from './main/main.module';
@@ -19,6 +20,7 @@ import { CustomToastComponent } from './shared/services/custom-toast.component';
 import { AuthGuardService } from './shared/guards/auth-guard.service';
 import { SCHttpInterceptor } from './shared/interceptor/http-interceptor';
 import { AppSettingService } from './shared/services/app-setting.service';
+import { CustomLoadingService } from './shared/services/custom-loading.service';
 
 
 const appRoutes: Routes = [
@@ -55,7 +57,10 @@ const appRoutes: Routes = [
         TranslateModule.forRoot(),
         FuseMainModule,
         FuseHomeModule,
-        LoginModule
+        LoginModule,
+        LoadingModule.forRoot({
+            fullScreenBackdrop: true
+        })
     ],
     providers   : [
         FuseSplashScreenService,
@@ -66,7 +71,8 @@ const appRoutes: Routes = [
             provide: HTTP_INTERCEPTORS,
             useClass: SCHttpInterceptor,
             multi: true
-        }
+        },
+        CustomLoadingService
     ],
     entryComponents: [
         CustomToastComponent

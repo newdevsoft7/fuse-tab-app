@@ -1,5 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from "ngx-toastr";
+import { RegisterService } from "../../register.service";
+import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 
 @Component({
     selector: 'app-register-step0',
@@ -8,11 +11,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterStep0Component implements OnInit {
 
+    @Output() onStepSucceed = new EventEmitter;
+    @Output() onUserCreated = new EventEmitter;
+
     form: FormGroup;
     formErrors: any;
 
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private registerService: RegisterService,
+        private toastr: ToastrService,
+        private spinner: CustomLoadingService
     ) {
         this.formErrors = {
             fname   : {},
@@ -54,5 +63,27 @@ export class RegisterStep0Component implements OnInit {
                 this.formErrors[field] = control.errors;
             }
         }
+    }
+
+    save() {
+        if (this.form.invalid) return;
+        this.spinner.show();
+        const params = this.form.value;
+        this.registerService.register(params).subscribe(res => {
+            this.spinner.hide();
+            this.toastr.success("Saved");
+            this.onUserCreated.next(res.user);
+            this.onStepSucceed.next(res.steps);
+        }, err => {
+            this.spinner.hide();
+            this.displayError(err);
+        })
+    }
+
+    private displayError(err) {
+        const errors = err.error.errors;
+        Object.keys(errors).forEach(v => {
+            this.toastr.error(errors[v]);
+        });
     }
 }

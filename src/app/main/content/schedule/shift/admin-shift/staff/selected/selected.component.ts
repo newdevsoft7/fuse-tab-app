@@ -70,7 +70,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private tabService: TabService,
         private userService: UserService,
         private scheduleService: ScheduleService,

@@ -14,6 +14,7 @@ import { FavicoService } from './shared/services/favico.service';
 import { ActivityManagerService } from './shared/services/activity-manager.service';
 import { TabService } from './main/tab/tab.service';
 import { AppSettingService } from './shared/services/app-setting.service';
+import { CustomLoadingService } from './shared/services/custom-loading.service';
 
 @Component({
     selector   : 'fuse-root',
@@ -23,6 +24,7 @@ import { AppSettingService } from './shared/services/app-setting.service';
 export class AppComponent implements OnInit
 {
     socketService: SocketService;
+    loading = false;
 
     constructor(
         private fuseNavigationService: FuseNavigationService,
@@ -35,7 +37,8 @@ export class AppComponent implements OnInit
         private activityManagerService: ActivityManagerService,
         private tabService: TabService,
         private appSetting: AppSettingService,
-        private titleService: Title
+        private titleService: Title,
+        private spinner: CustomLoadingService
     )
     {
         // Add languages
@@ -59,6 +62,10 @@ export class AppComponent implements OnInit
         this.socketService = this.injector.get(SocketService);
 
         this.listenSocketMessage();
+
+        this.spinner.isLoading.subscribe(isLoading => {
+            this.loading = isLoading;
+        });
     }
 
     listenSocketMessage() {

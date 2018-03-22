@@ -33,7 +33,7 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     dialogRef: any;
 
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private dialog: MatDialog,
         private userService: UserService,
         private toastr: ToastrService,
@@ -99,7 +99,7 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     onUploadVideo(event, isAdmin = 0) {
         const files = event.target.files;
         if (files && files.length > 0) {
-            this.loadingService.showLoadingSpinner();
+            this.spinner.show();
 
             let formData = new FormData();
 
@@ -114,12 +114,12 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
             this.userService.uploadProfileVideo(this.user.id, formData)
                 .subscribe(res => {
                     this.toastr.success(res.message);
-                    this.loadingService.hideLoadingSpinner();
+                    this.spinner.hide();
                     res.data.map(video => {
                         this.videos.push(video);
                     });
                 }, err => {
-                    this.loadingService.hideLoadingSpinner();
+                    this.spinner.hide();
                     _.forEach(err.error.errors, errors => {
                         _.forEach(errors, (error: string) => {
                             const message = _.replace(error, /video\.\d+/g, 'video');

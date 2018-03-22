@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../core/modules/shared.module';
-import { ANIMATION_TYPES, LoadingModule } from 'ngx-loading';
 
 import { FuseMainComponent } from './main.component';
 import { FuseContentComponent } from './content/content.component';
@@ -34,10 +33,7 @@ import { FuseSearchBarModule } from '../core/components/search-bar/search-bar.mo
         RouterModule,
         FuseNavigationModule,
         FuseShortcutsModule,
-        FuseSearchBarModule,
-        LoadingModule.forRoot({
-            fullScreenBackdrop: true
-        })
+        FuseSearchBarModule
     ],
     exports     : [
         FuseMainComponent

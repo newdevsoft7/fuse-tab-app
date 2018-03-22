@@ -30,7 +30,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialTimeControlModule } from '../components/material-time-control/material-time-control.module';
 import { ActionService } from '../../shared/services/action.service';
-import { CustomLoadingService } from '../../shared/services/custom-loading.service';
 import { FCMService } from '../../shared/services/fcm.service';
 import { SocketService } from '../../shared/services/socket.service';
 import { FavicoService } from '../../shared/services/favico.service';
@@ -110,7 +109,6 @@ import { DebounceDirective } from '../directives/debounce/debounce.directive';
         FuseNavbarVerticalService,
         FuseMatSidenavHelperService,
         FuseTranslationLoaderService,
-        CustomLoadingService,
         FCMService,
         SocketService,
         FavicoService,

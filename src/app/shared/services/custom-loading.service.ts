@@ -9,11 +9,11 @@ export class CustomLoadingService {
 
     constructor() { }
 
-    showLoadingSpinner() {
+    show() {
         this.loading.next(true);
     }
 
-    hideLoadingSpinner() {
+    hide() {
         this.loading.next(false);
     }
 

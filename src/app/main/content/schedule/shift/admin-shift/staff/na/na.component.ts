@@ -59,7 +59,7 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
     @Output() onStaffCountChanged = new EventEmitter();
 
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private tabService: TabService,
         private userService: UserService,
         private scheduleService: ScheduleService,

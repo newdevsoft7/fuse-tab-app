@@ -23,7 +23,7 @@ export class RegisterStep6Component implements OnInit {
 
     constructor(
         private userService: UserService,
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage
     ) { }

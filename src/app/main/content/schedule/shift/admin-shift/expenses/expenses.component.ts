@@ -16,9 +16,9 @@ import * as _ from 'lodash';
 export class AdminShiftExpensesComponent implements OnInit, DoCheck {
 
     @Input() shift;
-    
+
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         differs: IterableDiffers

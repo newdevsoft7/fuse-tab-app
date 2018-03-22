@@ -32,7 +32,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	dialogRef: any;
 
 	constructor(
-		private loadingService: CustomLoadingService,
+		private spinner: CustomLoadingService,
 		private dialog: MatDialog,
 		private userService: UserService,
 		private toastr: ToastrService,
@@ -98,7 +98,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 		const files = event.target.files;
 		if (files && files.length > 0) {
 
-			this.loadingService.showLoadingSpinner();
+			this.spinner.show();
 
 			let formData = new FormData();
 
@@ -112,13 +112,13 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 			this.userService.uploadProfilePhoto(this.user.id, formData)
 				.subscribe(res => {
-					this.loadingService.hideLoadingSpinner();
+					this.spinner.hide();
 					this.toastr.success(res.message);
 					res.data.map(photo => {
 						this.photos.push(photo);
 					});
 				}, err => {
-					this.loadingService.hideLoadingSpinner();
+					this.spinner.hide();
 					_.forEach(err.error.errors, errors => {
 						_.forEach(errors, (error: string) => {
 							const message = _.replace(error, /photo\.\d+/g, 'photo');

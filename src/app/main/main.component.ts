@@ -19,11 +19,8 @@ export class FuseMainComponent implements OnInit, OnDestroy
     fuseSettings: any;
     @HostBinding('attr.fuse-layout-mode') layoutMode;
 
-    loading = false;
-
     constructor(
         private router: Router,
-        private loadingService: CustomLoadingService,
         private _renderer: Renderer2,
         private _elementRef: ElementRef,
         private fuseConfig: FuseConfigService,
@@ -45,10 +42,6 @@ export class FuseMainComponent implements OnInit, OnDestroy
         {
             this.document.body.className += ' is-mobile';
         }
-
-        this.loadingService.isLoading.subscribe(isLoading => {
-            this.loading = isLoading;
-        })
     }
 
     ngOnInit()

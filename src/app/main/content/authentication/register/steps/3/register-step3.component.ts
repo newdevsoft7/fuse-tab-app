@@ -31,7 +31,7 @@ export class RegisterStep3Component implements OnInit {
     constructor(
         private dialog: MatDialog,
         private userService: UserService,
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage
     ) {}
@@ -94,7 +94,7 @@ export class RegisterStep3Component implements OnInit {
         const files = event.target.files;
         if (files && files.length > 0) {
 
-            this.loadingService.showLoadingSpinner();
+            this.spinner.show();
 
             let formData = new FormData();
 
@@ -104,13 +104,13 @@ export class RegisterStep3Component implements OnInit {
 
             this.userService.uploadProfilePhoto(this.user.id, formData)
                 .subscribe(res => {
-                    this.loadingService.hideLoadingSpinner();
+                    this.spinner.hide();
                     this.toastr.success(res.message);
                     res.data.map(photo => {
                         this.photos.push(photo);
                     });
                 }, err => {
-                    this.loadingService.hideLoadingSpinner();
+                    this.spinner.hide();
                     _.forEach(err.error.errors, errors => {
                         _.forEach(errors, (error: string) => {
                             const message = _.replace(error, /photo\.\d+/g, 'photo');

@@ -59,7 +59,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
 
 
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private scheduleService: ScheduleService,
         private tabService: TabService,
         private userService: UserService,
@@ -84,11 +84,11 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
             case STAFF_STATUS_STANDBY:
                 message = 'Really put this applicant on standby?';
                 break;
-            
+
             case STAFF_STATUS_HIDDEN_REJECTED:
                 message = 'Really hidden reject this applicant?';
                 break;
-            
+
             case STAFF_STATUS_REJECTED:
                 message = 'Really reject this applicant?';
                 break;

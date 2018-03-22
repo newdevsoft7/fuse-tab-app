@@ -42,7 +42,7 @@ export class TokenStorage {
     * Set settings
     * @returns {void}
     */
-    public setSettings(settings: string): void {
+    public setSettings(settings: any): void {
         localStorage.setItem('settings', JSON.stringify(settings));
     }
 
@@ -52,6 +52,22 @@ export class TokenStorage {
      */
     public getSettings(): any {
         return JSON.parse(localStorage.getItem('settings'));
+    }
+
+    /**
+    * Set steps for registrant
+    * @returns {void}
+    */
+    public setSteps(steps: any): void {
+        localStorage.setItem('steps', JSON.stringify(steps));
+    }
+
+    /**
+     * Get steps for registrant
+     * @returns {any}
+     */
+    public getSteps(): any {
+        return JSON.parse(localStorage.getItem('steps'));
     }
 
     /**

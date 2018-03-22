@@ -40,7 +40,7 @@ enum Query {
 export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
 
     @Input() editable;
-    
+
     _staffs;
     @Input()
     get staffs() {
@@ -56,10 +56,10 @@ export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
     @Output() onStaffCountChanged = new EventEmitter();
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-    
+
 
     constructor(
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private scheduleService: ScheduleService,
         private userService: UserService,
         private tabService: TabService,
@@ -123,7 +123,7 @@ export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
                     });
             }
         });
-    } 
+    }
 
     getAvatar(value) {
         switch (value) {

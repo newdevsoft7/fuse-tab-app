@@ -22,6 +22,7 @@ interface AccessData {
     user: any;
     settings: any;
     message: string;
+    steps: any;
 }
 
 @Injectable()
@@ -140,10 +141,11 @@ export class AuthenticationService {
      * @private
      * @param {AccessData} data
      */
-    private saveAccessData({ access_token, refresh_token, user, settings }: AccessData) {
+    private saveAccessData({ access_token, refresh_token, user, settings, steps }: AccessData) {
         if (access_token) { this.tokenStorage.setAccessToken(access_token); }
         if (refresh_token) { this.tokenStorage.setRefreshToken(refresh_token); }
         if (settings) { this.tokenStorage.setSettings(settings); }
+        if (steps) { this.tokenStorage.setSteps(steps); }
         if (user) { this.tokenStorage.setUser(user); }
     }
 

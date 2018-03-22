@@ -27,7 +27,7 @@ export class RegisterStep4Component implements OnInit {
 
     constructor(
         private userService: UserService,
-        private loadingService: CustomLoadingService,
+        private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage
     ) {}
@@ -48,7 +48,7 @@ export class RegisterStep4Component implements OnInit {
     onUploadDocument(event, isAdmin = 0) {
         const files = event.target.files;
         if (files && files.length > 0) {
-            this.loadingService.showLoadingSpinner();
+            this.spinner.show();
 
             let formData = new FormData();
 
@@ -58,13 +58,13 @@ export class RegisterStep4Component implements OnInit {
 
             this.userService.uploadProfileDocument(this.user.id, formData)
                 .subscribe(res => {
-                    this.loadingService.hideLoadingSpinner();
+                    this.spinner.hide();
                     this.toastr.success(res.message);
                     res.data.map(document => {
                         this.documents.push(document);
                     });
                 }, err => {
-                    this.loadingService.hideLoadingSpinner();
+                    this.spinner.hide();
                     _.forEach(err.error.errors, errors => {
                         _.forEach(errors, (error: string) => {
                             const message = _.replace(error, /document\.\d+/g, 'document');

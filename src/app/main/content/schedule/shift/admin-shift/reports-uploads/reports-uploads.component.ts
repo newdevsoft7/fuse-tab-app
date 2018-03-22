@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation, Input, DoCheck, IterableDiffers }
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
-import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 
 import * as _ from 'lodash';
 
@@ -18,7 +17,6 @@ export class AdminShiftReportsUploadsComponent implements OnInit, DoCheck {
     @Input() shift;
 
     constructor(
-        private loadingService: CustomLoadingService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         differs: IterableDiffers

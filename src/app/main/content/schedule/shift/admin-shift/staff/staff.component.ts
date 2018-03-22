@@ -1,4 +1,4 @@
-import { 
+import {
     Component, OnInit,
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
@@ -69,7 +69,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     public Section = Section;
 
     @Input() shift;
-    
+
     @ViewChild('adminNoteInput') adminNoteInput;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -108,7 +108,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     usersToRoleSubscription: Subscription;
 
     constructor(
-        private loadingService: CustomLoadingService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         private formBuilder: FormBuilder,
@@ -117,7 +116,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         private scheduleService: ScheduleService,
         private actionService: ActionService,
         private tabService: TabService,
-        private loadingSerivce: CustomLoadingService,
+        private spinner: CustomLoadingService,
         differs: IterableDiffers
     ) {
         this.currentUser = this.tokenStorage.getUser();
@@ -126,15 +125,15 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.usersToRoleSubscription = this.actionService.usersToRole.subscribe(
             ({ userIds, role, section }) => {
                 const staffStatusId = mapSectionToStaffStatus(section);
-                this.loadingSerivce.showLoadingSpinner();
+                this.spinner.show();
                 this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
                     .subscribe(res => {
-                        this.loadingSerivce.hideLoadingSpinner();
+                        this.spinner.hide();
                         this.refreshTabByRole(role, section);
                         this.updateStaffsCount(role.id);
                         this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
                     }, err => {
-                        this.loadingSerivce.hideLoadingSpinner();
+                        this.spinner.hide();
                         this.updateStaffsCount(role.id);
                         this.refreshTabByRole(role, section);
                         this.toastr.error('Error!');
@@ -150,11 +149,11 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             note: ['', Validators.required]
         });
 
-        
+
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
         });
-        
+
         // Get current user information
         this.userService.getUser(this.currentUser.id).subscribe(res => {
             this.userInfo = res;
@@ -167,12 +166,12 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.refreshAdminNotesView();
             });
 
-        
+
         this.roles = this.shift.shift_roles.map((role, index) => {
 
             // Get selected from shift role staff
             const selected = role.role_staff.filter(rs => {
-               return true; 
+               return true;
             });
             return {
                 ...role,
@@ -194,7 +193,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         const roleTab = new Tab('Edit Role', 'shiftRoleEditTpl', url, { url, role });
         this.tabService.openTab(roleTab);
     }
-    
+
     onSelectedTabChange(role, event: MatTabChangeEvent) {
         const selectedTab = event.index;
         const roleId = role.id;
@@ -306,7 +305,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             case Section.Selected:
                 staffs = role.selected;
                 break;
-        
+
             case Section.Standby:
                 staffs = role.standby;
                 break;
@@ -487,7 +486,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             note.client_visible = this.noteTemp.client_visible;
             note.note = this.noteTemp.note;
             note.updated_at = data.updated_at;
-            
+
             if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
                 const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
                 note.color = noteType.color;
@@ -495,7 +494,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             }
         })
         note.editMode = false;
-        
+
     }
 
     private displayError(err) {
@@ -510,7 +509,7 @@ function mapSectionToStaffStatus(section) {
     switch(section) {
         case Section.Selected:
             return STAFF_STATUS_SELECTED;
-        
+
         case Section.Standby:
             return STAFF_STATUS_STANDBY;
 
