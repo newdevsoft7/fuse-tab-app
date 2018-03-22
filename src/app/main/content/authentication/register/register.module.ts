@@ -18,12 +18,12 @@ import {
   RegisterProfileEditTextValueComponent,
   RegisterProfileEditListmValueComponent,
   // Photo Step
-  RegisterPhotoGalleryDialogComponent
+  RegisterPhotoGalleryDialogComponent,
+  RegisterVideoGalleryDialogComponent
 } from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
 import { RegisterService } from "./register.service";
-import { RegisterVideoGalleryDialogComponent } from "./steps/5/video-gallery-dialog/video-gallery-dialog.component";
 
 const stepComponents = [
   RegisterStep0Component,
@@ -62,7 +62,8 @@ const profileEditComponents = [
     RegisterService
   ],
   entryComponents: [
-    RegisterPhotoGalleryDialogComponent
+    RegisterPhotoGalleryDialogComponent,
+    RegisterVideoGalleryDialogComponent
   ]
 })
 export class RegisterModule {

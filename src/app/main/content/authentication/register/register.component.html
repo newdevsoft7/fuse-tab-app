@@ -42,7 +42,8 @@
   <!-- STEP 5 - UPLOAD VIDEOS -->
   <mat-step [stepControl]="forms[5]" *ngIf="steps.step5 !== null">
     <ng-template matStepLabel>Upload videos</ng-template>
-    <app-register-step5 [user]="user"></app-register-step5>
+    <app-register-step5 [user]="user" (quitClicked)="quitStep($event)"
+      (onStepSucceed)="onStepSucceed($event)"></app-register-step5>
   </mat-step>
   <!-- / STEP 5 - UPLOAD VIDEOS -->
 
