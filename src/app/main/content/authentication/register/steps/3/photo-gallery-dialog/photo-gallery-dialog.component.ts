@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Inject, HostListener } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
-export enum KEY_CODE {
+enum KEY_CODE {
     RIGHT_ARROW = 39,
     LEFT_ARROW = 37
 }

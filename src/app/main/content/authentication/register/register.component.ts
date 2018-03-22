@@ -45,8 +45,10 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private tokenStorage: TokenStorage,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private fuseConfig: FuseConfigService
   ) {
+
     this.user = this.tokenStorage.getUser();
     if (this.user) {
       // For registered, but not completed user, set steps
