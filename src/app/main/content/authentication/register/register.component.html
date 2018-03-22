@@ -34,7 +34,8 @@
   <!-- STEP 4 - UPLOAD DOCUMENTS -->
   <mat-step [stepControl]="forms[4]" *ngIf="steps.step4 !== null">
     <ng-template matStepLabel>Upload documents</ng-template>
-    <app-register-step4 [user]="user"></app-register-step4>
+    <app-register-step4 [user]="user" (quitClicked)="quitStep($event)"
+      (onStepSucceed)="onStepSucceed($event)"></app-register-step4>
   </mat-step>
   <!-- / STEP 4 - UPLOAD DOCUMENTS -->
 

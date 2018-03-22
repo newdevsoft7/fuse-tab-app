@@ -27,11 +27,11 @@
     </div>
 
     <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
-        <button mat-raised-button type="button" color="accent" class="mr-12">
+        <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
             Quit
         </button>
 
-        <button mat-raised-button type="button" color="accent">
+        <button mat-raised-button type="button" color="accent" (click)="save()">
             Save & Continue
         </button>
     </div>
@@ -41,7 +41,7 @@
 <!-- DOCUMENT TEMPLATE -->
 <ng-template #documentTpl let-document="document">
     <a [href]="document.path" target="blank">
-        <img class="preview" [src]="document.thumbnail">
+        <img class="preview" src="assets/images/avatars/pdf_thumbnail.jpg">
     </a>
     <div class="title" fxLayout="row" fxLayoutAlign="end center">
         <button mat-icon-button (click)="deleteDocument(document)">

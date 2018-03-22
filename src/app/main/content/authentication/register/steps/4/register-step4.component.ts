@@ -1,6 +1,7 @@
 import {
     Component, OnInit,
-    ViewEncapsulation, Input
+    ViewEncapsulation, Input, OnChanges,
+    Output, EventEmitter, SimpleChanges
 } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { ToastrService } from "ngx-toastr";
@@ -9,6 +10,7 @@ import * as _ from 'lodash';
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 import { UserService } from "../../../../users/user.service";
 import { TokenStorage } from "../../../../../../shared/services/token-storage.service";
+import { RegisterService } from "../../register.service";
 
 const PROFILE_DOCUMENT = 'profile_document';
 
@@ -18,22 +20,35 @@ const PROFILE_DOCUMENT = 'profile_document';
     styleUrls: ['./register-step4.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class RegisterStep4Component implements OnInit {
+export class RegisterStep4Component implements OnInit, OnChanges {
 
     settings: any = {};
     documents: any[];
     dialogRef: any;
+
     @Input() user;
+    @Output() quitClicked = new EventEmitter;
+    @Output() onStepSucceed = new EventEmitter;
 
     constructor(
         private userService: UserService,
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
-        private tokenStorage: TokenStorage
+        private tokenStorage: TokenStorage,
+        private registerService: RegisterService
     ) {}
 
     ngOnInit() {
         this.settings = this.tokenStorage.getSettings() || {};
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.user.currentValue) {
+            this.userService.getUser(this.user.id)
+                .subscribe(res => {
+                    this.getDocuments();
+                });
+        }
     }
 
     private getDocuments() {
@@ -83,5 +98,22 @@ export class RegisterStep4Component implements OnInit {
             }, err => {
                 console.log(err);
             });
+    }
+
+    quit() {
+        this.quitClicked.next(true);
+    }
+
+    save() {
+        this.spinner.show();
+        this.registerService.registerByStep('step4', {})
+            .subscribe(res => {
+                this.spinner.hide();
+                this.toastr.success(res.message);
+                this.onStepSucceed.next(res.steps);
+            }, err => {
+                this.spinner.hide();
+                this.toastr.error(err.error.message);
+            })
     }
 }
