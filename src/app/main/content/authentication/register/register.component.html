@@ -11,7 +11,7 @@
   <!-- STEP 1 - PROFILE -->
   <mat-step [stepControl]="forms[1]" *ngIf="steps.step1 !== null">
     <ng-template matStepLabel>Profile</ng-template>
-    <app-register-step1></app-register-step1>
+    <app-register-step1 [user]="user"></app-register-step1>
   </mat-step>
   <!-- / STEP 1 - PROFILE -->
 

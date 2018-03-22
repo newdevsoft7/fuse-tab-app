@@ -101,6 +101,15 @@ export class AuthenticationService {
             .catch(this.handleError);
     }
 
+    public register(params) {
+        return this.http.post(`${BASE_URL}/auth/register`, params)
+            .map((tokens: AccessData) => {
+                this.saveAccessData(tokens);
+                return tokens;
+            })
+            .catch(this.handleError);
+    }
+
     public async logout() {
         try {
             await this.usersChatService.removeDevice();

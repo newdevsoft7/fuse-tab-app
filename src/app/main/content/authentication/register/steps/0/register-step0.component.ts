@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from "ngx-toastr";
 import { RegisterService } from "../../register.service";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
+import { AuthenticationService } from "../../../../../../shared/services/authentication.service";
 
 @Component({
     selector: 'app-register-step0',
@@ -20,6 +21,7 @@ export class RegisterStep0Component implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private registerService: RegisterService,
+        private authService: AuthenticationService,
         private toastr: ToastrService,
         private spinner: CustomLoadingService
     ) {
@@ -69,7 +71,7 @@ export class RegisterStep0Component implements OnInit {
         if (this.form.invalid) return;
         this.spinner.show();
         const params = this.form.value;
-        this.registerService.register(params).subscribe(res => {
+        this.authService.register(params).subscribe(res => {
             this.spinner.hide();
             this.toastr.success("Saved");
             this.onUserCreated.next(res.user);
@@ -77,7 +79,7 @@ export class RegisterStep0Component implements OnInit {
         }, err => {
             this.spinner.hide();
             this.displayError(err);
-        })
+        });
     }
 
     private displayError(err) {
