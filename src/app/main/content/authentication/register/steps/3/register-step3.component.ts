@@ -48,10 +48,7 @@ export class RegisterStep3Component implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.user.currentValue) {
-            this.userService.getUser(this.user.id)
-                .subscribe(res => {
-                    this.getPhotos();
-                });
+            this.getPhotos();
         }
     }
 

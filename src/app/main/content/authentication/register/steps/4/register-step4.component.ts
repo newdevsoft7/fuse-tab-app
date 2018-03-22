@@ -44,10 +44,7 @@ export class RegisterStep4Component implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.user.currentValue) {
-            this.userService.getUser(this.user.id)
-                .subscribe(res => {
-                    this.getDocuments();
-                });
+            this.getDocuments();
         }
     }
 
