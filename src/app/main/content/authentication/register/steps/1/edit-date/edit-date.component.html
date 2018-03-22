@@ -1,0 +1,19 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="text-element" (click)="openForm()">
+	<span class="element-value">{{element[field] ? (element[field] | date: 'mediumDate') : 'Empty'}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="text-element-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field  floatPlaceholder="never" fxFlexLayout="start center">
+		<input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="data" fxFlex>
+		<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+		<mat-datepicker #picker></mat-datepicker>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

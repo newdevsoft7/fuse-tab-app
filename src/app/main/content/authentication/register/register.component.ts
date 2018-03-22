@@ -1,12 +1,14 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { MatHorizontalStepper } from "@angular/material";
+import { MatHorizontalStepper, MatDialog, MatDialogRef } from "@angular/material";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FuseConfigService } from "../../../../core/services/config.service";
 
 import * as _ from "lodash";
 import { UserService } from "../../users/user.service";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
+import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
+import { AuthenticationService } from "../../../../shared/services/authentication.service";
 
 @Component({
   selector: 'app-register',
@@ -34,12 +36,16 @@ export class RegisterComponent implements OnInit {
     'step7': 0
   }; // From step 1 to step 7
 
+  dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
   constructor(
+    private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private tokenStorage: TokenStorage
+    private tokenStorage: TokenStorage,
+    private authService: AuthenticationService
   ) {
     this.user = this.tokenStorage.getUser();
     if (this.user) {
@@ -149,6 +155,18 @@ export class RegisterComponent implements OnInit {
     } else {
       this.router.navigate(['/register', this.currentStep - 1]);
     }
+  }
+
+  quitStep(event) {
+    this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = 'Really quit?';
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.authService.logout();
+      }
+    });
   }
 
   doSubmit() {

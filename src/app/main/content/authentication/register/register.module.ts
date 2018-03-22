@@ -9,6 +9,14 @@ import {
   RegisterStep6Component, RegisterStep7Component,
   RegisterStep0Component,
 } from "./steps";
+
+import {
+  RegisterProfileEditDateComponent,
+  RegisterProfileEditListValueComponent,
+  RegisterProfileEditSexComponent,
+  RegisterProfileEditTextValueComponent,
+  RegisterProfileEditListmValueComponent
+} from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
 import { RegisterService } from "./register.service";
@@ -26,6 +34,14 @@ const stepComponents = [
   RegisterStep7Component
 ];
 
+const profileEditComponents = [
+  RegisterProfileEditDateComponent,
+  RegisterProfileEditListValueComponent,
+  RegisterProfileEditSexComponent,
+  RegisterProfileEditTextValueComponent,
+  RegisterProfileEditListmValueComponent
+];
+
 @NgModule({
   imports: [
     SharedModule,
@@ -35,6 +51,7 @@ const stepComponents = [
     RegisterComponent,
     RegisterStepComponent,
     ...stepComponents,
+    ...profileEditComponents,
     RegisterPhotoGalleryDialogComponent,
     RegisterVideoGalleryDialogComponent
   ],

@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { RegisterService } from "../../register.service";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
@@ -19,6 +20,7 @@ export class RegisterStep0Component implements OnInit {
     formErrors: any;
 
     constructor(
+        private router: Router,
         private formBuilder: FormBuilder,
         private registerService: RegisterService,
         private authService: AuthenticationService,
@@ -80,6 +82,10 @@ export class RegisterStep0Component implements OnInit {
             this.spinner.hide();
             this.displayError(err);
         });
+    }
+
+    quit() {
+        this.router.navigate(['/login']);
     }
 
     private displayError(err) {
