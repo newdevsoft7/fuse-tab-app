@@ -26,7 +26,8 @@
   <!-- STEP 3 - UPLOAD PHOTOS -->
   <mat-step [stepControl]="forms[3]" *ngIf="steps.step3 !== null">
     <ng-template matStepLabel>Upload photos</ng-template>
-    <app-register-step3 [user]="user"></app-register-step3>
+    <app-register-step3 [user]="user" (quitClicked)="quitStep($event)"
+      (onStepSucceed)="onStepSucceed($event)"></app-register-step3>
   </mat-step>
   <!-- / STEP 3 - UPLOAD PHOTOS -->
 

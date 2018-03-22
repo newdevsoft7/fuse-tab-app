@@ -11,16 +11,18 @@ import {
 } from "./steps";
 
 import {
+  // Profile Step
   RegisterProfileEditDateComponent,
   RegisterProfileEditListValueComponent,
   RegisterProfileEditSexComponent,
   RegisterProfileEditTextValueComponent,
-  RegisterProfileEditListmValueComponent
+  RegisterProfileEditListmValueComponent,
+  // Photo Step
+  RegisterPhotoGalleryDialogComponent
 } from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
 import { RegisterService } from "./register.service";
-import { RegisterPhotoGalleryDialogComponent } from "./steps/3/photo-gallery-dialog/photo-gallery-dialog.component";
 import { RegisterVideoGalleryDialogComponent } from "./steps/5/video-gallery-dialog/video-gallery-dialog.component";
 
 const stepComponents = [
@@ -58,6 +60,9 @@ const profileEditComponents = [
   providers: [
     UserService,
     RegisterService
+  ],
+  entryComponents: [
+    RegisterPhotoGalleryDialogComponent
   ]
 })
 export class RegisterModule {
