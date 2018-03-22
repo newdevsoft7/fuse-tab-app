@@ -4,7 +4,7 @@
     <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Xero Integration</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_enable)"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_enable]"
                 (change)="onChange(Setting.xero_enable, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable the Xero Module to sync accouting data with Xero
@@ -17,7 +17,7 @@
     <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20"></div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_client_invoice)"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_client_invoice]"
                 (change)="onChange(Setting.xero_client_invoice, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable to transfer client invoices to Xero
@@ -30,7 +30,7 @@
     <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20"></div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_staff_invoice)"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_staff_invoice]"
                 (change)="onChange(Setting.xero_staff_invoice, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable to transfer staff invoices to Xero
@@ -43,7 +43,7 @@
     <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20"></div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="value(Setting.xero_payroll)"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_payroll]"
                 (change)="onChange(Setting.xero_payroll, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable to transfer timesheets to Xero
@@ -51,5 +51,47 @@
         </div>
     </div>
     <!-- / XERO PAYROLL -->
+
+    <!-- XERO PAYROLL CALENDAR -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <div fxFlex="20">
+                <mat-form-field class="w-120">
+                    <input matInput [matDatepicker]="picker" [value]="items[Setting.xero_payroll_calendar]" (dateChange)="changeDate($event)">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="desc secondary-text" fxFlex="80">
+                Select the Xero payroll calendar to use
+            </div>
+        </div>
+    </div>
+    <!-- / XERO PAYROLL CALENDAR -->
+
+    <!-- XERO KEY -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.xero_key]" [delay]="1000" (onValueChange)="onChange(Setting.xero_key, $event)"
+                    placeholder="Xero integration API consumer key" />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / XERO KEY -->
+
+    <!-- XERO SECRET -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.xero_secret]" [delay]="1000" (onValueChange)="onChange(Setting.xero_secret, $event)"
+                    placeholder="Xero integration API consumer secret" />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / XERO SECRET -->
 
 </div>
