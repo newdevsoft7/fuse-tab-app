@@ -10,6 +10,8 @@ export class TabService {
     private tab: Subject<Tab> = new Subject();
     tabActived: BehaviorSubject<TabComponent> = new BehaviorSubject(null);
     currentTab: TabComponent;
+
+    openTabs: TabComponent[] = [];
     
     tabClosed: Subject<string> = new Subject();
     

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { FuseConfigService } from '../../core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,6 +9,7 @@ import { UserService } from '../content/users/user.service';
 import { TokenStorage } from '../../shared/services/token-storage.service';
 import { fuseAnimations } from '../../core/animations';
 import { Tab } from '../tab/tab';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -17,7 +18,7 @@ import { Tab } from '../tab/tab';
     animations: fuseAnimations
 })
 
-export class FuseToolbarComponent implements OnInit
+export class FuseToolbarComponent implements OnInit, OnDestroy
 {
     userStatusOptions: any[];
     languages: any;
@@ -26,6 +27,10 @@ export class FuseToolbarComponent implements OnInit
     horizontalNav: boolean;
 
     user: any;
+
+    loggedInSecondary: boolean = false;
+
+    userSwitcherSubscription: Subscription;
 
     constructor(
         private router: Router,
@@ -99,8 +104,28 @@ export class FuseToolbarComponent implements OnInit
     }
 
     ngOnInit() {
+        this.switchUser();
+        this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
+            if (isSwitch) {
+                this.switchUser();
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        if (this.userSwitcherSubscription) {
+            this.userSwitcherSubscription.unsubscribe();
+        }
+    }
+
+    switchUser() {
         const user = this.tokenStorage.getUser();
         if (user) {
+            if (this.tokenStorage.isExistSecondaryUser()) {
+                this.loggedInSecondary = true;
+            } else {
+                this.loggedInSecondary = false;
+            }
             this.userService.getUser(user.id)
                 .subscribe(res => {
                     this.user = res;

@@ -50,9 +50,6 @@ export class AppComponent implements OnInit
         // Use a language
         this.translate.use('en');
 
-        // Set the navigation model
-        this.fuseNavigationService.setNavigationModel(new FuseNavigationModel());
-
         // Set the navigation translations
         this.translationLoader.loadTranslations(navigationEnglish, navigationTurkish);
 

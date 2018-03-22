@@ -7,12 +7,15 @@ export class FuseNavigationService
 {
     onNavCollapseToggle = new EventEmitter<any>();
     onNavCollapseToggled = new EventEmitter<any>();
-    onNavigationModelChange: BehaviorSubject<any> = new BehaviorSubject({});
+    onNavigationModelChange: BehaviorSubject<any> = new BehaviorSubject(null);
     navigationModel: FuseNavigationModelInterface;
     flatNavigation: any[] = [];
 
     constructor()
     {
+        this.navigationModel = {
+            model: []
+        };
     }
 
     /**

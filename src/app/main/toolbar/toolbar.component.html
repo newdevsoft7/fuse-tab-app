@@ -32,7 +32,10 @@
                         class="user-button">
                     <div fxLayout="row" fxLayoutAlign="center center">
                         <img class="avatar" [src]="user.ppic_a">
-                        <span class="username mr-12" fxHide fxShow.gt-sm>{{user.fname}} {{user.lname}}</span>
+                        <span class="username mr-12" fxHide fxShow.gt-sm *ngIf="!loggedInSecondary; else secondaryUserBlock">{{user.fname}} {{user.lname}}</span>
+                        <ng-template #secondaryUserBlock>
+                            <span class="username mr-12" fxHide fxShow.gt-sm>Logged in as {{user.fname}} {{user.lname}}</span>
+                        </ng-template>
                         <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
                     </div>
                 </button>

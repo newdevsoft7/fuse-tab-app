@@ -33,8 +33,10 @@ export class FuseNavigationComponent implements OnDestroy
         this.navigationModelChangeSubscription =
             this.fuseNavigationService.onNavigationModelChange
                 .subscribe((navigationModel) => {
-                    this.navigationModel = navigationModel;
-                    this.getTrackingCategories();
+                    if (navigationModel) {
+                        this.navigationModel = navigationModel;
+                        this.getTrackingCategories();
+                    }
                 });
 
         this.tabSubscription = 
