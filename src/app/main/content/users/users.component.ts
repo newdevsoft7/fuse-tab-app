@@ -18,6 +18,7 @@ import { UserFormDialogComponent } from './dialogs/user-form/user-form.component
 import { Tab } from '../../tab/tab';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
 import { fuseAnimations } from '../../../core/animations';
+import { AuthenticationService } from '../../../shared/services/authentication.service';
 
 
 const DEFAULT_PAGE_SIZE = 5;
@@ -85,7 +86,8 @@ export class UsersComponent implements OnInit {
         private userService: UserService,
         private tokenStorage: TokenStorage,
         private actionService: ActionService,
-        private tabService: TabService) { }
+        private tabService: TabService,
+        private authService: AuthenticationService) { }
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
@@ -241,4 +243,14 @@ export class UsersComponent implements OnInit {
         return Math.min(x, y);
     }
 
+    async loginAsUser(user: any) {
+        try {
+            const res = await this.authService.loginAs(user.id);
+            this.toastr.success(res.message);
+            this.tokenStorage.setSecondaryUser(res.user);
+            this.tokenStorage.userSwitchListener.next(true);
+        } catch (e) {
+            this.toastr.error(e.message || 'Something is wrong');
+        }
+    }
 }

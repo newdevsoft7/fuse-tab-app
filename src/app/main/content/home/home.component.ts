@@ -29,6 +29,7 @@ import 'rxjs/add/operator/skipWhile';
 import { ShiftsExportAsExcelDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
 import { ShiftsExportAsPdfDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
 import { UsersExportDialogComponent } from '../users/users-export-dialog/users-export-dialog.component';
+import { TabComponent } from '../../tab/tab/tab.component';
 
 @Component({
     selector   : 'fuse-home',
@@ -82,6 +83,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     dialogRef: any;
 
+    userSwitcherSubscription: Subscription;
+
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private fuseNavigationService: FuseNavigationService,
@@ -104,21 +107,28 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         this.closeTabSubscription = this.tabService.tabClosed.subscribe(url => {
             this.closeTab(url);
         });
-
-        this.loadFCMservices();
-
-        this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(tokenStorage.getUser().lvl));
-        
-        this.addMenuByUserLevel();
     }
 
     async runSockets() {
         this.socketService.enableReconnect();
-        this.socketSubscription = this.socketService.connectionStatus.skipWhile(() => !this.alive).subscribe((connected: boolean) => {
+        this.socketSubscription = this.socketService.connectionStatus.subscribe((connected: boolean) => {
             if (connected) {
                 this.startSocket();
             }
         });
+    }
+
+    switchUser() {
+        if (this.socketService.getState() === WebSocket.CONNECTING || this.socketService.getState() === WebSocket.OPEN) {
+            this.socketService.closeConnection();
+        } else {
+            this.socketService.reconnect();
+        }
+        setTimeout(() => {
+            this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(this.tokenStorage.getUser().lvl));
+            this.addMenuByUserLevel();
+        });
+        this.loadFCMservices();
     }
 
     startSocket() {
@@ -138,14 +148,22 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     ngOnInit() {
         this.runSockets();
-        this.alive = true;
+        this.switchUser();
+        this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
+            if (isSwitch) {
+                this.tabService.openTabs.forEach((tab: TabComponent) => {
+                    this.closeTab(tab.url);
+                });
+                this.switchUser();
+            }
+        });
     }
 
     ngOnDestroy() {
-        this.alive = false;
         this.socketSubscription.unsubscribe();
         this.tabSubscription.unsubscribe();
         this.closeTabSubscription.unsubscribe();
+        this.userSwitcherSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {
@@ -170,7 +188,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     private addMenuByUserLevel() {
-        const level = this.tokenStorage.getUser().lvl;
+        let level = this.tokenStorage.getUser().lvl;
         const navModel = this.fuseNavigationService.getNavigationModel();
 
         switch (level) {

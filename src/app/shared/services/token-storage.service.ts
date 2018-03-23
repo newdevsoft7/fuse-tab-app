@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/of';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class TokenStorage {
+
+    userSwitchListener: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     /**
      * Get access token
@@ -80,11 +83,33 @@ export class TokenStorage {
     }
 
     /**
+     * Set secondary user information
+     */
+    public setSecondaryUser(user: any) {
+        localStorage.setItem('secondaryUser', JSON.stringify(user));
+    }
+
+    /**
+     * Check if secondary user exists
+     */
+    public isExistSecondaryUser(): boolean {
+        return !!localStorage.getItem('secondaryUser');
+    }
+
+    /**
+     * Remove secondary user
+     */
+    public removeSecondaryUser() {
+        localStorage.removeItem('secondaryUser');
+    }
+
+    /**
      * Get user information
      * @returns {any}
      */
     public getUser(): any {
-        return JSON.parse(localStorage.getItem('user'));
+        const secondaryUser = localStorage.getItem('secondaryUser');
+        return secondaryUser? JSON.parse(secondaryUser) : JSON.parse(localStorage.getItem('user'));
     }
 
     /**
@@ -94,6 +119,7 @@ export class TokenStorage {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
+        localStorage.removeItem('secondaryUser');
         localStorage.removeItem('settings');
     }
 }

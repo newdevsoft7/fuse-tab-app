@@ -94,6 +94,8 @@ export class TabsComponent implements AfterContentInit {
 			// tab navigation headers
 			this.dynamicTabs.push(componentRef.instance as TabComponent);
 
+			this.tabService.openTabs.push(componentRef.instance as TabComponent);
+
 			// set it active
 			setTimeout(() => { 
 				this.selectTab(this.dynamicTabs[this.dynamicTabs.length - 1]);

@@ -58,8 +58,8 @@ export class FuseLoginComponent implements OnInit
             this.isSuccess = true;
         });
 
-        this.socketService.closeConnection();
         this.socketService.disableReconnect();
+        this.socketService.closeConnection();
     }
 
     onLoginFormValuesChanged()
@@ -90,10 +90,6 @@ export class FuseLoginComponent implements OnInit
         const password = this.loginForm.getRawValue().password;
         try {
             await this.authService.login(username, password).toPromise();
-            if (this.authService.isUserCompleted()) {
-                this.socketService.enableReconnect();
-                this.socketService.reconnect();
-            }
             this.router.navigate(['/home']);
         } catch (err) {
             this.isSuccess = false;

@@ -110,15 +110,32 @@ export class AuthenticationService {
             .catch(this.handleError);
     }
 
+    public loginAs(user_id: number): Promise<any> {
+        const url = `${AUTH_URL}/loginAs`;
+        return this.http.post(`${AUTH_URL}/loginAs`, { user_id }).toPromise();
+    }
+
+    public logoutAs(): Promise<any> {
+        const url = `${AUTH_URL}/logoutAs`;
+        return this.http.post(`${AUTH_URL}/logoutAs`, {}).toPromise();
+    }
+
     public async logout() {
-        try {
-            await this.usersChatService.removeDevice();
-        } catch (e) {}
-        this.usersChatService.Device = null;
-        this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
-        this.tokenStorage.clear();
-        this.favicoService.setBadge(0);
-        this.router.navigate(['/login']);
+        if (this.tokenStorage.isExistSecondaryUser()) {
+            await this.logoutAs();
+            this.tokenStorage.removeSecondaryUser();
+            this.favicoService.setBadge(0);
+            this.tokenStorage.userSwitchListener.next(true);
+        } else {
+            try {
+                await this.usersChatService.removeDevice();
+            } catch (e) {}
+            this.usersChatService.Device = null;
+            this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {});
+            this.tokenStorage.clear();
+            this.favicoService.setBadge(0);
+            this.router.navigate(['/login']);
+        }
     }
 
     public verifyTokenRequest(url: string): boolean {
