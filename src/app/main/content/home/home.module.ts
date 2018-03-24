@@ -14,10 +14,12 @@ import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module'
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { TrackingModule } from '../tracking/tracking.module';
 import { AccountingModule } from '../accounting/accounting.module';
+import { HomeTimelineComponent } from './timeline/timeline.component';
 
 @NgModule({
     declarations: [
-        FuseHomeComponent
+        FuseHomeComponent,
+        HomeTimelineComponent
     ],
     imports     : [
         SharedModule,
