@@ -1,6 +1,8 @@
 import {
     Component, OnInit,
-    ViewEncapsulation, Input
+    ViewEncapsulation, Input,
+    SimpleChanges, OnChanges,
+    Output, EventEmitter
 } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { ToastrService } from "ngx-toastr";
@@ -10,6 +12,7 @@ import { CustomLoadingService } from "../../../../../../shared/services/custom-l
 import { UserService } from "../../../../users/user.service";
 import { RegisterPhotoGalleryDialogComponent } from "./photo-gallery-dialog/photo-gallery-dialog.component";
 import { TokenStorage } from "../../../../../../shared/services/token-storage.service";
+import { RegisterService } from "../../register.service";
 
 const PROFILE_PHOTO = 'profile_photo';
 
@@ -20,24 +23,33 @@ const PROFILE_PHOTO = 'profile_photo';
     encapsulation: ViewEncapsulation.None
 
 })
-export class RegisterStep3Component implements OnInit {
+export class RegisterStep3Component implements OnInit, OnChanges {
 
     dialogRef: any;
-    photos: any[];
+    photos: any[] = [];
     settings: any = {};
 
     @Input() user;
+    @Output() quitClicked = new EventEmitter;
+    @Output() onStepSucceed = new EventEmitter;
 
     constructor(
         private dialog: MatDialog,
         private userService: UserService,
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
-        private tokenStorage: TokenStorage
+        private tokenStorage: TokenStorage,
+        private registerService: RegisterService
     ) {}
 
     ngOnInit() {
         this.settings = this.tokenStorage.getSettings() || {};
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.user.currentValue) {
+            this.getPhotos();
+        }
     }
 
 
@@ -119,5 +131,22 @@ export class RegisterStep3Component implements OnInit {
                     });
                 });
         }
+    }
+
+    quit() {
+        this.quitClicked.next(true);
+    }
+
+    save() {
+        this.spinner.show();
+        this.registerService.registerByStep('step3', {})
+            .subscribe(res => {
+                this.spinner.hide();
+                this.toastr.success(res.message);
+                this.onStepSucceed.next(res.steps);
+            }, err => {
+                this.spinner.hide();
+                this.toastr.error(err.error.message);
+            })
     }
 }

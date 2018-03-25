@@ -27,11 +27,11 @@
     </div>
 
     <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
-        <button mat-raised-button type="button" color="accent" class="mr-12">
+        <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
             Quit
         </button>
 
-        <button mat-raised-button type="button" color="accent">
+        <button mat-raised-button type="button" color="accent" (click)="save()">
             Save & Continue
         </button>
     </div>
@@ -41,7 +41,7 @@
 <!-- VIDEO TEMPLATE -->
 <ng-template #videoTpl let-video="video">
 
-    <img class="preview" [src]="video.thumbnail" (click)="showVideo(video)">
+    <img class="preview" src="assets/images/avatars/video_thumbnail.jpg" (click)="showVideo(video)">
 
     <div class="title" fxLayout="row" fxLayoutAlign="end center">
         <button mat-icon-button (click)="deleteVideo(video)">

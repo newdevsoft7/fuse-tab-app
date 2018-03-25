@@ -1,4 +1,9 @@
 :host {
 
     padding: 12px;
+
+    /deep/ .mat-horizontal-content-container {
+        height: calc(100% - 72px);
+        overflow: auto;
+    }
 }

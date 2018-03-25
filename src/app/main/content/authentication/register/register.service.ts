@@ -14,16 +14,6 @@ export class RegisterService {
     ) { }
 
     /**
-     * Register in first step
-     * @param params
-     */
-    register(params): Observable<any> {
-        const url = `${BASE_URL}/auth/register`;
-        return this.http.post(url, params)
-            .catch(this.handleError);
-    }
-
-    /**
      * Register in any steps except first step
      * @param step
      * @param params

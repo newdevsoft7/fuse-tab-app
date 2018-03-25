@@ -1,0 +1,27 @@
+.list-element {
+    &.disabled {
+        pointer-events: none;
+        border-bottom: none;
+    }
+    
+    .element-value {
+        border-bottom: dashed 1px #d0d0d0;
+        & :hover {
+            cursor: text;
+        }
+    }
+}
+
+.list-element-form {
+    .mat-form-field-wrapper {
+        padding: 0;
+    }
+
+    .mat-form-field-infix {
+        padding: 0;
+    }
+
+    .mat-form-field-underline {
+        bottom: -5px;
+    }
+}

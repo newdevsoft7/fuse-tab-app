@@ -1,0 +1,24 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="sex-element" (click)="openForm()">
+	<span class="sex-value">{{element.sex}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="sex-element-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field fxFlex="1 0 auto" floatPlaceholder="never">
+		<mat-select formControlName="sex">
+			<mat-option [value]="'female'">
+				Female
+			</mat-option>
+			<mat-option [value]="'male'">
+				Male
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

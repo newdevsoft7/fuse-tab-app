@@ -101,6 +101,15 @@ export class AuthenticationService {
             .catch(this.handleError);
     }
 
+    public register(params) {
+        return this.http.post(`${BASE_URL}/auth/register`, params)
+            .map((tokens: AccessData) => {
+                this.saveAccessData(tokens);
+                return tokens;
+            })
+            .catch(this.handleError);
+    }
+
     public loginAs(user_id: number): Promise<any> {
         const url = `${AUTH_URL}/loginAs`;
         return this.http.post(`${AUTH_URL}/loginAs`, { user_id }).toPromise();

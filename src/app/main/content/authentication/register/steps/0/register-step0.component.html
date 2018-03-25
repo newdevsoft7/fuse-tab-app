@@ -2,57 +2,53 @@
 
     <form [formGroup]="form" class="p-24" fxLayout="column" fxLayoutAlign="start">
 
-        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-            <!-- FIRST NAME -->
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="First name" formControlName="fname" required>
-                <mat-error *ngIf="formErrors.fname.required">
-                    First Name is required!
-                </mat-error>
-            </mat-form-field>
-            <!-- / FIRST NAME  -->
+        <!-- FIRST NAME -->
+        <mat-form-field>
+            <input matInput placeholder="First name" formControlName="fname" required>
+            <mat-error *ngIf="formErrors.fname.required">
+                First Name is required!
+            </mat-error>
+        </mat-form-field>
+        <!-- / FIRST NAME  -->
 
-            <!-- LAST NAME -->
-            <mat-form-field fxFlex="50">
-                <input matInput placeholder="Last name" formControlName="lname" required>
-                <mat-error *ngIf="formErrors.lname.required">
-                    Last Name is required!
-                </mat-error>
-            </mat-form-field>
-            <!-- / LAST NAME -->
-        </div>
+        <!-- LAST NAME -->
+        <mat-form-field>
+            <input matInput placeholder="Last name" formControlName="lname" required>
+            <mat-error *ngIf="formErrors.lname.required">
+                Last Name is required!
+            </mat-error>
+        </mat-form-field>
+        <!-- / LAST NAME -->
 
-        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" fxLayoutWrap>
-            <!-- EMAIL -->
-            <mat-form-field fxFlex="33">
-                <input matInput placeholder="Email" formControlName="email" type="email" required>
-                <mat-error *ngIf="formErrors.email.required">
-                    Email is required!
-                </mat-error>
-            </mat-form-field>
-            <!-- / EMAIL -->
+        <!-- EMAIL -->
+        <mat-form-field>
+            <input matInput placeholder="Email" formControlName="email" type="email" required>
+            <mat-error *ngIf="formErrors.email.required">
+                Email is required!
+            </mat-error>
+        </mat-form-field>
+        <!-- / EMAIL -->
 
-            <!-- PASSWORD -->
-            <mat-form-field fxFlex="33">
-                <input matInput placeholder="Password" formControlName="password" type="password" required>
-                <mat-error *ngIf="formErrors.password.required">
-                    Password is required!
-                </mat-error>
-            </mat-form-field>
-            <!-- / PASSWORD -->
+        <!-- PASSWORD -->
+        <mat-form-field>
+            <input matInput placeholder="Enter a password" formControlName="password" type="password" required>
+            <mat-error *ngIf="formErrors.password.required">
+                Password is required!
+            </mat-error>
+        </mat-form-field>
+        <!-- / PASSWORD -->
 
-            <!-- MOBILE -->
-            <mat-form-field fxFlex="33">
-                <input matInput placeholder="Mobile number" formControlName="mob" required>
-                <mat-error *ngIf="formErrors.mob.required">
-                    Mobile number is required!
-                </mat-error>
-            </mat-form-field>
-            <!-- / MOBILE -->
-        </div>
+        <!-- MOBILE -->
+        <mat-form-field>
+            <input matInput placeholder="Mobile number" formControlName="mob" required>
+            <mat-error *ngIf="formErrors.mob.required">
+                Mobile number is required!
+            </mat-error>
+        </mat-form-field>
+        <!-- / MOBILE -->
 
         <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
-            <button mat-raised-button type="button" color="accent" class="mr-12">
+            <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
                 Quit
             </button>
 
