@@ -370,7 +370,10 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   triggerAddUserModal() {
     this.userDialogRef = this.dialog.open(AddUserFormDialogComponent, {
       panelClass: 'add-user-form-dialog',
-      data: this.selectedThread.participants.map(user => user.id)
+      data: {
+        thread_id: this.selectedThread.id,
+        users: this.selectedThread.participants.map(user => user.id)
+      }
     });
     this.userDialogRef.afterClosed().subscribe(async selectedUsers => {
       if (!selectedUsers) {

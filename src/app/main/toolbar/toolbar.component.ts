@@ -118,18 +118,17 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
         }
     }
 
-    switchUser() {
+    async switchUser() {
         const user = this.tokenStorage.getUser();
         if (user) {
-            if (this.tokenStorage.isExistSecondaryUser()) {
-                this.loggedInSecondary = true;
-            } else {
-                this.loggedInSecondary = false;
-            }
-            this.userService.getUser(user.id)
-                .subscribe(res => {
-                    this.user = res;
-                });
+            try {
+                this.user = await this.userService.getUser(user.id).toPromise();            
+                if (this.tokenStorage.isExistSecondaryUser()) {
+                    this.loggedInSecondary = true;
+                } else {
+                    this.loggedInSecondary = false;
+                }
+            } catch (e) {}
         }
     }
 

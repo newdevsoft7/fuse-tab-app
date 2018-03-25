@@ -19,6 +19,7 @@ import { Tab } from '../../tab/tab';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
 import { fuseAnimations } from '../../../core/animations';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
+import { Router } from '@angular/router';
 
 
 const DEFAULT_PAGE_SIZE = 5;
@@ -87,7 +88,8 @@ export class UsersComponent implements OnInit {
         private tokenStorage: TokenStorage,
         private actionService: ActionService,
         private tabService: TabService,
-        private authService: AuthenticationService) { }
+        private authService: AuthenticationService,
+        private router: Router) { }
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
@@ -249,8 +251,12 @@ export class UsersComponent implements OnInit {
             this.toastr.success(res.message);
             this.tokenStorage.setSecondaryUser(res.user);
             this.tokenStorage.userSwitchListener.next(true);
+            if (res.user.lvl.startsWith('registrant')) {
+                const currentStep = this.authService.getCurrentStep();
+                this.router.navigate(['/register', currentStep]);
+            }
         } catch (e) {
-            this.toastr.error(e.message || 'Something is wrong');
+            this.toastr.error((e.error? e.error.message : e.message) || 'Something is wrong');
         }
     }
 }

@@ -104,6 +104,11 @@ export class UsersChatService {
     }
   }
 
+  async searchUsersForThread(threadId: number, searchText: string) {
+    const url = `${BASE_URL}/autocomplete/users/chatThread/${threadId}/${searchText}`;
+    return this.http.get(url).toPromise();
+  }
+
   async addUserIntoThread(threadId: number, userId: number) {
     const url = `${CHAT_URL}/thread/${threadId}/user/${userId}`;
     return this.http.post(url, {}).toPromise();

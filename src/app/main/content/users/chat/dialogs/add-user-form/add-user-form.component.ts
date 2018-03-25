@@ -16,13 +16,15 @@ export class AddUserFormDialogComponent {
   searchText: string = '';
 
   currentUserIds: any = [];
+  threadId: number;
 
   constructor(
     public dialogRef: MatDialogRef<AddUserFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any,
     private usersChatService: UsersChatService) {
 
-    this.currentUserIds = data;
+    this.currentUserIds = data.users;
+    this.threadId = data.thread_id;
   }
 
   isUserSelected(user: any): boolean {
@@ -44,7 +46,7 @@ export class AddUserFormDialogComponent {
       return;
     }
     try {
-      this.users = (await this.usersChatService.searchRecipient(this.searchText)).filter(user => this.currentUserIds.indexOf(user.id) === -1);
+      this.users = (await this.usersChatService.searchUsersForThread(this.threadId, this.searchText));
     } catch (e) {
       console.error(e);
     }
