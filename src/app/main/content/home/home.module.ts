@@ -15,6 +15,8 @@ import { ProfileAttributesModule } from '../profile/attributes/profile-attribute
 import { TrackingModule } from '../tracking/tracking.module';
 import { AccountingModule } from '../accounting/accounting.module';
 import { HomeTimelineComponent } from './timeline/timeline.component';
+import { HomeService } from './home.service';
+import { UserService } from '../users/user.service';
 
 @NgModule({
     declarations: [
@@ -36,6 +38,10 @@ import { HomeTimelineComponent } from './timeline/timeline.component';
     ],
     exports     : [
         FuseHomeComponent
+    ],
+    providers   : [
+        HomeService,
+        UserService
     ]
 })
 

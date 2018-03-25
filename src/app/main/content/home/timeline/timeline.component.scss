@@ -21,6 +21,33 @@
                     resize: vertical;
                 }
 
+                .preview {
+                    position: relative;
+
+                    img {
+                        display: block;
+                    }
+
+                    .overlay {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        z-index: 10;
+                        padding: 0 16px;
+                        height: 48px;
+                        line-height: 48px;
+                        background: rgba(0, 0, 0, 0.54);
+                        color: #FFF;
+                        font-size: 15px;
+
+                        mat-icon {
+                            cursor: pointer;
+                            color: #FFF;
+                        }
+                    }
+                }
+
                 footer {
                     padding: 8px;
                     border-top: 1px solid rgba(0, 0, 0, 0.08);
@@ -90,7 +117,7 @@
                     }
 
                     .like-button,
-                    .share-button {
+                    .comment-button {
                         padding: 4px 6px;
                         text-transform: inherit;
                         font-size: 13px;
@@ -108,36 +135,10 @@
                         }
                     }
 
-                    .article {
-                        border: 1px solid rgba(0, 0, 0, 0.12);
-                        margin: 16px;
-
-                        .media {
-                            padding: 0;
-                            overflow: hidden;
-                            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-
-                            img {
-                                display: block;
-                                padding: 0;
-                            }
-
-                        }
-
-                        .title {
-                            font-size: 15px;
-                            padding: 16px 16px 4px 16px;
-                        }
-
-                        .subtitle {
-                            padding: 0 16px;
-                            color: rgba(0, 0, 0, 0.54);
-                        }
-
-                        .excerpt {
-                            padding: 16px 16px;
-                        }
+                    .like-button mat-icon.liked {
+                        color: mat-color($warn)
                     }
+
                 }
 
                 footer {
@@ -145,13 +146,9 @@
                     background-color: rgba(0, 0, 0, 0.04);
                     padding: 16px;
 
-                    .comment-count {
-                        margin-bottom: 16px;
+                    .view-more-comments {
+                        margin-bottom: 8px;
                         cursor: pointer;
-
-                        mat-icon {
-                            margin-left: 8px;
-                        }
                     }
 
                     .comment {
@@ -171,17 +168,28 @@
                         }
 
                         .actions {
-                            margin-top: 8px;
+                            margin-top: 4px;
 
-                            .reply-button {
-                                margin-right: 16px;
-                                cursor: pointer;
-                                color: mat-color($accent);
+                            .like-button {
+                                padding: 4px 6px;
+                                margin-left: -6px;
+                                text-transform: inherit;
+                                font-size: 13px;
+                                font-weight: normal;
+                                min-width: inherit;
+                                line-height: inherit;
+
+                                &:hover {
+                                    background-color: transparent;
+                                }
+
+                                mat-icon {
+                                    margin: 0 8px 0 0;
+                                }
                             }
 
-                            .report-button {
-                                margin: 0;
-                                cursor: pointer;
+                            .like-button mat-icon.liked {
+                                color: mat-color($warn)
                             }
                         }
                     }
@@ -194,19 +202,12 @@
                                 width: 100% !important;
                                 min-height: 72px;
                                 padding: 8px;
-                                margin-bottom: 8px;
                                 font-size: 13px;
                                 border: 1px solid rgba(0, 0, 0, 0.12);
                             }
 
-                            .post-comment-button {
-                                margin: 0;
-                                text-transform: inherit;
-                                font-weight: normal;
-                                padding: 0 12px;
-                                min-height: 30px;
-                                min-width: inherit;
-                                line-height: 30px;
+                            .hint-text {
+                                margin-bottom: 8px;
                             }
                         }
                     }
@@ -253,8 +254,7 @@
         }
     }
 
-    // Profile boxes
-    .profile-box {
+    .box {
         margin-bottom: 16px;
         @include mat-elevation(2);
 
@@ -301,5 +301,10 @@
                 }
             }
         }
+    }
+
+    .spinner {
+        height: 40px;
+        width: 40px;
     }
 }
