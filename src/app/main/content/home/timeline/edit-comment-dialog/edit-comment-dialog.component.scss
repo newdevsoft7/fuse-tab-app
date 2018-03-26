@@ -1,6 +1,6 @@
 @import "src/app/core/scss/fuse";
 
-.post-form-dialog {
+.comment-form-dialog {
 
     @include media-breakpoint('xs') {
         width: 100%;
@@ -24,13 +24,11 @@
         flex-direction: column;
 
         .mat-dialog-content {
-            max-height: 85vh;
-            max-width: 1200px;
-            min-width: 600px;
+            min-width: 500px;
         }
     }
 
-    .new-post {
+    .new-comment {
         margin-bottom: 0;
         @include mat-elevation(2);
 
@@ -43,56 +41,6 @@
             border: none;
             padding: 16px;
             resize: vertical;
-        }
-
-        .media {
-            padding: 16px;
-
-            img, iframe {
-                width: 100%;
-            }
-
-            a {
-                color: inherit;
-            }
-        }
-
-        .preview {
-            position: relative;
-            min-height: 40px;
-
-            .doc {
-                line-height: 40px;
-            }
-
-            img {
-                display: block;
-            }
-
-            .overlay {
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 10;
-                padding: 0 16px;
-                height: 48px;
-                line-height: 48px;
-                background: rgba(0, 0, 0, 0.54);
-                color: #FFF;
-                font-size: 15px;
-
-                mat-icon {
-                    cursor: pointer;
-                    color: #FFF;
-                }
-            }
-        }
-
-        footer {
-            padding: 8px;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            background: #F3F4F5;
         }
     }
 

@@ -77,7 +77,7 @@
 
                         <button mat-menu-item *ngIf="post.approve" (click)="approvePost(post)">
                             <mat-icon>check</mat-icon>
-                            <span>{{post.approve === '0' ? 'Approve' : 'Unapprove'}}</span>
+                            <span>{{post.approved === 0 ? 'Approve' : 'Unapprove'}}</span>
                         </button>
 
                         <button mat-menu-item *ngIf="post.edit" (click)="editPost(post)">
@@ -170,10 +170,10 @@
 
                             <button mat-menu-item *ngIf="comment.approve" (click)="approveComment(comment)">
                                 <mat-icon>check</mat-icon>
-                                <span>{{comment.approve === '0' ? 'Approve' : 'Unapprove'}}</span>
+                                <span>{{comment.approved === 0 ? 'Approve' : 'Unapprove'}}</span>
                             </button>
 
-                            <button mat-menu-item *ngIf="comment.edit">
+                            <button mat-menu-item *ngIf="comment.edit" (click)="editComment(comment)">
                                 <mat-icon>edit</mat-icon>
                                 <span>Edit</span>
                             </button>

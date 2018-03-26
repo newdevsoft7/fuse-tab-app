@@ -15,7 +15,7 @@ export class EditPostDialogComponent implements OnInit {
     post;
     file;
     preview;
-    deleteFile = 0; // Check if already uploaded file should be deleted
+    delete_file = 0; // Check if already uploaded file should be deleted
 
     constructor(
         public dialogRef: MatDialogRef<EditPostDialogComponent>,
@@ -35,7 +35,7 @@ export class EditPostDialogComponent implements OnInit {
         if (!content) { return; }
         const post = new FormData();
         post.append('content', content);
-        post.append('delete_file', this.deleteFile.toString());
+        post.append('delete_file', this.delete_file.toString());
         if (this.file) {
             post.append('file', this.file, this.file.name);
         }
@@ -48,7 +48,7 @@ export class EditPostDialogComponent implements OnInit {
     }
 
     onUploadFile(event) {
-        this.deleteFile = 1;
+        this.delete_file = 1;
         const files = event.target.files;
         this.file = files[0];
         if (this.file && this.file.size / (1024 * 1024) > 10) {
@@ -92,6 +92,11 @@ export class EditPostDialogComponent implements OnInit {
     removeFile() {
         this.file = null;
         this.preview = null;
+    }
+
+    deleteFile() {
+        this.delete_file = 1;
+        this.post.thumb = null;
     }
 
     private displayError(error) {

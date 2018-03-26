@@ -13,6 +13,7 @@ import { TokenStorage } from '../../../../shared/services/token-storage.service'
 import { UserService } from '../../users/user.service';
 import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
 import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.component';
+import { EditCommentDialogComponent } from './edit-comment-dialog/edit-comment-dialog.component';
 
 enum PostType {
     Main    = 'main',
@@ -182,12 +183,25 @@ export class HomeTimelineComponent implements OnInit
             data: post
         });
 
-        this.dialogRef.afterClosed().subscribe(newPost => {
-            if (newPost) {
-                post = {
-                    ...post,
-                    ...newPost
-                };
+        this.dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                post.content = res.content;
+                post.thumb = res.thumb;
+                post.link = res.link;
+            }
+        });
+    }
+
+    editComment(comment) {
+        this.dialogRef = this.dialog.open(EditCommentDialogComponent, {
+            disableClose: false,
+            panelClass: 'comment-form-dialog',
+            data: comment
+        });
+
+        this.dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                comment.content = res.content;
             }
         });
     }
@@ -270,7 +284,7 @@ export class HomeTimelineComponent implements OnInit
 
     approveComment(comment) {
         comment.approved = comment.approved === 0 ? 1 : 0;
-        this.homeService.approvePost(comment.id, comment.approved).subscribe(
+        this.homeService.approveComment(comment.id, comment.approved).subscribe(
             res => {
                 this.toastr.success(res.message);
             },

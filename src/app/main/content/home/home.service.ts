@@ -70,7 +70,7 @@ export class HomeService {
      * @param setApprove
      */
     approveComment(id, setApprove = 1): Observable<any> {
-        const url = `${BASE_URL}/comment/${id}/approve/${setApprove}`;
+        const url = `${BASE_URL}/post/comment/${id}/approve/${setApprove}`;
         return this.http.put(url, {})
             .catch(this.handleError);
     }
@@ -150,9 +150,9 @@ export class HomeService {
      * @param id
      * @param comment
      */
-    updateComment(id: number, comment: any): Observable<any> {
+    updateComment(id: number, content: string): Observable<any> {
         const url = `${BASE_URL}/post/comment/${id}`;
-        return this.http.put(url, comment)
+        return this.http.put(url, { content })
             .catch(this.handleError);
     }
 

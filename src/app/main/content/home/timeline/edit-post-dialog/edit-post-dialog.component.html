@@ -23,9 +23,16 @@
                             <source [src]="post.link">
                         </video>
 
-                        <a [href]="post.link" *ngSwitchCase="'other'" target="blank">
-                            <img [src]="post.thumb" />
-                        </a>
+                        <div class="preview">
+                            <a [href]="post.link" *ngSwitchCase="'other'" target="blank">
+                                <img [src]="post.thumb" />
+                            </a>
+                            <div class="overlay" fxLayout="row" fxLayoutAlign="end">
+                                <button mat-icon-button (click)="deleteFile()">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
                     </ng-container>
                 </div>
 
