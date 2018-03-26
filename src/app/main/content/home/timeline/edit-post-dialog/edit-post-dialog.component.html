@@ -75,11 +75,11 @@
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
 
-        <button mat-raised-button (click)="savePost()" class="save-button mat-accent" aria-label="SAVE">
+        <button mat-raised-button (click)="savePost()" class="mr-8 mat-accent" aria-label="SAVE">
             SAVE
         </button>
 
-        <button mat-raised-button (click)="dialogRef.close(false)" aria-label="CANCEL" matTooltip="Cancel">
+        <button mat-button (click)="dialogRef.close(false)" aria-label="CANCEL" matTooltip="Cancel">
             CANCEL
         </button>
 

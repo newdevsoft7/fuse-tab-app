@@ -98,7 +98,6 @@ export class HomeService {
             .catch(this.handleError);
     }
 
-
     /**
      * Get a post
      * @param id
@@ -109,6 +108,16 @@ export class HomeService {
             .catch(this.handleError);
     }
 
+    /**
+     * Get pinned posts
+     * @param type
+     * @param id
+     */
+    getPinnedPosts(type = 'main', id = 0): Observable<any> {
+        const url = `${BASE_URL}/pinnedPosts/${type}/${id}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
 
     /**
      * Get posts
@@ -162,9 +171,9 @@ export class HomeService {
      * @param title
      * @param setPin
      */
-    pinPost(id: number, title: string, setPin = 1): Observable<any> {
+    pinPost(id: number, setPin = 1, title = ''): Observable<any> {
         const url = `${BASE_URL}/post/${id}/pin/${setPin}`;
-        return this.http.put(url,  { title })
+        return this.http.put(url, { title })
             .catch(this.handleError);
     }
 

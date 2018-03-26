@@ -19,13 +19,17 @@ import { HomeService } from './home.service';
 import { UserService } from '../users/user.service';
 import { EditPostDialogComponent } from './timeline/edit-post-dialog/edit-post-dialog.component';
 import { EditCommentDialogComponent } from './timeline/edit-comment-dialog/edit-comment-dialog.component';
+import { PinPostDialogComponent } from './timeline/pin-post-dialog/pin-post-dialog.component';
+import { PostDialogComponent } from './timeline/post-dialog/post-dialog.component';
 
 @NgModule({
     declarations: [
         FuseHomeComponent,
         HomeTimelineComponent,
         EditPostDialogComponent,
-        EditCommentDialogComponent
+        EditCommentDialogComponent,
+        PinPostDialogComponent,
+        PostDialogComponent
     ],
     imports     : [
         SharedModule,
@@ -49,7 +53,9 @@ import { EditCommentDialogComponent } from './timeline/edit-comment-dialog/edit-
     ],
     entryComponents: [
         EditPostDialogComponent,
-        EditCommentDialogComponent
+        EditCommentDialogComponent,
+        PinPostDialogComponent,
+        PostDialogComponent
     ]
 })
 

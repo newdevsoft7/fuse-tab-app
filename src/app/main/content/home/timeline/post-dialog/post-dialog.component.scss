@@ -1,0 +1,236 @@
+@import "src/app/core/scss/fuse";
+
+.post-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+        overflow: hidden;
+
+        .mat-toolbar {
+            min-height: initial;
+        }
+
+        .toolbar-bottom {
+            height: auto;
+        }
+    }
+
+    .dialog-content-wrapper {
+        display: flex;
+        flex-direction: column;
+
+        .mat-dialog-content {
+            max-height: 85vh;
+            max-width: 1200px;
+            min-width: 600px;
+        }
+    }
+
+    mat-divider {
+        border-top-width: 1px;
+        border-top-style: solid;
+        margin: 32px 0;
+    }
+
+    .timeline-item {
+        margin-bottom: 32px;
+        overflow: hidden;
+        border-radius: 2px;
+        background: #FFFFFF;
+        @include mat-elevation(2);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        header {
+            padding: 16px 0 8px 16px;
+
+            .title {
+                font-weight: 500;
+
+                .username {
+                    margin-right: 2px;
+                    color: mat-color($accent);
+                }
+            }
+
+            .time {
+                color: rgba(0, 0, 0, 0.54);
+            }
+        }
+
+        .content {
+
+            .message {
+                padding: 16px;
+            }
+
+            .media {
+                padding: 16px;
+
+                img, iframe {
+                    width: 100%;
+                }
+
+                a {
+                    color: inherit;
+                }
+            }
+
+            .like-button,
+            .comment-button {
+                padding: 4px 6px;
+                text-transform: inherit;
+                font-size: 13px;
+                font-weight: normal;
+                margin: 0 0 16px 8px;
+                min-width: inherit;
+                line-height: inherit;
+
+                &:hover {
+                    background-color: transparent;
+                }
+
+                mat-icon {
+                    margin: 0 8px 0 0;
+                }
+            }
+
+            .like-button mat-icon.liked {
+                color: mat-color($warn)
+            }
+
+        }
+
+        footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(0, 0, 0, 0.04);
+            padding: 16px;
+
+            .view-more-comments {
+                margin-bottom: 8px;
+                cursor: pointer;
+            }
+
+            .comment {
+                margin-bottom: 24px !important;
+
+                .username {
+                    font-weight: 500;
+                    margin-right: 4px;
+                }
+
+                .message {
+                    color: rgba(0, 0, 0, 0.87);
+                }
+
+                .time {
+                    color: rgba(0, 0, 0, 0.54);
+                }
+
+                .actions {
+                    margin-top: 4px;
+
+                    .like-button {
+                        padding: 4px 6px;
+                        margin-left: -6px;
+                        text-transform: inherit;
+                        font-size: 13px;
+                        font-weight: normal;
+                        min-width: inherit;
+                        line-height: inherit;
+
+                        &:hover {
+                            background-color: transparent;
+                        }
+
+                        mat-icon {
+                            margin: 0 8px 0 0;
+                        }
+                    }
+
+                    .like-button mat-icon.liked {
+                        color: mat-color($warn)
+                    }
+                }
+            }
+
+            .reply {
+
+                form {
+
+                    textarea {
+                        width: 100% !important;
+                        min-height: 72px;
+                        padding: 8px;
+                        font-size: 13px;
+                        border: 1px solid rgba(0, 0, 0, 0.12);
+                    }
+
+                    .hint-text {
+                        margin-bottom: 8px;
+                    }
+                }
+            }
+        }
+    }
+
+    .box {
+        margin-bottom: 16px;
+        @include mat-elevation(2);
+
+        header {
+            padding: 16px;
+
+            .title {
+                font-size: 17px;
+            }
+
+            .more {
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            padding: 16px;
+            background-color: #FFF;
+        }
+
+        footer {
+            padding: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        &.info-box {
+
+            .info-line {
+                margin-bottom: 24px;
+
+                .title {
+                    font-size: 15px;
+                    font-weight: 500;
+                    padding-bottom: 4px;
+                }
+
+                .info {
+
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .spinner {
+        height: 40px;
+        width: 40px;
+    }
+}

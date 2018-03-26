@@ -14,6 +14,8 @@ import { UserService } from '../../users/user.service';
 import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
 import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.component';
 import { EditCommentDialogComponent } from './edit-comment-dialog/edit-comment-dialog.component';
+import { PinPostDialogComponent } from './pin-post-dialog/pin-post-dialog.component';
+import { PostDialogComponent } from './post-dialog/post-dialog.component';
 
 enum PostType {
     Main    = 'main',
@@ -96,6 +98,7 @@ export class HomeTimelineComponent implements OnInit
         }
     ];
 
+    pinnedPosts = [];
     posts: any[] = [];
     page = 0; // Page number of posts
     newPost = ''; // New post content
@@ -125,6 +128,7 @@ export class HomeTimelineComponent implements OnInit
             this.user.name = `${this.user.fname} ${this.user.lname}`;
         });
         this.getPosts(true);
+        this.getPinnedPosts();
     }
 
     getPosts(isFirstCall = false) {
@@ -162,6 +166,15 @@ export class HomeTimelineComponent implements OnInit
             });
         }
 
+    }
+
+    getPinnedPosts() {
+        const type = ['client', 'ext'].includes(this.user.lvl) ? this.user.lvl : 'main';
+
+        // TODO - Use id of client, outsource company
+        this.homeService.getPinnedPosts(type, 0).subscribe(posts => {
+            this.pinnedPosts = posts;
+        });
     }
 
     getComments(post) {
@@ -336,6 +349,35 @@ export class HomeTimelineComponent implements OnInit
         }
     }
 
+    pinPost(post) {
+        const pinned = post.pinned === 0 ? 1 : 0;
+        if (pinned === 0) { // Unpin
+            this.homeService.pinPost(post.id, 0).subscribe(res => {
+                post.pinned = pinned;
+                this.toastr.success(res.message);
+                const index = _.findIndex(this.pinnedPosts, ['post_id', post.id]);
+                this.pinnedPosts.splice(index, 1);
+            });
+        } else { // Pin
+            this.dialogRef = this.dialog.open(PinPostDialogComponent, {
+                disableClose: false,
+                panelClass: 'pin-post-dialog'
+            });
+            this.dialogRef.afterClosed().subscribe(title => {
+                if (title) {
+                    this.homeService.pinPost(post.id, 1, title).subscribe(res => {
+                        post.pinned = pinned;
+                        this.toastr.success(res.message);
+                        this.pinnedPosts.push({
+                            title,
+                            post_id: res.data.post_id
+                        });
+                    });
+                }
+            });
+        }
+    }
+
     private addToPosts(post: any) {
         const file = post.file;
         if (file) { // If post uploaded with a file
@@ -401,6 +443,43 @@ export class HomeTimelineComponent implements OnInit
                 break;
         }
         return type;
+    }
+
+    openPinPostDialog(postId) {
+        postId = parseInt(postId, 10);
+        this.dialogRef = this.dialog.open(PostDialogComponent, {
+            disableClose: true,
+            panelClass: 'post-dialog',
+            data: { postId, user: this.user }
+        });
+        this.dialogRef.afterClosed().subscribe(mode => {
+            if (mode === 'update') {
+                this.getPinnedPosts();
+                const index = _.findIndex(this.posts, ['id', postId]);
+                if (index > -1) { // If pinned post is already displayed, update post
+                    this.homeService.getPost(postId).subscribe(post => {
+                        post = {
+                            ...post,
+                            remarks: [],
+                            newComment: '',
+                            page: 0,
+                            isCommentsShow: false,
+                            commentsLoading: false
+                        };
+                        this.posts[index] = post;
+                    });
+                }
+            } else { // mode === 'delete'
+                const index = _.findIndex(this.posts, ['id', postId]);
+                if (index > -1) {
+                    this.posts.splice(index, 1);
+                }
+                const pinIndex = _.findIndex(this.pinnedPosts, ['post_id', postId]);
+                if (index > -1) {
+                    this.pinnedPosts.splice(pinIndex, 1);
+                }
+            }
+        });
     }
 
     private displayError(error) {

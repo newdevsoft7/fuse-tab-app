@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">Edit comment</span>
+            <span class="title dialog-title">Pin post</span>
             <button mat-button class="mat-icon-button" (click)="dialogRef.close()" aria-label="Close dialog">
                 <mat-icon>close</mat-icon>
             </button>
@@ -10,22 +10,24 @@
 
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
 
-        <!--  COMMENT FORM -->
-        <mat-form-field class="w-100-p">
-                <mat-label>Comment</mat-label>
-                <textarea matInput placeholder="Write comment.." [(ngModel)]="comment.content"></textarea>
+        <form [formGroup]="form">
 
-        </mat-form-field>
-        <!-- / COMMENT FORM -->
+            <mat-form-field fxFlex>
+                <input name="title" formControlName="title" placeholder="Title" matInput required>
+            </mat-form-field>
+        </form>
+
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
 
-        <button mat-raised-button (click)="saveComment()" class="mr-8 mat-accent" aria-label="SAVE">
+        <button mat-raised-button (click)="saveForm()" class="mr-8 mat-accent"
+            [disabled]="form.invalid" aria-label="SAVE">
             SAVE
         </button>
 
-        <button mat-button (click)="dialogRef.close(false)" aria-label="CANCEL" matTooltip="Cancel">
+        <button mat-button (click)="dialogRef.close()" aria-label="Cancel"
+            matTooltip="Cancel">
             CANCEL
         </button>
 

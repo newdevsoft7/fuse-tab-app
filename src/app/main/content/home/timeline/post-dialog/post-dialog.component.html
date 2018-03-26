@@ -1,55 +1,15 @@
+<div class="dialog-content-wrapper" *ngIf="post">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">View post</span>
+            <button mat-button class="mat-icon-button" (click)="closeDialog()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
 
-<div id="timeline" class="p-24" fxLayout="row" fxLayoutWrap>
-    <div class="timeline-content" fxLayout="column" fxFlex="100" fxFlex.gt-sm="60" fxFlex.gt-md="70">
-
-        <!--  NEW POST FORM -->
-        <div class="box add-post">
-
-            <div class="form" fxFlex>
-
-                <textarea placeholder="Write something.." [(ngModel)]="newPost"></textarea>
-
-                <div *ngIf="preview" class="preview">
-                    <img [src]="preview" *ngIf="file.type.indexOf('image') > -1"/>
-
-                    <video controls class="w-100-p" *ngIf="file.type.indexOf('video') > -1">
-                        <source [src]="preview">
-                    </video>
-
-                    <div *ngIf="file.type.indexOf('video') < 0 && file.type.indexOf('image') < 0"
-                        class="ml-8 doc">
-                        {{file.name}}
-                    </div>
-
-                    <div class="overlay" fxLayout="row" fxLayoutAlign="end">
-                        <button mat-icon-button (click)="removeFile()">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-                </div>
-
-                <footer fxLayout="row" fxLayoutAlign="space-between center">
-
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <input hidden type="file" #fileInput (change)="onUploadFile($event)"/>
-                        <button mat-icon-button aria-label="Add photo" matTooltip="Add File" (click)="fileInput.click()">
-                            <mat-icon>photo</mat-icon>
-                        </button>
-
-                    </div>
-
-                    <button mat-raised-button color="accent" class="post-button" aria-label="POST"
-                        (click)="addPost()">POST</button>
-                </footer>
-
-            </div>
-
-        </div>
-        <!-- / NEW POST FORM -->
-
-        <mat-divider *ngIf="posts.length > 0"></mat-divider>
-
-        <div class="timeline-item" *ngFor="let post of posts">
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div class="timeline-item">
 
             <header fxLayout="row" fxLayoutAlign="space-between start">
                 <div class="user" fxLayout="row" fxLayoutAlign="start center">
@@ -70,22 +30,22 @@
 
                     <mat-menu #menu="matMenu">
 
-                        <button mat-menu-item *ngIf="post.pin" (click)="pinPost(post)">
+                        <button mat-menu-item *ngIf="post.pin" (click)="pinPost()">
                             <mat-icon>attach_file</mat-icon>
                             <span>{{post.pinned === 0 ? 'Pin' : 'Unpin'}}</span>
                         </button>
 
-                        <button mat-menu-item *ngIf="post.approve" (click)="approvePost(post)">
+                        <button mat-menu-item *ngIf="post.approve" (click)="approvePost()">
                             <mat-icon>check</mat-icon>
                             <span>{{post.approved === 0 ? 'Approve' : 'Unapprove'}}</span>
                         </button>
 
-                        <button mat-menu-item *ngIf="post.edit" (click)="editPost(post)">
+                        <button mat-menu-item *ngIf="post.edit" (click)="editPost()">
                             <mat-icon>edit</mat-icon>
                             <span>Edit</span>
                         </button>
 
-                        <button mat-menu-item *ngIf="post.delete" (click)="deletePost(post)">
+                        <button mat-menu-item *ngIf="post.delete" (click)="deletePost()">
                             <mat-icon>delete</mat-icon>
                             <span>Delete</span>
                         </button>
@@ -106,7 +66,7 @@
                         </video>
 
                         <a [href]="post.link" *ngSwitchCase="'other'" target="blank">
-                            <img  [src]="post.thumb"/>
+                            <img [src]="post.thumb" />
                         </a>
                     </ng-container>
                 </div>
@@ -115,14 +75,16 @@
                     <button mat-button class="like-button" (click)="likePost(post)">
                         <span fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="s-16" [class.liked]="post.liked">favorite</mat-icon>
-                            <span>Like</span>&nbsp;<span>({{post.likes}})</span>
+                            <span>Like</span>&nbsp;
+                            <span>({{post.likes}})</span>
                         </span>
                     </button>
 
-                    <button mat-button class="comment-button" (click)="initComments(post)">
+                    <button mat-button class="comment-button" (click)="initComments()">
                         <span fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="s-16">comment</mat-icon>
-                            <span>comments</span>&nbsp;<span>({{post.comments}})</span>
+                            <span>comments</span>&nbsp;
+                            <span>({{post.comments}})</span>
                         </span>
                     </button>
                 </div>
@@ -133,14 +95,13 @@
                     <img [src]="user.ppic_a" class="avatar" />
 
                     <form fxFlex>
-                        <textarea name="comment" placeholder="Add a comment..."
-                            [(ngModel)]="post.newComment" (keydown.enter)="addComment(post)"></textarea>
+                        <textarea name="comment" placeholder="Add a comment..." [(ngModel)]="post.newComment" (keydown.enter)="addComment(post)"></textarea>
                         <div class="hint-text">Press Enter to post</div>
                     </form>
                 </div>
 
                 <div class="comment" fxLayout="row" fxFlexFill *ngFor="let comment of post.remarks">
-                    <img [src]="comment.ppic_a" class="avatar"/>
+                    <img [src]="comment.ppic_a" class="avatar" />
 
                     <div fxLayout="column" fxFlex>
                         <div fxLayout="row" fxLayoutAlign="start center">
@@ -178,7 +139,7 @@
                                 <span>Edit</span>
                             </button>
 
-                            <button mat-menu-item *ngIf="comment.delete" (click)="deleteComment(post, comment)">
+                            <button mat-menu-item *ngIf="comment.delete" (click)="deleteComment(comment)">
                                 <mat-icon>delete</mat-icon>
                                 <span>Delete</span>
                             </button>
@@ -187,62 +148,15 @@
                     </div>
                 </div>
 
-                <a *ngIf="(post.comments > post.remarks.length) && post.remarks && !post.commentsLoading"
-                    class="view-more-comments" (click)="getComments(post)">
+                <a *ngIf="(post.comments > post.remarks.length) && post.remarks && !post.commentsLoading" class="view-more-comments" (click)="getComments(post)">
                     View more comments
                 </a>
 
                 <div fxLayout="row" fxLayoutAlign="center" class="w-100-p" *ngIf="post.commentsLoading">
-                    <img src="assets/images/etc/spinner.gif" class="spinner"/>
+                    <img src="assets/images/etc/spinner.gif" class="spinner" />
                 </div>
 
             </footer>
         </div>
-
-        <div fxLayout="row" fxLayoutAlign="center" *ngIf="canLoadPosts">
-            <button mat-icon-button class="mat-accent-bg" (click)="getPosts()"
-                matTooltip="Load more posts" *ngIf="!postLoading">
-                <mat-icon class="s-32">keyboard_arrow_down</mat-icon>
-            </button>
-
-            <img src="assets/images/etc/spinner.gif" class="spinner" *ngIf="postLoading"/>
-        </div>
     </div>
-
-    <div class="timeline-sidebar" fxLayout="column" fxFlex="100" fxFlex.gt-sm="40" fxFlex.gt-md="30">
-
-        <div class="pin-posts" fxLayout="column">
-            <button mat-raised-button *ngFor="let post of pinnedPosts"
-                color="accent" class="mb-8"
-                (click)="openPinPostDialog(post.post_id)">
-                {{post.title}}
-            </button>
-        </div>
-
-        <div class="box latest-activity" fxLayout="column">
-
-            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="title">Latest Activity</div>
-                <div class="more secondary-text">See All</div>
-            </header>
-
-            <div class="content" fxLayout="row" fxLayoutWrap>
-                <div class="activities">
-                    <div class="activity" fxLayout="row" fxLayoutAlign="start start"
-                         *ngFor="let activity of activities">
-                        <img [src]="activity.user.avatar" class="avatar" alt="{{activity.user.name}}"/>
-
-                        <div fxLayout="column">
-                            <div>
-                                <span class="username">{{activity.user.name}}</span>
-                                <span class="message"> {{activity.message}}</span>
-                            </div>
-                            <span class="time secondary-text">{{activity.time}}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
