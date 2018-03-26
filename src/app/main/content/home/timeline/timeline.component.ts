@@ -97,7 +97,6 @@ export class HomeTimelineComponent implements OnInit
     posts: any[] = [];
     page = 0; // Page number of posts
     newPost = ''; // New post content
-    isFileUploaded = false;
     file; // New post file
     preview; // Preview of new post file with image type
     canLoadPosts = false; // Ability to load more posts
@@ -119,12 +118,10 @@ export class HomeTimelineComponent implements OnInit
 
     ngOnInit() {
         // FIX - Get user avatar. we should use local storage
-        if (!this.user.ppic_a) {
-            this.userService.getUser(this.user.id).subscribe(res => {
-                this.user = res;
-                this.user.name = `${this.user.fname} ${this.user.lname}`;
-            });
-        }
+        this.userService.getUser(this.user.id).subscribe(res => {
+            this.user = res;
+            this.user.name = `${this.user.fname} ${this.user.lname}`;
+        });
         this.getPosts(true);
     }
 
@@ -171,6 +168,9 @@ export class HomeTimelineComponent implements OnInit
             post.commentsLoading = false;
             post.remarks.push(...comments);
             post.page++;
+        }, err => {
+            post.commentsLoading = false;
+            this.toastr.error('Something is wrong!');
         });
     }
 
@@ -178,6 +178,7 @@ export class HomeTimelineComponent implements OnInit
      * Show comments and load comments by page
      */
     initComments(post) {
+        if (post.isCommentsShow) { return; }
         if (post.comments > 0 && post.page === 0) {
             this.getComments(post);
         }
@@ -188,7 +189,7 @@ export class HomeTimelineComponent implements OnInit
         this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
-        this.dialogRef.componentInstance.confirmMessage = 'Are you sure';
+        this.dialogRef.componentInstance.confirmMessage = 'Are you sure?';
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.homeService.deletePost(post.id).subscribe(res => {
@@ -282,30 +283,34 @@ export class HomeTimelineComponent implements OnInit
 
     addPost() {
         const content = _.trim(this.newPost);
-        if (_.isEmpty(content) && !this.file) { return; }
+        if (_.isEmpty(content)) { return; }
 
         if (this.file) { // If posting a file
             const formData = new FormData();
             formData.append('file', this.file, this.file.name);
             formData.append('ptype', PostType.Main);
-            this.homeService.createPost({ content, ptype: PostType.Main }).subscribe(post => {
+            formData.append('content', content);
+            this.homeService.createPost(formData).subscribe(post => {
                 this.addToPosts(post);
             }, err => {
-                this.toastr.error(err.message);
+                this.displayError(err);
             });
         } else { // If posting text
             this.homeService.createPost({ content, ptype: PostType.Main }).subscribe(post => {
                this.addToPosts(post);
             }, err => {
-                this.toastr.error(err.message);
+                this.displayError(err);
             });
         }
     }
 
     private addToPosts(post: any) {
+        const file = post.file;
+        if (file) { // If post uploaded with a file
+        }
+
         post = {
             ...post,
-            name: this.user.name,
             ppic_a: this.user.ppic_a,
             comments: 0,
             likes: 0,
@@ -317,6 +322,8 @@ export class HomeTimelineComponent implements OnInit
         };
         this.posts.unshift(post);
         this.newPost = '';
+        this.preview = null;
+        this.file = null;
     }
 
     onUploadFile(event) {
@@ -324,9 +331,10 @@ export class HomeTimelineComponent implements OnInit
         const files = event.target.files;
         if (files && files[0]) {
             this.file = files[0];
-            this.isFileUploaded = true;
             if (_.startsWith(this.file.type, 'video') || _.startsWith(this.file.type, 'image')) {
                 this.readURL(this.file);
+            } else {
+                this.preview = {}; // For document upload
             }
         }
     }
@@ -343,7 +351,30 @@ export class HomeTimelineComponent implements OnInit
     removeFile() {
         this.file = null;
         this.preview = null;
-        this.isFileUploaded = false;
+    }
+
+    getFileType(url: string) {
+        if (!url) { return; }
+        let type;
+        switch (true) {
+            case (_.endsWith(url, 'jpg') || _.endsWith(url, 'png')):
+                type = 'image';
+                break;
+            case (_.endsWith(url, 'mp4')):
+                type = 'video';
+                break;
+            default:
+                type = 'other';
+                break;
+        }
+        return type;
+    }
+
+    private displayError(error) {
+        const errors = error.error.errors;
+        Object.keys(errors).forEach(e => {
+            this.toastr.error(errors[e]);
+        });
     }
 
 }

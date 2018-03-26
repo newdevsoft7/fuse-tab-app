@@ -7,7 +7,7 @@
 
             <div class="form" fxFlex>
 
-                <textarea placeholder="Write something.." [(ngModel)]="newPost" *ngIf="!isFileUploaded"></textarea>
+                <textarea placeholder="Write something.." [(ngModel)]="newPost"></textarea>
 
                 <div *ngIf="preview" class="preview">
                     <img [src]="preview" *ngIf="file.type.indexOf('image') > -1"/>
@@ -15,6 +15,11 @@
                     <video controls class="w-100-p" *ngIf="file.type.indexOf('video') > -1">
                         <source [src]="preview">
                     </video>
+
+                    <div *ngIf="file.type.indexOf('video') < 0 && file.type.indexOf('image') < 0"
+                        class="ml-8 doc">
+                        {{file.name}}
+                    </div>
 
                     <div class="overlay" fxLayout="row" fxLayoutAlign="end">
                         <button mat-icon-button (click)="removeFile()">
@@ -41,6 +46,7 @@
 
         </div>
         <!-- / NEW POST FORM -->
+
         <mat-divider *ngIf="posts.length > 0"></mat-divider>
 
         <div class="timeline-item" *ngFor="let post of posts">
@@ -57,7 +63,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div *ngIf="post.pin || post.approve || post.edit || post.delete">
                     <button mat-icon-button [matMenuTriggerFor]="menu">
                         <mat-icon>more_vert</mat-icon>
                     </button>
@@ -94,7 +100,16 @@
                 </div>
 
                 <div *ngIf="post.thumb" class="media">
-                    <img [src]="post.thumb">
+                    <ng-container [ngSwitch]="getFileType(post.link)">
+                        <img *ngSwitchCase="'image'" [src]="post.thumb"/>
+
+                        <video *ngSwitchCase="'video'" controls class="w-100-p">
+                            <source [src]="post.link">
+                        </video>
+
+                        <a class="other-file" *ngSwitchCase="'other'" [href]="post.link" target="blank">Attached file</a>
+
+                    </ng-container>
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="start center">
@@ -147,7 +162,7 @@
                         </div>
                     </div>
 
-                    <div fxFlex="0 1 auto">
+                    <div fxFlex="0 1 auto" *ngIf="comment.pin || comment.approve || comment.edit || comment.delete">
                         <button mat-icon-button [matMenuTriggerFor]="commentMenu">
                             <mat-icon>more_vert</mat-icon>
                         </button>

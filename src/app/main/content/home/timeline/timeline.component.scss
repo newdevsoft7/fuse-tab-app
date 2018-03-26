@@ -23,6 +23,11 @@
 
                 .preview {
                     position: relative;
+                    min-height: 40px;
+
+                    .doc {
+                        line-height: 40px;
+                    }
 
                     img {
                         display: block;
@@ -111,7 +116,7 @@
                             width: 100%;
                         }
 
-                        a {
+                        a:not(.other-file) {
                             color: inherit;
                         }
                     }
