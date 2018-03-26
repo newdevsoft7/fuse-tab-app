@@ -17,11 +17,13 @@ import { AccountingModule } from '../accounting/accounting.module';
 import { HomeTimelineComponent } from './timeline/timeline.component';
 import { HomeService } from './home.service';
 import { UserService } from '../users/user.service';
+import { EditPostDialogComponent } from './timeline/edit-post-dialog/edit-post-dialog.component';
 
 @NgModule({
     declarations: [
         FuseHomeComponent,
-        HomeTimelineComponent
+        HomeTimelineComponent,
+        EditPostDialogComponent
     ],
     imports     : [
         SharedModule,
@@ -42,6 +44,9 @@ import { UserService } from '../users/user.service';
     providers   : [
         HomeService,
         UserService
+    ],
+    entryComponents: [
+        EditPostDialogComponent
     ]
 })
 

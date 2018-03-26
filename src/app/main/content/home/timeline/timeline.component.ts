@@ -12,6 +12,7 @@ import { HomeService } from '../home.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { UserService } from '../../users/user.service';
 import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
+import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.component';
 
 enum PostType {
     Main    = 'main',
@@ -103,7 +104,7 @@ export class HomeTimelineComponent implements OnInit
     postLoading = false;
 
     user: any;
-    dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+    dialogRef;
 
     constructor(
         private dialog: MatDialog,
@@ -171,6 +172,23 @@ export class HomeTimelineComponent implements OnInit
         }, err => {
             post.commentsLoading = false;
             this.toastr.error('Something is wrong!');
+        });
+    }
+
+    editPost(post) {
+        this.dialogRef = this.dialog.open(EditPostDialogComponent, {
+            disableClose: false,
+            panelClass: 'post-form-dialog',
+            data: post
+        });
+
+        this.dialogRef.afterClosed().subscribe(newPost => {
+            if (newPost) {
+                post = {
+                    ...post,
+                    ...newPost
+                };
+            }
         });
     }
 
@@ -327,10 +345,14 @@ export class HomeTimelineComponent implements OnInit
     }
 
     onUploadFile(event) {
-        this.preview = null;
         const files = event.target.files;
+        this.file = files[0];
+        if (this.file && this.file.size / (1024 * 1024) > 10) {
+            this.toastr.error('Maximum file size to upload is 10Mb.');
+            return;
+        }
+        this.preview = null;
         if (files && files[0]) {
-            this.file = files[0];
             if (_.startsWith(this.file.type, 'video') || _.startsWith(this.file.type, 'image')) {
                 this.readURL(this.file);
             } else {
@@ -357,9 +379,6 @@ export class HomeTimelineComponent implements OnInit
         if (!url) { return; }
         let type;
         switch (true) {
-            case (_.endsWith(url, 'jpg') || _.endsWith(url, 'png')):
-                type = 'image';
-                break;
             case (_.endsWith(url, 'mp4')):
                 type = 'video';
                 break;

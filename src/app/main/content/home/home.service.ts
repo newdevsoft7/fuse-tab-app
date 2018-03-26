@@ -98,6 +98,18 @@ export class HomeService {
             .catch(this.handleError);
     }
 
+
+    /**
+     * Get a post
+     * @param id
+     */
+    getPost(id: number): Observable<any> {
+        const url = `${BASE_URL}/post/${id}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+
     /**
      * Get posts
      * @param pageSize
@@ -119,6 +131,40 @@ export class HomeService {
     getComments(postId, pageNumber = 0, pageSize = 10): Observable<any> {
         const url = `${BASE_URL}/post/${postId}/comments/${pageSize}/${pageNumber}`;
         return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Update a post
+     * @param id
+     * @param post
+     */
+    updatePost(id: number, post: any): Observable<any> {
+        const url = `${BASE_URL}/post/${id}`;
+        return this.http.post(url, post)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Update a comment
+     * @param id
+     * @param comment
+     */
+    updateComment(id: number, comment: any): Observable<any> {
+        const url = `${BASE_URL}/post/comment/${id}`;
+        return this.http.put(url, comment)
+            .catch(this.handleError);
+    }
+
+    /**
+     * Pin / Unpin a post
+     * @param id
+     * @param title
+     * @param setPin
+     */
+    pinPost(id: number, title: string, setPin = 1): Observable<any> {
+        const url = `${BASE_URL}/post/${id}/pin/${setPin}`;
+        return this.http.put(url,  { title })
             .catch(this.handleError);
     }
 

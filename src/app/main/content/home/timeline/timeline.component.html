@@ -80,7 +80,7 @@
                             <span>{{post.approve === '0' ? 'Approve' : 'Unapprove'}}</span>
                         </button>
 
-                        <button mat-menu-item *ngIf="post.edit">
+                        <button mat-menu-item *ngIf="post.edit" (click)="editPost(post)">
                             <mat-icon>edit</mat-icon>
                             <span>Edit</span>
                         </button>
@@ -101,14 +101,13 @@
 
                 <div *ngIf="post.thumb" class="media">
                     <ng-container [ngSwitch]="getFileType(post.link)">
-                        <img *ngSwitchCase="'image'" [src]="post.thumb"/>
-
                         <video *ngSwitchCase="'video'" controls class="w-100-p">
                             <source [src]="post.link">
                         </video>
 
-                        <a class="other-file" *ngSwitchCase="'other'" [href]="post.link" target="blank">Attached file</a>
-
+                        <a [href]="post.link" *ngSwitchCase="'other'" target="blank">
+                            <img  [src]="post.thumb"/>
+                        </a>
                     </ng-container>
                 </div>
 
@@ -168,11 +167,6 @@
                         </button>
 
                         <mat-menu #commentMenu="matMenu">
-
-                            <button mat-menu-item *ngIf="comment.pin">
-                                <mat-icon>attach_file</mat-icon>
-                                <span>Pin</span>
-                            </button>
 
                             <button mat-menu-item *ngIf="comment.approve" (click)="approveComment(comment)">
                                 <mat-icon>check</mat-icon>

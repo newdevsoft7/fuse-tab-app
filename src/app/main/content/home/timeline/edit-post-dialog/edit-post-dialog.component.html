@@ -1,0 +1,80 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Edit post</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <!--  POST FORM -->
+        <div class="box new-post">
+
+            <div class="form" fxFlex>
+
+                <textarea placeholder="Write something.." [(ngModel)]="post.content"></textarea>
+
+                <div *ngIf="post.thumb && !preview" class="media">
+                    <ng-container [ngSwitch]="getFileType(post.link)">
+                        <video *ngSwitchCase="'video'" controls class="w-100-p">
+                            <source [src]="post.link">
+                        </video>
+
+                        <a [href]="post.link" *ngSwitchCase="'other'" target="blank">
+                            <img [src]="post.thumb" />
+                        </a>
+                    </ng-container>
+                </div>
+
+                <div *ngIf="preview" class="preview">
+                    <img [src]="preview" *ngIf="file.type.indexOf('image') > -1" />
+
+                    <video controls class="w-100-p" *ngIf="file.type.indexOf('video') > -1">
+                        <source [src]="preview">
+                    </video>
+
+                    <div *ngIf="file.type.indexOf('video') < 0 && file.type.indexOf('image') < 0" class="ml-8 doc">
+                        {{file.name}}
+                    </div>
+
+                    <div class="overlay" fxLayout="row" fxLayoutAlign="end">
+                        <button mat-icon-button (click)="removeFile()">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <footer fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <input hidden type="file" #fileInput (change)="onUploadFile($event)" />
+                        <button mat-icon-button aria-label="Add photo" matTooltip="Add File" (click)="fileInput.click()">
+                            <mat-icon>photo</mat-icon>
+                        </button>
+
+                    </div>
+
+                </footer>
+
+            </div>
+
+        </div>
+
+        <!-- / POST FORM -->
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+
+        <button mat-raised-button (click)="savePost()" class="save-button mat-accent" aria-label="SAVE">
+            SAVE
+        </button>
+
+        <button mat-raised-button (click)="dialogRef.close(false)" aria-label="CANCEL" matTooltip="Cancel">
+            CANCEL
+        </button>
+
+    </div>
+</div>
