@@ -9,7 +9,7 @@
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-        <div class="timeline-item">
+        <div class="timeline-item" [class.unapproved]="post.approved === 0">
 
             <header fxLayout="row" fxLayoutAlign="space-between start">
                 <div class="user" fxLayout="row" fxLayoutAlign="start center">
@@ -91,7 +91,7 @@
             </div>
 
             <footer fxLayout="column" fxLayoutAlign="start start" *ngIf="post.isCommentsShow">
-                <div class="reply" fxLayout="row" fxFlexFill>
+                <div class="reply p-8" fxLayout="row" fxFlexFill>
                     <img [src]="user.ppic_a" class="avatar" />
 
                     <form fxFlex>
@@ -100,7 +100,8 @@
                     </form>
                 </div>
 
-                <div class="comment" fxLayout="row" fxFlexFill *ngFor="let comment of post.remarks">
+                <div class="comment p-8" fxLayout="row" fxFlexFill *ngFor="let comment of post.remarks"
+                    [class.unapproved]="comment.approved === 0">
                     <img [src]="comment.ppic_a" class="avatar" />
 
                     <div fxLayout="column" fxFlex>

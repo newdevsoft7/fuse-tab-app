@@ -82,6 +82,10 @@
                 background: #FFFFFF;
                 @include mat-elevation(2);
 
+                &.unapproved {
+                    background: rgba(0, 0, 0, 0.15);
+                }
+
                 &:last-child {
                     margin-bottom: 0;
                 }
@@ -157,8 +161,12 @@
                     }
 
                     .comment {
+                        padding: 8px;
                         margin-bottom: 24px !important;
 
+                        &.unapproved {
+                            background: rgba(0, 0, 0, 0.15);
+                        }
                         .username {
                             font-weight: 500;
                             margin-right: 4px;

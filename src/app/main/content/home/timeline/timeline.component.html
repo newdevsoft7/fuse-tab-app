@@ -50,7 +50,7 @@
 
         <mat-divider *ngIf="posts.length > 0"></mat-divider>
 
-        <div class="timeline-item" *ngFor="let post of posts">
+        <div class="timeline-item" *ngFor="let post of posts" [class.unapproved]="post.approved === 0">
 
             <header fxLayout="row" fxLayoutAlign="space-between start">
                 <div class="user" fxLayout="row" fxLayoutAlign="start center">
@@ -130,7 +130,7 @@
             </div>
 
             <footer fxLayout="column" fxLayoutAlign="start start" *ngIf="post.isCommentsShow">
-                <div class="reply" fxLayout="row" fxFlexFill>
+                <div class="reply p-8" fxLayout="row" fxFlexFill>
                     <img [src]="user.ppic_a" class="avatar" />
 
                     <form fxFlex>
@@ -140,7 +140,8 @@
                     </form>
                 </div>
 
-                <div class="comment" fxLayout="row" fxFlexFill *ngFor="let comment of post.remarks">
+                <div class="comment" fxLayout="row" fxFlexFill *ngFor="let comment of post.remarks"
+                    [class.unapproved]="comment.approved === 0">
                     <img [src]="comment.ppic_a" class="avatar"/>
 
                     <div fxLayout="column" fxFlex>
@@ -215,7 +216,7 @@
 
         <div class="pin-posts" fxLayout="column">
             <button mat-raised-button *ngFor="let post of pinnedPosts"
-                color="accent" class="mb-8"
+                color="accent" class="mb-16"
                 (click)="openPinPostDialog(post.post_id)">
                 {{post.title}}
             </button>
