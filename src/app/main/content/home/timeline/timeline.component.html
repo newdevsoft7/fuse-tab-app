@@ -1,6 +1,7 @@
 
 <div id="timeline" class="p-24" fxLayout="row" fxLayoutWrap>
-    <div class="timeline-content" fxLayout="column" fxFlex="100" fxFlex.gt-sm="60" fxFlex.gt-md="70">
+    <div class="timeline-content" fxLayout="column" fxFlex="100" fxFlex.gt-sm="70"
+        fxFlexOrder.gt-sm="1" fxFlexOrder="2">
 
         <!--  NEW POST FORM -->
         <div class="box add-post">
@@ -209,7 +210,8 @@
         </div>
     </div>
 
-    <div class="timeline-sidebar" fxLayout="column" fxFlex="100" fxFlex.gt-sm="40" fxFlex.gt-md="30">
+    <div class="timeline-sidebar" fxLayout="column" fxFlex="100" fxFlex.gt-sm="30"
+        fxFlexOrder.gt-sm="2" fxFlexOrder="1">
 
         <div class="pin-posts" fxLayout="column">
             <button mat-raised-button *ngFor="let post of pinnedPosts"
