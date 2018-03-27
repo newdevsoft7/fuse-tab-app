@@ -12,10 +12,11 @@
         }
 
         .staff-sidebar {
-            padding-left: 32px;
+            @include media-breakpoint-up('lg') {
+                padding-left: 32px;
+            }
 
             @include media-breakpoint('sm') {
-                padding: 8px
             }
 
             .admin-notes {
@@ -52,7 +53,7 @@
                     }
                 }
             }
-        }        
+        }
     }
 
     // shift boxes
