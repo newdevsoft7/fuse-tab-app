@@ -16,7 +16,7 @@ export class ActionService {
   addUsersToRole({ userIds, role, section }) {
     this._usersToRole.next({ userIds, role, section });
   }
-  
+
   get usersToRole() {
     return this._usersToRole.asObservable();
   }
@@ -25,7 +25,7 @@ export class ActionService {
   addUsersToShift({ userIds, shift }) {
     this._usersToShift.next({ userIds, shift });
   }
-  
+
   get usersToShift() {
     return this._usersToShift.asObservable();
   }
@@ -37,6 +37,6 @@ export class ActionService {
 
   get shiftsToEdit() {
     return this._shiftsToEdit.asObservable();
-  } 
+  }
 
 }

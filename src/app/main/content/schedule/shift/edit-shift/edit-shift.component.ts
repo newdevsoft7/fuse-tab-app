@@ -23,7 +23,7 @@ export class EditShiftComponent implements OnInit, OnDestroy {
 
     @ViewChild('table') table: DatatableComponent;
 
-    shiftsSubscription: Subscription
+    shiftsSubscription: Subscription;
 
     constructor(
         private actionService: ActionService

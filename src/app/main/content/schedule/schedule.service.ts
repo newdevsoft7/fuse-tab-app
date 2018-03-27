@@ -20,7 +20,7 @@ export class ScheduleService {
     return this.http.get<EventEntity[]>(url).toPromise();
   }
 
-  async getShift(id: number): Promise<any> {
+  async getShift(id: string | number): Promise<any> {
     return this.http.get(`${BASE_URL}/shift/${id}`).toPromise();
   }
 
@@ -148,7 +148,7 @@ export class ScheduleService {
   createShiftsRoles(shiftIds, role): Observable<any> {
     return Observable.forkJoin(
       shiftIds.map(shiftId => this.createShiftRole(shiftId, role))
-    );  
+    );
   };
 
   getPayLevelCategory(id?: number): Observable<any> {

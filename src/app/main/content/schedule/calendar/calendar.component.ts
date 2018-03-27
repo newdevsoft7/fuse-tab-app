@@ -10,6 +10,7 @@ import { ScheduleService } from '../schedule.service';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
+import { ActionService } from '../../../../shared/services/action.service';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -36,7 +37,7 @@ export class ScheduleCalendarComponent implements OnInit {
       // put some logic here for styling event chips
     },
     dayClick: (date: Moment, jsEvent: Event): void => {
-      if (!['owner', 'admin'].includes(this.currentUser.lvl)) return;
+      if (!['owner', 'admin'].includes(this.currentUser.lvl)) { return; }
       const url = `schedule/new-shift/${date.toString()}`;
       const tab = new Tab('New Shift', 'newShiftTpl', url, { date, url });
       this.tabService.openTab(tab);
@@ -66,7 +67,7 @@ export class ScheduleCalendarComponent implements OnInit {
       title: 'Edit',
       icon: 'mode_edit',
       callback: (event: EventEntity): void => {
-        this.openEventTab(event);
+        this.openEditShiftTab(event);
       }
     },
     {
@@ -122,9 +123,10 @@ export class ScheduleCalendarComponent implements OnInit {
     private snackBar: MatSnackBar,
     private scheduleService: ScheduleService,
     private tokenStorage: TokenStorage,
+    private actionService: ActionService,
     private tabService: TabService) { }
 
-  
+
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser();
     this.filtersObservable = (text: string): Observable<any> => {
@@ -190,7 +192,7 @@ export class ScheduleCalendarComponent implements OnInit {
       if (temp.backgroundColor) {
         newEvent.eventBackgroundColor = temp.backgroundColor;
       }
-      if (data.action === 'new') {        
+      if (data.action === 'new') {
         if (!this.options.events) {
           this.options.events = [];
         }
@@ -215,5 +217,21 @@ export class ScheduleCalendarComponent implements OnInit {
     }
     const tab = new Tab(event.title, template, url, { id, url });
     this.tabService.openTab(tab);
+  }
+
+  // Open Shifts edit tab for a shift
+  async openEditShiftTab(event: EventEntity) {
+    if (!['owner', 'admin'].includes(this.currentUser.lvl)) { return; }
+    try {
+      const shift = await this.scheduleService.getShift(event.id);
+      const shifts = [shift];
+      const tab = new Tab('Shifts Edit', 'editShiftTpl', 'admin/shift/edit', { shifts });
+      this.tabService.openTab(tab);
+      this.actionService.addShiftsToEdit(shifts);
+    } catch (e) {
+      this.snackBar.open(e.message || 'Something is wrong while fetching events.', 'Ok', {
+        duration: 2000
+      });
+    }
   }
 }
