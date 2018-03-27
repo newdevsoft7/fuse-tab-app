@@ -1,8 +1,8 @@
 <div id="about" class="p-24" fxLayout="row" fxLayoutWrap>
 
     <div class="about-content"
-        fxLayout="column"
-        [fxFlex]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
+        fxLayout="column" fxFlex.lt-lg="100"
+        [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
 
         <div fxLayout="row" fxLayoutWrap *ngIf="ratings.length > 0">
             <fieldset class="rating" *ngFor="let rating of ratings">
@@ -149,7 +149,8 @@
 
     </div>
 
-    <div class="about-sidebar" fxLayout="column" fxFlex="35" *ngIf="currentUser.lvl == 'owner' || currentUser.lvl == 'admin'">
+    <div class="about-sidebar" fxLayout="column" fxFlex="35" fxFlex.lt-lg="100"
+        *ngIf="currentUser.lvl == 'owner' || currentUser.lvl == 'admin'">
 
         <div class="profile-box admin-notes" fxLayout="column">
 
