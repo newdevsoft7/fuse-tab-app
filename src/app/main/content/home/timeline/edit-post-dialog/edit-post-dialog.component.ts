@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { HomeService } from '../../home.service';
+import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 
 @Component({
     selector: 'app-edit-post-dialog',
@@ -21,6 +22,7 @@ export class EditPostDialogComponent implements OnInit {
         public dialogRef: MatDialogRef<EditPostDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private toastr: ToastrService,
+        private spinner: CustomLoadingService,
         private homeService: HomeService
     ) {
         this.post = _.cloneDeep(this.data);
@@ -33,6 +35,7 @@ export class EditPostDialogComponent implements OnInit {
     savePost() {
         const content = this.post.content.trim();
         if (!content) { return; }
+        this.spinner.show();
         const post = new FormData();
         post.append('content', content);
         post.append('delete_file', this.delete_file.toString());
@@ -40,9 +43,11 @@ export class EditPostDialogComponent implements OnInit {
             post.append('file', this.file, this.file.name);
         }
         this.homeService.updatePost(this.post.id, post).subscribe(newPost => {
+            this.spinner.hide();
             this.toastr.success('Saved');
             this.dialogRef.close(newPost);
         }, err => {
+            this.spinner.hide();
             this.displayError(err);
         });
     }

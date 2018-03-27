@@ -329,21 +329,25 @@ export class HomeTimelineComponent implements OnInit
     addPost() {
         const content = _.trim(this.newPost);
         if (_.isEmpty(content)) { return; }
-
+        this.spinner.show();
         if (this.file) { // If posting a file
             const formData = new FormData();
             formData.append('file', this.file, this.file.name);
             formData.append('ptype', PostType.Main);
             formData.append('content', content);
             this.homeService.createPost(formData).subscribe(post => {
+                this.spinner.hide();
                 this.addToPosts(post);
             }, err => {
+                this.spinner.hide();
                 this.displayError(err);
             });
         } else { // If posting text
             this.homeService.createPost({ content, ptype: PostType.Main }).subscribe(post => {
+                this.spinner.hide();
                this.addToPosts(post);
             }, err => {
+                this.spinner.hide();
                 this.displayError(err);
             });
         }
