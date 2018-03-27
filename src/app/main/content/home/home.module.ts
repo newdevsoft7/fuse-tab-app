@@ -7,6 +7,7 @@ import { UsersModule } from '../users/users.module';
 import { ProfileModule } from '../profile/profile.module';
 import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { ScheduleModule } from '../schedule/schedule.module';
+import { FormSignModule } from '../form-sign/form-sign.module';
 
 import { FuseHomeComponent } from './home.component';
 import { SettingsModule } from '../settings/settings.module';
@@ -42,7 +43,8 @@ import { PostDialogComponent } from './timeline/post-dialog/post-dialog.componen
         ScheduleModule,
         SettingsModule,
         TrackingModule,
-        AccountingModule
+        AccountingModule,
+        FormSignModule
     ],
     exports     : [
         FuseHomeComponent

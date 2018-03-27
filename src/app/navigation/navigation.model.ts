@@ -131,6 +131,14 @@ export const ADMIN_MODEL = [
         ]
     },
     {
+        'id': 'forms',
+        'title': 'Forms',
+        'translate': 'NAV.ADMIN.FORMS',
+        'icon': 'today',
+        'type': 'item',
+        'tab': TAB.FORMS_TAB
+    },
+    {
         'id': 'reports_and_uploads',
         'title': 'Reports & Uploads',
         'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS',
@@ -472,11 +480,11 @@ export class FuseNavigationModel implements FuseNavigationModelInterface
             case Level.Client:
                 this.model = CLIENT_MODEL;
                 break;
-                
+
             default:
                 this.model = STAFF_MODEL;
                 break;
         }
-        
+
     }
 }

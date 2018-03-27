@@ -54,7 +54,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
     @ViewChild('shiftsImportTpl') shiftsImportTpl;
-    @ViewChild('shiftsExportAsExcelTpl') shiftsExportAsExcelTpl; 
+    @ViewChild('shiftsExportAsExcelTpl') shiftsExportAsExcelTpl;
     @ViewChild('shiftsExportAsPdfTpl') shiftsExportAsPdfTpl;
     @ViewChild('usersChatTpl') usersChatTpl;
     @ViewChild('adminShiftTpl') adminShiftTpl;
@@ -64,16 +64,20 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('settingsTpl') settingsTpl;
     @ViewChild('trackingTpl') trackingTpl;
     @ViewChild('adminGenStaffInvoicesTpl') adminGenStaffInvoicesTpl;
-    @ViewChild('adminClientInvoiceListTpl') adminClientInvoiceListTpl; 
-    @ViewChild('adminStaffInvoiceListTpl') adminStaffInvoiceListTpl; 
-    
+    @ViewChild('adminClientInvoiceListTpl') adminClientInvoiceListTpl;
+    @ViewChild('adminStaffInvoiceListTpl') adminStaffInvoiceListTpl;
+
     // Staff view templates
     @ViewChild('staffShiftTpl') staffShiftTpl;
 
     // Client view templates clientShiftListTpl
-    @ViewChild('clientShiftListTpl') clientShiftListTpl; 
+    @ViewChild('clientShiftListTpl') clientShiftListTpl;
     @ViewChild('clientNewBookingTpl') clientNewBookingTpl;
     @ViewChild('clientShiftTpl') clientShiftTpl;
+
+    // Form
+    @ViewChild('formTpl') formTpl; // Form Template for signing
+    @ViewChild('formSignTpl') formSignTpl; // Forms Template
 
     socketService: SocketService;
     fcmService: FCMService;
@@ -174,8 +178,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
         this.tabsComponent.openTab(_tab);
 
-        if (_tab.url == 'tracking') {
-            let trackingCategory = _tab.data;
+        if (_tab.url === 'tracking') {
+            const trackingCategory = _tab.data;
             if (JSON.stringify(_tab.data) != '{}' ){
                 this.trackingService.toggleSelectedCategory(trackingCategory as TrackingCategory);
             }
@@ -188,7 +192,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     private addMenuByUserLevel() {
-        let level = this.tokenStorage.getUser().lvl;
+        const level = this.tokenStorage.getUser().lvl;
         const navModel = this.fuseNavigationService.getNavigationModel();
 
         switch (level) {
@@ -209,11 +213,11 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                                 this.dialogRef = this.dialog.open(ShiftsExportAsExcelDialogComponent, {
                                     panelClass: 'client-shifts-export-as-excel-dialog',
                                 });
-    
+
                                 this.dialogRef.afterClosed().subscribe(res => {});
                             }
                         },
-    
+
                     );
                 }
 
@@ -229,11 +233,11 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                                 this.dialogRef = this.dialog.open(ShiftsExportAsPdfDialogComponent, {
                                     panelClass: 'client-shifts-export-as-pdf-dialog',
                                 });
-    
+
                                 this.dialogRef.afterClosed().subscribe(res => { });
                             }
                         },
-    
+
                     );
                 }
                 break;
@@ -254,18 +258,17 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                                 this.dialogRef = this.dialog.open(UsersExportDialogComponent, {
                                     panelClass: 'users-export-dialog',
                                 });
-    
+
                                 this.dialogRef.afterClosed().subscribe(res => { });
                             }
                         },
                     );
                 }
                 break;
-        
+
             default:
                 break;
-        }   
+        }
     }
 
 }
-

@@ -23,6 +23,8 @@ export const locale = {
                 'SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW': 'PDF Overview',
                 'SCHEDULE_NEW_SHIFT': 'New Shift',
 
+                'FORMS': 'Forms',
+
                 'REPORTS_AND_UPLOADS': 'Reports & Uploads',
                 'REPORTS_AND_UPLOADS_REPORT_DESIGNER': 'Report Designer',
                 'REPORTS_AND_UPLOADS_SHARED_FILES': 'Shared Files',

@@ -113,4 +113,12 @@
     </ng-template>
     <!--  / CLIENT VIEW TEMPLATES-->
 
+    <ng-template #formSignTpl>
+        <app-form-sign></app-form-sign>
+    </ng-template>
+
+    <ng-template #formTpl let-data="data">
+        <app-form [data]="data"></app-form>
+    </ng-template>
+
 </div>

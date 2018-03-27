@@ -14,8 +14,7 @@ import { StaffInvoiceListComponent } from './admin/staff-invoice-list/staff-invo
 @NgModule({
     imports: [
         CommonModule,
-        SharedModule,
-        CommonModule
+        SharedModule
     ],
     declarations: [
         // For Admin User

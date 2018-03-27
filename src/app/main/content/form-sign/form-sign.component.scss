@@ -1,0 +1,13 @@
+:host {
+
+    .page-layout {
+        overflow: unset !important;
+        margin: -1em;
+        width: inherit;
+    }
+
+    .header {
+        height: auto !important;
+        min-height: 200px !important;
+    }
+}
