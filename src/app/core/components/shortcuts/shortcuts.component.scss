@@ -1,26 +1,6 @@
 @import 'src/app/core/scss/fuse';
 
 :host {
-    .shortcuts {
-        .shortcut {
-            position: relative;
-            .notification {
-                position: absolute;
-                color: map-get($mat-white, 500);
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                background-color: map-get($mat-red, 'A700');
-                font-size: 8px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding-top: 1px;
-                top: 3px;
-                right: 2px;
-            }
-        }
-    }
 
     @include media-breakpoint-down('sm') {
 

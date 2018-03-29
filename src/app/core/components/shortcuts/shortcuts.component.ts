@@ -7,7 +7,6 @@ import { FuseConfigService } from '../../services/config.service';
 import { CookieService } from 'ngx-cookie-service';
 import * as TAB from '../../../constants/tab';
 import { TabService } from '../../../main/tab/tab.service';
-import { UsersChatService } from '../../../main/content/users/chat/chat.service';
 
 @Component({
     selector   : 'fuse-shortcuts',
@@ -35,8 +34,7 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         private fuseNavigationService: FuseNavigationService,
         private fuseConfig: FuseConfigService,
         private cookieService: CookieService,
-        private tabService: TabService,
-        private userChatService: UsersChatService
+        private tabService: TabService
     )
     {
         this.filteredNavigationItems = this.navigationItems = this.fuseNavigationService.getFlatNavigation();
@@ -92,15 +90,6 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
                     'icon' : 'check_box',
                     'onClick': () => {
                         // @todo: silence is golden
-                    }
-                },
-                {
-                    'title': 'Chat',
-                    'type' : 'nav-item',
-                    'icon' : 'sms',
-                    'hasNotification': true,
-                    'onClick': () => {
-                        this.tabService.openTab(TAB.USERS_CHAT_TAB);
                     }
                 }
             ];
@@ -186,9 +175,5 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     {
         this.mobileShortcutsPanelActive = false;
         this.renderer.removeClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
-    }
-
-    get unreadCount(): number {
-        return (this.userChatService.unreadList.length + this.userChatService.unreadThreads.length);
     }
 }

@@ -10,6 +10,8 @@ import { TokenStorage } from '../../shared/services/token-storage.service';
 import { fuseAnimations } from '../../core/animations';
 import { Tab } from '../tab/tab';
 import { Subscription } from 'rxjs/Subscription';
+import { UsersChatService } from '../content/users/chat/chat.service';
+import * as TAB from '../../constants/tab';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -39,7 +41,8 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
         private tabService: TabService,
         private authService: AuthenticationService,
         private userService: UserService,
-        private tokenStorage: TokenStorage
+        private tokenStorage: TokenStorage,
+        private userChatService: UsersChatService
     )
     {
         this.userStatusOptions = [
@@ -154,5 +157,13 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
     openProfile() {
         const tab = new Tab(`${this.user.fname} ${this.user.lname}`, 'usersProfileTpl', `users/user/${this.user.id}`, this.user);
         this.tabService.openTab(tab);
+    }
+
+    get unreadCount(): number {
+        return (this.userChatService.unreadList.length + this.userChatService.unreadThreads.length);
+    }
+
+    showChatTab() {
+        this.tabService.openTab(TAB.USERS_CHAT_TAB);
     }
 }
