@@ -5,6 +5,9 @@ import { ObservableMedia } from '@angular/flex-layout';
 import { FuseMatchMedia } from '../../services/match-media.service';
 import { FuseConfigService } from '../../services/config.service';
 import { CookieService } from 'ngx-cookie-service';
+import * as TAB from '../../../constants/tab';
+import { TabService } from '../../../main/tab/tab.service';
+import { UsersChatService } from '../../../main/content/users/chat/chat.service';
 
 @Component({
     selector   : 'fuse-shortcuts',
@@ -31,7 +34,9 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
         private fuseMatchMedia: FuseMatchMedia,
         private fuseNavigationService: FuseNavigationService,
         private fuseConfig: FuseConfigService,
-        private cookieService: CookieService
+        private cookieService: CookieService,
+        private tabService: TabService,
+        private userChatService: UsersChatService
     )
     {
         this.filteredNavigationItems = this.navigationItems = this.fuseNavigationService.getFlatNavigation();
@@ -61,25 +66,42 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
                     'title': 'Calendar',
                     'type' : 'nav-item',
                     'icon' : 'today',
-                    'url'  : '/apps/calendar'
+                    'onClick': () => {
+                        this.tabService.openTab(TAB.SCHEDULE_CALENDAR_TAB);
+                    }
                 },
                 {
                     'title': 'Mail',
                     'type' : 'nav-item',
                     'icon' : 'email',
-                    'url'  : '/apps/mail'
+                    'onClick': () => {
+                        // @todo: silence is golden
+                    }
                 },
                 {
                     'title': 'Contacts',
                     'type' : 'nav-item',
                     'icon' : 'account_box',
-                    'url'  : '/apps/contacts'
+                    'onClick': () => {
+                        // @todo: silence is golden
+                    }
                 },
                 {
                     'title': 'To-Do',
                     'type' : 'nav-item',
                     'icon' : 'check_box',
-                    'url'  : '/apps/todo'
+                    'onClick': () => {
+                        // @todo: silence is golden
+                    }
+                },
+                {
+                    'title': 'Chat',
+                    'type' : 'nav-item',
+                    'icon' : 'sms',
+                    'hasNotification': true,
+                    'onClick': () => {
+                        this.tabService.openTab(TAB.USERS_CHAT_TAB);
+                    }
                 }
             ];
         }
@@ -164,5 +186,9 @@ export class FuseShortcutsComponent implements OnInit, OnDestroy
     {
         this.mobileShortcutsPanelActive = false;
         this.renderer.removeClass(this.shortcutsEl.nativeElement, 'show-mobile-panel');
+    }
+
+    get unreadCount(): number {
+        return (this.userChatService.unreadList.length + this.userChatService.unreadThreads.length);
     }
 }

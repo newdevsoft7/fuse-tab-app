@@ -42,14 +42,6 @@ export const ADMIN_MODEL = [
                 'type': 'item',
                 'tab': TAB.USERS_NEW_MESSAGE_TAB
 
-            },
-            {
-                'id': 'chat',
-                'title': 'Chat',
-                'translate': 'NAV.ADMIN.USERS_CHAT',
-                'type': 'item',
-                'tab': TAB.USERS_CHAT_TAB
-
             }
         ]
     },

@@ -25,23 +25,25 @@
                 <!-- / LEFT SIDENAV -->
 
                 <!-- CONTENT -->
-                <!-- <fuse-chat-start *ngIf="!selectedChat"></fuse-chat-start> -->
                 <mat-sidenav-content>
-                  <fuse-chat-view
-                    *ngIf="selectedChat" 
-                    [messages]="selectedChat" 
-                    [thread]="selectedThread"
-                    [replyMessage]="pendingMessages[selectedThread?.id]"
-                    [typingUsers]="typingUsers"
-                    [paginationDisabled]="paginationDisabled"
-                    (sendMessage)="sendMessage($event)"
-                    (updateReadStatus)="updateReadStatus($event)"
-                    (addUser)="triggerAddUserModal($event)"
-                    (updatePendingMessage)="updatePendingMessage($event)"
-                    (updateTypingStatus)="updateTypingStatus($event)"
-                    (fetchMessages)="fetchMessages($event)"
-                    (renameThread)="triggerRenameThreadModal($event)"
-                    (removeUser)="removeUser($event)"></fuse-chat-view>
+                    <fuse-chat-view
+                        *ngIf="selectedChat; else chatStartBlock" 
+                        [messages]="selectedChat" 
+                        [thread]="selectedThread"
+                        [replyMessage]="pendingMessages[selectedThread?.id]"
+                        [typingUsers]="typingUsers"
+                        [paginationDisabled]="paginationDisabled"
+                        (sendMessage)="sendMessage($event)"
+                        (updateReadStatus)="updateReadStatus($event)"
+                        (addUser)="triggerAddUserModal($event)"
+                        (updatePendingMessage)="updatePendingMessage($event)"
+                        (updateTypingStatus)="updateTypingStatus($event)"
+                        (fetchMessages)="fetchMessages($event)"
+                        (renameThread)="triggerRenameThreadModal($event)"
+                        (removeUser)="removeUser($event)"></fuse-chat-view>
+                    <ng-template #chatStartBlock>
+                        <fuse-chat-start></fuse-chat-start>
+                    </ng-template>
                 </mat-sidenav-content>
                 <!-- / CONTENT -->
 
