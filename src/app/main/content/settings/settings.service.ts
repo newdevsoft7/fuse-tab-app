@@ -18,10 +18,10 @@ export class SettingsService {
     sidenavs: any[];
 
     constructor(
-        private http: HttpClient) { 
+        private http: HttpClient) {
             this.sidenavs = new SettingsSideNavModel().model;
         }
-    
+
     getSideNavs(){
         return this.sidenavs;
     }
@@ -31,7 +31,7 @@ export class SettingsService {
      * @param sidenav
      */
     toggleSelectedSideNav(sidenav: any) {
-        this.onSideNavChanged.next(sidenav);       
+        this.onSideNavChanged.next(sidenav);
     }
 
     getSelectedSideNav(): Observable<any> {
@@ -127,7 +127,7 @@ export class SettingsService {
     updatePayCategory(id: number, cname) {
         const url = `${BASE_URL}/payLevel/category/${id}`;
         return this.http.put(url, { cname })
-            .catch(this.handleError);   
+            .catch(this.handleError);
     }
 
     deletePayLevel(id: number) {
@@ -178,7 +178,43 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    getForms(): Observable<any> {
+        const url = `${BASE_URL}/forms`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    getForm(id: number | string): Observable<any> {
+        const url = `${BASE_URL}/form/${id}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    addFormLevelRequirement(formId, requirement, lvl): Observable<any> {
+        const url = `${BASE_URL}/form/${formId}/requirement/lvl`;
+        return this.http.put(url, { requirement, lvl })
+            .catch(this.handleError);
+    }
+
+    addFormTrackRequirement(formId, requirement, tracking_option_id): Observable<any> {
+        const url = `${BASE_URL}/form/${formId}/requirement/track`;
+        return this.http.put(url, { requirement, tracking_option_id })
+            .catch(this.handleError);
+    }
+
+    deleteFormLevelRequirement(id): Observable<any> {
+        const url = `${BASE_URL}/form/requirement/lvl/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
+    deleteFormTrackRequirement(id): Observable<any> {
+        const url = `${BASE_URL}/form/requirement/track/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
-    }    
+    }
 }

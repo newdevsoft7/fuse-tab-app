@@ -2,36 +2,36 @@
 
     <!-- HEADER -->
     <div class="header mat-accent-bg p-24" fxLayout="row" fxLayoutAlign="start center">
-    
+
         <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="simple-left-sidenav-3" fxHide.gt-md>
             <mat-icon>menu</mat-icon>
         </button>
-    
+
         <div>
             <h2>Settings {{ selectedSideNav ? ' > ' + selectedSideNav.title : '' }}</h2>
         </div>
-    
+
     </div>
     <!-- / HEADER -->
 
     <mat-sidenav-container>
-    
+
         <!-- SIDENAV -->
         <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3"
             mat-is-locked-open="gt-md" #sidenav>
-    
+
             <div class="sidenav-content pt-16" fusePerfectScrollbar>
-        
+
                 <app-settings-sidenav></app-settings-sidenav>
 
             </div>
-        
+
         </mat-sidenav>
         <!-- / SIDENAV -->
 
         <!-- CENTER -->
         <div class="center p-16" fusePerfectScrollbar>
-        
+
             <!-- CONTENT -->
             <div class="content mat-elevation-z4 mat-white-bg p-24">
                 <ng-container [ngSwitch]="selectedSideNav.id">
@@ -49,59 +49,59 @@
                     </app-settings-email>
 
                     <app-settings-expenses *ngSwitchCase="'expenses'" [options]="options" [(settings)]="settings" fxFill></app-settings-expenses>
-                    
-                    <app-settings-forms *ngSwitchCase="'forms'" [options]="options" [settings]="settings" fxFill></app-settings-forms>
-                    
+
+                    <app-settings-forms *ngSwitchCase="'forms'" [options]="options" [(settings)]="settings" class="w-100-p"></app-settings-forms>
+
                     <app-settings-locations *ngSwitchCase="'locations'" [options]="options" [(settings)]="settings" fxFill></app-settings-locations>
-                    
+
                     <app-settings-outsourcing *ngSwitchCase="'outsourcing'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-outsourcing>
-                    
+
                     <app-settings-pay-levels *ngSwitchCase="'pay_levels'" [options]="options" [(settings)]="settings" class="w-100-p">
                     </app-settings-pay-levels>
 
                     <app-settings-profile-documents *ngSwitchCase="'profile_documents'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-profile-documents>
-                    
+
                     <app-settings-profile-photos *ngSwitchCase="'profile_photos'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-profile-photos>
-                    
+
                     <app-settings-profile-videos *ngSwitchCase="'profile_videos'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-profile-videos>
-                    
+
                     <app-settings-quizs *ngSwitchCase="'quizs'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-quizs>
-                    
+
                     <app-settings-registration *ngSwitchCase="'registration'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-registration>
-                    
+
                     <app-settings-scheduling *ngSwitchCase="'scheduling'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-scheduling>
 
                     <app-settings-shift-flags *ngSwitchCase="'shift_flags'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-shift-flags>
-                    
+
                     <app-settings-showcases *ngSwitchCase="'showcases'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-showcases>
-                    
+
                     <app-settings-staff *ngSwitchCase="'staff'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-staff>
-                    
+
                     <app-settings-staff-invoices *ngSwitchCase="'staff_invoices'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-staff-invoices>
-                    
+
                     <app-settings-surveys *ngSwitchCase="'surveys'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-surveys>
-                    
+
                     <app-settings-system *ngSwitchCase="'system'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-system>
-                    
+
                     <app-settings-tracking *ngSwitchCase="'tracking'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-tracking>
 
                     <app-settings-user-table *ngSwitchCase="'user_table'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-user-table>
-                    
+
                     <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]="(settings)" class="w-100-p">
                     </app-settings-work-areas>
 
@@ -110,15 +110,14 @@
 
                     <app-settings-xero *ngSwitchCase="'xero'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-xero>
-                    
+
                 </ng-container>
             </div>
             <!-- / CONTENT -->
 
         </div>
         <!-- / CENTER -->
-        
+
     </mat-sidenav-container>
 
 </div>
-
