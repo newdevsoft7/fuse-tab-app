@@ -1,0 +1,108 @@
+<div id="settings-forms-container" fxLayout="column">
+
+    <div fxFlex="1 0 auto" fxLayout="column">
+        <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
+            <mat-drawer #drawer mode="side" [disableClose]="true" class="draw-sidenav">
+                <div class="pt-16 nav" fuseperfectscrollbar>
+                    <div class="nav-item" *ngFor="let form of forms">
+                        <div matRipple class="nav-link" fxLayout="row" fxLayoutAlign="space-between center"
+                            (click)="selectForm(form)"
+                            [class.active]="form.id === selectedForm.id">
+                            <span class="name">
+                                {{form.name}}
+                            </span>
+
+                            <button mat-icon-button (click)="deleteForm(form.id, $event)" fxFlex="0 1 auto">
+                                <mat-icon class="s-20">delete</mat-icon>
+                            </button>
+                        </div>
+
+                        <mat-divider></mat-divider>
+                    </div>
+                </div>
+            </mat-drawer>
+
+            <div class="form-container" *ngIf="form">
+
+                <!-- USER LEVEL REQUIREMENTS -->
+                <div class="box info-box">
+                    <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="title">User Level Requirements</div>
+                    </header>
+                    <div class="content" fxLayout="column">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                            <mat-form-field class="w-120 example-height">
+                                <mat-select placeholder="User Level" [(ngModel)]="level">
+                                    <mat-option *ngFor="let option of levels" [value]="option.value">{{option.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-button-toggle-group #levelButtonGroup="matButtonToggleGroup" [value]="levelRequirement" (change)="levelRequirement = levelButtonGroup.value">
+                                <mat-button-toggle value="apply">APPLY</mat-button-toggle>
+                                <mat-button-toggle value="confirm">CONFIRM</mat-button-toggle>
+                                <mat-button-toggle value="optional">OPTIONAL</mat-button-toggle>
+                                <mat-button-toggle value="login">LOGIN</mat-button-toggle>
+                            </mat-button-toggle-group>
+
+                            <button mat-raised-button color="accent" (click)="addLevelRequirement()">ADD</button>
+
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let track of form.required_lvls">
+                            <div class="level">{{track.lvl}}</div>
+                            <div class="requirement">{{track.requirement}}</div>
+                            <button mat-icon-button (click)="deleteLevelRequirement(track.id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- / USER LEVEL REQUIREMENTS -->
+
+                <!-- TRACKING REQUIREMENTS -->
+                <div class="box info-box mt-16">
+                    <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between start">
+                        <div class="title">Tracking Requirements</div>
+                    </header>
+                    <div class="content" fxLayout="column">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                            <mat-form-field class="example-height">
+                                <input type="text" placeholder="Tracking Option" matInput [matAutocomplete]="auto"
+                                    [formControl]="trackingFilter">
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                    [displayWith]="displayFn">
+                                    <mat-optgroup *ngFor="let category of filteredOptions" [label]="category.cname">
+                                        <mat-option *ngFor="let option of category.options" [value]="option">
+                                            {{option.oname}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-autocomplete>
+                            </mat-form-field>
+
+                            <mat-button-toggle-group #trackButtonGroup="matButtonToggleGroup" [value]="trackRequirement"
+                                (change)="trackRequirement = trackButtonGroup.value">
+                                <mat-button-toggle value="apply">APPLY</mat-button-toggle>
+                                <mat-button-toggle value="confirm">CONFIRM</mat-button-toggle>
+                            </mat-button-toggle-group>
+
+                            <button mat-raised-button color="accent" (click)="addTrackRequirement()">ADD</button>
+
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let track of form.required_tracks">
+                            <div>{{getTrackingOptionName(track.tracking_option_id)}}</div>
+                            <div class="requirement">{{track.requirement}}</div>
+                            <button mat-icon-button (click)="deleteTrackRequirement(track.id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- / TRACKING REQUIREMENTS -->
+            </div>
+
+        </mat-drawer-container>
+    </div>
+</div>

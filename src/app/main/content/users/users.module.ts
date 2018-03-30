@@ -32,6 +32,7 @@ import { UsersExportDialogComponent } from './users-export-dialog/users-export-d
 import { UsersProfileSettingsComponent } from './profile/settings/settings.component';
 import { UsersSettingsAdminComponent } from './profile/settings/admin/admin.component';
 import { UsersSettingsClientComponent } from './profile/settings/client/client.component';
+import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 
 @NgModule({
     imports: [
@@ -57,6 +58,7 @@ import { UsersSettingsClientComponent } from './profile/settings/client/client.c
         UsersProfileDocumentComponent,
         UsersChatComponent,
         FuseChatViewComponent,
+        FuseChatStartComponent,
         FuseChatLeftSidenavComponent,
         FuseChatChatsSidenavComponent,
         BtnAddContactComponent,
@@ -76,6 +78,7 @@ import { UsersSettingsClientComponent } from './profile/settings/client/client.c
         UsersProfileComponent,
         UsersChatComponent,
         FuseChatViewComponent,
+        FuseChatStartComponent,
         FuseChatLeftSidenavComponent,
         FuseChatChatsSidenavComponent,
         BtnAddContactComponent,
