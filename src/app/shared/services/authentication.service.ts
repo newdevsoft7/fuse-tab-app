@@ -23,6 +23,7 @@ interface AccessData {
     settings: any;
     message: string;
     steps: any;
+    forms_required: any[];
 }
 
 @Injectable()
@@ -167,12 +168,13 @@ export class AuthenticationService {
      * @private
      * @param {AccessData} data
      */
-    private saveAccessData({ access_token, refresh_token, user, settings, steps }: AccessData) {
+    private saveAccessData({ access_token, refresh_token, user, settings, steps, forms_required }: AccessData) {
         if (access_token) { this.tokenStorage.setAccessToken(access_token); }
         if (refresh_token) { this.tokenStorage.setRefreshToken(refresh_token); }
         if (settings) { this.tokenStorage.setSettings(settings); }
         if (steps) { this.tokenStorage.setSteps(steps); }
         if (user) { this.tokenStorage.setUser(user); }
+        if (forms_required && forms_required.length > 0) { this.tokenStorage.setFormData(forms_required); }
     }
 
 }

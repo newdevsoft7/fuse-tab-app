@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { FormComponent } from './form/form.component';
 import { FormSignComponent } from './form-sign.component';
+import { FormSignService } from './form-sign.service';
 
 @NgModule({
     imports         : [
@@ -13,6 +14,7 @@ import { FormSignComponent } from './form-sign.component';
         FormComponent,
         FormSignComponent
     ],
+    providers: [ FormSignService ],
     exports         : [
         FormComponent,
         FormSignComponent

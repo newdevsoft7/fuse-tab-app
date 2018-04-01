@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="px-8 px-mat-16">
+            <div class="px-8 px-mat-16" *ngIf="!requiredFormData">
                 <fuse-shortcuts></fuse-shortcuts>
             </div>
 
@@ -43,12 +43,12 @@
             
             <mat-menu #userMenu="matMenu">
 
-                <button mat-menu-item (click)="openProfile()">
+                <button mat-menu-item (click)="openProfile()" *ngIf="!requiredFormData">
                     <mat-icon>account_circle</mat-icon>
                     <span>My Profile</span>
                 </button>
 
-                <button mat-menu-item class="">
+                <button mat-menu-item class="" *ngIf="!requiredFormData">
                     <mat-icon>mail</mat-icon>
                     <span>Inbox</span>
                 </button>
@@ -62,12 +62,13 @@
 
             <div class="toolbar-separator"></div>
 
-            <button mat-icon-button class="mat-icon-button btn--chat mx-12" matTooltip="Chat" matTooltipPosition="below" (click)="showChatTab()">
-                <span *ngIf="unreadCount > 0" class="notification">{{unreadCount}}</span>
-                <mat-icon class="icon">sms</mat-icon>
-            </button>
-
-            <div class="toolbar-separator"></div>
+            <ng-container *ngIf="!requiredFormData">
+                <button mat-icon-button class="mat-icon-button btn--chat mx-12" matTooltip="Chat" matTooltipPosition="below" (click)="showChatTab()">
+                    <span *ngIf="unreadCount > 0" class="notification">{{unreadCount}}</span>
+                    <mat-icon class="icon">sms</mat-icon>
+                </button>
+                <div class="toolbar-separator"></div>
+            </ng-container>
 
             <button mat-icon-button
                     class="mat-icon-button quick-panel-toggle-button"

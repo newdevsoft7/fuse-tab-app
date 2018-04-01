@@ -7,11 +7,17 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-    @Input() data;
+    iframeUrl: string;
+    data: any;
+
+    @Input('data') set updateData(data: any) {
+        this.data = data;
+        if (this.data && this.data.other_id) {
+            this.iframeUrl = `https://formsigner.net/main/templates/edit/${this.data.other_id}?provider=staffconnect&type=iframe`;
+        }
+    }
 
     constructor() { }
 
-    ngOnInit() {
-    }
-
+    ngOnInit() {}
 }

@@ -1,11 +1,15 @@
 <div class="page-layout blank">
 
     <app-tabs>
-        <app-tab [tabTitle]="'Home'">
+        <app-tab [tabTitle]="'Home'" *ngIf="(!formData || formData.length === 0); else formBlock">
             <app-home-timeline></app-home-timeline>
         </app-tab>
+        <ng-template #formBlock>
+            <app-tab [tabTitle]="form.name" [data]="form" *ngFor="let form of formData">
+                <app-form [data]="form"></app-form>
+            </app-tab>
+        </ng-template>
     </app-tabs>
-
 
     <!-- ADMIN VIEW TEMPLATES -->
     <ng-template #usersTpl let-data="data">

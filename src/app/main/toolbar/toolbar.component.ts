@@ -166,4 +166,8 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
     showChatTab() {
         this.tabService.openTab(TAB.USERS_CHAT_TAB);
     }
+
+    get requiredFormData(): boolean {
+        return !!this.tokenStorage.getFormData();
+    }
 }

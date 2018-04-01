@@ -113,6 +113,28 @@ export class TokenStorage {
     }
 
     /**
+     * Set the required form data
+     */
+    public setFormData(forms: any[]) {
+        localStorage.setItem('formRequired', JSON.stringify(forms));
+    }
+
+    /**
+     * Get the required form data
+     */
+    public getFormData(): any {
+        const formData = localStorage.getItem('formRequired');
+        return formData? JSON.parse(formData) : null;
+    }
+
+    /**
+     * Remove the required form data
+     */
+    public removeFormData() {
+        localStorage.removeItem('formRequired');
+    }
+
+    /**
     * Remove tokens
     */
     public clear() {
@@ -121,5 +143,6 @@ export class TokenStorage {
         localStorage.removeItem('user');
         localStorage.removeItem('secondaryUser');
         localStorage.removeItem('settings');
+        localStorage.removeItem('formRequired');
     }
 }

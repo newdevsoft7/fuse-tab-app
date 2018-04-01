@@ -21,7 +21,7 @@
             <fuse-navbar-vertical [folded]="fuseSettings.layout.navigationFolded"
                                   class="left-navbar"
                                   [ngClass]="fuseSettings.colorClasses.navbar"
-                                  *ngIf="(fuseSettings.layout.navigation === 'left' || fuseSettings.layout.navigation === 'top') && visibleNavbar">
+                                  *ngIf="(fuseSettings.layout.navigation === 'left' || fuseSettings.layout.navigation === 'top') && visibleNavbar && !requiredFormData">
             </fuse-navbar-vertical>
             <!-- / NAVBAR: Left -->
 

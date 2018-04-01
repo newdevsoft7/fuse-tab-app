@@ -89,6 +89,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     userSwitcherSubscription: Subscription;
 
+    formData: any;
+
     constructor(
         private translationLoader: FuseTranslationLoaderService,
         private fuseNavigationService: FuseNavigationService,
@@ -111,6 +113,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         this.closeTabSubscription = this.tabService.tabClosed.subscribe(url => {
             this.closeTab(url);
         });
+
+        this.formData = this.tokenStorage.getFormData();
     }
 
     async runSockets() {
@@ -161,6 +165,12 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                 this.switchUser();
             }
         });
+
+        if (window.addEventListener) {
+            window.addEventListener('message', this.onMessage.bind(this), false);
+        } else if ((<any>window).attachEvent) {
+            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
+        }
     }
 
     ngOnDestroy() {
@@ -271,4 +281,15 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         }
     }
 
+    onMessage(event: any) {
+        if (event.data && event.data.func && this.formData) {
+            const index = this.formData.findIndex(data => data.id === this.tabService.currentTab.data.id);
+            this.formData.splice(index, 1);
+            if (this.formData.length > 0) {
+                this.tokenStorage.setFormData(this.formData);
+            } else {
+                this.tokenStorage.removeFormData();
+            }
+        }
+    }
 }

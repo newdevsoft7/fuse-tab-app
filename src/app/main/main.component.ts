@@ -6,6 +6,7 @@ import { DOCUMENT } from '@angular/common';
 import { CustomLoadingService } from '../shared/services/custom-loading.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
 import { Router } from '@angular/router';
+import { TokenStorage } from '../shared/services/token-storage.service';
 
 @Component({
     selector     : 'fuse-main',
@@ -26,6 +27,7 @@ export class FuseMainComponent implements OnInit, OnDestroy
         private fuseConfig: FuseConfigService,
         private platform: Platform,
         private authService: AuthenticationService,
+        private tokenStorage: TokenStorage,
         @Inject(DOCUMENT) private document: any
     )
     {
@@ -69,5 +71,9 @@ export class FuseMainComponent implements OnInit, OnDestroy
 
     get visibleToolbar(): boolean {
        return !this.router.url.startsWith('/register');
+    }
+
+    get requiredFormData(): boolean {
+        return !!this.tokenStorage.getFormData();
     }
 }
