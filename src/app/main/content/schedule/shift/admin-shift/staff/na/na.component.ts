@@ -28,8 +28,9 @@ enum Query {
     Selected = 'selected',
     Standby = 'standby',
     Applicants = 'applicants',
+    Invited = 'invited',
     Na = 'na'
-};
+}
 
 @Component({
     selector: 'app-admin-shift-staff-na',

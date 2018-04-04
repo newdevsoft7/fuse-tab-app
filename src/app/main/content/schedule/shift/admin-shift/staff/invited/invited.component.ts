@@ -33,16 +33,16 @@ enum Query {
 }
 
 @Component({
-    selector: 'app-admin-shift-staff-applicants',
-    templateUrl: './applicants.component.html',
-    styleUrls: ['./applicants.component.scss'],
+    selector: 'app-admin-shift-staff-invited',
+    templateUrl: './invited.component.html',
+    styleUrls: ['./invited.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
+export class AdminShiftStaffInvitedComponent implements OnInit, DoCheck {
 
     @Input() editable;
-    _staffs;
 
+    _staffs;
     @Input()
     get staffs() {
         return this._staffs;
@@ -62,16 +62,22 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
     constructor(
         private spinner: CustomLoadingService,
         private scheduleService: ScheduleService,
-        private tabService: TabService,
         private userService: UserService,
+        private tabService: TabService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         differs: IterableDiffers
     ) {
     }
 
+    ngOnInit() {
+    }
+
+    ngDoCheck() {
+    }
+
     changeStatus(staff, statusId) {
-        let message = "";
+        let message = '';
 
         switch (statusId) {
             case STAFF_STATUS_SELECTED:
@@ -110,18 +116,14 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
                         this.toastr.success(res.message);
-                        this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Applicants)
+                        this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Invited)
                             .subscribe(res => {
                                 this.staffs = res.role_staff;
-                            })
-                            this.updateStaffCount();
+                            });
+                        this.updateStaffCount();
                     });
             }
         });
-    }
-
-    private updateStaffCount() {
-        this.onStaffCountChanged.next(true);
     }
 
     getAvatar(value) {
@@ -154,10 +156,8 @@ export class AdminShiftStaffApplicantsComponent implements OnInit, DoCheck {
             });
     }
 
-    ngOnInit() {
-    }
-
-    ngDoCheck() {
+    private updateStaffCount() {
+        this.onStaffCountChanged.next(true);
     }
 
 

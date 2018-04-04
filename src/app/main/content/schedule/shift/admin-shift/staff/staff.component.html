@@ -116,6 +116,7 @@
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_APPLIED')">Applied</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_STANDBY')">Standby</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_SELECTED')">Selected</button>
+                        <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_INVITED')">Invited</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
                         <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
@@ -136,7 +137,7 @@
                 <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section"
                     (selectedTabChange)="onSelectedTabChange(role, $event)">
 
-                    <mat-tab [label]="Selected">
+                    <mat-tab label="Selected">
                         <ng-template mat-tab-label>
                             Selected&nbsp;
                             <strong>{{role.num_selected}} / {{role.num_required}}</strong>
@@ -150,7 +151,7 @@
                     <mat-tab label="Standby">
                         <ng-template mat-tab-label>
                              Standby&nbsp;
-                            <strong>{{role.num_standby}}</strong>
+                            <strong *ngIf="role.num_standby">{{role.num_standby}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-standby [(staffs)]="role.standby"
                             [editable]="shift.editable"
@@ -160,17 +161,25 @@
                     <mat-tab label="Applicants">
                         <ng-template mat-tab-label>
                             Applicants&nbsp;
-                            <strong>{{role.num_applicants}}</strong>
+                            <strong *ngIf="role.num_applicants > 0">{{role.num_applicants}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-applicants [(staffs)]="role.applicants"
                             [editable]="shift.editable"
                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-applicants>
                     </mat-tab>
 
+                    <mat-tab label="Invited">
+                        <ng-template mat-tab-label>
+                            Invited&nbsp;
+                            <strong *ngIf="role.num_invited > 0">{{role.num_invited}}</strong>
+                        </ng-template>
+                        <app-admin-shift-staff-invited [(staffs)]="role.invited" [editable]="shift.editable" (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-invited>
+                    </mat-tab>
+
                     <mat-tab label="NA">
                         <ng-template mat-tab-label>
                             NA&nbsp;
-                            <strong>{{role.num_na}}</strong>
+                            <strong *ngIf="role.num_na > 0">{{role.num_na}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-na [(staffs)]="role.na"
                             [editable]="shift.editable"

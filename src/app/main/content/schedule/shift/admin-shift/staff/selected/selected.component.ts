@@ -19,7 +19,6 @@ import * as moment from 'moment';
 
 import { FuseConfirmDialogComponent } from '../../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { Tab } from '../../../../../../tab/tab';
-import { StaffStatus } from '../../../../../../../constants/staff-status-id';
 import {
     STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
     STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
@@ -33,8 +32,9 @@ enum Query {
     Selected = 'selected',
     Standby = 'standby',
     Applicants = 'applicants',
+    Invited = 'invited',
     Na = 'na'
-};
+}
 
 @Component({
     selector: 'app-admin-shift-staff-selected',
@@ -63,8 +63,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
     }
 
     @Input() showBillInfo = 0;
-
-    public StaffStatus = StaffStatus;
 
     @Output() onStaffCountChanged = new EventEmitter();
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
