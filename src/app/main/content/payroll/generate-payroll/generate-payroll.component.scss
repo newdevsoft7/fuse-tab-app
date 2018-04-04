@@ -1,0 +1,55 @@
+#generate-payroll-container {
+
+    .date-picker {
+        width: 120px;
+    }
+
+    .link {
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .payrolls {
+
+        .payroll {
+
+            .payroll-avatar img {
+                width: 50px;
+                min-width: 50px;
+                height: 50px;
+                line-height: 50px;
+                margin: 5px;
+                border-radius: 50%;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .category {
+
+                .name {
+                    text-transform: capitalize;
+                }
+
+                .category-table {
+                    width: 100%;
+                    border-collapse: collapse;
+
+                    .line {
+                        border: 1px solid #ccc;
+                    }
+
+                    .title {
+                        padding-left: 20px;
+                    }
+                }
+            }
+
+            .total {
+                text-align: right;
+                margin-top: 24px;
+            }
+        }
+    }
+}

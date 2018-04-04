@@ -25,6 +25,9 @@ export const locale = {
 
                 'FORMS': 'Forms',
 
+                'PAYROLL': 'Payroll',
+                'PAYROLL_GENERATE_PAYROLL': 'Generate Payroll',
+
                 'REPORTS_AND_UPLOADS': 'Reports & Uploads',
                 'REPORTS_AND_UPLOADS_REPORT_DESIGNER': 'Report Designer',
                 'REPORTS_AND_UPLOADS_SHARED_FILES': 'Shared Files',
