@@ -9,9 +9,9 @@
         </div>
     </ng-container>
     <ng-template #formBlock>
-        <p>The following forms must be completed in order to apply for this shift:</p>
-        <div>
-            <a *ngFor="let form of forms" href="javascript:void(0)" (click)="openForm(form)" class="mr-12">{{form.name}}</a>
+        <p class="text-center mb-0">The following must be completed first:</p>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <a *ngFor="let form of forms" href="javascript:void(0)" (click)="openForm(form)" class="mt-8">{{form.name}}</a>
         </div>
     </ng-template>
 </div>
