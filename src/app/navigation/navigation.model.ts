@@ -123,14 +123,6 @@ export const ADMIN_MODEL = [
         ]
     },
     {
-        'id': 'forms',
-        'title': 'Forms',
-        'translate': 'NAV.ADMIN.FORMS',
-        'icon': 'today',
-        'type': 'item',
-        'tab': TAB.FORMS_TAB
-    },
-    {
         'id': 'reports_and_uploads',
         'title': 'Reports & Uploads',
         'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS',

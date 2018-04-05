@@ -77,7 +77,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     // Form
     @ViewChild('formTpl') formTpl; // Form Template for signing
-    @ViewChild('formSignTpl') formSignTpl; // Forms Template
 
     // Payroll
     @ViewChild('payrollTpl') payrollTpl;

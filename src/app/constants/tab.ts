@@ -21,8 +21,6 @@ export const SCHEDULE_NEW_SHIFT_TAB = new Tab('New Shift', 'newShiftTpl', 'sched
 export const SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB = new Tab('Export Shifts as Excel', 'shiftsExportAsExcelTpl', 'schedule/export-shift/excel-spreadsheet', {});
 export const SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB = new Tab('Export Shifts as PDF', 'shiftsExportAsPdfTpl', 'schedule/export-shift/pdf-overview', {});
 
-export const FORMS_TAB = new Tab('Forms', 'formSignTpl', 'forms', {});
-
 export const REPORTS_AND_UPLOADS_TAB = new Tab('Reports & Uploads', '', 'reports-and-uploads', {});
 export const REPORTS_AND_UPLOADS_REPORT_DESIGNER_TAB = new Tab('Report Designer', '', 'reports-and-uploads/report-designer', {});
 export const REPORTS_AND_UPLOADS_SHARED_FILES_TAB = new Tab('Shared Files', '', 'reports-and-uploads/shared-file', {});
