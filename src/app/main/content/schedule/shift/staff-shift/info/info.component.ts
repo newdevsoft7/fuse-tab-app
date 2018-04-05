@@ -13,7 +13,6 @@ import {
 
 import { ToastrService } from 'ngx-toastr';
 
-import { StaffStatus } from '../../../../../../constants/staff-status-id';
 import { ScheduleService } from '../../../schedule.service';
 
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';

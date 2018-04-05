@@ -29,30 +29,31 @@ import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
 import { ActionService } from '../../../../../../shared/services/action.service';
 import { ScheduleService } from '../../../schedule.service';
-import { StaffStatus } from '../../../../../../constants/staff-status-id';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 import {
     STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
     STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
     STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
-    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
+    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW, STAFF_STATUS_INVITED
 } from '../../../../../../constants/staff-status';
 
 export enum Section {
     Selected = 0,
     Standby = 1,
     Applicants = 2,
-    NA = 3
-};
+    Invited = 3,
+    NA = 4
+}
 
 enum Query {
     Counts = 'counts',
     Selected = 'selected',
     Standby = 'standby',
     Applicants = 'applicants',
+    Invited = 'invited',
     Na = 'na'
-};
+}
 
 @Component({
     selector: 'app-admin-shift-staff',
@@ -82,8 +83,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     adminNoteForm: FormGroup;
     noteTemp: any; // Note template for update
 
-    public StaffStatus = StaffStatus;
-
     readonly noteTypes = [
         { value: 0, label: 'Default' }
     ]
@@ -91,18 +90,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     readonly noteClientVisibles = [
         { value: 0, label: 'Admin Only' },
         { value: 1, label: 'Admin & Client' }
-    ];
-
-    readonly StaffStatusesSelected = [
-        StaffStatus.Selected,
-        StaffStatus.Confirmed,
-        StaffStatus.CheckedInAttempted,
-        StaffStatus.CheckedIn,
-        StaffStatus.NoShow,
-        StaffStatus.CheckedOut,
-        StaffStatus.Completed,
-        StaffStatus.Invoiced,
-        StaffStatus.Paid
     ];
 
     usersToRoleSubscription: Subscription;
@@ -254,6 +241,16 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                     });
                 break;
 
+            case Section.Invited:
+                this.scheduleService.getRoleStaffs(role.id, Query.Invited)
+                    .subscribe(res => {
+                        const index = this.roles.findIndex(v => v.id === role.id);
+                        this.roles[index].invited = res.role_staff;
+                    }, err => {
+                        this.toastr.error(err.error.message);
+                    });
+                break;
+
             case Section.NA:
                 this.scheduleService.getRoleStaffs(role.id, Query.Na)
                     .subscribe(res => {
@@ -294,8 +291,9 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                     role['num_standby'] = res.num_standby;
                     role['num_applicants'] = res.num_applicants;
                     role['num_na'] = res.num_na;
+                    role['num_invited'] = res.num_invited;
                 }
-            })
+            });
     }
 
     changeStatus(role, statusId) {
@@ -312,6 +310,10 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
             case Section.Applicants:
                 staffs = role.applicants;
+                break;
+
+            case Section.Invited:
+                staffs = role.invited;
                 break;
 
             default:
@@ -382,6 +384,10 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
             case Section.Applicants:
                 query = Query.Applicants;
+                break;
+
+            case Section.Invited:
+                query = Query.Selected;
                 break;
 
             default:
@@ -506,7 +512,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 }
 
 function mapSectionToStaffStatus(section) {
-    switch(section) {
+    switch (section) {
         case Section.Selected:
             return STAFF_STATUS_SELECTED;
 
@@ -515,6 +521,9 @@ function mapSectionToStaffStatus(section) {
 
         case Section.Applicants:
             return STAFF_STATUS_APPLIED;
+
+        case Section.Invited:
+            return STAFF_STATUS_INVITED;
 
         case Section.NA:
             return STAFF_STATUS_REJECTED;

@@ -63,6 +63,7 @@ import { ClientShiftMapComponent } from './shift/client-shift/map/map.component'
 import { ClientShiftInfoComponent } from './shift/client-shift/info/info.component';
 import { ShiftsExportAsExcelDialogComponent } from './shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
 import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
+import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invited/invited.component';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-
         AdminShiftStaffSelectedComponent,
         AdminShiftStaffStandbyComponent,
         AdminShiftStaffApplicantsComponent,
+        AdminShiftStaffInvitedComponent,
         AdminShiftStaffNAComponent,
         NewShiftComponent,
         ShiftRoleEditComponent,
@@ -112,7 +114,7 @@ import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-
         ShiftsImportComponent,
         ShiftsExportAsExcelComponent,
         ShiftsExportAsPdfComponent,
-        
+
         // Staff view of shift
         StaffShiftComponent,
         StaffShiftInfoComponent,
@@ -123,7 +125,7 @@ import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-
         StaffShiftApplyDialogComponent,
         EditShiftDetailComponent,
         EditShiftRoleDetailComponent,
-        
+
         // Client view
         ClientShiftListComponent,
         ClientNewBookingComponent,

@@ -79,6 +79,10 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('formTpl') formTpl; // Form Template for signing
     @ViewChild('formSignTpl') formSignTpl; // Forms Template
 
+    // Payroll
+    @ViewChild('payrollTpl') payrollTpl;
+    @ViewChild('generatePayrollTpl') generatePayrollTpl;
+
     socketService: SocketService;
     fcmService: FCMService;
     alive: boolean = false;
@@ -135,6 +139,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         setTimeout(() => {
             this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(this.tokenStorage.getUser().lvl));
             this.addMenuByUserLevel();
+            this.addPayRollMenu();
         });
         this.loadFCMservices();
     }
@@ -279,6 +284,31 @@ export class FuseHomeComponent implements OnInit, OnDestroy
             default:
                 break;
         }
+    }
+
+    private addPayRollMenu() {
+        const shouldAddPayroll = this.tokenStorage.getSettings().payroll;
+        const level = this.tokenStorage.getUser().lvl;
+        if (!shouldAddPayroll || !['owner', 'admin'].includes(level)) { return; }
+        const navModel = this.fuseNavigationService.getNavigationModel();
+        const payroll = {
+            'id': 'payroll',
+            'title': 'Payroll',
+            'translate': 'NAV.ADMIN.PAYROLL',
+            'type': 'collapse',
+            'icon': 'payment',
+            'tab': new Tab('Payroll', 'payrollTpl', 'payroll', {}),
+            children: [
+                {
+                    'id': 'generate_payroll',
+                    'title': 'Generate Payroll',
+                    'translate': 'NAV.ADMIN.PAYROLL_GENERATE_PAYROLL',
+                    'type': 'item',
+                    'tab': new Tab('Generate Payroll', 'generatePayrollTpl', 'payroll/generate', {})
+                }
+            ]
+        };
+        navModel.splice(2, 0, payroll);
     }
 
     onMessage(event: any) {
