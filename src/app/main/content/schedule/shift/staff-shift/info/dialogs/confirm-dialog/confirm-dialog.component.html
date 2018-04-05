@@ -1,10 +1,17 @@
 <div class="dialog-content-wrapper">
-    <div class="heading secondary-text mat-primary-100-bg" *ngIf="data.heading">{{data.heading}}</div>
-    <h1 mat-dialog-title>{{data.title}}</h1>
+    <ng-container *ngIf="forms.length === 0; else formBlock">
+        <div class="heading secondary-text mat-primary-100-bg" *ngIf="data.heading">{{data.heading}}</div>
+        <h1 mat-dialog-title>{{data.title}}</h1>
 
-    <div mat-dialog-actions>
-        <button mat-button [mat-dialog-close]="true">Yes</button>
-        <button mat-button [mat-dialog-close]="false" cdkFocusInitial>No</button>
-    </div>
-
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="true">Yes</button>
+            <button mat-button [mat-dialog-close]="false" cdkFocusInitial>No</button>
+        </div>
+    </ng-container>
+    <ng-template #formBlock>
+        <p>The following forms must be completed in order to apply for this shift:</p>
+        <div>
+            <a *ngFor="let form of forms" href="javascript:void(0)" (click)="openForm(form)" class="mr-12">{{form.name}}</a>
+        </div>
+    </ng-template>
 </div>

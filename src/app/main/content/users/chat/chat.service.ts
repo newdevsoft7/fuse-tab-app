@@ -52,15 +52,16 @@ export class UsersChatService {
     const url = `${USER_URL}/device`;
     return this.http.post(url, { 
       firebase_token,
-      user_id: this.getUserId()
+      client_id: 2
     }).map((_: any) => _.id).toPromise();
   }
 
   async updateDevice(firebase_token: string): Promise<any> {
-    const url = `${USER_URL}/device/${this.Device}`;
-    return this.http.put(url, { 
+    const url = `${USER_URL}/device`;
+    return this.http.post(url, { 
       firebase_token,
-      user_id: this.getUserId()
+      client_id: 2,
+      device_id: this.Device
     }).toPromise();
   }
 

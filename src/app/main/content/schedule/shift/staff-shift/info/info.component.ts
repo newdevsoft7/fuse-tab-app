@@ -96,10 +96,14 @@ export class StaffShiftInfoComponent implements OnInit {
         switch (action) {
             case Action.apply:
                 this.dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
-                    panelClass: 'staff-shift-apply-dialog'
+                    panelClass: 'staff-shift-apply-dialog',
+                    data: {
+                        forms: this.shift.forms_apply,
+                        shift_id: this.shift.id
+                    }
                 });
                 this.dialogRef.afterClosed().subscribe(reason => {
-                    if (reason !== false) {
+                    if (reason) {
                         this.scheduleService.applyShiftRole(role.id, reason)
                             .subscribe(res => {
                                 this.toastr.success(res.message);
@@ -146,7 +150,9 @@ export class StaffShiftInfoComponent implements OnInit {
                 this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
                     data: {
                         title: 'Really confirm this role?',
-                        heading: this.settings.shift_msg_confirmation
+                        heading: this.settings.shift_msg_confirmation,
+                        forms: this.shift.forms_confirm,
+                        shift_id: this.shift.id
                     }
                 });
                 this.dialogRef.afterClosed().subscribe(result => {

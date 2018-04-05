@@ -13,7 +13,7 @@ export class FormComponent implements OnInit {
     @Input('data') set updateData(data: any) {
         this.data = data;
         if (this.data && this.data.other_id) {
-            this.iframeUrl = `https://formsigner.net/main/templates/edit/${this.data.other_id}?provider=staffconnect&type=iframe`;
+            this.iframeUrl = `https://formsigner.net/main/templates/signup/${this.data.other_id}?provider=staffconnect&type=iframe`;
         }
     }
 

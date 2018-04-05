@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 import { StaffShiftMapComponent } from './map/map.component';
+import { TabService } from '../../../../tab/tab.service';
 
 enum TAB {
     Info = 0,
@@ -36,6 +37,7 @@ export class StaffShiftComponent implements OnInit {
         private toastr: ToastrService,
         private userService: UserService,
         private scheduleService: ScheduleService,
+        private tabService: TabService
     ) { }
 
     ngOnInit() {
@@ -47,6 +49,12 @@ export class StaffShiftComponent implements OnInit {
             .subscribe(res => {
                 this.timezones = res;
             });
+
+        if (window.addEventListener) {
+            window.addEventListener('message', this.onMessage.bind(this), false);
+        } else if ((<any>window).attachEvent) {
+            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
+        }    
     }
 
     // Get a shift
@@ -76,5 +84,21 @@ export class StaffShiftComponent implements OnInit {
         }
     }
 
-
+    onMessage(event: any) {
+        if (event.data && event.data.func) {
+            const id = this.tabService.currentTab.data.id;
+            if (this.tabService.currentTab.url === `form_apply/${this.shift.id}/${id}`) {
+                const index = this.shift.forms_apply.findIndex(form => form.id === this.tabService.currentTab.data.id);
+                if (index > -1) {
+                    this.shift.forms_apply.splice(index, 1);
+                }
+            } else if (this.tabService.currentTab.url === `form_confirm/${this.shift.id}/${id}`) {
+                const index = this.shift.forms_confirm.findIndex(form => form.id === this.tabService.currentTab.data.id);
+                if (index > -1) {
+                    this.shift.forms_confirm.splice(index, 1);
+                }
+            }
+            this.tabService.closeTab(this.tabService.currentTab.url);
+        }
+    }
 }

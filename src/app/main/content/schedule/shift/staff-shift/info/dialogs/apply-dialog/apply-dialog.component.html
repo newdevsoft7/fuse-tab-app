@@ -1,21 +1,27 @@
 <div class="dialog-content-wrapper">
+    <ng-container *ngIf="forms.length === 0; else formBlock">
+        <h1 mat-dialog-title>Really apply for this role?</h1>
+        <form [formGroup]="form">
 
-    <h1 mat-dialog-title>Really apply for this role?</h1>
-    <form [formGroup]="form">
+            <div mat-dialog-content>
+                <p *ngIf="settings.shift_msg_application !== ''">
+                    {{settings.shift_msg_application}}
+                </p>
+                <mat-form-field floatPlaceholder="never" class="w-100-p">
+                    <textarea matInput formControlName="reason"></textarea>
+                </mat-form-field>
+            </div>
 
-        <div mat-dialog-content>
-            <p *ngIf="settings.shift_msg_application !== ''">
-                {{settings.shift_msg_application}}
-            </p>
-            <mat-form-field floatPlaceholder="never" class="w-100-p">
-                <textarea matInput formControlName="reason"></textarea>
-            </mat-form-field>
+            <div mat-dialog-actions>
+                <button mat-button (click)="saveForm()" cdkFocusInitial>Apply</button>
+                <button mat-button [mat-dialog-close]="false">Cancel</button>
+            </div>
+        </form>
+    </ng-container>
+    <ng-template #formBlock>
+        <p>The following forms must be completed in order to apply for this shift:</p>
+        <div>
+            <a *ngFor="let form of forms" href="javascript:void(0)" (click)="openForm(form)" class="mr-12">{{form.name}}</a>
         </div>
-
-        <div mat-dialog-actions>
-            <button mat-button (click)="saveForm()" cdkFocusInitial>Apply</button>
-            <button mat-button [mat-dialog-close]="false">Cancel</button>
-        </div>
-    </form>
-
+    </ng-template>
 </div>
