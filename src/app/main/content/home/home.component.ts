@@ -290,6 +290,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         const level = this.tokenStorage.getUser().lvl;
         if (!shouldAddPayroll || !['owner', 'admin'].includes(level)) { return; }
         const navModel = this.fuseNavigationService.getNavigationModel();
+        if (navModel.find(v => v.id === 'payroll')) { return; }
         const payroll = {
             'id': 'payroll',
             'title': 'Payroll',
