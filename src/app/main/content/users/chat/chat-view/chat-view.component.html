@@ -108,7 +108,7 @@
                     debounce
                     [delay]="2000"
                     ngModel
-                    placeholder="Type and hit enter to send message"
+                    placeholder="Type and hit enter to send a message"
                     (onValueChange)="stopTyping()"
                     (keyup)="continueTyping()" 
                     (blur)="updatePendingMessage.next(replyForm.form.value.message)" 
