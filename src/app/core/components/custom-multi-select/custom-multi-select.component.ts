@@ -83,6 +83,14 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, OnInit,
             }
         });
     }
+    
+    @Input('added') set added(v: any) {
+        if (v) {
+            this._selected.push(v);
+            this._value.push(v[this.valueBy]);
+            this.onChange(this._value);
+        }
+    }
 
     @Input('value')
     get value() { return this._value; }

@@ -1,0 +1,95 @@
+<form novalidate #messageForm="ngForm" (ngSubmit)="sendMessage()">
+  <div class="header px-12" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start" fxLayoutAlign.xs="start">
+    <div class="form-inputs" fxLayout="column">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+        <span class="w-100">To</span>
+        <app-custom-multi-select-group
+          class="w-100-p"
+          [class.submitted]="messageForm.submitted"
+          [autocompleteObservable]="recipientsFiltersObservable"
+          [labelBy]="'text'" 
+          [valueBy]="'id'"
+          [(ngModel)]="recipients"
+          name="recipients"
+          required
+          (ngModelChange)="onRecipientFiltersChanged($event)"></app-custom-multi-select-group>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+        <span class="w-100">From Email</span>
+        <mat-form-field>
+          <mat-select 
+            [(ngModel)]="message.from"
+            #from="ngModel"
+            name="from"
+            required>
+            <mat-option *ngFor="let email of fromEmails" [value]="email.id">{{email.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+        <span class="w-100">Template</span>
+        <mat-form-field>
+          <mat-select>
+            <!-- @todo: insert options -->
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+        <span class="w-100">Subject</span>
+        <mat-form-field>
+          <input 
+            matInput
+            [(ngModel)]="message.subject"
+            #subject="ngModel"
+            name="subject"
+            required>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+        <span class="w-100">Attachments</span>
+        <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p">
+          <app-custom-multi-select
+            class="w-100-p"
+            [autocompleteObservable]="attachmentsFiltersObservable"
+            [labelBy]="'text'" 
+            [valueBy]="'id'"
+            [added]="file"
+            (valueChange)="onAttachmentsFiltersChanged($event)"></app-custom-multi-select>
+          <button mat-mini-fab class="ml-12" type="button" (click)="uploadFile.click()">
+            <mat-icon class="mat-24 white-fg">add</mat-icon>
+          </button>
+          <input type="file" #uploadFile accept="image/jpeg, image/png, video/mp4" hidden/>
+        </div>
+      </div>
+    </div>
+    <div class="switcher mt-12" fxLayout="row" fxLayoutAlign="center center">
+      Message
+      <mat-slide-toggle 
+        class="ml-8" 
+        ngModel 
+        #email="ngModel"
+        name="email"        
+        (ngModelChange)="updateEmailToggler($event)">Email</mat-slide-toggle>
+    </div>
+  </div>
+  <div class="content px-12 pt-16">
+    <div 
+      [froalaEditor]
+      [(ngModel)]="message.content"
+      #content="ngModel"
+      name="content"
+      required></div>
+  </div>
+  <div class="footer px-12 pt-20">
+    <button mat-raised-button color="accent" type="submit" [disabled]="sent || sending">
+      <ng-container *ngIf="!sent && !sending">{{ message.thread === 0 ? 'Send Individually' : 'Send Group' }}{{ !count? '' : ' (' + count + ' recipients)' }}</ng-container>
+      <ng-container *ngIf="sent">Sent</ng-container>
+      <ng-container *ngIf="sending">Sending...</ng-container>
+    </button>
+    <button mat-raised-button class="btn-menu px-4" color="accent" [matMenuTriggerFor]="menu" type="button" [disabled]="sent || sending"><mat-icon class="white-fg">expand_more</mat-icon></button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="message.thread = 0">Send Individually</button>
+        <button mat-menu-item (click)="message.thread = 1">Send Group</button>
+    </mat-menu>
+  </div>
+</form>

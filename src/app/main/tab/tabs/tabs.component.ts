@@ -71,7 +71,7 @@ export class TabsComponent implements AfterContentInit {
 
 	openTab(newTab: Tab) {
 		const existedTab = this.dynamicTabs.find(tab => tab.url == newTab.url);
-		if (existedTab && !newTab.shouldAlwaysOpen) {
+		if (existedTab && !newTab.shouldAlwaysOpen && !newTab.multiple) {
 			this.selectTab(existedTab);
 		} else {
 			// get a component factory for our TabComponent
@@ -85,10 +85,35 @@ export class TabsComponent implements AfterContentInit {
 
 			// set the according properties on our component instance
 			let instance: TabComponent = componentRef.instance as TabComponent;
-			instance.title = newTab.title;
-			instance.url = newTab.url;
 			instance.template = newTab.template;
 			instance.data = newTab.data;
+			if (!newTab.multiple) {				
+				instance.title = newTab.title;
+				instance.url = newTab.url;
+			} else {
+				const sameTabs = this.dynamicTabs.filter(tab => tab.template === newTab.template);
+				if (sameTabs.length === 0) {
+					instance.title = newTab.title;
+					instance.url = `${newTab.url}/0`;
+				} else {
+					const indexArray = [];
+					for (let i = 0; i < sameTabs.length; i++) {
+						const index = parseInt(sameTabs[i].url.replace(`${newTab.url}/`, ''));
+						indexArray.push(index);
+					}
+					for (let i = 0; i <= Math.max(...indexArray); i++) {
+						if (indexArray.indexOf(i) === -1) {
+							instance.title = `${newTab.title}${i === 0? '' : ` ${i + 1}`}`;
+							instance.url = `${newTab.url}/${i}`;
+							break;
+						}
+					}
+					if (!instance.title || !instance.url) {
+						instance.title = `${newTab.title} ${indexArray.length + 1}`;
+						instance.url = `${newTab.url}/${indexArray.length}`;
+					}
+				}
+			}
 
 			// remember the dynamic component for rendering the
 			// tab navigation headers

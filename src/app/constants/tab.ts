@@ -7,7 +7,7 @@ export const USERS_PROFILE_TAB = new Tab('Profile', 'profileTpl', 'users/profile
 export const USERS_NEW_SUBMISSION_TAB = new Tab('New Submission', '', 'users/new-submission', {});
 export const USERS_NEW_USER_TAB = new Tab('New User', '', 'users/new-user', {});
 export const USERS_RECENT_ACTIVITY_TAB = new Tab('Recent Activity', '', 'users/recent-activity', {});
-export const USERS_NEW_MESSAGE_TAB = new Tab('New Message', '', 'users/new-message', {});
+export const USERS_NEW_MESSAGE_TAB = new Tab('New Message', 'newMessageTpl', 'users/new-message', {}, true);
 export const USERS_CHAT_TAB = new Tab('Chat', 'usersChatTpl', 'users/chat', {});
 
 export const SCHEDULE_CALENDAR_TAB = new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {});
