@@ -73,7 +73,7 @@
                 <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="message?.ppic_a">
 
                 <div class="bubble">
-                    <div class="message">{{message.content}}</div>
+                    <div class="message" [innerHtml]="message.content"></div>
                     <div class="clearfix">
                         <div class="time secondary-text pull-left">{{message.created_at | date:'medium'}}</div>
                     </div>

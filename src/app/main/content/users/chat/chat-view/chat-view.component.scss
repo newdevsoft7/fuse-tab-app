@@ -109,6 +109,9 @@
 
                     .message {
                         white-space: pre-wrap;
+                        /deep/ * {
+                            margin: 0;
+                        }
                     }
 
                     .time {
