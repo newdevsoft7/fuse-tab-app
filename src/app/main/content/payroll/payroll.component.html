@@ -82,11 +82,9 @@
 
     <div class="content mt-24">
         <ngx-datatable class="material striped" [rows]="payrolls" [loadingIndicator]="isLoading" [columnMode]="'force'"
-            [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true" [selected]="selectedPayrolls" limit="1" [sortType]="'multi'" (select)="onSelect($event)">
-            <!-- <ngx-datatable class="material striped" [rows]="payrolls" [loadingIndicator]="isLoading" [columnMode]="'force'"
             [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true" [selected]="selectedPayrolls" [externalPaging]="true" [count]="total"
             [offset]="pageNumber" [limit]="pageSize" [sortType]="'multi'" (page)="setPage($event)"
-            (sort)="onSort($event)" (select)="onSelect($event)"> -->
+            (sort)="onSort($event)" (select)="onSelect($event)">
 
             <!-- CHECKBOX -->
             <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
@@ -108,10 +106,13 @@
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Invoice No." prop="display" [sortable]="true" [canAutoResize]="true">
+            <ngx-datatable-column name="Invoice No." prop="display" [sortable]="false" [canAutoResize]="true">
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Status" prop="status" [sortable]="true" [canAutoResize]="true">
+            <ngx-datatable-column name="Recipient" prop="name" [sortable]="false" [canAutoResize]="true">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Status" prop="status" [sortable]="false" [canAutoResize]="true">
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false">
@@ -136,7 +137,7 @@
                 </ng-template>
             </ngx-datatable-column>
 
-            <!-- <ngx-datatable-footer>
+            <ngx-datatable-footer>
                 <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
                     let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset">
                     <div class="page-count h-60">
@@ -157,7 +158,7 @@
                         (change)="setPage($event)">
                     </datatable-pager>
                 </ng-template>
-            </ngx-datatable-footer> -->
+            </ngx-datatable-footer>
         </ngx-datatable>
     </div>
 </div>

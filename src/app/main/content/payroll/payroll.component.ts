@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/observable';
 import { CustomLoadingService } from '../../../shared/services/custom-loading.service';
 import { PayrollService } from './payroll.service';
 
-const DEFAULT_PAGE_SIZE = 2;
+const DEFAULT_PAGE_SIZE = 5;
 
 @Component({
     selector: 'app-payroll',
@@ -95,16 +95,16 @@ export class PayrollComponent implements OnInit {
             this.to = moment(this.to).format('YYYY-MM-DD');
             this.filters.push(`to:${this.to}`);
         }
-        if (this.user) {
-            this.filters.push(`user:${this.user}`);
+        if (this.user && !_.isEmpty(this.user)) {
+            this.filters.push(`user:${JSON.stringify(this.user)}`);
         }
         this.payrollService.getPayrolls(this.pageSize, this.pageNumber, this.status, this.filters, this.sorts).subscribe(
             res => {
                 this.isLoading = false;
-                this.payrolls = res[0];
-                // this.pageSize = res.page_size;
-                // this.pageNumber = res.page_number;
-                // this.total = res.total_counts;
+                this.payrolls = res.data;
+                this.pageSize = res.page_size;
+                this.pageNumber = res.page_number;
+                this.total = res.total_counts;
             },
             err => {
                 this.isLoading = false;
