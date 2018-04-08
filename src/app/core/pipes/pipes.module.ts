@@ -6,6 +6,7 @@ import { HtmlToPlaintextPipe } from './htmlToPlaintext.pipe';
 import { FilterPipe } from './filter.pipe';
 import { CamelCaseToDashPipe } from './camelCaseToDash.pipe';
 import { SafePipe } from './safe.pipe';
+import { CapitalizePipe } from './capitalize.pipe';
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import { SafePipe } from './safe.pipe';
         HtmlToPlaintextPipe,
         FilterPipe,
         CamelCaseToDashPipe,
-        SafePipe
+        SafePipe,
+        CapitalizePipe
 
     ],
     imports     : [],
@@ -24,7 +26,8 @@ import { SafePipe } from './safe.pipe';
         HtmlToPlaintextPipe,
         FilterPipe,
         CamelCaseToDashPipe,
-        SafePipe
+        SafePipe,
+        CapitalizePipe
     ]
 })
 

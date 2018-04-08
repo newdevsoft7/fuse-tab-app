@@ -1,0 +1,34 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-icon class="mr-8 mb-8" fxFlex="0 1 auto">search</mat-icon>
+    <mat-form-field fxFlex>
+        <mat-chip-list #chipList>
+            <ng-container *ngFor="let tag of selected">
+                <mat-chip  *ngIf="tag" (remove)="remove(tag)">
+                    {{tag[labelBy]}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </ng-container>
+            <input #chipInput
+                ngModel
+                debounce
+                [delay]="300"
+                [placeholder]="placeholder"
+                [matChipInputFor]="chipList"
+                [matChipInputAddOnBlur]="false"
+                (matChipInputTokenEnd)="addNew($event)"
+                [matAutocomplete]="auto"
+                [disabled]="disabled"
+                (onValueChange)="onkeyUpChange($event)">
+        </mat-chip-list>
+
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
+            <mat-option *ngFor="let tag of sourceFiltered()" [value]="tag">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <img [src]="tag[avatar]" class="avatar"/>
+                    <span>{{tag[labelBy]}}</span>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
+
+    </mat-form-field>
+</div>

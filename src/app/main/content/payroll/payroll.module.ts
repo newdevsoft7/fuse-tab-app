@@ -4,6 +4,7 @@ import { SharedModule } from '../../../core/modules/shared.module';
 import { PayrollComponent } from './payroll.component';
 import { GeneratePayrollComponent } from './generate-payroll/generate-payroll.component';
 import { PayrollService } from './payroll.service';
+import { PayrollSearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
     imports         : [
@@ -12,7 +13,8 @@ import { PayrollService } from './payroll.service';
     ],
     declarations    : [
         PayrollComponent,
-        GeneratePayrollComponent
+        GeneratePayrollComponent,
+        PayrollSearchBarComponent
     ],
     exports         : [
         PayrollComponent,
