@@ -3,7 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 
 import { CustomLoadingService } from '../../../shared/services/custom-loading.service';
 import { PayrollService } from './payroll.service';
