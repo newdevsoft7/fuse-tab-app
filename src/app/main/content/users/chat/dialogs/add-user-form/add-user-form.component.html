@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar matDialogTitle class="mat-accent m-0">
       <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-          <span class="title dialog-title">New users</span>
+          <span class="title dialog-title">Add someone to the conversation</span>
           <button mat-button class="mat-icon-button"
                   (click)="dialogRef.close()"
                   aria-label="Close dialog">
@@ -12,7 +12,7 @@
 
   <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar fxLayout="column">
     <mat-form-field class="" fxFlex floatPlaceholder="never">
-        <textarea debounce matInput placeholder="Search users here..." [(ngModel)]="searchText" (onValueChange)="searchUsers()"></textarea>
+        <textarea debounce matInput placeholder="Start typing to search.." [(ngModel)]="searchText" (onValueChange)="searchUsers()"></textarea>
     </mat-form-field>
 
     <div class="user-list" fxLayout="column">
@@ -34,8 +34,6 @@
           <btn-add-contact [added]="isUserSelected(user)" (onTapped)="select(user)"></btn-add-contact>
 
       </div>
-
-      <p *ngIf="users.length === 0" class="m-0 p-16">No results.</p>
 
     </div>
   </div>

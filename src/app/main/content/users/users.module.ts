@@ -34,10 +34,16 @@ import { UsersSettingsAdminComponent } from './profile/settings/admin/admin.comp
 import { UsersSettingsClientComponent } from './profile/settings/client/client.component';
 import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 
+import { MessageComponent, MessageService } from './message';
+import { CustomMultiSelectGroupModule } from '../../../core/components/custom-multi-select-group/custom-multi-select-group.module';
+import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
+
 @NgModule({
     imports: [
         CommonModule,
-        SharedModule
+        SharedModule,
+        CustomMultiSelectGroupModule,
+        CustomMultiSelectModule
     ],
     declarations: [
         UsersComponent,
@@ -71,7 +77,8 @@ import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
         UsersExportDialogComponent,
         UsersProfileSettingsComponent,
         UsersSettingsAdminComponent,
-        UsersSettingsClientComponent
+        UsersSettingsClientComponent,
+        MessageComponent
     ],
     exports: [
         UsersComponent,
@@ -84,11 +91,13 @@ import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
         BtnAddContactComponent,
         NewThreadFormDialogComponent,
         AddUserFormDialogComponent,
-        RenameThreadFormDialogComponent
+        RenameThreadFormDialogComponent,
+        MessageComponent
     ],
     providers: [
         UserService,
-        UsersChatService
+        UsersChatService,
+        MessageService
     ],
     entryComponents: [
         UserFormDialogComponent,

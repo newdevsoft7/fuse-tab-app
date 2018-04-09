@@ -12,7 +12,7 @@
 
                     <mat-icon>search</mat-icon>
 
-                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search or start new chat" (onValueChange)="searchUsers.next({searchText: $event, type: 'all'})" fxFlex>
+                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search for or start a new conversation" (onValueChange)="searchUsers.next({searchText: $event, type: 'all'})" fxFlex>
 
                 </div>
             </div>
