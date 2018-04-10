@@ -1,0 +1,70 @@
+<div id="email-templates-container">
+    <div class="action-buttons" fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="12px">
+        <button mat-raised-button color="accent" (click)="openNewFolderEdit()">
+            <mat-icon>add</mat-icon>
+            New Folder
+        </button>
+
+        <button mat-raised-button color="accent" (click)="openNewTemplateEdit()">
+            <mat-icon>add</mat-icon>
+            New Template
+        </button>
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start">
+
+        <!-- FODLERS & TEMPLATES TREE PANE -->
+        <div class="folder-tree nav" fxFlex="0 1 auto">
+            <div *ngFor="let folder of folders" class="folder nav-collapse nav-item" [class.open]="folder.isOpen">
+                <a class="nav-link" matRipple (click)="selectFolder($event, folder)"
+                    [class.active]="selectedFolder.id === folder.id">
+                    <span class="nav-link-title">{{folder.fname}}</span>
+                    <mat-icon class="collapse-arrow" *ngIf="folder.templates.length > 0">keyboard_arrow_right</mat-icon>
+                </a>
+
+                <mat-divider></mat-divider>
+
+                <div class="children" [hidden]="!folder.isOpen">
+                    <div class="nav-item" *ngFor="let template of folder.templates">
+                        <a class="nav-link" matRipple (click)="selectTemplate(template)"
+                            [class.active]="selectedTemplate?.id === template.id">
+                            <span class="nav-link-title">{{template.tname}}</span>
+                        </a>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+        </div>
+        <!-- / FOLDERS & TEMPLATES TREE PANE -->
+
+        <!-- CONTENT -->
+        <div class="content mat-elevation-z1 p-16" fxFlex ngClass.gt-xs="ml-16" *ngIf="mode !== null">
+            <div class="folder-template"
+                *ngIf="mode === Mode.NewFolder ||
+                        (mode === Mode.EditFolder)">
+                <form [formGroup]="folderForm">
+                    <h3>{{mode === Mode.NewFolder ? 'New Folder' : 'Edit Folder ' + selectedFolder.fname}}</h3>
+                    <div class="form-inputs" fxLayout="column">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="w-100">Name</span>
+                            <mat-form-field>
+                                <input matInput formControlName="fname">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start">
+                            <button mat-raised-button color="accent" (click)="saveFolder()"
+                                [disabled]="folderForm.invalid">Save</button>
+                            <button mat-raised-button class="ml-12" (click)="deleteFolder()"
+                                *ngIf="mode === Mode.EditFolder">Delete</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+
+</div>
