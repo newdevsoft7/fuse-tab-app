@@ -1,5 +1,5 @@
 import { FuseNavigationModelInterface } from '../core/components/navigation/navigation.model';
-import * as TAB from '../constants/tab';
+import { TAB } from '../constants/tab';
 import { Level } from '../constants/level';
 
 export const ADMIN_MODEL = [
@@ -95,7 +95,6 @@ export const ADMIN_MODEL = [
                 'title': 'Export Shifts',
                 'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS',
                 'type': 'collapse',
-                // 'tab': TAB.SCHEDULE_EXPORT_SHIFTS_TAB,
                 'children': [
                     {
                         'id': 'excel_spreadsheet',

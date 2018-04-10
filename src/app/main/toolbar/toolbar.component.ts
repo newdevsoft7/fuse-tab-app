@@ -3,7 +3,6 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { FuseConfigService } from '../../core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TabService } from '../tab/tab.service';
-import { USERS_PROFILE_TAB } from '../../constants/tab';
 import { AuthenticationService } from '../../shared/services/authentication.service';
 import { UserService } from '../content/users/user.service';
 import { TokenStorage } from '../../shared/services/token-storage.service';
@@ -11,7 +10,7 @@ import { fuseAnimations } from '../../core/animations';
 import { Tab } from '../tab/tab';
 import { Subscription } from 'rxjs/Subscription';
 import { UsersChatService } from '../content/users/chat/chat.service';
-import * as TAB from '../../constants/tab';
+import { TAB } from '../../constants/tab';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -125,7 +124,7 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
         const user = this.tokenStorage.getUser();
         if (user) {
             try {
-                this.user = await this.userService.getUser(user.id).toPromise();            
+                this.user = await this.userService.getUser(user.id).toPromise();
                 if (this.tokenStorage.isExistSecondaryUser()) {
                     this.loggedInSecondary = true;
                 } else {
