@@ -9,7 +9,7 @@
           [autocompleteObservable]="recipientsFiltersObservable"
           [labelBy]="'text'" 
           [valueBy]="'id'"
-          [(ngModel)]="recipients"
+          [(ngModel)]="message.recipients"
           name="recipients"
           required
           (ngModelChange)="onRecipientFiltersChanged($event)"></app-custom-multi-select-group>
@@ -28,10 +28,13 @@
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
         <span class="w-100">Template</span>
-        <mat-form-field>
-          <mat-select>
-            <!-- @todo: insert options -->
-          </mat-select>
+        <mat-form-field class="w-100-p">
+          <input type="text" matInput ngModel name="template" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterTemplates($event)">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="templateDisplayFn" (optionSelected)="selectTemplate($event)">
+            <mat-option *ngFor="let template of templates" [value]="template">
+              {{ template.tname }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
@@ -49,12 +52,14 @@
         <span class="w-100">Attachments</span>
         <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p">
           <app-custom-multi-select
+            #attachmentsSelector
             class="w-100-p"
             [autocompleteObservable]="attachmentsFiltersObservable"
             [labelBy]="'text'" 
             [valueBy]="'id'"
             [added]="file"
-            (valueChange)="onAttachmentsFiltersChanged($event)"></app-custom-multi-select>
+            [(ngModel)]="message.attachments"
+            name="attachments"></app-custom-multi-select>
           <button mat-mini-fab class="ml-12" type="button" (click)="uploadFile.click()">
             <mat-icon class="mat-24 white-fg">add</mat-icon>
           </button>
@@ -81,12 +86,12 @@
       required></div>
   </div>
   <div class="footer px-12 pt-20">
-    <button mat-raised-button color="accent" type="submit" [disabled]="sent || sending">
-      <ng-container *ngIf="!sent && !sending">{{ message.thread === 0 ? 'Send Individually' : 'Send Group' }}{{ !count? '' : ' (' + count + ' recipients)' }}</ng-container>
-      <ng-container *ngIf="sent">Sent</ng-container>
+    <button mat-raised-button color="accent" type="submit" [disabled]="(sent && messageForm.pristine) || sending">
+      <ng-container *ngIf="!sending && (!messageForm.pristine || !sent)">{{ message.thread === 0 ? 'Send Individually' : 'Send Group' }}{{ !count? '' : ' (' + count + ' recipients)' }}</ng-container>
+      <ng-container *ngIf="sent && messageForm.pristine">Sent</ng-container>
       <ng-container *ngIf="sending">Sending...</ng-container>
     </button>
-    <button mat-raised-button class="btn-menu px-4" color="accent" [matMenuTriggerFor]="menu" type="button" [disabled]="sent || sending"><mat-icon class="white-fg">expand_more</mat-icon></button>
+    <button mat-raised-button class="btn-menu px-4" color="accent" [matMenuTriggerFor]="menu" type="button" [disabled]="(sent && messageForm.pristine) || sending"><mat-icon class="white-fg">expand_more</mat-icon></button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="message.thread = 0">Send Individually</button>
         <button mat-menu-item (click)="message.thread = 1">Send Group</button>

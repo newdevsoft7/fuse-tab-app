@@ -19,6 +19,11 @@ export class MessageService {
     return this.http.get(url);
   }
 
+  searchTemplates(searchText: string): Promise<any> {
+    const url = `${environment.apiUrl}/autocomplete/message/template/${searchText}`;
+    return this.http.get(url).toPromise();
+  }
+
   send(body: any): Promise<any> {
     const url = `${environment.apiUrl}/message`;
     return this.http.post(url, body).toPromise();
@@ -29,5 +34,10 @@ export class MessageService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(url, formData).toPromise();
+  }
+
+  getTemplate(templateId: number): Promise<any> {
+    const url = `${environment.apiUrl}/message/template/${templateId}`;
+    return this.http.get(url).toPromise();
   }
 }

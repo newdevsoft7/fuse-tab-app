@@ -2,9 +2,10 @@ import { Component, ViewChild, ElementRef } from "@angular/core";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
 import { MessageService } from "./message.service";
 import { Observable } from "rxjs/Observable";
-import { CustomMultiSelectComponent } from "../../../../core/components/custom-multi-select/custom-multi-select.component";
 import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { MatAutocompleteSelectedEvent } from "@angular/material";
+import { CustomMultiSelectComponent } from "../../../../core/components/custom-multi-select/custom-multi-select.component";
 
 @Component({
   selector: 'app-user-message',
@@ -14,25 +15,26 @@ import { ToastrService } from "ngx-toastr";
 export class MessageComponent {
   message: any = {
     thread: 0,
-    email: 0
+    email: 0,
+    attachments: [],
+    recipients: []
   };
 
   fromEmails: any = [];
-  recipients: any = [];
-  attachments: any = [];
 
   recipientsFiltersObservable: any;
   attachmentsFiltersObservable: any;
   count: number = 0;
 
   file: any;
-  files: any = [];
 
   sending: boolean = false;
   sent: boolean = false;
+  templates: any = [];
 
   @ViewChild('uploadFile') uploadFile: ElementRef;
   @ViewChild('messageForm') messageForm: NgForm;
+  @ViewChild('attachmentsSelector') attachmentsSelector: CustomMultiSelectComponent;
 
   constructor(
     private tokenStorage: TokenStorage,
@@ -72,7 +74,7 @@ export class MessageComponent {
   }
 
   async onRecipientFiltersChanged(filters: any): Promise<any> {
-    this.message.recipients = filters;
+    if (filters.length === 0) return;
     try {
       const res = await this.messageService.send({
         content: 'test',
@@ -85,15 +87,23 @@ export class MessageComponent {
     }
   }
 
-  onAttachmentsFiltersChanged(filters: any): void {
-    this.files = filters;
+  async filterTemplates(searchText: string): Promise<any> {
+    if (!searchText) {
+      this.templates = [];
+      return;
+    }
+    try {
+      this.templates = await this.messageService.searchTemplates(searchText);
+    } catch (e) {
+      this.handleError(e.error);
+    }
   }
 
-  updateEmailToggler(value: boolean) {
+  updateEmailToggler(value: boolean): void {
     this.message.email = value? 1 : 0;
   }
 
-  async fileUpload(file: File) {    
+  async fileUpload(file: File): Promise<any> {    
     try {
       const res = await this.messageService.uploadFile(file);
       this.file = { id: res.data.id, text: res.data.oname };
@@ -102,7 +112,7 @@ export class MessageComponent {
     }
   }
 
-  async sendMessage() {
+  async sendMessage(): Promise<any> {
     if (this.messageForm.valid) {
       this.sending = true;
       try {
@@ -113,8 +123,11 @@ export class MessageComponent {
           thread: this.message.thread,
           email: this.message.email,
           subject: this.message.subject,
-          from: this.message.from
+          from: this.message.from,
+          attachments: this.message.attachments
         });
+        this.toastrService.success('Email has been sent successfully!');
+        this.messageForm.reset(this.message);
         this.sent = true;
       } catch (e) {
         this.handleError(e.error);
@@ -125,7 +138,26 @@ export class MessageComponent {
     }
   }
 
-  handleError(e) {
+  templateDisplayFn(template?: any): string {
+    return template? template.tname : '';
+  }
+
+  async selectTemplate(event: MatAutocompleteSelectedEvent): Promise<any> {
+    try {
+      const template = await this.messageService.getTemplate(event.option.value.id);
+      this.attachmentsSelector.value = [];
+      for (let i = 0; i < template.attachments.length; i++) {
+        this.file = { id: template.attachments[i].id, text: template.attachments[i].oname }
+      }
+      this.message.content = template.content;
+      this.message.subject = template.subject;
+      this.message.from = template.from;
+    } catch (e) {
+      this.handleError(e.error);
+    }
+  }
+
+  handleError(e): void {
     this.toastrService.error(e.message || 'Something is wrong');
   }
 }
