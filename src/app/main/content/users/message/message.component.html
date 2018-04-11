@@ -78,12 +78,13 @@
     </div>
   </div>
   <div class="content px-12 pt-16">
-    <div 
-      [froalaEditor]
+    <app-ckeditor-v5
+      [uploadUrl]="uploadUrl"
+      [token]="token"
+      [imageBaseUrl]="imageBaseUrl"
       [(ngModel)]="message.content"
-      #content="ngModel"
       name="content"
-      required></div>
+      require></app-ckeditor-v5>
   </div>
   <div class="footer px-12 pt-20">
     <button mat-raised-button color="accent" type="submit" [disabled]="(sent && messageForm.pristine) || sending">

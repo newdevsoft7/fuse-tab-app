@@ -6,6 +6,7 @@ import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { MatAutocompleteSelectedEvent } from "@angular/material";
 import { CustomMultiSelectComponent } from "../../../../core/components/custom-multi-select/custom-multi-select.component";
+import { environment } from "../../../../../environments/environment";
 
 @Component({
   selector: 'app-user-message',
@@ -31,6 +32,10 @@ export class MessageComponent {
   sending: boolean = false;
   sent: boolean = false;
   templates: any = [];
+
+  uploadUrl: string;
+  token: string;
+  imageBaseUrl: string;
 
   @ViewChild('uploadFile') uploadFile: ElementRef;
   @ViewChild('messageForm') messageForm: NgForm;
@@ -62,6 +67,9 @@ export class MessageComponent {
         return Observable.of([]);
       }
     }
+    this.uploadUrl = `${environment.apiUrl}/message/attachment`;
+    this.token = this.tokenStorage.getAccessToken();
+    this.imageBaseUrl = `${environment.apiUrl}/file/file`;
   }
 
   ngOnInit() {
