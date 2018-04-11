@@ -37,13 +37,15 @@ import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 import { MessageComponent, MessageService } from './message';
 import { CustomMultiSelectGroupModule } from '../../../core/components/custom-multi-select-group/custom-multi-select-group.module';
 import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
+import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
 
 @NgModule({
     imports: [
         CommonModule,
         SharedModule,
         CustomMultiSelectGroupModule,
-        CustomMultiSelectModule
+        CustomMultiSelectModule,
+        CKEditor5Module
     ],
     declarations: [
         UsersComponent,
