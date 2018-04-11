@@ -90,7 +90,7 @@ export class FuseLoginComponent implements OnInit
         const password = this.loginForm.getRawValue().password;
         try {
             await this.authService.login(username, password).toPromise();
-            this.router.navigate(['/home']);
+            this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
         } catch (err) {
             this.isSuccess = false;
             this.isSubmitted = false;
