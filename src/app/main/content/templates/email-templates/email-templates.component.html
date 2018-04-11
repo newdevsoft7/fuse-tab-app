@@ -39,9 +39,7 @@
 
         <!-- CONTENT -->
         <div class="content mat-elevation-z1 p-16" fxFlex ngClass.gt-xs="ml-16" *ngIf="mode !== null">
-            <div class="folder-template"
-                *ngIf="mode === Mode.NewFolder ||
-                        (mode === Mode.EditFolder)">
+            <div *ngIf="mode === Mode.NewFolder || mode === Mode.EditFolder">
                 <form [formGroup]="folderForm">
                     <h3>{{mode === Mode.NewFolder ? 'New Folder' : 'Edit Folder ' + selectedFolder.fname}}</h3>
                     <div class="form-inputs" fxLayout="column">
@@ -61,6 +59,16 @@
                     </div>
                 </form>
             </div>
+
+            <div [ngSwitch]="mode">
+                <app-email-template-form *ngSwitchCase="Mode.NewTemplate"
+                    mode="create" (onTemplateAdded)="onTemplateAdded($event)"></app-email-template-form>
+                <app-email-template-form *ngSwitchCase="Mode.EditTemplate"
+                    mode="edit" [id]="selectedTemplate.id"
+                    (onTemplateDeleted)="onTemplateDeleted($event)"
+                    (onTemplateUpdated)="onTemplateUpdated($event)"></app-email-template-form>
+            </div>
+
 
         </div>
         <!-- / CONTENT -->

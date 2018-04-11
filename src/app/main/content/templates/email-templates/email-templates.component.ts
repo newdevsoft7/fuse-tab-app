@@ -78,13 +78,9 @@ export class EmailTemplatesComponent implements OnInit {
     }
   }
 
-  async selectTemplate(template) {
-    try {
-      this.selectedTemplate = await this.templatesService.getTemplate(template.id);
-      this.mode = Mode.EditTemplate;
-    } catch (e) {
-      this.handleError(e);
-    }
+  selectTemplate(template) {
+    this.selectedTemplate = template;
+    this.mode = Mode.EditTemplate;
   }
 
   openNewFolderEdit() {
@@ -139,6 +135,39 @@ export class EmailTemplatesComponent implements OnInit {
         }
       }
     });
+  }
+
+  onTemplateAdded(template) {
+    const unassignedFolder = this.folders.find(f => f.id === FolderType.Unassigned);
+    unassignedFolder.templates.push(template);
+  }
+
+  onTemplateDeleted(template) {
+    let folder;
+    if (template.folder_id) {
+      folder = this.folders.find(f => f.id === template.folder_id);
+    } else {
+      folder = this.folders.find(f => f.id === FolderType.Unassigned);
+    }
+    if (folder) {
+      const index = folder.templates.findIndex(t => t.id === template.id);
+      folder.templates.splice(index, 1);
+    }
+  }
+
+  onTemplateUpdated(template) {
+    let folder;
+    if (template.folder_id) {
+      folder = this.folders.find(f => f.id === template.folder_id);
+    } else {
+      folder = this.folders.find(f => f.id === FolderType.Unassigned);
+    }
+    if (folder) {
+      const temp = folder.templates.find(t => t.id === template.id);
+      if (temp) {
+        temp.tname = template.tname;
+      }
+    }
   }
 
   handleError(e): void {

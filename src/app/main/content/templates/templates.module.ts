@@ -3,14 +3,18 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { TemplatesService } from './templates.service';
 import { EmailTemplatesComponent } from './email-templates/email-templates.component';
+import { EmailTemplateFormComponent } from './email-templates/template-form/template-form.component';
+import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    CustomMultiSelectModule
   ],
   declarations: [
-    EmailTemplatesComponent
+    EmailTemplatesComponent,
+    EmailTemplateFormComponent
   ],
   exports: [
     EmailTemplatesComponent

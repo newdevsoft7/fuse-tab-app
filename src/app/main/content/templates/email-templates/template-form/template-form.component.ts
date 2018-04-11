@@ -1,0 +1,201 @@
+import {
+  Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs/Observable';
+
+import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { CustomMultiSelectComponent } from '../../../../../core/components/custom-multi-select/custom-multi-select.component';
+import { TemplatesService } from '../../templates.service';
+
+enum Mode {
+  Create = 'create',
+  Edit = 'edit'
+}
+
+enum FolderType {
+  Unassigned = 1,
+  System = 2
+}
+
+@Component({
+  selector: 'app-email-template-form',
+  templateUrl: './template-form.component.html',
+  styleUrls: ['./template-form.component.scss']
+})
+export class EmailTemplateFormComponent implements OnInit, OnChanges {
+
+  @Input() mode = Mode.Create;
+
+  @Input() id;
+
+  @Output('onTemplateAdded') onTemplateAdded = new EventEmitter();
+  @Output('onTemplateUpdated') onTemplateUpdated = new EventEmitter();
+  @Output('onTemplateDeleted') onTemplateDeleted = new EventEmitter();
+
+  template: any = {
+    tname: '',
+    from: 'company',
+    subject: '',
+    content: '',
+    attachments: []
+  };
+
+  file: any;
+
+  submitting = false;
+  submitted = false;
+
+  folders: any[] = [];
+  readonly Mode = Mode;
+
+  attachmentsFiltersObservable: any;
+
+  @ViewChild('uploadFile') uploadFile: ElementRef;
+  @ViewChild('templateForm') templateForm: NgForm;
+  @ViewChild('attachmentsSelector') attachmentsSelector: CustomMultiSelectComponent;
+
+  dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+
+  constructor(
+    private dialog: MatDialog,
+    private toastr: ToastrService,
+    private templatesService: TemplatesService
+  ) {
+    this.init();
+  }
+
+  init(): void {
+    this.attachmentsFiltersObservable = (text: string): Observable<any> => {
+      if (text) {
+        return this.templatesService.searchAttachments(text);
+      } else {
+        return Observable.of([]);
+      }
+    };
+  }
+
+  ngOnInit() {
+    this.uploadFile.nativeElement.onchange = (e) => {
+      const files = e.target.files;
+      if (files.length > 0) {
+        this.fileUpload(files[0]);
+      }
+    };
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes['id']) {
+        try {
+          const template = await this.templatesService.getTemplate(this.id);
+          const attachments = template.attachments.map(v => v.id);
+          this.template = {
+            ...template,
+            attachments
+          };
+
+          this.attachmentsSelector.value = [];
+          for (let i = 0; i < template.attachments.length; i++) {
+            this.file = { id: template.attachments[i].id, text: template.attachments[i].oname };
+          }
+
+          const folders = await this.templatesService.getFolders();
+          this.folders = folders.filter(f => f.id !== FolderType.System);
+        } catch (e) {
+          this.handleError(e);
+        }
+    }
+  }
+
+  async fileUpload(file: File): Promise<any> {
+    try {
+      const res = await this.templatesService.uploadFile(file);
+      this.file = { id: res.data.id, text: res.data.oname };
+    } catch (e) {
+      this.handleError(e.error);
+    }
+  }
+
+  async saveTemplate() {
+    if (this.mode === Mode.Create) {
+      if (this.templateForm.valid) {
+        this.submitting = true;
+        try {
+          const res = await this.templatesService.createTemplate({
+            tname: this.template.tname,
+            from: this.template.from,
+            subject: this.template.subject,
+            content: this.template.content,
+            attachments: this.template.attachments
+          });
+          this.toastr.success(res.message);
+          this.templateForm.reset(this.template);
+          this.submitted = true;
+          this.onTemplateAdded.next(res.data);
+        } catch (e) {
+          this.handleError(e.error);
+        }
+        this.submitting = false;
+      } else {
+        this.handleError({ message: 'Please complete the form' });
+      }
+    } else {
+      if (this.templateForm.valid) {
+        this.submitting = true;
+        try {
+          const res = await this.templatesService.updateTemplate(this.id, {
+            tname: this.template.tname,
+            from: this.template.from,
+            subject: this.template.subject,
+            content: this.template.content,
+            attachments: this.template.attachments,
+            folder_id: this.template.folder_id,
+            active: this.template.active ? 1 : 0
+          });
+          this.toastr.success(res.message);
+          this.templateForm.reset(this.template);
+          this.submitted = true;
+          this.onTemplateUpdated.next(res.data);
+        } catch (e) {
+          this.handleError(e.error);
+        }
+        this.submitting = false;
+      } else {
+        this.handleError({ message: 'Please complete the form' });
+      }
+    }
+  }
+
+  async deleteTemplate() {
+    this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+    this.dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        try {
+          const res = await this.templatesService.deleteTemplate(this.id);
+          this.toastr.success(res.message);
+          this.onTemplateDeleted.next(this.template);
+        } catch (e) {
+          this.handleError(e);
+        }
+
+      }
+    });
+  }
+
+  handleError(e): void {
+    if (e.error && e.error.errors) {
+      const errors = e.error.errors;
+      Object.keys(errors).forEach(key => {
+        this.toastr.error(errors[key]);
+      });
+    } else {
+      this.toastr.error(e.message || 'Something is wrong!');
+    }
+  }
+}

@@ -50,4 +50,16 @@ export class TemplatesService {
     return this.http.delete(url).toPromise();
   }
 
+  uploadFile(file: File): Promise<any> {
+    const url = `${BASE_URL}/message/attachment`;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(url, formData).toPromise();
+  }
+
+  searchAttachments(searchText: string): Observable<any> {
+    const url = `${BASE_URL}/autocomplete/message/attachment/${searchText}`;
+    return this.http.get(url);
+  }
+
 }

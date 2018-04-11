@@ -1,0 +1,48 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .header {
+
+        .form-inputs {
+          min-width: 70%;
+
+          mat-form-field {
+            width: 100%;
+          }
+
+          app-custom-multi-select-group {
+            &.ng-dirty.ng-invalid,
+            &.submitted.ng-invalid {
+              /deep/ mat-form-field {
+                .mat-form-field-underline {
+                  background-color: #F44336;
+                }
+              }
+            }
+          }
+
+          @include media-breakpoint-down('xs') {
+            min-width: 100%;
+          }
+        }
+      }
+
+      .content {
+        /deep/ {
+          .fr-wrapper {
+            min-height: 200px;
+          }
+          .fr-quick-insert {
+            margin-left: 16px;
+          }
+        }
+      }
+
+      .footer {
+      }
+}
