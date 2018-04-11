@@ -178,6 +178,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         } else if ((<any>window).attachEvent) {
             (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
         }
+
+        this.handleURLParams();
     }
 
     ngOnDestroy() {
@@ -324,5 +326,39 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                 this.tokenStorage.removeFormData();
             }
         }
+    }
+
+    /**
+     * This function handles any actions provided query params in url, handles opening initial window when coming from notification
+     **/
+    private handleURLParams() {
+        const action = this.getUrlParameter('action');
+
+        // Check what kind of action was passed
+        if (action === 'shift') {
+
+            const id = this.getUrlParameter('id');
+
+            /* TODO: Do I really need to use adminShiftTpl? */
+            const url = `admin/shift/${id}`;
+
+            /* TODO: Add dynamic shift title by ID */
+            const tab = new Tab('Test', 'adminShiftTpl', url, { id, url });
+            // this.tabService.openTab(tab);
+            this.openTab(tab);
+
+        } else if (action === 'chat') {
+            this.openTab(TAB.USERS_CHAT_TAB);
+
+            /* TODO: using tabb service directly does nto work for some reason */
+            // this.tabService.openTab(TAB.USERS_TAB);
+        }
+    }
+
+    private getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        const results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     }
 }
