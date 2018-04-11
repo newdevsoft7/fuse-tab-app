@@ -1,6 +1,8 @@
 import { Component, forwardRef, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, FormControl } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { environment } from "../../../../environments/environment";
+import { TokenStorage } from "../../../shared/services/token-storage.service";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -33,21 +35,25 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
 
   @ViewChild('editor') editorWrapper: ElementRef;
 
-  @Input() uploadUrl: string;
-  @Input() token: string;
-  @Input() imageBaseUrl: string;
+  uploadUrl: string;
+  token: string;
 
   editor: any;
 
-  constructor(private toastrService: ToastrService) {}
+  constructor(
+    private tokenStorage: TokenStorage,
+    private toastrService: ToastrService) {
+
+    this.uploadUrl = `${environment.apiUrl}/editor/image`;
+    this.token = tokenStorage.getAccessToken();
+  }
 
   ngOnInit() {
     ClassicEditor
       .create(this.editorWrapper.nativeElement, {
         ckfinder: {
           uploadUrl: this.uploadUrl,
-          token: this.token,
-          imageBaseUrl: this.imageBaseUrl
+          token: this.token
         }
       })
       .then(editor => {
