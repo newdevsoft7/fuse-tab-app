@@ -126,7 +126,7 @@ export class EmailTemplatesComponent implements OnInit {
         try {
           const response = await this.templatesService.deleteFolder(this.selectedFolder.id);
           const unassignedFolder = this.folders.find(f => f.id === FolderType.Unassigned);
-          unassignedFolder.templates.push(...this.selectedFolder.children);
+          unassignedFolder.templates.push(...this.selectedFolder.templates);
           const index = this.folders.findIndex(f => f.id === this.selectedFolder.id);
           this.folders.splice(index, 1);
           this.toastr.success(response.message);
@@ -140,6 +140,7 @@ export class EmailTemplatesComponent implements OnInit {
   onTemplateAdded(template) {
     const unassignedFolder = this.folders.find(f => f.id === FolderType.Unassigned);
     unassignedFolder.templates.push(template);
+    this.selectTemplate(template);
   }
 
   onTemplateDeleted(template) {
@@ -156,18 +157,32 @@ export class EmailTemplatesComponent implements OnInit {
   }
 
   onTemplateUpdated(template) {
-    let folder;
-    if (template.folder_id) {
-      folder = this.folders.find(f => f.id === template.folder_id);
-    } else {
-      folder = this.folders.find(f => f.id === FolderType.Unassigned);
-    }
-    if (folder) {
-      const temp = folder.templates.find(t => t.id === template.id);
+    const toFolder = this.folders.find(f => f.id === template.folder_id);
+    let fromFolder;
+    let temp;
+
+    this.folders.every(f => {
+      temp = f.templates.find(t => t.id === template.id);
       if (temp) {
-        temp.tname = template.tname;
+        fromFolder = f;
+        return false;
+      } else {
+        return true;
       }
+    });
+
+    // Change template name
+    if (temp) {
+      temp.tname = template.tname;
     }
+
+    // Move
+    if (toFolder.id !== fromFolder.id && template.sys_id !== 1) {
+      toFolder.templates.push(temp);
+      const index = fromFolder.templates.findIndex(t => t.id === temp.id);
+      fromFolder.templates.splice(index, 1);
+    }
+
   }
 
   handleError(e): void {

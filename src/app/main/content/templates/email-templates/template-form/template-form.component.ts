@@ -90,6 +90,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['id']) {
         try {
+          this.mode = Mode.Edit;
           const template = await this.templatesService.getTemplate(this.id);
           const attachments = template.attachments.map(v => v.id);
           this.template = {
@@ -132,7 +133,6 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
             attachments: this.template.attachments
           });
           this.toastr.success(res.message);
-          this.templateForm.reset(this.template);
           this.submitted = true;
           this.onTemplateAdded.next(res.data);
         } catch (e) {
@@ -156,7 +156,6 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
             active: this.template.active ? 1 : 0
           });
           this.toastr.success(res.message);
-          this.templateForm.reset(this.template);
           this.submitted = true;
           this.onTemplateUpdated.next(res.data);
         } catch (e) {
@@ -179,6 +178,8 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
         try {
           const res = await this.templatesService.deleteTemplate(this.id);
           this.toastr.success(res.message);
+          this.mode = Mode.Create;
+          this.resetTemplateForm();
           this.onTemplateDeleted.next(this.template);
         } catch (e) {
           this.handleError(e);
@@ -186,6 +187,17 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
 
       }
     });
+  }
+
+  private resetTemplateForm() {
+    this.template = {
+      tname: '',
+      from: 'company',
+      subject: '',
+      content: '',
+      attachments: []
+    };
+    this.templateForm.reset(this.template);
   }
 
   handleError(e): void {
