@@ -10,8 +10,6 @@ import { Observable } from 'rxjs/Observable';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { CustomMultiSelectComponent } from '../../../../../core/components/custom-multi-select/custom-multi-select.component';
 import { TemplatesService } from '../../templates.service';
-import { environment } from '../../../../../../environments/environment';
-import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 
 enum Mode {
   Create = 'create',
@@ -37,10 +35,6 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   @Output('onTemplateAdded') onTemplateAdded = new EventEmitter();
   @Output('onTemplateUpdated') onTemplateUpdated = new EventEmitter();
   @Output('onTemplateDeleted') onTemplateDeleted = new EventEmitter();
-
-  uploadUrl: string;
-  token: string;
-  imageBaseUrl: string;
 
   template: any = {
     tname: '',
@@ -69,8 +63,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private templatesService: TemplatesService,
-    private tokenStorage: TokenStorage
+    private templatesService: TemplatesService
   ) {
     this.init();
   }
@@ -83,10 +76,6 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
         return Observable.of([]);
       }
     };
-
-    this.uploadUrl = `${environment.apiUrl}/message/attachment`;
-    this.token = this.tokenStorage.getAccessToken();
-    this.imageBaseUrl = `${environment.apiUrl}/file/file`;
   }
 
   ngOnInit() {
