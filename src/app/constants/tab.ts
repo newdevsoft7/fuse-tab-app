@@ -47,7 +47,7 @@ export const TAB = {
     'SETTINGS_PROFILE_VIDEO_CATEGORIES_TAB': new Tab('Video Categories', '', 'settings/profile/video-categories', {}),
     'SETTINGS_SYSTEM_TAB': new Tab('System', '', 'settings/system', {}),
     'SETTINGS_TEMPLATES_TAB': new Tab('Templates', '', 'settings/templates', {}),
-    'SETTINGS_TEMPLATES_EMAIL_TAB': new Tab('Email', '', 'settings/templates/email', {}),
+    'SETTINGS_TEMPLATES_EMAIL_TAB': new Tab('Email Templates', 'emailTemplatesTpl', 'settings/templates/email', {}),
     'SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS_TAB': new Tab('Email Attachments', '', 'settings/templates/email/attachments', {}),
     'SETTINGS_TEMPLATES_SMS_TAB': new Tab('SMS', '', 'settings/templates/sms', {}),
     'SETTINGS_TEMPLATES_SHIFT_NOTES_TAB': new Tab('Shift Notes', '', 'settings/templates/shift-notes',  {}),

@@ -1,0 +1,79 @@
+@import "src/app/core/scss/fuse";
+
+#email-templates-container {
+
+    .action-buttons {
+        margin-bottom: 16px;
+
+        mat-icon {
+            color: white;
+        }
+    }
+
+    .folder-tree {
+
+        min-width: 292px;
+
+        .folder {
+
+            .nav-link {
+
+                .collapse-arrow {
+                    transition: transform .3s ease-in-out, opacity .25s ease-in-out .1s;
+                    transform: rotate(0);
+                }
+            }
+
+            &.open {
+
+                .nav-link {
+
+                    .collapse-arrow {
+                        transform: rotate(90deg);
+                    }
+                }
+            }
+
+            .nav-item {
+
+            }
+        }
+
+    }
+
+    .nav > .nav-item.nav-collapse.open {
+        background: none;
+    }
+
+    .content {
+
+        form {
+
+            h3 {
+                font-weight: 500;
+            }
+        }
+
+        .form-inputs {
+            mat-form-field {
+              width: 100%;
+            }
+
+            app-custom-multi-select-group {
+              &.ng-dirty.ng-invalid,
+              &.submitted.ng-invalid {
+                /deep/ mat-form-field {
+                  .mat-form-field-underline {
+                    background-color: #F44336;
+                  }
+                }
+              }
+            }
+
+            @include media-breakpoint-down('xs') {
+              min-width: 100%;
+            }
+
+        }
+    }
+}

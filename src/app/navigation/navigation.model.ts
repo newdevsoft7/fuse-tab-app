@@ -282,7 +282,6 @@ export const ADMIN_MODEL = [
                 'title': 'Templates',
                 'translate': 'NAV.ADMIN.SETTINGS_TEMPLATES',
                 'type': 'collapse',
-                'tab': TAB.SETTINGS_TEMPLATES_TAB,
                 'children': [
                     {
                         'id': 'email',

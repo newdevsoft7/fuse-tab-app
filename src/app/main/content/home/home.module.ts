@@ -23,6 +23,7 @@ import { EditCommentDialogComponent } from './timeline/edit-comment-dialog/edit-
 import { PinPostDialogComponent } from './timeline/pin-post-dialog/pin-post-dialog.component';
 import { PostDialogComponent } from './timeline/post-dialog/post-dialog.component';
 import { PayrollModule } from '../payroll/payroll.module';
+import { TemplatesModule } from '../templates/templates.module';
 
 @NgModule({
     declarations: [
@@ -46,7 +47,8 @@ import { PayrollModule } from '../payroll/payroll.module';
         TrackingModule,
         AccountingModule,
         FormSignModule,
-        PayrollModule
+        PayrollModule,
+        TemplatesModule
     ],
     exports     : [
         FuseHomeComponent

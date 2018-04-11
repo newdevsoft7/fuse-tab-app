@@ -1,0 +1,103 @@
+<div id="new-email-template-container">
+    <form novalidate #templateForm="ngForm">
+
+        <!-- HEADER -->
+        <div class="header px-12" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start"
+            fxLayoutAlign.xs="start">
+
+            <div class="form-inputs" fxLayout="column">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start"
+                    [hidden]="template.sys_id === 1">
+                    <span class="w-100">Name</span>
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="template.tname" #tname="ngModel" name="tname" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+                    <span class="w-100">From</span>
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="template.from" #from="ngModel" name="from" required>
+                            <mat-option *ngFor="let item of ['company', 'personal']" [value]="item">
+                                {{item}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+                    <span class="w-100">Subject</span>
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="template.subject" #subject="ngModel"
+                            name="subject" required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+                    <span class="w-100">Attachments</span>
+                    <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p">
+                        <app-custom-multi-select
+                            #attachmentsSelector
+                            class="w-100-p"
+                            [autocompleteObservable]="attachmentsFiltersObservable"
+                            [labelBy]="'text'"
+                            [valueBy]="'id'"
+                            [added]="file"
+                            [(ngModel)]="template.attachments"
+                            name="attachments"></app-custom-multi-select>
+                        <button mat-mini-fab class="ml-12" type="button" (click)="uploadFile.click()">
+                            <mat-icon class="mat-24 white-fg">add</mat-icon>
+                        </button>
+                        <input type="file" #uploadFile accept="image/jpeg, image/png, video/mp4" hidden/>
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="column">
+                <div class="my-12" fxLayout="row" fxLayoutAlign="center center" [hidden]="mode === Mode.Create">
+                    Active
+                    <mat-slide-toggle class="ml-8" [(ngModel)]="template.active" #active="ngModel" name="active"
+                        ></mat-slide-toggle>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="center center" [hidden]="template.sys_id === 1 || mode === Mode.Create">
+                    <span class="w-100">Folder</span>
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="template.folder_id" name="folder_id">
+                            <mat-option *ngFor="let item of folders" [value]="item.id">
+                                {{item.fname}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content px-12 pt-16">
+            <app-ckeditor-v5
+                [uploadUrl]="uploadUrl"
+                [token]="token"
+                [imageBaseUrl]="imageBaseUrl"
+                [(ngModel)]="template.content"
+                name="content"
+                require></app-ckeditor-v5>
+        </div>
+        <!-- / CONTENT -->
+
+        <!-- FOOTER -->
+        <div class="footer px-12 pt-20">
+            <button mat-raised-button color="accent" type="submit" (click)="saveTemplate()"
+                [disabled]="(submitted && templateForm.pristine) || submitting">
+                <ng-container *ngIf="!submitting && (!templateForm.pristine || !submitted)">Save</ng-container>
+                <ng-container *ngIf="submitting">Saving...</ng-container>
+            </button>
+
+            <button mat-raised-button color="accent" *ngIf="mode === Mode.Edit && this.template.sys_id !== 1"
+                (click)="deleteTemplate()">
+                Delete
+            </button>
+        </div>
+        <!-- / FOOTER -->
+    </form>
+</div>
