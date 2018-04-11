@@ -16,7 +16,7 @@ import { TabsComponent } from '../../tab/tabs/tabs.component';
 import { Tab } from '../../tab/tab';
 import { TabService } from '../../tab/tab.service';
 
-import * as TAB from '../../../constants/tab';
+import { TAB } from '../../../constants/tab';
 import { TrackingService } from '../tracking/tracking.service';
 import { TrackingCategory } from '../tracking/tracking.models';
 
@@ -195,7 +195,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
         if (_tab.url === 'tracking') {
             const trackingCategory = _tab.data;
-            if (JSON.stringify(_tab.data) != '{}' ){
+            if (JSON.stringify(_tab.data) !== '{}' ){
                 this.trackingService.toggleSelectedCategory(trackingCategory as TrackingCategory);
             }
         }

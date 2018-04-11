@@ -5,7 +5,7 @@ import { ObservableMedia } from '@angular/flex-layout';
 import { FuseMatchMedia } from '../../services/match-media.service';
 import { FuseConfigService } from '../../services/config.service';
 import { CookieService } from 'ngx-cookie-service';
-import * as TAB from '../../../constants/tab';
+import { TAB } from '../../../constants/tab';
 import { TabService } from '../../../main/tab/tab.service';
 
 @Component({
