@@ -64,6 +64,7 @@ import { ClientShiftInfoComponent } from './shift/client-shift/info/info.compone
 import { ShiftsExportAsExcelDialogComponent } from './shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
 import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
 import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invited/invited.component';
+import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invit
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
         }),
-        AgmJsMarkerClustererModule
+        AgmJsMarkerClustererModule,
+        CKEditor5Module
     ],
     declarations: [
         ScheduleComponent,

@@ -35,6 +35,8 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
 
   @ViewChild('editor') editorWrapper: ElementRef;
 
+  @Input() placeholder: string = '';
+
   uploadUrl: string;
   token: string;
 
@@ -57,11 +59,11 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
         }
       })
       .then(editor => {
-          this.editor = editor;
-          this.editor.setData(this._value);
-          this.editor.editing.model.document.on('change', () => {
-            this.value = this.editor.getData();
-          });
+        this.editor = editor;
+        this.editor.setData(this._value);
+        this.editor.editing.model.document.on('change', () => {
+          this.value = this.editor.getData();
+        });
       })
       .catch(error => {
           this.toastrService.error(error);
