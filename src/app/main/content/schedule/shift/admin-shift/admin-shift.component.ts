@@ -18,11 +18,10 @@ import { ActionService } from '../../../../../shared/services/action.service';
 export enum TAB {
     Staff = 0,
     Expenses = 1,
-    Tracking = 2,
-    Reports = 3,
-    Casting = 4,
-    Map = 5,
-    Notes = 6
+    Reports = 2,
+    Casting = 3,
+    Map = 4,
+    Notes = 5
 }
 
 @Component({
@@ -40,6 +39,8 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
     usersToInviteSubscription: Subscription;
     selectedTabIndex = TAB.Staff;
+
+    shiftData: any; // For edit tracking & work areas
 
     get id() {
         return this.data.id;
@@ -63,7 +64,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         private actionService: ActionService,
         private spinner: CustomLoadingService
     ) {
-        // Add Users to Role
+        // Invite Users to Role
         this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
             ({ shiftId, userIds, filters, role, inviteAll }) => {
                 if (this.shift.id === shiftId) {
@@ -83,6 +84,11 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
                     this.timezones.push({ value: key, label: res[key] });
                 });
             });
+
+        // Get Tracking Categories & Options
+        this.scheduleService.getShiftsData().subscribe(res => {
+            this.shiftData = res;
+        });
 
     }
 

@@ -11,7 +11,6 @@ import { CalendarEventFormDialogComponent } from './calendar/event-form/event-fo
 import { AdminShiftComponent } from './shift/admin-shift/admin-shift.component';
 import { AdminShiftStaffComponent } from './shift/admin-shift/staff/staff.component';
 import { AdminShiftExpensesComponent } from './shift/admin-shift/expenses/expenses.component';
-import { AdminShiftTrackingComponent } from './shift/admin-shift/tracking/tracking.component';
 import { AdminShiftReportsUploadsComponent } from './shift/admin-shift/reports-uploads/reports-uploads.component';
 import { AdminShiftCastingsComponent } from './shift/admin-shift/castings/castings.component';
 import { AdminShiftMapComponent } from './shift/admin-shift/map/map.component';
@@ -64,10 +63,14 @@ import { ClientShiftInfoComponent } from './shift/client-shift/info/info.compone
 import { ShiftsExportAsExcelDialogComponent } from './shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
 import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
 import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invited/invited.component';
+import { EditTrackingComponent } from './shift/admin-shift/edit-tracking/edit-tracking.component';
+import { EditTrackingDialogComponent } from './shift/admin-shift/edit-tracking/edit-tracking-dialog/edit-tracking-dialog.component';
+import { EditWorkareasComponent } from './shift/admin-shift/edit-workareas/edit-workareas.component';
+import { EditWorkareasDialogComponent } from './shift/admin-shift/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
 
 
 @NgModule({
-	imports: [
+    imports: [
         CommonModule,
         SCCalendarModule,
         SharedModule,
@@ -86,7 +89,6 @@ import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invit
         AdminShiftComponent,
         AdminShiftStaffComponent,
         AdminShiftExpensesComponent,
-        AdminShiftTrackingComponent,
         AdminShiftReportsUploadsComponent,
         AdminShiftCastingsComponent,
         AdminShiftStaffSelectedComponent,
@@ -133,8 +135,11 @@ import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invit
         ClientShiftMapComponent,
         ClientShiftInfoComponent,
         ShiftsExportAsExcelDialogComponent,
-        ShiftsExportAsPdfDialogComponent
-
+        ShiftsExportAsPdfDialogComponent,
+        EditTrackingComponent,
+        EditTrackingDialogComponent,
+        EditWorkareasComponent,
+        EditWorkareasDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -148,7 +153,10 @@ import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invit
 
         // Client
         ShiftsExportAsExcelDialogComponent,
-        ShiftsExportAsPdfDialogComponent
+        ShiftsExportAsPdfDialogComponent,
+
+        EditTrackingDialogComponent,
+        EditWorkareasDialogComponent
     ],
     exports: [
         ScheduleComponent,

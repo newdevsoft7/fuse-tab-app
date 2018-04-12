@@ -192,23 +192,26 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     inviteStaffs({ userIds, filters, role, inviteAll }) {
+        const body: any = {};
         if (inviteAll) {
-
+            body.filters = filters;
         } else {
-            this.spinner.show();
-            this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_INVITED)
-                .subscribe(res => {
-                    this.spinner.hide();
-                    this.refreshTabByRole(role, Section.Invited);
-                    this.updateStaffsCount(role.id);
-                    const index = this.roles.findIndex(v => v.id === role.id);
-                    this.roles[index].section = Section.Invited;
-                    this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} invited`);
-                }, err => {
-                    this.spinner.hide();
-                    this.toastr.error('Error!');
-                });
+            body.user_ids = userIds;
         }
+        this.spinner.show();
+        this.scheduleService.inviteStaffsToRole(role.id, body).subscribe(
+            res => {
+                this.spinner.hide();
+                this.refreshTabByRole(role, Section.Invited);
+                this.updateStaffsCount(role.id);
+                const index = this.roles.findIndex(v => v.id === role.id);
+                this.roles[index].section = Section.Invited;
+                this.toastr.success(res.message);
+            },
+            err => {
+                this.spinner.hide();
+                this.toastr.error(err.error.message);
+            });
     }
 
     moveup(role) {

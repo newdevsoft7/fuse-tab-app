@@ -42,6 +42,16 @@
         }
     }
 
+    .tracking-workareas {
+        height: 55px;
+        overflow: hidden;
+
+        &.show {
+            height: 100%;
+            overflow: unset;
+        }
+    }
+
     .shift-notes /deep/ .fr-quick-insert {
         display: none;
     }

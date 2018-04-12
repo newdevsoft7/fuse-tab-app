@@ -149,7 +149,7 @@ export class ScheduleService {
     return Observable.forkJoin(
       shiftIds.map(shiftId => this.createShiftRole(shiftId, role))
     );
-  };
+  }
 
   getPayLevelCategory(id?: number): Observable<any> {
     const param = typeof id === 'undefined' ? '' : id;
@@ -168,17 +168,16 @@ export class ScheduleService {
   }
 
   assignStaffsToRole(userIds, roleId, staffStatusId): Observable<any> {
-    return Observable.forkJoin(
-      userIds.map(userId => this.assignStaffToRole(userId, roleId, staffStatusId))
-    );
-  }
-
-  assignStaffToRole(userId, roleId, staffStatusId): Observable<any> {
     const url = `${BASE_URL}/role/${roleId}/assign`;
     return this.http.post(url, {
-      user_id: userId,
+      user_ids: userIds,
       staff_status_id: staffStatusId
     }).catch(this.handleError);
+  }
+
+  inviteStaffsToRole(roleId, body: { user_ids?, filters? }): Observable<any> {
+    const url = `${BASE_URL}/role/${roleId}/invite`;
+    return this.http.post(url, body).catch(this.handleError);
   }
 
   getRoleStaffs(roleId, query): Observable<any> {
@@ -280,6 +279,18 @@ export class ScheduleService {
   confirmStaffSelection(roleStaffId: number): Observable<any> {
     const url = `${BASE_URL}/role/confirm/${roleStaffId}`;
     return this.http.post(url, {}).catch(this.handleError);
+  }
+
+  setShiftTrackingOptions(shiftId, catgegoryId, optionIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/tracking/${catgegoryId}`;
+    const body = optionIds.length > 0 ? { ids: optionIds } : {};
+    return this.http.put(url, body).toPromise();
+  }
+
+  setShiftWorkareas(shiftId, workareaIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/workArea`;
+    const body = workareaIds.length > 0 ? { ids: workareaIds } : {};
+    return this.http.put(url, body).toPromise();
   }
 
   private handleError(error: Response | any) {

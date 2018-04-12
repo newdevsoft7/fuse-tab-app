@@ -1,7 +1,7 @@
 <div id="admin-shift" class="page-layout simple fullwidth" *ngIf="shift">
 
     <!-- HEADER -->
-    <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="header mat-accent-bg p-12" fxLayout="column" fxLayoutAlign="space-between">
         <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
             <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-70-p">
 
@@ -59,6 +59,14 @@
                         <mat-icon [ngStyle]="{'color': flag.set !== 0 ? flag.color : 'white'}">flag</mat-icon>
                     </button>
                 </div>
+
+                <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column"
+                    fxLayoutAlign="start end">
+                    <app-edit-tracking *ngFor="let category of shift.tracking_categories"
+                        [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>
+
+                    <app-edit-workareas [data]="shiftData" [shift]="shift"></app-edit-workareas>
+                </div>
             </div>
             <!-- / HEADER BUTTONS -->
 
@@ -82,10 +90,6 @@
 
             <mat-tab label="Expenses">
                 <app-admin-shift-expenses [shift]="shift"></app-admin-shift-expenses>
-            </mat-tab>
-
-            <mat-tab label="Tracking">
-                <app-admin-shift-tracking [shift]="shift"></app-admin-shift-tracking>
             </mat-tab>
 
             <mat-tab label="Reports & Uploads">

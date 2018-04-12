@@ -168,9 +168,8 @@ export class UsersComponent implements OnInit {
         this.selectedUsers.push(...selected);
 
         // For invitation to a shift
-        if (this.data.invite) {
-            this.data.invite_all =
-                (this.users.length === this.selectedUsers.length && this.users.length === this.total) ? true : false;
+        if (this.data.invite && selected.length > 0) {
+            this.data.invite_all = false;
         }
     }
 
@@ -238,11 +237,19 @@ export class UsersComponent implements OnInit {
     onFiltersChange(evt: any[]) {
         this.filters = evt;
         this.getUsers();
+
+        if (this.data.invite) {
+            this.data.invite_all = true;
+        }
     }
 
     onTypeFilterChange(filter) {
         this.selectedTypeFilter = filter;
         this.getUsers();
+
+        if (this.data.invite) {
+            this.data.invite_all = true;
+        }
     }
 
     private mergeAllFilters(): any[] {
