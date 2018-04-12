@@ -15,6 +15,11 @@
 
                     <mat-menu #menu="matMenu">
 
+                        <button mat-menu-item (click)="onInviteStaffToRole(role)">
+                            <mat-icon>person_add</mat-icon>
+                            <span>Invite staff</span>
+                        </button>
+
                         <button mat-menu-item (click)="onAddStaffToRole(role)">
                             <mat-icon>person_add</mat-icon>
                             <span>Select staff</span>

@@ -7,6 +7,7 @@ export class ActionService {
 
   private _usersToShift = new Subject();
   private _usersToRole = new Subject();
+  private _usersToInvite = new Subject();
 
   // Shift Edit
   private _shiftsToEdit = new Subject();
@@ -21,6 +22,13 @@ export class ActionService {
     return this._usersToRole.asObservable();
   }
 
+  inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll }) {
+    this._usersToInvite.next({ shiftId, userIds, filters, role, inviteAll });
+  }
+
+  get usersToInvite() {
+    return this._usersToInvite.asObservable();
+  }
 
   addUsersToShift({ userIds, shift }) {
     this._usersToShift.next({ userIds, shift });

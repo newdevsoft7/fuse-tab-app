@@ -12,7 +12,7 @@ import {
 
 import { MatAutocompleteSelectedEvent, MatInput, MatDialog } from '@angular/material';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { of } from 'rxjs/observable/of';
 
@@ -31,10 +31,10 @@ export interface Tag {
 }
 
 export function arrayDiffObj(s: any[], v: any[], key: string) {
-    if ( !s ) return [];
-    let reducedIds = v.map((o) => o[key]);
+    if (!s) { return []; }
+    const reducedIds = v;
     return s.filter((obj: any) => reducedIds.indexOf(obj[key]) === -1);
-};
+}
 
 const CUSTOM_INPUT_VALIDATORS: any = {
     provide: NG_VALIDATORS,
@@ -62,28 +62,52 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     dialogRef: any;
 
     source = [];
-    private _value: Tag[] = [];
+    _value = [];
 
     @Input('typeFilters') typeFilters;
-    @Output() onTypeFilterSelected = new EventEmitter();
+    @Output() filterChange = new EventEmitter();
+    @Output() typeFilterChange = new EventEmitter();
+
     selectedTypeFilter = 'utype:=:all';  // All Active Users
 
     private searchTerms = new Subject<string>();
 
-    @Output() onFiltersChange = new EventEmitter();
+    _selected = [];
+    get selected() {
+        return this._value.map((v, i) => {
+            const idx = this._selected.findIndex(s => s && s.id === v);
+            if (idx > -1) {
+                return this._selected[idx];
+            } else {
+                let option;
+                this.source.every(group => {
+                    const item = group.children.find(o => o.id === v);
+                    if (item) {
+                        option = item;
+                        return false;
+                    } else {
+                        return true;
+                    }
+                });
+                this._selected[i] = option ? option : null;
+                return this._selected[i];
+            }
+        });
+    }
+
+    @Input('filters')
+    get value() { return this._value; }
+    set value(v: any[]) {
+        this._value = v;
+        this.onChange(this._value);
+    }
+
 
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
         private userService: UserService) {
     }
-
-    get value(): Tag[] { return this._value; }
-    set value(v: Tag[]) {
-        this._value = v;
-        this.onChange(this._value);
-    }
-
 
     ngOnInit() {
         this.getFilters();
@@ -101,14 +125,14 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     }
 
     onChange = (_: any): void => {
-        // mock
+        this.filterChange.emit(_);
     }
 
     onTouched = (_: any): void => {
         // mock
     }
 
-    writeValue(v: Tag[]): void {
+    writeValue(v): void {
         this._value = v;
     }
 
@@ -123,15 +147,10 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         };
     }
 
-    private getFilters(query = '') {
-        this.userService.getUsersFilters(query).subscribe(
-            res => {
-                this.source = [...res];
-            },
-            err => {
-                console.log(err);
-            }
-        );
+    private async getFilters(query = '') {
+        try {
+            this.source = await this.userService.getUsersFilters(query);
+        } catch (e) {}
     }
 
     onSearchChange(query: string) {
@@ -140,44 +159,43 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
     add(event: MatAutocompleteSelectedEvent): void {
         const t: Tag = event.option.value;
-        this._value.push(t);
+
+        this._value.push(t.id);
         this.value = this._value;
+        this._selected.push(t);
+
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
-        this.onFiltersChange.next(this._value);
         this.onSearchChange('');
-        
     }
 
     addNew(input: MatInput): void {
-        let inputValue = input.value.trim();
+        const inputValue = input.value.trim();
         let searchedTag: Tag;
 
         this.source.forEach(group => {
-            if (group.children.findIndex(o => o.text == inputValue) >= 0) {
-                searchedTag = group.children.find(o => o.text == inputValue);
+            if (group.children.findIndex(o => o.text === inputValue) > -1) {
+                searchedTag = group.children.find(o => o.text === inputValue);
                 return;
             }
         });
 
         let newTag: Tag;
 
-        if  (inputValue != '') {
+        if  (inputValue !== '') {
             if (searchedTag) {
-                if (this.value.findIndex(v => v.id == searchedTag.id) < 0) {
+                if (this.value.findIndex(v => v.id === searchedTag.id) < 0) {
                     newTag = { ...searchedTag };
-                    this._value.push(newTag);
+                    this._selected.push(newTag);
+                    this._value.push(newTag.id);
                     this.value = this._value;
-
-                    this.onFiltersChange.next(this._value);
                 }
             } else {
-                if (this.value.findIndex(v => v.id == inputValue) < 0) {
-                     newTag = { id: input.value, text: input.value };
-                    this._value.push(newTag);
+                if (this.value.findIndex(v => v.id === inputValue) < 0) {
+                    newTag = { id: input.value, text: input.value };
+                    this._selected.push(newTag);
+                    this._value.push(newTag.id);
                     this.value = this._value;
-
-                    this.onFiltersChange.next(this._value);
                 }
             }
         }
@@ -187,14 +205,14 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     }
 
     remove(tag: Tag): void {
-        this._value = this._value.filter((i: Tag) => i.id !== tag.id);
+        this._selected = this._selected.filter(t => t.id !== tag.id);
+        this._value = this._value.filter(v => v !== tag.id);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
         this.onSearchChange('');
-        this.onFiltersChange.next(this._value);
     }
 
-    sourceFiltered(groupItems: Tag[]): Tag[] {
+    sourceFiltered(groupItems) {
         return arrayDiffObj(groupItems, this._value, 'id');
     }
 
@@ -208,10 +226,10 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         });
 
         this.dialogRef.afterClosed()
-            .subscribe(_ => {});
+            .subscribe(result => {});
     }
 
     onTypeFilterChange(event) {
-        this.onTypeFilterSelected.next(event.value);
+        this.typeFilterChange.next(event.value);
     }
 }

@@ -83,7 +83,7 @@ export class UserService {
         return this.http.put(url, {})
             .catch(this.handleError);
     }
-    
+
     rotateProfilePhoto(photoId: number, deg: number): Observable<any> {
         const url = `${BASE_URL}/profilePhoto/${photoId}/rotate/${deg}`;
         return this.http.put(url, {})
@@ -187,7 +187,7 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    
+
     getProfileWorkAreas(userId: number): Observable<any> {
         const url = `${BASE_URL}/profile/${userId}/workAreas`;
         return this.http.get(url)
@@ -200,10 +200,9 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    getUsersFilters(query: string): Observable<any> {
+    getUsersFilters(query: string): Promise<any> {
         const url = `${USERS_URL}/filter/${query}`;
-        return this.http.get(url.replace(/\/+$/, ''))
-            .catch(this.handleError);
+        return this.http.get(url.replace(/\/+$/, '')).toPromise();
     }
 
     async getUsersTypeFilters(): Promise<any> {

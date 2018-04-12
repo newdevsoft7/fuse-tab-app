@@ -26,15 +26,32 @@
 
             <!-- HEADER BUTTONS -->
             <div fxLayout="column" fxLayoutAlign="start end">
-                <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
-                    <mat-icon *ngIf="shift.live === 1">visibility</mat-icon>
-                    <mat-icon *ngIf="shift.live !== 1">visibility_off</mat-icon>
-                </button>
+                <div fxLayout="row">
+                    <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
+                        <mat-icon *ngIf="shift.locked === 1">lock_outline</mat-icon>
+                        <mat-icon *ngIf="shift.locked !== 1">lock_open</mat-icon>
+                    </button>
 
-                <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
-                    <mat-icon *ngIf="shift.locked === 1">lock_outline</mat-icon>
-                    <mat-icon *ngIf="shift.locked !== 1">lock_open</mat-icon>
-                </button>
+                    <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
+                        <mat-icon *ngIf="shift.live === 1">visibility</mat-icon>
+                        <mat-icon *ngIf="shift.live !== 1">visibility_off</mat-icon>
+                    </button>
+
+                    <div>
+                        <button mat-icon-button [matMenuTriggerFor]="shiftMenu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+
+                        <mat-menu #shiftMenu="matMenu">
+                            <button mat-menu-item>Add Role</button>
+                            <button mat-menu-item (click)="invite()">Invite</button>
+                            <button mat-menu-item>Chat</button>
+                            <button mat-menu-item>Messaged Selected</button>
+                            <button mat-menu-item>Messaged Applicants</button>
+                            <button mat-menu-item>Messaged Invited</button>
+                        </mat-menu>
+                    </div>
+                </div>
 
                 <div fxLayout="row" fxLayoutAlign="end" fxLayoutWrap>
                     <button mat-icon-button *ngFor="let flag of shift.flags" (click)="toggleFlag(flag)"
@@ -57,7 +74,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
+        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedTabIndex">
 
             <mat-tab label="Staff">
                 <app-admin-shift-staff [shift]="shift" #staffTab></app-admin-shift-staff>

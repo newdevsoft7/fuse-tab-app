@@ -11,18 +11,20 @@
             <mat-icon class="mat-icon material-icons" role="img" aria-hidden="true">search</mat-icon>
         </button>
     </div>
-    
+
     <div fxFlex>
         <mat-form-field fxFlexFill>
             <mat-chip-list #chipList>
-                <mat-chip *ngFor="let item of value" (remove)="remove(item)">
-                    {{item.text}} <mat-icon matChipRemove>cancel</mat-icon>
-                </mat-chip>
+                <ng-container *ngFor="let tag of selected">
+                    <mat-chip *ngIf="tag" (remove)="remove(tag)">
+                        {{tag.text}} <mat-icon matChipRemove>cancel</mat-icon>
+                    </mat-chip>
+                </ng-container>
 
-                <input #chipInput 
-                    [matChipInputFor]="chipList" 
-                    [matChipInputAddOnBlur]="false" 
-                    (matChipInputTokenEnd)="addNew($event)" 
+                <input #chipInput
+                    [matChipInputFor]="chipList"
+                    [matChipInputAddOnBlur]="false"
+                    (matChipInputTokenEnd)="addNew($event)"
                     [matAutocomplete]="auto" />
             </mat-chip-list>
         </mat-form-field>

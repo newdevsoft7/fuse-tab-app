@@ -44,29 +44,29 @@ export class UsersComponent implements OnInit {
     users: any[];
     selectedUsers: any[] = [];
     columns: any[];
-    
+
     pageNumber: number;
     pageSize = DEFAULT_PAGE_SIZE;
     total: number;
     pageLengths = [5, 10, 20, 50, 100];
-    
+
     filters = [];
     sorts: any[];
 
     typeFilters;
-    selectedTypeFilter = 'utype:=:all'  // All Active Users
-    
+    selectedTypeFilter = 'utype:=:all'; // All Active Users
+
     mode: Mode = Mode.Normal; // Normal
     public Mode = Mode;
 
     loadingIndicator = true;
     reorderable = true;
-    
+
     dialogRef: any;
-    
+
     differ: any;
-    
-    @ViewChild(DatatableComponent) table: DatatableComponent
+
+    @ViewChild(DatatableComponent) table: DatatableComponent;
 
     _data;
     @Input('data')
@@ -78,7 +78,7 @@ export class UsersComponent implements OnInit {
         this._data = value;
         if (this._data && this._data.role) {
             this.mode = Mode.Role;
-        } 
+        }
     }
 
     constructor(
@@ -92,6 +92,13 @@ export class UsersComponent implements OnInit {
         private router: Router) { }
 
     ngOnInit() {
+
+        // For invitation to a shift
+        if (this.data.invite) {
+            this.data.invite_all = true;
+            this.filters = this.data.filters;
+        }
+
         this.currentUser = this.tokenStorage.getUser();
         this.init();
     }
@@ -128,7 +135,7 @@ export class UsersComponent implements OnInit {
             },
             err => {
                 this.loadingIndicator = false;
-                if (err.status && err.status == 403) {
+                if (err.status && err.status === 403) {
                     this.toastr.error('You have no permission!');
                 }
             });
@@ -159,6 +166,12 @@ export class UsersComponent implements OnInit {
     onSelect({ selected }) {
         this.selectedUsers.splice(0, this.selectedUsers.length);
         this.selectedUsers.push(...selected);
+
+        // For invitation to a shift
+        if (this.data.invite) {
+            this.data.invite_all =
+                (this.users.length === this.selectedUsers.length && this.users.length === this.total) ? true : false;
+        }
     }
 
     openNewUser() {
@@ -221,9 +234,9 @@ export class UsersComponent implements OnInit {
             pageNumber: this.pageNumber
         });
     }
-    
+
     onFiltersChange(evt: any[]) {
-        this.filters = evt.map(v => v.id);
+        this.filters = evt;
         this.getUsers();
     }
 
@@ -256,7 +269,45 @@ export class UsersComponent implements OnInit {
                 this.router.navigate(['/register', currentStep]);
             }
         } catch (e) {
-            this.toastr.error((e.error? e.error.message : e.message) || 'Something is wrong');
+            this.toastr.error((e.error ? e.error.message : e.message) || 'Something is wrong');
         }
+    }
+
+    invite(messaging: boolean) {
+        const shiftId = this.data.shiftId;
+        const filters = this.filters;
+        const role = { id: this.data.selectedRoleId };
+        const userIds = this.selectedUsers.map(v => v.id);
+        const inviteAll = this.data.invite_all;
+        if (!this.data.selectedRoleId) { return; }
+        if ((this.data.invite_all && this.total === 0) || (!this.data.invite_all && _.isEmpty(userIds))) { return; }
+
+        if (messaging) {
+            // TODO - Open message composer tab
+        } else {
+            // Invite Staffs
+            this.actionService.inviteUsersToRole({ shiftId, filters, role, userIds, inviteAll });
+            this.tabService.closeTab(USERS_TAB);
+
+            const template = 'adminShiftTpl';
+            this.tabService.openTab(
+                new Tab(this.data.title, template, this.data.tab, { id: this.data.shiftId, url: this.data.tab })
+            );
+        }
+    }
+
+    onRoleChange() {
+        // TODO - Get filters by selected role and filter users
+    }
+
+    removeInvitationBar() {
+        this.data.invite = false;
+        this.resetFilters();
+    }
+
+    private resetFilters() {
+        this.selectedTypeFilter = 'utype:=:all';
+        this.filters = [];
+        this.getUsers();
     }
 }

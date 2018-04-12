@@ -85,7 +85,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     readonly noteTypes = [
         { value: 0, label: 'Default' }
-    ]
+    ];
 
     readonly noteClientVisibles = [
         { value: 0, label: 'Admin Only' },
@@ -111,20 +111,22 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         // Add Users to Role
         this.usersToRoleSubscription = this.actionService.usersToRole.subscribe(
             ({ userIds, role, section }) => {
-                const staffStatusId = mapSectionToStaffStatus(section);
-                this.spinner.show();
-                this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
-                    .subscribe(res => {
-                        this.spinner.hide();
-                        this.refreshTabByRole(role, section);
-                        this.updateStaffsCount(role.id);
-                        this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
-                    }, err => {
-                        this.spinner.hide();
-                        this.updateStaffsCount(role.id);
-                        this.refreshTabByRole(role, section);
-                        this.toastr.error('Error!');
-                    })
+                if (this.shift.id === role.shift_id) {
+                    const staffStatusId = mapSectionToStaffStatus(section);
+                    this.spinner.show();
+                    this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
+                        .subscribe(res => {
+                            this.spinner.hide();
+                            this.refreshTabByRole(role, section);
+                            this.updateStaffsCount(role.id);
+                            this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
+                        }, err => {
+                            this.spinner.hide();
+                            this.updateStaffsCount(role.id);
+                            this.refreshTabByRole(role, section);
+                            this.toastr.error('Error!');
+                        });
+                }
             });
     }
 
@@ -189,9 +191,29 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.refreshTabByRole(role, selectedTab);
     }
 
+    inviteStaffs({ userIds, filters, role, inviteAll }) {
+        if (inviteAll) {
+
+        } else {
+            this.spinner.show();
+            this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_INVITED)
+                .subscribe(res => {
+                    this.spinner.hide();
+                    this.refreshTabByRole(role, Section.Invited);
+                    this.updateStaffsCount(role.id);
+                    const index = this.roles.findIndex(v => v.id === role.id);
+                    this.roles[index].section = Section.Invited;
+                    this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} invited`);
+                }, err => {
+                    this.spinner.hide();
+                    this.toastr.error('Error!');
+                });
+        }
+    }
+
     moveup(role) {
         const index = role.index;
-        if (index === 0) return;
+        if (index === 0) { return; }
         this.scheduleService.UpdateRoleDisplayOrder(role.id, 'up').subscribe(res => {
             this.roles[index].index = index - 1;
             this.roles[index - 1].index = index;
@@ -201,7 +223,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     movedown(role) {
         const index = role.index;
-        if (index === this.roles.length - 1) return;
+        if (index === this.roles.length - 1) { return; }
         this.scheduleService.UpdateRoleDisplayOrder(role.id, 'down').subscribe(res => {
             this.roles[index].index = index + 1;
             this.roles[index + 1].index = index;
@@ -268,11 +290,34 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     onAddStaffToRole(role) {
         // TODO
-        const filter = [];
+        const filters = [];
         const data = {
-            filter,
+            filters,
             role,
             tab: `admin/shift/${this.shift.id}`
+        };
+
+        this.tabService.closeTab('users');
+        const tab = new Tab('Users', 'usersTpl', 'users', data);
+
+        this.tabService.openTab(tab);
+    }
+
+    onInviteStaffToRole(role) {
+        const roles = this.shift.shift_roles.map(v => {
+            return {
+                id: v.id,
+                name: v.rname
+            };
+        });
+        const data = {
+            roles,
+            shiftId: this.shift.id,
+            invite: true,
+            tab: `admin/shift/${this.shift.id}`,
+            filters: [],
+            title: this.shift.title,
+            selectedRoleId: role.id
         };
 
         this.tabService.closeTab('users');
@@ -369,7 +414,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                     });
             }
         });
-    };
+    }
 
     private updateStaffsBySection(role) {
         let query = '';
@@ -454,7 +499,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     onDeleteAdminNote(note) {
-        const index = this.adminNotes.findIndex(v => v.id == note.id);
+        const index = this.adminNotes.findIndex(v => v.id === note.id);
         this.scheduleService.deleteShiftAdminNote(note.id)
             .subscribe(res => {
                 this.adminNotes.splice(index, 1);
@@ -498,7 +543,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 note.color = noteType.color;
                 note.tname = noteType.tname;
             }
-        })
+        });
         note.editMode = false;
 
     }

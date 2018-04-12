@@ -130,15 +130,10 @@ export class UsersExportDialogComponent implements OnInit, AfterViewInit {
         return value && typeof value === 'object' ? value.text : value;
     }
 
-    private getFilters(query = '') {
-        this.userService.getUsersFilters(query).subscribe(
-            res => {
-                this.source = [...res];
-            },
-            err => {
-                console.log(err);
-            }
-        );
+    private async getFilters(query = '') {
+        try {
+            this.source = await this.userService.getUsersFilters(query);
+        } catch (e) { }
     }
 
 }

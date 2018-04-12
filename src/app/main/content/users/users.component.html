@@ -3,7 +3,50 @@
     <!-- HEADER -->
     <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
 
-        <ng-container *ngIf="selectedUsers.length > 0">
+        <!-- INVITATION BAR -->
+        <div *ngIf="data.invite" fxLayout.gt-xs="row" fxLayout="column" class="invitation-bar"
+            fxLayoutAlign.gt-xs="space-between center" fxLayoutGap.xs="8px">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
+                <span class="title">Invite to</span>
+
+                <mat-form-field floatPlaceholder="never">
+                    <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Role Name" (ngModelChange)="onRoleChange()">
+                        <mat-option *ngFor="let role of data.roles" [value]="role.id">{{role.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <mat-checkbox #editMessage>Edit Message</mat-checkbox>
+
+            <div>
+                <button mat-raised-button color="accent" (click)="invite(editMessage.checked)">
+                    <ng-container>{{data.invite_all ? 'All' : 'Selected'}}</ng-container>
+                </button>
+                <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" class="btn-menu px-4">
+                    <mat-icon class="white-fg">expand_more</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="data.invite_all = true">All</button>
+                    <button mat-menu-item (click)="data.invite_all = false">Selected</button>
+                </mat-menu>
+            </div>
+
+            <button mat-icon-button fxFlex="0 1 auto" (click)="removeInvitationBar()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <!-- / INVITATION BAR -->
+
+        <!-- SEARCHBAR -->
+        <app-users-search-bar
+            [filters]="filters"
+            (filterChange)="onFiltersChange($event)"
+            [typeFilters]="typeFilters"
+            (typeFilterChange)="onTypeFilterChange($event)">
+        </app-users-search-bar>
+        <!-- / SEARCHBAR -->
+
+        <ng-container *ngIf="selectedUsers.length > 0 && !data.invite">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom
             [@animate]="{value:'*',params:{delay:'50ms'}}"
             fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
@@ -39,13 +82,6 @@
             </button>
         </div>
         </ng-container>
-
-        <!-- SEARCHBAR -->
-        <app-users-search-bar (onFiltersChange)="onFiltersChange($event)"
-                              [typeFilters]="typeFilters"
-                              (onTypeFilterSelected)="onTypeFilterChange($event)">
-        </app-users-search-bar>
-        <!-- / SEARCHBAR -->
 
     </div>
     <!-- / HEADER -->
@@ -94,7 +130,7 @@
                                  let-selectFn="selectFn">
                         <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
                     </ng-template>
-                    
+
                     <ng-template ngx-datatable-cell-template
                                  let-value="value"
                                  let-isSelected="isSelected"
@@ -132,7 +168,7 @@
                         [sortable]="column.sortable == 1 ? true : false"
                         [width]="100"
                         [canAutoResize]="false">
-                        
+
                         <ng-template *ngIf="column.key_name =='fav'" let-row="row" let-value="value" ngx-datatable-cell-template>
 
                             <div class="" fxLayout="row" fxLayoutAlign="start center">
@@ -149,19 +185,19 @@
 
                 </ng-container>
 
-                <ngx-datatable-column 
+                <ngx-datatable-column
                     [width]="100"
                     [sortable]="false"
                     [resizeable]="false"
                     [draggable]="false"
                     [canAutoResize]="false">
-                    
+
                     <ng-template let-row="row" ngx-datatable-cell-template>
-                        
+
                         <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
                             <mat-icon class="material-icons">more_vert</mat-icon>
                         </button>
-                        
+
                         <mat-menu #menu="matMenu">
 
                             <button mat-menu-item (click)="loginAsUser(row)">
@@ -180,7 +216,7 @@
                             </button>
 
                         </mat-menu>
-            
+
                         <mat-menu #typeMenu="matMenu">
 
                             <button mat-menu-item>Owner</button>
