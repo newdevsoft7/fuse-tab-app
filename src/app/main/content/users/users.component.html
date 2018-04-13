@@ -9,7 +9,7 @@
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
                 <span class="title">Invite to</span>
 
-                <mat-form-field floatPlaceholder="never">
+                <mat-form-field floatLabel="never">
                     <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Role Name" (ngModelChange)="onRoleChange()">
                         <mat-option *ngFor="let role of data.roles" [value]="role.id">{{role.name}}</mat-option>
                     </mat-select>
