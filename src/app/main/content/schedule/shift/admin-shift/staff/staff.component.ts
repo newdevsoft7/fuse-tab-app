@@ -180,6 +180,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     onEditRole(role) {
         const url = `shift/role/${role.id}/role-edit`;
         const roleTab = new Tab('Edit Role', 'shiftRoleEditTpl', url, { url, role });
+        this.tabService.closeTab(url);
         this.tabService.openTab(roleTab);
     }
 

@@ -61,6 +61,7 @@ export class ShiftRoleEditComponent implements OnInit {
     url: string;
 
     role: any;  // EDIT ROLE FROM SHIFT TAB
+    shift: any; // CREATE ROLE FROM SHIFT TAB
 
     roleForm: FormGroup;
     formErrors: any;
@@ -96,6 +97,8 @@ export class ShiftRoleEditComponent implements OnInit {
         // FOR ROLE EDIT
         this.role = this.data.role;
 
+        // FOR ROLE CREATING FROM SHIFT TAB
+        this.shift = this.data.shift;
 
         if (this.role) { // ROLE EDIT
             this.roleForm = this.formBuilder.group({
@@ -116,7 +119,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.payRateType = this.role.pay_rate_type;
 
             // SET ROLE REQUIREMENTS
-            this.scheduleService.getRoleRequirements(this.role.id).subscribe(requirements => {
+            this.scheduleService.getRoleRequirementsByRole(this.role.id).subscribe(requirements => {
                 this.roleForm.patchValue({ requirements });
             });
 
@@ -198,9 +201,10 @@ export class ShiftRoleEditComponent implements OnInit {
 
         // Make Role Param
         let role = _.cloneDeep(this.roleForm.value);
-
+        const requirements = role.requirements.map(v => v.id);
         role = {
             ...role,
+            requirements,
             pay_rate_type: this.payRateType,
             bill_rate_type: this.billRateType
         };
@@ -251,9 +255,26 @@ export class ShiftRoleEditComponent implements OnInit {
                 }, err => {
                     this.displayError(err);
                 });
+        } else if (this.shift) { // ROLE CREATE FROM SHIFT TAB
+            this.scheduleService.createShiftRole(this.shift.id, role)
+                .subscribe(res => {
+                    this.toastr.success(res.message);
+                    this.tabService.closeTab(this.url);
+                    this.openShiftTab(this.shift.id, this.shift.title);
+                }, err => {
+                    this.displayError(err);
+                });
         } else { // ROLE UPDATE
-            // TODO
+
         }
+    }
+
+    private openShiftTab(id, title) {
+        const template = 'adminShiftTpl';
+        const url = `admin/shift/${id}`;
+        const tab = new Tab(title, template, url, { id, url });
+        this.tabService.closeTab(url);
+        this.tabService.openTab(tab);
     }
 
     private resetForm() {

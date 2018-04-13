@@ -2,12 +2,9 @@
 
     <mat-chip-list #chipList>
 
-        <ng-container *ngFor="let item of selected">
-            <mat-chip *ngIf="item" (remove)="remove(item)">
-                {{item.text}}
-                <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-        </ng-container>
+        <mat-chip *ngFor="let tag of _value" (remove)="remove(tag)">
+            {{tag.text}} <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
 
         <input #chipInput
                [matChipInputFor]="chipList"

@@ -199,6 +199,17 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         this.shift.managers = managers;
     }
 
+    addRole() {
+        const url = `shift/${this.shift.id}/role-edit`;
+        const shift = this.shift;
+        const tab = new Tab(
+            `Add Role (1 shift)`,
+            'shiftRoleEditTpl',
+            url,
+            { shift, url });
+        this.tabService.closeTab(url);
+        this.tabService.openTab(tab);
+    }
 
     private async fetch() {
         try {

@@ -3,8 +3,7 @@ import {
     Component, OnInit,
     ChangeDetectionStrategy,
     ViewChild, forwardRef,
-    EventEmitter, Input,
-    IterableDiffers, DoCheck
+    EventEmitter, Input
 } from '@angular/core';
 
 import {
@@ -29,9 +28,10 @@ import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from '../../../schedule.service';
 
 export function arrayDiffObj(s: any[], v: any[], key: string) {
-    let reducedIds = v;
+    if (!s) { return []; }
+    const reducedIds = v.map(k => k.id);
     return s.filter((obj: any) => reducedIds.indexOf(obj[key]) === -1);
-};
+}
 
 const CUSTOM_INPUT_VALIDATORS: any = {
     provide: NG_VALIDATORS,
@@ -53,10 +53,10 @@ const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
         CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR
     ]
 })
-export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, ControlValueAccessor, DoCheck {
+export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
     @ViewChild('chipInput') chipInput: MatInput;
-    
+
     @Output() valueChange = new EventEmitter();
 
     @Input('value')
@@ -68,37 +68,19 @@ export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, Co
 
     source = [];
     _value = [];
-    
-    differ: any;
-    
-    _selected = [];
-    get selected() {
-        return this._value.map((v, i) => {
-            const idx = this._selected.findIndex(s => s.id === v);
-            if (idx > -1) {
-                return this._selected[idx];
-            } else {
-                const idx2 = this.source.findIndex(r => r.id === v);
-                this._selected[idx] = idx2 > -1 ? this.source[idx2] : null;
-                return this._selected[idx];
-            }
-        });
-    }
 
     private searchTerms = new Subject<string>();
 
     constructor(
         private toastr: ToastrService,
-        private scheduleService: ScheduleService,
-        differs: IterableDiffers
+        private scheduleService: ScheduleService
     ) {
-        this.differ = differs.find([]).create(null);
     }
 
     ngOnInit() {
         this.getRequirements('');
     }
-    
+
     ngAfterViewInit() {
         Observable.fromEvent(this.chipInput['nativeElement'], 'keyup')
             .debounceTime(300)
@@ -110,14 +92,6 @@ export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, Co
                 }
             });
     }
-
-    ngDoCheck() {
-        const change = this.differ.diff(this.source);
-        if (change) {
-            // TODO
-        }
-    }
-
     private getRequirements(query): void {
         this.scheduleService.getRoleRequirements(query)
             .subscribe(res => {
@@ -156,10 +130,8 @@ export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, Co
     add(event: MatAutocompleteSelectedEvent): void {
         const t = event.option.value;
 
-        this._value.push(t.id);
+        this._value.push(t);
         this.value = this._value;
-
-        this._selected.push(t);
 
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
@@ -172,8 +144,7 @@ export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, Co
     }
 
     remove(tag): void {
-        this._selected = this._selected.filter(t => t.id !== tag.id);
-        this._value = this._value.filter(i => i !== tag.id);
+        this._value = this._value.filter(v => v.id !== tag.id);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
         this.getRequirements('');

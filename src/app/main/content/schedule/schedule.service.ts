@@ -293,9 +293,9 @@ export class ScheduleService {
     return this.http.put(url, body).toPromise();
   }
 
-  getRoleRequirementsByRole(roleId: number | string): Promise<any> {
+  getRoleRequirementsByRole(roleId: number | string): Observable<any> {
     const url = `${BASE_URL}/role/${roleId}/roleRequirements`;
-    return this.http.get(url).toPromise();
+    return this.http.get(url).catch(this.handleError);
   }
 
   private handleError(error: Response | any) {

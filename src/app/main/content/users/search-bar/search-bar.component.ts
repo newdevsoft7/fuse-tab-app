@@ -32,7 +32,7 @@ export interface Tag {
 
 export function arrayDiffObj(s: any[], v: any[], key: string) {
     if (!s) { return []; }
-    const reducedIds = v;
+    const reducedIds = v.map(k => k.id);
     return s.filter((obj: any) => reducedIds.indexOf(obj[key]) === -1);
 }
 
