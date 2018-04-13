@@ -104,7 +104,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.roleForm = this.formBuilder.group({
                 num_required: [this.role.num_required],
                 rname: [this.role.rname, Validators.required],
-                application_deadline: [moment(this.role.application_deadline)],
+                application_deadline: [this.role.application_deadline ? moment(this.role.application_deadline) : null],
                 notes: [this.role.notes],
                 bill_rate: [this.role.bill_rate],
                 pay_rate: [this.role.pay_rate],
@@ -180,7 +180,7 @@ export class ShiftRoleEditComponent implements OnInit {
     }
 
     get validate() {
-        return (!this.sameAsShift && !this.roleTimeValidate() || !this.roleForm.valid) ? false : true;
+        return ((!this.sameAsShift && !this.roleTimeValidate()) || this.roleForm.invalid) ? false : true;
     }
 
     private roleTimeValidate(): boolean {
@@ -265,7 +265,14 @@ export class ShiftRoleEditComponent implements OnInit {
                     this.displayError(err);
                 });
         } else { // ROLE UPDATE
-
+            this.scheduleService.updateShiftRole(this.role.id, role)
+                .subscribe(res => {
+                    this.toastr.success(res.message);
+                    this.tabService.closeTab(this.url);
+                    this.openShiftTab(this.role.shift_id, this.role.shift_title);
+                }, err => {
+                    this.displayError(err);
+                });
         }
     }
 

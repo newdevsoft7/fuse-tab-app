@@ -151,6 +151,12 @@ export class ScheduleService {
     );
   }
 
+  updateShiftRole(roleId, role): Observable<any> {
+    const url = `${BASE_URL}/shift/role/${roleId}`;
+    return this.http.put(url, role)
+      .catch(this.handleError);
+  }
+
   getPayLevelCategory(id?: number): Observable<any> {
     const param = typeof id === 'undefined' ? '' : id;
     const url = `${BASE_URL}/payLevel/category/${param}`;
