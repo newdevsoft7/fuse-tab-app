@@ -316,6 +316,7 @@ export class UsersComponent implements OnInit {
 
     private resetFilters() {
         this.selectedTypeFilter = 'utype:=:all';
+        this.selectedUsers = [];
         this.filters = [];
         this.getUsers();
     }
