@@ -293,6 +293,11 @@ export class ScheduleService {
     return this.http.put(url, body).toPromise();
   }
 
+  getRoleRequirementsByRole(roleId: number | string): Promise<any> {
+    const url = `${BASE_URL}/role/${roleId}/roleRequirements`;
+    return this.http.get(url).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

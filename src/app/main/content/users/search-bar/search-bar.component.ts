@@ -64,42 +64,20 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     source = [];
     _value = [];
 
-    @Input('typeFilters') typeFilters;
+    typeFilters: any[] = [];
+
+    @Input() disableTypeFilter = false;
+    @Input() selectedTypeFilter = 'utype:=:all'; // All Active Users
     @Output() filterChange = new EventEmitter();
     @Output() typeFilterChange = new EventEmitter();
 
-    selectedTypeFilter = 'utype:=:all';  // All Active Users
-
     private searchTerms = new Subject<string>();
-
-    _selected = [];
-    get selected() {
-        return this._value.map((v, i) => {
-            const idx = this._selected.findIndex(s => s && s.id === v);
-            if (idx > -1) {
-                return this._selected[idx];
-            } else {
-                let option;
-                this.source.every(group => {
-                    const item = group.children.find(o => o.id === v);
-                    if (item) {
-                        option = item;
-                        return false;
-                    } else {
-                        return true;
-                    }
-                });
-                this._selected[i] = option ? option : null;
-                return this._selected[i];
-            }
-        });
-    }
 
     @Input('filters')
     get value() { return this._value; }
     set value(v: any[]) {
         this._value = v;
-        this.onChange(this._value);
+        this.filterChange.next(this._value);
     }
 
 
@@ -109,8 +87,11 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         private userService: UserService) {
     }
 
-    ngOnInit() {
-        this.getFilters();
+    async ngOnInit() {
+        try  {
+            this.getFilters();
+            this.typeFilters = await this.userService.getUsersTypeFilters();
+        } catch (e) { }
     }
 
     ngAfterViewInit() {
@@ -125,7 +106,6 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     }
 
     onChange = (_: any): void => {
-        this.filterChange.emit(_);
     }
 
     onTouched = (_: any): void => {
@@ -160,9 +140,8 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     add(event: MatAutocompleteSelectedEvent): void {
         const t: Tag = event.option.value;
 
-        this._value.push(t.id);
+        this._value.push(t);
         this.value = this._value;
-        this._selected.push(t);
 
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
@@ -186,14 +165,12 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
             if (searchedTag) {
                 if (this.value.findIndex(v => v.id === searchedTag.id) < 0) {
                     newTag = { ...searchedTag };
-                    this._selected.push(newTag);
                     this._value.push(newTag.id);
                     this.value = this._value;
                 }
             } else {
                 if (this.value.findIndex(v => v.id === inputValue) < 0) {
                     newTag = { id: input.value, text: input.value };
-                    this._selected.push(newTag);
                     this._value.push(newTag.id);
                     this.value = this._value;
                 }
@@ -205,8 +182,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     }
 
     remove(tag: Tag): void {
-        this._selected = this._selected.filter(t => t.id !== tag.id);
-        this._value = this._value.filter(v => v !== tag.id);
+        this._value = this._value.filter(v => v.id !== tag.id);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
         this.onSearchChange('');

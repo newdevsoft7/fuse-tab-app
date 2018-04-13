@@ -205,7 +205,12 @@ export class UserService {
         return this.http.get(url.replace(/\/+$/, '')).toPromise();
     }
 
-    async getUsersTypeFilters(): Promise<any> {
+    getRoleRequirementsByRole(roleId: number | string): Promise<any> {
+        const url = `${BASE_URL}/role/${roleId}/roleRequirements`;
+        return this.http.get(url).toPromise();
+    }
+
+    getUsersTypeFilters(): Promise<any> {
         const url = `${USERS_URL}/typeFilter`;
         return this.http.get(url).toPromise();
     }

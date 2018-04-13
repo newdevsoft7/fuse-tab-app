@@ -15,11 +15,9 @@
     <div fxFlex>
         <mat-form-field fxFlexFill>
             <mat-chip-list #chipList>
-                <ng-container *ngFor="let tag of selected">
-                    <mat-chip *ngIf="tag" (remove)="remove(tag)">
+                    <mat-chip *ngFor="let tag of _value" (remove)="remove(tag)">
                         {{tag.text}} <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
-                </ng-container>
 
                 <input #chipInput
                     [matChipInputFor]="chipList"
@@ -42,7 +40,8 @@
 
     <div fxFlex="0 1 auto">
         <mat-form-field>
-            <mat-select (change)="onTypeFilterChange($event)" [(ngModel)]="selectedTypeFilter">
+            <mat-select (change)="onTypeFilterChange($event)" [(ngModel)]="selectedTypeFilter"
+                [disabled]="disableTypeFilter">
                 <ng-container *ngFor="let group of typeFilters">
                     <mat-optgroup *ngIf="group.children.length > 0" [label]="group.text">
                         <mat-option *ngFor="let option of group.children" [value]="option.id">

@@ -53,7 +53,6 @@ export class UsersComponent implements OnInit {
     filters = [];
     sorts: any[];
 
-    typeFilters;
     selectedTypeFilter = 'utype:=:all'; // All Active Users
 
     mode: Mode = Mode.Normal; // Normal
@@ -91,25 +90,26 @@ export class UsersComponent implements OnInit {
         private authService: AuthenticationService,
         private router: Router) { }
 
-    ngOnInit() {
+    async ngOnInit() {
 
         // For invitation to a shift
         if (this.data.invite) {
             this.data.invite_all = true;
             this.filters = this.data.filters;
+            this.selectedTypeFilter = 'utype:=:staff';
+            if (this.data.selectedRoleId) {
+                try {
+                    await this.onRoleChange();
+                } catch (e) { }
+            }
         }
 
         this.currentUser = this.tokenStorage.getUser();
         this.init();
     }
 
-    private async init() {
-        try {
-            this.typeFilters = await this.userService.getUsersTypeFilters();
-            this.getUsers();
-        } catch (e) {
-            console.log(e);
-        }
+    private init() {
+        this.getUsers();
     }
 
     onPageLengthChange(event) {
@@ -253,7 +253,7 @@ export class UsersComponent implements OnInit {
     }
 
     private mergeAllFilters(): any[] {
-        return [this.selectedTypeFilter, ...this.filters];
+        return [this.selectedTypeFilter, ...this.filters.map(v => v.id)];
     }
 
     onSort(event) {
@@ -282,7 +282,7 @@ export class UsersComponent implements OnInit {
 
     invite(messaging: boolean) {
         const shiftId = this.data.shiftId;
-        const filters = this.filters;
+        const filters = this.filters.map(v => v.id);
         const role = { id: this.data.selectedRoleId };
         const userIds = this.selectedUsers.map(v => v.id);
         const inviteAll = this.data.invite_all;
@@ -303,8 +303,10 @@ export class UsersComponent implements OnInit {
         }
     }
 
-    onRoleChange() {
-        // TODO - Get filters by selected role and filter users
+    async onRoleChange() {
+        try {
+            this.filters = await this.userService.getRoleRequirementsByRole(this.data.selectedRoleId);
+        } catch (e) { }
     }
 
     removeInvitationBar() {

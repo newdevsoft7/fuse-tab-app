@@ -41,7 +41,8 @@
         <app-users-search-bar
             [filters]="filters"
             (filterChange)="onFiltersChange($event)"
-            [typeFilters]="typeFilters"
+            [selectedTypeFilter]="selectedTypeFilter"
+            [disableTypeFilter]="data.invite"
             (typeFilterChange)="onTypeFilterChange($event)">
         </app-users-search-bar>
         <!-- / SEARCHBAR -->
