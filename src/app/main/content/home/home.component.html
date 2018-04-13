@@ -129,8 +129,8 @@
         <app-generate-payroll></app-generate-payroll>
     </ng-template>
 
-    <ng-template #newMessageTpl>
-        <app-user-message></app-user-message>
+    <ng-template #newMessageTpl let-data="data">
+        <app-user-message [data]="data"></app-user-message>
     </ng-template>
 
     <ng-template #emailTemplatesTpl>

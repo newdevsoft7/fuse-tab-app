@@ -85,14 +85,16 @@
   </div>
   <div class="footer px-12 pt-20">
     <button mat-raised-button color="accent" type="submit" [disabled]="(sent && messageForm.pristine) || sending">
-      <ng-container *ngIf="!sending && (!messageForm.pristine || !sent)">{{ message.thread === 0 ? 'Send Individually' : 'Send Group' }}{{ !count? '' : ' (' + count + ' recipients)' }}</ng-container>
+      <ng-container *ngIf="!sending && (!messageForm.pristine || !sent)">{{ message.thread === 0 ? 'Send Individually' : 'Send to Group' }}{{ !count? '' : ' (' + count + ' recipients)' }}</ng-container>
       <ng-container *ngIf="sent && messageForm.pristine">Sent</ng-container>
       <ng-container *ngIf="sending">Sending...</ng-container>
     </button>
-    <button mat-raised-button class="btn-menu px-4" color="accent" [matMenuTriggerFor]="menu" type="button" [disabled]="(sent && messageForm.pristine) || sending"><mat-icon class="white-fg">expand_more</mat-icon></button>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="message.thread = 0">Send Individually</button>
-        <button mat-menu-item (click)="message.thread = 1">Send Group</button>
-    </mat-menu>
+    <ng-container *ngIf="message.recipients && message.recipients.length > 1">
+      <button mat-raised-button class="btn-menu px-4" color="accent" [matMenuTriggerFor]="menu" type="button" [disabled]="(sent && messageForm.pristine) || sending"><mat-icon class="white-fg">expand_more</mat-icon></button>
+      <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="message.thread = 0">Send Individually</button>
+          <button mat-menu-item (click)="message.thread = 1">Send to Group</button>
+      </mat-menu>
+    </ng-container>
   </div>
 </form>

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from "@angular/core";
+import { Component, ViewChild, ElementRef, Input } from "@angular/core";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
 import { MessageService } from "./message.service";
 import { Observable } from "rxjs/Observable";
@@ -13,6 +13,13 @@ import { CustomMultiSelectComponent } from "../../../../core/components/custom-m
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent {
+
+  @Input('data') set updateData(data: any) {
+    if (data) {
+      this.message = { ...this.message, ...data };
+    }
+  }
+
   message: any = {
     thread: 0,
     email: 0,
@@ -74,6 +81,9 @@ export class MessageComponent {
   }
 
   async onRecipientFiltersChanged(filters: any): Promise<any> {
+    if (filters.length < 2) {
+      this.message.thread = 0;
+    }
     if (filters.length === 0) return;
     try {
       const res = await this.messageService.send({
