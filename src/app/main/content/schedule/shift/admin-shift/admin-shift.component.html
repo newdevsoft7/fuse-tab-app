@@ -106,7 +106,7 @@
 
             <mat-tab label="Notes">
                 <div class="p-24 shift-notes">
-                    <div [froalaEditor] [(froalaModel)]="notes" class="mb-12"></div>
+                    <app-ckeditor-v5 class="mb-12" [(ngModel)]="notes"></app-ckeditor-v5>
                     <button mat-raised-button color="accent" (click)="saveNotes()" [disabled]="!notes">Save</button>
                 </div>
             </mat-tab>

@@ -67,6 +67,7 @@ import { EditTrackingComponent } from './shift/admin-shift/edit-tracking/edit-tr
 import { EditTrackingDialogComponent } from './shift/admin-shift/edit-tracking/edit-tracking-dialog/edit-tracking-dialog.component';
 import { EditWorkareasComponent } from './shift/admin-shift/edit-workareas/edit-workareas.component';
 import { EditWorkareasDialogComponent } from './shift/admin-shift/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
+import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { EditWorkareasDialogComponent } from './shift/admin-shift/edit-workareas
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
         }),
-        AgmJsMarkerClustererModule
+        AgmJsMarkerClustererModule,
+        CKEditor5Module
     ],
     declarations: [
         ScheduleComponent,

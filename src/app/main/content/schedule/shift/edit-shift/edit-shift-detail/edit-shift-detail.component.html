@@ -221,7 +221,7 @@
             </div>
 
             <div fxFlex="1 0 auto">
-                <textarea [froalaEditor] [(froalaModel)]="list.notes.value" *ngIf="list.notes.checked"></textarea>
+                <app-ckeditor-v5 [(ngModel)]="list.notes.value" *ngIf="list.notes.checked"></app-ckeditor-v5>
             </div>
 
         </div>

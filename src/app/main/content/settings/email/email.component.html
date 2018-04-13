@@ -31,8 +31,9 @@
         <div class="name" fxFlex="20">Main Email Signature</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <div class="w-100-p">
-                <textarea [froalaEditor]="{placeholderText: 'Enter any signature to be appended to outgoing emails. This may be overwritten by personal signatures entered on the settings tab of administrator profiles.'}"
-                    [(froalaModel)]="items[Setting.company_email_signature]" [formControl]="signature"></textarea>
+                <app-ckeditor-v5
+                    placeholder="Enter any signature to be appended to outgoing emails. This may be overwritten by personal signatures entered on the settings tab of administrator profiles." 
+                    [(ngModel)]="items[Setting.company_email_signature]" [formControl]="signature"></app-ckeditor-v5>
             </div>
         </div>
     </div>

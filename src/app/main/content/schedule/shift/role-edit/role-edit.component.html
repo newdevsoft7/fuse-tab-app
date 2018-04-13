@@ -49,9 +49,7 @@
             
                 <div class="content p-0" fxLayout="column">
                     <div class="info-line">
-                        <textarea matInput [froalaEditor]="{placeholderText: 'Enter any role specific notes here. They will be shown on the apply and confirm dialogues.'}"
-                            formControlName="notes">
-                                        </textarea>
+                        <app-ckeditor-v5 placeholder="Enter any role specific notes here. They will be shown on the apply and confirm dialogues." formControlName="notes"></app-ckeditor-v5>
                     </div>
                 </div>
             </div>
@@ -173,10 +171,7 @@
             
                 <div class="content p-0" fxLayout="column">
                     <div class="info-line">
-                        <textarea matInput
-                            [froalaEditor]="{placeholderText: 'Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues.'}"
-                            formControlName="completion_notes">
-                        </textarea>
+                        <app-ckeditor-v5 placeholder="Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues." formControlName="completion_notes"></app-ckeditor-v5>
                     </div>
                 </div>
             

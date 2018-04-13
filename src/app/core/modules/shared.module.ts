@@ -10,7 +10,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxDnDModule } from '@swimlane/ngx-dnd';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { TextMaskModule } from 'angular2-text-mask';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { NgPipesModule } from 'ngx-pipes';
 
 import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '../directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.directive';
@@ -66,8 +65,6 @@ import { DebounceDirective } from '../directives/debounce/debounce.directive';
         NgxDatatableModule,
         NgSelectModule,
         TextMaskModule,
-        FroalaEditorModule.forRoot(),
-        FroalaViewModule.forRoot(),
         MaterialTimeControlModule,
         NgPipesModule,
         StarRatingModule.forRoot()
@@ -93,8 +90,6 @@ import { DebounceDirective } from '../directives/debounce/debounce.directive';
         TranslateModule,
         NgSelectModule,
         TextMaskModule,
-        FroalaEditorModule,
-        FroalaViewModule,
         MaterialTimeControlModule,
         NgPipesModule,
         StarRatingModule

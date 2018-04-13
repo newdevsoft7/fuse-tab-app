@@ -40,7 +40,7 @@ class TimeRange {
 
 // Convert Time to TimeRange
 function processTime(dateTime) {
-    if (!dateTime) return;
+    if (!dateTime) { return; }
     const date = moment(dateTime, 'YYYY-MM-DD HH:mm:ss');
     const minute = date.minute();
     const { hour, meriden } = hours24to12(date.hour());
@@ -64,7 +64,7 @@ export class ShiftRoleEditComponent implements OnInit {
 
     roleForm: FormGroup;
     formErrors: any;
-    
+
     rolePeriod = new TimeRange();
     sameAsShift = true;
 
@@ -119,7 +119,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.scheduleService.getRoleRequirements(this.role.id).subscribe(requirements => {
                 this.roleForm.patchValue({ requirements });
             });
-            
+
             // SET ROLE PERIOD
             this.rolePeriod = new TimeRange(
                 processTime(this.role.role_start),
@@ -146,7 +146,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.payCategories = res;
         }, err => {
             this.displayError(err);
-        })
+        });
 
         // Form Validation
         this.roleForm.valueChanges.subscribe(() => {
@@ -198,18 +198,18 @@ export class ShiftRoleEditComponent implements OnInit {
 
         // Make Role Param
         let role = _.cloneDeep(this.roleForm.value);
-        
+
         role = {
             ...role,
             pay_rate_type: this.payRateType,
             bill_rate_type: this.billRateType
         };
-        
+
         if (role.application_deadline) {
             role = {
                 ...role,
                 application_deadline: moment(role.application_deadline).format('YYYY-MM-DD HH:mm:ss'),
-            }
+            };
         } else {
             delete role.application_deadline;
         }
@@ -226,18 +226,18 @@ export class ShiftRoleEditComponent implements OnInit {
                 role_start,
                 role_end
             };
-        } 
+        }
 
         if (this.shifts) { // ROLE CREATE
             this.scheduleService.createShiftsRoles(this.shifts, role)
                 .subscribe(res => {
-                    this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles': 'Role'} created.`);
-    
+                    this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles' : 'Role'} created.`);
+
                     // Confirm Dialog to ask whether to add another role or not
                     this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
                         disableClose: false
                     });
-    
+
                     this.confirmDialogRef.componentInstance.confirmMessage = 'Do you want to add another role?';
                     this.confirmDialogRef.componentInstance.confirmTitle = 'Confirm';
                     this.confirmDialogRef.afterClosed().subscribe(result => {
@@ -247,7 +247,7 @@ export class ShiftRoleEditComponent implements OnInit {
                             this.tabService.closeTab(this.url);
                         }
                     });
-    
+
                 }, err => {
                     this.displayError(err);
                 });
@@ -287,14 +287,14 @@ export class ShiftRoleEditComponent implements OnInit {
 }
 
 function hours12to24(h, meridiem) {
-    return h == 12 ? (meridiem.toUpperCase() == 'PM' ? 12 : 0) : (meridiem.toUpperCase() == 'PM' ? h + 12 : h);
+    return h === 12 ? (meridiem.toUpperCase() === 'PM' ? 12 : 0) : (meridiem.toUpperCase() === 'PM' ? h + 12 : h);
 }
 
 function hours24to12(h) {
     return {
         hour: (h + 11) % 12 + 1,
         meriden: h >= 12 ? 'PM' : 'AM'
-    }
+    };
 }
 
 function convertTime({ hour, minute, format, meriden }) {
