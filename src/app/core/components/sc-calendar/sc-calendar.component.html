@@ -1,4 +1,8 @@
 <div class="calendar-container" #calendar fxLayout="column">
+  <div class="calendar-overlay" *ngIf="loading && ajax">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      Loading data...
+  </div>
   <sc-calendar-header
     [title]="title"
     [month]="month"

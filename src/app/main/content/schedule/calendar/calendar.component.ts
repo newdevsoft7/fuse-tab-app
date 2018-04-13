@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 import { FormGroup } from '@angular/forms/src/model';
@@ -11,6 +11,7 @@ import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { ActionService } from '../../../../shared/services/action.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -28,6 +29,8 @@ export class ScheduleCalendarComponent implements OnInit {
 
   startDate: string;
   endDate: string;
+
+  loading: boolean = false;
 
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
@@ -52,7 +55,6 @@ export class ScheduleCalendarComponent implements OnInit {
       title: 'Open',
       icon: 'open_in_new',
       callback: (event: EventEntity): void => {
-        // put some logic here
         this.openEventTab(event);
       }
     },
@@ -120,7 +122,7 @@ export class ScheduleCalendarComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private toastrService: ToastrService,
     private scheduleService: ScheduleService,
     private tokenStorage: TokenStorage,
     private actionService: ActionService,
@@ -156,13 +158,15 @@ export class ScheduleCalendarComponent implements OnInit {
       view: 'calendar'
     };
 
+    this.loading = true;
+
     try {
       this.options.events = await this.scheduleService.getShifts(query).toPromise();
     } catch (e) {
-      this.snackBar.open(e.message || 'Something is wrong while fetching events.', 'Ok', {
-        duration: 2000
-      });
+      this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong while fetching events.');
     }
+
+    this.loading = false;
   }
 
   triggerEventModal(data: { action: string, date?: Moment, event?: EventEntity }): void {
@@ -229,9 +233,7 @@ export class ScheduleCalendarComponent implements OnInit {
       this.tabService.openTab(tab);
       this.actionService.addShiftsToEdit(shifts);
     } catch (e) {
-      this.snackBar.open(e.message || 'Something is wrong while fetching events.', 'Ok', {
-        duration: 2000
-      });
+      this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong while fetching events.');
     }
   }
 }
