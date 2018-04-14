@@ -1,0 +1,77 @@
+<div class="dialog-content-wrapper">
+        <mat-toolbar matDialogTitle class="mat-accent m-0">
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title">Add unavailability</span>
+                <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)" aria-label="Close dialog">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+            <mat-button-toggle-group [(ngModel)]="recurring">
+                <mat-button-toggle [value]="Recurring.Weekly">
+                    Regular
+                </mat-button-toggle>
+                <mat-button-toggle [value]="Recurring.None">
+                    Irregular
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+
+            <div fxLayout="column">
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start"
+                    *ngIf="recurring === Recurring.Weekly" fxLayoutGap.gt-xs="32px">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-60">Day:</span>
+                        <mat-form-field>
+                            <mat-select [(ngModel)]="weekday">
+                                <mat-option *ngFor="let day of weekdays" [value]="day.value">{{day.label}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex="120px" fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-60">From:</span>
+                        <w-mat-timepicker color="accent" placeholder="" [(userTime)]="fromTime.time"></w-mat-timepicker>
+                    </div>
+                    <div fxFlex="120px" fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-48">To:</span>
+                        <w-mat-timepicker color="accent" placeholder="" [(userTime)]="toTime.time"></w-mat-timepicker>
+                    </div>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap.gt-xs="12px" fxLayout.xs="column"
+                    fxLayoutAlign.xs="start">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-60">From:</span>
+                        <mat-form-field fxFlexLayout="start center" fxFlex="120px" class="mr-16">
+                            <input matInput [matDatepicker]="fromDatePicker" [(ngModel)]="fromDate" fxFlex>
+                            <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-48">To:</span>
+                        <mat-form-field fxFlexLayout="start center" fxFlex="120px">
+                            <input matInput [matDatepicker]="toDatePicker" [(ngModel)]="toDate" fxFlex>
+                            <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #toDatePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <mat-form-field>
+                    <input matInput [(ngModel)]="title" placeholder="Reason">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+
+            <button mat-raised-button (click)="save()" class="mr-8 mat-accent" aria-label="SAVE"
+                [disabled]="!valid">
+                SAVE
+            </button>
+
+        </div>
+    </div>
