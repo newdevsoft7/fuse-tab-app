@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { MatMenu } from '@angular/material';
 
 @Component({
   selector: 'sc-calendar-month-view',
@@ -18,6 +19,8 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   onResize() {
     this.updateCellHeight();
   }
+
+  menu: MatMenu;
 
   activatedCell: ElementRef;
   contextMenuContent: ContextMenuItemEntity[];
