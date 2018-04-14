@@ -38,6 +38,8 @@ import { MessageComponent, MessageService } from './message';
 import { CustomMultiSelectGroupModule } from '../../../core/components/custom-multi-select-group/custom-multi-select-group.module';
 import { CustomMultiSelectModule } from '../../../core/components/custom-multi-select/custom-multi-select.module';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
+import { UsersProfileUnavailabilityComponent } from './profile/unavailability/unavailability.component';
+import { AddUnavailabilityDialogComponent } from './profile/unavailability/add-unavailability-dialog/add-unavailability-dialog.component';
 
 @NgModule({
     imports: [
@@ -80,7 +82,9 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         UsersProfileSettingsComponent,
         UsersSettingsAdminComponent,
         UsersSettingsClientComponent,
-        MessageComponent
+        MessageComponent,
+        UsersProfileUnavailabilityComponent,
+        AddUnavailabilityDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -109,7 +113,8 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         NewThreadFormDialogComponent,
         AddUserFormDialogComponent,
         RenameThreadFormDialogComponent,
-        UsersExportDialogComponent
+        UsersExportDialogComponent,
+        AddUnavailabilityDialogComponent
     ]
 })
 export class UsersModule { }

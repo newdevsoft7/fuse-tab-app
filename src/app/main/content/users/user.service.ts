@@ -215,6 +215,21 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    getUserAvailabilities(userId): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/unavailability`;
+        return this.http.get(url).toPromise();
+    }
+
+    deleteUserAvailability(id): Promise<any> {
+        const url = `${BASE_URL}/user/unavailability/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+
+    addUserAvailability(body): Promise<any> {
+        const url = `${BASE_URL}/user/unavailability`;
+        return this.http.post(url, body).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

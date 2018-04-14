@@ -1,0 +1,37 @@
+<div class="p-24">
+    <button class="mb-16" mat-raised-button color="accent" (click)="openDialog()">Add</button>
+    <ngx-datatable
+        class="material striped"
+        [rows]="unavailabilities"
+        [columnMode]="'force'"
+        [headerHeight]="0"
+        [footerHeight]="0"
+        [rowHeight]="50">
+
+        <ngx-datatable-column prop="title">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="dates">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value}}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column prop="recurring">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+                {{value ? value : ''}}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column [maxWidth]="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button (click)="delete(row.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </ng-template>
+        </ngx-datatable-column>
+    </ngx-datatable>
+</div>

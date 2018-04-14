@@ -58,6 +58,13 @@
                     [settings]="settings"></app-users-profile-settings>
             </mat-tab>
 
+            <mat-tab label="Unavailability" *ngIf="currentUser.lvl === 'staff'">
+                <app-users-profile-unavailability
+                    [userInfo]="userInfo"
+                    [currentUser]="currentUser">
+                </app-users-profile-unavailability>
+            </mat-tab>
+
         </mat-tab-group>
 
     </div>
