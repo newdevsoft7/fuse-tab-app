@@ -14,6 +14,6 @@
     class="context-menu-trigger"
     [contextMenuTrigger]="contextMenu"
     (onContextMenuShown)="onContextMenuShown()"></div>
-  {{event.data.title}}
+  <span class="mr-8 font-weight-400">{{getTime(event.data.startedAt)}}</span>{{event.data.title}}
   <mat-icon>{{event.data.icon}}</mat-icon>
 </mat-card>

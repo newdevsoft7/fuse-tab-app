@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, DoCheck } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, DoCheck, Renderer2, OnDestroy } from '@angular/core';
 import { EventOptionEntity, ContextMenuItemEntity } from './entities';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -9,17 +9,25 @@ import * as _ from 'lodash';
   styleUrls: ['./sc-calendar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SCCalendarComponent implements OnInit, DoCheck {
+export class SCCalendarComponent implements OnInit, OnDestroy, DoCheck {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: ContextMenuItemEntity[] = [];
   @Input() ajax: Boolean = false;
+
+  @Input('loading') set updateLoading(value: boolean) {
+    this.toggleLoader(value);
+  }
+
   @Output() optionChanged: EventEmitter<{startDate: string, endDate: string}> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();
 
   oldOptions: EventOptionEntity;
   dateRange: any;
 
-  constructor() {}
+  loading: boolean = false;
+
+  constructor(
+    private renderer: Renderer2) {}
 
   ngOnInit() {
     this.oldOptions = _.cloneDeep(this.options);
@@ -32,6 +40,10 @@ export class SCCalendarComponent implements OnInit, DoCheck {
     if (this.ajax) {
       setTimeout(() => this.loadAjaxEvents());
     }
+  }
+
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'loading');
   }
 
   ngDoCheck() {
@@ -72,5 +84,15 @@ export class SCCalendarComponent implements OnInit, DoCheck {
 
   loadAjaxEvents() {
     this.optionChanged.next(this.dateRange);
+  }
+
+  toggleLoader(show: boolean) {
+    if (show) {
+      this.renderer.addClass(document.body, 'loading');
+      this.loading = true;
+    } else {
+      this.renderer.removeClass(document.body, 'loading');
+      this.loading = false;
+    }
   }
 }
