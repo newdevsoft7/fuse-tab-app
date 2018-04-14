@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 })
 export class SCCalendarComponent implements OnInit, OnDestroy, DoCheck {
   @Input() options: EventOptionEntity;
-  @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
   @Input() ajax: Boolean = false;
 
   @Input('loading') set updateLoading(value: boolean) {

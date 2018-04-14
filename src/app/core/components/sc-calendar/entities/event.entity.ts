@@ -19,4 +19,5 @@ export class EventEntity {
   eventBackgroundColor?: string;
   eventBorderColor?: string;
   eventTextColor?: string;
+  type?: string;
 }

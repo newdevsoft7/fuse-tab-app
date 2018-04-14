@@ -20,9 +20,10 @@
           <sc-calendar-event-chip
             [data]="event"
             (eventShown)="eventRender($event)"
-            [contextMenu]="contextMenu"
+            [contextMenu]="menu"
             (onMenuShown)="onMenuShown($event)"
             [hoverPopup]="hoverPopup"
+            [triggerMode]="contextMenu.mode"
             (onPopupShown)="onPopupShown($event)"
             (eventClicked)="options.eventClick($event.event, $event.jsEvent)"></sc-calendar-event-chip>
         </div>
@@ -46,5 +47,5 @@
 <sc-calendar-context-menu
   [event]="menuEvent?.raw"
   [content]="contextMenuContent"
-  (onLoadMenu)="contextMenu = $event">
+  (onLoadMenu)="menu = $event">
 </sc-calendar-context-menu>

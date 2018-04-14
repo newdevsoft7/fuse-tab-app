@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 })
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
-  @Input() contextMenu: ContextMenuItemEntity[] = [];
+  @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
   @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
   @ViewChild('monthView') monthView: any;
   @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;
@@ -45,7 +45,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       this.init();
     }
     if (changes.contextMenu) {
-      this.contextMenuContent = changes.contextMenu.currentValue;
+      this.contextMenuContent = changes.contextMenu.currentValue.data;
     }
   }
 
