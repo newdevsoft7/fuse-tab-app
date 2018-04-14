@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { FormGroup } from '@angular/forms/src/model';
 import { Observable } from 'rxjs/Observable';
 import { CalendarEventFormDialogComponent } from './event-form/event-form.component';
-import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../../../core/components/sc-calendar';
+import { EventOptionEntity, EventEntity, ContextMenuItemEntity, CONTEXT_MENU_TRIGGER_MODE } from '../../../../core/components/sc-calendar';
 import { ScheduleService } from '../schedule.service';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
@@ -50,75 +50,78 @@ export class ScheduleCalendarComponent implements OnInit {
     }
   };
 
-  contextMenu: ContextMenuItemEntity[] = [
-    {
-      title: 'Open',
-      icon: 'open_in_new',
-      callback: (event: EventEntity): void => {
-        this.openEventTab(event);
-      }
-    },
-    {
-      title: 'Copy',
-      icon: 'content_copy',
-      callback: (event: EventEntity): void => {
-        // put some logic here
-      }
-    },
-    {
-      title: 'Edit',
-      icon: 'mode_edit',
-      callback: (event: EventEntity): void => {
-        this.openEditShiftTab(event);
-      }
-    },
-    {
-      title: 'Status',
-      icon: 'mode_edit',
-      children: [
-        {
-          title: 'Default',
-          callback: (event: EventEntity): void => {
-            // put some logic here
+  contextMenu: { mode: number, data: ContextMenuItemEntity[] } = {
+    mode: CONTEXT_MENU_TRIGGER_MODE.ELLIPSIS,
+    data: [
+      {
+        title: 'Open',
+        icon: 'open_in_new',
+        callback: (event: EventEntity): void => {
+          this.openEventTab(event);
+        }
+      },
+      {
+        title: 'Copy',
+        icon: 'content_copy',
+        callback: (event: EventEntity): void => {
+          // put some logic here
+        }
+      },
+      {
+        title: 'Edit',
+        icon: 'mode_edit',
+        callback: (event: EventEntity): void => {
+          this.openEditShiftTab(event);
+        }
+      },
+      {
+        title: 'Status',
+        icon: 'mode_edit',
+        children: [
+          {
+            title: 'Default',
+            callback: (event: EventEntity): void => {
+              // put some logic here
+            }
+          },
+          {
+            title: 'Completed',
+            callback: (event: EventEntity): void => {
+              // put some logic here
+            }
+          },
+          {
+            title: 'Invoiced',
+            callback: (event: EventEntity): void => {
+              // put some logic here
+            }
+          },
+          {
+            title: 'Paid',
+            callback: (event: EventEntity): void => {
+              // put some logic here
+            }
+          },
+          {
+            title: 'Cancelled',
+            callback: (event: EventEntity): void => {
+              // put some logic here
+            }
           }
-        },
-        {
-          title: 'Completed',
-          callback: (event: EventEntity): void => {
-            // put some logic here
-          }
-        },
-        {
-          title: 'Invoiced',
-          callback: (event: EventEntity): void => {
-            // put some logic here
-          }
-        },
-        {
-          title: 'Paid',
-          callback: (event: EventEntity): void => {
-            // put some logic here
-          }
-        },
-        {
-          title: 'Cancelled',
-          callback: (event: EventEntity): void => {
-            // put some logic here
+        ]
+      },
+      {
+        title: 'Delete',
+        icon: 'delete',
+        callback: (event: EventEntity): void => {
+          const index = this.options.events.indexOf(event);
+          if (index > -1) {
+            this.options.events.splice(index, 1);
           }
         }
-      ]
-    },
-    {
-      title: 'Delete',
-      icon: 'delete',
-      callback: (event: EventEntity): void => {
-        const index = this.options.events.indexOf(event);
-        if (index > -1) {
-          this.options.events.splice(index, 1);
-        }
       }
-    }
-  ];
+    ]
+  };
 
   constructor(
     private dialog: MatDialog,

@@ -2,6 +2,11 @@ import { Component, Input, Output, EventEmitter, OnInit, ElementRef } from '@ang
 import { MatMenu } from '@angular/material';
 import { Moment } from 'moment';
 
+export enum CONTEXT_MENU_TRIGGER_MODE {
+  ELLIPSIS = 0,
+  RIGHT_CLICK = 1
+}
+
 @Component({
   selector: 'sc-calendar-event-chip',
   templateUrl: './event-chip.component.html',
@@ -11,6 +16,7 @@ export class SCCalendarEventChipComponent implements OnInit {
   @Input('data') event: any;
   @Input() contextMenu: MatMenu;
   @Input() hoverPopup: any;
+  @Input() triggerMode: number;
   @Output() eventShown: EventEmitter<any> = new EventEmitter();
   @Output() onPopupShown: EventEmitter<any> = new EventEmitter();
   @Output() onMenuShown: EventEmitter<any> = new EventEmitter();
@@ -19,7 +25,6 @@ export class SCCalendarEventChipComponent implements OnInit {
   constructor(private $el: ElementRef) {}
 
   ngOnInit() {
-    console.log(this.event);
     this.eventShown.next({
       event: this.event.raw,
       element: this.$el.nativeElement
@@ -34,6 +39,10 @@ export class SCCalendarEventChipComponent implements OnInit {
 
   popupShown() {
     this.onPopupShown.emit(this.event);
+  }
+
+  isRightClick(mode: number): boolean {
+    return mode === CONTEXT_MENU_TRIGGER_MODE.RIGHT_CLICK;
   }
 
   onContextMenuShown() {
