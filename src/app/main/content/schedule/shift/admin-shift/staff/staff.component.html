@@ -2,7 +2,7 @@
     <div class="staff-content" fxLayout="column"  fxFlex.lt-lg="100"
         [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
         <div *ngIf="roles.length === 0">
-            No rules. <a class="add-role" (click)="addRole()">Add a Role</a>
+            No roles. <a class="add-role" (click)="addRole()">Add a Role</a>
         </div>
         <div *ngFor="let role of roles" class="staff-box info-box general" fxLayout="column">
 
