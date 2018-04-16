@@ -21,8 +21,6 @@ export class UsersProfileAboutComponent implements OnInit {
     canSavePost = false;
 
     adminNotes = [];
-    viewedAdminNotes: any[];
-    isSeeAllAdminNotes = false;
     adminNoteForm: FormGroup;
     noteTemp: any; // Note template for update
 
@@ -51,7 +49,6 @@ export class UsersProfileAboutComponent implements OnInit {
         if (['owner', 'admin'].includes(this.currentUser.lvl)) {
             this.userService.getAdminNotes(this.userInfo.id).subscribe(res => {
                 this.adminNotes = res;
-                this.refreshAdminNotesView();
             });
         }
 
@@ -73,25 +70,18 @@ export class UsersProfileAboutComponent implements OnInit {
     getNoteType(noteType) {
         const type = this.noteTypes.find(t => t.value === noteType);
         return type ? type.label : '';
-    };
-
-    onSeeAllAdminNotes() {
-        this.isSeeAllAdminNotes = true;
-        this.refreshAdminNotesView();
     }
-
 
     onPostAdminNote() {
         const data = this.adminNoteForm.value;
+        this.canSavePost = false;
         this.userService.createAdminNote(this.currentUser.id, data)
             .subscribe(res => {
                 const note = res.data;
                 note.creator_ppic_a = this.userInfo.ppic_a;
                 note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
-
                 this.adminNotes.unshift(note);
-                this.refreshAdminNotesView();
 
                 this.adminNoteInput.nativeElement.value = '';
                 this.adminNoteInput.nativeElement.focus();
@@ -105,7 +95,6 @@ export class UsersProfileAboutComponent implements OnInit {
         this.userService.deleteAdminNote(note.id)
             .subscribe(res => {
                 this.adminNotes.splice(index, 1);
-                this.refreshAdminNotesView();
             }, err => {
             });
     }
@@ -138,14 +127,6 @@ export class UsersProfileAboutComponent implements OnInit {
         });
         note.editMode = false;
 
-    }
-
-    private refreshAdminNotesView() {
-        if (this.isSeeAllAdminNotes) {
-            this.viewedAdminNotes = this.adminNotes;
-        } else {
-            this.viewedAdminNotes = this.adminNotes.slice(0, 5);
-        }
     }
 
     changeRate(event: OnRatingChangeEven, rating) {

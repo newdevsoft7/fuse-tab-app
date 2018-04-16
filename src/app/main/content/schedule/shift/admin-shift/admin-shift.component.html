@@ -6,6 +6,7 @@
             <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-70-p">
 
                 <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones"
+                    [disableTimezone]="settings.shift_timezone_display === '0'"
                     (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
                 <app-admin-shift-edit-title [shift]="shift"
                     (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
@@ -13,11 +14,14 @@
                 <ng-container *ngIf="!showMoreBtn">
                     <app-admin-shift-edit-generic-title [shift]="shift"
                         (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
-                    <app-admin-shift-edit-generic-location [shift]="shift"
+                    <app-admin-shift-edit-generic-location *ngIf="settings.locations_enable === '1'"
+                        [shift]="shift"
                         (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>
-                    <app-admin-shift-edit-address [shift]="shift"
+                    <app-admin-shift-edit-address *ngIf="settings.location_address === '1'"
+                        [shift]="shift"
                         (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
-                    <app-admin-shift-edit-contact [shift]="shift"
+                    <app-admin-shift-edit-contact *ngIf="settings.contact_enable === '1'"
+                        [shift]="shift"
                         (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
                     <app-admin-shift-edit-managers [shift]="shift" class="w-100-p"
                         (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
@@ -62,10 +66,13 @@
 
                 <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column"
                     fxLayoutAlign="start end">
-                    <app-edit-tracking *ngFor="let category of shift.tracking_categories"
-                        [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>
+                    <ng-container *ngIf="settings.tracking_enable === '1'">
+                        <app-edit-tracking *ngFor="let category of shift.tracking_categories"
+                            [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>
+                    </ng-container>
 
-                    <app-edit-workareas [data]="shiftData" [shift]="shift"></app-edit-workareas>
+                    <app-edit-workareas [data]="shiftData" [shift]="shift"
+                        *ngIf="settings.work_areas_enable === '1'"></app-edit-workareas>
                 </div>
             </div>
             <!-- / HEADER BUTTONS -->
@@ -85,7 +92,8 @@
         <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedTabIndex">
 
             <mat-tab label="Staff">
-                <app-admin-shift-staff [shift]="shift" #staffTab></app-admin-shift-staff>
+                <app-admin-shift-staff [shift]="shift" #staffTab
+                    (onAddRole)="addRole()"></app-admin-shift-staff>
             </mat-tab>
 
             <mat-tab label="Expenses">
@@ -100,15 +108,15 @@
                 <app-admin-shift-castings [shift]="shift"></app-admin-shift-castings>
             </mat-tab>
 
-            <mat-tab label="Map">
-                <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
-            </mat-tab>
-
             <mat-tab label="Notes">
                 <div class="p-24 shift-notes">
                     <app-ckeditor-v5 class="mb-12" [(ngModel)]="notes"></app-ckeditor-v5>
                     <button mat-raised-button color="accent" (click)="saveNotes()" [disabled]="!notes">Save</button>
                 </div>
+            </mat-tab>
+
+            <mat-tab label="Map" *ngIf="settings.location_address === '1'">
+                <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
             </mat-tab>
 
         </mat-tab-group>

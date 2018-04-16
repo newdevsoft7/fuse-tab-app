@@ -294,7 +294,7 @@ export class UsersComponent implements OnInit {
         } else {
             // Invite Staffs
             this.actionService.inviteUsersToRole({ shiftId, filters, role, userIds, inviteAll });
-            this.tabService.closeTab(USERS_TAB);
+            this.removeInvitationBar();
 
             const template = 'adminShiftTpl';
             this.tabService.openTab(

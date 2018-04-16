@@ -28,6 +28,7 @@ import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { Tab } from '../../../../tab/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 
 class TimeRange {
     from;
@@ -74,6 +75,8 @@ export class ShiftRoleEditComponent implements OnInit {
 
     payCategories = [];
 
+    settings: any;
+
     confirmDialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
 
 
@@ -82,10 +85,13 @@ export class ShiftRoleEditComponent implements OnInit {
         private toastr: ToastrService,
         public dialog: MatDialog,
         private tabService: TabService,
-        private scheduleService: ScheduleService) {
+        private scheduleService: ScheduleService,
+        private tokenStroage: TokenStorage
+    ) {
         this.formErrors = {
             rname: {}
         };
+        this.settings = this.tokenStroage.getSettings();
     }
 
     ngOnInit() {

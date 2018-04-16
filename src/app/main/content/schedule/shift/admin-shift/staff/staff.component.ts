@@ -2,7 +2,7 @@ import {
     Component, OnInit,
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
-    ViewChild, OnDestroy
+    ViewChild, OnDestroy, Output, EventEmitter
 } from '@angular/core';
 
 import {
@@ -70,6 +70,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     public Section = Section;
 
     @Input() shift;
+    @Output() onAddRole = new EventEmitter();
 
     @ViewChild('adminNoteInput') adminNoteInput;
 
@@ -78,8 +79,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     canSavePost = false;
 
     adminNotes = [];
-    viewedAdminNotes: any[];
-    isSeeAllAdminNotes = false;
     adminNoteForm: FormGroup;
     noteTemp: any; // Note template for update
 
@@ -152,7 +151,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.scheduleService.getShiftAdminNotes(this.shift.id)
             .subscribe(res => {
                 this.adminNotes = res;
-                this.refreshAdminNotesView();
             });
 
 
@@ -460,14 +458,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         return visible ? visible.label : '';
     }
 
-    private refreshAdminNotesView() {
-        if (this.isSeeAllAdminNotes) {
-            this.viewedAdminNotes = this.adminNotes;
-        } else {
-            this.viewedAdminNotes = this.adminNotes.slice(0, 5);
-        }
-    }
-
     onAdminNoteFormValuesChanged() {
         const note = this.adminNoteForm.getRawValue().note;
         if (note.length > 0) {
@@ -477,13 +467,9 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    onSeeAllAdminNotes() {
-        this.isSeeAllAdminNotes = true;
-        this.refreshAdminNotesView();
-    }
-
     onPostAdminNote() {
         const data = this.adminNoteForm.value;
+        this.canSavePost = false;
         this.scheduleService.createShiftAdminNote(this.shift.id, data)
             .subscribe(res => {
                 const note = res.data;
@@ -497,7 +483,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 }
 
                 this.adminNotes.unshift(note);
-                this.refreshAdminNotesView();
 
                 this.adminNoteInput.nativeElement.value = '';
                 this.adminNoteInput.nativeElement.focus();
@@ -511,7 +496,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.scheduleService.deleteShiftAdminNote(note.id)
             .subscribe(res => {
                 this.adminNotes.splice(index, 1);
-                this.refreshAdminNotesView();
             }, err => {
                 this.displayError(err);
             });
@@ -554,6 +538,10 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         });
         note.editMode = false;
 
+    }
+
+    addRole() {
+        this.onAddRole.next(true);
     }
 
     private displayError(err) {

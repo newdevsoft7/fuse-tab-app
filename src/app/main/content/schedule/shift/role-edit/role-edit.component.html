@@ -7,11 +7,11 @@
 
             <!-- GENERAL INFORMATION -->
             <div class="role-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">General Information</div>
                 </header>
-            
+
                 <div class="content" fxLayout="column">
                     <div class="info-line" fxLayout="row" fxLayoutGap="12px" fxLayout.xs="column">
                         <mat-form-field>
@@ -42,11 +42,11 @@
 
             <!-- NOTES -->
             <div class="role-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">Notes</div>
                 </header>
-            
+
                 <div class="content p-0" fxLayout="column">
                     <div class="info-line">
                         <app-ckeditor-v5 placeholder="Enter any role specific notes here. They will be shown on the apply and confirm dialogues." formControlName="notes"></app-ckeditor-v5>
@@ -57,17 +57,17 @@
 
             <!-- TIMES -->
             <div class="role-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">Times</div>
                 </header>
-            
+
                 <div class="content" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutGap="12px">
                     <mat-radio-group [ngClass.xs]="'time-radio-group'" [value]="sameAsShift" (change)="changeSameAsShift($event)">
                         <mat-radio-button class="mr-12" [value]="true">Same as shift</mat-radio-button>
                         <mat-radio-button [value]="false"></mat-radio-button>
                     </mat-radio-group>
-                    
+
                     <div fxFlex.gt-xs="80px">
                         <w-mat-timepicker color="accent" [placeholder]="'From'" [(userTime)]="rolePeriod.from"
                                           [class.disabled]="sameAsShift"></w-mat-timepicker>
@@ -77,33 +77,33 @@
                                          [class.disabled]="sameAsShift"></w-mat-timepicker>
                     </div>
                 </div>
-            
+
             </div>
             <!-- / TIMES -->
 
             <!-- REQUIREMENTS -->
             <div class="role-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">Requirements</div>
                 </header>
-            
+
                 <div class="content" fxLayout="column">
                     <div class="info-line">
                         <app-shift-role-requirements formControlName="requirements"></app-shift-role-requirements>
                     </div>
                 </div>
-            
+
             </div>
             <!-- / REQUIREMENTS -->
 
             <!-- BILL RATE -->
-            <div class="role-box info-box" fxLayout="column">
-            
+            <div class="role-box info-box" fxLayout="column" *ngIf="settings.client_enable === '1'">
+
                 <header class="mat-accent-bg">
                     <div class="title">Bill Rate</div>
                 </header>
-            
+
                 <div class="content" fxLayout="column">
                     <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="12px">
                         <mat-form-field>
@@ -121,19 +121,19 @@
                         </mat-button-toggle-group>
                     </div>
                 </div>
-            
+
             </div>
             <!-- / BILL RATE -->
 
             <!-- PAY RATE -->
             <div class="role-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">Pay Rate</div>
                 </header>
-            
+
                 <div class="content" fxLayout="column">
-                    <div class="info-line">
+                    <div class="info-line" *ngIf="settings.paylvl_enable === '1'">
                         <mat-form-field>
                             <mat-label>Category</mat-label>
                             <mat-select formControlName="pay_category_id">
@@ -149,7 +149,7 @@
                                 <mat-icon>attach_money</mat-icon>
                             </button>
                         </mat-form-field>
-                    
+
                         <mat-button-toggle-group #payRateTypeGroup="matButtonToggleGroup"
                                                  [value]="payRateType"
                                                  (change)="payRateType = payRateTypeGroup.value">
@@ -158,33 +158,33 @@
                         </mat-button-toggle-group>
                     </div>
                 </div>
-            
+
             </div>
             <!-- / PAY RATE -->
 
             <!-- COMPLETION -->
             <div class="role-box info-box" fxLayout="column">
-            
+
                 <header class="mat-accent-bg">
                     <div class="title">Completion</div>
                 </header>
-            
+
                 <div class="content p-0" fxLayout="column">
                     <div class="info-line">
                         <app-ckeditor-v5 placeholder="Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues." formControlName="completion_notes"></app-ckeditor-v5>
                     </div>
                 </div>
-            
+
             </div>
             <!-- / COMPLETION -->
 
             <!-- EXPENSES -->
-            <div class="role-box info-box" fxLayout="column">
-            
+            <div class="role-box info-box" fxLayout="column" *ngIf="settings.expenses_staff === '1'">
+
                 <header class="mat-accent-bg">
                     <div class="title">Expenses</div>
                 </header>
-            
+
                 <div class="content" fxLayout="column">
                     <mat-form-field class="expense-limit">
                         <mat-label>Limit</mat-label>
@@ -194,7 +194,7 @@
                         </button>
                     </mat-form-field>
                 </div>
-            
+
             </div>
             <!-- / EXPENSES -->
 

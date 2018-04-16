@@ -10,7 +10,7 @@
                 <span class="title">Invite to</span>
 
                 <mat-form-field floatLabel="never">
-                    <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Role Name" (ngModelChange)="onRoleChange()">
+                    <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Choose role" (ngModelChange)="onRoleChange()">
                         <mat-option *ngFor="let role of data.roles" [value]="role.id">{{role.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>

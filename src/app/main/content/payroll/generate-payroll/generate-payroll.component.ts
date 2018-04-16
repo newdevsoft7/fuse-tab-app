@@ -166,6 +166,7 @@ export class GeneratePayrollComponent implements OnInit {
 
         this.payrollService.savePayroll(formData).subscribe(res => {
             this.toastr.success(res.message);
+            this.payrolls = [];
         });
     }
 

@@ -20,8 +20,8 @@ export enum TAB {
     Expenses = 1,
     Reports = 2,
     Casting = 3,
-    Map = 4,
-    Notes = 5
+    Notes = 4,
+    Map = 5
 }
 
 @Component({
@@ -54,6 +54,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     shift: any;
     timezones = [];
     notes; // For Shift notes tab
+    settings: any = {};
 
     constructor(
         private tokenStorage: TokenStorage,
@@ -76,6 +77,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
+        this.settings = this.tokenStorage.getSettings();
         this.fetch();
 
         this.scheduleService.getTimezones()
@@ -103,6 +105,10 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
                 name: v.rname
             };
         });
+        if (roles.length === 0) {
+            this.toastr.error('There are no roles in the shift. Please add a role first.');
+            return;
+        }
         const data = {
             roles,
             shiftId: this.id,

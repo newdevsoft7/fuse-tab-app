@@ -4,7 +4,7 @@
             <span matTooltip="Date">{{shift.shift_start | date: 'EEEE, MMMM d, y'}}</span>,
             <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a'}}</span>&nbsp;-&nbsp;
             <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a'}}</span>
-            <span matTooltip="Timezone" class="timezone">{{getTimezone()}}</span>
+            <span matTooltip="Timezone" class="timezone" *ngIf="!disableTimezone">{{getTimezone()}}</span>
         </div>
     </div>
 
@@ -25,7 +25,7 @@
             <w-mat-timepicker color="accent" [placeholder]="'To'" [(userTime)]="end.time"></w-mat-timepicker>
         </div>
 
-        <mat-form-field>
+        <mat-form-field *ngIf="!disableTimezone">
             <mat-select formControlName="timezone" placeholder="Timezone">
                 <mat-option *ngFor="let timezone of timezones" [value]="timezone.value">
                     {{timezone.label}}
