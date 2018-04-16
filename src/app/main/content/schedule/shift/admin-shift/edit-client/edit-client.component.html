@@ -1,0 +1,26 @@
+<div id="admin-shift-edit-client">
+    <div *ngIf="!formActive"  (click)="openForm()" class="text-field mr-12" [class.disabled]="shift.editable !== 1">
+        <div class="info" matTooltip="Client" fxLayoutAlign="start center">
+            {{display()}}
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never">
+            <mat-select formControlName="client_id" placeholder="Choose a Client">
+                <mat-option *ngFor="let client of clients" [value]="client.id">
+                    {{client.cname}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>

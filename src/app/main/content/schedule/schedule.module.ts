@@ -68,6 +68,7 @@ import { EditTrackingDialogComponent } from './shift/admin-shift/edit-tracking/e
 import { EditWorkareasComponent } from './shift/admin-shift/edit-workareas/edit-workareas.component';
 import { EditWorkareasDialogComponent } from './shift/admin-shift/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
+import { AdminShiftEditClientComponent } from './shift/admin-shift/edit-client/edit-client.component';
 
 
 @NgModule({
@@ -141,7 +142,8 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         EditTrackingComponent,
         EditTrackingDialogComponent,
         EditWorkareasComponent,
-        EditWorkareasDialogComponent
+        EditWorkareasDialogComponent,
+        AdminShiftEditClientComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [

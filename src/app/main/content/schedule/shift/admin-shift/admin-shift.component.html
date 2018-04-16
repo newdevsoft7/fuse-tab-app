@@ -66,6 +66,9 @@
 
                 <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column"
                     fxLayoutAlign="start end">
+                    <app-admin-shift-edit-client *ngIf="settings.client_enable === '1'"
+                        [clients]="clients" [shift]="shift"></app-admin-shift-edit-client>
+
                     <ng-container *ngIf="settings.tracking_enable === '1'">
                         <app-edit-tracking *ngFor="let category of shift.tracking_categories"
                             [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>

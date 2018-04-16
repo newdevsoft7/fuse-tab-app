@@ -55,6 +55,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     timezones = [];
     notes; // For Shift notes tab
     settings: any = {};
+    clients: any[] = [];
 
     constructor(
         private tokenStorage: TokenStorage,
@@ -91,6 +92,11 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         this.scheduleService.getShiftsData().subscribe(res => {
             this.shiftData = res;
         });
+
+        // Get Clients
+        this.scheduleService.getClients('').subscribe(res => {
+            this.clients = res;
+        })
 
     }
 
