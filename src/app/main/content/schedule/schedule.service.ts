@@ -304,6 +304,22 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
+  addRoleStaffPayItem(roleStaffId, body: { item_name, item_type, unit_rate, units }): Promise<any> {
+    const url = `${BASE_URL}/roleStaff/${roleStaffId}/payItem`;
+    return this.http.post(url, body).toPromise();
+  }
+
+  deleteRoleStaffPayItem(id): Promise<any> {
+    const url = `${BASE_URL}/roleStaff/payItem/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  updateRoleStaffPayItem(roleStaffId, payItemId,
+    body: { item_name?, item_type?, unit_rate?, units?, bill_unit_rate?, bill_units? }): Promise<any> {
+    const url = `${BASE_URL}/roleStaff/${roleStaffId}/payItem/${payItemId}`;
+    return this.http.put(url, body).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

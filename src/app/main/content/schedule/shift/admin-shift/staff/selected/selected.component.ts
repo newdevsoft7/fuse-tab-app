@@ -1,7 +1,6 @@
 import {
     Component, OnInit,
     ViewEncapsulation, Input,
-    DoCheck, IterableDiffers,
     Output, EventEmitter,
     ViewChild,
     ChangeDetectorRef
@@ -26,6 +25,7 @@ import {
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
 } from '../../../../../../../constants/staff-status';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { AddPayItemDialogComponent } from './add-pay-item-dialog/add-pay-item-dialog.component';
 
 enum Query {
     Counts = 'counts',
@@ -42,12 +42,10 @@ enum Query {
     styleUrls: ['./selected.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
+export class AdminShiftStaffSelectedComponent implements OnInit {
 
     @Input() editable;
 
-    @ViewChild('tableWrapper') tableWrapper;
-    @ViewChild('table') table: DatatableComponent;
     private currentComponentWidth;
 
     _staffs;
@@ -73,25 +71,14 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
         private userService: UserService,
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
-        private toastr: ToastrService,
-        private changeDetectorRef: ChangeDetectorRef,
-        differs: IterableDiffers
-    ) {
-    }
-
-    ngAfterViewChecked() {
-        // Check if the table size has changed,
-        if (this.table && this.table.recalculate && (this.tableWrapper.nativeElement.clientWidth !== this.currentComponentWidth)) {
-            this.currentComponentWidth = this.tableWrapper.nativeElement.clientWidth;
-            this.table.recalculate();
-            this.changeDetectorRef.detectChanges();
-        }
-    }
+        private toastr: ToastrService
+    ) { }
 
     ngOnInit() {
-    }
-
-    ngDoCheck() {
+        this.staffs.map(s => {
+            s.pay_items_show === false;
+            s.pay_items = s.pay_items ? s.pay_items : []
+        });
     }
 
     openUser(staff, event: Event) {
@@ -113,6 +100,50 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
             default:
                 return value;
         }
+    }
+
+    addPayItem(staff) {
+        const dialogRef: MatDialogRef<AddPayItemDialogComponent> =
+            this.dialog.open(AddPayItemDialogComponent, {
+                disableClose: false,
+                panelClass: 'add-pay-item-dialog'
+            });
+
+        dialogRef.afterClosed().subscribe(async (data) => {
+            if (data !== false) {
+                try {
+                    const res = await this.scheduleService.addRoleStaffPayItem(staff.id, data);
+                    const item = {
+                        ...res.data,
+                        type: 'staff'
+                    };
+                    staff.pay_items.push(item);
+                    this.toastr.success(res.message);
+                    this.recalcuatePayItemsTotal(staff);
+                } catch (e) { }
+            }
+        });
+    }
+
+    async removePayItem(staff, payItem) {
+        if (payItem.type === 'role') {
+            this.toastr.error('This is a role pay item and must be deleted from the role.');
+            return;
+        } else {
+            try {
+                const res = await this.scheduleService.deleteRoleStaffPayItem(payItem.id);
+                this.toastr.success(res.message);
+                const index = staff.pay_items.findIndex(p => p.id === payItem.id);
+                if (index > -1) {
+                    staff.pay_items.splice(index, 1);
+                }
+                this.recalcuatePayItemsTotal(staff);
+            } catch (e) { }
+        }
+    }
+
+    togglePayItemsView(staff) {
+        staff.pay_items_show = staff.pay_items_show ? false : true;
     }
 
     changeStatus(staff, statusId) {
@@ -184,6 +215,10 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
                 this.toastr.success(res.message);
                 staff.unpaid_break = value;
             });
+    }
+
+    recalcuatePayItemsTotal(staff) {
+        staff.pay_items_total = staff.pay_items.reduce((s, v) => s + v.units * v.unit_rate, 0);
     }
 
     onPayItemsChanged(event, staff) {

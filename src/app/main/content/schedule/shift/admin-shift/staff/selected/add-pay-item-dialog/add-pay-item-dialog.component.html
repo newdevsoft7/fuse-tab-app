@@ -1,0 +1,49 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">
+                Add Pay Item
+            </span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form [formGroup]="form" fxLayout="column">
+            <mat-form-field>
+                <mat-select formControlName="item_type" placeholder="Item Type">
+                    <mat-option *ngFor="let item of types" [value]="item">
+                        {{item | capitalize}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="item_name" placeholder="Item Name"/>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="number" formControlName="units" placeholder="Units" min="0">
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="number" formControlName="unit_rate" placeholder="Unit Rate" min="0">
+            </mat-form-field>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+
+        <button mat-raised-button (click)="saveForm()" class="mr-8 mat-accent" aria-label="SAVE"
+            [disabled]="form.invalid">
+            SAVE
+        </button>
+
+        <button mat-button (click)="dialogRef.close(false)" aria-label="CANCEL" matTooltip="Cancel">
+            CANCEL
+        </button>
+
+    </div>
+</div>
