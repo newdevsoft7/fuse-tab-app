@@ -2,15 +2,77 @@
 
 #admin-shift-staff-selected {
 
-    .avatar {
-        width: 50px;
-        min-width: 50px;
-        height: 50px;
-        line-height: 50px;
-        border-radius: 5px;
+    overflow-y: scroll;
+    display: grid;
+    
+    .savatar {
 
-        &:hover {
-            cursor: pointer;
+        img {
+            width: 50px;
+            min-width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 5px;
+            margin-right: 12px;
+    
+            &:hover {
+                cursor: pointer;
+            }
         }
+    }
+
+    .person {
+        padding: 4px 0;
+        
+        .main-info {
+
+            .savatar {
+                min-width: 160px;
+            }
+
+            .check-in-out {
+                min-width: 120px;
+            }
+
+            .times-break {
+                min-width: 160px;
+            }
+
+            .pay-rate {
+                min-width: 120px;
+            }
+
+            .total {
+                min-width: 80px;
+            }
+
+            .expand-button {
+                min-width: 40px;
+            }
+
+            .action-button {
+                min-width: 40px;
+            }
+
+        }
+
+        .additional-info {
+            padding: 4px;
+            
+            .item-line {
+                width: 100%;
+            }
+
+            .add-payitem-link {
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .pull-right {
+        float: right;
     }
 }

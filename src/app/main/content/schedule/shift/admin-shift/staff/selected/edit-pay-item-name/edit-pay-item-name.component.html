@@ -1,0 +1,22 @@
+<div id="edit-pay-item-name-container">
+
+  <div *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
+    <span class="info" (click)="openForm()" matTooltip="Item Name">{{payItem.item_name}}</span>
+  </div>
+
+  <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center">
+
+    <mat-form-field class="item-name-width mr-4">
+      <input matInput formControlName="item_name" required>
+    </mat-form-field>
+
+
+    <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+      <mat-icon>check</mat-icon>
+    </button>
+
+    <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </form>
+</div>

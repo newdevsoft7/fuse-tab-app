@@ -1,4 +1,4 @@
-#selected-staff-break {
+#edit-pay-item-unit-rate-container {
 
     .text-field {
 
@@ -17,21 +17,7 @@
         }
     }
 
-    .break-width {
-        width: 40px;
+    .unit-rate-width {
+        width: 30px;
     }
-
-    /** Patch **/
-    .mat-form-field-infix {
-        border-top: unset;
-    }
-
-    .mat-form-field-underline {
-        bottom: unset;
-    }
-
-    .mat-form-field-wrapper {
-        padding-bottom: unset;
-    }
-
 }

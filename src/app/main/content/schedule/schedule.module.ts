@@ -69,6 +69,10 @@ import { EditWorkareasComponent } from './shift/admin-shift/edit-workareas/edit-
 import { EditWorkareasDialogComponent } from './shift/admin-shift/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
 import { AdminShiftEditClientComponent } from './shift/admin-shift/edit-client/edit-client.component';
+import { AddPayItemDialogComponent } from './shift/admin-shift/staff/selected/add-pay-item-dialog/add-pay-item-dialog.component';
+import { EditPayItemNameComponent } from './shift/admin-shift/staff/selected/edit-pay-item-name/edit-pay-item-name.component';
+import { EditPayItemUnitsComponent } from './shift/admin-shift/staff/selected/edit-pay-item-units/edit-pay-item-units.component';
+import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected/edit-pay-item-unit-rate/edit-pay-item-unit-rate.component';
 
 
 @NgModule({
@@ -143,7 +147,11 @@ import { AdminShiftEditClientComponent } from './shift/admin-shift/edit-client/e
         EditTrackingDialogComponent,
         EditWorkareasComponent,
         EditWorkareasDialogComponent,
-        AdminShiftEditClientComponent
+        AdminShiftEditClientComponent,
+        AddPayItemDialogComponent,
+        EditPayItemNameComponent,
+        EditPayItemUnitsComponent,
+        EditPayItemUnitRateComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -160,7 +168,8 @@ import { AdminShiftEditClientComponent } from './shift/admin-shift/edit-client/e
         ShiftsExportAsPdfDialogComponent,
 
         EditTrackingDialogComponent,
-        EditWorkareasDialogComponent
+        EditWorkareasDialogComponent,
+        AddPayItemDialogComponent
     ],
     exports: [
         ScheduleComponent,
