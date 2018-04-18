@@ -221,9 +221,9 @@
 
                     <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="canSavePost">
 
-                        <mat-form-field *ngIf="shift.admin_note_types.length > 0">
+                        <mat-form-field *ngIf="adminNoteTypes.length > 0">
                             <mat-select formControlName="type_id" placeholder="Type">
-                                <mat-option *ngFor="let option of shift.admin_note_types" [value]="option.id"
+                                <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id"
                                     [style.background-color]="option.color">
                                     {{option.tname}}
                                 </mat-option>
@@ -259,9 +259,9 @@
                                 </mat-form-field>
 
                                 <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px">
-                                    <mat-form-field *ngIf="shift.admin_note_types.length > 0">
+                                    <mat-form-field *ngIf="adminNoteTypes.length > 0">
                                         <mat-select [(ngModel)]="noteTemp.type_id" placeholder="Type">
-                                            <mat-option *ngFor="let option of shift.admin_note_types" [value]="option.id" [style.background-color]="option.color">
+                                            <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id" [style.background-color]="option.color">
                                                 {{option.tname}}
                                             </mat-option>
                                         </mat-select>
@@ -277,7 +277,7 @@
 
                                     <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)"
                                         [disabled]="!noteTemp.note ||
-                                            (shift.admin_note_types.length > 0 && noteTemp.type_id === null)">Update</button>
+                                            (adminNoteTypes.length > 0 && noteTemp.type_id === null)">Update</button>
                                     <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
                                 </div>
 

@@ -304,20 +304,26 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
-  addRoleStaffPayItem(roleStaffId, body: { item_name, item_type, unit_rate, units }): Promise<any> {
-    const url = `${BASE_URL}/roleStaff/${roleStaffId}/payItem`;
+  addPayItem(body: { item_name, item_type, unit_rate, units,
+    bill_unit_rate?, bill_units?, shift_id?, shift_role_id?, role_staff_id? }): Promise<any> {
+    const url = `${BASE_URL}/payItem`;
     return this.http.post(url, body).toPromise();
   }
 
-  deleteRoleStaffPayItem(id): Promise<any> {
-    const url = `${BASE_URL}/roleStaff/payItem/${id}`;
+  deletePayItem(id): Promise<any> {
+    const url = `${BASE_URL}/payItem/${id}`;
     return this.http.delete(url).toPromise();
   }
 
-  updateRoleStaffPayItem(roleStaffId, payItemId,
-    body: { item_name?, item_type?, unit_rate?, units?, bill_unit_rate?, bill_units? }): Promise<any> {
-    const url = `${BASE_URL}/roleStaff/${roleStaffId}/payItem/${payItemId}`;
+  updatePayItem(payItemId,
+    body: { item_name?, item_type?, unit_rate?, units?, bill_unit_rate?, bill_units?, role_staff_id? }): Promise<any> {
+    const url = `${BASE_URL}/payItem/${payItemId}`;
     return this.http.put(url, body).toPromise();
+  }
+
+  getShiftAdminNoteType(): Observable<any> {
+    const url = `${BASE_URL}/shiftAdminNoteType`;
+    return this.http.get(url).catch(this.handleError);
   }
 
   private handleError(error: Response | any) {

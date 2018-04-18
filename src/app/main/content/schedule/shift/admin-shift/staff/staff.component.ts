@@ -78,6 +78,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     canSavePost = false;
 
+    adminNoteTypes: any = [];
     adminNotes = [];
     adminNoteForm: FormGroup;
     noteTemp: any; // Note template for update
@@ -130,9 +131,14 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        const type_id = this.shift.admin_note_types.length > 0 ? this.shift.admin_note_types[0].id : '';
+        this.scheduleService.getShiftAdminNoteType().subscribe(types => {
+            this.adminNoteTypes = types;
+            const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
+            this.adminNoteForm.patchValue({ type_id });
+        });
+        
         this.adminNoteForm = this.formBuilder.group({
-            type_id: [type_id],
+            type_id: [''],
             client_visible: [0, Validators.required],
             note: ['', Validators.required]
         });
@@ -173,7 +179,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.usersToRoleSubscription.unsubscribe();
     }
-
 
     onEditRole(role) {
         role = {
@@ -476,8 +481,8 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 note.creator_ppic_a = this.userInfo.ppic_a;
                 note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
 
-                if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
-                    const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
+                if (this.adminNoteTypes.length > 0 && note.type_id != null) {
+                    const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
                     note.color = noteType.color;
                     note.tname = noteType.tname;
                 }
@@ -530,8 +535,8 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             note.note = this.noteTemp.note;
             note.updated_at = data.updated_at;
 
-            if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
-                const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
+            if (this.adminNoteTypes.length > 0 && note.type_id != null) {
+                const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
                 note.color = noteType.color;
                 note.tname = noteType.tname;
             }

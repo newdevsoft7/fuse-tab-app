@@ -34,14 +34,20 @@ export class EditPayItemNameComponent implements OnInit {
 
   async saveForm() {
     if (this.form.valid) {
-      const body = this.form.getRawValue();
+      const body = {
+        item_name: this.form.getRawValue().item_name,
+        role_staff_id: this.staff.id
+      };
+      
       try {
-        const res = await this.scheduleService.updateRoleStaffPayItem(this.staff.id, this.payItem.id, body);
+        const res = await this.scheduleService.updatePayItem(this.payItem.id, body);
         this.payItem.item_name = res.data.item_name;
+        this.payItem.id = res.data.id;
         this.formActive = false;
         this.toastr.success(res.message);
       } catch (e) { 
         this.formActive = false;
+        this.toastr.error(e.error.message);
       }
     }
   }
