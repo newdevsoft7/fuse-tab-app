@@ -222,7 +222,6 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
-
   getShiftAdminNotes(shiftId): Observable<any> {
     const url = `${BASE_URL}/shift/${shiftId}/adminNote`;
     return this.http.get(url).catch(this.handleError);
@@ -324,6 +323,18 @@ export class ScheduleService {
   getShiftAdminNoteType(): Observable<any> {
     const url = `${BASE_URL}/shiftAdminNoteType`;
     return this.http.get(url).catch(this.handleError);
+  }
+
+  deleteFile(fileId: number, fileType = 'file'): Promise<any> {
+    const url = `${BASE_URL}/file/${fileType}/${fileId}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  uploadFile(shiftId, file: File): Promise<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/file`;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(url, formData).toPromise();
   }
 
   private handleError(error: Response | any) {

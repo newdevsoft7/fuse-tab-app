@@ -1,6 +1,6 @@
 <div id="selected-staff-break">
     <div *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
-        <span>{{duration}} hrs - </span>
+        <span>{{staff.hours}} hrs - </span>
         <span class="info" (click)="openForm()">{{break}}</span> mins break
     </div>
 

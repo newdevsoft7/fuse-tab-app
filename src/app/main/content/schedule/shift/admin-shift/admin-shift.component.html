@@ -99,23 +99,16 @@
                     (onAddRole)="addRole()"></app-admin-shift-staff>
             </mat-tab>
 
-            <mat-tab label="Expenses">
-                <app-admin-shift-expenses [shift]="shift"></app-admin-shift-expenses>
+            <mat-tab label="Bill" *ngIf="shift.bill_info === 1">
+                <app-admin-shift-bill [shift]="shift"></app-admin-shift-bill>
             </mat-tab>
 
             <mat-tab label="Reports & Uploads">
                 <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
             </mat-tab>
 
-            <mat-tab label="Castings">
-                <app-admin-shift-castings [shift]="shift"></app-admin-shift-castings>
-            </mat-tab>
-
-            <mat-tab label="Notes">
-                <div class="p-24 shift-notes">
-                    <app-ckeditor-v5 class="mb-12" [(ngModel)]="notes"></app-ckeditor-v5>
-                    <button mat-raised-button color="accent" (click)="saveNotes()" [disabled]="!notes">Save</button>
-                </div>
+            <mat-tab label="Attachments">
+                <app-admin-shift-attachments [shift]="shift"></app-admin-shift-attachments>
             </mat-tab>
 
             <mat-tab label="Map" *ngIf="settings.location_address === '1'">

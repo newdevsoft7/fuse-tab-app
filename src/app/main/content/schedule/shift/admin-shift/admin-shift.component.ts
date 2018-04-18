@@ -16,12 +16,11 @@ import { Tab } from '../../../../tab/tab';
 import { ActionService } from '../../../../../shared/services/action.service';
 
 export enum TAB {
-    Staff = 0,
-    Expenses = 1,
-    Reports = 2,
-    Casting = 3,
-    Notes = 4,
-    Map = 5
+    Staff = 'Staff',
+    Bill = 'Bill',
+    Reports = 'Reports & Uploads',
+    Attachements = 'Attachments',
+    Map = 'Map'
 }
 
 @Component({
@@ -38,7 +37,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     showMoreBtn = true;
 
     usersToInviteSubscription: Subscription;
-    selectedTabIndex = TAB.Staff;
+    selectedTabIndex: number = 0; // Set staff tab as initial tab
 
     shiftData: any; // For edit tracking & work areas
 
@@ -70,7 +69,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
             ({ shiftId, userIds, filters, role, inviteAll }) => {
                 if (this.shift.id === shiftId) {
-                    this.selectedTabIndex = TAB.Staff;
+                    this.selectedTabIndex = 0; // Set staff tab active
                         this.staffTab.inviteStaffs({ userIds, filters, role, inviteAll });
                 }
             });
@@ -135,7 +134,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     }
 
     selectedTabChange(event: MatTabChangeEvent) {
-        switch (event.index) {
+        switch (event.tab.textLabel) {
             case TAB.Map:
                 this.mapTab.refreshMap();
                 break;
@@ -168,16 +167,6 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             .subscribe(res => {
                 this.shift.locked = lock;
                 this.toastr.success(res.message);
-            });
-    }
-
-    saveNotes(notes) {
-        this.scheduleService.updateShift(this.shift.id, { notes })
-            .subscribe(res => {
-                this.toastr.success(res.message);
-                this.shift.notes = _.clone(this.notes);
-            }, err => {
-                this.notes = _.clone(this.shift.notes);
             });
     }
 

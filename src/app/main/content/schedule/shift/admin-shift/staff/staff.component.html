@@ -7,13 +7,15 @@
         <div *ngFor="let role of roles" class="staff-box info-box general" fxLayout="column">
 
             <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="title">{{role.rname}}</div>
+                <div>
+                    <span class="title" matTooltip="Role Name">{{role.rname}}</span>
+                    <span class="ml-12" matTooltip="Role Period">{{role.start}} - {{role.end}}</span>
+                </div>
 
                 <div>
                     <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" [disabled]="shift.editable !== 1">
                         <mat-icon class="material-icons">more_vert</mat-icon>
                     </button>
-
 
                     <mat-menu #menu="matMenu">
 
