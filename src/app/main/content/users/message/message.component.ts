@@ -103,9 +103,6 @@ export class MessageComponent implements OnInit {
   }
 
   async onRecipientFiltersChanged(filters: any): Promise<any> {
-    if (filters.length < 2) {
-      this.message.thread = 0;
-    }
     if (filters.length === 0) {
       this.count = 0;
       return;
@@ -117,6 +114,9 @@ export class MessageComponent implements OnInit {
         recipients: filters
       });
       this.count = res.count;
+      if (this.count < 2) {
+        this.message.thread = 0;
+      }
     } catch (e) {
       this.handleError(e.error);
     }

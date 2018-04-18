@@ -89,7 +89,7 @@
       <ng-container *ngIf="sent && messageForm.pristine">Sent</ng-container>
       <ng-container *ngIf="sending">Sending...</ng-container>
     </button>
-    <ng-container *ngIf="message.recipients && message.recipients.length > 1">
+    <ng-container *ngIf="count > 1">
       <button mat-raised-button class="btn-menu px-4" color="accent" [matMenuTriggerFor]="menu" type="button" [disabled]="(sent && messageForm.pristine) || sending"><mat-icon class="white-fg">expand_more</mat-icon></button>
       <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="message.thread = 0">Send Individually</button>
