@@ -73,7 +73,7 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
                     ];
                     this.toastr.success(res.message);
                 } catch (e) {
-                    this.toastr.error(e.message || e.error.messasge);
+                    this.displayError(e);
                 }
             }
         });
@@ -85,6 +85,17 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
             this.unavailabilities = this.unavailabilities.filter(v => v.id !== id);
             this.toastr.success(res.message);
         } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
             this.toastr.error(e.message);
         }
     }
