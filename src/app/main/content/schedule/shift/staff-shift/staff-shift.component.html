@@ -7,10 +7,10 @@
 
                 <!-- DATE, TIME, TIMEZONE -->
                 <div class="info">
-                    <span matTooltip="Date">{{shift.shift_start | date: 'EEEE, MMMM d, y'}}</span>,
-                    <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a'}}</span>
+                    <span matTooltip="Date">{{shift.shift_start | date: 'EEEE MMMM d'}}</span>,
+                    <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a' | lowercase}}</span>
                     &nbsp;-&nbsp;
-                    <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a'}}</span>
+                    <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a' | lowercase}}</span>
                     <span matTooltip="Timezone" class="timezone" *ngIf="timezones">{{timezones[shift.timezone]}}</span>
                 </div>
                 <!-- / DATE, TIME, TIMEZONE -->

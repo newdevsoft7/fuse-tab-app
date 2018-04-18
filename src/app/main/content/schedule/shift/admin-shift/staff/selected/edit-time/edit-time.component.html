@@ -1,9 +1,9 @@
 <div id="selected-staff-time-picker">
     <div *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
         <span class="info" (click)="openForm()">
-            <span matTooltip="Start time">{{display(staff.staff_start)}}</span> 
+            <span matTooltip="Start time">{{staff.start}}</span> 
             &nbsp;-&nbsp;
-            <span matTooltip="End time">{{display(staff.staff_end)}}</span>
+            <span matTooltip="End time">{{staff.end}}</span>
         </span>
     </div>
 

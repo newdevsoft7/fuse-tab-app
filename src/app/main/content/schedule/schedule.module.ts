@@ -10,9 +10,9 @@ import { CalendarEventFormDialogComponent } from './calendar/event-form/event-fo
 
 import { AdminShiftComponent } from './shift/admin-shift/admin-shift.component';
 import { AdminShiftStaffComponent } from './shift/admin-shift/staff/staff.component';
-import { AdminShiftExpensesComponent } from './shift/admin-shift/expenses/expenses.component';
+import { AdminShiftBillComponent } from './shift/admin-shift/bill/bill.component';
+import { AdminShiftAttachmentsComponent } from './shift/admin-shift/attachments/attachments.component';
 import { AdminShiftReportsUploadsComponent } from './shift/admin-shift/reports-uploads/reports-uploads.component';
-import { AdminShiftCastingsComponent } from './shift/admin-shift/castings/castings.component';
 import { AdminShiftMapComponent } from './shift/admin-shift/map/map.component';
 
 import { ScheduleService } from './schedule.service';
@@ -95,9 +95,8 @@ import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected
         CalendarEventFormDialogComponent,
         AdminShiftComponent,
         AdminShiftStaffComponent,
-        AdminShiftExpensesComponent,
+        AdminShiftBillComponent,
         AdminShiftReportsUploadsComponent,
-        AdminShiftCastingsComponent,
         AdminShiftStaffSelectedComponent,
         AdminShiftStaffStandbyComponent,
         AdminShiftStaffApplicantsComponent,
@@ -151,7 +150,8 @@ import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected
         AddPayItemDialogComponent,
         EditPayItemNameComponent,
         EditPayItemUnitsComponent,
-        EditPayItemUnitRateComponent
+        EditPayItemUnitRateComponent,
+        AdminShiftAttachmentsComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [

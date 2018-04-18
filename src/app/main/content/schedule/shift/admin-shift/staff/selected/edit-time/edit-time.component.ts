@@ -4,38 +4,27 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 class ShiftTime {
-    date;
     time;
 
-    constructor(dateTime = null) {
-        if (!dateTime) {
-            const now = new Date();
-            const _date = moment(now, 'YYYY-MM-DD HH:mm:ss');
-            this.date = moment(now, 'YYYY-MM-DD');
+    constructor(sTime) {
+        if (!sTime) {
             this.time = { hour: 8, minute: 0, meriden: 'AM', format: 12 }; 
             return;
         };
 
-        const _date = moment(dateTime, 'YYYY-MM-DD HH:mm:ss');
-        const minute = _date.minute();
-        const { hour, meriden } = hours24to12(_date.hour());
+        const time = moment(sTime, 'h:mm a');
+        const minute = time.minute();
+        const { hour, meriden } = hours24to12(time.hour());
         
-        this.date = moment(dateTime, 'YYYY-MM-DD');
         this.time = { hour, minute, meriden, format: 12 };
     }
 
     toString() {
-        const date = moment(this.date, 'YYYY-MM-DD');
-        const year = date.year();
-        const month = date.month();
-        const day = date.date();
-
         const time = moment({
-            year, month, day,
             hour: hours12to24(this.time.hour, this.time.meriden),
             minute: this.time.minute
         });
-        const str = time.format('YYYY-MM-DD HH:mm:ss');
+        const str = time.format('h:mm a');
         return str;
     }
 }
@@ -75,17 +64,8 @@ export class AdminShiftEditTimeComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        this.start = new ShiftTime(this.staff.staff_start);
-        this.end = new ShiftTime(this.staff.staff_end);
-    }
-
-    display(dateTime = null) {
-        if (!dateTime) return 'TBA';
-
-        const _date = moment(dateTime, 'YYYY-MM-DD hh:mm:ss');
-        const minute = _date.minutes();
-        const { hour, meriden } = hours24to12(_date.hour());
-        return `${hour}:${minutesWithLeadingZeros(minute)} ${meriden}`;
+        this.start = new ShiftTime(this.staff.start);
+        this.end = new ShiftTime(this.staff.end);
     }
     
     openForm() {
@@ -105,7 +85,6 @@ export class AdminShiftEditTimeComponent implements OnInit {
     }
 
     private validate() {
-            if (this.start.date > this.end.date ) return false;
 
             if (this.start.time.hour === '' ||
                 this.end.time.hour === '' ||

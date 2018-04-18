@@ -205,16 +205,21 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     }
 
     onTimeChanged(event, staff) {
-        staff.staff_start = event.start;
-        staff.staff_end = event.end;
+        staff.start = event.start;
+        staff.end = event.end;
 
-        const staff_start = moment(staff.staff_start).format('HH:mm');
-        const staff_end = moment(staff.staff_end).format('HH:mm');
+        const start = moment(staff.start, 'hh:mm a');
+        const end = moment(staff.end, 'hh:mm a');
 
-        this.scheduleService.updateRoleStaff(staff.id, { staff_start, staff_end })
-            .subscribe(res => {
-                this.toastr.success(res.message);
-            });
+        const duration = moment.duration(end.diff(start));
+        staff.hours = _.round(duration.asHours(), 2);
+
+        this.scheduleService.updateRoleStaff(staff.id, {
+            staff_start: start.format('HH:mm'),
+            staff_end: end.format('HH:mm')
+        }).subscribe(res => {
+            this.toastr.success(res.message);
+        });
     }
 
     OnBreakChanged(value, staff) {

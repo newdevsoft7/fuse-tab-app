@@ -13,8 +13,12 @@
                     <span>{{staff.name}}</span>
                 </div>
 
-                <div class="check-in-out px-12">
+                <div class="check-in px-12" [style.color]="staff.check_in_color" matTooltip="Check In Time">
+                    {{staff.check_in}}
+                </div>
 
+                <div class="check-out px-12" [style.color]="staff.check_out_color" matTooltip="Check Out Time">
+                    {{staff.check_out}}
                 </div>
 
                 <div class="times-break px-12">

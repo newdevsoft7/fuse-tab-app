@@ -131,18 +131,14 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.scheduleService.getShiftAdminNoteType().subscribe(types => {
-            this.adminNoteTypes = types;
-            const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
-            this.adminNoteForm.patchValue({ type_id });
-        });
+        this.adminNoteTypes = this.tokenStorage.getSettings().admin_note_types || [];
+        const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
         
         this.adminNoteForm = this.formBuilder.group({
-            type_id: [''],
+            type_id: [type_id],
             client_visible: [0, Validators.required],
             note: ['', Validators.required]
         });
-
 
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
