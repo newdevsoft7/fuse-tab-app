@@ -112,7 +112,11 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         dialogRef.afterClosed().subscribe(async (data) => {
             if (data !== false) {
                 try {
-                    const res = await this.scheduleService.addRoleStaffPayItem(staff.id, data);
+                    data = {
+                        ...data,
+                        role_staff_id: staff.id
+                    };
+                    const res = await this.scheduleService.addPayItem(data);
                     const item = {
                         ...res.data,
                         type: 'staff'
@@ -120,7 +124,9 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
                     staff.pay_items.push(item);
                     this.toastr.success(res.message);
                     this.recalcuatePayItemsTotal(staff);
-                } catch (e) { }
+                } catch (e) {
+                    this.toastr.error(e.error.message);
+                }
             }
         });
     }
@@ -131,14 +137,16 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             return;
         } else {
             try {
-                const res = await this.scheduleService.deleteRoleStaffPayItem(payItem.id);
+                const res = await this.scheduleService.deletePayItem(payItem.id);
                 this.toastr.success(res.message);
                 const index = staff.pay_items.findIndex(p => p.id === payItem.id);
                 if (index > -1) {
                     staff.pay_items.splice(index, 1);
                 }
                 this.recalcuatePayItemsTotal(staff);
-            } catch (e) { }
+            } catch (e) {
+                this.toastr.error(e.error.message);
+            }
         }
     }
 

@@ -35,15 +35,20 @@ export class EditPayItemUnitsComponent implements OnInit {
 
   async saveForm() {
     if (this.form.valid) {
-      const body = this.form.getRawValue();
+      const body = {
+        units: this.form.getRawValue().units,
+        role_staff_id: this.staff.id
+      };
       try {
-        const res = await this.scheduleService.updateRoleStaffPayItem(this.staff.id, this.payItem.id, body);
+        const res = await this.scheduleService.updatePayItem(this.payItem.id, body);
         this.payItem.units = res.data.units;
+        this.payItem.id = res.data.id;
         this.formActive = false;
         this.toastr.success(res.message);
         this.onItemChanged.next(true);
       } catch (e) {
         this.formActive = false;
+        this.toastr.error(e.error.message);
       }
     }
   }
