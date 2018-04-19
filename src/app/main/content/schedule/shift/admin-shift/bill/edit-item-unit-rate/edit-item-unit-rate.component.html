@@ -1,0 +1,23 @@
+<div>
+
+  <div *ngIf="!formActive" class="text-field">
+    <span class="info" (click)="openForm()" matTooltip="Bill Unit Rate">
+      {{item.bill_unit_rate !== null ? (item.bill_unit_rate | currency) : '-'}}</span>
+  </div>
+
+  <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center">
+
+    <mat-form-field class="unit-rate-width mr-4">
+      <input matInput formControlName="bill_unit_rate" required min="0">
+    </mat-form-field>
+
+
+    <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+      <mat-icon>check</mat-icon>
+    </button>
+
+    <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </form>
+</div>

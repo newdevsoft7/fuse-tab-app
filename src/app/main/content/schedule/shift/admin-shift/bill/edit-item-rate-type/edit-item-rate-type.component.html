@@ -1,0 +1,27 @@
+<div>
+
+  <div *ngIf="!formActive" class="text-field">
+    <span class="info" (click)="openForm()" matTooltip="Bill Rate Type">
+      {{item.bill_rate_type ? types[item.bill_rate_type] : '-'}}
+    </span>
+  </div>
+
+  <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center">
+
+    <mat-form-field class="unit-rate-width mr-4">
+      <mat-select formControlName="bill_rate_type">
+        <mat-option value="phr">/hr</mat-option>
+        <mat-option value="flat">flat</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+      <mat-icon>check</mat-icon>
+    </button>
+
+    <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </form>
+</div>
