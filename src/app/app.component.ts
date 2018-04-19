@@ -98,6 +98,7 @@ export class AppComponent implements OnInit
     }
 
     ngOnInit() {
+        this.appSetting.getBaseData();
 
         // Load Global Settings
         this.appSetting.getGlobalSettings().then(settings => {

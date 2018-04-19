@@ -1,6 +1,7 @@
 export const environment = {
     production: true,
     hmr       : false,
-    apiUrl: 'https://api.demo.staffconnect-app.com/api',
+    baseUrl: '/base.php',
+    apiUrl: '',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com'
 };
