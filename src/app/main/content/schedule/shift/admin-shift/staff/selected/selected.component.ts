@@ -106,7 +106,10 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         const dialogRef: MatDialogRef<AddPayItemDialogComponent> =
             this.dialog.open(AddPayItemDialogComponent, {
                 disableClose: false,
-                panelClass: 'add-pay-item-dialog'
+                panelClass: 'add-pay-item-dialog',
+                data: {
+                    show_bill: this.showBillInfo
+                }
             });
 
         dialogRef.afterClosed().subscribe(async (data) => {

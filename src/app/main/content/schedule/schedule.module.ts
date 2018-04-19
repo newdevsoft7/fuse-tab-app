@@ -73,6 +73,10 @@ import { AddPayItemDialogComponent } from './shift/admin-shift/staff/selected/ad
 import { EditPayItemNameComponent } from './shift/admin-shift/staff/selected/edit-pay-item-name/edit-pay-item-name.component';
 import { EditPayItemUnitsComponent } from './shift/admin-shift/staff/selected/edit-pay-item-units/edit-pay-item-units.component';
 import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected/edit-pay-item-unit-rate/edit-pay-item-unit-rate.component';
+import { EditBillItemNameComponent } from './shift/admin-shift/bill/edit-item-name/edit-item-name.component';
+import { EditBillItemUnitRateComponent } from './shift/admin-shift/bill/edit-item-unit-rate/edit-item-unit-rate.component';
+import { EditBillItemUnitsComponent } from './shift/admin-shift/bill/edit-item-units/edit-item-units.component';
+import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-item-rate-type/edit-item-rate-type.component';
 
 
 @NgModule({
@@ -140,6 +144,7 @@ import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected
         ClientShiftComponent,
         ClientShiftMapComponent,
         ClientShiftInfoComponent,
+
         ShiftsExportAsExcelDialogComponent,
         ShiftsExportAsPdfDialogComponent,
         EditTrackingComponent,
@@ -151,7 +156,12 @@ import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected
         EditPayItemNameComponent,
         EditPayItemUnitsComponent,
         EditPayItemUnitRateComponent,
-        AdminShiftAttachmentsComponent
+        AdminShiftAttachmentsComponent,
+        EditBillItemNameComponent,
+        EditBillItemUnitRateComponent,
+        EditBillItemUnitsComponent,
+        EditBillItemRateTypeComponent
+
     ],
     providers: [ ScheduleService ],
     entryComponents: [

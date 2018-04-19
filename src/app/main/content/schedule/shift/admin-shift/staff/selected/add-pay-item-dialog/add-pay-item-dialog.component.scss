@@ -7,7 +7,7 @@
     }
 
     @include media-breakpoint-up('xs') {
-        width: 300px;
+        width: 800px;
     }
 
     .mat-dialog-container {
@@ -23,5 +23,9 @@
     .dialog-content-wrapper {
         display: flex;
         flex-direction: column;
+    }
+
+    .hidden {
+        display: none !important;
     }
 }
