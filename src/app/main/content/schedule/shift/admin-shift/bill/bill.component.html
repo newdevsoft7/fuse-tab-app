@@ -59,9 +59,14 @@
                         {{item.bill_total !== null ? (item.bill_total | currency) : '-'}}
                     </span>
                 </div>
+                <div fxFlex>
+                    <button mat-icon-button (click)="deleteItem(item, type)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
-        <mat-divider *ngIf="!last"></mat-divider>
+        <mat-divider *ngIf="!last && shift.bill_items[type]?.length > 0"></mat-divider>
     </ng-container>
 
 </div>

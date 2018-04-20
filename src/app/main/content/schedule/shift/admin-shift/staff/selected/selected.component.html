@@ -6,22 +6,23 @@
     <div class="person" *ngFor="let staff of staffs">
         <div class="main-info" >
             <div fxLayout="row" fxLayoutAlign="start center">
-                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center">
+                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center" fxFlex>
                     <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)"
                         [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                         [matTooltip]="staff.staff_status.status" />
                     <span>{{staff.name}}</span>
                 </div>
 
-                <div class="check-in px-12" [style.color]="staff.check_in_color" matTooltip="Check In Time">
-                    {{staff.check_in}}
+                <div class="check-in-out px-12" matTooltip="Check In Time" fxFlex="1 1 80px">
+                    <div matTooltip="Check In Time" [style.color]="staff.check_in_color">
+                        {{staff.check_in}}
+                    </div>
+                    <div matTooltip="Check Out Time" [style.color]="staff.check_out_color">
+                        {{staff.check_out}}
+                    </div>
                 </div>
 
-                <div class="check-out px-12" [style.color]="staff.check_out_color" matTooltip="Check Out Time">
-                    {{staff.check_out}}
-                </div>
-
-                <div class="times-break px-12">
+                <div class="times-break px-12" fxFlex>
                     <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)"
                         [editable]="editable"></app-admin-shift-edit-time>
                     <app-admin-shift-edit-break [staff]="staff" [editable]="editable"
@@ -29,25 +30,17 @@
                     </app-admin-shift-edit-break>
                 </div>
 
-                <div class="pay-rate px-12">
+                <div class="pay-rate px-12" fxFlex>
                     <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable"
                         (onPayItemsChanged)="onPayItemsChanged($event, staff)">
                     </app-admin-shift-edit-payitems>
                 </div>
 
-                <div class="total px-12">
-                    {{staff.pay_items_total | currency}}
+                <div class="total px-12" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
+                    {{staff.pay_items_total !== null ? (staff.pay_items_total | currency) : '-'}}
                 </div>
 
-                <div class="expand-button">
-                    <button mat-icon-button (click)="togglePayItemsView(staff)" matTooltip="Show / hide pay items">
-                        <mat-icon>
-                            {{staff.pay_items_show ? 'arrow_drop_up' : 'arrow_drop_down'}}
-                        </mat-icon>
-                    </button>
-                </div>
-
-                <div class="action-button">
+                <div class="action-button" fxFLex>
                     <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
                         <mat-icon class="material-icons">more_vert</mat-icon>
                     </button>
@@ -160,7 +153,7 @@
                         </div>
 
                         <div fxFlex="10%">
-                            <button mat-icon-button (click)="removePayItem(staff, item)" class="pull-right" matTooltip="Delete">
+                            <button mat-icon-button *ngIf="item.type === 'staff'" (click)="removePayItem(staff, item)" class="pull-right" matTooltip="Delete">
                                 <mat-icon>close</mat-icon>
                             </button>
                         </div>

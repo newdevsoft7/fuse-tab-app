@@ -26,32 +26,11 @@
         
         .main-info {
 
-            .savatar {
-                min-width: 160px;
-            }
-
-            .check-in {
-                min-width: 60px;
-            }
-
-            .check-out {
-                min-width: 60px;
-            }
-
-            .times-break {
-                min-width: 160px;
-            }
-
-            .pay-rate {
-                min-width: 120px;
-            }
-
             .total {
-                min-width: 80px;
-            }
 
-            .expand-button {
-                min-width: 40px;
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             .action-button {

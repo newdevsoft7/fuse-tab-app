@@ -73,6 +73,19 @@ export class AdminShiftBillComponent implements OnInit {
         });
     }
 
+    async deleteItem(item, type) {
+        try {
+            const res = await this.scheduleService.deletePayItem(item.id);
+            const index = this.shift.bill_items[type].findIndex(v => v.id === item.id);
+            if (index > -1) {
+                this.shift.bill_items[type].splice(index, 1);
+            }
+            this.toastr.success(res.message);
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
     async onItemChanged(value: any, type: string, field: string, item: any) {
         if (type === 'staff') {
             let key;
