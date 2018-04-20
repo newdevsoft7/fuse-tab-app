@@ -176,15 +176,26 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.usersToRoleSubscription.unsubscribe();
     }
 
-    onEditRole(role) {
-        role = {
-            ...role,
-            shift_title: this.shift.title
-        };
-        const url = `shift/role/${role.id}/role-edit`;
-        const roleTab = new Tab('Edit Role', 'shiftRoleEditTpl', url, { url, role });
-        this.tabService.closeTab(url);
-        this.tabService.openTab(roleTab);
+    async onEditRole(role) {
+        try {
+            this.spinner.show();
+            const data = await this.scheduleService.getShiftRole(role.id);
+            this.spinner.hide();
+            const url = `shift/role/${role.id}/role-edit`;
+            const roleTab = new Tab(
+                'Edit Role',
+                'shiftRoleEditTpl',
+                url,
+                {
+                    url,
+                    role: { ...data, shift_title: this.shift.title }
+                });
+            this.tabService.closeTab(url);
+            this.tabService.openTab(roleTab);
+        } catch (e) {
+            this.spinner.hide();
+            this.toastr.error(e.error.message || 'Something is wrong!');
+        }
     }
 
     onSelectedTabChange(role, event: MatTabChangeEvent) {

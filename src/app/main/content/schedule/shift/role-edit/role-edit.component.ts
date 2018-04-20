@@ -29,6 +29,7 @@ import { ScheduleService } from '../../schedule.service';
 import { Tab } from '../../../../tab/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
+import { NullTemplateVisitor } from '@angular/compiler';
 
 class TimeRange {
     from;
@@ -36,6 +37,26 @@ class TimeRange {
     constructor(from = null, to = null) {
         this.from = from || { hour: 8, minute: 0, meriden: 'AM', format: 12 };
         this.to = to || { hour: 5, minute: 0, meriden: 'PM', format: 12 };
+    }
+}
+
+class PayItem {
+    id: number;
+    item_name: string;
+    item_type: string;
+    unit_rate: number;
+    units: number;
+    bill_unit_rate: number;
+    bill_units: number;
+
+    constructor() {
+        this.id = 0;
+        this.item_name = null;
+        this.item_type = null;
+        this.unit_rate = null;
+        this.units = null;
+        this.bill_unit_rate = null;
+        this.bill_units = null;
     }
 }
 
@@ -74,8 +95,17 @@ export class ShiftRoleEditComponent implements OnInit {
     payRateType = 'phr';
 
     payCategories = [];
+    role_pay_items: any[] = [];
 
     settings: any;
+
+    readonly types: string[] = [
+        'bonus',
+        'deduction',
+        'expense',
+        'travel',
+        'other'
+    ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
 
@@ -96,14 +126,14 @@ export class ShiftRoleEditComponent implements OnInit {
 
     ngOnInit() {
 
-        // FOR ROLE CREATE
+        // FOR ROLE CREATE FROM NEW SHIFT TAB
         this.shifts = this.data.shifts;
         this.url = this.data.url;
 
-        // FOR ROLE EDIT
+        // FOR ROLE EDIT FROM ADMIN SHIFT TAB
         this.role = this.data.role;
 
-        // FOR ROLE CREATING FROM SHIFT TAB
+        // FOR ROLE CREATING FROM ADMIN SHIFT TAB
         this.shift = this.data.shift;
 
         if (this.role) { // ROLE EDIT
@@ -117,7 +147,8 @@ export class ShiftRoleEditComponent implements OnInit {
                 pay_category_id: [this.role.pay_category_id ? this.role.pay_category_id : 'none'],
                 expense_limit: [this.role.expense_limit],
                 completion_notes: [this.role.completion_notes],
-                requirements: [[]] // TODO - ROLE REQUIREMENTS
+                requirements: [[]], // TODO - ROLE REQUIREMENTS,
+                uploads_required: [this.role.uploads_required]
             });
 
             // SET RATE TYPE
@@ -128,6 +159,8 @@ export class ShiftRoleEditComponent implements OnInit {
             this.scheduleService.getRoleRequirementsByRole(this.role.id).subscribe(requirements => {
                 this.roleForm.patchValue({ requirements });
             });
+
+            this.role_pay_items = this.role.role_pay_items;
 
             // SET ROLE PERIOD
             this.rolePeriod = new TimeRange(
@@ -146,7 +179,8 @@ export class ShiftRoleEditComponent implements OnInit {
                 pay_category_id: ['none'],
                 expense_limit: [0],
                 completion_notes: [''],
-                requirements: [[]]
+                requirements: [[]],
+                uploads_required: [null]
             });
         }
 
@@ -238,6 +272,21 @@ export class ShiftRoleEditComponent implements OnInit {
             };
         }
 
+        // Pay Items
+        const pay_items = this.role_pay_items.map(item => {
+            return [
+                item.id,
+                item.item_type,
+                item.item_name,
+                item.unit_rate,
+                item.units,
+                item.bill_unit_rate,
+                item.bill_units
+            ].join('|');
+        });
+
+        role = { ...role, pay_items };
+
         if (this.shifts) { // ROLE CREATE
             this.scheduleService.createShiftsRoles(this.shifts, role)
                 .subscribe(res => {
@@ -303,12 +352,28 @@ export class ShiftRoleEditComponent implements OnInit {
             pay_category_id: 'none',
             expense_limit: 0,
             completion_notes: '',
-            requirements: []
+            requirements: [],
+            uploads_required: []
         });
         this.formErrors = {
             rname: {}
         };
         this.rolePeriod = new TimeRange();
+    }
+
+    addPayItem() {
+        const item = new PayItem();
+        this.role_pay_items.unshift(item);
+    }
+
+    deletePayItem(index) {
+        this.role_pay_items.splice(index, 1);
+    }
+
+    onPayItemChanged(value, item, field) {
+        if (!item[field]) {
+            item[field] = value;
+        }
     }
 
     private displayError(err) {

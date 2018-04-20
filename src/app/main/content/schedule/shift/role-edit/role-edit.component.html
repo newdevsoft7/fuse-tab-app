@@ -97,52 +97,24 @@
             </div>
             <!-- / REQUIREMENTS -->
 
-            <!-- BILL RATE -->
-            <div class="role-box info-box" fxLayout="column" *ngIf="settings.client_enable === '1'">
+            <!-- PAY ITEMS -->
+            <div class="role-box info-box" fxLayout="column">
 
                 <header class="mat-accent-bg">
-                    <div class="title">Bill Rate</div>
+                    <div class="title">Pay Items</div>
                 </header>
 
                 <div class="content" fxLayout="column">
                     <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="12px">
-                        <mat-form-field>
-                            <input matInput type="number" formControlName="bill_rate" min="0">
-                            <button mat-icon-button matPrefix>
-                                <mat-icon>attach_money</mat-icon>
-                            </button>
-                        </mat-form-field>
 
-                        <mat-button-toggle-group #billRateTypeGroup="matButtonToggleGroup"
-                                                 [value]="billRateType"
-                                                 (change)="billRateType = billRateTypeGroup.value">
-                            <mat-button-toggle value="phr">/hr</mat-button-toggle>
-                            <mat-button-toggle value="flat">flat</mat-button-toggle>
-                        </mat-button-toggle-group>
-                    </div>
-                </div>
-
-            </div>
-            <!-- / BILL RATE -->
-
-            <!-- PAY RATE -->
-            <div class="role-box info-box" fxLayout="column">
-
-                <header class="mat-accent-bg">
-                    <div class="title">Pay Rate</div>
-                </header>
-
-                <div class="content" fxLayout="column">
-                    <div class="info-line" *ngIf="settings.paylvl_enable === '1'">
-                        <mat-form-field>
+                        <mat-form-field  *ngIf="settings.paylvl_enable === '1'">
                             <mat-label>Category</mat-label>
                             <mat-select formControlName="pay_category_id">
                                 <mat-option [value]="'none'">None</mat-option>
                                 <mat-option *ngFor="let category of payCategories" [value]="category.id">{{category.cname}}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                    </div>
-                    <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+
                         <mat-form-field>
                             <input matInput type="number" formControlName="pay_rate" min="0">
                             <button mat-icon-button matPrefix>
@@ -156,11 +128,82 @@
                             <mat-button-toggle value="phr">/hr</mat-button-toggle>
                             <mat-button-toggle value="flat">flat</mat-button-toggle>
                         </mat-button-toggle-group>
+
+                        <mat-form-field>
+                            <input matInput type="number" formControlName="bill_rate" min="0">
+                            <button mat-icon-button matPrefix>
+                                <mat-icon>attach_money</mat-icon>
+                            </button>
+                        </mat-form-field>
+                        
+                        <mat-button-toggle-group #billRateTypeGroup="matButtonToggleGroup"
+                            [value]="billRateType"
+                            (change)="billRateType = billRateTypeGroup.value">
+                            <mat-button-toggle value="phr">/hr</mat-button-toggle>
+                            <mat-button-toggle value="flat">flat</mat-button-toggle>
+                        </mat-button-toggle-group>
                     </div>
+
+                    <button mat-fab color="accent" (click)="addPayItem()">
+                        <mat-icon class="white-fg">add</mat-icon>
+                    </button>
+
+                    <fieldset *ngFor="let item of role_pay_items; let index = index" class="fieldset-width">
+                        <legend>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="item.item_type" [ngModelOptions]="{standalone: true}" placeholder="Item Type">
+                                    <mat-option *ngFor="let type of types" [value]="type">
+                                        {{type | capitalize}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </legend>
+                        <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start center" fxLayoutGap.gt-xs="12px"
+                            fxLayout.xs="column" fxLayoutAlign.xs="start stretch">
+                            <mat-form-field fxFlex>
+                                <input matInput [(ngModel)]="item.item_name" placeholder="Item Name"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" [(ngModel)]="item.unit_rate" placeholder="Amount" min="0"
+                                    [ngModelOptions]="{standalone: true}"
+                                    debounce (onValueChange)="onPayItemChanged($event, item, 'bill_unit_rate')">
+                                <button mat-icon-button matPrefix>
+                                    <mat-icon>attach_money</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" [(ngModel)]="item.units" placeholder="Qty" min="0"
+                                    [ngModelOptions]="{standalone: true}"
+                                    debounce (onValueChange)="onPayItemChanged($event, item, 'bill_units')">
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" [(ngModel)]="item.bill_unit_rate" placeholder="Bill Amount" min="0"
+                                    [ngModelOptions]="{standalone: true}">
+                                <button mat-icon-button matPrefix>
+                                    <mat-icon>attach_money</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" [(ngModel)]="item.bill_units" placeholder="Bill Qty" min="0"
+                                    [ngModelOptions]="{standalone: true}">
+                            </mat-form-field>
+
+                            <div fxFlex="nogrow">
+                                <button mat-icon-button (click)="deletePayItem(index)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
 
             </div>
-            <!-- / PAY RATE -->
+            <!-- / PAY ITEMS -->
 
             <!-- COMPLETION -->
             <div class="role-box info-box" fxLayout="column">
@@ -172,6 +215,13 @@
                 <div class="content p-0" fxLayout="column">
                     <div class="info-line">
                         <app-ckeditor-v5 placeholder="Enter any completion instructions here. They will be shown on the apply, confirm and completion dialogues." formControlName="completion_notes"></app-ckeditor-v5>
+                    </div>
+
+                    <div class="info-line">
+                        <span class="mx-12">Number of uploads required:</span>
+                        <mat-form-field>
+                            <input matInput formControlName="uploads_required" type="number" min="0" max="99">
+                        </mat-form-field>
                     </div>
                 </div>
 

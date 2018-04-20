@@ -157,6 +157,11 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  getShiftRole(roleId): Promise<any> {
+    const url = `${BASE_URL}/shift/role/${roleId}`;
+    return this.http.get(url).toPromise();
+  }
+
   getPayLevelCategory(id?: number): Observable<any> {
     const param = typeof id === 'undefined' ? '' : id;
     const url = `${BASE_URL}/payLevel/category/${param}`;
