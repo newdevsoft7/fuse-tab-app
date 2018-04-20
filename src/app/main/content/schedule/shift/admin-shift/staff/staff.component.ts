@@ -24,7 +24,6 @@ import * as _ from 'lodash';
 
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
-import { UserService } from '../../../../users/user.service';
 import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
 import { ActionService } from '../../../../../../shared/services/action.service';
@@ -64,7 +63,6 @@ enum Query {
 export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     currentUser;
-    userInfo: any;
     roles: any[];
 
     public Section = Section;
@@ -99,7 +97,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private formBuilder: FormBuilder,
         private tokenStorage: TokenStorage,
-        private userService: UserService,
         private scheduleService: ScheduleService,
         private actionService: ActionService,
         private tabService: TabService,
@@ -142,11 +139,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
-        });
-
-        // Get current user information
-        this.userService.getUser(this.currentUser.id).subscribe(res => {
-            this.userInfo = res;
         });
 
         // Get shift admin notes
@@ -485,8 +477,8 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.scheduleService.createShiftAdminNote(this.shift.id, data)
             .subscribe(res => {
                 const note = res.data;
-                note.creator_ppic_a = this.userInfo.ppic_a;
-                note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
+                note.creator_ppic_a = this.currentUser.ppic_a;
+                note.creator_name = `${this.currentUser.fname} ${this.currentUser.lname}`;
 
                 if (this.adminNoteTypes.length > 0 && note.type_id != null) {
                     const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
