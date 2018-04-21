@@ -104,8 +104,8 @@
                     <div class="title">Pay Items</div>
                 </header>
 
-                <div class="content" fxLayout="column">
-                    <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="12px">
+                <div class="content pay-items" fxLayout="column">
+                    <div class="info-line" fxLayoutAlign="row" fxLayoutAlign="start center" fxLayoutGap="18px">
 
                         <mat-form-field  *ngIf="settings.paylvl_enable === '1'">
                             <mat-label>Category</mat-label>
@@ -115,12 +115,15 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field>
-                            <input matInput type="number" formControlName="pay_rate" min="0">
-                            <button mat-icon-button matPrefix>
-                                <mat-icon>attach_money</mat-icon>
-                            </button>
-                        </mat-form-field>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <span class="mr-18">Pay</span>
+                            <mat-form-field class="w-100">
+                                <input matInput type="number" formControlName="pay_rate" min="0">
+                                <button mat-icon-button matPrefix>
+                                    <mat-icon>attach_money</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
 
                         <mat-button-toggle-group #payRateTypeGroup="matButtonToggleGroup"
                                                  [value]="payRateType"
@@ -129,12 +132,15 @@
                             <mat-button-toggle value="flat">flat</mat-button-toggle>
                         </mat-button-toggle-group>
 
-                        <mat-form-field>
-                            <input matInput type="number" formControlName="bill_rate" min="0">
-                            <button mat-icon-button matPrefix>
-                                <mat-icon>attach_money</mat-icon>
-                            </button>
-                        </mat-form-field>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <span class="mr-18">Bill</span>
+                            <mat-form-field class="w-100">
+                                <input matInput type="number" formControlName="bill_rate" min="0">
+                                <button mat-icon-button matPrefix>
+                                    <mat-icon>attach_money</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
                         
                         <mat-button-toggle-group #billRateTypeGroup="matButtonToggleGroup"
                             [value]="billRateType"
@@ -144,11 +150,11 @@
                         </mat-button-toggle-group>
                     </div>
 
-                    <button mat-fab color="accent" (click)="addPayItem()">
+                    <button mat-fab color="accent" class="add-button" (click)="addPayItem()" matTooltip="Add Pay Item">
                         <mat-icon class="white-fg">add</mat-icon>
                     </button>
 
-                    <fieldset *ngFor="let item of role_pay_items; let index = index" class="fieldset-width">
+                    <fieldset *ngFor="let item of role_pay_items; let index = index" class="fieldset">
                         <legend>
                             <mat-form-field>
                                 <mat-select [(ngModel)]="item.item_type" [ngModelOptions]="{standalone: true}" placeholder="Item Type">

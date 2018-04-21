@@ -33,8 +33,18 @@
         }
     }
 
-    .fieldset-width {
+    .fieldset {
         min-width: 0;
+    }
+
+    .pay-items {
+        position: relative;
+
+        .add-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
     }
 
     // Role boxes

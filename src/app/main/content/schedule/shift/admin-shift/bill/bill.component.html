@@ -61,7 +61,7 @@
                     </span>
                 </div>
                 <div fxFlex>
-                    <button mat-icon-button (click)="deleteItem(item, type)">
+                    <button mat-icon-button (click)="deleteItem(item, type)" *ngIf="item.type === 'shift'">
                         <mat-icon>close</mat-icon>
                     </button>
                 </div>
