@@ -147,10 +147,10 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     startSocket() {
-        this.socketService.sendData(JSON.stringify({
+        this.socketService.sendData({
             type: 'init',
             payload: this.tokenStorage.getUser().id
-        }));
+        });
     }
 
     async loadFCMservices() {

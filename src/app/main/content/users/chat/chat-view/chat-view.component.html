@@ -75,9 +75,9 @@
                 <div class="bubble">
                     <div class="message" [innerHtml]="message.content"></div>
                     <div class="clearfix">
-                        <div class="time secondary-text pull-left">{{message.created_at | date:'medium'}}</div>
+                        <div class="time secondary-text pull-left">{{message.created_at | date:'MMM d, y, h:mm a'}}</div>
                     </div>
-                    <div class="seen-status" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
+                    <div class="seen-status w-100-p" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
                         <ng-container *ngFor="let seenId of message.seen_by_ids">
                             <img class="mt-8" [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId) && message.sender_id !== seenId"/>
                         </ng-container>

@@ -20,6 +20,8 @@ export class FuseNavbarVerticalComponent implements OnInit, OnDestroy
     private _backdropElement: HTMLElement | null = null;
     private _folded = false;
 
+    logoUrl: string;
+
     @HostBinding('class.close') isClosed: boolean;
     @HostBinding('class.folded') isFoldedActive: boolean;
     @HostBinding('class.folded-open') isFoldedOpen: boolean;
@@ -108,6 +110,8 @@ export class FuseNavbarVerticalComponent implements OnInit, OnDestroy
 
     ngOnInit()
     {
+        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
+
         this.isClosed = false;
         this.isFoldedActive = this._folded;
         this.isFoldedOpen = false;

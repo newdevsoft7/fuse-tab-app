@@ -80,14 +80,15 @@ export class SocketService {
   }
 
   sendData(data: any): void {
+    data.tenant = (<any>window).tenant.name;
     if (this.getState() === WebSocket.OPEN) {
-      this.conn.send(data);
+      this.conn.send(JSON.stringify(data));
     } else {
       console.log('connection is not ready. please wait...');
       this.connectionStatus.subscribe((connected: boolean) => {
         if (connected) {
           console.log('connection is ready! please send data');
-          this.conn.send(data);
+          this.conn.send(JSON.stringify(data));
         }
       });
     }

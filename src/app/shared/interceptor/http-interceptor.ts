@@ -6,56 +6,32 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 
 import { AuthenticationService } from '../services/authentication.service';
-import { AppSettingService } from '../services/app-setting.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class SCHttpInterceptor implements HttpInterceptor {
-
-  authService: AuthenticationService;
-  appSettingService: AppSettingService;
 
   constructor(
     private injector: Injector) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    this.authService = this.injector.get(AuthenticationService);
-    this.appSettingService = this.injector.get(AppSettingService);
+    const authService = this.injector.get(AuthenticationService);
 
-    req = this.getRequestWithToken(req, this.authService.getAccessToken());
+    const baseUrl = `https://api.${(<any>window).tenant.name}.staffconnect-app.com/api`;
+    req = req.clone({ url: `${baseUrl}${req.url}` });
 
-    return this.getUpdatedRequest(req, next).mergeAll();
-  }
+    req = this.getRequestWithToken(req, authService.getAccessToken());
 
-  private getUpdatedRequest(req: HttpRequest<any>, next: HttpHandler): Observable<Observable<HttpEvent<any>>> {
-    return new Observable((observer) => {
-      if (!this.appSettingService.baseData) {
-        this.appSettingService.baseDataUpdated$.subscribe(async (isUpdated: boolean) => {
-          if (isUpdated) {
-            req = req.clone({ url: `${this.appSettingService.baseData.url}${req.url}` });
-            observer.next(this.getHandler(req, next));
-            observer.complete();
-          }
-        });
-      } else {
-        req = req.clone({ url: `${this.appSettingService.baseData.url}${req.url}` });
-        observer.next(this.getHandler(req, next));
-        observer.complete();
-      }
-    });
-  }
-
-  private getHandler(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).catch(error => {
       if (error.status === 401) {
         if (req.url.endsWith('refresh')) {
-          this.authService.refreshing = false;
-          this.authService.logout();
+          authService.refreshing = false;
+          authService.logout();
         } else {
-          return this.authService.refreshToken()
+          return authService.refreshToken()
             .switchMap(() => {
-              req = this.getRequestWithToken(req, this.authService.getAccessToken());
+              req = this.getRequestWithToken(req, authService.getAccessToken());
               return next.handle(req);
             });
         }
