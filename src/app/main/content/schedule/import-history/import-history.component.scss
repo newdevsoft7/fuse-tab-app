@@ -1,0 +1,26 @@
+@import 'src/app/core/scss/fuse';
+
+:host {
+
+    .heading {
+       background-color: #eeeeee;
+        
+        & > div {
+            padding: 8px;
+        } 
+    }
+
+    .item {
+        & > div {
+            padding: 8px;
+        }
+    }
+
+    .odd {
+        background-color: #eeeeee;
+    }
+    
+    .even {
+        background-color: #ffffff;
+    }
+}

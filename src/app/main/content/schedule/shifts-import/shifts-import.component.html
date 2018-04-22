@@ -1,36 +1,58 @@
 <div id="shifts-import-container" class="page-layout simple">
 
-    <!-- HEADER -->
-    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column" fxLayoutAlign="center">
-        <h1>Import Shifts</h1>
-
-        <!-- ADD FILE BUTTON -->
-        <div class="file-uploader">
-            <input hidden type="file" #fileInput (change)="uploadShifts($event)" multiple
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-            <button mat-fab class="add-file-button mat-warn" (click)="fileInput.click()" aria-label="Add file"
-                *fuseIfOnDom [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
-        <!-- / ADD FILE BUTTON -->
-
-    </div>
-    <!-- / HEADER -->
-
     <!-- CONTENT -->
     <div class="content">
 
-        <!-- SHIFT LIST -->
-        <div class="shifts-list" fxLayout="column" fxLayout="start">
-            
-            <!-- SHIFT -->
-            <div class="shift" *ngFor="let shift of shifts">
-
-            </div>
-            <!-- / SHIFT -->
+        <!-- ADD FILE BUTTON -->
+        <div class="file-uploader" [class.hidden]="result">
+            <input hidden type="file" #fileInput
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+            <button mat-raised-button color="accent" class="add-file-button mat-accent" (click)="fileInput.click()" aria-label="Add file">
+                Import
+            </button>
         </div>
-        <!-- / SHIFT LIST -->
+        <!-- / ADD FILE BUTTON -->
+        
+        <div *ngIf="result">
+            <fieldset *ngIf="result.warnings?.length > 0" class="warnings mb-24">
+                <legend><h3>Warnings</h3></legend>
+                <div *ngFor="let msg of result.warnings" class="message">{{msg}}</div>
+            </fieldset>
+
+            <ngx-datatable class="material striped" [rows]="result.data" [columnMode]="'force'"
+                [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true">
+
+                <ng-container *ngFor="let column of columns">
+                    <ngx-datatable-column *ngIf="typeof(column) === 'string'" [name]="column" [prop]="column">
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column *ngIf="typeof(column) !== 'string'" [name]="column" [prop]="column">
+                        <ng-template let-value="value" ngx-datatable-cell-template>
+                            <div *ngFor="let v of value">{{v}}</div>
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ng-container>
+
+                <ngx-datatable-column [width]="100">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <button mat-icon-button (click)="deleteItem(row)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
+
+            </ngx-datatable>
+
+            <div fxLayout="row" fxLayoutAlign="start center" class="mt-24">
+                <span class="mr-12">Publish</span>
+                <mat-slide-toggle [(ngModel)]="live"></mat-slide-toggle>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" class="mt-24">
+                <button mat-raised-button color="accent" class="mr-24" (click)="save()">Save</button>
+                <button mat-raised-button color="accent" class="mr-24" (click)="discard()">Discard</button>
+            </div>
+        </div>
 
     </div>
     <!-- / CONTENT -->
