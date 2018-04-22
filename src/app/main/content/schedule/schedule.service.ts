@@ -342,6 +342,38 @@ export class ScheduleService {
     return this.http.post(url, formData).toPromise();
   }
 
+  importShift(file: File): Promise<any> {
+    const url = `${BASE_URL}/shift/import`;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(url, formData).toPromise();
+  }
+
+  getColumnMaps(): Promise<any> {
+    const url = `${BASE_URL}/shift/import/columns`;
+    return this.http.get(url).toPromise();
+  }
+
+  getImportHistory(): Promise<any> {
+    const url = `${BASE_URL}/shift/import/history`;
+    return this.http.get(url).toPromise();
+  }
+
+  saveImport(id, live: boolean): Promise<any> {
+    const url = `${BASE_URL}/shift/import/${id}`;
+    return this.http.put(url, { live: live ? 1 : 0 }).toPromise();
+  }
+
+  saveColumnMap(id, column: string): Promise<any> {
+    const url = `${BASE_URL}/shift/import/column/${id}`;
+    return this.http.put(url, { column }).toPromise();
+  }
+
+  deleteImport(id): Promise<any> {
+    const url = `${BASE_URL}/shift/import/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

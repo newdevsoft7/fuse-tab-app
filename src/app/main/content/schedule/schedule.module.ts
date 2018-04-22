@@ -77,6 +77,8 @@ import { EditBillItemNameComponent } from './shift/admin-shift/bill/edit-item-na
 import { EditBillItemUnitRateComponent } from './shift/admin-shift/bill/edit-item-unit-rate/edit-item-unit-rate.component';
 import { EditBillItemUnitsComponent } from './shift/admin-shift/bill/edit-item-units/edit-item-units.component';
 import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-item-rate-type/edit-item-rate-type.component';
+import { ColumnMappingComponent } from './column-mapping/column-mapping.component';
+import { ImportHistoryComponent } from './import-history/import-history.component';
 
 
 @NgModule({
@@ -160,7 +162,9 @@ import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-ite
         EditBillItemNameComponent,
         EditBillItemUnitRateComponent,
         EditBillItemUnitsComponent,
-        EditBillItemRateTypeComponent
+        EditBillItemRateTypeComponent,
+        ColumnMappingComponent,
+        ImportHistoryComponent
 
     ],
     providers: [ ScheduleService ],
@@ -196,7 +200,9 @@ import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-ite
         ClientShiftComponent,
         ShiftsImportComponent,
         ShiftsExportAsExcelComponent,
-        ShiftsExportAsPdfComponent
+        ShiftsExportAsPdfComponent,
+        ColumnMappingComponent,
+        ImportHistoryComponent
     ]
 })
 export class ScheduleModule { }

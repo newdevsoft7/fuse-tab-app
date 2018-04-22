@@ -1,0 +1,25 @@
+<div id="column-mapping-container" class="page-layout simple fullwidth" fusePerfectScrollbar>
+
+    <!-- CONTENT -->
+    <div class="content p-12 mat-white-bg">
+
+        <div class="box info-box" fxLayout="column" *ngFor="let group of groups">
+        
+            <header class="mat-accent-bg">
+                <div class="title">{{group | capitalize}}</div>
+            </header>
+        
+            <div class="content" fxLayout="column">
+                <div *ngFor="let item of map[group]" class="info-line" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="title">{{item.display_name}}</span>
+                    <mat-form-field *ngIf="item.column">
+                        <input matInput debounce [(ngModel)]="item.column"
+                            (onValueChange)="saveColumnMap($event, item)">
+                    </mat-form-field>
+                </div>
+            </div>
+        
+        </div>
+        
+    </div>
+</div>

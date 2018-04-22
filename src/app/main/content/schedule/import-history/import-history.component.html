@@ -1,0 +1,34 @@
+<div id="import-history-container" class="page-layout simple fullwidth p-24" fusePerfectScrollbar>
+    
+    <!-- HEADER -->
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px" class="heading">
+        <div fxFlex>Imported</div>
+        <div fxFlex>No. imported</div>
+        <div fxFlex>Imported By</div>
+        <div fxFlex></div>
+    </div>
+    <!-- / HEADER -->
+
+    <div *ngFor="let item of history; let odd = odd; let even = even" [ngClass]="{'odd': odd, 'even': even}"
+        fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="24px" class="item">
+        <div fxFlex>
+            {{item.date}}
+        </div>
+        <div fxFlex>
+            {{item.num_shifts}}
+        </div>
+        <div fxFlex>
+            {{item.importer}}
+        </div>
+        <div fxFlex>
+            <button mat-icon-button (click)="delete(item)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="history.length === 0" class="item">
+        <div>No history</div>
+    </div>
+
+</div>
