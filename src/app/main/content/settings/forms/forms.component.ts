@@ -10,6 +10,8 @@ import * as _ from 'lodash';
 import { SettingsService } from '../settings.service';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { TrackingService } from '../../tracking/tracking.service';
+import { Tab } from '../../../tab/tab';
+import { TabService } from '../../../tab/tab.service';
 
 @Component({
     selector: 'app-settings-forms',
@@ -65,7 +67,9 @@ export class SettingsFormsComponent implements OnInit {
         private settingsService: SettingsService,
         private trackingService: TrackingService,
         private toastr: ToastrService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private tabService: TabService,
+        private toastrService: ToastrService
     ) { }
 
     ngOnInit() {
@@ -86,6 +90,12 @@ export class SettingsFormsComponent implements OnInit {
                     }
                 });
             });
+
+        if (window.addEventListener) {
+            window.addEventListener('message', this.onMessage.bind(this), false);
+        } else if ((<any>window).attachEvent) {
+            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
+        }
     }
 
     getForms() {
@@ -193,5 +203,30 @@ export class SettingsFormsComponent implements OnInit {
         return value && typeof value === 'object' ? value.oname : value;
     }
 
+    async editForm(form, event: MouseEvent) {
+        event.stopPropagation();
+        try {
+            const res = await this.settingsService.getForm(form.id).toPromise();
+            res.isEdit = true;
+            const tab = new Tab(
+                form.name,
+                'formTpl',
+                `settings/form/${form.id}`,
+                res
+            );
+            this.tabService.openTab(tab);
+        } catch (e) {
+            this.handleError(e.error);
+        }
+    }
 
+    onMessage(event: any) {
+        if (event.data && event.data.func && this.tabService.currentTab.url.indexOf('settings/form') > -1) {
+            this.tabService.closeTab(this.tabService.currentTab.url);
+        }
+    }
+
+    handleError(e): void {
+        this.toastrService.error(e.message || 'Something is wrong');
+    }
 }
