@@ -158,7 +158,10 @@
                         [sortable]="false"
                         [canAutoResize]="false">
                         <ng-template *ngIf="column.key_name == 'ppic_a'" let-row="row" let-value="value" ngx-datatable-cell-template>
-                            <img class="avatar" [src]="getAvatar(value)" (click)="openUserTab(row, $event)" />
+                            <div class="savatar">
+                                <img [src]="getAvatar(value)" (click)="openUserTab(row, $event)" />
+                                <div class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.text"></div>
+                            </div>
                         </ng-template>
                     </ngx-datatable-column>
 
