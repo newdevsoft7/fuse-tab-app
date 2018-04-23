@@ -8,6 +8,8 @@ import {
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
+import { OnRatingChangeEven } from 'angular-star-rating';
+
 import { CustomLoadingService } from '../../../../../../../shared/services/custom-loading.service';
 import { TabService } from '../../../../../../tab/tab.service';
 import { UserService } from '../../../../../users/user.service';
@@ -45,6 +47,7 @@ enum Query {
 export class AdminShiftStaffSelectedComponent implements OnInit {
 
     @Input() editable;
+    @Input() shift;
 
     private currentComponentWidth;
 
@@ -281,5 +284,40 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             });
     }
 
+    async changeRate(event: OnRatingChangeEven, staff) {
+        const score = event.rating;
+        try {
+            const res = await this.scheduleService.updateRoleStaff(staff.id, { rating: score }).toPromise();
+            staff.rating = score;
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
 
+    async resetRate(staff) {
+        try {
+            const res = await this.scheduleService.updateRoleStaff(staff.id, { rating: 0 }).toPromise();
+            staff.rating = 0;
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+    async setLate(isLate: boolean, staff) {
+        try {
+            const res = await this.scheduleService.updateRoleStaff(staff.id, { late: isLate ? 1 : 0 }).toPromise();
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.message);
+        }
+    }
 }

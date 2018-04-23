@@ -154,6 +154,7 @@
                         <app-admin-shift-staff-selected [(staffs)]="role.selected"
                             [showBillInfo]="shift.bill_info"
                             [editable]="shift.editable"
+                            [shift]="shift"
                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-selected>
                     </mat-tab>
 

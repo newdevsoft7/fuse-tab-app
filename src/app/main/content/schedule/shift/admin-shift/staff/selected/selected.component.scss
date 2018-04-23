@@ -57,4 +57,25 @@
     .pull-right {
         float: right;
     }
+
+    .rating {
+
+        button {
+            margin-right: -8px;
+            mat-icon {
+
+                &:hover {
+                    color: #f44336;
+                }
+            }
+        }
+
+        star-rating-comp {
+            margin-top: 6px;
+        }
+    }
+
+    .ontime {
+        line-height: 24px;
+    }
 }

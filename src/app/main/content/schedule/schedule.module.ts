@@ -79,6 +79,7 @@ import { EditBillItemUnitsComponent } from './shift/admin-shift/bill/edit-item-u
 import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-item-rate-type/edit-item-rate-type.component';
 import { ColumnMappingComponent } from './column-mapping/column-mapping.component';
 import { ImportHistoryComponent } from './import-history/import-history.component';
+import { AdminShiftEditPerformanceNoteComponent } from './shift/admin-shift/staff/selected/edit-performance-note/edit-performance-note.component';
 
 
 @NgModule({
@@ -164,7 +165,8 @@ import { ImportHistoryComponent } from './import-history/import-history.componen
         EditBillItemUnitsComponent,
         EditBillItemRateTypeComponent,
         ColumnMappingComponent,
-        ImportHistoryComponent
+        ImportHistoryComponent,
+        AdminShiftEditPerformanceNoteComponent
 
     ],
     providers: [ ScheduleService ],

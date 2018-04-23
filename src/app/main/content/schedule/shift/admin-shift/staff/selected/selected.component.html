@@ -122,6 +122,29 @@
                     </mat-menu>
                 </div>
             </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" class="pl-48" *ngIf="shift.past === 1">
+                <div fxLayout="row" fxLayoutAlign="start center" class="rating">
+                    <button mat-icon-button (click)="resetRate(staff)">
+                        <mat-icon class="s-20">do_not_disturb_on</mat-icon>
+                    </button>
+                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="staff.rating !== null ? staff.rating : 0" [step]="0.5" [showHalfStars]="true"
+                        (onRatingChange)="changeRate($event, staff)">
+                    </star-rating-comp>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <span class="ontime">On time</span>
+                    <mat-slide-toggle class="ml-8" [(ngModel)]="staff.late"
+                        (ngModelChange)="setLate($event, staff)">
+                        Late
+                    </mat-slide-toggle>
+                </div>
+
+                <app-admin-shift-edit-performance-note [staff]="staff">
+                </app-admin-shift-edit-performance-note>
+            </div>
+
             <div class="additional-info" *ngIf="staff.pay_items_show">
                 <div *ngIf="staff.pay_items.length > 0; else noPayItems">
                     <div class="item-line" *ngFor="let item of staff.pay_items"
