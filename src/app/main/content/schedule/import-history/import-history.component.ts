@@ -45,11 +45,16 @@ export class ImportHistoryComponent implements OnInit {
             if (result) {
                 try {
                     // TODO - Delete import history
+                    this.spinner.show();
+                    const res = await this.scheduleService.deleteImport(item.id);
+                    this.spinner.hide();
+                    this.toastr.success(res.message);
                     const index = this.history.findIndex(v => v.id === item.id);
                     if (index > -1) {
                         this.history.splice(index, 1);
                     }
                 } catch (e) {
+                    this.spinner.hide();
                     this.displayError(e);
                 }
             }

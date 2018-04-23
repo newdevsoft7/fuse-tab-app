@@ -139,6 +139,11 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  deleteShift(id): Promise<any> {
+    const url = `${BASE_URL}/shift/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
   createShiftRole(shiftId, role): Observable<any> {
     const url = `${BASE_URL}/shift/${shiftId}/role`;
     return this.http.post(url, role)

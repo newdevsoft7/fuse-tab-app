@@ -120,14 +120,15 @@ export class ShiftsImportComponent implements OnInit {
             if (result) {
                 try {
                     this.spinner.show();
-                    // TODO - Delete shift
+                    const res = await this.scheduleService.deleteShift(item.id);
+                    this.spinner.hide();
+                    this.toastr.success(res.message);
                     const index = this.result.data.findIndex(v => v.id === item.id);
                     if (index > -1) {
                         const temp = [ ... this.result.data ];
                         temp.splice(index, 1);
                         this.result.data = temp;
                     }
-                    this.spinner.hide();
                 } catch (e) {
                     this.spinner.hide();
                     this.displayError(e);
