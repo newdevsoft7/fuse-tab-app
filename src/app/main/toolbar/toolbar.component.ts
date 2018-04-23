@@ -32,6 +32,7 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
     loggedInSecondary: boolean = false;
 
     userSwitcherSubscription: Subscription;
+    logoUrl: string;
 
     constructor(
         private router: Router,
@@ -106,6 +107,7 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
     }
 
     ngOnInit() {
+        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
         this.switchUser();
         this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
             if (isSwitch) {

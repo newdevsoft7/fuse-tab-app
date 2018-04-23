@@ -13,6 +13,8 @@ export class FuseForgotPasswordComponent implements OnInit
 {
     forgotPasswordForm: FormGroup;
     forgotPasswordFormErrors: any;
+    logoUrl: string;
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService,
@@ -34,6 +36,9 @@ export class FuseForgotPasswordComponent implements OnInit
 
     ngOnInit()
     {
+        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
+        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
+
         this.forgotPasswordForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]]
         });

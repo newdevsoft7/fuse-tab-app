@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
 
@@ -8,8 +8,9 @@ import { fuseAnimations } from '../../../../core/animations';
     styleUrls  : ['./mail-confirm.component.scss'],
     animations : fuseAnimations
 })
-export class FuseMailConfirmComponent
+export class FuseMailConfirmComponent implements OnInit
 {
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService
@@ -22,5 +23,9 @@ export class FuseMailConfirmComponent
                 footer    : 'none'
             }
         });
+    }
+
+    ngOnInit() {
+        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
     }
 }

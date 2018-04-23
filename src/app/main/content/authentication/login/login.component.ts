@@ -21,6 +21,8 @@ export class FuseLoginComponent implements OnInit
     isSubmitted = false;
 
     socketService: SocketService;
+    logoUrl: string;
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService,
@@ -48,6 +50,9 @@ export class FuseLoginComponent implements OnInit
 
     ngOnInit()
     {
+        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
+        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
+
         this.loginForm = this.formBuilder.group({
             username   : ['', [Validators.required, Validators.email]], 
             password   : ['', Validators.required]

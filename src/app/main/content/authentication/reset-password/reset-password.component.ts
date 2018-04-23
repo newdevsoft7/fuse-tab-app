@@ -13,6 +13,8 @@ export class FuseResetPasswordComponent implements OnInit
 {
     resetPasswordForm: FormGroup;
     resetPasswordFormErrors: any;
+    logoUrl: string;
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService,
@@ -36,6 +38,9 @@ export class FuseResetPasswordComponent implements OnInit
 
     ngOnInit()
     {
+        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
+        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
+
         this.resetPasswordForm = this.formBuilder.group({
             email          : ['', [Validators.required, Validators.email]],
             password       : ['', Validators.required],

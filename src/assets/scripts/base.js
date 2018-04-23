@@ -14,15 +14,21 @@ function updateFavicon() {
   }
 }
 
+function updateLogo() {
+  document.querySelector('#fuse-splash-screen .logo img').src = window.tenant.logo;
+}
+
 function init() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', getBaseUrl(), true);
   xhr.responseType = 'json';
   xhr.addEventListener('load', () => {
     window.tenant = xhr.response;
-
     if (window.tenant.favicon) {
       updateFavicon();
+    }
+    if (window.tenant.logo) {
+      updateLogo();
     }
   });
   xhr.send();

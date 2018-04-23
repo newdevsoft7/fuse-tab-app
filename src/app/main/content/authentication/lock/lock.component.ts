@@ -13,6 +13,7 @@ export class FuseLockComponent implements OnInit
 {
     lockForm: FormGroup;
     lockFormErrors: any;
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService,
@@ -35,6 +36,7 @@ export class FuseLockComponent implements OnInit
 
     ngOnInit()
     {
+        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
         this.lockForm = this.formBuilder.group({
             username: [
                 {
