@@ -21,6 +21,13 @@
         max-height: inherit !important;
     }
 
+    .group {
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .search-bar {
 
         .date-picker {

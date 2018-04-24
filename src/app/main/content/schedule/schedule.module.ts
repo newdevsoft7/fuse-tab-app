@@ -80,6 +80,7 @@ import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-ite
 import { ColumnMappingComponent } from './column-mapping/column-mapping.component';
 import { ImportHistoryComponent } from './import-history/import-history.component';
 import { AdminShiftEditPerformanceNoteComponent } from './shift/admin-shift/staff/selected/edit-performance-note/edit-performance-note.component';
+import { GroupDialogComponent } from './shift-list/admin-shift-list/group-dialog/group-dialog.component';
 
 
 @NgModule({
@@ -166,7 +167,8 @@ import { AdminShiftEditPerformanceNoteComponent } from './shift/admin-shift/staf
         EditBillItemRateTypeComponent,
         ColumnMappingComponent,
         ImportHistoryComponent,
-        AdminShiftEditPerformanceNoteComponent
+        AdminShiftEditPerformanceNoteComponent,
+        GroupDialogComponent
 
     ],
     providers: [ ScheduleService ],
@@ -185,7 +187,8 @@ import { AdminShiftEditPerformanceNoteComponent } from './shift/admin-shift/staf
 
         EditTrackingDialogComponent,
         EditWorkareasDialogComponent,
-        AddPayItemDialogComponent
+        AddPayItemDialogComponent,
+        GroupDialogComponent
     ],
     exports: [
         ScheduleComponent,
