@@ -1,0 +1,24 @@
+<div id="group-edit-contact">
+    <div *ngIf="!formActive"  (click)="openForm()" class="text-field">
+        <div class="info" matTooltip="Contact" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon class="mr-8">contacts</mat-icon>
+            {{group.contact ? group.contact : 'Empty'}}
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-icon class="mr-8">contacts</mat-icon>
+        <mat-form-field class="contact-width">
+            <input matInput type="text" #contactInput fxFlex required formControlName="contact">
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>

@@ -1,0 +1,84 @@
+<div id="admin-shift-group" class="page-layout simple fullwidth" *ngIf="group">
+
+    <div class="header mat-accent-bg p-12" fxLayout="column" fxLayoutAlign="space-between">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
+
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-70-p">
+                <div class="period">
+                    {{group.group_start | date: 'EEEE MMMM d'}} - {{group.group_end | date: 'EEEE MMMM d'}}
+                </div>
+
+                <app-group-edit-name [group]="group"></app-group-edit-name>
+
+                <ng-container *ngIf="!showMoreBtn">
+                    <app-group-edit-location [group]="group"></app-group-edit-location>
+
+                    <app-group-edit-generic-location [group]="group"></app-group-edit-generic-location>
+
+                    <app-group-edit-address [group]="group"></app-group-edit-address>
+
+                    <app-group-edit-contact [group]="group"></app-group-edit-contact>
+
+                    <app-group-edit-managers [group]="group" class="w-100-p"></app-group-edit-managers>
+                    
+                </ng-container>
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="start end">
+                <div fxLayout="row">
+                    <button mat-icon-button (click)="toggleLock()">
+                        <mat-icon *ngIf="group.locked === 1">lock_outline</mat-icon>
+                        <mat-icon *ngIf="group.locked !== 1">lock_open</mat-icon>
+                    </button>
+                
+                    <button mat-icon-button (click)="toggleLive()">
+                        <mat-icon *ngIf="group.live === 1">visibility</mat-icon>
+                        <mat-icon *ngIf="group.live !== 1">visibility_off</mat-icon>
+                    </button>
+                
+                    <div>
+                        <button mat-icon-button [matMenuTriggerFor]="shiftMenu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                
+                        <mat-menu #shiftMenu="matMenu">
+                            <button mat-menu-item>Add Role</button>
+                            <button mat-menu-item>Invite</button>
+                            <button mat-menu-item>Chat</button>
+                            <button mat-menu-item>Messaged Selected</button>
+                            <button mat-menu-item>Messaged Applicants</button>
+                            <button mat-menu-item>Messaged Invited</button>
+                        </mat-menu>
+                    </div>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="end" fxLayoutWrap>
+                    <button mat-icon-button *ngFor="let flag of group.flags" (click)="toggleFlag(flag)"
+                        [matTooltip]="flag.fname">
+                        <mat-icon [ngStyle]="{'color': flag.set !== 0 ? flag.color : 'white'}">flag</mat-icon>
+                    </button>
+                </div>
+
+                <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column" fxLayoutAlign="start end">
+                    <app-group-edit-client [group]="group" [clients]="clients"></app-group-edit-client>
+
+                    <app-group-edit-tracking *ngFor="let category of group.tracking_categories"
+                        [data]="shiftData" [category]="category" [group]="group"></app-group-edit-tracking>
+
+                    <app-group-edit-workareas [group]="group" [data]="shiftData"></app-group-edit-workareas>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <a mat-button href="javascript:void(0)" (click)="showMoreBtn = !showMoreBtn">
+                {{showMoreBtn ? 'More Details' : 'Less Details'}}
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+
+    </div>
+
+</div>

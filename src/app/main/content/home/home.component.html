@@ -44,6 +44,10 @@
         <app-admin-shift-list></app-admin-shift-list>
     </ng-template>
 
+    <ng-template #adminShiftGroupTpl let-data="data">
+        <app-admin-shift-group [data]="data"></app-admin-shift-group>
+    </ng-template>
+
     <ng-template #shiftsImportTpl>
         <app-shifts-import></app-shifts-import>
     </ng-template>

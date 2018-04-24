@@ -60,9 +60,6 @@ export class AppComponent implements OnInit
 
         this.listenSocketMessage();
 
-        this.spinner.isLoading.subscribe(isLoading => {
-            this.loading = isLoading;
-        });
     }
 
     listenSocketMessage() {
@@ -101,6 +98,12 @@ export class AppComponent implements OnInit
         // Load Global Settings
         this.appSetting.getGlobalSettings().then(settings => {
             this.titleService.setTitle(settings.system_name);
+        });
+
+        this.spinner.isLoading.subscribe(isLoading => {
+            setTimeout(() => {
+                this.loading = isLoading;
+            });
         });
     }
 

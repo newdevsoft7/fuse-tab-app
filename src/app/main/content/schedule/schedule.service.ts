@@ -395,6 +395,45 @@ export class ScheduleService {
     ).toPromise();
   }
 
+  getShiftGroup(id): Promise<any> {
+    const url = `${BASE_URL}/group/${id}`;
+    return this.http.get(url).toPromise();
+  }
+
+  updateShiftGroup(id, body: {
+    gname?: string,
+    apply_all_or_nothing?: number,
+    client_id?: number,
+    address?: string,
+    contact?: string,
+    location?: string,
+    generic_location?: string,
+    generic_title?: string,
+    manager_ids?: number[],
+    live?: number,
+    locked?: number
+  }): Promise<any> {
+    const url = `${BASE_URL}/group/${id}`;
+    return this.http.put(url, body).toPromise();
+  }
+
+  setGroupFlag(groupId, flagId, flag = 1): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/flag/${flagId}/${flag}`;
+    return this.http.put(url, {}).toPromise();
+  }
+
+  setGroupTrackingOptions(groupId, catgegoryId, optionIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/tracking/${catgegoryId}`;
+    const body = optionIds.length > 0 ? { ids: optionIds } : {};
+    return this.http.put(url, body).toPromise();
+  }
+
+  setGroupWorkareas(groupId, workareaIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/workArea`;
+    const body = workareaIds.length > 0 ? { ids: workareaIds } : {};
+    return this.http.put(url, body).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

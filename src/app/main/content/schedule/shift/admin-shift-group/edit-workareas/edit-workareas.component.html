@@ -1,0 +1,12 @@
+<div id="edit-workareas-container" (click)="openDialog()">
+    <div *ngIf="workareas.length > 0" matTooltip="Workarea">
+        <span *ngFor="let workarea of workareas; let last = last">
+            {{workarea.aname}}
+            <ng-container *ngIf="!last" class="mr-4">,</ng-container>
+        </span>
+    </div>
+
+    <div *ngIf="workareas.length === 0">
+        <span>No Work Areas</span>
+    </div>
+</div>

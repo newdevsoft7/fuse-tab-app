@@ -234,7 +234,13 @@ export class AdminShiftListComponent implements OnInit {
     }
 
     openGroup(shift) {
-
+        const tab = new Tab(
+            shift.gname,
+            'adminShiftGroupTpl',
+            `admin-shift/group/${shift.shift_group_id}`,
+            { id: shift.shift_group_id }
+        );
+        this.tabService.openTab(tab);
     }
 
     private displayError(e: any) {
