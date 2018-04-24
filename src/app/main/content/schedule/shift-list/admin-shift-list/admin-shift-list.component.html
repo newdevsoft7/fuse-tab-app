@@ -17,12 +17,12 @@
                     <span>Edit Selected</span>
                 </button>
 
-                <button mat-raised-button class="mat-white-bg my-4">
+                <button mat-raised-button class="mat-white-bg my-4" (click)="group()">
                     <mat-icon fontSet="fa" fontIcon="fa-object-group" class="s-18 mr-4"></mat-icon>
                     <span>Group</span>
                 </button>
 
-                <button mat-raised-button class="mat-white-bg my-4">
+                <button mat-raised-button class="mat-white-bg my-4" (click)="ungroup()">
                     <mat-icon fontSet="fa" fontIcon="fa-object-ungroup" class="s-18 mr-4"></mat-icon>
                     <span>Ungroup</span>
                 </button>
@@ -114,8 +114,10 @@
                         </ng-template>
                         <!-- / DATE COLUMN -->
 
-                        <!-- TODO - ON CLICK TO GO SHIFT -->
-                        <!-- / TODO - ON CLICK TO GO SHIFT -->
+                        <ng-template *ngIf="column.key_name === 'gname'" ngx-datatable-cell-template let-value="value" let-row="row">
+                            <span class="group" (click)="openGroup(row)">{{value}}</span>
+                        </ng-template>
+
 
                     </ngx-datatable-column>
                 </ng-container>

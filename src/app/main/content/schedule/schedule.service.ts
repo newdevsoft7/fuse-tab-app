@@ -379,6 +379,22 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
+  groupShifts(body: { gname, shift_ids?, group_ids? }): Promise<any> {
+    const url = `${BASE_URL}/group`;
+    return this.http.post(url, body).toPromise();
+  }
+
+  ungroupShifts(groupId, shift_ids: string[]): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}`;
+    return this.http.delete(url, { params: { 'shift_ids[]': shift_ids } }).toPromise();
+  }
+
+  ungroupGroups(groupIds, shift_ids: string[]): Promise<any> {
+    return Observable.forkJoin(
+      groupIds.map(v => this.ungroupShifts(v, shift_ids))
+    ).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
