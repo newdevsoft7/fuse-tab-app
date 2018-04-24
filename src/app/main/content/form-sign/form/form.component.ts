@@ -16,6 +16,8 @@ export class FormComponent implements OnInit {
             this.iframeUrl = `https://formsigner.net/main/templates/signup/${this.data.other_id}?provider=staffconnect&type=iframe`;
         } else if (this.data && this.data.other_id && this.data.isEdit) {
             this.iframeUrl = `https://formsigner.net/main/templates/edit/${this.data.other_id}?provider=staffconnect&type=iframe`;
+        } else if (this.data && !this.data.other_id) {
+            this.iframeUrl = `https://formsigner.net/main/templates/create?provider=staffconnect&type=iframe`;
         }
     }
 

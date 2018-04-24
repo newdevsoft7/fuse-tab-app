@@ -220,6 +220,18 @@ export class SettingsFormsComponent implements OnInit {
         }
     }
 
+    addForm(): void {
+        const tab = new Tab(
+            'New Form',
+            'formTpl',
+            `settings/form/new`,
+            {
+                name: 'New Form'
+            }
+        );
+        this.tabService.openTab(tab);
+    }
+
     onMessage(event: any) {
         if (event.data && event.data.func && this.tabService.currentTab.url.indexOf('settings/form') > -1) {
             this.tabService.closeTab(this.tabService.currentTab.url);
