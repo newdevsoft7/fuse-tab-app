@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
+import { AppSettingService } from '../../../../shared/services/app-setting.service';
 
 @Component({
     selector   : 'fuse-mail-confirm',
@@ -13,7 +14,8 @@ export class FuseMailConfirmComponent implements OnInit
     backgroundImg: string;
 
     constructor(
-        private fuseConfig: FuseConfigService
+        private fuseConfig: FuseConfigService,
+        private appSettingService: AppSettingService
     )
     {
         this.fuseConfig.setSettings({
@@ -26,6 +28,6 @@ export class FuseMailConfirmComponent implements OnInit
     }
 
     ngOnInit() {
-        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
+        this.backgroundImg = this.appSettingService.baseData.background;
     }
 }

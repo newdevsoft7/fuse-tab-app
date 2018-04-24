@@ -11,6 +11,7 @@ import { Tab } from '../tab/tab';
 import { Subscription } from 'rxjs/Subscription';
 import { UsersChatService } from '../content/users/chat/chat.service';
 import { TAB } from '../../constants/tab';
+import { AppSettingService } from '../../shared/services/app-setting.service';
 
 @Component({
     selector   : 'fuse-toolbar',
@@ -42,7 +43,8 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
         private authService: AuthenticationService,
         private userService: UserService,
         private tokenStorage: TokenStorage,
-        private userChatService: UsersChatService
+        private userChatService: UsersChatService,
+        private appSettingService: AppSettingService
     )
     {
         this.userStatusOptions = [
@@ -107,7 +109,7 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
     }
 
     ngOnInit() {
-        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
+        this.logoUrl = this.appSettingService.baseData.logo;
         this.switchUser();
         this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
             if (isSwitch) {

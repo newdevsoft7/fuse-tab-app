@@ -8,6 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { FuseNavigationService } from '../../../core/components/navigation/navigation.service';
 import { FusePerfectScrollbarDirective } from '../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
+import { AppSettingService } from '../../../shared/services/app-setting.service';
 
 @Component({
     selector     : 'fuse-navbar-vertical',
@@ -63,7 +64,8 @@ export class FuseNavbarVerticalComponent implements OnInit, OnDestroy
         private _renderer: Renderer2,
         private _elementRef: ElementRef,
         private animationBuilder: AnimationBuilder,
-        public media: ObservableMedia
+        public media: ObservableMedia,
+        private appSettingService: AppSettingService
     )
     {
         navBarService.setNavBar(this);
@@ -110,7 +112,7 @@ export class FuseNavbarVerticalComponent implements OnInit, OnDestroy
 
     ngOnInit()
     {
-        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
+        this.logoUrl = this.appSettingService.baseData.logo;
 
         this.isClosed = false;
         this.isFoldedActive = this._folded;

@@ -11,10 +11,22 @@ const BASE_URL = `${environment.apiUrl}`;
 export class AppSettingService {
 
     private globalPromise = null; // Global Settings
+    baseData: any;
+    baseUrl: string;
 
     constructor(
         private http: HttpClient
     ) {
+        this.initBaseUrl();
+    }
+
+    initBaseUrl() {
+        const host = window.location.host;
+        if (host.indexOf('localhost') > -1) {
+            this.baseUrl = 'http://localhost:8080/base.php';
+        } else {
+            this.baseUrl = '/base.php';
+        }
     }
 
     getGlobalSettings() {
@@ -30,4 +42,27 @@ export class AppSettingService {
         this.globalPromise = null;
     }
 
+    load(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', this.baseUrl, true);
+            xhr.responseType = 'json';
+            xhr.addEventListener('load', () => {
+                this.baseData = xhr.response;
+                this.updateFavicon();
+                resolve(xhr.response);
+            });
+            xhr.send();
+        });
+    }
+
+    updateFavicon() {
+        const links: any = document.getElementsByTagName("link");
+        for (let link of links) {
+            if (link.rel === 'icon' && link.type === 'image/x-icon') {
+                link.href = this.baseData.favicon;
+                break;
+            }
+        }
+    }
 }

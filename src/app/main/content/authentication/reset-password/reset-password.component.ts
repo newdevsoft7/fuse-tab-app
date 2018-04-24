@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
+import { AppSettingService } from '../../../../shared/services/app-setting.service';
 
 @Component({
     selector   : 'fuse-reset-password',
@@ -18,7 +19,8 @@ export class FuseResetPasswordComponent implements OnInit
 
     constructor(
         private fuseConfig: FuseConfigService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private appSettingService: AppSettingService
     )
     {
         this.fuseConfig.setSettings({
@@ -38,8 +40,8 @@ export class FuseResetPasswordComponent implements OnInit
 
     ngOnInit()
     {
-        this.logoUrl = (<any>window).tenant.logo || 'assets/images/logos/staffconnect.svg';
-        this.backgroundImg = (<any>window).tenant.background || 'assets/images/backgrounds/dark-material-bg.jpg';
+        this.logoUrl = this.appSettingService.baseData.logo;
+        this.backgroundImg = this.appSettingService.baseData.background;
 
         this.resetPasswordForm = this.formBuilder.group({
             email          : ['', [Validators.required, Validators.email]],

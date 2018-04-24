@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { UsersChatService } from '../../main/content/users/chat/chat.service';
+import { AppSettingService } from './app-setting.service';
 
 const SOCKET_SERVER_URL = environment.socketServerUrl;
 
@@ -18,7 +19,9 @@ export class SocketService {
   duration: number = 1000;
   disconnectedTime: number = 0;
 
-  constructor() {
+  constructor(
+    private appSettingService: AppSettingService
+  ) {
     this.connect();
     this.init();
   }
@@ -80,7 +83,7 @@ export class SocketService {
   }
 
   sendData(data: any): void {
-    data.tenant = (<any>window).tenant.name;
+    data.tenant = this.appSettingService.baseData.name;
     if (this.getState() === WebSocket.OPEN) {
       this.conn.send(JSON.stringify(data));
     } else {

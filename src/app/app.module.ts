@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +22,9 @@ import { SCHttpInterceptor } from './shared/interceptor/http-interceptor';
 import { AppSettingService } from './shared/services/app-setting.service';
 import { CustomLoadingService } from './shared/services/custom-loading.service';
 
+export function init(config: AppSettingService) {
+    return () => config.load();
+}
 
 const appRoutes: Routes = [
     {
@@ -70,6 +73,12 @@ const appRoutes: Routes = [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: SCHttpInterceptor,
+            multi: true
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: init,
+            deps: [AppSettingService],
             multi: true
         },
         CustomLoadingService
