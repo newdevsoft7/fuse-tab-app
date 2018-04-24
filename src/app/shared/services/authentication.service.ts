@@ -131,7 +131,7 @@ export class AuthenticationService {
     document.body.removeChild(form);
     setTimeout(function () {
       loginWindow.close();
-    }, 1000);
+    }, 5000);
 
   }
 
