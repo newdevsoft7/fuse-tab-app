@@ -139,6 +139,11 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  deleteShift(id): Promise<any> {
+    const url = `${BASE_URL}/shift/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
   createShiftRole(shiftId, role): Observable<any> {
     const url = `${BASE_URL}/shift/${shiftId}/role`;
     return this.http.post(url, role)
@@ -155,6 +160,11 @@ export class ScheduleService {
     const url = `${BASE_URL}/shift/role/${roleId}`;
     return this.http.put(url, role)
       .catch(this.handleError);
+  }
+
+  getShiftRole(roleId): Promise<any> {
+    const url = `${BASE_URL}/shift/role/${roleId}`;
+    return this.http.get(url).toPromise();
   }
 
   getPayLevelCategory(id?: number): Observable<any> {
@@ -221,7 +231,6 @@ export class ScheduleService {
     return this.http.get(url)
       .catch(this.handleError);
   }
-
 
   getShiftAdminNotes(shiftId): Observable<any> {
     const url = `${BASE_URL}/shift/${shiftId}/adminNote`;
@@ -302,6 +311,127 @@ export class ScheduleService {
   getRoleRequirementsByRole(roleId: number | string): Observable<any> {
     const url = `${BASE_URL}/role/${roleId}/roleRequirements`;
     return this.http.get(url).catch(this.handleError);
+  }
+
+  addPayItem(body: { item_name, item_type, unit_rate, units,
+    bill_unit_rate?, bill_units?, shift_id?, shift_role_id?, role_staff_id? }): Promise<any> {
+    const url = `${BASE_URL}/payItem`;
+    return this.http.post(url, body).toPromise();
+  }
+
+  deletePayItem(id): Promise<any> {
+    const url = `${BASE_URL}/payItem/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  updatePayItem(payItemId,
+    body: { item_name?, item_type?, unit_rate?, units?, bill_unit_rate?, bill_units?, role_staff_id? }): Promise<any> {
+    const url = `${BASE_URL}/payItem/${payItemId}`;
+    return this.http.put(url, body).toPromise();
+  }
+
+  getShiftAdminNoteType(): Observable<any> {
+    const url = `${BASE_URL}/shiftAdminNoteType`;
+    return this.http.get(url).catch(this.handleError);
+  }
+
+  deleteFile(fileId: number, fileType = 'file'): Promise<any> {
+    const url = `${BASE_URL}/file/${fileType}/${fileId}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  uploadFile(shiftId, file: File): Promise<any> {
+    const url = `${BASE_URL}/shift/${shiftId}/file`;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(url, formData).toPromise();
+  }
+
+  importShift(file: File): Promise<any> {
+    const url = `${BASE_URL}/shift/import`;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(url, formData).toPromise();
+  }
+
+  getColumnMaps(): Promise<any> {
+    const url = `${BASE_URL}/shift/import/columns`;
+    return this.http.get(url).toPromise();
+  }
+
+  getImportHistory(): Promise<any> {
+    const url = `${BASE_URL}/shift/import/history`;
+    return this.http.get(url).toPromise();
+  }
+
+  saveImport(id, live: boolean): Promise<any> {
+    const url = `${BASE_URL}/shift/import/${id}`;
+    return this.http.put(url, { live: live ? 1 : 0 }).toPromise();
+  }
+
+  saveColumnMap(id, column: string): Promise<any> {
+    const url = `${BASE_URL}/shift/import/column/${id}`;
+    return this.http.put(url, { column }).toPromise();
+  }
+
+  deleteImport(id): Promise<any> {
+    const url = `${BASE_URL}/shift/import/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  groupShifts(body: { gname, shift_ids?, group_ids? }): Promise<any> {
+    const url = `${BASE_URL}/group`;
+    return this.http.post(url, body).toPromise();
+  }
+
+  ungroupShifts(groupId, shift_ids: string[]): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}`;
+    return this.http.delete(url, { params: { 'shift_ids[]': shift_ids } }).toPromise();
+  }
+
+  ungroupGroups(groupIds, shift_ids: string[]): Promise<any> {
+    return Observable.forkJoin(
+      groupIds.map(v => this.ungroupShifts(v, shift_ids))
+    ).toPromise();
+  }
+
+  getShiftGroup(id): Promise<any> {
+    const url = `${BASE_URL}/group/${id}`;
+    return this.http.get(url).toPromise();
+  }
+
+  updateShiftGroup(id, body: {
+    gname?: string,
+    apply_all_or_nothing?: number,
+    client_id?: number,
+    address?: string,
+    contact?: string,
+    location?: string,
+    generic_location?: string,
+    generic_title?: string,
+    manager_ids?: number[],
+    live?: number,
+    locked?: number
+  }): Promise<any> {
+    const url = `${BASE_URL}/group/${id}`;
+    return this.http.put(url, body).toPromise();
+  }
+
+  setGroupFlag(groupId, flagId, flag = 1): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/flag/${flagId}/${flag}`;
+    return this.http.put(url, {}).toPromise();
+  }
+
+  setGroupTrackingOptions(groupId, catgegoryId, optionIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/tracking/${catgegoryId}`;
+    const body = optionIds.length > 0 ? { ids: optionIds } : {};
+    return this.http.put(url, body).toPromise();
+  }
+
+  setGroupWorkareas(groupId, workareaIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/workArea`;
+    const body = workareaIds.length > 0 ? { ids: workareaIds } : {};
+    return this.http.put(url, body).toPromise();
   }
 
   private handleError(error: Response | any) {

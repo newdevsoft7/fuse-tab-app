@@ -1,0 +1,61 @@
+<div class="pt-24 px-4" fxLayout.gt-sm="row" fxLayout="column">
+
+    <!-- NOTES -->
+    <div class="info-content" fxLayout="column" fxFlex="100" fxFlex.gt-sm="65">
+        <div class="box info-box" fxLayout="column">
+            <header class="mat-accent-bg">
+                <div class="title">Notes</div>
+            </header>
+        
+            <div class="content p-0">
+                <app-ckeditor-v5 class="mb-12" [(ngModel)]="notes"></app-ckeditor-v5>
+                <button class="m-12" mat-raised-button color="accent" (click)="saveNotes(notes)" [disabled]="!notes">Save</button>
+            </div>
+        </div>
+    </div>
+    <!-- / NOTES -->
+
+    <!-- FILES -->
+    <div class="info-sidebar" fxLayout="column" fxFlex="100" fxFlex.gt-sm="35">
+    
+        <div class="box info-box" fxLayout="column">
+    
+            <header class="mat-accent-bg px-16 py-8" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Files</div>
+                <div>
+                    <button mat-icon-button (click)="uploadFile.click()" [disabled]="shift.editable !== 1">
+                        <mat-icon class="mat-24 white-fg">add</mat-icon>
+                    </button>
+                    <input type="file" #uploadFile accept="image/jpeg, image/png, video/mp4" hidden/>
+                </div>
+            </header>
+    
+            <div class="content">
+    
+                <!-- FILES LIST -->
+                <div class="files" fxLayout="column">
+                    <div *ngIf="files.length === 0">No Files</div>
+                    <div class="file" *ngFor="let file of files" fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="nogrow" class="thumbnail">
+                            <img [src]="file.thumb">
+                        </div>
+                        <div fxFlex>
+                            <a [href]="file.link" target="_blank">{{file.oname}}</a><br/>
+                            {{file.track}}
+                        </div>
+                        <div fxFlex="nogrow">
+                            <button mat-icon-button (click)="delete(file)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- / FILES LIST -->
+    
+            </div>
+    
+        </div>
+    
+    </div>
+    <!-- / FILES -->
+</div>

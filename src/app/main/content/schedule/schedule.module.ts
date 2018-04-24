@@ -10,9 +10,9 @@ import { CalendarEventFormDialogComponent } from './calendar/event-form/event-fo
 
 import { AdminShiftComponent } from './shift/admin-shift/admin-shift.component';
 import { AdminShiftStaffComponent } from './shift/admin-shift/staff/staff.component';
-import { AdminShiftExpensesComponent } from './shift/admin-shift/expenses/expenses.component';
+import { AdminShiftBillComponent } from './shift/admin-shift/bill/bill.component';
+import { AdminShiftAttachmentsComponent } from './shift/admin-shift/attachments/attachments.component';
 import { AdminShiftReportsUploadsComponent } from './shift/admin-shift/reports-uploads/reports-uploads.component';
-import { AdminShiftCastingsComponent } from './shift/admin-shift/castings/castings.component';
 import { AdminShiftMapComponent } from './shift/admin-shift/map/map.component';
 
 import { ScheduleService } from './schedule.service';
@@ -68,6 +68,31 @@ import { EditTrackingDialogComponent } from './shift/admin-shift/edit-tracking/e
 import { EditWorkareasComponent } from './shift/admin-shift/edit-workareas/edit-workareas.component';
 import { EditWorkareasDialogComponent } from './shift/admin-shift/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
+import { AdminShiftEditClientComponent } from './shift/admin-shift/edit-client/edit-client.component';
+import { AddPayItemDialogComponent } from './shift/admin-shift/staff/selected/add-pay-item-dialog/add-pay-item-dialog.component';
+import { EditPayItemNameComponent } from './shift/admin-shift/staff/selected/edit-pay-item-name/edit-pay-item-name.component';
+import { EditPayItemUnitsComponent } from './shift/admin-shift/staff/selected/edit-pay-item-units/edit-pay-item-units.component';
+import { EditPayItemUnitRateComponent } from './shift/admin-shift/staff/selected/edit-pay-item-unit-rate/edit-pay-item-unit-rate.component';
+import { EditBillItemNameComponent } from './shift/admin-shift/bill/edit-item-name/edit-item-name.component';
+import { EditBillItemUnitRateComponent } from './shift/admin-shift/bill/edit-item-unit-rate/edit-item-unit-rate.component';
+import { EditBillItemUnitsComponent } from './shift/admin-shift/bill/edit-item-units/edit-item-units.component';
+import { EditBillItemRateTypeComponent } from './shift/admin-shift/bill/edit-item-rate-type/edit-item-rate-type.component';
+import { ColumnMappingComponent } from './column-mapping/column-mapping.component';
+import { ImportHistoryComponent } from './import-history/import-history.component';
+import { AdminShiftEditPerformanceNoteComponent } from './shift/admin-shift/staff/selected/edit-performance-note/edit-performance-note.component';
+import { GroupDialogComponent } from './shift-list/admin-shift-list/group-dialog/group-dialog.component';
+import { AdminShiftGroupComponent } from './shift/admin-shift-group/admin-shift-group.component';
+import { GroupEditNameComponent } from './shift/admin-shift-group/edit-name/edit-name.component';
+import { GroupEditGenericLocationComponent } from './shift/admin-shift-group/edit-generic-location/edit-generic-location.component';
+import { GroupEditLocationComponent } from './shift/admin-shift-group/edit-location/edit-location.component';
+import { GroupEditAddressComponent } from './shift/admin-shift-group/edit-address/edit-address.component';
+import { GroupEditContactComponent } from './shift/admin-shift-group/edit-contact/edit-contact.component';
+import { GroupEditManagersComponent } from './shift/admin-shift-group/edit-managers/edit-managers.component';
+import { GroupEditClientComponent } from './shift/admin-shift-group/edit-client/edit-client.component';
+import { GroupEditTrackingComponent } from './shift/admin-shift-group/edit-tracking/edit-tracking.component';
+import { GroupEditTrackingDialogComponent } from './shift/admin-shift-group/edit-tracking/edit-tracking-dialog/edit-tracking-dialog.component';
+import { GroupEditWorkareasComponent } from './shift/admin-shift-group/edit-workareas/edit-workareas.component';
+import { GroupEditWorkareasDialogComponent } from './shift/admin-shift-group/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
 
 
 @NgModule({
@@ -90,9 +115,8 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         CalendarEventFormDialogComponent,
         AdminShiftComponent,
         AdminShiftStaffComponent,
-        AdminShiftExpensesComponent,
+        AdminShiftBillComponent,
         AdminShiftReportsUploadsComponent,
-        AdminShiftCastingsComponent,
         AdminShiftStaffSelectedComponent,
         AdminShiftStaffStandbyComponent,
         AdminShiftStaffApplicantsComponent,
@@ -136,12 +160,39 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         ClientShiftComponent,
         ClientShiftMapComponent,
         ClientShiftInfoComponent,
+
         ShiftsExportAsExcelDialogComponent,
         ShiftsExportAsPdfDialogComponent,
         EditTrackingComponent,
         EditTrackingDialogComponent,
         EditWorkareasComponent,
-        EditWorkareasDialogComponent
+        EditWorkareasDialogComponent,
+        AdminShiftEditClientComponent,
+        AddPayItemDialogComponent,
+        EditPayItemNameComponent,
+        EditPayItemUnitsComponent,
+        EditPayItemUnitRateComponent,
+        AdminShiftAttachmentsComponent,
+        EditBillItemNameComponent,
+        EditBillItemUnitRateComponent,
+        EditBillItemUnitsComponent,
+        EditBillItemRateTypeComponent,
+        ColumnMappingComponent,
+        ImportHistoryComponent,
+        AdminShiftEditPerformanceNoteComponent,
+        GroupDialogComponent,
+        AdminShiftGroupComponent,
+        GroupEditNameComponent,
+        GroupEditGenericLocationComponent,
+        GroupEditLocationComponent,
+        GroupEditAddressComponent,
+        GroupEditContactComponent,
+        GroupEditManagersComponent,
+        GroupEditClientComponent,
+        GroupEditTrackingComponent,
+        GroupEditTrackingDialogComponent,
+        GroupEditWorkareasComponent,
+        GroupEditWorkareasDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -158,7 +209,11 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         ShiftsExportAsPdfDialogComponent,
 
         EditTrackingDialogComponent,
-        EditWorkareasDialogComponent
+        EditWorkareasDialogComponent,
+        AddPayItemDialogComponent,
+        GroupDialogComponent,
+        GroupEditTrackingDialogComponent,
+        GroupEditWorkareasDialogComponent
     ],
     exports: [
         ScheduleComponent,
@@ -175,7 +230,10 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         ClientShiftComponent,
         ShiftsImportComponent,
         ShiftsExportAsExcelComponent,
-        ShiftsExportAsPdfComponent
+        ShiftsExportAsPdfComponent,
+        ColumnMappingComponent,
+        ImportHistoryComponent,
+        AdminShiftGroupComponent
     ]
 })
 export class ScheduleModule { }

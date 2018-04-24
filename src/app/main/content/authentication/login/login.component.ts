@@ -5,6 +5,7 @@ import { fuseAnimations } from '../../../../core/animations';
 import { AuthenticationService } from '../../../../shared/services/authentication.service';
 import { Router } from '@angular/router';
 import { SocketService } from '../../../../shared/services/socket.service';
+import { AppSettingService } from '../../../../shared/services/app-setting.service';
 
 @Component({
     selector   : 'fuse-login',
@@ -21,13 +22,16 @@ export class FuseLoginComponent implements OnInit
     isSubmitted = false;
 
     socketService: SocketService;
+    logoUrl: string;
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService,
         private formBuilder: FormBuilder,
         private authService: AuthenticationService,
         private router: Router,
-        private injector: Injector
+        private injector: Injector,
+        private appSettingService: AppSettingService
     )
     {
         this.socketService = injector.get(SocketService);
@@ -48,6 +52,9 @@ export class FuseLoginComponent implements OnInit
 
     ngOnInit()
     {
+        this.logoUrl = this.appSettingService.baseData.logo;
+        this.backgroundImg = this.appSettingService.baseData.background;
+
         this.loginForm = this.formBuilder.group({
             username   : ['', [Validators.required, Validators.email]], 
             password   : ['', Validators.required]

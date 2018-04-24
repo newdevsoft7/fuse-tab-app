@@ -95,6 +95,7 @@ export class AdminShiftEditPeriodComponent implements OnInit {
     form: FormGroup;
     @Input() shift;
     @Input() timezones = [];
+    @Input() disableTimezone = false;
     @Output() onPeriodChanged = new EventEmitter;
 
     dateChanged = false;
@@ -121,13 +122,13 @@ export class AdminShiftEditPeriodComponent implements OnInit {
     openForm() {
         this.form = this.formBuilder.group({
             date: [moment(this.shift.shift_start).toDate(), Validators.required],
-            timezone: [this.shift.timezone, Validators.required]
+            timezone: [this.shift.timezone]
         });
         this.formActive = true;
     }
 
     saveForm() {
-        if (!this.form.valid || !this.validatePeriod()) return;
+        if (!this.form.valid || !this.validatePeriod()) { return; }
         const date = moment(this.form.getRawValue().date).format('YYYY-MM-DD');
         const start = moment(`${date} ${moment(this.start.toString()).format('HH:mm:ss')}`).format('YYYY-MM-DD HH:mm:ss');
         const end = moment(`${date} ${moment(this.end.toString()).format('HH:mm:ss')}`).format('YYYY-MM-DD HH:mm:ss');
@@ -137,7 +138,7 @@ export class AdminShiftEditPeriodComponent implements OnInit {
             .subscribe(res => {
                 this.onPeriodChanged.next({ start, end, timezone });
                 this.toastr.success(res.message);
-            })
+            });
         this.formActive = false;
     }
 

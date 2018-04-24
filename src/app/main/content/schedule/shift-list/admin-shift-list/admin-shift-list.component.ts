@@ -3,7 +3,7 @@ import {
 	ViewEncapsulation, ViewChild,
 	ElementRef, Input
 } from '@angular/core';
-import { MatDatepickerInputEvent } from '@angular/material';
+import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -20,6 +20,9 @@ import { ScheduleService } from '../../schedule.service';
 import { TabService } from '../../../../tab/tab.service';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { Tab } from '../../../../tab/tab';
+import { GroupDialogComponent } from './group-dialog/group-dialog.component';
+import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
+import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-admin-shift-list',
@@ -38,7 +41,7 @@ export class AdminShiftListComponent implements OnInit {
     filters = [];
     sorts: any[];
 
-    hiddenColumns = ['id', 'status', 'border_color', 'bg_color', 'font_color'];
+    hiddenColumns = ['id', 'status', 'border_color', 'bg_color', 'font_color', 'shift_group_id'];
 
     pageNumber: number;
     pageSize = 10;
@@ -63,7 +66,9 @@ export class AdminShiftListComponent implements OnInit {
         private tokenStorage: TokenStorage,
         private scheduleService: ScheduleService,
         private tabService: TabService,
-        private actionService: ActionService
+        private actionService: ActionService,
+        private dialog: MatDialog,
+        private spinner: CustomLoadingService
     ) { 
     }
 
@@ -106,6 +111,67 @@ export class AdminShiftListComponent implements OnInit {
                 }
             }
         )
+    }
+
+    async group() {
+        const ids = this.selectedShifts.map(v => v.id);
+        const dialogRef = this.dialog.open(GroupDialogComponent, {
+            disableClose: false,
+            panelClass: 'group-dialog',
+            data: {
+                count: this.selectedShifts.length
+            }
+        });
+        dialogRef.afterClosed().subscribe(async (groupName) => {
+            if (groupName) {
+                try {
+                    this.spinner.show();
+                    const res = await this.scheduleService.groupShifts({
+                        gname: groupName,
+                        shift_ids: this.selectedShifts.map(s => s.id.toString())
+                    });
+                    this.spinner.hide();
+                    this.toastr.success(res.message);
+                    this.shifts.filter(v => ids.includes(v.id)).forEach(shift => {
+                        shift.gname = res.shift_group.gname;
+                        shift.shift_group_id = res.shift_group.id;
+                    });
+                } catch (e) {
+                    this.spinner.hide();
+                    this.displayError(e);
+                }
+            }
+        });
+
+    }
+
+    ungroup() {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        const groupIds = _.uniq(this.selectedShifts.map(v => v.shift_group_id));
+        const shiftIds = this.selectedShifts.map(v => v.id.toString());
+
+        const count = this.selectedShifts.length;
+        dialogRef.componentInstance.confirmMessage = `Really ungroup ${count} ${count > 1 ? 'shifts' : 'shift'}`;
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (result) {
+                try {
+                    this.spinner.show();
+                    const res = await this.scheduleService.ungroupGroups(groupIds, shiftIds);
+                    this.spinner.hide();
+                    this.toastr.success('Saved.');
+                    this.shifts.filter(v => shiftIds.includes(v.id.toString())).forEach(shift => {
+                        shift.gname = null;
+                        shift.shift_group_id = null;
+                    });
+                } catch (e) {
+                    this.spinner.hide();
+                    this.toastr.error('Error occured!');
+                }
+            }
+        });
     }
 
     // DATATABLE SORT
@@ -165,6 +231,26 @@ export class AdminShiftListComponent implements OnInit {
         const url = `admin/shift/${id}`;
         const tab = new Tab(shift.title, 'adminShiftTpl', url, { id, url });
         this.tabService.openTab(tab);
+    }
+
+    openGroup(shift) {
+        const tab = new Tab(
+            shift.gname,
+            'adminShiftGroupTpl',
+            `admin-shift/group/${shift.shift_group_id}`,
+            { id: shift.shift_group_id }
+        );
+        this.tabService.openTab(tab);
+    }
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.message);
+        }
     }
 
 }

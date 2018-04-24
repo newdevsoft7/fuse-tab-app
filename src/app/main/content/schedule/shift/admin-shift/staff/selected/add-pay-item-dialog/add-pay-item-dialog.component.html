@@ -1,0 +1,106 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">
+                Add Pay Item
+            </span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form [formGroup]="form" fxLayout="column">
+            <div fxLayout="row" fxLayoutAlign="space-between start" fxLayout.xs="column" fxLayoutAlign.xs="start stretch"
+                fxLayoutGap.gt-xs="16px">
+                <mat-form-field fxFlex>
+                    <mat-select formControlName="item_type" placeholder="Type">
+                        <mat-option *ngFor="let item of types" [value]="item">
+                            {{item | capitalize}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field fxFlex>
+                    <input matInput formControlName="item_name" placeholder="Item"/>
+                </mat-form-field>
+    
+                <div fxFlex *ngIf="data.from === 'bill'">
+                    <div fxLayout="column" fxLayoutAlign="start">
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start"
+                            fxLayoutGap.gt-xs="16px">
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="bill_unit_rate" placeholder="Bill" min="0">
+                            </mat-form-field>
+        
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="bill_units" placeholder="Qty" min="0">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start"
+                            *ngIf="isPriceEntered" fxLayoutGap.gt-xs="16px">
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="unit_rate" placeholder="Price" min="0">
+                            </mat-form-field>
+                            
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="units" placeholder="Qty" min="0">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxFlex *ngIf="data.from !== 'bill'">
+                    <div fxLayout="column" fxLayoutAlign="start">
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start"
+                            fxLayoutGap.gt-xs="16px">
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="unit_rate" placeholder="Price" min="0">
+                            </mat-form-field>
+        
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="units" placeholder="Qty" min="0">
+                            </mat-form-field>
+                        </div>
+                        
+                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign="start"
+                            *ngIf="isBillEntered" fxLayoutGap.gt-xs="16px">
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="bill_unit_rate" placeholder="Bill" min="0">
+                            </mat-form-field>
+                            
+                            <mat-form-field fxFlex>
+                                <input matInput type="number" formControlName="bill_units" placeholder="Qty" min="0">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div fxFlex>
+                <ng-container *ngIf="data.from !== 'bill' && data.show_bill === 1">
+                    <a (click)="isBillEntered = true" *ngIf="!isBillEntered">Enter Bill</a>
+                </ng-container>
+
+                <ng-container *ngIf="data.from === 'bill'">
+                    <a (click)="isPriceEntered = true" *ngIf="!isPriceEntered">Enter Cost</a>
+                </ng-container>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center">
+
+        <button mat-raised-button (click)="saveForm()" class="mr-8 mat-accent" aria-label="SAVE"
+            [disabled]="form.invalid">
+            SAVE
+        </button>
+
+        <button mat-button (click)="dialogRef.close(false)" aria-label="CANCEL" matTooltip="Cancel">
+            CANCEL
+        </button>
+
+    </div>
+</div>

@@ -1,0 +1,23 @@
+#edit-pay-item-name-container {
+
+    .text-field {
+
+        &.disabled {
+            pointer-events: none;
+            .info {
+                border-bottom: none;
+            }
+        }
+
+        .info {
+            border-bottom: dashed 1px #d0d0d0;
+            &:hover {
+                cursor: text;
+            }
+        }
+    }
+
+    .item-name-width {
+        width: 70px;
+    }
+}

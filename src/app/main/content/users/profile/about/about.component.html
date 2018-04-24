@@ -17,7 +17,7 @@
                 </div>
             </fieldset>
         </div>
-        <!-- / RATINGS --> 
+        <!-- / RATINGS -->
 
         <div class="profile-box info-box general" fxLayout="column" *ngIf="userInfo.lvl == 'owner'">
 
@@ -109,7 +109,7 @@
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
-                
+
                 <div class="info-line">
                     <div class="title">
                         <span class="required">*</span>
@@ -156,9 +156,6 @@
 
             <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
                 <div class="title">Admin Notes</div>
-                <div class="more secondary-text">
-                    <span (click)="onSeeAllAdminNotes()" class="see-all-button" [class.disabled]="isSeeAllAdminNotes">See All</span>
-                </div>
             </header>
 
             <div class="content">
@@ -169,7 +166,7 @@
                     <mat-form-field class="mb-4" floatPlaceholder="never">
                         <textarea matInput placeholder="Write an admin note.." formControlName="note" #adminNoteInput></textarea>
                     </mat-form-field>
-                    
+
                     <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="canSavePost">
                         <mat-form-field>
                             <mat-select formControlName="type" placeholder="Note Type">
@@ -193,11 +190,11 @@
 
                 <!-- ADMIN NOTES LIST -->
                 <div class="notes" fxLayout="column">
-                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of viewedAdminNotes">
+                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes">
                         <img [src]="note.creator_ppic_a" class="avatar" alt="{{note.creator_name}}" />
-                
+
                         <div fxLayout="column" class="w-100-p">
-                            
+
                             <div>
                                 <div class="username">{{note.creator_name}}</div>
                                 <div *ngIf="!note.editMode">
@@ -209,7 +206,7 @@
                                     <mat-form-field class="w-100-p">
                                         <textarea matInput [(ngModel)]="noteTemp.note"></textarea>
                                     </mat-form-field>
-                                
+
                                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px">
                                         <mat-form-field>
                                             <mat-select [(ngModel)]="noteTemp.type" placeholder="Type">
@@ -218,11 +215,11 @@
                                                 </mat-option>
                                             </mat-select>
                                         </mat-form-field>
-                                
+
                                         <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)" [disabled]="!noteTemp.note">Update</button>
                                         <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
                                     </div>
-                                
+
                                 </div>
                             </div>
 
@@ -236,8 +233,8 @@
                     </div>
                 </div>
                 <!-- / ADMIN NOTES LIST -->
-                
-                
+
+
             </div>
 
         </div>
@@ -251,7 +248,7 @@
         <header class="mat-accent-bg">
             <div class="title">{{item.cname}}</div>
         </header>
-        
+
         <div class="content">
             <ng-container *ngFor="let item of item.elements">
                 <ng-container *ngTemplateOutlet="template; context: {$implicit: item}"></ng-container>

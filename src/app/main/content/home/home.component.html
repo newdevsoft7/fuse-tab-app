@@ -44,6 +44,10 @@
         <app-admin-shift-list></app-admin-shift-list>
     </ng-template>
 
+    <ng-template #adminShiftGroupTpl let-data="data">
+        <app-admin-shift-group [data]="data"></app-admin-shift-group>
+    </ng-template>
+
     <ng-template #shiftsImportTpl>
         <app-shifts-import></app-shifts-import>
     </ng-template>
@@ -94,6 +98,14 @@
 
     <ng-template #adminStaffInvoiceListTpl>
         <app-staff-invoice-list></app-staff-invoice-list>
+    </ng-template>
+
+    <ng-template #columnMappingTpl>
+        <app-column-mapping></app-column-mapping>
+    </ng-template>
+
+    <ng-template #importHistoryTpl>
+        <app-import-history></app-import-history>
     </ng-template>
     <!-- ADMIN VIEW TEMPLATES -->
 

@@ -1,7 +1,6 @@
 import {
     Component, OnInit,
     ViewEncapsulation, Input,
-    DoCheck, IterableDiffers,
     Output, EventEmitter,
     ViewChild,
     ChangeDetectorRef
@@ -9,6 +8,8 @@ import {
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
+import { OnRatingChangeEven } from 'angular-star-rating';
+
 import { CustomLoadingService } from '../../../../../../../shared/services/custom-loading.service';
 import { TabService } from '../../../../../../tab/tab.service';
 import { UserService } from '../../../../../users/user.service';
@@ -26,6 +27,7 @@ import {
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
 } from '../../../../../../../constants/staff-status';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { AddPayItemDialogComponent } from './add-pay-item-dialog/add-pay-item-dialog.component';
 
 enum Query {
     Counts = 'counts',
@@ -42,12 +44,11 @@ enum Query {
     styleUrls: ['./selected.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
+export class AdminShiftStaffSelectedComponent implements OnInit {
 
     @Input() editable;
+    @Input() shift;
 
-    @ViewChild('tableWrapper') tableWrapper;
-    @ViewChild('table') table: DatatableComponent;
     private currentComponentWidth;
 
     _staffs;
@@ -73,25 +74,14 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
         private userService: UserService,
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
-        private toastr: ToastrService,
-        private changeDetectorRef: ChangeDetectorRef,
-        differs: IterableDiffers
-    ) {
-    }
-
-    ngAfterViewChecked() {
-        // Check if the table size has changed,
-        if (this.table && this.table.recalculate && (this.tableWrapper.nativeElement.clientWidth !== this.currentComponentWidth)) {
-            this.currentComponentWidth = this.tableWrapper.nativeElement.clientWidth;
-            this.table.recalculate();
-            this.changeDetectorRef.detectChanges();
-        }
-    }
+        private toastr: ToastrService
+    ) { }
 
     ngOnInit() {
-    }
-
-    ngDoCheck() {
+        this.staffs.map(s => {
+            s.pay_items_show === false;
+            s.pay_items = s.pay_items ? s.pay_items : []
+        });
     }
 
     openUser(staff, event: Event) {
@@ -113,6 +103,61 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
             default:
                 return value;
         }
+    }
+
+    addPayItem(staff) {
+        const dialogRef: MatDialogRef<AddPayItemDialogComponent> =
+            this.dialog.open(AddPayItemDialogComponent, {
+                disableClose: false,
+                panelClass: 'add-pay-item-dialog',
+                data: {
+                    show_bill: this.showBillInfo
+                }
+            });
+
+        dialogRef.afterClosed().subscribe(async (data) => {
+            if (data !== false) {
+                try {
+                    data = {
+                        ...data,
+                        role_staff_id: staff.id
+                    };
+                    const res = await this.scheduleService.addPayItem(data);
+                    const item = {
+                        ...res.data,
+                        type: 'staff'
+                    };
+                    staff.pay_items.push(item);
+                    this.toastr.success(res.message);
+                    this.recalcuatePayItemsTotal(staff);
+                } catch (e) {
+                    this.toastr.error(e.error.message);
+                }
+            }
+        });
+    }
+
+    async removePayItem(staff, payItem) {
+        if (payItem.type === 'role') {
+            this.toastr.error('This is a role pay item and must be deleted from the role.');
+            return;
+        } else {
+            try {
+                const res = await this.scheduleService.deletePayItem(payItem.id);
+                this.toastr.success(res.message);
+                const index = staff.pay_items.findIndex(p => p.id === payItem.id);
+                if (index > -1) {
+                    staff.pay_items.splice(index, 1);
+                }
+                this.recalcuatePayItemsTotal(staff);
+            } catch (e) {
+                this.toastr.error(e.error.message);
+            }
+        }
+    }
+
+    togglePayItemsView(staff) {
+        staff.pay_items_show = staff.pay_items_show ? false : true;
     }
 
     changeStatus(staff, statusId) {
@@ -166,16 +211,21 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
     }
 
     onTimeChanged(event, staff) {
-        staff.staff_start = event.start;
-        staff.staff_end = event.end;
+        staff.start = event.start;
+        staff.end = event.end;
 
-        const staff_start = moment(staff.staff_start).format('HH:mm');
-        const staff_end = moment(staff.staff_end).format('HH:mm');
+        const start = moment(staff.start, 'hh:mm a');
+        const end = moment(staff.end, 'hh:mm a');
 
-        this.scheduleService.updateRoleStaff(staff.id, { staff_start, staff_end })
-            .subscribe(res => {
-                this.toastr.success(res.message);
-            });
+        const duration = moment.duration(end.diff(start));
+        staff.hours = _.round(duration.asHours(), 2);
+
+        this.scheduleService.updateRoleStaff(staff.id, {
+            staff_start: start.format('HH:mm'),
+            staff_end: end.format('HH:mm')
+        }).subscribe(res => {
+            this.toastr.success(res.message);
+        });
     }
 
     OnBreakChanged(value, staff) {
@@ -184,6 +234,10 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
                 this.toastr.success(res.message);
                 staff.unpaid_break = value;
             });
+    }
+
+    recalcuatePayItemsTotal(staff) {
+        staff.pay_items_total = staff.pay_items.reduce((s, v) => s + v.units * v.unit_rate, 0);
     }
 
     onPayItemsChanged(event, staff) {
@@ -230,5 +284,40 @@ export class AdminShiftStaffSelectedComponent implements OnInit, DoCheck {
             });
     }
 
+    async changeRate(event: OnRatingChangeEven, staff) {
+        const score = event.rating;
+        try {
+            const res = await this.scheduleService.updateRoleStaff(staff.id, { rating: score }).toPromise();
+            staff.rating = score;
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
 
+    async resetRate(staff) {
+        try {
+            const res = await this.scheduleService.updateRoleStaff(staff.id, { rating: 0 }).toPromise();
+            staff.rating = 0;
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+    async setLate(isLate: boolean, staff) {
+        try {
+            const res = await this.scheduleService.updateRoleStaff(staff.id, { late: isLate ? 1 : 0 }).toPromise();
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.message);
+        }
+    }
 }

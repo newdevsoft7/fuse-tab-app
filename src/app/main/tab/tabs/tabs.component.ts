@@ -92,9 +92,11 @@ export class TabsComponent implements AfterContentInit {
 				instance.url = newTab.url;
 			} else {
 				const sameTabs = this.dynamicTabs.filter(tab => tab.template === newTab.template);
+
 				if (sameTabs.length === 0) {
 					instance.title = newTab.title;
 					instance.url = `${newTab.url}/0`;
+					instance.data.index = 0;
 				} else {
 					const indexArray = [];
 					for (let i = 0; i < sameTabs.length; i++) {
@@ -105,21 +107,23 @@ export class TabsComponent implements AfterContentInit {
 						if (indexArray.indexOf(i) === -1) {
 							instance.title = `${newTab.title}${i === 0? '' : ` ${i + 1}`}`;
 							instance.url = `${newTab.url}/${i}`;
+							instance.data.index = i;
 							break;
 						}
 					}
 					if (!instance.title || !instance.url) {
 						instance.title = `${newTab.title} ${indexArray.length + 1}`;
 						instance.url = `${newTab.url}/${indexArray.length}`;
+						instance.data.index = indexArray.length;
 					}
 				}
 			}
 
 			// remember the dynamic component for rendering the
 			// tab navigation headers
-			this.dynamicTabs.push(componentRef.instance as TabComponent);
+			this.dynamicTabs.push(instance);
 
-			this.tabService.openTabs.push(componentRef.instance as TabComponent);
+			this.tabService.openTabs.push(instance);
 
 			// set it active
 			setTimeout(() => { 

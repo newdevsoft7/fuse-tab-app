@@ -1,0 +1,105 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    .info-content {
+
+    }
+
+    .info-sidebar {
+
+        @include media-breakpoint-up('md') {
+            padding-left: 32px;
+        }
+
+        @include media-breakpoint-down('sm') {
+            padding-top: 8px;
+        }
+
+        .content {
+
+            .files {
+
+                .file {
+                    border-bottom: 1px solid #cccccc;
+                    margin-bottom: 4px;
+                    padding: 12px 0;
+                    width: 100%;
+
+                    &:last-child {
+                        border-bottom: none;
+                        padding-bottom: 0;
+                    } 
+
+                    .thumbnail {
+                        padding-right: 20px;
+
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 2px;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    .box {
+        margin-bottom: 16px;
+        @include mat-elevation(2);
+
+        header {
+            padding: 16px;
+
+            .title {
+                font-size: 17px;
+            }
+
+            .more {
+                cursor: pointer;
+            }
+        }
+
+        .content {
+            padding: 16px;
+            background-color: #FFF;
+        }
+
+        footer {
+            padding: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        &.info-box {
+
+            .info-line {
+                margin-bottom: 24px;
+
+                .title {
+                    font-size: 15px;
+                    font-weight: 500;
+                    padding-bottom: 4px;
+                    position: relative;
+                    padding-left: 8px;
+
+                    span.required {
+                        color: #f44336;
+                        position: absolute;
+                        left: -2px;
+                    }
+                }
+
+                .info {
+                    padding-left: 8px;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

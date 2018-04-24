@@ -1,0 +1,28 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    #admin-shift-bill-container {
+        position: relative;
+        min-height: 300px;
+
+        .add-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+    }
+
+    .template {
+        padding: 8px;
+
+        .item {
+            margin-bottom: 12px;
+            padding: 0 24px;
+        }
+
+        h3 {
+            font-weight: bold;
+        }
+    }
+}

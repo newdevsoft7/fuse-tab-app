@@ -1,0 +1,22 @@
+<div id="group-edit-name">
+    <div *ngIf="!formActive"  (click)="openForm()" class="text-field">
+        <div class="info" matTooltip="Group Name">
+            {{group.gname ? group.gname : 'Empty'}}
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-form-field class="name-width">
+            <input matInput type="text" #nameInput fxFlex required formControlName="gname">
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>

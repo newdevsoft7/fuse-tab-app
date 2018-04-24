@@ -2,7 +2,7 @@ import {
     Component, OnInit,
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
-    ViewChild, OnDestroy
+    ViewChild, OnDestroy, Output, EventEmitter
 } from '@angular/core';
 
 import {
@@ -24,7 +24,6 @@ import * as _ from 'lodash';
 
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
-import { UserService } from '../../../../users/user.service';
 import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
 import { ActionService } from '../../../../../../shared/services/action.service';
@@ -64,12 +63,12 @@ enum Query {
 export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     currentUser;
-    userInfo: any;
     roles: any[];
 
     public Section = Section;
 
     @Input() shift;
+    @Output() onAddRole = new EventEmitter();
 
     @ViewChild('adminNoteInput') adminNoteInput;
 
@@ -77,9 +76,8 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     canSavePost = false;
 
+    adminNoteTypes: any = [];
     adminNotes = [];
-    viewedAdminNotes: any[];
-    isSeeAllAdminNotes = false;
     adminNoteForm: FormGroup;
     noteTemp: any; // Note template for update
 
@@ -99,7 +97,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private formBuilder: FormBuilder,
         private tokenStorage: TokenStorage,
-        private userService: UserService,
         private scheduleService: ScheduleService,
         private actionService: ActionService,
         private tabService: TabService,
@@ -131,28 +128,23 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        const type_id = this.shift.admin_note_types.length > 0 ? this.shift.admin_note_types[0].id : '';
+        this.adminNoteTypes = this.tokenStorage.getSettings().admin_note_types || [];
+        const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
+        
         this.adminNoteForm = this.formBuilder.group({
             type_id: [type_id],
             client_visible: [0, Validators.required],
             note: ['', Validators.required]
         });
 
-
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
-        });
-
-        // Get current user information
-        this.userService.getUser(this.currentUser.id).subscribe(res => {
-            this.userInfo = res;
         });
 
         // Get shift admin notes
         this.scheduleService.getShiftAdminNotes(this.shift.id)
             .subscribe(res => {
                 this.adminNotes = res;
-                this.refreshAdminNotesView();
             });
 
 
@@ -176,16 +168,26 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.usersToRoleSubscription.unsubscribe();
     }
 
-
-    onEditRole(role) {
-        role = {
-            ...role,
-            shift_title: this.shift.title
-        };
-        const url = `shift/role/${role.id}/role-edit`;
-        const roleTab = new Tab('Edit Role', 'shiftRoleEditTpl', url, { url, role });
-        this.tabService.closeTab(url);
-        this.tabService.openTab(roleTab);
+    async onEditRole(role) {
+        try {
+            this.spinner.show();
+            const data = await this.scheduleService.getShiftRole(role.id);
+            this.spinner.hide();
+            const url = `shift/role/${role.id}/role-edit`;
+            const roleTab = new Tab(
+                'Edit Role',
+                'shiftRoleEditTpl',
+                url,
+                {
+                    url,
+                    role: { ...data, shift_title: this.shift.title }
+                });
+            this.tabService.closeTab(url);
+            this.tabService.openTab(roleTab);
+        } catch (e) {
+            this.spinner.hide();
+            this.toastr.error(e.error.message || 'Something is wrong!');
+        }
     }
 
     onSelectedTabChange(role, event: MatTabChangeEvent) {
@@ -460,14 +462,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         return visible ? visible.label : '';
     }
 
-    private refreshAdminNotesView() {
-        if (this.isSeeAllAdminNotes) {
-            this.viewedAdminNotes = this.adminNotes;
-        } else {
-            this.viewedAdminNotes = this.adminNotes.slice(0, 5);
-        }
-    }
-
     onAdminNoteFormValuesChanged() {
         const note = this.adminNoteForm.getRawValue().note;
         if (note.length > 0) {
@@ -477,27 +471,22 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         }
     }
 
-    onSeeAllAdminNotes() {
-        this.isSeeAllAdminNotes = true;
-        this.refreshAdminNotesView();
-    }
-
     onPostAdminNote() {
         const data = this.adminNoteForm.value;
+        this.canSavePost = false;
         this.scheduleService.createShiftAdminNote(this.shift.id, data)
             .subscribe(res => {
                 const note = res.data;
-                note.creator_ppic_a = this.userInfo.ppic_a;
-                note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
+                note.creator_ppic_a = this.currentUser.ppic_a;
+                note.creator_name = `${this.currentUser.fname} ${this.currentUser.lname}`;
 
-                if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
-                    const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
+                if (this.adminNoteTypes.length > 0 && note.type_id != null) {
+                    const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
                     note.color = noteType.color;
                     note.tname = noteType.tname;
                 }
 
                 this.adminNotes.unshift(note);
-                this.refreshAdminNotesView();
 
                 this.adminNoteInput.nativeElement.value = '';
                 this.adminNoteInput.nativeElement.focus();
@@ -511,7 +500,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.scheduleService.deleteShiftAdminNote(note.id)
             .subscribe(res => {
                 this.adminNotes.splice(index, 1);
-                this.refreshAdminNotesView();
             }, err => {
                 this.displayError(err);
             });
@@ -546,14 +534,18 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             note.note = this.noteTemp.note;
             note.updated_at = data.updated_at;
 
-            if (this.shift.admin_note_types.length > 0 && note.type_id != null) {
-                const noteType = this.shift.admin_note_types.find(v => v.id === note.type_id);
+            if (this.adminNoteTypes.length > 0 && note.type_id != null) {
+                const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
                 note.color = noteType.color;
                 note.tname = noteType.tname;
             }
         });
         note.editMode = false;
 
+    }
+
+    addRole() {
+        this.onAddRole.next(true);
     }
 
     private displayError(err) {

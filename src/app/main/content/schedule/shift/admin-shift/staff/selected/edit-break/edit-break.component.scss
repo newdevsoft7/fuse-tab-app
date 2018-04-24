@@ -1,7 +1,6 @@
 #selected-staff-break {
 
     .text-field {
-        margin-bottom: 16px;
 
         &.disabled {
             pointer-events: none;
@@ -20,6 +19,19 @@
 
     .break-width {
         width: 40px;
+    }
+
+    /** Patch **/
+    .mat-form-field-infix {
+        border-top: unset;
+    }
+
+    .mat-form-field-underline {
+        bottom: unset;
+    }
+
+    .mat-form-field-wrapper {
+        padding-bottom: unset;
     }
 
 }

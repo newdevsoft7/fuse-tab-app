@@ -54,7 +54,7 @@ export class StaffShiftComponent implements OnInit {
             window.addEventListener('message', this.onMessage.bind(this), false);
         } else if ((<any>window).attachEvent) {
             (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-        }    
+        }
     }
 
     // Get a shift

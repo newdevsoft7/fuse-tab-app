@@ -1,0 +1,12 @@
+<div (click)="openDialog()">
+    <div *ngIf="category.options.length > 0" [matTooltip]="category.cname">
+        <span *ngFor="let option of category.options; let last = last">
+            {{option.oname}}
+            <ng-container *ngIf="!last" class="mr-4">,</ng-container>
+        </span>
+    </div>
+
+    <div *ngIf="category.options.length === 0">
+        <span>No {{category.cname}}</span>
+    </div>
+</div>

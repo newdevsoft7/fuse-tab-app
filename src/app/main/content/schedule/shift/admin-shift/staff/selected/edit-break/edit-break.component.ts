@@ -39,18 +39,6 @@ export class AdminShiftEditBreakComponent implements OnInit {
         });
     }
 
-    get duration() {
-        let val = 0;
-        if (this.staff.staff_start && this.staff.staff_end) {
-            const start = moment(this.staff.staff_start);
-            const end = moment(this.staff.staff_end);
-            const duration = moment.duration(end.diff(start));
-            const hours = _.round(duration.asHours(), 2);
-            val = hours;
-        }
-        return val;
-    }
-
     get break() {
         return !this.staff.unpaid_break ? 0 : this.staff.unpaid_break;
     }

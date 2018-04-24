@@ -3,6 +3,7 @@
     <div fxFlex="1 0 auto" fxLayout="column">
         <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
             <mat-drawer #drawer mode="side" [disableClose]="true" class="draw-sidenav">
+                <button class="btn-add-form" mat-mini-fab color="accent" (click)="addForm()"><mat-icon>add</mat-icon></button>
                 <div class="pt-16 nav" fuseperfectscrollbar>
                     <div class="nav-item" *ngFor="let form of forms">
                         <div matRipple class="nav-link" fxLayout="row" fxLayoutAlign="space-between center"
@@ -12,6 +13,9 @@
                                 {{form.name}}
                             </span>
 
+                            <button mat-icon-button (click)="editForm(form, $event)" fxFlex="0 1 auto">
+                                <mat-icon class="s-20">edit</mat-icon>
+                            </button>
                             <button mat-icon-button (click)="deleteForm(form.id, $event)" fxFlex="0 1 auto">
                                 <mat-icon class="s-20">delete</mat-icon>
                             </button>

@@ -10,7 +10,7 @@
                 <span class="title">Invite to</span>
 
                 <mat-form-field floatLabel="never">
-                    <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Role Name" (ngModelChange)="onRoleChange()">
+                    <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Choose role" (ngModelChange)="onRoleChange()">
                         <mat-option *ngFor="let role of data.roles" [value]="role.id">{{role.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -158,7 +158,10 @@
                         [sortable]="false"
                         [canAutoResize]="false">
                         <ng-template *ngIf="column.key_name == 'ppic_a'" let-row="row" let-value="value" ngx-datatable-cell-template>
-                            <img class="avatar" [src]="getAvatar(value)" (click)="openUserTab(row, $event)" />
+                            <div class="savatar">
+                                <img [src]="getAvatar(value)" (click)="openUserTab(row, $event)" />
+                                <div class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.text"></div>
+                            </div>
                         </ng-template>
                     </ngx-datatable-column>
 

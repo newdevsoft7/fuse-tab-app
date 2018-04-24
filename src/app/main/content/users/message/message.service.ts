@@ -9,8 +9,8 @@ import 'rxjs/add/operator/toPromise';
 export class MessageService {
   constructor(private http: HttpClient) {}
 
-  searchRecipients(searchText: string): Observable<any> {
-    const url = `${environment.apiUrl}/autocomplete/message/to/${searchText}`;
+  searchRecipients(action: string, searchText: string): Observable<any> {
+    const url = `${environment.apiUrl}/autocomplete/message/to/${action}/${searchText}`;
     return this.http.get(url);
   }
 
@@ -38,6 +38,11 @@ export class MessageService {
 
   getTemplate(templateId: number): Promise<any> {
     const url = `${environment.apiUrl}/message/template/${templateId}`;
+    return this.http.get(url).toPromise();
+  }
+
+  fetchContent(id: string, action: string): Promise<any> {
+    const url = `${environment.apiUrl}/message/action/${action}/${id}`;
     return this.http.get(url).toPromise();
   }
 }

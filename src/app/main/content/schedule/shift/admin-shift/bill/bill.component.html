@@ -1,0 +1,73 @@
+<div id="admin-shift-bill-container" fusePerfectScrollbar>
+    <button mat-fab color="accent" class="add-button mat-accent-bg" (click)="addBillItem()">
+        <mat-icon>add</mat-icon>
+    </button>
+
+    <div *ngIf="shift.bill_items.staff?.length > 0" class="template">
+        <h3>Staff</h3>
+        <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let item of shift.bill_items.staff"
+            class="item">
+            <div fxFlex>
+                <span matTooltip="Item Name">{{item.title}}</span>
+            </div>
+            <div fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                <app-admin-shift-edit-bill-item-unit-rate [item]="item"
+                    (onChanged)="onItemChanged($event, 'staff', 'bill_unit_rate', item)">
+                </app-admin-shift-edit-bill-item-unit-rate>
+                <app-admin-shift-edit-bill-item-rate-type [item]="item"
+                    (onChanged)="onItemChanged($event, 'staff', 'bill_rate_type', item)">
+                </app-admin-shift-edit-bill-item-rate-type>
+            </div>
+            <div fxFlex>
+                <span matTooltip="Bill Units">
+                    {{item.bill_rate_type ? (item.bill_rate_type === 'phr' ? item.hours : 1) : '-' }}
+                </span>
+            </div>
+            <div fxFlex>
+                <span matTooltip="Bill Total">
+                    {{item.bill_total !== null ? (item.bill_total | currency) : '-'}}
+                </span>
+            </div>
+            <div fxFlex></div>
+        </div>
+    </div>
+
+    <mat-divider *ngIf="shift.bill_items.staff?.length > 0"></mat-divider>
+
+    <ng-container *ngFor="let type of types; let last = last">
+        <div *ngIf="shift.bill_items[type]?.length > 0" class="template">
+
+            <h3>{{type | capitalize}}</h3>
+            <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let item of shift.bill_items[type]"
+                class="item">
+                <div fxFlex>
+                    <app-admin-shift-edit-bill-item-name [item]="item"
+                        (onChanged)="onItemChanged($event, type, 'title', item)">
+                    </app-admin-shift-edit-bill-item-name>
+                </div>
+                <div fxFlex>
+                    <app-admin-shift-edit-bill-item-unit-rate [item]="item"
+                        (onChanged)="onItemChanged($event, type, 'bill_unit_rate', item)">
+                    </app-admin-shift-edit-bill-item-unit-rate>
+                </div>
+                <div fxFlex>
+                    <app-admin-shift-edit-bill-item-units [item]="item"
+                        (onChanged)="onItemChanged($event, type, 'bill_units', item)">
+                    </app-admin-shift-edit-bill-item-units>
+                </div>
+                <div fxFlex>
+                    <span matTooltip="Bill Total">
+                        {{item.bill_total !== null ? (item.bill_total | currency) : '-'}}
+                    </span>
+                </div>
+                <div fxFlex>
+                    <button mat-icon-button (click)="deleteItem(item, type)" *ngIf="item.type === 'shift'">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <mat-divider *ngIf="!last && shift.bill_items[type]?.length > 0"></mat-divider>
+    </ng-container>
+
+</div>

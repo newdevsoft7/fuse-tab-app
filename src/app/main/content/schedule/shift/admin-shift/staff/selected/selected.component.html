@@ -1,155 +1,195 @@
-<div id="admin-shift-staff-selected" #tableWrapper>
+<div id="admin-shift-staff-selected">
 
-    <ngx-datatable class="material striped" [rows]="staffs" [columnMode]="'force'" [headerHeight]="0" #table
-        [footerHeight]="50" [rowHeight]="'auto'" [limit]="10" [scrollbarH]="true">
+    <div class="p-24" *ngIf="staffs.length === 0">
+        No selected staffs
+    </div>
+    <div class="person" *ngFor="let staff of staffs">
+        <div class="main-info" >
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center" fxFlex>
+                    <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)"
+                        [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
+                        [matTooltip]="staff.staff_status.status" />
+                    <span>{{staff.name}}</span>
+                    <div class="status" [style.background]="staff.user_status.color"
+                        [matTooltip]="staff.user_status.text"></div>
+                </div>
 
-        <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="80" [sortable]="false" [canAutoResize]="false">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                <img class="avatar" [src]="getAvatar(value)" (click)="openUser(row, $event)"
-                    [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
-                    [matTooltip]="row.staff_status.status"/>
-            </ng-template>
-        </ngx-datatable-column>
+                <div class="check-in-out px-12" matTooltip="Check In Time" fxFlex="1 1 80px">
+                    <div matTooltip="Check In Time" [style.color]="staff.check_in_color">
+                        {{staff.check_in}}
+                    </div>
+                    <div matTooltip="Check Out Time" [style.color]="staff.check_out_color">
+                        {{staff.check_out}}
+                    </div>
+                </div>
 
-        <!-- NAME, EMAIL -->
-        <ngx-datatable-column name="Name" prop="name" [sortable]="true" [width]="120" [canAutoResize]="false">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <strong>{{row.name}}</strong>
-                <br/>
-                <strong>{{row.email}}</strong>
-            </ng-template>
-        </ngx-datatable-column>
-        <!-- / NAME, EMAIL -->
+                <div class="times-break px-12" fxFlex>
+                    <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)"
+                        [editable]="editable"></app-admin-shift-edit-time>
+                    <app-admin-shift-edit-break [staff]="staff" [editable]="editable"
+                        (onBreakChanged)="OnBreakChanged($event, staff)">
+                    </app-admin-shift-edit-break>
+                </div>
 
-        <!-- TIMES LOCK -->
-        <ngx-datatable-column name="Times Locked" prop="times_locked" [sortable]="true" [canAutoResize]="false"
-            [width]="70">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="changeTimesLock(row)" [disabled]="editable !== 1">
-                    <mat-icon *ngIf="row.times_locked" fontSet="fa" fontIcon="fa-lock"
-                        matTooltip="Locked - Staff cannot change times"></mat-icon>
-                    <mat-icon *ngIf="!row.times_locked" fontSet="fa" fontIcon="fa-unlock"
-                         matTooltip="Unlocked - Staff can change times"></mat-icon>
-                </button>
-            </ng-template>
-        </ngx-datatable-column>
-        <!-- / TIMES LOCK -->
+                <div class="pay-rate px-12" fxFlex>
+                    <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable"
+                        (onPayItemsChanged)="onPayItemsChanged($event, staff)">
+                    </app-admin-shift-edit-payitems>
+                </div>
 
-        <!-- TIMES & BREAK -->
-        <ngx-datatable-column name="Time" [sortable]="false" [canAutoResize]="true">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <app-admin-shift-edit-time [staff]="row" (onTimeChanged)="onTimeChanged($event, row)"
-                    [editable]="editable"></app-admin-shift-edit-time>
-                <app-admin-shift-edit-break [staff]="row"
-                    [editable]="editable"
-                    (onBreakChanged)="OnBreakChanged($event, row)">
-                </app-admin-shift-edit-break>
-            </ng-template>
-        </ngx-datatable-column>
-        <!-- / TIMES & BREAK -->
+                <div class="total px-12" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
+                    {{staff.pay_items_total !== null ? (staff.pay_items_total | currency) : '-'}}
+                </div>
 
-        <!-- PAY RATE -->
-        <ngx-datatable-column name="Pay" [sortable]="false" [canAutoResize]="true">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <app-admin-shift-edit-payitems [staff]="row" [editable]="editable"
-                    (onPayItemsChanged)="onPayItemsChanged($event, row)">
-                </app-admin-shift-edit-payitems>
-            </ng-template>
-        </ngx-datatable-column>
-        <!-- / PAY RATE-->
-
-        <!-- BILL RATE -->
-        <ngx-datatable-column name="Bill" [sortable]="false" [canAutoResize]="true" *ngIf="showBillInfo === 1">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <app-admin-shift-edit-billitems [staff]="row" [editable]="editable"
-                    (onBillItemsChanged)="onBillItemsChanged($event, row)">
-                </app-admin-shift-edit-billitems>
-            </ng-template>
-        </ngx-datatable-column>
-        <!-- / BILL RATE -->
-
-        <ngx-datatable-column name="Action" [sortable]="false" [canAutoResize]="false" [width]="80">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
-                    <mat-icon class="material-icons">more_vert</mat-icon>
-                </button>
-
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item>
-                        <mat-icon>mail_outline</mat-icon>
-                        <span>Send Message</span>
+                <div class="action-button" fxFLex>
+                    <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
+                        <mat-icon class="material-icons">more_vert</mat-icon>
                     </button>
 
-                    <button mat-menu-item>
-                        <mat-icon>vpn_key</mat-icon>
-                        <span>Login as user</span>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                            <mat-icon>mail_outline</mat-icon>
+                            <span>Send Message</span>
+                        </button>
+                    
+                        <button mat-menu-item>
+                            <mat-icon>vpn_key</mat-icon>
+                            <span>Login as user</span>
+                        </button>
+                    
+                        <button mat-menu-item>
+                            <mat-icon>event_note</mat-icon>
+                            <span>View Calender</span>
+                        </button>
+                    
+                        <button mat-menu-item>
+                            <mat-icon>refresh</mat-icon>
+                            <span>Force re-confirmation</span>
+                        </button>
+                    
+                        <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                            <mat-icon>edit</mat-icon>
+                            <span>Change Status</span>
+                        </button>
+                    
+                        <button mat-menu-item (click)="toggleTeamLeader(staff)">
+                            <mat-icon>person</mat-icon>
+                            <span>Toggle Leader</span>
+                        </button>
+
+                        <button mat-menu-item (click)="addPayItem(staff)">
+                            <mat-icon>add</mat-icon>
+                            Add Pay Item
+                        </button>
+                    
+                        <button mat-menu-item>
+                            <mat-icon>person</mat-icon>
+                            <span>Add to presentation</span>
+                        </button>
+                    
+                        <button mat-menu-item>
+                            <mat-icon>person</mat-icon>
+                            <span>Add to submission</span>
+                        </button>
+                    
+                    
+                        <button mat-menu-item>
+                            <mat-icon>clear</mat-icon>
+                            <span>Remove</span>
+                        </button>
+                    
+                        <button mat-menu-item>
+                            <mat-icon>clear</mat-icon>
+                            <span>Remove (edit email)</span>
+                        </button>
+                    </mat-menu>
+                    
+                    <mat-menu #statusMenu="matMenu">
+                    
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_APPLIED')">Applied</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_STANDBY')">Standby</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_SELECTED')">Selected</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_INVITED')">Invited</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_COMPLETED')">Completed</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_INVOICED')">Invoiced</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_PAID')">Paid</button>
+                        <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_NO_SHOW')">No Show</button>
+                        <button mat-menu-item>No Pay</button>
+                        <button mat-menu-item>Other</button>
+                    
+                    </mat-menu>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" class="pl-48" *ngIf="shift.past === 1">
+                <div fxLayout="row" fxLayoutAlign="start center" class="rating">
+                    <button mat-icon-button (click)="resetRate(staff)">
+                        <mat-icon class="s-20">do_not_disturb_on</mat-icon>
                     </button>
+                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="staff.rating !== null ? staff.rating : 0" [step]="0.5" [showHalfStars]="true"
+                        (onRatingChange)="changeRate($event, staff)">
+                    </star-rating-comp>
+                </div>
 
-                    <button mat-menu-item>
-                        <mat-icon>event_note</mat-icon>
-                        <span>View Calender</span>
-                    </button>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <span class="ontime">On time</span>
+                    <mat-slide-toggle class="ml-8" [(ngModel)]="staff.late"
+                        (ngModelChange)="setLate($event, staff)">
+                        Late
+                    </mat-slide-toggle>
+                </div>
 
-                    <button mat-menu-item>
-                        <mat-icon>refresh</mat-icon>
-                        <span>Force re-confirmation</span>
-                    </button>
+                <app-admin-shift-edit-performance-note [staff]="staff">
+                </app-admin-shift-edit-performance-note>
+            </div>
 
-                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
-                        <mat-icon>edit</mat-icon>
-                        <span>Change Status</span>
-                    </button>
+            <div class="additional-info" *ngIf="staff.pay_items_show">
+                <div *ngIf="staff.pay_items.length > 0; else noPayItems">
+                    <div class="item-line" *ngFor="let item of staff.pay_items"
+                        fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="20%">
+                            {{item.item_type | capitalize}}
+                        </div>
+                        <div fxFlex="20%">
+                            <app-admin-shift-edit-pay-item-name
+                                [staff]="staff" [payItem]="item" [editable]="editable">
+                            </app-admin-shift-edit-pay-item-name>
+                        </div>
+                        <div fxFlex="20%">
+                            <app-admin-shift-edit-pay-item-units
+                                [staff]="staff" [payItem]="item" [editable]="editable"
+                                (onItemChanged)="recalcuatePayItemsTotal(staff)">
+                            </app-admin-shift-edit-pay-item-units>
+                        </div>
+                        <div fxFlex="20%">
+                            <app-admin-shift-edit-pay-item-unit-rate
+                                [staff]="staff" [payItem]="item" [editable]="editable"
+                                (onItemChanged)="recalcuatePayItemsTotal(staff)">
+                            </app-admin-shift-edit-pay-item-unit-rate>
+                        </div>
+                        <div fxFlex="10%">
+                            <button mat-icon-button *ngIf="item.item_type === 'expense'" class="pull-right" matTooltip="View / Upload receipt">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
 
-                    <button mat-menu-item (click)="toggleTeamLeader(row)">
-                        <mat-icon>person</mat-icon>
-                        <span>Toggle Leader</span>
-                    </button>
-
-                    <button mat-menu-item>
-                        <mat-icon>person</mat-icon>
-                        <span>Add to presentation</span>
-                    </button>
-
-                    <button mat-menu-item>
-                        <mat-icon>person</mat-icon>
-                        <span>Add to submission</span>
-                    </button>
-
-
-                    <button mat-menu-item>
-                        <mat-icon>clear</mat-icon>
-                        <span>Remove</span>
-                    </button>
-
-                    <button mat-menu-item>
-                        <mat-icon>clear</mat-icon>
-                        <span>Remove (edit email)</span>
-                    </button>
-                </mat-menu>
-
-                <!-- CHANGE STATUS SUBMENU -->
-                <mat-menu #statusMenu="matMenu">
-
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_APPLIED')">Applied</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')">Standby</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')">Selected</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVITED')">Invited</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_COMPLETED')">Completed</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVOICED')">Invoiced</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_PAID')">Paid</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_NO_SHOW')">No Show</button>
-                    <button mat-menu-item>No Pay</button>
-                    <button mat-menu-item>Other</button>
-
-                </mat-menu>
-                <!-- / CHANGE STATUS SUBMENU -->
-
-            </ng-template>
-        </ngx-datatable-column>
-
-    </ngx-datatable>
+                        <div fxFlex="10%">
+                            <button mat-icon-button *ngIf="item.type === 'staff'" (click)="removePayItem(staff, item)" class="pull-right" matTooltip="Delete">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #noPayItems>
+                        No pay items.
+                    <a class="add-payitem-link" (click)="addPayItem(staff)">Add</a>
+                </ng-template>
+            </div>
+        </div>
+    </div>
 
 </div>

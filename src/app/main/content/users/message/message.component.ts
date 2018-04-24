@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Input } from "@angular/core";
+import { Component, ViewChild, ElementRef, Input, OnInit } from "@angular/core";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
 import { MessageService } from "./message.service";
 import { Observable } from "rxjs/Observable";
@@ -6,19 +6,17 @@ import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { MatAutocompleteSelectedEvent } from "@angular/material";
 import { CustomMultiSelectComponent } from "../../../../core/components/custom-multi-select/custom-multi-select.component";
+import { TabService } from "../../../tab/tab.service";
+import { TAB } from "../../../../constants/tab";
 
 @Component({
   selector: 'app-user-message',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent {
+export class MessageComponent implements OnInit {
 
-  @Input('data') set updateData(data: any) {
-    if (data) {
-      this.message = { ...this.message, ...data };
-    }
-  }
+  @Input() data: any = {};
 
   message: any = {
     thread: 0,
@@ -39,6 +37,8 @@ export class MessageComponent {
   sent: boolean = false;
   templates: any = [];
 
+  props: any = {};
+
   @ViewChild('uploadFile') uploadFile: ElementRef;
   @ViewChild('messageForm') messageForm: NgForm;
   @ViewChild('attachmentsSelector') attachmentsSelector: CustomMultiSelectComponent;
@@ -46,9 +46,8 @@ export class MessageComponent {
   constructor(
     private tokenStorage: TokenStorage,
     private toastrService: ToastrService,
+    private tabService: TabService,
     private messageService: MessageService) {
-
-    this.init();
   }
 
   init(): void {
@@ -57,7 +56,7 @@ export class MessageComponent {
     this.message.recipients = [];
     this.recipientsFiltersObservable = (text: string): Observable<any> => {
       if (text) {
-        return this.messageService.searchRecipients(text);
+        return this.messageService.searchRecipients(this.props.action || 'normal', text);
       } else {
         return Observable.of([]);
       }
@@ -78,13 +77,36 @@ export class MessageComponent {
         this.fileUpload(files[0]);
       }
     }
+
+    this.props.index = this.data.index;
+    this.props.action = this.data.action;
+    this.props.id = this.data.id;
+
+    this.init();
+
+    if (this.props.action) {
+      this.fetchTemplateContent();
+    }
+  }
+
+  async fetchTemplateContent(): Promise<any> {
+    try {
+      const res = await this.messageService.fetchContent(this.props.id, this.props.action);
+      this.message.content = res.content;
+      this.message.subject = res.subject;
+      for (let i = 0; i < res.attachments.length; i++) {
+        this.file = { id: res.attachments[i].id, text: res.attachments[i].oname };
+      }
+    } catch (e) {
+      this.handleError(e.error);
+    }
   }
 
   async onRecipientFiltersChanged(filters: any): Promise<any> {
-    if (filters.length < 2) {
-      this.message.thread = 0;
+    if (filters.length === 0) {
+      this.count = 0;
+      return;
     }
-    if (filters.length === 0) return;
     try {
       const res = await this.messageService.send({
         content: 'test',
@@ -92,6 +114,9 @@ export class MessageComponent {
         recipients: filters
       });
       this.count = res.count;
+      if (this.count < 2) {
+        this.message.thread = 0;
+      }
     } catch (e) {
       this.handleError(e.error);
     }
@@ -139,6 +164,9 @@ export class MessageComponent {
         this.toastrService.success('Email has been sent successfully!');
         this.messageForm.reset(this.message);
         this.sent = true;
+        if (this.props.action) {
+          this.tabService.closeTab(`${TAB.USERS_NEW_MESSAGE_TAB.url}/${this.props.index}`);
+        }
       } catch (e) {
         this.handleError(e.error);
       }

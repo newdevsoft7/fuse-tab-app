@@ -199,7 +199,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   updateTypingStatus(isTyping: boolean) {
-    this.socketService.sendData(JSON.stringify({
+    this.socketService.sendData({
       type: 'typing',
       payload: {
         status: isTyping,
@@ -207,7 +207,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         thread: this.selectedThread.id,
         receipts: this.selectedThread.participants.map(user => user.id).filter(id => id !== this.tokenStorage.getUser().id)
       }
-    }));
+    });
   }
 
   watchActivityChange() {
@@ -274,14 +274,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.chatView.readyToReply();
     try {
       const savedMessage = await this.usersChatService.sendMessage(message);
-      this.socketService.sendData(JSON.stringify({
+      this.socketService.sendData({
         type: 'message',
         payload: {
           receipts: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id)),
           sender: this.tokenStorage.getUser().id,
           content: savedMessage
         }
-      }));
+      });
       message.id = savedMessage.id;
       message.created_at = savedMessage.created_at;
       message.updated_at = savedMessage.updated_at;
@@ -316,14 +316,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       if (this.selectedThread) {
         this.selectedThread.unread = 0;
       }
-      this.socketService.sendData(JSON.stringify({
+      this.socketService.sendData({
         type: 'readThread',
         payload: {
           thread: threadId,
           receipts: receipts,
           reader: this.tokenStorage.getUser().id
         }
-      }));
+      });
     } catch (e) {
       this.handleError(e);
     }
@@ -354,13 +354,13 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         });
         this.threads = await this.usersChatService.getThreads();
         await this.fetchChatByThread(payload.thread_id);
-        this.socketService.sendData(JSON.stringify({
+        this.socketService.sendData({
           type: 'thread',
           payload: {
             thread: payload.thread_id,
             receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
-        }));
+        });
       } catch (e) {
         this.handleError(e);
       }
@@ -388,13 +388,13 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         await Promise.all(promiseList);
         await this.fetchThreads();
         this.selectedThread = this.threads.find(thread => thread.id === threadId);
-        this.socketService.sendData(JSON.stringify({
+        this.socketService.sendData({
           type: 'thread',
           payload: {
             thread: this.selectedThread.id,
             receipt: this.selectedThread.participants.map(user => user.id).filter(id => parseInt(id) !== parseInt(this.tokenStorage.getUser().id))
           }
-        }));
+        });
       } catch (e) {
         this.handleError(e);
       }
@@ -417,14 +417,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
         if (this.selectedThread) {
           this.selectedThread.name = name;
         }
-        this.socketService.sendData(JSON.stringify({
+        this.socketService.sendData({
           type: 'renameThread',
           payload: {
             thread,
             name,
             receipt
           }
-        }));
+        });
       } catch (e) {
         this.handleError(e);
       }
@@ -438,14 +438,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
       await this.usersChatService.removeUserFromThread(threadId, userId);
       await this.fetchThreads();
       this.selectedThread = this.threads.find(thread => thread.id === threadId);
-      this.socketService.sendData(JSON.stringify({
+      this.socketService.sendData({
         type: 'removeUser',
         payload: {
           thread: threadId,
           userId,
           receipt
         }
-      }));
+      });
     } catch (e) {
       this.handleError(e);
     }

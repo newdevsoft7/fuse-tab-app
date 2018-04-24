@@ -53,6 +53,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
+    @ViewChild('adminShiftGroupTpl') adminShiftGroupTpl;
     @ViewChild('shiftsImportTpl') shiftsImportTpl;
     @ViewChild('shiftsExportAsExcelTpl') shiftsExportAsExcelTpl;
     @ViewChild('shiftsExportAsPdfTpl') shiftsExportAsPdfTpl;
@@ -66,6 +67,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     @ViewChild('adminGenStaffInvoicesTpl') adminGenStaffInvoicesTpl;
     @ViewChild('adminClientInvoiceListTpl') adminClientInvoiceListTpl;
     @ViewChild('adminStaffInvoiceListTpl') adminStaffInvoiceListTpl;
+    @ViewChild('columnMappingTpl') columnMappingTpl;
+    @ViewChild('importHistoryTpl') importHistoryTpl;
 
     // Staff view templates
     @ViewChild('staffShiftTpl') staffShiftTpl;
@@ -147,10 +150,10 @@ export class FuseHomeComponent implements OnInit, OnDestroy
     }
 
     startSocket() {
-        this.socketService.sendData(JSON.stringify({
+        this.socketService.sendData({
             type: 'init',
             payload: this.tokenStorage.getUser().id
-        }));
+        });
     }
 
     async loadFCMservices() {

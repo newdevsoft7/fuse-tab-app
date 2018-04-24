@@ -1,6 +1,6 @@
 <div id="staff-shift-info" class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
 
-    <div class="info-content" fxLayout="column" fxFlex="65">
+    <div class="info-content" fxLayout="column" fxFlex="100" [fxFlex.gt-sm]="shift.show_files === 1 ? 65 : 100">
 
         <div class="box info-box" fxLayout="column">
             <header class="mat-accent-bg">
@@ -15,7 +15,11 @@
         <div *ngFor="let role of shift.shift_roles" class="box info-box" fxLayout="column">
 
             <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="title">{{role.rname}}</div>
+                <div>
+                    <span class="title" matTooltip="Role Name">{{role.rname}}</span>
+                    <span class="ml-12" matTooltip="Role Period">{{role.start}} - {{role.end}}</span>
+                </div>
+                
                 <div matTooltip="Number required" *ngIf="role.num_required > 0"
                     fxLayout="row" fxLayoutAlign="start center">
                     <ng-container [ngSwitch]="role.sex">
@@ -94,7 +98,7 @@
 
     </div>
 
-    <div class="info-sidebar" fxLayout="column" fxFlex="35">
+    <div class="info-sidebar" fxLayout="column" fxFlex="100" fxFlex.gt-sm="35" *ngIf="shift.show_files === 1">
 
         <div class="box info-box" fxLayout="column">
 
@@ -103,21 +107,20 @@
             </header>
 
             <div class="content">
-
+            
                 <!-- FILES LIST -->
                 <div class="files" fxLayout="column">
-                    <div class="file" *ngFor="let file of files" fxLayout="row">
-                        <div fxFlex>
-                            <mat-icon class="type-icon" [ngClass]="file.type"></mat-icon>
+                    <div *ngIf="shift.files.length === 0">No Files</div>
+                    <div class="file" *ngFor="let file of shift.files" fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="nogrow" class="thumbnail">
+                            <img [src]="file.thumb">
                         </div>
-                        <div fxFlex>{{file.name}}</div>
-                        <div fxFlex>{{file.size}}</div>
-                        <div fxFlex>{{file.created_at}}</div>
+                        <div fxFlex>
+                            <a [href]="file.link" target="_blank">{{file.oname}}</a>
+                        </div>
                     </div>
                 </div>
                 <!-- / FILES LIST -->
-
-
             </div>
 
         </div>

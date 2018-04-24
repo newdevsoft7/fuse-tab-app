@@ -1,17 +1,21 @@
 <div id="admin-shift-staff" class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
     <div class="staff-content" fxLayout="column"  fxFlex.lt-lg="100"
         [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
-
+        <div *ngIf="roles.length === 0">
+            No roles. <a class="add-role" (click)="addRole()">Add a Role</a>
+        </div>
         <div *ngFor="let role of roles" class="staff-box info-box general" fxLayout="column">
 
             <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="title">{{role.rname}}</div>
+                <div>
+                    <span class="title" matTooltip="Role Name">{{role.rname}}</span>
+                    <span class="ml-12" matTooltip="Role Period">{{role.start}} - {{role.end}}</span>
+                </div>
 
                 <div>
                     <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" [disabled]="shift.editable !== 1">
                         <mat-icon class="material-icons">more_vert</mat-icon>
                     </button>
-
 
                     <mat-menu #menu="matMenu">
 
@@ -150,6 +154,7 @@
                         <app-admin-shift-staff-selected [(staffs)]="role.selected"
                             [showBillInfo]="shift.bill_info"
                             [editable]="shift.editable"
+                            [shift]="shift"
                             (onStaffCountChanged)="updateStaffsCount(role.id)"></app-admin-shift-staff-selected>
                     </mat-tab>
 
@@ -204,13 +209,6 @@
 
         <div class="staff-box admin-notes" fxLayout="column">
 
-            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
-                <div class="title">Admin Notes</div>
-                <div class="more secondary-text">
-                    <span (click)="onSeeAllAdminNotes()" class="see-all-button" [class.disabled]="isSeeAllAdminNotes">See All</span>
-                </div>
-            </header>
-
             <div class="content">
 
                 <!-- ADMIN NOTE FORM -->
@@ -222,9 +220,9 @@
 
                     <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="canSavePost">
 
-                        <mat-form-field *ngIf="shift.admin_note_types.length > 0">
+                        <mat-form-field *ngIf="adminNoteTypes.length > 0">
                             <mat-select formControlName="type_id" placeholder="Type">
-                                <mat-option *ngFor="let option of shift.admin_note_types" [value]="option.id"
+                                <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id"
                                     [style.background-color]="option.color">
                                     {{option.tname}}
                                 </mat-option>
@@ -248,7 +246,7 @@
 
                 <!-- ADMIN NOTES LIST -->
                 <div class="notes" fxLayout="column">
-                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of viewedAdminNotes"
+                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes"
                         [style.background-color]="note.color">
                         <img [src]="note.creator_ppic_a" class="avatar ml-8" alt="{{note.creator_name}}" [matTooltip]="note.creator_name"/>
 
@@ -260,9 +258,9 @@
                                 </mat-form-field>
 
                                 <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px">
-                                    <mat-form-field *ngIf="shift.admin_note_types.length > 0">
+                                    <mat-form-field *ngIf="adminNoteTypes.length > 0">
                                         <mat-select [(ngModel)]="noteTemp.type_id" placeholder="Type">
-                                            <mat-option *ngFor="let option of shift.admin_note_types" [value]="option.id" [style.background-color]="option.color">
+                                            <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id" [style.background-color]="option.color">
                                                 {{option.tname}}
                                             </mat-option>
                                         </mat-select>
@@ -278,7 +276,7 @@
 
                                     <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)"
                                         [disabled]="!noteTemp.note ||
-                                            (shift.admin_note_types.length > 0 && noteTemp.type_id === null)">Update</button>
+                                            (adminNoteTypes.length > 0 && noteTemp.type_id === null)">Update</button>
                                     <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
                                 </div>
 

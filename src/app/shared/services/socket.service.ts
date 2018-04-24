@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 import { UsersChatService } from '../../main/content/users/chat/chat.service';
+import { AppSettingService } from './app-setting.service';
 
 const SOCKET_SERVER_URL = environment.socketServerUrl;
 
@@ -18,7 +19,9 @@ export class SocketService {
   duration: number = 1000;
   disconnectedTime: number = 0;
 
-  constructor() {
+  constructor(
+    private appSettingService: AppSettingService
+  ) {
     this.connect();
     this.init();
   }
@@ -80,14 +83,15 @@ export class SocketService {
   }
 
   sendData(data: any): void {
+    data.tenant = this.appSettingService.baseData.name;
     if (this.getState() === WebSocket.OPEN) {
-      this.conn.send(data);
+      this.conn.send(JSON.stringify(data));
     } else {
       console.log('connection is not ready. please wait...');
       this.connectionStatus.subscribe((connected: boolean) => {
         if (connected) {
           console.log('connection is ready! please send data');
-          this.conn.send(data);
+          this.conn.send(JSON.stringify(data));
         }
       });
     }

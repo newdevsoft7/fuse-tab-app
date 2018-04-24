@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
+import { AppSettingService } from '../../../../shared/services/app-setting.service';
 
 @Component({
     selector   : 'fuse-lock',
@@ -13,10 +14,12 @@ export class FuseLockComponent implements OnInit
 {
     lockForm: FormGroup;
     lockFormErrors: any;
+    backgroundImg: string;
 
     constructor(
         private fuseConfig: FuseConfigService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private appSettingService: AppSettingService
     )
     {
         this.fuseConfig.setSettings({
@@ -35,6 +38,7 @@ export class FuseLockComponent implements OnInit
 
     ngOnInit()
     {
+        this.backgroundImg = this.appSettingService.baseData.background;
         this.lockForm = this.formBuilder.group({
             username: [
                 {
