@@ -85,6 +85,10 @@
             </mat-tab>
         
             <mat-tab label="Bill">
+                <div *ngFor="let shift of shifts; let last = last" [class.mb-40]="!last">
+                    <h2 class="mb-0">{{shift.title}}</h2>
+                    <app-admin-shift-bill [shift]="shift"></app-admin-shift-bill>
+                </div>
             </mat-tab>
         
             <mat-tab label="Reports & Uploads">
