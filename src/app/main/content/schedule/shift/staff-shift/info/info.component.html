@@ -44,17 +44,17 @@
                                 {{shift.shift_start | date: 'h:mm a'}} - {{shift.shift_end | date: 'h:mm a'}}
                             </div>
 
-                            <div *ngIf="role.pay_items.length === 0" class="pay-rate" matTooltip="Pay rate">
+                            <div *ngIf="role.eligible === 1 && role.pay_items.length === 0" class="pay-rate" matTooltip="Pay rate">
                                 <ng-container *ngIf="role.pay_rate">
                                     {{role.pay_rate | currency}} {{role.pay_rate_type === 'phr' ? '/hr' : 'flat'}}
                                 </ng-container>
                             </div>
                             
-                            <div *ngIf="role.pay_items.length > 0" class="pay-rate">
+                            <div *ngIf="role.eligible === 1 && role.pay_items.length > 0" class="pay-rate">
                                 <span *ngIf="role.pay_rate" matTooltip="Pay rate">
                                     {{role.pay_rate | currency}} {{role.pay_rate_type === 'phr' ? '/hr' : 'flat'}}
                                 </span>
-                                <span matTooltip="Pay item" class="pay-item" (click)="openPayItemDialog(role.pay_items)">
+                                <span matTooltip="Additional Payment" class="pay-item" (click)="openPayItemDialog(role.pay_items)">
                                      + {{ sum(role.pay_items) | currency}}
                                 </span>
                             </div>
