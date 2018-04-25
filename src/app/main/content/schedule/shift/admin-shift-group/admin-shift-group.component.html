@@ -78,7 +78,27 @@
     </div>
 
     <div class="content">
-
+        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedTabIndex">
+        
+            <mat-tab label="Staff">
+                <app-group-staff #staffTab [group]="group" [shifts]="shifts"></app-group-staff>
+            </mat-tab>
+        
+            <mat-tab label="Bill">
+                <div *ngFor="let shift of shifts; let last = last" [class.mb-40]="!last">
+                    <h2 class="mb-0">{{shift.long_date}} - {{shift.title}}</h2>
+                    <app-admin-shift-bill [shift]="shift"></app-admin-shift-bill>
+                </div>
+            </mat-tab>
+        
+            <mat-tab label="Reports & Uploads">
+            </mat-tab>
+        
+            <mat-tab label="Attachments">
+                <app-group-attachments [group]="group" [shifts]="shifts"></app-group-attachments>
+            </mat-tab>
+        
+        </mat-tab-group>
     </div>
 
 </div>

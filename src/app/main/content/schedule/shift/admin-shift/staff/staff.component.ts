@@ -442,7 +442,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 break;
 
             case Section.Invited:
-                query = Query.Selected;
+                query = Query.Invited;
                 break;
 
             default:

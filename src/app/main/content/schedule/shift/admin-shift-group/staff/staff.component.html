@@ -1,0 +1,325 @@
+<div class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
+    <div class="staff-content" fxLayout="column" fxFlex.lt-lg="100"
+        [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
+
+        <div *ngFor="let shift of shifts" class="shift">
+            <div class="mb-12">
+                <span class="shift-title" (click)="openShift(shift)" matTooltip="Click to open shift">
+                    {{shift.long_date}} - {{shift.title}}
+                </span>
+            </div>
+
+            <div *ngFor="let role of shift.shift_roles" class="box info-box general" fxLayout="column">
+            
+                <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div>
+                        <span class="title" matTooltip="Role Name">{{role.rname}}</span>
+                        <span class="ml-12" matTooltip="Role Period">{{role.start}} - {{role.end}}</span>
+                    </div>
+            
+                    <div>
+                        <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" [disabled]="shift.editable !== 1">
+                            <mat-icon class="material-icons">more_vert</mat-icon>
+                        </button>
+            
+                        <mat-menu #menu="matMenu">
+            
+                            <button mat-menu-item (click)="onInviteStaffToRole(shift, role)">
+                                <mat-icon>person_add</mat-icon>
+                                <span>Invite staff</span>
+                            </button>
+            
+                            <button mat-menu-item (click)="onAddStaffToRole(role)">
+                                <mat-icon>person_add</mat-icon>
+                                <span>Select staff</span>
+                            </button>
+            
+                            <!-- DOTS BUTTON CONTENT -->
+                            <ng-container [ngSwitch]="role.section">
+            
+                                <ng-container *ngSwitchCase="Section.Selected">
+                                    <button mat-menu-item>
+                                        <mat-icon>person</mat-icon>
+                                        <span>Add all to presentation</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>person</mat-icon>
+                                        <span>Add all to submission</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>refresh</mat-icon>
+                                        <span>Force re-confirmation</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>sync</mat-icon>
+                                        <span>Reset times to role</span>
+                                    </button>
+            
+                                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Change statuses</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>mail_outline</mat-icon>
+                                        <span>Message users</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>call_made</mat-icon>
+                                        <span>Export users</span>
+                                    </button>
+                                </ng-container>
+            
+                                <ng-container *ngSwitchDefault>
+                                    <button mat-menu-item>
+                                        <mat-icon>person</mat-icon>
+                                        <span>Add all to presentation</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>person</mat-icon>
+                                        <span>Add all to submission</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>mail_outline</mat-icon>
+                                        <span>Message users</span>
+                                    </button>
+            
+                                    <button mat-menu-item>
+                                        <mat-icon>call_made</mat-icon>
+                                        <span>Export users</span>
+                                    </button>
+            
+                                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Change statuses</span>
+                                    </button>
+            
+                                </ng-container>
+            
+                            </ng-container>
+                            <!-- / DOTS BUTTON CONTENT -->
+            
+                            <ng-container *ngIf="shift.shift_roles.length > 1">
+                                <button mat-menu-item (click)="moveup(shift, role)">
+                                    <mat-icon>arrow_upward</mat-icon>
+                                    Move up
+                                </button>
+            
+                                <button mat-menu-item (click)="movedown(shift, role)">
+                                    <mat-icon>arrow_downward</mat-icon>
+                                    Move down
+                                </button>
+                            </ng-container>
+            
+                            <button mat-menu-item (click)="onEditRole(shift, role)">
+                                <mat-icon>settings</mat-icon>
+                                <span>Edit Role</span>
+                            </button>
+            
+                        </mat-menu>
+            
+                        <!-- CHANGE STATUS SUBMENU -->
+                        <mat-menu #statusMenu="matMenu">
+            
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_APPLIED')">Applied</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_STANDBY')">Standby</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_SELECTED')">Selected</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_INVITED')">Invited</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_COMPLETED')">Completed</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_INVOICED')">Invoiced</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_PAID')">Paid</button>
+                            <button mat-menu-item (click)="changeStatus(role, 'STAFF_STATUS_NO_SHOW')">No Show</button>
+                            <button mat-menu-item>No Pay</button>
+                            <button mat-menu-item>Other</button>
+            
+                        </mat-menu>
+                        <!-- / CHANGE STATUS SUBMENU -->
+            
+                    </div>
+                </header>
+            
+                <div class="content">
+                    <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section" (selectedTabChange)="onSelectedTabChange(role, $event)">
+            
+                        <mat-tab label="Selected">
+                            <ng-template mat-tab-label>
+                                Selected&nbsp;
+                                <strong>{{role.num_selected}} / {{role.num_required}}</strong>
+                            </ng-template>
+                            <app-admin-shift-staff-selected [(staffs)]="role.selected" [showBillInfo]="shift.bill_info" [editable]="shift.editable" [shift]="shift"
+                                (onStaffCountChanged)="updateStaffsCount(role)"></app-admin-shift-staff-selected>
+                        </mat-tab>
+            
+                        <mat-tab label="Standby">
+                            <ng-template mat-tab-label>
+                                Standby&nbsp;
+                                <strong *ngIf="role.num_standby">{{role.num_standby}}</strong>
+                            </ng-template>
+                            <app-admin-shift-staff-standby [(staffs)]="role.standby" [editable]="shift.editable" (onStaffCountChanged)="updateStaffsCount(role)"></app-admin-shift-staff-standby>
+                        </mat-tab>
+            
+                        <mat-tab label="Applicants">
+                            <ng-template mat-tab-label>
+                                Applicants&nbsp;
+                                <strong *ngIf="role.num_applicants > 0">{{role.num_applicants}}</strong>
+                            </ng-template>
+                            <app-admin-shift-staff-applicants [(staffs)]="role.applicants" [editable]="shift.editable" (onStaffCountChanged)="updateStaffsCount(role)"></app-admin-shift-staff-applicants>
+                        </mat-tab>
+            
+                        <mat-tab label="Invited">
+                            <ng-template mat-tab-label>
+                                Invited&nbsp;
+                                <strong *ngIf="role.num_invited > 0">{{role.num_invited}}</strong>
+                            </ng-template>
+                            <app-admin-shift-staff-invited [(staffs)]="role.invited" [editable]="shift.editable" (onStaffCountChanged)="updateStaffsCount(role)"></app-admin-shift-staff-invited>
+                        </mat-tab>
+            
+                        <mat-tab label="NA">
+                            <ng-template mat-tab-label>
+                                NA&nbsp;
+                                <strong *ngIf="role.num_na > 0">{{role.num_na}}</strong>
+                            </ng-template>
+                            <app-admin-shift-staff-na [(staffs)]="role.na" [editable]="shift.editable" (onStaffCountChanged)="updateStaffsCount(role)"></app-admin-shift-staff-na>
+                        </mat-tab>
+            
+                    </mat-tab-group>
+            
+                </div>
+            
+            </div>
+        </div>
+
+    </div>
+
+    <div class="staff-sidebar" fxLayout="column" fxFlex="35" fxFlex.lt-lg="100"
+        *ngIf="currentUser.lvl == 'owner' || currentUser.lvl == 'admin'">
+
+        <div class="box admin-notes" fxLayout="column">
+            <div class="content">
+
+                <!-- NOTE FORM -->
+                <form [formGroup]="adminNoteForm" novalidate fxLayout="column">
+                
+                    <mat-form-field class="mb-4" floatPlaceholder="never">
+                        <textarea matInput placeholder="Write an admin note.." formControlName="note" #adminNoteInput></textarea>
+                    </mat-form-field>
+                
+                    <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" *ngIf="canSavePost" fxLayoutWrap fxLayoutGap="12px">
+
+                        <mat-form-field>
+                            <mat-select formControlName="shift_id" placeholder="Shift">
+                                <mat-option *ngFor="let option of group.shift_options" [value]="option.id">
+                                    {{option.text}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <mat-form-field *ngIf="adminNoteTypes.length > 0">
+                            <mat-select formControlName="type_id" placeholder="Type">
+                                <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id" [style.background-color]="option.color">
+                                    {{option.tname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <mat-form-field>
+                            <mat-select formControlName="client_visible">
+                                <mat-option *ngFor="let option of noteClientVisibles" [value]="option.value">
+                                    {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <button mat-raised-button (click)="onPostAdminNote()" class="save-button mat-accent" [disabled]="adminNoteForm.invalid" aria-label="POST">
+                            POST
+                        </button>
+                    </div>
+                </form>
+                <!-- / NOTE FORM -->
+
+                <!-- NOTES LIST -->
+                <div class="notes">
+                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes" [style.background-color]="note.color">
+                        <img [src]="note.creator_ppic_a" class="avatar ml-8" alt="{{note.creator_name}}" [matTooltip]="note.creator_name" />
+                
+                        <div class="w-100-p">
+                
+                            <div *ngIf="note.editMode">
+                                <mat-form-field class="w-100-p">
+                                    <textarea matInput [(ngModel)]="noteTemp.note"></textarea>
+                                </mat-form-field>
+                
+                                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px">
+                                    <mat-form-field *ngIf="adminNoteTypes.length > 0">
+                                        <mat-select [(ngModel)]="noteTemp.type_id" placeholder="Type">
+                                            <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id" [style.background-color]="option.color">
+                                                {{option.tname}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                
+                                    <mat-form-field>
+                                        <mat-select [(ngModel)]="noteTemp.client_visible">
+                                            <mat-option *ngFor="let option of noteClientVisibles" [value]="option.value">
+                                                {{option.label}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                
+                                    <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)" [disabled]="!noteTemp.note ||
+                                                            (adminNoteTypes.length > 0 && noteTemp.type_id === null)">Update</button>
+                                    <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
+                                </div>
+                
+                            </div>
+                
+                            <div *ngIf="!note.editMode" fxLayout="row">
+                                <div fxFlex="1 0 auto">
+                                    <span class="message"> {{note.note}}</span>
+                                    <div>
+                                        <strong matToolTip="Shift Title">{{getShiftTitle(note.shift_id)}}</strong>
+                                    </div>
+                                    <div>
+                                        <strong class="mr-8">{{getNoteClientVisible(note.client_visible)}}</strong>
+                                        <span class="time secondary-text mr-8">{{note.updated_at | date: 'medium'}}</span>
+                                    </div>
+                                </div>
+                
+                
+                                <button fxFlex="0 1 auto" mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                                    <mat-icon class="material-icons">more_vert</mat-icon>
+                                </button>
+                
+                                <mat-menu #menu="matMenu">
+                
+                                    <button mat-menu-item (click)="onEditAdminNote(note)">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                
+                                    <button mat-menu-item (click)="onDeleteAdminNote(note)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                
+                                </mat-menu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / NOTES LIST -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
