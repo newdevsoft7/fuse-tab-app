@@ -53,14 +53,12 @@ self.addEventListener('notificationclick', function(event) {
 });
 
 self.addEventListener('push', function(event) {
-  console.log('[Service Worker] Push Received.');
   var payload = event.data.json();
-  console.log(payload);
   const title = payload.notification.title;
   const options = {
     body: payload.notification.body,
     actions: [
-      {action: payload.notification.click_action, title: payload.notification.click_action}
+      {action: payload.data.action, title: payload.data.action}
     ],
     data: payload.data,
     icon: payload.notification.icon
