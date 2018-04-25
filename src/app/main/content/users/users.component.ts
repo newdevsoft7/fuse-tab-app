@@ -214,14 +214,6 @@ export class UsersComponent implements OnInit {
 
         this.actionService.addUsersToRole({ userIds, section, role });
         this.tabService.closeTab(USERS_TAB);
-
-        // TODO - Select tab by user level
-        let template = 'shiftTpl';
-
-        if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-            template = 'adminShiftTpl';
-        }
-        this.tabService.openTab(new Tab(this.data.shiftTitle, template, this.data.tab, { id: this.data.role.shift_id, url: this.data.tab }));
     }
 
     onActivate(evt) {
@@ -295,11 +287,6 @@ export class UsersComponent implements OnInit {
             // Invite Staffs
             this.actionService.inviteUsersToRole({ shiftId, filters, role, userIds, inviteAll });
             this.removeInvitationBar();
-
-            const template = 'adminShiftTpl';
-            this.tabService.openTab(
-                new Tab(this.data.title, template, this.data.tab, { id: this.data.shiftId, url: this.data.tab })
-            );
         }
     }
 
