@@ -27,8 +27,8 @@ const USERS_TAB = 'users';
 
 export enum Mode {
     Normal, // Users
-    Shift,  // Add Users to Shift
-    Role
+    Role,
+    Invite
 }
 
 @Component({
@@ -77,6 +77,10 @@ export class UsersComponent implements OnInit {
         this._data = value;
         if (this._data && this._data.role) {
             this.mode = Mode.Role;
+        }
+
+        if (this._data && this._data.invite) {
+            this.mode = Mode.Invite;
         }
     }
 
@@ -195,14 +199,6 @@ export class UsersComponent implements OnInit {
                         });
                     });
             });
-    }
-
-    // Add users to roles
-    addUsersToShift() {
-        if (!this.selectedUsers.length) { return false; }
-        // TODO
-        this.tabService.closeTab(USERS_TAB);
-        this.tabService.openTab(this.data.tab);
     }
 
     addUsersToRole() {

@@ -110,9 +110,13 @@
                                 'background-color': row.bg_color,
                                 'color': row.font_color,
                                 'border': '1px solid ' + row.border_color
-                            }" [matTooltip]="row.status" (click)="openShift(row)">{{value}}</span>
+                            }" [matTooltip]="row.status">{{formatDate(value)}}</span>
                         </ng-template>
                         <!-- / DATE COLUMN -->
+
+                        <ng-template *ngIf="column.key_name === 'title'" ngx-datatable-cell-template let-value="value" let-row="row">
+                            <span class="shift-title" (click)="openShift(row)">{{value}}</span>
+                        </ng-template>
 
                         <ng-template *ngIf="column.key_name === 'gname'" ngx-datatable-cell-template let-value="value" let-row="row">
                             <span class="group" (click)="openGroup(row)">{{value}}</span>
