@@ -16,7 +16,10 @@
 
             .shift-title {
                 font-size: 20px;
-                margin-bottom: 12px;
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
 
             .add-role {
@@ -32,6 +35,33 @@
         }
 
         @include media-breakpoint('sm') {
+        }
+
+        .admin-notes {
+
+            .content {
+
+                .notes {
+
+                    .note {
+                        padding: 16px 0;
+                        width: 100%;
+                        margin-bottom: 4px;
+
+                        .avatar {
+                            margin-right: 16px;
+                        }
+
+                        .message {
+                            font-weight: 500;
+                        }
+
+                        .time {
+
+                        }
+                    }
+                }
+            }
         }
     }
 

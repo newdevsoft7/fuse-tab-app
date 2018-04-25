@@ -1,9 +1,9 @@
 import {
     Component, OnInit,
     ViewEncapsulation, Input,
-    DoCheck, IterableDiffers,
     Output, EventEmitter
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -22,6 +22,8 @@ import {
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
 } from '../../../../../../../constants/staff-status';
 import { Tab } from '../../../../../../tab/tab';
+import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
+import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
 
 enum Query {
     Counts = 'counts',
@@ -38,7 +40,7 @@ enum Query {
     styleUrls: ['./standby.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
+export class AdminShiftStaffStandbyComponent implements OnInit {
 
     @Input() editable;
 
@@ -66,14 +68,27 @@ export class AdminShiftStaffStandbyComponent implements OnInit, DoCheck {
         private tabService: TabService,
         private dialog: MatDialog,
         private toastr: ToastrService,
-        differs: IterableDiffers
-    ) {
-    }
+        private tokenStorage: TokenStorage,
+        private authService: AuthenticationService,
+        private router: Router
+    ) { }
 
     ngOnInit() {
     }
 
-    ngDoCheck() {
+    async loginAsUser(staff: any) {
+        try {
+            const res = await this.authService.loginAs(staff.user_id);
+            this.toastr.success(res.message);
+            this.tokenStorage.setSecondaryUser(res.user);
+            this.tokenStorage.userSwitchListener.next(true);
+            if (res.user.lvl.startsWith('registrant')) {
+                const currentStep = this.authService.getCurrentStep();
+                this.router.navigate(['/register', currentStep]);
+            }
+        } catch (e) {
+            this.toastr.error((e.error ? e.error.message : e.message) || 'Something is wrong');
+        }
     }
 
     changeStatus(staff, statusId) {

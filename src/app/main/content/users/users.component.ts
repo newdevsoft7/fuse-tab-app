@@ -22,7 +22,7 @@ import { AuthenticationService } from '../../../shared/services/authentication.s
 import { Router } from '@angular/router';
 
 
-const DEFAULT_PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 20;
 const USERS_TAB = 'users';
 
 export enum Mode {

@@ -1,9 +1,9 @@
 import {
     Component, OnInit,
     ViewEncapsulation, Input,
-    DoCheck, IterableDiffers,
     Output, EventEmitter
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +15,8 @@ import { ScheduleService } from '../../../../schedule.service';
 import * as _ from 'lodash';
 import { FuseConfirmDialogComponent } from '../../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { Tab } from '../../../../../../tab/tab';
+import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
+import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
 
 import {
     STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
@@ -38,7 +40,7 @@ enum Query {
     styleUrls: ['./na.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
+export class AdminShiftStaffNAComponent implements OnInit {
 
     @Input() editable;
 
@@ -66,7 +68,9 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
-        differs: IterableDiffers
+        private tokenStorage: TokenStorage,
+        private authService: AuthenticationService,
+        private router: Router
     ) {
     }
 
@@ -81,6 +85,21 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
         }
     }
 
+    async loginAsUser(staff: any) {
+        try {
+            const res = await this.authService.loginAs(staff.user_id);
+            this.toastr.success(res.message);
+            this.tokenStorage.setSecondaryUser(res.user);
+            this.tokenStorage.userSwitchListener.next(true);
+            if (res.user.lvl.startsWith('registrant')) {
+                const currentStep = this.authService.getCurrentStep();
+                this.router.navigate(['/register', currentStep]);
+            }
+        } catch (e) {
+            this.toastr.error((e.error ? e.error.message : e.message) || 'Something is wrong');
+        }
+    }
+
     openUser(staff, event: Event) {
         event.stopPropagation();
         this.userService.getUser(staff.user_id)
@@ -91,10 +110,9 @@ export class AdminShiftStaffNAComponent implements OnInit, DoCheck {
             });
     }
 
-    ngOnInit() {
-    }
+    
 
-    ngDoCheck() {
+    ngOnInit() {
     }
 
     private updateStaffCount() {

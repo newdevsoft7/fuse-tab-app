@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MatTabChangeEvent } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import * as _ from 'lodash';
 
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
@@ -46,9 +47,25 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
 
     @Input() group;
     @Input() shifts = [];
+    @ViewChild('adminNoteInput') adminNoteInput;
 
-    currentUser: any;
+    adminNotes: any[] = [];
+    adminNoteTypes: any[] = [];
+    adminNoteForm: FormGroup;
+    canSavePost = false;
+    noteTemp: any; // Note template for update
+
+    noteTypes = [
+        { value: 0, label: 'Default' }
+    ];
+
+    noteClientVisibles = [
+        { value: 0, label: 'Admin Only' },
+        { value: 1, label: 'Admin & Client' }
+    ];
+
     Section = Section;
+    currentUser: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     usersToRoleSubscription: Subscription;
 
@@ -60,7 +77,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
         private tabService: TabService,
         private actionService: ActionService,
         private tokenStorage: TokenStorage,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
     ) {
         this.currentUser = this.tokenStorage.getUser();
 
@@ -97,10 +114,140 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 };
             });
         });
+
+        this.adminNoteTypes = this.tokenStorage.getSettings().admin_note_types || [];
+        const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
+        this.adminNoteForm = this.formBuilder.group({
+            shift_id: [this.group.shift_options[0].id, Validators.required],
+            type_id: [type_id],
+            client_visible: [0, Validators.required],
+            note: ['', Validators.required]
+        });
+
+        this.adminNoteForm.valueChanges.subscribe(() => {
+            this.onAdminNoteFormValuesChanged();
+        });
+
+        this.scheduleService.getGroupAdminNotes(this.group.id)
+            .subscribe(res => {
+                this.adminNotes = res;
+            });
+    }
+
+    onAdminNoteFormValuesChanged() {
+        const note = this.adminNoteForm.getRawValue().note;
+        if (note.length > 0) {
+            this.canSavePost = true;
+        } else {
+            this.canSavePost = false;
+        }
+    }
+
+    onDeleteAdminNote(note) {
+        const index = this.adminNotes.findIndex(v => v.id === note.id);
+        this.spinner.show();
+        this.scheduleService.deleteShiftAdminNote(note.id)
+            .subscribe(res => {
+                this.spinner.hide();
+                this.adminNotes.splice(index, 1);
+            }, err => {
+                this.spinner.hide();
+                this.displayError(err);
+            });
+    }
+
+    onUpdateAdminNote(note) {
+        const index = this.adminNotes.findIndex(v => v.id === note.id);
+
+        // Update note
+        this.spinner.show();
+        this.scheduleService.updateAdminNote(
+            note.id,
+            {
+                note: this.noteTemp.note,
+                type_id: this.noteTemp.type_id === null ? '' : this.noteTemp.type_id,
+                client_visible: this.noteTemp.client_visible
+            }
+        ).subscribe(res => {
+            this.spinner.hide();
+            const data = res.data;
+            note.type_id = this.noteTemp.type_id;
+            note.client_visible = this.noteTemp.client_visible;
+            note.note = this.noteTemp.note;
+            note.updated_at = data.updated_at;
+
+            if (this.adminNoteTypes.length > 0 && note.type_id != null) {
+                const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
+                note.color = noteType.color;
+                note.tname = noteType.tname;
+            }
+        }, err => {
+            this.spinner.hide();
+            this.displayError(err);
+        });
+        note.editMode = false;
+    }
+
+    onEditAdminNote(note) {
+        note.editMode = true;
+        this.noteTemp = _.cloneDeep(note);
+    }
+
+    onCancelEditAdminNote(note) {
+        note.editMode = false;
+    }
+
+    getNoteClientVisible(noteClientVisible) {
+        const visible = this.noteClientVisibles.find(v => v.value === noteClientVisible);
+        return visible ? visible.label : '';
+    }
+
+    getShiftTitle(id) {
+        const option = this.group.shift_options.find(v => v.id === id);
+        return option ? option.text : '';
+    }
+
+    openShift(shift) {
+        const url = `admin/shift/${shift.id}`;
+        const tab = new Tab(
+            shift.title,
+            'adminShiftTpl',
+            url,
+            { url, id: shift.id }
+        );
+        this.tabService.openTab(tab);
     }
 
     ngOnDestroy() {
         this.usersToRoleSubscription.unsubscribe();
+    }
+
+    onPostAdminNote() {
+        const data = this.adminNoteForm.value;
+        this.canSavePost = false;
+        this.spinner.show();
+        this.scheduleService.createShiftAdminNote(data.shift_id, data)
+            .subscribe(res => {
+                this.spinner.hide();
+                const note = res.data;
+                note.creator_ppic_a = this.currentUser.ppic_a;
+                note.creator_name = `${this.currentUser.fname} ${this.currentUser.lname}`;
+                note.shift_id = data.shift_id;
+
+                if (this.adminNoteTypes.length > 0 && note.type_id != null) {
+                    const noteType = this.adminNoteTypes.find(v => v.id === note.type_id);
+                    note.color = noteType.color;
+                    note.tname = noteType.tname;
+                }
+
+                this.adminNotes.unshift(note);
+
+                this.adminNoteInput.nativeElement.value = '';
+                this.adminNoteInput.nativeElement.focus();
+            }, err => {
+                this.spinner.hide();
+                this.displayError(err);
+            });
     }
 
     moveup(shift, role) {
@@ -387,6 +534,16 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.toastr.error(err.error.message);
             });
     }
+
+    private displayError(e: any) {
+		const errors = e.error.errors;
+		if (errors) {
+			Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+		}
+		else {
+			this.toastr.error(e.message);
+		}
+	}
 
 }
 

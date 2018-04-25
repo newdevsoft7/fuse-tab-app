@@ -5,6 +5,7 @@ import {
     ViewChild,
     ChangeDetectorRef
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -28,6 +29,8 @@ import {
 } from '../../../../../../../constants/staff-status';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { AddPayItemDialogComponent } from './add-pay-item-dialog/add-pay-item-dialog.component';
+import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
+import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
 
 enum Query {
     Counts = 'counts',
@@ -74,7 +77,10 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         private userService: UserService,
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private tokenStorage: TokenStorage,
+        private authService: AuthenticationService,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -102,6 +108,21 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
                 return `/assets/images/avatars/${value}`;
             default:
                 return value;
+        }
+    }
+
+    async loginAsUser(staff: any) {
+        try {
+            const res = await this.authService.loginAs(staff.user_id);
+            this.toastr.success(res.message);
+            this.tokenStorage.setSecondaryUser(res.user);
+            this.tokenStorage.userSwitchListener.next(true);
+            if (res.user.lvl.startsWith('registrant')) {
+                const currentStep = this.authService.getCurrentStep();
+                this.router.navigate(['/register', currentStep]);
+            }
+        } catch (e) {
+            this.toastr.error((e.error ? e.error.message : e.message) || 'Something is wrong');
         }
     }
 

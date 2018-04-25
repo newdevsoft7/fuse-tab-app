@@ -434,6 +434,11 @@ export class ScheduleService {
     return this.http.put(url, body).toPromise();
   }
 
+  getGroupAdminNotes(id): Observable<any> {
+    const url = `${BASE_URL}/group/${id}/adminNote`;
+    return this.http.get(url).catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

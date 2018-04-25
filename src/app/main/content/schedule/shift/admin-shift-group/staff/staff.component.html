@@ -3,11 +3,10 @@
         [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
 
         <div *ngFor="let shift of shifts" class="shift">
-            <div class="shift-title">{{shift.long_date}} - {{shift.title}}</div>
-
-            <div *ngIf="shift.shift_roles.length === 0">
-                No roles.
-                <a class="add-role">Add a Role</a>
+            <div class="mb-12">
+                <span class="shift-title" (click)="openShift(shift)" matTooltip="Click to open shift">
+                    {{shift.long_date}} - {{shift.title}}
+                </span>
             </div>
 
             <div *ngFor="let role of shift.shift_roles" class="box info-box general" fxLayout="column">
@@ -204,6 +203,123 @@
     <div class="staff-sidebar" fxLayout="column" fxFlex="35" fxFlex.lt-lg="100"
         *ngIf="currentUser.lvl == 'owner' || currentUser.lvl == 'admin'">
 
+        <div class="box admin-notes" fxLayout="column">
+            <div class="content">
+
+                <!-- NOTE FORM -->
+                <form [formGroup]="adminNoteForm" novalidate fxLayout="column">
+                
+                    <mat-form-field class="mb-4" floatPlaceholder="never">
+                        <textarea matInput placeholder="Write an admin note.." formControlName="note" #adminNoteInput></textarea>
+                    </mat-form-field>
+                
+                    <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" *ngIf="canSavePost" fxLayoutWrap fxLayoutGap="12px">
+
+                        <mat-form-field>
+                            <mat-select formControlName="shift_id" placeholder="Shift">
+                                <mat-option *ngFor="let option of group.shift_options" [value]="option.id">
+                                    {{option.text}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <mat-form-field *ngIf="adminNoteTypes.length > 0">
+                            <mat-select formControlName="type_id" placeholder="Type">
+                                <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id" [style.background-color]="option.color">
+                                    {{option.tname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <mat-form-field>
+                            <mat-select formControlName="client_visible">
+                                <mat-option *ngFor="let option of noteClientVisibles" [value]="option.value">
+                                    {{option.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                
+                        <button mat-raised-button (click)="onPostAdminNote()" class="save-button mat-accent" [disabled]="adminNoteForm.invalid" aria-label="POST">
+                            POST
+                        </button>
+                    </div>
+                </form>
+                <!-- / NOTE FORM -->
+
+                <!-- NOTES LIST -->
+                <div class="notes">
+                    <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes" [style.background-color]="note.color">
+                        <img [src]="note.creator_ppic_a" class="avatar ml-8" alt="{{note.creator_name}}" [matTooltip]="note.creator_name" />
+                
+                        <div class="w-100-p">
+                
+                            <div *ngIf="note.editMode">
+                                <mat-form-field class="w-100-p">
+                                    <textarea matInput [(ngModel)]="noteTemp.note"></textarea>
+                                </mat-form-field>
+                
+                                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px">
+                                    <mat-form-field *ngIf="adminNoteTypes.length > 0">
+                                        <mat-select [(ngModel)]="noteTemp.type_id" placeholder="Type">
+                                            <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id" [style.background-color]="option.color">
+                                                {{option.tname}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                
+                                    <mat-form-field>
+                                        <mat-select [(ngModel)]="noteTemp.client_visible">
+                                            <mat-option *ngFor="let option of noteClientVisibles" [value]="option.value">
+                                                {{option.label}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                
+                                    <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)" [disabled]="!noteTemp.note ||
+                                                            (adminNoteTypes.length > 0 && noteTemp.type_id === null)">Update</button>
+                                    <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
+                                </div>
+                
+                            </div>
+                
+                            <div *ngIf="!note.editMode" fxLayout="row">
+                                <div fxFlex="1 0 auto">
+                                    <span class="message"> {{note.note}}</span>
+                                    <div>
+                                        <strong matToolTip="Shift Title">{{getShiftTitle(note.shift_id)}}</strong>
+                                    </div>
+                                    <div>
+                                        <strong class="mr-8">{{getNoteClientVisible(note.client_visible)}}</strong>
+                                        <span class="time secondary-text mr-8">{{note.updated_at | date: 'medium'}}</span>
+                                    </div>
+                                </div>
+                
+                
+                                <button fxFlex="0 1 auto" mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                                    <mat-icon class="material-icons">more_vert</mat-icon>
+                                </button>
+                
+                                <mat-menu #menu="matMenu">
+                
+                                    <button mat-menu-item (click)="onEditAdminNote(note)">
+                                        <mat-icon>edit</mat-icon>
+                                        <span>Edit</span>
+                                    </button>
+                
+                                    <button mat-menu-item (click)="onDeleteAdminNote(note)">
+                                        <mat-icon>delete</mat-icon>
+                                        <span>Delete</span>
+                                    </button>
+                
+                                </mat-menu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- / NOTES LIST -->
+
+            </div>
+        </div>
 
     </div>
 </div>
