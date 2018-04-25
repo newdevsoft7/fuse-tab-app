@@ -47,7 +47,7 @@
         </app-users-search-bar>
         <!-- / SEARCHBAR -->
 
-        <ng-container *ngIf="selectedUsers.length > 0 && !data.invite">
+        <ng-container *ngIf="selectedUsers.length > 0 && !data.invite && !data.role">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom
             [@animate]="{value:'*',params:{delay:'50ms'}}"
             fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
@@ -274,21 +274,14 @@
         <!-- / TABLE -->
 
         <!-- ADD USER BUTTON -->
-        <button *ngIf="mode == Mode.Normal" mat-fab class="mat-accent-bg" id="add-user-button" aria-label="add user"
+        <button *ngIf="mode === Mode.Normal" mat-fab class="mat-accent-bg" id="add-user-button" aria-label="add user"
             (click)="openNewUser()">
             <mat-icon>person_add</mat-icon>
         </button>
         <!-- / ADD USER BUTTON -->
 
-        <!-- ADD USERS TO SHIFT BUTTON -->
-        <button *ngIf="mode == Mode.Shift" mat-fab class="mat-warn-bg" id="add-user-button" aria-label="add user to shift"
-             (click)="addUsersToShift()">
-            <mat-icon>person_add</mat-icon>
-        </button>
-        <!-- / ADD USERS TO SHIFT BUTTON -->
-
         <!-- ADD USERS TO ROLE BUTTON -->
-        <button *ngIf="mode == Mode.Role" mat-fab class="mat-warn-bg" id="add-user-button" aria-label="add user to shift" (click)="addUsersToRole()">
+        <button *ngIf="mode === Mode.Role" mat-fab class="mat-warn-bg" id="add-user-button" aria-label="add user to shift" (click)="addUsersToRole()">
             <mat-icon>person_add</mat-icon>
         </button>
         <!-- / ADD USERS TO ROLE BUTTON -->
