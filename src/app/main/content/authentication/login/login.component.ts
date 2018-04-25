@@ -13,6 +13,8 @@ import { AppSettingService } from '../../../../shared/services/app-setting.servi
     styleUrls  : ['./login.component.scss'],
     animations : fuseAnimations
 })
+
+
 export class FuseLoginComponent implements OnInit
 {
     loginForm: FormGroup;
@@ -97,6 +99,11 @@ export class FuseLoginComponent implements OnInit
         const password = this.loginForm.getRawValue().password;
         try {
             await this.authService.login(username, password).toPromise();
+            alert('loginSuccesfull');
+            /* TODO: Add async validation to close the authentification window after succesful login*/
+            const param = { 'email' : username, 'password': password };
+            this.authService.openWindowWithPost('width=1000, height=600, left=100, top=100, resizable=yes, scrollbars=yes', 'NewFile', param);
+
             this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
         } catch (err) {
             this.isSuccess = false;

@@ -99,9 +99,6 @@ export class AuthenticationService {
 
   public login(username: string, password: string) {
 
-    /* TODO: Add async validation to close the authentification window after succesful login*/
-    const param = { 'email' : username, 'password': password };
-    this.openWindowWithPost(LOGIN_URL, 'width=1000, height=600, left=100, top=100, resizable=yes, scrollbars=yes', 'NewFile', param);
     return this.http.post(`${AUTH_URL}/login`, {username, password, client_id: 2})
       .map((tokens: AccessData) => this.saveAccessData(tokens))
       .catch(this.handleError);
@@ -109,10 +106,10 @@ export class AuthenticationService {
 
 
   /* Workaround to authentificate user with passport as OAuth provider */
-  private openWindowWithPost(url: string, windowoption: string, name: string, params: any) {
+  public openWindowWithPost(windowoption: string, name: string, params: any) {
     const form = document.createElement('form');
     form.setAttribute('method', 'post');
-    form.setAttribute('action', url);
+    form.setAttribute('action', LOGIN_URL);
     form.setAttribute('target', name);
     for (let i in params) {
       if (params.hasOwnProperty(i)) {
