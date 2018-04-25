@@ -243,6 +243,10 @@ export class AdminShiftListComponent implements OnInit {
         this.tabService.openTab(tab);
     }
 
+    formatDate(date) {
+        return date ? moment(date, 'DD/MM/YYYY').format('MM/DD/YY') : '';
+    }
+
     private displayError(e: any) {
         const errors = e.error.errors;
         if (errors) {
