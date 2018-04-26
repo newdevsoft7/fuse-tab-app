@@ -249,14 +249,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         });
     }
 
-    OnBreakChanged(value, staff) {
-        this.scheduleService.updateRoleStaff(staff.id, { unpaid_break: value })
-            .subscribe(res => {
-                this.toastr.success(res.message);
-                staff.unpaid_break = value;
-            });
-    }
-
     recalcuatePayItemsTotal(staff) {
         staff.pay_items_total = staff.pay_items.reduce((s, v) => s + v.units * v.unit_rate, 0);
     }

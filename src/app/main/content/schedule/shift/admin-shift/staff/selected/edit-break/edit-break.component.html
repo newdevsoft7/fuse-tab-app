@@ -1,14 +1,24 @@
 <div id="selected-staff-break">
-    <div *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1">
-        <span>{{staff.hours}} hrs - </span>
-        <span class="info" (click)="openForm()">{{break}}</span> mins break
+    <div *ngIf="!formActive" class="text-field" [class.disabled]="editable !== 1" (click)="openForm()">
+        <span>{{staff.hours}} hrs • </span>
+        <span class="info" matTooltip="Unpaid break">
+            {{staff.unpaid_break !== null ? staff.unpaid_break : 0}}
+        </span>
+        • 
+        <span class="info" matTooltip="Paid break">
+            {{staff.paid_break !== null ? staff.paid_break: 0}}
+        </span>&nbsp;mins
     </div>
 
     <form [formGroup]="form" fxLayout="row nowrap" *ngIf="formActive" fxLayoutAlign="start center">
-        <mat-form-field class="break-width">
-            <input matInput type="number" #breakInput fxFlex required formControlName="break">
+        <mat-form-field class="break-width mr-4">
+            <input matInput type="number" formControlName="unpaid_break">
         </mat-form-field>
-        <div class="ml-4">mins break</div>
+
+        <mat-form-field class="break-width">
+            <input matInput type="number" formControlName="paid_break">
+        </mat-form-field>
+
         <button mat-icon-button (click)="saveForm()">
             <mat-icon>check</mat-icon>
         </button>
