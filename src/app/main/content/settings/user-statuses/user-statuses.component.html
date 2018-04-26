@@ -1,0 +1,24 @@
+<div id="user-statuses-container">
+    <p>Add your own custom user statuses to easily identiy users' statuses' by a coloured dot appearing on the user table and in
+        shifts.
+    </p>
+    <app-settings-status-item *ngFor="let status of statuses" [status]="status"
+        (onStatusDeleted)="onStatusDeleted($event)"></app-settings-status-item>
+
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
+        <mat-form-field floatPlaceholder="never" class="name" fxFlex="200px">
+            <input matInput [(ngModel)]="status.sname" placeholder="Write a status name" required>
+        </mat-form-field>
+
+        <div class="color" fxFlex="150px" [style.background]="status.color">
+            <input [(colorPicker)]="status.color" [value]="status.color" [style.background]="status.color"
+                placeholder="Choose a color"/>
+        </div>
+
+        <div fxLayout="row">
+            <button mat-icon-button fxFlex="0 1 auto" (click)="addStatus()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

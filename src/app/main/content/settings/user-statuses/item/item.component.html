@@ -1,12 +1,13 @@
 <div fxLayout="row" fxLayoutAlign="start center" *ngIf="!formActive" fxLayoutGap="16px" class="item">
-    <div class="name" fxFlex="200px">{{flag.fname}}</div>
-    <div class="color" fxFlex="150px" [style.background]="flag.color">{{flag.color}}</div>
+    <div class="name" fxFlex="200px">{{status.name}}</div>
+    <div class="color" fxFlex="150px" [style.background]="status.color">{{status.color}}</div>
     <div fxLayout="row">
-        <button mat-icon-button (click)="openForm()">
+        <button mat-icon-button (click)="openForm()"
+            [disabled]="status.editable !== 1 && status.color_editable !== 1">
             <mat-icon class="s-20">edit</mat-icon>
         </button>
 
-        <button mat-icon-button (click)="delete()">
+        <button mat-icon-button (click)="delete()" [disabled]="status.deletable !== 1">
             <mat-icon class="s-20">delete</mat-icon>
         </button>
     </div>
@@ -14,11 +15,13 @@
 
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" *ngIf="formActive">
     <mat-form-field floatPlaceholder="never" class="name" fxFlex="200px">
-        <input matInput [(ngModel)]="form.fname" #nameInput placeholder="Write a flag name" required>
+        <input matInput [(ngModel)]="form.sname" #nameInput placeholder="Write a status name" required
+            [disabled]="form.editable !== 1">
     </mat-form-field>
 
     <div class="color" fxFlex="150px" [style.background]="form.color">
-        <input [(colorPicker)]="form.color" [value]="form.color" [style.background]="form.color"/>
+        <input [(colorPicker)]="form.color" [value]="form.color" [style.background]="form.color"
+            [disabled]="form.color_editable !== 1"/>
     </div>
 
     <div fxLayout="row">

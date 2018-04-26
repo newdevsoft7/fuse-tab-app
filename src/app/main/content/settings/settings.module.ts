@@ -39,6 +39,8 @@ import { SettingsPayLevelItemComponent } from './pay-levels/pay-level-item/pay-l
 import { SettingsPayCategoryItemComponent } from './pay-levels/pay-category-item/pay-category-item.component';
 import { ItemComponent } from './shift-flags/item/item.component';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
+import { SettingsUserStatusesComponent } from './user-statuses/user-statuses.component';
+import { UserStatusItemComponent } from './user-statuses/item/item.component';
 
 @NgModule({
     imports: [
@@ -82,7 +84,9 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         SettingsPayLevelItemComponent,
         SettingsPayCategoryItemComponent,
         SettingsScheduleListComponent,
-        ItemComponent
+        ItemComponent,
+        SettingsUserStatusesComponent,
+        UserStatusItemComponent
     ],
 
     providers: [
