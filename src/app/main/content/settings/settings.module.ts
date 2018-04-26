@@ -31,6 +31,7 @@ import { SettingsSurveysComponent } from './surveys/surveys.component';
 import { SettingsSystemComponent } from './system/system.component';
 import { SettingsTrackingComponent } from './tracking/tracking.component';
 import { SettingsUserTableComponent } from './user-table/user-table.component';
+import { SettingsScheduleListComponent } from './schedule-list/schedule-list.component';
 import { SettingsWorkMarketComponent } from './work-market/work-market.component';
 import { SettingsXeroComponent } from './xero/xero.component';
 import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component';
@@ -80,6 +81,7 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         SettingsShiftFlagsComponent,
         SettingsPayLevelItemComponent,
         SettingsPayCategoryItemComponent,
+        SettingsScheduleListComponent,
         ItemComponent
     ],
 

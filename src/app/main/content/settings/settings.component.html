@@ -99,8 +99,9 @@
                     <app-settings-tracking *ngSwitchCase="'tracking'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-tracking>
 
-                    <app-settings-user-table *ngSwitchCase="'user_table'" fxFill>
-                    </app-settings-user-table>
+                    <app-settings-user-table *ngSwitchCase="'user_table'" fxFill></app-settings-user-table>
+
+                    <app-settings-schedule-list *ngSwitchCase="'schedule_list'" fxFill></app-settings-schedule-list>
 
                     <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]="(settings)" class="w-100-p">
                     </app-settings-work-areas>

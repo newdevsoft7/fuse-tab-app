@@ -109,6 +109,7 @@ export const locale = {
                 'SYSTEM': 'System',
                 'TRACKING': 'Tracking',
                 'USER_TABLE': 'User Table',
+                'SCHEDULE_LIST': 'Schedule List',
                 'WORK_AREAS': 'Work Areas',
                 'WORK_MARKET': 'Work Market',
                 'XERO': 'Xero'
