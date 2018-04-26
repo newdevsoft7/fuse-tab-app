@@ -22,7 +22,7 @@
 
             <div class="sidenav-content pt-16" fusePerfectScrollbar>
 
-                <app-settings-sidenav></app-settings-sidenav>
+                <app-settings-sidenav (selected)="scrollbar.scrollToTop()"></app-settings-sidenav>
 
             </div>
 
@@ -30,7 +30,7 @@
         <!-- / SIDENAV -->
 
         <!-- CENTER -->
-        <div class="center p-16" fusePerfectScrollbar>
+        <div class="center p-16" fusePerfectScrollbar #scrollbar="fusePerfectScrollbar">
 
             <!-- CONTENT -->
             <div class="content mat-elevation-z4 mat-white-bg p-24">

@@ -27,7 +27,7 @@ enum Setting {
     shift_msg_confirmation = 53,
     shift_msg_completion = 54,
     shift_calendar_overnight_single = 55,
-    shift_table_columns = 11,
+    // shift_table_columns = 11,
     shift_replacement_request = 56,
     shift_msg_replacement_request = 57,
     shift_replacement_request_deadline = 58,
@@ -65,10 +65,6 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
     // Form Controls
     deadline = new FormControl();
 
-    // List View Columns
-    displayedColumns = [];
-    availableColumns = [];
-
     // Slide Togglable Items
     checkableItems = [
         Setting.shift_enable,
@@ -104,19 +100,6 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
                 if (!_.isUndefined(item)) {
                     if (this.checkableItems.includes(item.id)) { // Slide Togglable Items
                         this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
-                    } else if (item.id === Setting.shift_table_columns) {
-
-                        // Set columns to display
-                        const columns = _.split(item.value, ',');
-                        this.displayedColumns = [];
-                        if (!_.isEmpty(this.options)) {
-                            _.forEach(columns, (column) => {
-                                this.displayedColumns.push({
-                                    label: this.options[Setting.shift_table_columns][column],
-                                    value: column
-                                });
-                            });
-                        }
                     } else if (this.numberItems.includes(item.id)) { // Number Fields
                         switch (item.id) {
                             case Setting.shift_replacement_request_deadline:
@@ -132,19 +115,6 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
                 }
             });
 
-            // Set available columns
-            if (!_.isEmpty(this.options)) {
-                const option = this.options[Setting.shift_table_columns];
-                this.availableColumns = [];
-                Object.keys(option)
-                    .filter(v => !_.map(this.displayedColumns, 'value').includes(v))
-                    .forEach(key => {
-                    this.availableColumns.push({
-                        label: option[key],
-                        value: key
-                    });
-                });
-            }
         }
 
     }
@@ -184,13 +154,6 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
             this.settingsChange.next(this.settings);
             this.toastr.success(res.message);
         });
-    }
-
-
-    onDrop(event) {
-        const  value = _.map(this.displayedColumns, 'value').join(',');
-        const setting = _.find(this.settings, ['id', Setting.shift_table_columns]);
-        this.onChange(Setting.shift_table_columns, value);
     }
 
 }

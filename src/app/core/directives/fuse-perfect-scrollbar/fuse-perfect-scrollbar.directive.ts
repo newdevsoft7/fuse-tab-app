@@ -5,7 +5,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Platform } from '@angular/cdk/platform';
 
 @Directive({
-    selector: '[fusePerfectScrollbar]'
+    selector: '[fusePerfectScrollbar]',
+    exportAs: 'fusePerfectScrollbar'
 })
 export class FusePerfectScrollbarDirective implements AfterViewInit, OnDestroy
 {
