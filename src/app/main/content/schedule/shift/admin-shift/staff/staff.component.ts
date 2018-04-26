@@ -74,6 +74,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
+    settings: any;
     canSavePost = false;
 
     adminNoteTypes: any = [];
@@ -104,6 +105,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         differs: IterableDiffers
     ) {
         this.currentUser = this.tokenStorage.getUser();
+        this.settings = this.tokenStorage.getSettings();
 
         // Add Users to Role
         this.usersToRoleSubscription = this.actionService.usersToRole.subscribe(
@@ -128,12 +130,12 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.adminNoteTypes = this.tokenStorage.getSettings().admin_note_types || [];
+        this.adminNoteTypes = this.settings.admin_note_types || [];
         const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
         
         this.adminNoteForm = this.formBuilder.group({
             type_id: [type_id],
-            client_visible: [0, Validators.required],
+            client_visible: [0],
             note: ['', Validators.required]
         });
 
@@ -472,7 +474,9 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
 
     onPostAdminNote() {
-        const data = this.adminNoteForm.value;
+        const form = this.adminNoteForm.getRawValue();
+        let data: any = { note: form.note, type_id: form.type_id };
+        if (this.settings.client_enable === '1') { data.client_visible = form.client_visible; }
         this.canSavePost = false;
         this.scheduleService.createShiftAdminNote(this.shift.id, data)
             .subscribe(res => {

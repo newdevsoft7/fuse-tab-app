@@ -220,7 +220,7 @@
 
                     <div class="mb-4" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="canSavePost">
 
-                        <mat-form-field *ngIf="adminNoteTypes.length > 0">
+                        <mat-form-field *ngIf="adminNoteTypes.length > 1">
                             <mat-select formControlName="type_id" placeholder="Type">
                                 <mat-option *ngFor="let option of adminNoteTypes" [value]="option.id"
                                     [style.background-color]="option.color">
@@ -229,7 +229,7 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field>
+                        <mat-form-field *ngIf="settings.client_enable === '1'">
                             <mat-select formControlName="client_visible">
                                 <mat-option *ngFor="let option of noteClientVisibles" [value]="option.value">
                                     {{option.label}}
