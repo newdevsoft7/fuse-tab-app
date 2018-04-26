@@ -214,16 +214,30 @@ export class ScheduleCalendarComponent implements OnInit {
   }
 
   openEventTab(event: EventEntity) {
-    const id = event.id;
-    let template = 'staffShiftTpl';
-    let url = `staff/shift/${id}`;
-
-    if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-      template = 'adminShiftTpl';
-      url = `admin/shift/${id}`;
+    if (event.type === 'g') {
+      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+        const tab = new Tab(
+          event.title,
+          'adminShiftGroupTpl',
+          `admin-shift/group/${event.id}`,
+          { id: event.id }
+        );
+        this.tabService.openTab(tab);
+      } else {
+        return;
+      }
+    } else {
+      const id = event.id;
+      let template = 'staffShiftTpl';
+      let url = `staff/shift/${id}`;
+  
+      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+        template = 'adminShiftTpl';
+        url = `admin/shift/${id}`;
+      }
+      const tab = new Tab(event.title, template, url, { id, url });
+      this.tabService.openTab(tab);
     }
-    const tab = new Tab(event.title, template, url, { id, url });
-    this.tabService.openTab(tab);
   }
 
   // Open Shifts edit tab for a shift
