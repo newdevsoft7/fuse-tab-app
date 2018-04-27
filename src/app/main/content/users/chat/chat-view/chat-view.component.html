@@ -77,10 +77,11 @@
                     <div class="clearfix">
                         <div class="time secondary-text pull-left">{{message.created_at | date:'MMM d, y, h:mm a'}}</div>
                     </div>
-                    <div class="seen-status w-100-p" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="start center">
-                        <ng-container *ngFor="let seenId of message.seen_by_ids">
-                            <img class="mt-8" [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId) && message.sender_id !== seenId"/>
-                        </ng-container>
+                    <div class="seen-status w-100-p" *ngIf="message.seen_by_ids && message.seen_by_ids.length > 0" fxLayout="row" fxLayoutAlign="end center">
+                        <div *ngFor="let seenId of message.seen_by_ids | partialAmount : 0 : 7; let i = index">
+                            <img [src]="getParticipant(seenId)?.ppic_a" [alt]="getParticipant(seenId)?.name" [matTooltip]="'Seen by ' + getParticipant(seenId)?.name" *ngIf="getParticipant(seenId) && message.sender_id !== seenId"/>
+                            <span *ngIf="i === (message.seen_by_ids | partialAmount : 0 : 7).length - 1 && message.seen_by_ids.length > 7">+{{message.seen_by_ids.length - 7}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,7 +111,7 @@
                     ngModel
                     placeholder="Type and hit enter to send a message"
                     (onValueChange)="stopTyping()"
-                    (keyup)="continueTyping()" 
+                    (keypress)="continueTyping()" 
                     (blur)="updatePendingMessage.next(replyForm.form.value.message)" 
                     name="message"></textarea>
             </mat-form-field>

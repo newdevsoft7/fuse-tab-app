@@ -7,6 +7,7 @@ import { FilterPipe } from './filter.pipe';
 import { CamelCaseToDashPipe } from './camelCaseToDash.pipe';
 import { SafePipe } from './safe.pipe';
 import { CapitalizePipe } from './capitalize.pipe';
+import { PartialAmountPipe } from './partial-amount.pipe';
 
 @NgModule({
     declarations: [
@@ -16,8 +17,8 @@ import { CapitalizePipe } from './capitalize.pipe';
         FilterPipe,
         CamelCaseToDashPipe,
         SafePipe,
-        CapitalizePipe
-
+        CapitalizePipe,
+        PartialAmountPipe
     ],
     imports     : [],
     exports     : [
@@ -27,7 +28,8 @@ import { CapitalizePipe } from './capitalize.pipe';
         FilterPipe,
         CamelCaseToDashPipe,
         SafePipe,
-        CapitalizePipe
+        CapitalizePipe,
+        PartialAmountPipe
     ]
 })
 

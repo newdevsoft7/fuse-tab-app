@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Moment } from 'moment';
 import * as moment from 'moment';
@@ -12,13 +12,15 @@ import { TabService } from '../../../tab/tab.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { ActionService } from '../../../../shared/services/action.service';
 import { ToastrService } from 'ngx-toastr';
+import { TabComponent } from '../../../tab/tab/tab.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class ScheduleCalendarComponent implements OnInit {
+export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
@@ -31,6 +33,9 @@ export class ScheduleCalendarComponent implements OnInit {
   endDate: string;
 
   loading: boolean = false;
+
+  tabLoaded: boolean = false;
+  tabActiveSubscription: Subscription;
 
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
@@ -137,11 +142,26 @@ export class ScheduleCalendarComponent implements OnInit {
     this.filtersObservable = (text: string): Observable<any> => {
       return Observable.of([]);
     };
+
+    this.tabActiveSubscription = this.tabService.tabActived.subscribe((tab: TabComponent) => {
+      if (tab.url === 'schedule/calendar') {
+        if (this.tabLoaded) {
+          this.fetchEvents(false);
+        } else {
+          this.tabLoaded = true;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.tabActiveSubscription.unsubscribe();
+    this.tabLoaded = false;
   }
 
   onFiltersChanged(filters: any) {
     this.filters = filters;
-    this.fetchEvents();
+    this.fetchEvents(true);
   }
 
   updateEvents(event: { startDate: string, endDate: string }) {
@@ -150,10 +170,10 @@ export class ScheduleCalendarComponent implements OnInit {
     };
     this.startDate = event.startDate;
     this.endDate = event.endDate;
-    this.fetchEvents();
+    this.fetchEvents(true);
   }
 
-  async fetchEvents() {
+  async fetchEvents(isLoading: boolean) {
     const query = {
       filters: this.filters,
       from: this.startDate,
@@ -161,7 +181,7 @@ export class ScheduleCalendarComponent implements OnInit {
       view: 'calendar'
     };
 
-    this.loading = true;
+    if (isLoading) this.loading = true;
 
     try {
       this.options.events = await this.scheduleService.getShifts(query).toPromise();
