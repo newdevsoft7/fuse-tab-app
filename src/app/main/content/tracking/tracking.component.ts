@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, IterableDiffer } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, IterableDiffer, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
@@ -23,6 +23,8 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('sidenav') private sidenav: MatSidenav;
 
+    @Input() data: any;
+
     constructor(
         private toastr: ToastrService,
         private trackingService: TrackingService) {
@@ -40,6 +42,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.trackingService.onSelectCategoryChanged.next(this.data);
         this.getTrackingCategories();
     }
 

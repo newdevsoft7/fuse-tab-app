@@ -14,4 +14,10 @@
             }
         }
     }
+
+    .btn-add-category {
+        mat-icon {
+            color: map-get($mat-white, 500);
+        }
+    }
 }
