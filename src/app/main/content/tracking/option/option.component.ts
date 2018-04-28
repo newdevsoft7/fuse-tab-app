@@ -51,7 +51,7 @@ export class TrackingOptionComponent implements OnInit, DoCheck {
 
     ngDoCheck() {
         const change = this.differ.diff(this.category);
-        if (change) {
+        if (change && this.category) {
             this.getOptions(this.category.id);
         }
     }
