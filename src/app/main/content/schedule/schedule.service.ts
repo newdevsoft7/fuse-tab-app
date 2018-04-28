@@ -439,6 +439,16 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
+  getUnavailableShift(userId: number, id: any): Promise<any> {
+    const url = `${BASE_URL}/user/${userId}/unavailability/${id}`;
+    return this.http.get(url).toPromise();
+  }
+
+  deleteUnavailableShift(id: any): Promise<any> {
+    const url = `${BASE_URL}/user/unavailability/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
