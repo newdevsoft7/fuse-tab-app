@@ -42,6 +42,11 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    updateUser(id, body: any): Promise<any> {
+        const url = `${BASE_URL}/user/${id}`;
+        return this.http.put(url, body).toPromise();
+    }
+
     updateProfile(userId: number, elementId: number | string, data: any): Observable<any> {
         const url = `${BASE_URL}/profile/${userId}/${elementId}`;
         return this.http.put(url, { data })

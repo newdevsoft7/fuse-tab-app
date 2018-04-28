@@ -40,6 +40,7 @@ import { CustomMultiSelectModule } from '../../../core/components/custom-multi-s
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
 import { UsersProfileUnavailabilityComponent } from './profile/unavailability/unavailability.component';
 import { AddUnavailabilityDialogComponent } from './profile/unavailability/add-unavailability-dialog/add-unavailability-dialog.component';
+import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-status.component';
 
 @NgModule({
     imports: [
@@ -84,7 +85,8 @@ import { AddUnavailabilityDialogComponent } from './profile/unavailability/add-u
         UsersSettingsClientComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
-        AddUnavailabilityDialogComponent
+        AddUnavailabilityDialogComponent,
+        EditUserStatusComponent
     ],
     exports: [
         UsersComponent,
