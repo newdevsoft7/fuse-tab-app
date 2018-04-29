@@ -249,7 +249,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Selected)
                     .subscribe(res => {
                         const index = this.roles.findIndex(v => v.id === role.id);
-                        this.roles[index].selected = res.role_staff;
+                        this.roles[index].selected = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -259,7 +259,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Standby)
                     .subscribe(res => {
                         const index = this.roles.findIndex(v => v.id === role.id);
-                        this.roles[index].standby = res.role_staff;
+                        this.roles[index].standby = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -269,7 +269,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Applicants)
                     .subscribe(res => {
                         const index = this.roles.findIndex(v => v.id === role.id);
-                        this.roles[index].applicants = res.role_staff;
+                        this.roles[index].applicants = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -279,7 +279,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Invited)
                     .subscribe(res => {
                         const index = this.roles.findIndex(v => v.id === role.id);
-                        this.roles[index].invited = res.role_staff;
+                        this.roles[index].invited = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -289,7 +289,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Na)
                     .subscribe(res => {
                         const index = this.roles.findIndex(v => v.id === role.id);
-                        this.roles[index].na = res.role_staff;
+                        this.roles[index].na = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -454,7 +454,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
         this.scheduleService.getRoleStaffs(role.id, query)
             .subscribe(res => {
-                role[query] = res.role_staff;
+                role[query] = res;
             });
         this.updateStaffsCount(role.id);
     }

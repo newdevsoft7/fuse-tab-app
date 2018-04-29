@@ -43,6 +43,7 @@ enum Query {
 export class AdminShiftStaffNAComponent implements OnInit {
 
     @Input() editable;
+    @Input() roleId;
 
     _staffs;
 
@@ -124,27 +125,27 @@ export class AdminShiftStaffNAComponent implements OnInit {
 
         switch (statusId) {
             case STAFF_STATUS_SELECTED:
-                message = 'Really select this applicant?';
+                message = 'Really select this user?';
                 break;
 
             case STAFF_STATUS_APPLIED:
-                message = 'Really put this applicant on applied?';
+                message = 'Really put this user on applied?';
                 break;
 
             case STAFF_STATUS_STANDBY:
-                message = 'Really put this applicant on standby?';
+                message = 'Really put this user on standby?';
                 break;
 
             case STAFF_STATUS_HIDDEN_REJECTED:
-                message = 'Really hidden reject this applicant?';
+                message = 'Really hidden reject this user?';
                 break;
 
             case STAFF_STATUS_REJECTED:
-                message = 'Really reject this applicant?';
+                message = 'Really reject this user?';
                 break;
 
             default:
-                message = 'Really update this applicant?';
+                message = 'Really update this user?';
                 break;
         }
 
@@ -159,9 +160,9 @@ export class AdminShiftStaffNAComponent implements OnInit {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
                         this.toastr.success(res.message);
-                        this.scheduleService.getRoleStaffs(staff.shift_role_id, Query.Na)
+                        this.scheduleService.getRoleStaffs(this.roleId, Query.Na)
                             .subscribe(res => {
-                                this.staffs = res.role_staff;
+                                this.staffs = res;
                             })
                         this.updateStaffCount();
                     });

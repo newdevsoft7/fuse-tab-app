@@ -29,7 +29,15 @@
             </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="Hidden Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
+        <ngx-datatable-column name="Standby" [sortable]="false" [canAutoResize]="false" [width]="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')" matTooltip="Standby" [disabled]="editable !== 1">
+                    <mat-icon>flag</mat-icon>
+                </button>
+            </ng-template>
+        </ngx-datatable-column>
+
+        <!-- <ngx-datatable-column name="Hidden Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_HIDDEN_REJECTED')" matTooltip="Hidden Reject"
                     [disabled]="editable !== 1">
@@ -45,7 +53,7 @@
                     <mat-icon>clear</mat-icon>
                 </button>
             </ng-template>
-        </ngx-datatable-column>
+        </ngx-datatable-column> -->
 
         <ngx-datatable-column name="Action" [width]="100" [sortable]="false" [resizeable]="false"
             [draggable]="false" [canAutoResize]="false">
