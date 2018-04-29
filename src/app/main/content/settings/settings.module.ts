@@ -41,6 +41,7 @@ import { ItemComponent } from './shift-flags/item/item.component';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
 import { SettingsUserStatusesComponent } from './user-statuses/user-statuses.component';
 import { UserStatusItemComponent } from './user-statuses/item/item.component';
+import { CategoryDialogComponent } from './tracking/category-dialog/category-dialog.component';
 
 @NgModule({
     imports: [
@@ -86,14 +87,15 @@ import { UserStatusItemComponent } from './user-statuses/item/item.component';
         SettingsScheduleListComponent,
         ItemComponent,
         SettingsUserStatusesComponent,
-        UserStatusItemComponent
+        UserStatusItemComponent,
+        CategoryDialogComponent
     ],
 
     providers: [
         SettingsService
     ],
     entryComponents: [
-        
+        CategoryDialogComponent
     ],
     exports: [
         SettingsComponent

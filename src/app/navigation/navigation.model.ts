@@ -194,8 +194,7 @@ export const ADMIN_MODEL = [
         'title': 'Tracking',
         'translate': 'NAV.ADMIN.TRACKING',
         'type': 'collapse',
-        'icon': 'dashboard',
-        'tab': TAB.TRACKING_TAB
+        'icon': 'dashboard'
     },
     {
         'id': 'settings',
