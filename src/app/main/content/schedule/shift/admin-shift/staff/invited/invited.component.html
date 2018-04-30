@@ -8,7 +8,7 @@
                 <div class="savatar">
                     <img [src]="getAvatar(value)" (click)="openUser(row, $event)" [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
                         [matTooltip]="row.staff_status.status" />
-                    <div class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.text"></div>
+                    <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
                 </div>
             </ng-template>
         </ngx-datatable-column>

@@ -11,8 +11,8 @@
                         [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                         [matTooltip]="staff.staff_status.status" />
                     <span>{{staff.name}}</span>
-                    <div class="status" [style.background]="staff.user_status.color"
-                        [matTooltip]="staff.user_status.text"></div>
+                    <div *ngIf="staff.user_status!=null" class="status" [style.background]="staff.user_status.color"
+                        [matTooltip]="staff.user_status.sname"></div>
                 </div>
 
                 <div class="check-in-out px-12" matTooltip="Check In Time" fxFlex="1 1 80px">
