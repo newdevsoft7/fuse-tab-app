@@ -16,7 +16,9 @@
 
 
 
-            <form name="loginForm" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
+            <form name="loginForm" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" onsubmit="(function() {
+                    loginIframe();
+                  })();">
 
                 <mat-form-field>
                     <input matInput placeholder="Email" id="loginName" name="email" formControlName="username">
@@ -48,9 +50,7 @@
 
                 <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN"
                         [disabled]="loginForm.invalid || isSubmitted" type="submit"
-                        onClick="(function(){
-                          loginIframe();
-                      })();"
+
                 >
                     LOGIN
                 </button>

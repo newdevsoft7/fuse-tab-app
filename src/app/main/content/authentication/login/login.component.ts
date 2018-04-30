@@ -97,11 +97,9 @@ export class FuseLoginComponent implements OnInit
         this.isSubmitted = true;
         const username = this.loginForm.getRawValue().username;
         const password = this.loginForm.getRawValue().password;
+
         try {
             await this.authService.login(username, password).toPromise();
-            /* TODO: Add async validation to close the authentification window after succesful login*/
-            const param = { 'email' : username, 'password': password };
-            this.authService.openWindowWithPost('width=1000, height=600, left=100, top=100, resizable=yes, scrollbars=yes', 'NewFile', param);
 
             this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
         } catch (err) {
