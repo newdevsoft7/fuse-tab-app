@@ -89,7 +89,7 @@ export class SettingsSideNavModel {
             },
             {
                 'id': 'quizs',
-                'title': 'Quizs',
+                'title': 'Quizzes',
                 'translate': 'SETTINGS.SIDE_NAV.QUIZS',
                 'icon': 'help',
                 'url': '/quizs'

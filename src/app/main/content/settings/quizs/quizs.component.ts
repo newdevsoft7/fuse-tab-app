@@ -6,6 +6,9 @@ import {
 import { MatSlideToggleChange, MatSelectChange } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
+import { TabService } from '../../../tab/tab.service';
+import { Tab } from '../../../tab/tab';
+
 
 import { SettingsService } from '../settings.service';
 
@@ -30,7 +33,8 @@ export class SettingsQuizsComponent implements OnInit {
 
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private tabService: TabService
     ) { }
 
     ngOnInit() {
@@ -52,6 +56,18 @@ export class SettingsQuizsComponent implements OnInit {
             this.settingsChange.next(this.settings);
             this.toastr.success(res.message);
         });
+    }
+
+    addQuiz(): void {
+        const tab = new Tab(
+          'New Quiz',
+          'quizTpl',
+          `settings/quiz/new`,
+          {
+              name: 'New Quiz'
+          }
+        );
+        this.tabService.openTab(tab);
     }
 
 }
