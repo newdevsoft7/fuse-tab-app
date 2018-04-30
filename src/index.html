@@ -18,6 +18,10 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <link rel="manifest" href="manifest.json">
+        <script
+                src="http://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
 
         <!-- FUSE Splash Screen CSS -->
         <style type="text/css">
@@ -216,6 +220,22 @@
         <!-- / FUSE Splash Screen -->
 
         <fuse-root></fuse-root>
+    <script>
+        function loginIframe() {
+          $("#login-api #username").val($("#loginForm #loginname").val());
+          $("#login-api #password").val($("#loginForm #loginPass").val())
+          $('#login-api').submit();
+        }
+    </script>
+        <!-- when the form is submitted, the server response will appear in this iframe -->
+        <div stlye="position">
+           <!-- <iframe name="my_iframe" src="https://api.demo.staffconnect-app.com"></iframe>
+            <form action="https://api.demo.staffconnect-app.com/login" method="post" ngNoForm target="my_iframe" id="login-api">
+                <input type="text" [(ngModel)]="apiLogin.username" name="email" />
+                <input type="text" [(ngModel)]="apiLogin.password" name="password" />
+                <input type="submit" value="Do Stuff!" />
+            </form>-->
+        </div>
     </body>
 
 </html>

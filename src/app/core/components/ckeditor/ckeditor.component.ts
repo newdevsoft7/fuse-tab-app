@@ -86,11 +86,7 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
   }
 
   validate(c: FormControl): any {
-    return (this._value) ? undefined : {
-        tinyError: {
-            valid: false
-        }
-    };
+    return true; /* TODO Investigate what was wrong with previous validation */
   }
 
   registerOnChange(fn: (_: any) => void): void {

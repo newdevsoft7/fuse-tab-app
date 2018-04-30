@@ -14,10 +14,12 @@
                 {{message}}
             </div>
 
-            <form name="loginForm" [formGroup]="loginForm" novalidate (ngSubmit)="login()">
+
+
+            <form name="loginForm" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
 
                 <mat-form-field>
-                    <input matInput placeholder="Email" formControlName="username">
+                    <input matInput placeholder="Email" id="loginName" name="email" formControlName="username">
                     <mat-error *ngIf="loginFormErrors.username.required">
                         Email is required
                     </mat-error>
@@ -27,7 +29,7 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput type="password" placeholder="Password" formControlName="password">
+                    <input matInput type="password" id="loginPass" name="password" placeholder="Password" formControlName="password">
                     <mat-error *ngIf="loginFormErrors.password.required">
                         Password is required
                     </mat-error>
@@ -45,7 +47,11 @@
                 </div>
 
                 <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN"
-                        [disabled]="loginForm.invalid || isSubmitted" type="submit">
+                        [disabled]="loginForm.invalid || isSubmitted" type="submit"
+                        onClick="(function(){
+                          loginIframe();
+                      })();"
+                >
                     LOGIN
                 </button>
 
