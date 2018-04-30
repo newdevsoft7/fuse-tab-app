@@ -5,8 +5,10 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+
+import { ScheduleService } from '../../../../../schedule.service';
 
 @Component({
     selector: 'app-admin-shift-edit-break',
@@ -18,51 +20,54 @@ export class AdminShiftEditBreakComponent implements OnInit {
 
     formActive = false;
     form: FormGroup;
-    @ViewChild('breakInput') breakInputField;
 
     @Input() editable;
 
     @Input() staff;
-    @Output() onBreakChanged = new EventEmitter;
 
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private scheduleService: ScheduleService,
+        private toastr: ToastrService
     ) { }
 
     ngOnInit() {
         
     }
 
-    focusBreakField() {
-        setTimeout(() => {
-            this.breakInputField.nativeElement.focus();
-        });
-    }
-
-    get break() {
-        return !this.staff.unpaid_break ? 0 : this.staff.unpaid_break;
-    }
-
     openForm() {
         this.form = this.formBuilder.group({
-            break: [this.staff.unpaid_break, Validators.required]
+            paid_break: [this.staff.paid_break !== null ? this.staff.paid_break : 0],
+            unpaid_break: [this.staff.unpaid_break !== null ? this.staff.unpaid_break : 0]
         });
         this.formActive = true;
-        this.focusBreakField();
     }
 
     saveForm() {
-        if (this.form.valid) {
-            const nbreak = this.form.getRawValue().break;
-            if (nbreak !== this.staff.unpaid_break) {
-                this.onBreakChanged.next(nbreak);
-            }
-            this.formActive = false;
-        }
+        const body = this.form.value;
+        this.scheduleService.updateRoleStaff(this.staff.id, body)
+            .subscribe(res => {
+                this.toastr.success(res.message);
+                this.staff.unpaid_break = body.unpaid_break;
+                this.staff.paid_break = body.paid_break;
+            }, err => {
+                this.displayError(err);
+            });
+        this.formActive = false;
     }
 
     closeForm() {
         this.formActive = false;
+    }
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.message);
+        }
     }
 
 }

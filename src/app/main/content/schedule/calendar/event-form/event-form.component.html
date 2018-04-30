@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
   <mat-toolbar matDialogTitle class="mat-accent m-0">
       <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
-          <span class="title dialog-title">{{dialogTitle}}</span>
+          <span class="title dialog-title">{{event?.title}}</span>
           <button mat-button class="mat-icon-button"
                   (click)="dialogRef.close()"
                   aria-label="Close dialog">
@@ -11,111 +11,22 @@
   </mat-toolbar>
 
   <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <h3 class="text-bold m-0">Start Date/Time</h3>
+    <p class="mt-4 mb-0">{{event?.start | date: 'MMM d, y, h:mm a'}}</p>
 
-      <form name="eventForm" [formGroup]="eventForm" class="event-form w-100-p" fxLayout="column" fxFlex>
-
-          <mat-form-field class="w-100-p">
-              <input matInput
-                     name="title"
-                     formControlName="title"
-                     placeholder="Title"
-                     required>
-          </mat-form-field>
-
-          <div class="py-16" fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
-
-              <mat-form-field fxFlex>
-                  <input matInput
-                         class="background-color-input"
-                         name="background color"
-                         formControlName="backgroundColor"
-                         placeholder="Background color"
-                         [colorPicker]="eventForm.get('backgroundColor').value"
-                         cpWidth="290px"
-                         [cpPresetColors]="presetColors"
-                         [style.background]="eventForm.get('backgroundColor').value"
-                         (colorPickerChange)="eventForm.patchValue({backgroundColor: $event})"/>
-              </mat-form-field>
-
-          </div>
-
-          <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName="start" class="mb-16">
-
-              <mat-form-field class="mr-sm-24" fxFlex>
-                  <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date"
-                         [max]="eventForm.get(['end', 'date']).value"
-                         name="start"
-                         formControlName="date"
-                         required>
-                  <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #startDatePicker></mat-datepicker>
-              </mat-form-field>
-
-              <mat-form-field class="no-errors-spacer" fxFlex mat-no-float>
-                  <input matInput name="start_time" formControlName="time" placeholder="Start Time" [textMask]="startMask">
-                  <mat-error *ngIf="eventForm?.get(['start', 'time'])?.errors?.earlierThanEndDate">
-                    Start Date/Time must occur earlier than End Date/Time.
-                  </mat-error>
-                  <mat-error *ngIf="eventForm?.get(['start', 'time'])?.errors?.validTimeFormat">
-                    Invalid format.
-                  </mat-error>
-              </mat-form-field>
-
-          </div>
-
-          <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row" formGroupName="end">
-
-              <mat-form-field class="mr-sm-24" fxFlex>
-                  <input matInput [matDatepicker]="endDatePicker" placeholder="End Date"
-                         [min]="eventForm.get(['start', 'date']).value"
-                         name="end"
-                         formControlName="date">
-                  <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #endDatePicker></mat-datepicker>
-              </mat-form-field>
-
-              <mat-form-field class="no-errors-spacer" fxFlex mat-no-float>
-                  <input matInput name="end_time" formControlName="time" placeholder="End Time" [textMask]="endMask">
-                  <mat-error *ngIf="eventForm?.get(['end', 'time'])?.errors?.laterThanStartDate">
-                    End Date/Time must occur later than Start Date/Time.
-                  </mat-error>
-                  <mat-error *ngIf="eventForm?.get(['end', 'time'])?.errors?.validTimeFormat">
-                    Invalid format.
-                  </mat-error>
-              </mat-form-field>
-
-          </div>
-      </form>
-
+    <ng-container *ngIf="event?.end">
+        <h3 class="text-bold mt-20 mb-4">End Date/Time</h3>
+        <p class="m-0">{{event?.end | date: 'MMM d, y, h:mm a'}}</p>
+    </ng-container>
   </div>
 
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
 
-      <button *ngIf="action !=='edit'"
-              mat-raised-button
-              (click)="dialogRef.close(eventForm)"
-              color="accent"
-              [disabled]="eventForm.invalid"
-              aria-label="SAVE">
-          SAVE
-      </button>
-
-      <button *ngIf="action ==='edit'"
-              mat-raised-button
-              (click)="dialogRef.close(eventForm)"
-              color="accent"
-              [disabled]="eventForm.invalid"
-              aria-label="SAVE">
-          SAVE
-      </button>
-
-      <button *ngIf="action ==='edit'"
-              mat-raised-button
-              color="warn"
-              (click)="dialogRef.close()"
-              aria-label="Cancel"
-              matTooltip="Cancel">
-          CANCEL
+      <button mat-raised-button
+        (click)="dialogRef.close({type: 'delete', id: event?.id})"
+        color="warn"
+        aria-label="DELETE">
+        DELETE
       </button>
   </div>
 </div>

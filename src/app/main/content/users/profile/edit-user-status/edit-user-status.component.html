@@ -1,0 +1,31 @@
+<div id="edit-user-status">
+    <div *ngIf="!formActive" (click)="openForm()" class="text-field">
+        <div class="info" matTooltip="User Status" fxLayoutAlign="start center">
+            <div *ngIf="user.user_status" fxLayout="row" fxLayoutAlign="start center">
+                <div [style.background-color]="user.user_status.color" class="colored-dot"></div>
+                <span class="sname">{{user.user_status.sname}}</span>
+            </div>
+
+            <ng-container *ngIf="!user.user_status">Empty</ng-container>
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-form-field floatLabel="never">
+            <mat-select formControlName="user_status_id" placeholder="User Status">
+                <mat-option *ngFor="let status of userStatuses" [value]="status.id">
+                    {{status.sname}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>

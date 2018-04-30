@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { Moment } from 'moment';
 import * as moment from 'moment';
@@ -12,13 +12,16 @@ import { TabService } from '../../../tab/tab.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { ActionService } from '../../../../shared/services/action.service';
 import { ToastrService } from 'ngx-toastr';
+import { TabComponent } from '../../../tab/tab/tab.component';
+import { Subscription } from 'rxjs';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-schedule-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class ScheduleCalendarComponent implements OnInit {
+export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<CalendarEventFormDialogComponent>;
 
@@ -31,6 +34,9 @@ export class ScheduleCalendarComponent implements OnInit {
   endDate: string;
 
   loading: boolean = false;
+
+  tabLoaded: boolean = false;
+  tabActiveSubscription: Subscription;
 
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
@@ -46,7 +52,11 @@ export class ScheduleCalendarComponent implements OnInit {
       this.tabService.openTab(tab);
     },
     eventClick: (event: EventEntity, jsEvent: Event): void => {
-      this.openEventTab(event);
+      if (event.type === 'u') {
+        this.triggerEventModal(event);
+      } else {
+        this.openEventTab(event);
+      }
     }
   };
 
@@ -57,7 +67,11 @@ export class ScheduleCalendarComponent implements OnInit {
         title: 'Open',
         icon: 'open_in_new',
         callback: (event: EventEntity): void => {
-          this.openEventTab(event);
+          if (event.type === 'u') {
+            this.triggerEventModal(event);
+          } else {
+            this.openEventTab(event);
+          }
         }
       },
       {
@@ -114,10 +128,7 @@ export class ScheduleCalendarComponent implements OnInit {
         title: 'Delete',
         icon: 'delete',
         callback: (event: EventEntity): void => {
-          const index = this.options.events.indexOf(event);
-          if (index > -1) {
-            this.options.events.splice(index, 1);
-          }
+          this.deleteEvent(event);
         }
       }
     ]
@@ -137,11 +148,26 @@ export class ScheduleCalendarComponent implements OnInit {
     this.filtersObservable = (text: string): Observable<any> => {
       return Observable.of([]);
     };
+
+    this.tabActiveSubscription = this.tabService.tabActived.subscribe((tab: TabComponent) => {
+      if (tab.url === 'schedule/calendar') {
+        if (this.tabLoaded) {
+          this.fetchEvents(false);
+        } else {
+          this.tabLoaded = true;
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.tabActiveSubscription.unsubscribe();
+    this.tabLoaded = false;
   }
 
   onFiltersChanged(filters: any) {
     this.filters = filters;
-    this.fetchEvents();
+    this.fetchEvents(true);
   }
 
   updateEvents(event: { startDate: string, endDate: string }) {
@@ -150,10 +176,10 @@ export class ScheduleCalendarComponent implements OnInit {
     };
     this.startDate = event.startDate;
     this.endDate = event.endDate;
-    this.fetchEvents();
+    this.fetchEvents(true);
   }
 
-  async fetchEvents() {
+  async fetchEvents(isLoading: boolean) {
     const query = {
       filters: this.filters,
       from: this.startDate,
@@ -161,7 +187,7 @@ export class ScheduleCalendarComponent implements OnInit {
       view: 'calendar'
     };
 
-    this.loading = true;
+    if (isLoading) this.loading = true;
 
     try {
       this.options.events = await this.scheduleService.getShifts(query).toPromise();
@@ -172,58 +198,63 @@ export class ScheduleCalendarComponent implements OnInit {
     this.loading = false;
   }
 
-  triggerEventModal(data: { action: string, date?: Moment, event?: EventEntity }): void {
+  triggerEventModal(data: EventEntity): void {
     this.dialogRef = this.dialog.open(CalendarEventFormDialogComponent, {
       panelClass: 'event-form-dialog',
       data
     });
-    this.dialogRef.afterClosed().subscribe((response: FormGroup) => {
+    this.dialogRef.afterClosed().subscribe(async (response: any) => {
       if (!response) {
         return;
       }
-      const temp = response.getRawValue();
-      const newEvent = new EventEntity();
-      newEvent.title = temp.title;
-      if (temp.start.time) {
-        newEvent.start = `${moment(temp.start.date).format('YYYY-MM-DD')} ${temp.start.time}`;
-      } else {
-        newEvent.start = `${moment(temp.start.date).format('YYYY-MM-DD')}`;
-      }
-      if (temp.end.date && moment(temp.end.date).isValid()) {
-        if (temp.end.time) {
-          newEvent.end = `${moment(temp.end.date).format('YYYY-MM-DD')} ${temp.end.time || ''}`;
-        } else {
-          newEvent.end = `${moment(temp.end.date).format('YYYY-MM-DD')}`;
+      if (response.type === 'delete') {
+        this.loading = true;
+        try {
+          await this.scheduleService.deleteUnavailableShift(response.id);
+          let event = this.options.events.find((event) => event.id === response.id && event.type === 'u');
+          if (event) {
+            this.deleteEvent(event);
+          }
+        } catch (e) {
+          this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong while deleting shift.');
         }
-      }
-      if (temp.backgroundColor) {
-        newEvent.eventBackgroundColor = temp.backgroundColor;
-      }
-      if (data.action === 'new') {
-        if (!this.options.events) {
-          this.options.events = [];
-        }
-        this.options.events.push(newEvent);
-      } else {
-        const index = this.options.events.indexOf(data.event);
-        if (index > -1) {
-          this.options.events[index] = { ...data.event, ...newEvent };
-        }
+        this.loading = false;
       }
     });
   }
 
-  openEventTab(event: EventEntity) {
-    const id = event.id;
-    let template = 'staffShiftTpl';
-    let url = `staff/shift/${id}`;
-
-    if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-      template = 'adminShiftTpl';
-      url = `admin/shift/${id}`;
+  deleteEvent(event: EventEntity): void {
+    const index = this.options.events.indexOf(event);
+    if (index > -1) {
+      this.options.events.splice(index, 1);
     }
-    const tab = new Tab(event.title, template, url, { id, url });
-    this.tabService.openTab(tab);
+  }
+
+  openEventTab(event: EventEntity) {
+    if (event.type === 'g') {
+      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+        const tab = new Tab(
+          event.title,
+          'adminShiftGroupTpl',
+          `admin-shift/group/${event.id}`,
+          { id: event.id }
+        );
+        this.tabService.openTab(tab);
+      } else {
+        return;
+      }
+    } else {
+      const id = event.id;
+      let template = 'staffShiftTpl';
+      let url = `staff/shift/${id}`;
+  
+      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
+        template = 'adminShiftTpl';
+        url = `admin/shift/${id}`;
+      }
+      const tab = new Tab(event.title, template, url, { id, url });
+      this.tabService.openTab(tab);
+    }
   }
 
   // Open Shifts edit tab for a shift

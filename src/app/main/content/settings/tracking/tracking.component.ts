@@ -3,11 +3,13 @@ import {
     Output, EventEmitter
 } from '@angular/core';
 
-import { MatSlideToggleChange, MatSelectChange } from '@angular/material';
+import { MatSlideToggleChange, MatSelectChange, MatDialogRef, MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { TrackingService } from '../../tracking/tracking.service';
+import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 
 enum Setting {
     tracking_enable = 94
@@ -28,14 +30,24 @@ export class SettingsTrackingComponent implements OnInit {
     
     readonly Setting = Setting;
 
+    categories: any = [];
+    dialogRef: MatDialogRef<CategoryDialogComponent>;
+
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private trackingService: TrackingService,
+        private dialog: MatDialog
     ) { }
 
-    ngOnInit() {
+    async ngOnInit() {
+        try {
+            this.categories = await this.trackingService.getTrackingCategories().toPromise();
+        } catch (e) {
+            this.handleError(e);
+        }
     }
-    
+
     value(id: Setting) {
         if (_.isEmpty(this.settings)) return;
         const value = _.find(this.settings, ['id', id]);
@@ -54,4 +66,59 @@ export class SettingsTrackingComponent implements OnInit {
         });
     }
 
+    addCategory() {
+        this.dialogRef = this.dialog.open(CategoryDialogComponent, {
+            panelClass: 'tracking-category-dialog'
+        });
+        this.dialogRef.afterClosed().subscribe(async (res: any) => {
+            if (!res) return;
+            res.required = res.required? 1 : 0;
+            try {
+                const response = await this.trackingService.createTrackingCategory(res).toPromise();
+                this.categories.push(response.data);
+                this.trackingService.toggleCategories(this.categories);
+                this.toastr.success(response.message);
+            } catch (e) {
+                this.handleError(e);
+            }
+        });
+    }
+
+    editCategory(category: any) {
+        this.dialogRef = this.dialog.open(CategoryDialogComponent, {
+            panelClass: 'tracking-category-dialog',
+            data: category
+        });
+        this.dialogRef.afterClosed().subscribe(async res => {
+            if (!res) return;
+            res.required = res.required? 1 : 0;
+            try {
+                const response = await this.trackingService.updateTrackingCategory(res).toPromise();
+                let category = this.categories.find(category => category.id === response.data.id);
+                category.cname = response.data.cname;
+                category.client_visibility = response.data.client_visibility;
+                category.staff_visibility = response.data.staff_visibility;
+                category.required = response.data.required;
+                this.toastr.success(response.message);
+            } catch (e) {
+                this.handleError(e);
+            }
+        });
+    }
+
+    async deleteCategory(categoryId: number) {
+        try {
+            const response = await this.trackingService.deleteTrackingCategory(categoryId).toPromise();
+            const index = this.categories.findIndex(category => category.id === categoryId);
+            this.categories.splice(index, 1);
+            this.trackingService.toggleCategories(this.categories);
+            this.toastr.success(response.message);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    private handleError(e: any) {
+        this.toastr.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
+    }
 }

@@ -1,13 +1,23 @@
 <div id="profile" class="page-layout simple tabbed" fusePerfectScrollbar *ngIf="userInfo">
 
     <!-- HEADER -->
-    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between end">
+    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
 
-        <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
+        <div class="user-info" [ngClass.gt-xs]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
             <img class="profile-image avatar huge"
                 [src]="getAvatar(userInfo)">
             <div class="name">
                 {{userInfo.fname}} {{userInfo.lname}}
+            </div>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start end">
+            <div fxLayout="row" *ngIf="isFavStatusShow" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
+                <button mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
+                    <mat-icon [ngClass]="{'white-fg': userInfo.fav === 0, 'amber-600-fg': userInfo.fav === 1}">star</mat-icon>
+                </button>
+
+                <app-edit-user-status [user]="userInfo" class="ml-8"></app-edit-user-status>
             </div>
         </div>
 

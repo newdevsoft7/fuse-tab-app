@@ -178,6 +178,30 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    getUserStatuses(): Observable<any> {
+        const url = `${BASE_URL}/userStatuses`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    createUserStatus(params): Observable<any> {
+        const url = `${BASE_URL}/userStatus`;
+        return this.http.post(url, params)
+            .catch(this.handleError);
+    }
+
+    updateUserStatus(id: number, params): Observable<any> {
+        const url = `${BASE_URL}/userStatus/${id}`;
+        return this.http.put(url, params)
+            .catch(this.handleError);
+    }
+
+    deleteUserStatus(id: number): Observable<any> {
+        const url = `${BASE_URL}/userStatus/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
     getForms(): Observable<any> {
         const url = `${BASE_URL}/forms`;
         return this.http.get(url)

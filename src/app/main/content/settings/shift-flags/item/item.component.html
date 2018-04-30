@@ -14,7 +14,7 @@
 
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px" *ngIf="formActive">
     <mat-form-field floatPlaceholder="never" class="name" fxFlex="200px">
-        <input matInput [value]="form.fname" #nameInput placeholder="Write a flag name" required>
+        <input matInput [(ngModel)]="form.fname" #nameInput placeholder="Write a flag name" required>
     </mat-form-field>
 
     <div class="color" fxFlex="150px" [style.background]="form.color">

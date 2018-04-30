@@ -239,6 +239,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async fetchChatByThread(threadId: number) {
     if (this.selectedThread && this.selectedThread.id === threadId) return;
+    this.typingUsers = [];
     this.paginationDisabled = false;
     this.readThread(threadId);
     this.selectedChat = [];
@@ -452,6 +453,6 @@ export class UsersChatComponent implements OnInit, OnDestroy {
   }
 
   handleError(e) {
-    throw new Error(e);
+    this.toastr.error(e.error.message);
   }
 }

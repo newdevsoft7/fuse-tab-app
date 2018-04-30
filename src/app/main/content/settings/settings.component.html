@@ -22,7 +22,7 @@
 
             <div class="sidenav-content pt-16" fusePerfectScrollbar>
 
-                <app-settings-sidenav></app-settings-sidenav>
+                <app-settings-sidenav (selected)="scrollbar.scrollToTop()"></app-settings-sidenav>
 
             </div>
 
@@ -30,7 +30,7 @@
         <!-- / SIDENAV -->
 
         <!-- CENTER -->
-        <div class="center p-16" fusePerfectScrollbar>
+        <div class="center p-16" fusePerfectScrollbar #scrollbar="fusePerfectScrollbar">
 
             <!-- CONTENT -->
             <div class="content mat-elevation-z4 mat-white-bg p-24">
@@ -99,8 +99,9 @@
                     <app-settings-tracking *ngSwitchCase="'tracking'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-tracking>
 
-                    <app-settings-user-table *ngSwitchCase="'user_table'" [options]="options" [(settings)]="settings" fxFill>
-                    </app-settings-user-table>
+                    <app-settings-user-table *ngSwitchCase="'user_table'" fxFill></app-settings-user-table>
+
+                    <app-settings-schedule-list *ngSwitchCase="'schedule_list'" fxFill></app-settings-schedule-list>
 
                     <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]="(settings)" class="w-100-p">
                     </app-settings-work-areas>
@@ -110,6 +111,9 @@
 
                     <app-settings-xero *ngSwitchCase="'xero'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-xero>
+
+                    <app-settings-user-statuses *ngSwitchCase="'user_statuses'" fxFill>
+                    </app-settings-user-statuses>
 
                 </ng-container>
             </div>

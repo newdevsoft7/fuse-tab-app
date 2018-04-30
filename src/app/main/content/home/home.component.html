@@ -84,8 +84,8 @@
         <app-settings></app-settings>
     </ng-template>
 
-    <ng-template #trackingTpl>
-        <app-tracking></app-tracking>
+    <ng-template #trackingTpl let-data="data">
+        <app-tracking [data]="data"></app-tracking>
     </ng-template>
 
     <ng-template #adminGenStaffInvoicesTpl>

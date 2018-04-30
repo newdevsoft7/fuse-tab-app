@@ -165,6 +165,20 @@ export class SettingsSideNavModel {
                 'url': '/user_table'
             },
             {
+                'id': 'user_statuses',
+                'title': 'User Statuses',
+                'translate': 'SETTINGS.SIDE_NAV.USER_STATUSES',
+                'icon': 'flag',
+                'url': '/user_statuses'
+            },
+            {
+                'id': 'schedule_list',
+                'title': 'Schedule List',
+                'translate': 'SETTINGS.SIDE_NAV.SCHEDULE_LIST',
+                'icon': 'view_list',
+                'url': '/schedule_list'
+            },
+            {
                 'id': 'work_areas',
                 'title': 'Work Areas',
                 'translate': 'SETTINGS.SIDE_NAV.WORK_AREAS',

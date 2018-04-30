@@ -31,6 +31,7 @@ import { SettingsSurveysComponent } from './surveys/surveys.component';
 import { SettingsSystemComponent } from './system/system.component';
 import { SettingsTrackingComponent } from './tracking/tracking.component';
 import { SettingsUserTableComponent } from './user-table/user-table.component';
+import { SettingsScheduleListComponent } from './schedule-list/schedule-list.component';
 import { SettingsWorkMarketComponent } from './work-market/work-market.component';
 import { SettingsXeroComponent } from './xero/xero.component';
 import { SettingsShiftFlagsComponent } from './shift-flags/shift-flags.component';
@@ -38,6 +39,9 @@ import { SettingsPayLevelItemComponent } from './pay-levels/pay-level-item/pay-l
 import { SettingsPayCategoryItemComponent } from './pay-levels/pay-category-item/pay-category-item.component';
 import { ItemComponent } from './shift-flags/item/item.component';
 import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.module';
+import { SettingsUserStatusesComponent } from './user-statuses/user-statuses.component';
+import { UserStatusItemComponent } from './user-statuses/item/item.component';
+import { CategoryDialogComponent } from './tracking/category-dialog/category-dialog.component';
 
 @NgModule({
     imports: [
@@ -80,14 +84,18 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
         SettingsShiftFlagsComponent,
         SettingsPayLevelItemComponent,
         SettingsPayCategoryItemComponent,
-        ItemComponent
+        SettingsScheduleListComponent,
+        ItemComponent,
+        SettingsUserStatusesComponent,
+        UserStatusItemComponent,
+        CategoryDialogComponent
     ],
 
     providers: [
         SettingsService
     ],
     entryComponents: [
-        
+        CategoryDialogComponent
     ],
     exports: [
         SettingsComponent

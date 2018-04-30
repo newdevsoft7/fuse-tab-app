@@ -13,4 +13,27 @@
     </div>
     <!-- / TRACKING MODULE -->
 
+    <button class="btn-add-category" mat-mini-fab color="accent" (click)="addCategory()">
+        <mat-icon>add</mat-icon>
+    </button>
+    <div class="pt-16 nav" fuseperfectscrollbar>
+        <div class="nav-item" *ngFor="let category of categories">
+            <div matRipple class="nav-link" fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="name">
+                    {{category.cname}}
+                </span>
+
+                <div fxFlex="0 1 auto">
+                    <button mat-icon-button (click)="editCategory(category)">
+                        <mat-icon class="s-20">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="deleteCategory(category.id)">
+                        <mat-icon class="s-20">delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+        </div>
+    </div>
 </div>
