@@ -133,6 +133,10 @@
         <app-form [data]="data"></app-form>
     </ng-template>
 
+    <ng-template #quizTpl let-data="data">
+        <app-quiz [data]="data"></app-quiz>
+    </ng-template>
+
     <ng-template #payrollTpl>
         <app-payroll></app-payroll>
     </ng-template>

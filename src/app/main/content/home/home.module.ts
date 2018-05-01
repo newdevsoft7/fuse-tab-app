@@ -8,6 +8,7 @@ import { ProfileModule } from '../profile/profile.module';
 import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { ScheduleModule } from '../schedule/schedule.module';
 import { FormSignModule } from '../form-sign/form-sign.module';
+import { QuizModule } from '../quiz/quiz.module';
 
 import { FuseHomeComponent } from './home.component';
 import { SettingsModule } from '../settings/settings.module';
@@ -47,6 +48,7 @@ import { TemplatesModule } from '../templates/templates.module';
         TrackingModule,
         AccountingModule,
         FormSignModule,
+        QuizModule,
         PayrollModule,
         TemplatesModule
     ],

@@ -1,0 +1,14 @@
+:host {
+
+  .quiz-iframe {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .page-layout {
+    overflow: unset !important;
+    margin: -1em;
+    width: inherit;
+    height: calc(100vh - 114px);
+  }
+}
