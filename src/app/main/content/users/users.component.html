@@ -160,7 +160,7 @@
                         <ng-template *ngIf="column.key_name == 'ppic_a'" let-row="row" let-value="value" ngx-datatable-cell-template>
                             <div class="savatar">
                                 <img [src]="getAvatar(value)" (click)="openUserTab(row, $event)" />
-                                <div class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.text"></div>
+                                <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
                             </div>
                         </ng-template>
                     </ngx-datatable-column>
