@@ -41,19 +41,21 @@
             }
 
             .chat-contact {
-                cursor: pointer;
-
                 .avatar {
                     margin-right: 16px;
                 }
 
                 .chat-contact-name {
                     height: 55px;
-                    .name {                    
+                    .name {
                         width: 400px;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         max-width: 40vw;
+
+                        &.has-shift {
+                            cursor: pointer;
+                        }
                     }
                 }
             }

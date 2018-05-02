@@ -23,7 +23,7 @@
                 <!-- CHAT CONTACT-->
                 <div class="chat-contact" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="thread">
                     <div class="chat-contact-name" fxLayout="column" fxLayoutAlign="center start">
-                        <p class="m-0 name">{{thread?.name}}</p>
+                        <p class="m-0 name" [class.has-shift]="thread?.shift_id" (click)="openShiftTab(thread?.shift_id)">{{thread?.name}}</p>
                         <p class="font-size-14 m-0" fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="mr-8">group</mat-icon>{{thread.participants.length}} members
                         </p>
@@ -109,14 +109,15 @@
                     debounce
                     [delay]="2000"
                     ngModel
-                    placeholder="Type and hit enter to send a message"
+                    [placeholder]="placeholder"
+                    [disabled]="!thread?.active"
                     (onValueChange)="stopTyping()"
                     (keypress)="continueTyping()" 
                     (blur)="updatePendingMessage.next(replyForm.form.value.message)" 
                     name="message"></textarea>
             </mat-form-field>
 
-            <button mat-fab class="" type="submit" [disabled]="!replyForm.form.value.message" aria-label="Send message">
+            <button mat-fab class="" type="submit" [disabled]="!replyForm.form.value.message || !thread?.active" aria-label="Send message">
                 <mat-icon>send</mat-icon>
             </button>
 

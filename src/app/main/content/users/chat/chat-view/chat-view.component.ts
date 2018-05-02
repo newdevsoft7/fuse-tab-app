@@ -3,6 +3,10 @@ import { NgForm } from '@angular/forms';
 import { FusePerfectScrollbarDirective } from '../../../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { UserService } from '../../user.service';
+import { ToastrService } from 'ngx-toastr';
+import { ScheduleService } from '../../../schedule/schedule.service';
+import { Tab } from '../../../../tab/tab';
+import { TabService } from '../../../../tab/tab.service';
 
 @Component({
     selector   : 'fuse-chat-view',
@@ -15,6 +19,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     @Input('thread') set updateThread(thread: any) {
         if (thread) {
             this.thread = thread;
+            this.placeholder = this.thread.active? 'Type and hit enter to send a message' : 'The conversation is inactive, messages can no longer be sent';
             this.currentPage = 0;
             this.readyToReply();
         }
@@ -55,8 +60,14 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     currentPage: number = 0;
     loading: boolean = true;    
 
-    constructor(private tokenStorage: TokenStorage)
-    {
+    placeholder: string;
+
+    constructor(
+        private tokenStorage: TokenStorage,
+        private toastrService: ToastrService,
+        private scheduleService: ScheduleService,
+        private tabService: TabService
+    ) {
         this.authenticatedUser = tokenStorage.getUser();
     }
 
@@ -127,6 +138,10 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     reply(event)
     {
         if (!this.replyForm.form.value.message) return;
+        if (!this.thread.active) {
+            this.toastrService.error('The conversation is inactive, messages can no longer be sent.');
+            return;
+        }
         const message = {
             thread_id: this.thread.id,
             content: this.replyForm.form.value.message
@@ -153,5 +168,38 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
             this.fetchMessages.next(this.currentPage);
         }
         this.currentPage++;
+    }
+
+    async openShiftTab(shiftId: number): Promise<any> {
+        if (!shiftId) return;
+        try {
+            const shift = await this.scheduleService.getShift(shiftId);
+            if (shift.type === 'g') {
+                if (['owner', 'admin'].includes(this.authenticatedUser.lvl)) {
+                  const tab = new Tab(
+                    shift.title,
+                    'adminShiftGroupTpl',
+                    `admin-shift/group/${shift.id}`,
+                    { id: shift.id }
+                  );
+                  this.tabService.openTab(tab);
+                } else {
+                  return;
+                }
+            } else {
+                const id = shift.id;
+                let template = 'staffShiftTpl';
+                let url = `staff/shift/${id}`;
+            
+                if (['owner', 'admin'].includes(this.authenticatedUser.lvl)) {
+                  template = 'adminShiftTpl';
+                  url = `admin/shift/${id}`;
+                }
+                const tab = new Tab(shift.title, template, url, { id, url });
+                this.tabService.openTab(tab);
+            }
+        } catch (e) {
+            this.toastrService.error(e.error.message);
+        }
     }
 }
