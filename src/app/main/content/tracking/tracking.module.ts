@@ -13,6 +13,7 @@ import { TrackingEditCategoryClientComponent } from './edit-category-client/edit
 import { TrackingAddOptionComponent } from './add-option/add-option.component';
 import { TrackingEditOptionNameComponent } from './edit-option-name/edit-option-name.component';
 import { TrackingEditOptionStaffComponent } from './edit-option-staff/edit-option-staff.component';
+import { TrackingOptionDetailComponent } from './tracking-option/tracking-option.component';
 
 @NgModule({
     imports: [
@@ -31,13 +32,15 @@ import { TrackingEditOptionStaffComponent } from './edit-option-staff/edit-optio
         TrackingEditCategoryClientComponent,
         TrackingAddOptionComponent,
         TrackingEditOptionNameComponent,
-        TrackingEditOptionStaffComponent
+        TrackingEditOptionStaffComponent,
+        TrackingOptionDetailComponent
     ],
 
     providers: [TrackingService],
     entryComponents: [],
     exports: [
-        TrackingComponent
+        TrackingComponent,
+        TrackingOptionDetailComponent
     ]
 })
 export class TrackingModule { }

@@ -5,6 +5,7 @@ import { TabService } from '../../../main/tab/tab.service';
 import { TrackingService } from '../../../main/content/tracking/tracking.service';
 import { TrackingCategory } from '../../../main/content/tracking/tracking.models';
 import { Tab } from '../../../main/tab/tab';
+import { TokenStorage } from '../../../shared/services/token-storage.service';
 
 @Component({
     selector     : 'fuse-navigation',
@@ -27,7 +28,8 @@ export class FuseNavigationComponent implements OnDestroy
     constructor(
         private fuseNavigationService: FuseNavigationService,
         private tabService: TabService,
-        private trackingService: TrackingService
+        private trackingService: TrackingService,
+        private tokenStorage: TokenStorage
     )
     {
         this.navigationModelChangeSubscription =
@@ -54,7 +56,7 @@ export class FuseNavigationComponent implements OnDestroy
                 let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
                 let tab = trackingNav.children.find ( t => t.id == category.id );
                 if (tab) this.updateNavItemActive(trackingNav.children, tab.tab);
-            });            
+            });
     }
 
     updateNavItemActive(items, tab) {
@@ -76,16 +78,10 @@ export class FuseNavigationComponent implements OnDestroy
     }
 
     getTrackingCategories() {
-        this.trackingService.getTrackingCategories().subscribe(
-            res => {
-                let trackingCategories = [...res];
-                this.addTrackingCategoriesToMenu( trackingCategories );
-            },
-            err => {
-                console.log(err);
-            });
+        const categories = this.tokenStorage.getSettings().tracking;
+        this.trackingService.toggleCategories(categories);
     }
-    
+
     addTrackingCategoriesToMenu(trackingCategories: TrackingCategory[]) {
         let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
         if (trackingNav) {

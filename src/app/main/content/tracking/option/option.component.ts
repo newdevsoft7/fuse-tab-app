@@ -8,6 +8,8 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { TrackingService } from '../tracking.service';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { Subscription } from 'rxjs/Subscription';
+import { TabService } from '../../../tab/tab.service';
+import { Tab } from '../../../tab/tab';
 
 
 @Component({
@@ -37,17 +39,12 @@ export class TrackingOptionComponent implements OnInit, DoCheck {
         private dialog: MatDialog,
         private toastr: ToastrService,
         private trackingService: TrackingService,
-        private differs: KeyValueDiffers) {
+        private differs: KeyValueDiffers,
+        private tabService: TabService) {
         this.differ = differs.find({}).create();
     }
 
-    ngOnInit() {
-        if ( this.category ){
-            this.getOptions(this.category.id);
-        } else {
-            this.options = null;
-        }
-    }
+    ngOnInit() {}
 
     ngDoCheck() {
         const change = this.differ.diff(this.category);
@@ -139,6 +136,19 @@ export class TrackingOptionComponent implements OnInit, DoCheck {
         if (this.table) {
             this.table.offset = 0;
         }
+    }
+
+    onViewDetail(option) {
+        let tab = new Tab(
+            option.oname, 
+            'trackingOptionTpl', 
+            `tracking-option/${option.tracking_cat_id}/${option.id}`, 
+            { 
+                tracking_cat_id: option.tracking_cat_id, 
+                id: option.id 
+            }
+        );
+        this.tabService.openTab(tab);
     }
 
     onSelect(evt) {

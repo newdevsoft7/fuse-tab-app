@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MatSidenav } from '@angular/material';
 import { TrackingService } from './tracking.service';
 import { TrackingCategory } from './tracking.models';
+import { TokenStorage } from '../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-tracking',
@@ -27,11 +28,12 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private toastr: ToastrService,
+        private tokenStorage: TokenStorage,
         private trackingService: TrackingService) {
 
         this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
-            categeories => {
-                this.categories = categeories;
+            categories => {
+                this.categories = categories;
                 let index = this.categories.findIndex(category => category.id === this.selectedCategory.id);
                 if (index === -1) {
                     this.selectedCategory = null;
@@ -46,11 +48,12 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.trackingService.onSelectCategoryChanged.next(this.data);
+        this.trackingService.toggleSelectedCategory(this.data);
         this.getTrackingCategories();
     }
 
     ngOnDestroy() {
+        this.onSelectedCategoryChanged.unsubscribe();
         this.onSelectedCategoryChanged.unsubscribe();
     }
 
@@ -61,14 +64,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     getTrackingCategories() {
-        this.trackingService.getTrackingCategories().subscribe(
-            res => {
-                this.categories = [...res];
-                this.trackingService.toggleCategories(this.categories);
-            },
-            err => {
-                console.log(err);
-            });
+        this.categories = this.tokenStorage.getSettings().tracking;
     }
 
     onCategoryAdd(newCategory) {

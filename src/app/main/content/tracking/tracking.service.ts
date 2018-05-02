@@ -41,9 +41,21 @@ export class TrackingService {
         return this.http.get(TRACKING_OPTION_URL)
             .catch(this.handleError);
     }
-    
+
     getTrackingOptionsByCategory(categoryId: number): Observable<any> {
         const url = `${TRACKING_OPTION_URL}/${categoryId}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    getTrackingOption(categoryId: number, optId: number): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${categoryId}/${optId}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    getTrackingOptionAccess(optId: number): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/access`;
         return this.http.get(url)
             .catch(this.handleError);
     }
@@ -75,6 +87,12 @@ export class TrackingService {
             .catch(this.handleError);
     }
 
+    getTrackingCategory(trackingCategoryId: number): Observable<any> {
+        const url = `${TRACKING_CATEGORY_URL}/${trackingCategoryId}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
     updateTrackingCategory(trackingCategory: TrackingCategory): Observable<any> {
         const url = `${TRACKING_CATEGORY_URL}/${trackingCategory.id}`;
         return this.http.put(url, { ...trackingCategory })
@@ -89,5 +107,5 @@ export class TrackingService {
 
     private handleError(error: Response | any) {
         return Observable.throw(error);
-    }    
+    }
 }

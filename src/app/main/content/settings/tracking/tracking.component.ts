@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { SettingsService } from '../settings.service';
 import { TrackingService } from '../../tracking/tracking.service';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 
 enum Setting {
     tracking_enable = 94
@@ -36,16 +37,13 @@ export class SettingsTrackingComponent implements OnInit {
     constructor(
         private settingsService: SettingsService,
         private toastr: ToastrService,
+        private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
         private dialog: MatDialog
     ) { }
 
-    async ngOnInit() {
-        try {
-            this.categories = await this.trackingService.getTrackingCategories().toPromise();
-        } catch (e) {
-            this.handleError(e);
-        }
+    ngOnInit() {
+        this.categories = this.tokenStorage.getSettings().tracking;
     }
 
     value(id: Setting) {
@@ -75,7 +73,11 @@ export class SettingsTrackingComponent implements OnInit {
             res.required = res.required? 1 : 0;
             try {
                 const response = await this.trackingService.createTrackingCategory(res).toPromise();
-                this.categories.push(response.data);
+                this.categories.push({
+                    id: response.data.id,
+                    cname: response.data.cname
+                });
+                this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
                 this.trackingService.toggleCategories(this.categories);
                 this.toastr.success(response.message);
             } catch (e) {
@@ -84,26 +86,30 @@ export class SettingsTrackingComponent implements OnInit {
         });
     }
 
-    editCategory(category: any) {
-        this.dialogRef = this.dialog.open(CategoryDialogComponent, {
-            panelClass: 'tracking-category-dialog',
-            data: category
-        });
-        this.dialogRef.afterClosed().subscribe(async res => {
-            if (!res) return;
-            res.required = res.required? 1 : 0;
-            try {
-                const response = await this.trackingService.updateTrackingCategory(res).toPromise();
-                let category = this.categories.find(category => category.id === response.data.id);
-                category.cname = response.data.cname;
-                category.client_visibility = response.data.client_visibility;
-                category.staff_visibility = response.data.staff_visibility;
-                category.required = response.data.required;
-                this.toastr.success(response.message);
-            } catch (e) {
-                this.handleError(e);
-            }
-        });
+    async editCategory(categoryId: any) {
+        try {
+            const category = await this.trackingService.getTrackingCategory(categoryId).toPromise();
+            this.dialogRef = this.dialog.open(CategoryDialogComponent, {
+                panelClass: 'tracking-category-dialog',
+                data: category
+            });
+            this.dialogRef.afterClosed().subscribe(async res => {
+                if (!res) return;
+                res.required = res.required? 1 : 0;
+                try {
+                    const response = await this.trackingService.updateTrackingCategory(res).toPromise();
+                    let category = this.categories.find(category => category.id === response.data.id);
+                    category.cname = response.data.cname;
+                    this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
+                    this.trackingService.toggleCategories(this.categories);
+                    this.toastr.success(response.message);
+                } catch (e) {
+                    this.handleError(e);
+                }
+            });
+        } catch (e) {
+            this.handleError(e);
+        }
     }
 
     async deleteCategory(categoryId: number) {
@@ -111,6 +117,7 @@ export class SettingsTrackingComponent implements OnInit {
             const response = await this.trackingService.deleteTrackingCategory(categoryId).toPromise();
             const index = this.categories.findIndex(category => category.id === categoryId);
             this.categories.splice(index, 1);
+            this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
             this.trackingService.toggleCategories(this.categories);
             this.toastr.success(response.message);
         } catch (e) {
