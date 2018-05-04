@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { UsersChatService } from '../../main/content/users/chat/chat.service';
 
 firebase.initializeApp({
-  messagingSenderId: '557767382630'
+  messagingSenderId: '184388846598'//'557767382630'
 });
 
 @Injectable()
@@ -12,7 +12,7 @@ export class FCMService {
   notificationAllowed: boolean = false;
 
   constructor(
-    private usersChatService: UsersChatService) {}
+    private usersChatService: UsersChatService) { }
 
   async requestPermission(): Promise<any> {
     try {

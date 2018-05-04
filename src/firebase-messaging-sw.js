@@ -8,7 +8,7 @@ importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-messaging.js');
 // Initialize the Firebase app in the service worker by passing in the
 // messagingSenderId.
 firebase.initializeApp({
-  'messagingSenderId': '557767382630'
+  'messagingSenderId': '184388846598'//'557767382630'
 });
 
 
@@ -41,7 +41,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
   console.warn('Push messaging is not supported');
 }
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   console.log('[Service Worker] Notification click Received.');
   console.log(event);
 
@@ -52,13 +52,13 @@ self.addEventListener('notificationclick', function(event) {
   );
 });
 
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function (event) {
   var payload = event.data.json();
   const title = payload.notification.title;
   const options = {
     body: payload.notification.body,
     actions: [
-      {action: payload.data.action, title: payload.data.action}
+      { action: payload.data.action, title: payload.data.action }
     ],
     data: payload.data,
     icon: payload.notification.icon
