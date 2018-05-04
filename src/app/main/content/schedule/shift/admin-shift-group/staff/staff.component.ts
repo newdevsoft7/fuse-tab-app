@@ -535,6 +535,27 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
             });
     }
 
+    selectStaffs({ shiftId, userIds, role }) {
+        const body: any = {};
+        body.user_ids = userIds;
+        role = { ...role, shift_id: shiftId };
+        this.spinner.show();
+        this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_SELECTED).subscribe(
+            res => {
+                this.spinner.hide();
+                this.refreshTabByRole(role, Section.Selected);
+                this.updateStaffsCount(role);
+                const roles = this.shifts.find(v => v.id === role.shift_id).shift_roles;
+                const index = roles.findIndex(v => v.id === role.id);
+                roles[index].section = Section.Selected;
+                this.toastr.success(res.message);
+            },
+            err => {
+                this.spinner.hide();
+                this.toastr.error(err.error.message);
+            });
+    }
+
     private displayError(e: any) {
 		const errors = e.error.errors;
 		if (errors) {

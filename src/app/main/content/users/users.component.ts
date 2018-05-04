@@ -28,7 +28,8 @@ const USERS_TAB = 'users';
 export enum Mode {
     Normal, // Users
     Role,
-    Invite
+    Invite,
+    Select
 }
 
 @Component({
@@ -82,6 +83,10 @@ export class UsersComponent implements OnInit {
         if (this._data && this._data.invite) {
             this.mode = Mode.Invite;
         }
+
+        if (this._data && this._data.select) {
+            this.mode = Mode.Select;
+        }
     }
 
     constructor(
@@ -108,6 +113,18 @@ export class UsersComponent implements OnInit {
             }
         }
 
+        // For assigning to a shift
+        if (this.data.select) {
+            this.data.select_all = true;
+            this.filters = this.data.filters;
+            this.selectedTypeFilter = 'utype:=:staff';
+            if (this.data.selectedRoleId) {
+                try {
+                    await this.onRoleChange();
+                } catch (e) { }
+            }
+        }
+
         this.currentUser = this.tokenStorage.getUser();
         this.init();
     }
@@ -117,7 +134,7 @@ export class UsersComponent implements OnInit {
     }
 
     onPageLengthChange(event) {
-        this.getUsers({pageSize: event.value});
+        this.getUsers({ pageSize: event.value });
     }
 
     private getUsers(params = null) {
@@ -229,6 +246,9 @@ export class UsersComponent implements OnInit {
         if (this.data.invite) {
             this.data.invite_all = true;
         }
+        if (this.data.select) {
+            this.data.select_all = true;
+        }
     }
 
     onTypeFilterChange(filter) {
@@ -237,6 +257,9 @@ export class UsersComponent implements OnInit {
 
         if (this.data.invite) {
             this.data.invite_all = true;
+        }
+        if (this.data.select) {
+            this.data.select_all = true;
         }
     }
 
@@ -281,8 +304,25 @@ export class UsersComponent implements OnInit {
             // TODO - Open message composer tab
         } else {
             // Invite Staffs
-            this.actionService.inviteUsersToRole({ shiftId, filters, role, userIds, inviteAll });
+            this.actionService.inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll });
             this.removeInvitationBar();
+        }
+    }
+
+    select(messaging: boolean) {
+        const shiftId = this.data.shiftId;
+        const role = { id: this.data.selectedRoleId };
+        const section = 'Selected';
+        const userIds = this.selectedUsers.map(v => v.id);
+        if (!this.data.selectedRoleId) { return; }
+        if (this.total === 0 || _.isEmpty(userIds)) { return; }
+
+        if (messaging) {
+            // TODO - Open message composer tab
+        } else {
+            // select Staffs
+            this.actionService.selectUsersToRole({ shiftId, userIds, role });
+            this.removeSelectBar();
         }
     }
 
@@ -294,6 +334,11 @@ export class UsersComponent implements OnInit {
 
     removeInvitationBar() {
         this.data.invite = false;
+        this.resetFilters();
+    }
+
+    removeSelectBar() {
+        this.data.select = false;
         this.resetFilters();
     }
 
