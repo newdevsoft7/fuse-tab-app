@@ -37,6 +37,33 @@
         </div>
         <!-- / INVITATION BAR -->
 
+        <!-- SELECT BAR -->
+        <div *ngIf="data.select" fxLayout.gt-xs="row" fxLayout="column" class="invitation-bar"
+            fxLayoutAlign.gt-xs="space-between center" fxLayoutGap.xs="8px">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
+                <span class="title">Select for</span>
+
+                <mat-form-field floatLabel="never">
+                    <mat-select [(ngModel)]="data.selectedRoleId" placeholder="Choose role" (ngModelChange)="onRoleChange()">
+                        <mat-option *ngFor="let role of data.roles" [value]="role.id">{{role.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <mat-checkbox #editMessage>Edit Message</mat-checkbox>
+
+            <div>
+                <button mat-raised-button color="accent" (click)="select(editMessage.checked)">
+                    <ng-container>Select</ng-container>
+                </button>
+            </div>
+
+            <button mat-icon-button fxFlex="0 1 auto" (click)="removeSelectBar()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <!-- / SELECT BAR -->
+
         <!-- SEARCHBAR -->
         <app-users-search-bar
             [filters]="filters"
@@ -47,7 +74,7 @@
         </app-users-search-bar>
         <!-- / SEARCHBAR -->
 
-        <ng-container *ngIf="selectedUsers.length > 0 && !data.invite && !data.role">
+        <ng-container *ngIf="selectedUsers.length > 0 && !data.invite && !data.role && !data.select">
         <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom
             [@animate]="{value:'*',params:{delay:'50ms'}}"
             fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
@@ -279,12 +306,6 @@
             <mat-icon>person_add</mat-icon>
         </button>
         <!-- / ADD USER BUTTON -->
-
-        <!-- ADD USERS TO ROLE BUTTON -->
-        <button *ngIf="mode === Mode.Role" mat-fab class="mat-warn-bg" id="add-user-button" aria-label="add user to shift" (click)="addUsersToRole()">
-            <mat-icon>person_add</mat-icon>
-        </button>
-        <!-- / ADD USERS TO ROLE BUTTON -->
 
     </div>
     <!-- CONTENT -->

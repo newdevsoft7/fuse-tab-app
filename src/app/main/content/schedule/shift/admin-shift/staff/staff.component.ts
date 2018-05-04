@@ -223,6 +223,25 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             });
     }
 
+    selectStaffs({ userIds, role }) {
+        const body: any = {};
+        body.user_ids = userIds;
+        this.spinner.show();
+        this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_SELECTED).subscribe(
+            res => {
+                this.spinner.hide();
+                this.refreshTabByRole(role, Section.Selected);
+                this.updateStaffsCount(role.id);
+                const index = this.roles.findIndex(v => v.id === role.id);
+                this.roles[index].section = Section.Selected;
+                this.toastr.success(res.message);
+            },
+            err => {
+                this.spinner.hide();
+                this.toastr.error(err.error.message);
+            });
+    }
+
     moveup(role) {
         const index = role.index;
         if (index === 0) { return; }
@@ -302,11 +321,20 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     onAddStaffToRole(role) {
         // TODO
-        const filters = [];
+        const roles = this.shift.shift_roles.map(v => {
+            return {
+                id: v.id,
+                name: v.rname
+            };
+        });
         const data = {
-            filters,
-            role,
-            tab: `admin/shift/${this.shift.id}`
+            roles,
+            shiftId: this.shift.id,
+            select: true,
+            tab: `admin/shift/${this.shift.id}`,
+            filters: [],
+            title: this.shift.title,
+            selectedRoleId: role.id
         };
 
         this.tabService.closeTab('users');

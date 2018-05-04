@@ -37,6 +37,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     showMoreBtn = true;
 
     usersToInviteSubscription: Subscription;
+    usersToSelectSubscription: Subscription;
     selectedTabIndex: number = 0; // Set staff tab as initial tab
 
     shiftData: any; // For edit tracking & work areas
@@ -73,6 +74,14 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
                         this.staffTab.inviteStaffs({ userIds, filters, role, inviteAll });
                 }
             });
+        // add Users to Role
+        this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
+            ({ shiftId, userIds, role }) => {
+                if (this.shift.id === shiftId) {
+                    this.selectedTabIndex = 0; // Set staff tab active
+                        this.staffTab.selectStaffs({ userIds, role });
+                }
+            });
     }
 
     ngOnInit() {
@@ -101,6 +110,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.usersToInviteSubscription.unsubscribe();
+        this.usersToSelectSubscription.unsubscribe();
     }
 
     invite() {

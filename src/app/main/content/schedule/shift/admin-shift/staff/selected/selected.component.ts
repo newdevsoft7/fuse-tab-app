@@ -289,6 +289,30 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             });
     }
 
+    remove(staff) {
+        let message = "Really remove this user?";
+
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = message;
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.scheduleService.removeRoleStaff(staff.id)
+                    .subscribe(res => {
+                        this.toastr.success(res.message);
+                        this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
+                            .subscribe(res => {
+                                this.staffs = res;
+                            })
+                        this.updateStaffCount();
+                    });
+            }
+        });
+    }
+
     toggleTeamLeader(staff) {
         const team_leader = staff.team_leader === 1 ? 0 : 1;
         this.scheduleService.updateRoleStaff(staff.id, { team_leader })

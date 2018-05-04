@@ -58,11 +58,6 @@
                         </button>
                     
                         <button mat-menu-item>
-                            <mat-icon>event_note</mat-icon>
-                            <span>View Calender</span>
-                        </button>
-                    
-                        <button mat-menu-item>
                             <mat-icon>refresh</mat-icon>
                             <span>Force re-confirmation</span>
                         </button>
@@ -91,16 +86,10 @@
                             <mat-icon>person</mat-icon>
                             <span>Add to submission</span>
                         </button>
-                    
-                    
-                        <button mat-menu-item>
+                                
+                        <button mat-menu-item (click)="remove(staff)">
                             <mat-icon>clear</mat-icon>
                             <span>Remove</span>
-                        </button>
-                    
-                        <button mat-menu-item>
-                            <mat-icon>clear</mat-icon>
-                            <span>Remove (edit email)</span>
                         </button>
                     </mat-menu>
                     
