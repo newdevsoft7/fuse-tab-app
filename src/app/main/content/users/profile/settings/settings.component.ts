@@ -22,14 +22,14 @@ export class UsersProfileSettingsComponent implements OnInit {
     // Left Side Navs
     categories = [
         {
-            'id': 'admin',
-            'title': 'Admin',
-            'level': ['owner']
+            'id': 'options',
+            'title': 'Options',
+            'lvls': ['owner','admin','staff','client','ext']
         },
         {
-            'id': 'client',
-            'title': 'Client',
-            'level': ['owner', 'admin']
+            'id': 'permissions',
+            'title': 'Permissions',
+            'lvls': ['admin','staff','client','ext']
         }
     ];
 
@@ -46,7 +46,7 @@ export class UsersProfileSettingsComponent implements OnInit {
     }
 
     getCategoryListByUser() {
-        this.categories = _.filter(this.categories, (c) => c.level.includes(this.currentUser.lvl));
+        this.categories = _.filter(this.categories, (c) => c.lvls.includes(this.user.lvl));
         if (!_.isEmpty(this.categories)) {
             this.select(this.categories[0]);
         }

@@ -23,8 +23,8 @@
     <!-- CONTENT -->
     <div class="content p-24" fxFlex>
         <ng-container [ngSwitch]="selectedCategory?.id">
-            <app-users-settings-admin *ngSwitchCase="'admin'"></app-users-settings-admin>
-            <app-users-settings-client *ngSwitchCase="'client'"></app-users-settings-client>
+            <app-users-settings-options *ngSwitchCase="'options'"></app-users-settings-options>
+            <app-users-settings-permissions *ngSwitchCase="'permissions'"></app-users-settings-permissions>
         </ng-container>
     </div>
     <!-- / CONTENT -->

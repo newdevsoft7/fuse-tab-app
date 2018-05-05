@@ -30,8 +30,8 @@ import { UsersSearchBarComponent } from './search-bar/search-bar.component';
 import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filter.component';
 import { UsersExportDialogComponent } from './users-export-dialog/users-export-dialog.component';
 import { UsersProfileSettingsComponent } from './profile/settings/settings.component';
-import { UsersSettingsAdminComponent } from './profile/settings/admin/admin.component';
-import { UsersSettingsClientComponent } from './profile/settings/client/client.component';
+import { UsersSettingsOptionsComponent } from './profile/settings/options/options.component';
+import { UsersSettingsPermissionsComponent } from './profile/settings/permissions/permissions.component';
 import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 
 import { MessageComponent, MessageService } from './message';
@@ -81,8 +81,8 @@ import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-st
         UsersAddFilterDialogComponent,
         UsersExportDialogComponent,
         UsersProfileSettingsComponent,
-        UsersSettingsAdminComponent,
-        UsersSettingsClientComponent,
+        UsersSettingsOptionsComponent,
+        UsersSettingsPermissionsComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,
