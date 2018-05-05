@@ -10,6 +10,7 @@ import { TrackingOption, TrackingCategory } from './tracking.models';
 const BASE_URL = `${environment.apiUrl}`;
 const TRACKING_CATEGORY_URL = `${environment.apiUrl}/tracking/category`;
 const TRACKING_OPTION_URL = `${environment.apiUrl}/tracking/option`;
+const AUTOCOMPLETE_USERS_URL = `${environment.apiUrl}/autocomplete/users`;
 
 @Injectable()
 export class TrackingService {
@@ -54,9 +55,27 @@ export class TrackingService {
             .catch(this.handleError);
     }
 
-    getTrackingOptionAccess(optId: number): Observable<any> {
-        const url = `${TRACKING_OPTION_URL}/${optId}/access`;
+    getTrackingOptionAccess(optId: number, lvl: string): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/access/${lvl}`;
         return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    updateTrackingOptionAccess(optId: number, data: any): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/access`;
+        return this.http.put(url, data)
+            .catch(this.handleError);
+    }
+
+    getTrackingOptionStaff(optId: number): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/staff`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    updateTrackingOptionStaff(optId: number, data: any): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/staff`;
+        return this.http.put(url, data)
             .catch(this.handleError);
     }
 
@@ -103,7 +122,13 @@ export class TrackingService {
         const url = `${TRACKING_CATEGORY_URL}/${trackingCategoryId}`;
         return this.http.delete(url)
             .catch(this.handleError);
-    }    
+    }
+
+    fetchUsersByLevel(lvl: string, q: string): Observable<any> {
+        const url = `${AUTOCOMPLETE_USERS_URL}/${lvl}/${q}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response | any) {
         return Observable.throw(error);

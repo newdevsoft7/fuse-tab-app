@@ -16,7 +16,9 @@ import { TabService } from '../../../../tab/tab.service';
 export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
 {
     @Input() messages: any = [];
-    @Input('thread') set updateThread(thread: any) {
+
+    @Input('thread')
+    set updateThread(thread: any) {
         if (thread) {
             this.thread = thread;
             this.placeholder = this.thread.active? 'Type and hit enter to send a message' : 'The conversation is inactive, messages can no longer be sent';
@@ -25,7 +27,8 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
         }
     }
 
-    @Input('replyMessage') set updateReply(value: string) {
+    @Input('replyMessage')
+    set updateReply(value: string) {
         value = value || '';
         setTimeout(() => {
             this.replyForm.form.setValue({ message: value })
@@ -74,7 +77,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     ngOnInit() {}
 
     ngOnChanges(changes: SimpleChanges) {
-        if ((changes.messages && !changes.messages.firstChange) || (changes.paginationDisabled && changes.paginationDisabled.currentValue)) {
+        if ((changes.messages && !changes.messages.firstChange) || (changes.paginationDisabled && changes.paginationDisabled.currentValue) || this.currentPage === 0) {
             this.loading = false;
         }
         if ((changes.messages && !changes.messages.firstChange && changes.messages.currentValue.length === 0 && !this.paginationDisabled)) {

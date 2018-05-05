@@ -1,0 +1,22 @@
+<form #userForm="ngForm" (ngSubmit)="addUser.next(selectedUser)">
+    <mat-form-field>
+        <input type="text" matInput ngModel name="user" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser.next({query: $event, lvl: lvl})" required>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="userDisplayFn" (optionSelected)="selectUser($event)">
+            <mat-option *ngFor="let user of source" [value]="user">
+            {{ user.name }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button mat-raised-button color="accent" class="ml-16" type="submit" [disabled]="userForm.invalid">ADD</button>
+</form>
+<div>
+  <ng-container *ngFor="let user of data; let last = last">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span>{{user.name}}</span>
+      <button mat-icon-button color="warn" (click)="removeUser.next(user)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </ng-container>
+</div>
