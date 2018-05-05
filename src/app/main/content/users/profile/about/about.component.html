@@ -1,25 +1,24 @@
 <div id="about" class="p-24" fxLayout="row" fxLayoutWrap>
 
-    <div class="about-content"
-        fxLayout="column" fxFlex.lt-lg="100"
-        [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
+    <div class="about-content" fxLayout="column" fxFlex.lt-lg="100" [fxFlex.gt-md]="(currentUser.id != userInfo.id && (currentUser.lvl == 'owner' || currentUser.lvl == 'admin')) ? 65 : 100">
 
-        <div fxLayout="row" fxLayoutWrap *ngIf="ratings.length > 0">
+        <div *ngIf="ratings.length > 0 && (userInfo.lvl.indexOf('registrant') > -1 || userInfo.lvl == 'staff' || userInfo.lvl == 'admin')"
+            fxLayout="row" fxLayoutWrap>
             <fieldset class="rating" *ngFor="let rating of ratings">
                 <legend>{{rating.rname}}</legend>
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <button mat-icon-button (click)="resetRate(rating)">
                         <mat-icon class="s-20">do_not_disturb_on</mat-icon>
                     </button>
-                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="rating.score"
-                        [step]="0.5" [showHalfStars]="true" (onRatingChange)="changeRate($event, rating)">
+                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="rating.score" [step]="0.5" [showHalfStars]="true"
+                        (onRatingChange)="changeRate($event, rating)">
                     </star-rating-comp>
                 </div>
             </fieldset>
         </div>
         <!-- / RATINGS -->
 
-        <div class="profile-box info-box general" fxLayout="column" *ngIf="userInfo.lvl == 'owner'">
+        <div class="profile-box info-box general" fxLayout="column" *ngIf="userInfo.lvl == 'owner' || userInfo.lvl == 'client' || userInfo.lvl == 'ext'">
 
             <header class="mat-accent-bg">
                 <div class="title">Basic Information</div>
@@ -116,8 +115,7 @@
                         Sex
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-sex
-                            [element]="userInfo" fxFlex="0 1 auto">
+                        <app-users-profile-edit-sex [element]="userInfo" fxFlex="0 1 auto">
                         </app-users-profile-edit-sex>
                     </div>
                 </div>
@@ -128,20 +126,14 @@
                         Date of Birth
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-date
-                            [userId]="userInfo.id"
-                            [element]="userInfo"
-                            [field]="'dob'"
-                            fxFlex="0 1 auto">
+                        <app-users-profile-edit-date [userId]="userInfo.id" [element]="userInfo" [field]="'dob'" fxFlex="0 1 auto">
                         </app-users-profile-edit-date>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
-        <ng-container *ngIf="userInfo.lvl.indexOf('registrant') > -1 || userInfo.lvl == 'staff'">
+        <ng-container *ngIf="userInfo.lvl.indexOf('registrant') > -1 || userInfo.lvl == 'staff' || userInfo.lvl == 'admin'">
             <ng-container *ngFor="let item of userInfo.data">
                 <ng-container *ngTemplateOutlet="template; context: {$implicit: item}"></ng-container>
             </ng-container>
@@ -149,8 +141,7 @@
 
     </div>
 
-    <div class="about-sidebar" fxLayout="column" fxFlex="35" fxFlex.lt-lg="100"
-        *ngIf="currentUser.lvl == 'owner' || currentUser.lvl == 'admin'">
+    <div class="about-sidebar" fxLayout="column" fxFlex="35" fxFlex.lt-lg="100" *ngIf="currentUser.id != userInfo.id && (currentUser.lvl == 'owner' || currentUser.lvl == 'admin')">
 
         <div class="profile-box admin-notes" fxLayout="column">
 
@@ -172,12 +163,7 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <button
-                            mat-raised-button
-                            (click)="onPostAdminNote()"
-                            class="save-button mat-accent"
-                            [disabled]="adminNoteForm.invalid"
-                            aria-label="POST">
+                        <button mat-raised-button (click)="onPostAdminNote()" class="save-button mat-accent" [disabled]="adminNoteForm.invalid" aria-label="POST">
                             POST
                         </button>
                     </div>
@@ -260,33 +246,21 @@
             </div>
             <div class="info">
                 <ng-container *ngIf="item.etype == 'list'">
-                    <app-users-profile-edit-list-value
-                        [userId]="userInfo.id"
-                        [element]="item"
-                        fxFlex="0 1 auto">
+                    <app-users-profile-edit-list-value [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
                     </app-users-profile-edit-list-value>
                 </ng-container>
 
                 <ng-container *ngIf="item.etype == 'listm'">
-                    <app-users-profile-edit-listm-value
-                        [userId]="userInfo.id"
-                        [element]="item"
-                        fxFlex="0 1 auto">
+                    <app-users-profile-edit-listm-value [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
                     </app-users-profile-edit-listm-value>
                 </ng-container>
 
                 <ng-container *ngIf="!['list', 'listm'].includes(item.etype)">
-                    <app-users-profile-edit-date *ngIf="item.ename == 'Date of Birth'"
-                        [userId]="userInfo.id"
-                        [element]="item"
-                        [field]="'data'"
+                    <app-users-profile-edit-date *ngIf="item.ename == 'Date of Birth'" [userId]="userInfo.id" [element]="item" [field]="'data'"
                         fxFlex="0 1 auto">
                     </app-users-profile-edit-date>
 
-                    <app-users-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'"
-                        [userId]="userInfo.id"
-                        [element]="item"
-                        fxFlex="0 1 auto">
+                    <app-users-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'" [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
                     </app-users-profile-edit-text-value>
                 </ng-container>
 

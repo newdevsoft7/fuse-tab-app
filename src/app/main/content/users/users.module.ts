@@ -30,8 +30,12 @@ import { UsersSearchBarComponent } from './search-bar/search-bar.component';
 import { UsersAddFilterDialogComponent } from './search-bar/add-filter/add-filter.component';
 import { UsersExportDialogComponent } from './users-export-dialog/users-export-dialog.component';
 import { UsersProfileSettingsComponent } from './profile/settings/settings.component';
-import { UsersSettingsOptionsComponent } from './profile/settings/options/options.component';
-import { UsersSettingsPermissionsComponent } from './profile/settings/permissions/permissions.component';
+import { UsersSettingsAdminOptionsComponent } from './profile/settings/admin-options/admin-options.component';
+import { UsersSettingsStaffOptionsComponent } from './profile/settings/staff-options/staff-options.component';
+import { UsersSettingsClientOptionsComponent } from './profile/settings/client-options/client-options.component';
+import { UsersSettingsAdminPermissionsComponent } from './profile/settings/admin-permissions/admin-permissions.component';
+import { UsersSettingsStaffPermissionsComponent } from './profile/settings/staff-permissions/staff-permissions.component';
+import { UsersSettingsClientPermissionsComponent } from './profile/settings/client-permissions/client-permissions.component';
 import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 
 import { MessageComponent, MessageService } from './message';
@@ -81,8 +85,12 @@ import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-st
         UsersAddFilterDialogComponent,
         UsersExportDialogComponent,
         UsersProfileSettingsComponent,
-        UsersSettingsOptionsComponent,
-        UsersSettingsPermissionsComponent,
+        UsersSettingsAdminOptionsComponent,
+        UsersSettingsStaffOptionsComponent,
+        UsersSettingsClientOptionsComponent,
+        UsersSettingsAdminPermissionsComponent,
+        UsersSettingsStaffPermissionsComponent,
+        UsersSettingsClientPermissionsComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,

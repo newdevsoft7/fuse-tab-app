@@ -9,11 +9,13 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'app-users-settings-options',
-    templateUrl: './options.component.html',
-    styleUrls: ['./options.component.scss']
+    selector: 'app-users-settings-admin-options',
+    templateUrl: './admin-options.component.html',
+    styleUrls: ['./admin-options.component.scss']
 })
-export class UsersSettingsOptionsComponent implements OnInit {
+export class UsersSettingsAdminOptionsComponent implements OnInit {
+
+    @Input() userOptions;
 
     constructor(
         private toastr: ToastrService

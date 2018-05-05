@@ -1,0 +1,25 @@
+<div fxLayout="column" class="p-24">
+
+    <!-- ADMIN_CHAT_DISCOVERABLE -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userOptions.admin_chat_discoverable.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                Allow staff to find and message you
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_CHAT_DISCOVERABLE -->
+
+    <!-- ADMIN_REPLACEMENT_REQUESTS -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userOptions.admin_replacement_request.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                Receive an email anytime someone requests a replacement for a shift, even if you are not an assigned manager of the shift
+            </div>
+        </div>
+    </div>
+    <!-- / AADMIN_REPLACEMENT_REQUESTS -->
+
+</div>

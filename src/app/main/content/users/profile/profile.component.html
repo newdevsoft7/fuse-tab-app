@@ -4,8 +4,7 @@
     <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
 
         <div class="user-info" [ngClass.gt-xs]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
-            <img class="profile-image avatar huge"
-                [src]="getAvatar(userInfo)">
+            <img class="profile-image avatar huge" [src]="getAvatar(userInfo)">
             <div class="name">
                 {{userInfo.fname}} {{userInfo.lname}}
             </div>
@@ -30,49 +29,37 @@
         <mat-tab-group dynamicHeight="true">
 
             <mat-tab label="About">
-                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser"
-                    [ratings]="ratings" [settings]="settings"></app-users-profile-about>
+                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings" [settings]="settings"></app-users-profile-about>
             </mat-tab>
 
             <mat-tab label="Skills & Qualifications">
-                <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser"
-                    [settings]="settings"></app-users-profile-attributes>
+                <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-attributes>
             </mat-tab>
 
             <mat-tab label="Photos">
-                <app-users-profile-photo
-                    [userInfo]="userInfo"
-                    [currentUser]="currentUser"
-                    [settings]="settings"
-                    (onAvatarChanged)="onAvatarChanged($event)">
+                <app-users-profile-photo [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings" (onAvatarChanged)="onAvatarChanged($event)">
                 </app-users-profile-photo>
             </mat-tab>
 
             <mat-tab label="Videos" *ngIf="settings.profile_video_enable === '1'">
-                <app-users-profile-video [userInfo]="userInfo" [currentUser]="currentUser"
-                    [settings]="settings"></app-users-profile-video>
+                <app-users-profile-video [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-video>
             </mat-tab>
 
             <mat-tab label="Documents">
-                <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser"
-                    [settings]="settings"></app-users-profile-document>
+                <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-document>
             </mat-tab>
 
-            <mat-tab label="Work Areas">
-                <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser"
-                    [settings]="settings"></app-users-profile-workareas>
+            <mat-tab label="Work Areas" *ngIf="settings.work_areas_enable === '1'">
+                <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-workareas>
             </mat-tab>
 
-            <mat-tab label="Settings">
-                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser"
-                    [settings]="settings"></app-users-profile-settings>
-            </mat-tab>
-
-            <mat-tab label="Unavailability" *ngIf="currentUser.lvl === 'staff'">
-                <app-users-profile-unavailability
-                    [userInfo]="userInfo"
-                    [currentUser]="currentUser">
+            <mat-tab label="Unavailability" *ngIf="userInfo.lvl === 'staff'">
+                <app-users-profile-unavailability [userInfo]="userInfo" [currentUser]="currentUser">
                 </app-users-profile-unavailability>
+            </mat-tab>
+
+            <mat-tab label="Settings" *ngIf="currentUser.id == user.id || currentUser.lvl == 'owner' || (currentUser.lvl == 'admin' && userInfo.lvl != 'admin' && userInfo.lvl != 'owner')">
+                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-settings>
             </mat-tab>
 
         </mat-tab-group>

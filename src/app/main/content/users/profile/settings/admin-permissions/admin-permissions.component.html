@@ -1,0 +1,101 @@
+<div fxLayout="column" class="p-24">
+
+    <!-- ADMIN_STAFF_ALL -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_staff_all.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                Access all staff
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_STAFF_ALL -->
+
+    <!-- ADMIN_STAFF_EXPORT -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_staff_export.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                Export staff
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_STAFF_EXPORT -->
+
+    <!-- ADMIN_STAFF_PAYROLL -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_staff_payroll.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                View, create and edit staff payroll
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_STAFF_PAYROLL -->
+
+    <!-- ADMIN_REGISTRANTS -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_registrants.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                View, approve and reject registrants
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_REGISTRANTS -->
+
+    <!-- ADMIN_CLIENTS -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_clients.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                View, create and edit client information
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_CLIENTS -->
+
+    <!-- ADMIN_BILL -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_bill.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                View and edit client bill rates
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_BILL -->
+
+    <!-- ADMIN_CLIENT_INVOICE -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_client_invoice.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                View, create and edit client invoices
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_CLIENT_INVOICE -->
+
+    <!-- ADMIN_SHIFTS_ALL -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_shifts_all.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                Access all shifts
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_SHIFTS_ALL -->
+
+    <!-- ADMIN_SETTINGS -->
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-slide-toggle [checked]="userPermissions.admin_settings.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="90">
+                View and modify system settings
+            </div>
+        </div>
+    </div>
+    <!-- / ADMIN_SETTINGS -->
+</div>

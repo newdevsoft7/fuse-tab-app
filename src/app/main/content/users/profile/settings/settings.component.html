@@ -1,5 +1,5 @@
 <div class="nav h-100-p" fxLayout="row" fxLayoutAlign="start start">
-    
+
     <!-- SIDENAV -->
     <div class="sidenav" fxFlex="200px">
         <div fusePerfectScrollbar class="pt-16">
@@ -7,8 +7,7 @@
             <!-- NAV ITEM -->
             <ng-container *ngFor="let category of categories">
                 <div class="nav-item">
-                    <a class="nav-link" matRipple (click)="select(category)" 
-                        [class.active]="category.id === selectedCategory?.id" >
+                    <a class="nav-link" matRipple (click)="select(category)" [class.active]="category.id === selectedCategory?.id">
                         <span>{{category.title}}</span>
                     </a>
                     <mat-divider></mat-divider>
@@ -23,8 +22,12 @@
     <!-- CONTENT -->
     <div class="content p-24" fxFlex>
         <ng-container [ngSwitch]="selectedCategory?.id">
-            <app-users-settings-options *ngSwitchCase="'options'"></app-users-settings-options>
-            <app-users-settings-permissions *ngSwitchCase="'permissions'"></app-users-settings-permissions>
+            <app-users-settings-admin-options [userOptions]="userOptions" *ngSwitchCase="'admin-options'"></app-users-settings-admin-options>
+            <app-users-settings-admin-permissions [userPermissions]="userPermissions" *ngSwitchCase="'admin-permissions'"></app-users-settings-admin-permissions>
+            <app-users-settings-staff-options [userOptions]="userOptions" *ngSwitchCase="'staff-options'"></app-users-settings-staff-options>
+            <app-users-settings-staff-permissions [userPermissions]="userPermissions" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
+            <app-users-settings-client-options [userOptions]="userOptions" *ngSwitchCase="'client-options'"></app-users-settings-client-options>
+            <app-users-settings-client-permissions [userPermissions]="userPermissions" *ngSwitchCase="'client-permissions'"></app-users-settings-client-permissions>
         </ng-container>
     </div>
     <!-- / CONTENT -->

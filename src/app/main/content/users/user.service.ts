@@ -36,6 +36,16 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getUserOptions(id: number): Observable<any> {
+        return this.http.get(`${BASE_URL}/user/${id}/options`)
+            .catch(this.handleError);
+    }
+
+    getUserPermissions(id: number): Observable<any> {
+        return this.http.get(`${BASE_URL}/user/${id}/permissions`)
+            .catch(this.handleError);
+    }
+
     createUser(user): Observable<any> {
         const url = `${BASE_URL}/user`;
         return this.http.post(url, user)
