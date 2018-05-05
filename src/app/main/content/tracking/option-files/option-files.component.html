@@ -1,0 +1,22 @@
+<!-- ADD FILE BUTTON -->
+<div class="file-uploader">
+  <input hidden type="file" name="file" #fileInput (change)="addFile.next($event)" />
+  <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+    <mat-icon>file_upload</mat-icon>
+    <span>Upload</span>
+  </button>
+</div>
+<!-- / ADD FILE BUTTON -->
+<div>
+  <ng-container *ngFor="let file of data; let last = last">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span>
+        <a href="{{file.link}}" target="_blank">{{file.oname}}</a>
+      </span>
+      <button mat-icon-button color="warn" (click)="removeFile.next(file)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </ng-container>
+</div>
