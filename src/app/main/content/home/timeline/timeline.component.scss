@@ -249,6 +249,23 @@
                                 margin-right: 16px;
                             }
 
+                            .icon-pic,
+                            .numeric-pic {
+                                min-width: 40px;
+                                min-height: 40px;
+                                margin-right: 16px;
+                                border-radius: 50%;
+                                background-color: #03a9f4;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                color: white;
+                                
+                                mat-icon {
+                                    color: white;
+                                }
+                            }
+
                             .username {
                                 font-weight: 500;
                                 color: mat-color($accent)
@@ -258,7 +275,8 @@
                                 font-weight: 500;
                             }
 
-                            .time {
+                            &.clickable {
+                                cursor: pointer;
                             }
                         }
                     }

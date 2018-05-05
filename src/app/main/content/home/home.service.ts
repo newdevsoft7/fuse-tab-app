@@ -178,6 +178,15 @@ export class HomeService {
     }
 
     /**
+     * Get notifications
+     */
+    getNotifications(): Observable<any> {
+        const url = `${BASE_URL}/notifications`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
+    /**
      * Handle error
      * @param error
      */

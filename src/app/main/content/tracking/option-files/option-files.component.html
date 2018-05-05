@@ -11,7 +11,7 @@
   <ng-container *ngFor="let file of data; let last = last">
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <span>
-        <a href="{{file.link}}" target="_blank">{{file.oname}}</a>
+        <a [href]="file.link" target="_blank">{{file.oname}}</a>
       </span>
       <button mat-icon-button color="warn" (click)="removeFile.next(file)">
         <mat-icon>delete</mat-icon>

@@ -16,6 +16,10 @@ import { EditPostDialogComponent } from './edit-post-dialog/edit-post-dialog.com
 import { EditCommentDialogComponent } from './edit-comment-dialog/edit-comment-dialog.component';
 import { PinPostDialogComponent } from './pin-post-dialog/pin-post-dialog.component';
 import { PostDialogComponent } from './post-dialog/post-dialog.component';
+import { TabService } from '../../../tab/tab.service';
+import { TAB } from '../../../../constants/tab';
+import { Tab } from '../../../tab/tab';
+import { ScheduleService } from '../../schedule/schedule.service';
 
 enum PostType {
     Main    = 'main',
@@ -31,72 +35,7 @@ enum PostType {
 })
 export class HomeTimelineComponent implements OnInit
 {
-    activities = [
-        {
-            'user': {
-                'name': 'Alice Freeman',
-                'avatar': 'assets/images/avatars/alice.jpg'
-            },
-            'message': 'started following you.',
-            'time': '13 mins. ago'
-        },
-        {
-            'user': {
-                'name': 'Andrew Green',
-                'avatar': 'assets/images/avatars/andrew.jpg'
-            },
-            'message': 'sent you a message.',
-            'time': 'June 10,2015'
-        },
-        {
-            'user': {
-                'name': 'Garry Newman',
-                'avatar': 'assets/images/avatars/garry.jpg'
-            },
-            'message': 'shared a public post with your group.',
-            'time': 'June 9,2015'
-        },
-        {
-            'user': {
-                'name': 'Carl Henderson',
-                'avatar': 'assets/images/avatars/carl.jpg'
-            },
-            'message': 'wants to play Fallout Shelter with you.',
-            'time': 'June 8,2015'
-        },
-        {
-            'user': {
-                'name': 'Jane Dean',
-                'avatar': 'assets/images/avatars/jane.jpg'
-            },
-            'message': 'started following you.',
-            'time': 'June 7,2015'
-        },
-        {
-            'user': {
-                'name': 'Juan Carpenter',
-                'avatar': 'assets/images/avatars/james.jpg'
-            },
-            'message': 'sent you a message.',
-            'time': 'June 6,2015'
-        },
-        {
-            'user': {
-                'name': 'Judith Burton',
-                'avatar': 'assets/images/avatars/joyce.jpg'
-            },
-            'message': 'shared a photo with you.',
-            'time': 'June 5,2015'
-        },
-        {
-            'user': {
-                'name': 'Vincent Munoz',
-                'avatar': 'assets/images/avatars/vincent.jpg'
-            },
-            'message': 'shared a photo with you.',
-            'time': 'June 4,2015'
-        }
-    ];
+    activities = [];
 
     pinnedPosts = [];
     posts: any[] = [];
@@ -116,7 +55,9 @@ export class HomeTimelineComponent implements OnInit
         private spinner: CustomLoadingService,
         private tokenStorage: TokenStorage,
         private homeService: HomeService,
-        private userService: UserService
+        private userService: UserService,
+        private tabService: TabService,
+        private scheduleService: ScheduleService
     ) {
         this.user = this.tokenStorage.getUser();
     }
@@ -129,6 +70,15 @@ export class HomeTimelineComponent implements OnInit
         });
         this.getPosts(true);
         this.getPinnedPosts();
+        this.loadNotifications();
+    }
+
+    async loadNotifications() {
+        try {
+            this.activities = await this.homeService.getNotifications().toPromise();
+        } catch (e) {
+            this.displayError(e);
+        }
     }
 
     getPosts(isFirstCall = false) {
@@ -484,6 +434,78 @@ export class HomeTimelineComponent implements OnInit
                 }
             }
         });
+    }
+
+    isNumeric(value: any): boolean {
+        return !isNaN(value);
+    }
+
+    isUrl(value: any): boolean {
+        return value && (value.startsWith('http://') || value.startsWith('https://'));
+    }
+
+    doAction(activity: any): void {
+        if (!activity.action) return;
+        switch (activity.action) {
+            case 'calendar':
+                this.tabService.openTab(TAB.SCHEDULE_CALENDAR_TAB);
+                break;
+            case 'shift':
+                this.openShiftTab(activity.other_id);
+                break;
+            case 'profile':
+                this.openProfileTab(activity.other_id);
+                break;
+        }
+    }
+
+    async openProfileTab(userId: number): Promise<any> {
+        try {
+            this.spinner.show();
+            const user = await this.userService.getUser(userId).toPromise();
+            const tab = new Tab(`${user.fname} ${user.lname}`, 'usersProfileTpl', `users/user/${user.id}`, user);
+            this.tabService.openTab(tab);
+        } catch (e) {
+            this.displayError(e);
+        } finally {
+            this.spinner.hide();
+        }
+    }
+
+    async openShiftTab(shiftId: number): Promise<any> {
+        if (!shiftId) return;
+        try {
+            this.spinner.show();
+            const shift = await this.scheduleService.getShift(shiftId);
+            if (shift.type === 'g') {
+                if (['owner', 'admin'].includes(this.user.lvl)) {
+                  const tab = new Tab(
+                    shift.title,
+                    'adminShiftGroupTpl',
+                    `admin-shift/group/${shift.id}`,
+                    { id: shift.id }
+                  );
+                  this.tabService.openTab(tab);
+                } else {
+                  return;
+                }
+            } else {
+                const id = shift.id;
+                let template = 'staffShiftTpl';
+                let url = `staff/shift/${id}`;
+            
+                if (['owner', 'admin'].includes(this.user.lvl)) {
+                  template = 'adminShiftTpl';
+                  url = `admin/shift/${id}`;
+                }
+                const tab = new Tab(shift.title, template, url, { id, url });
+                this.tabService.openTab(tab);
+            }
+        } catch (e) {
+            this.displayError(e);
+        } finally {
+            this.spinner.hide();
+        }
     }
 
     private displayError(error) {

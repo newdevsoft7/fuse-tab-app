@@ -189,10 +189,17 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             }
             this.customLoadingService.show();
-            await this.trackingService.updateTrackingOptionAccess(this.selectedOption.id, {
-                user_id: user.id,
-                add: isAdd ? 1 : 0
-            }).toPromise();
+            if (lvl === 'staff') {
+                await this.trackingService.updateTrackingOptionStaff(this.selectedOption.id, {
+                    user_id: user.id,
+                    add: isAdd ? 1 : 0
+                }).toPromise();
+            } else {
+                await this.trackingService.updateTrackingOptionAccess(this.selectedOption.id, {
+                    user_id: user.id,
+                    add: isAdd ? 1 : 0
+                }).toPromise();
+            }
             if (isAdd) {
                 this.values[lvl].push(user);
             } else {

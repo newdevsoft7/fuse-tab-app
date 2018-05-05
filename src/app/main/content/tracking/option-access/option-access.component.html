@@ -1,7 +1,6 @@
 <form #userForm="ngForm" (ngSubmit)="addUser.next(selectedUser)">
     <mat-form-field>
-        <input type="text" matInput ngModel name="user" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser.next({query: $event, lvl: lvl})">
-        <input type="hidden" ngModel name="selectedUser" required/>
+        <input type="text" matInput ngModel name="user" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser.next({query: $event, lvl: lvl})" required>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="userDisplayFn" (optionSelected)="selectUser($event)">
             <mat-option *ngFor="let user of source" [value]="user">
             {{ user.name }}
