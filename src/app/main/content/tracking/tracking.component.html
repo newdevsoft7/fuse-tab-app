@@ -6,7 +6,7 @@
             <button mat-button class="mat-icon-button sidenav-toggle" fuseMatSidenavToggler="simple-left-sidenav-3" fxHide.gt-md>
                 <mat-icon>menu</mat-icon>
             </button>
-        
+
             <div>
                 <h2>{{selectedCategory?.cname}}</h2>
             </div>
@@ -16,29 +16,21 @@
             <app-tracking-add-option (onOptionAdd)="onOptionAdd($event)">
             </app-tracking-add-option>
         </div>
-        
+
     </div>
     <!-- / HEADER -->
 
     <mat-sidenav-container>
-    
+
         <!-- SIDENAV -->
-        <mat-sidenav class="sidenav"
-                     align="start"
-                     opened="true"
-                     mode="side"
-                     fuseMatSidenavHelper="simple-left-sidenav-3"
-                     mat-is-locked-open="gt-md"
-                     #sidenav>
-    
+        <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3" mat-is-locked-open="gt-md"
+            #sidenav>
+
             <div class="sidenav-content nav pt-16" fusePerfectScrollbar>
                 <div class="nav-item" *ngFor="let option of options">
 
-                    <div class="nav-link" matRipple 
-                        (click)="changeOption(option)" 
-                        [ngClass]="{'active': selectedOption && option.id === selectedOption.id }" 
-                        fxLayout="row"
-                        fxLayoutAlign="space-between center">
+                    <div class="nav-link" matRipple (click)="changeOption(option)" [ngClass]="{'active': selectedOption && option.id === selectedOption.id }"
+                        fxLayout="row" fxLayoutAlign="space-between center">
                         <span>{{option.oname}}</span>
                     </div>
 
@@ -46,13 +38,13 @@
                 </div>
 
             </div>
-        
+
         </mat-sidenav>
         <!-- / SIDENAV -->
 
         <!-- CENTER -->
         <div class="center p-16" fusePerfectScrollbar>
-        
+
             <!-- CONTENT -->
             <div class="content mat-elevation-z4 mat-white-bg">
                 <mat-tab-group *ngIf="selectedOption" class="w-100-p">
@@ -60,37 +52,27 @@
                         <mat-checkbox [(ngModel)]="selectedOption.active" (ngModelChange)="changeActive($event)">Active</mat-checkbox>
                         <button mat-raised-button color="warn" class="ml-16" (click)="removeSelectedOption()">DELETE</button>
                     </mat-tab>
-                    <mat-tab label="Admin" *ngIf="!clientOnly">
-                        <app-tracking-option-access
-                            [lvl]="'admin'"
-                            [data]="values.admin"
-                            [source]="source.admin"
-                            (filterUser)="filterUser($event)"
-                            (addUser)="updateUser($event, 'admin', true)"
-                            (removeUser)="updateUser($event, 'admin', false)"></app-tracking-option-access>
+                    <mat-tab label="Reports & Uploads">
+                        
                     </mat-tab>
-                    <mat-tab label="Client">
-                        <app-tracking-option-access
-                            [lvl]="'client'"
-                            [data]="values.client"
-                            [source]="source.client"
-                            (filterUser)="filterUser($event)"
-                            (addUser)="updateUser($event, 'client', true)"
-                            (removeUser)="updateUser($event, 'client', false)"></app-tracking-option-access>
+                    <mat-tab label="Admin Access">
+                        <app-tracking-option-access [lvl]="'admin'" [data]="values.admin" [source]="source.admin" (filterUser)="filterUser($event)"
+                            (addUser)="updateUser($event, 'admin', true)" (removeUser)="updateUser($event, 'admin', false)"></app-tracking-option-access>
                     </mat-tab>
-                    <mat-tab label="Staff" *ngIf="!clientOnly">
+                    <mat-tab label="Client Access" *ngIf="showClient">
+                        <app-tracking-option-access [lvl]="'client'" [data]="values.client" [source]="source.client" (filterUser)="filterUser($event)"
+                            (addUser)="updateUser($event, 'client', true)" (removeUser)="updateUser($event, 'client', false)"></app-tracking-option-access>
+                    </mat-tab>
+                    <mat-tab label="Staff Access">
                         <mat-radio-group [(ngModel)]="selectedOption.staff_visibility" (ngModelChange)="updateStaffVisibility($event)">
                             <mat-radio-button value="all">Allow all staff to see / apply for shifts</mat-radio-button>
                             <mat-radio-button class="ml-16" value="team">Restrict access to team only</mat-radio-button>
                         </mat-radio-group>
-                        <app-tracking-option-access
-                            *ngIf="selectedOption.staff_visibility === 'team'"
-                            [lvl]="'staff'"
-                            [data]="values.staff"
-                            [source]="source.staff"
-                            (filterUser)="filterUser($event)"
-                            (addUser)="updateUser($event, 'staff', true)"
-                            (removeUser)="updateUser($event, 'staff', false)"></app-tracking-option-access>
+                        <app-tracking-option-access *ngIf="selectedOption.staff_visibility === 'team'" [lvl]="'staff'" [data]="values.staff" [source]="source.staff"
+                            (filterUser)="filterUser($event)" (addUser)="updateUser($event, 'staff', true)" (removeUser)="updateUser($event, 'staff', false)"></app-tracking-option-access>
+                    </mat-tab>
+                    <mat-tab label="Files">
+
                     </mat-tab>
                 </mat-tab-group>
             </div>

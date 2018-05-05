@@ -30,7 +30,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('sidenav') private sidenav: MatSidenav;
 
     @Input() data: any;
-    clientOnly: boolean;
+    showClient: boolean;
 
     values: any = {
         admin: [],
@@ -72,7 +72,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit() {
         this.trackingService.toggleSelectedCategory(this.data);
         this.getTrackingCategories();
-        this.clientOnly = this.tokenStorage.getSettings().client_enable === '1'? true : false;
+        this.showClient = this.tokenStorage.getSettings().client_enable === '1'? true : false;
     }
 
     ngOnDestroy() {
@@ -104,24 +104,28 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     async loadOptionAccess(): Promise<any> {
         let promise;
-        if (this.clientOnly) {
-            promise = this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'client').toPromise();
-        } else {
+        if (this.showClient) {
             promise = Promise.all([
                 this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'admin').toPromise(),
                 this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'client').toPromise(),
+                this.trackingService.getTrackingOptionStaff(this.selectedOption.id).toPromise()
+            ]);
+        } else {
+            promise = Promise.all([
+                this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'admin').toPromise(),
                 this.trackingService.getTrackingOptionStaff(this.selectedOption.id).toPromise()
             ]);
         }
         try {
             this.customLoadingService.show();
             const res = await promise;
-            if (this.clientOnly) {
-                this.values.client = res;
-            } else {
+            if (this.showClient) {
                 this.values.admin = res[0];
                 this.values.client = res[1];
                 this.values.staff = res[2];
+            } else {
+                this.values.admin = res[0];
+                this.values.staff = res[1];
             }
         } catch (e) {
             this.handleError(e);
