@@ -3,7 +3,8 @@ import { NgModel } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
 @Directive({
-  selector: '[debounce]'
+  selector: '[debounce]',
+  providers: [NgModel]
 })
 export class DebounceDirective implements OnInit {
   @Input() delay: number = 500;

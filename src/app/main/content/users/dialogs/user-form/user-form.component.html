@@ -92,6 +92,30 @@
                 </mat-form-field>
             </div>
 
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start" *ngIf="userForm.get('lvl').value === 'client'">
+                <mat-icon class="mr-12 mt-12">business</mat-icon>
+                <mat-form-field fxFlex>
+                    <input type="text" matInput ngModel (ngModelChange)="checkBelongTo($event)" [ngModelOptions]="{standalone: true}" name="client" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser($event, 'client')">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="userDisplayFn">
+                        <mat-option *ngFor="let user of users" [value]="user">
+                        {{ user.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div class="mb-24" fxLayout="row" fxLayoutAlign="start start" *ngIf="userForm.get('lvl').value === 'ext'">
+                <mat-icon class="mr-12 mt-12">business</mat-icon>
+                <mat-form-field fxFlex>
+                    <input type="text" matInput ngModel (ngModelChange)="checkBelongTo($event)" [ngModelOptions]="{standalone: true}" name="ext" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser($event, 'ext')">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="userDisplayFn">
+                        <mat-option *ngFor="let user of users" [value]="user">
+                        {{ user.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
             <div class="mb-24" fxLayout="row" fxLayoutAlign="start start">
                 <mat-checkbox formControlName="welcome_email">Send notification email</mat-checkbox>
             </div>
@@ -105,7 +129,7 @@
         <button mat-raised-button
                 (click)="onSave()"
                 class="save-button mat-accent"
-                [disabled]="userForm.invalid"
+                [disabled]="userForm.invalid || !belongTo"
                 aria-label="SAVE">
             SAVE
         </button>

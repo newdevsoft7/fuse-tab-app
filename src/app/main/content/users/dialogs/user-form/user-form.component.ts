@@ -1,6 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TrackingService } from '../../../tracking/tracking.service';
+import { ToastrService } from 'ngx-toastr';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 
 @Component({
     selector     : 'app-users-user-form-dialog',
@@ -13,20 +16,26 @@ export class UserFormDialogComponent implements OnInit
 {
     userForm: FormGroup;
     userFormErrors: any;
+    users: any = [];
 
-    readonly types = [
+    types: any = [
         { label: 'API', value: 'api' },
         { label: 'Owner', value: 'owner' },
         { label: 'Admin', value: 'admin' },
         { label: 'Supervisor', value: 'supervisor' },
-        { label: 'Staff', value: 'staff' },
-        { label: 'Client', value: 'client' }
+        { label: 'Staff', value: 'staff' }
     ];
+
+    belongTo: any;
 
     constructor(
         public dialogRef: MatDialogRef<UserFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
-        private formBuilder: FormBuilder) {
+        private formBuilder: FormBuilder,
+        private trackingService: TrackingService,
+        private toastr: ToastrService,
+        private tokenStorage: TokenStorage) {
+
         this.userFormErrors = {
             lvl: {},
             fname: {},
@@ -36,6 +45,14 @@ export class UserFormDialogComponent implements OnInit
             mob: {},
             password: {}
         };
+
+        if (tokenStorage.getSettings().client_enable === '1') {
+            this.types.push({ label: 'Client', value: 'client' });
+        }
+
+        if (tokenStorage.getSettings().outsource_enable === '1') {
+            this.types.push({ label: 'External Company', value: 'ext' });
+        }
     }
 
     ngOnInit() {
@@ -76,7 +93,29 @@ export class UserFormDialogComponent implements OnInit
     onSave() {
         const user = this.userForm.value;
         delete user.welcome_email;
+        if (user.lvl === 'client') {
+            user.client_id = this.belongTo;
+        } else if (user.lvl === 'ext') {
+            user.outsource_company_id = this.belongTo;
+        }
         // user.welcome_email = user.welcome_email ? 1 : 0;
         this.dialogRef.close(user);
+    }
+
+    async filterUser(query: string, lvl: string) {
+        if (!query) return;
+        try {
+            this.users = await this.trackingService.fetchUsersByLevel(lvl, query).toPromise();
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        }
+    }
+
+    checkBelongTo(user: any) {
+        this.belongTo = (typeof user === 'object') ? user.id : null;
+    }
+
+    userDisplayFn(user?: any): string {
+        return user? user.name : '';
     }
 }
