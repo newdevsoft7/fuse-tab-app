@@ -6,6 +6,7 @@ import { TrackingService } from './tracking.service';
 import { TrackingComponent } from './tracking.component';
 import { TrackingAddOptionComponent } from './add-option/add-option.component';
 import { TrackingOptionAccessComponent } from './option-access/option-access.component';
+import { TrackingOptionFilesComponent } from './option-files/option-files.component';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { TrackingOptionAccessComponent } from './option-access/option-access.com
     declarations: [
         TrackingComponent,
         TrackingAddOptionComponent,
-        TrackingOptionAccessComponent
+        TrackingOptionAccessComponent,
+        TrackingOptionFilesComponent
     ],
 
     providers: [TrackingService],

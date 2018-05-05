@@ -72,7 +72,7 @@
                             (filterUser)="filterUser($event)" (addUser)="updateUser($event, 'staff', true)" (removeUser)="updateUser($event, 'staff', false)"></app-tracking-option-access>
                     </mat-tab>
                     <mat-tab label="Files">
-
+                        <app-tracking-option-files [data]="values.files" (removeFile)="updateFile($event, false)" (addFile)="updateFile($event, true)"></app-tracking-option-files>
                     </mat-tab>
                 </mat-tab-group>
             </div>

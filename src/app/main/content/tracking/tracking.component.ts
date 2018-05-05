@@ -20,9 +20,9 @@ import { TabService } from '../../tab/tab.service';
 export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
 
     categories: TrackingCategory[];
-    selectedCategory:TrackingCategory;
+    selectedCategory: TrackingCategory;
     private onSelectedCategoryChanged: Subscription;
-    private onCategoriesChanged:Subscription;
+    private onCategoriesChanged: Subscription;
 
     options: any = [];
     selectedOption: any;
@@ -35,13 +35,14 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     values: any = {
         admin: [],
         client: [],
-        staff: []
+        staff: [],
+        files: [],
     };
 
     source: any = {
         admin: [],
         client: [],
-        staff: []
+        staff: [],
     };
 
     constructor(
@@ -61,7 +62,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
 
-        this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe( 
+        this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
             category => {
                 this.selectedCategory = category;
                 this.loadOptions(this.selectedCategory.id);
@@ -72,7 +73,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit() {
         this.trackingService.toggleSelectedCategory(this.data);
         this.getTrackingCategories();
-        this.showClient = this.tokenStorage.getSettings().client_enable === '1'? true : false;
+        this.showClient = this.tokenStorage.getSettings().client_enable === '1' ? true : false;
     }
 
     ngOnDestroy() {
@@ -108,12 +109,14 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
             promise = Promise.all([
                 this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'admin').toPromise(),
                 this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'client').toPromise(),
-                this.trackingService.getTrackingOptionStaff(this.selectedOption.id).toPromise()
+                this.trackingService.getTrackingOptionStaff(this.selectedOption.id).toPromise(),
+                this.trackingService.getTrackingOptionFiles(this.selectedOption.id).toPromise()
             ]);
         } else {
             promise = Promise.all([
                 this.trackingService.getTrackingOptionAccess(this.selectedOption.id, 'admin').toPromise(),
-                this.trackingService.getTrackingOptionStaff(this.selectedOption.id).toPromise()
+                this.trackingService.getTrackingOptionStaff(this.selectedOption.id).toPromise(),
+                this.trackingService.getTrackingOptionFiles(this.selectedOption.id).toPromise()
             ]);
         }
         try {
@@ -123,9 +126,11 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.values.admin = res[0];
                 this.values.client = res[1];
                 this.values.staff = res[2];
+                this.values.files = res[3];
             } else {
                 this.values.admin = res[0];
                 this.values.staff = res[1];
+                this.values.files = res[2];
             }
         } catch (e) {
             this.handleError(e);
@@ -162,7 +167,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    async filterUser(data: {query: string, lvl: string}): Promise<any> {
+    async filterUser(data: { query: string, lvl: string }): Promise<any> {
         if (!data.query) {
             this.source[data.lvl] = [];
             return;
@@ -215,12 +220,35 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    async updateFile(file: any, isAdd: boolean): Promise<any> {
+        try {
+            this.customLoadingService.show();
+            if (isAdd) {
+                const upload = file.target.files[0];
+                if (upload) {
+                    let postData = new FormData();
+                    postData.append('file', upload);
+                    const res = await this.trackingService.addTrackingOptionFile(this.selectedOption.id, postData).toPromise();
+                    this.values['files'].push({ ...res.data });
+                }
+            } else {
+                const index = this.values['files'].findIndex(value => value.id === file.id);
+                this.values['files'].splice(index, 1);
+                await this.trackingService.deleteTrackingOptionFile(file.id).toPromise();
+            }
+        } catch (e) {
+            this.handleError(e);
+        } finally {
+            this.customLoadingService.hide();
+        }
+    }
+
     async onOptionAdd(newOption) {
         if (newOption === {}) {
             return;
         }
         newOption.tracking_cat_id = this.selectedCategory.id;
-        
+
         const option = { ...newOption };
         option.active = option.active ? 1 : 0;
 
@@ -261,6 +289,6 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     handleError(e) {
-        this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
+        this.toastrService.error((e.error && e.error.message) ? e.error.message : 'Something is wrong.');
     }
 }

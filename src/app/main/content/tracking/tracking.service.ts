@@ -10,19 +10,20 @@ import { TrackingOption, TrackingCategory } from './tracking.models';
 const BASE_URL = `${environment.apiUrl}`;
 const TRACKING_CATEGORY_URL = `${environment.apiUrl}/tracking/category`;
 const TRACKING_OPTION_URL = `${environment.apiUrl}/tracking/option`;
+const TRACKING_FILE_URL = `${environment.apiUrl}/file/file`;
 const AUTOCOMPLETE_USERS_URL = `${environment.apiUrl}/autocomplete/users`;
 
 @Injectable()
 export class TrackingService {
 
     onSelectCategoryChanged: Subject<any> = new Subject();
-    OnCategoriesChanged:Subject<any> = new Subject();
+    OnCategoriesChanged: Subject<any> = new Subject();
 
-    constructor(private http: HttpClient) { 
+    constructor(private http: HttpClient) {
 
     }
 
-    toggleSelectedCategory(cateogry: TrackingCategory ) {
+    toggleSelectedCategory(cateogry: TrackingCategory) {
         this.onSelectCategoryChanged.next(cateogry);
     }
 
@@ -30,7 +31,7 @@ export class TrackingService {
         return this.onSelectCategoryChanged.asObservable();
     }
 
-    toggleCategories(categories: TrackingCategory[]){
+    toggleCategories(categories: TrackingCategory[]) {
         this.OnCategoriesChanged.next(categories);
     }
 
@@ -67,6 +68,12 @@ export class TrackingService {
             .catch(this.handleError);
     }
 
+    getTrackingOptionFiles(optId: number): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/files`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
     getTrackingOptionStaff(optId: number): Observable<any> {
         const url = `${TRACKING_OPTION_URL}/${optId}/staff`;
         return this.http.get(url)
@@ -76,6 +83,18 @@ export class TrackingService {
     updateTrackingOptionStaff(optId: number, data: any): Observable<any> {
         const url = `${TRACKING_OPTION_URL}/${optId}/staff`;
         return this.http.put(url, data)
+            .catch(this.handleError);
+    }
+
+    addTrackingOptionFile(optId: number, data: any): Observable<any> {
+        const url = `${TRACKING_OPTION_URL}/${optId}/file`;
+        return this.http.post(url, data)
+            .catch(this.handleError);
+    }
+
+    deleteTrackingOptionFile(fileId: number): Observable<any> {
+        const url = `${TRACKING_FILE_URL}/${fileId}`;
+        return this.http.delete(url)
             .catch(this.handleError);
     }
 
