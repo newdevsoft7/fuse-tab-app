@@ -3,7 +3,7 @@
     <!-- CLIENT_BOOK -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_book.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_book?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow user to request bookings from the calendar
             </div>
@@ -14,7 +14,7 @@
     <!-- CLIENT_SHIFT_NOTES -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_shift_notes.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_shift_notes?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow user to see shift notes
             </div>
@@ -25,7 +25,7 @@
     <!-- CLIENT_SHIFT_FILLED -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_shift_filled.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_shift_filled?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow user to see unfilled / filled shift status
             </div>
@@ -36,7 +36,7 @@
     <!-- CLIENT_SHIFT_CHECKIN -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_shift_checkin.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_shift_checkin?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow access to shift check in and out information
             </div>
@@ -47,7 +47,7 @@
     <!-- CLIENT_STAFF_NAMES -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_staff_names.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_staff_names?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow user to see staff full names
             </div>
@@ -58,7 +58,7 @@
     <!-- CLIENT_STAFF_CHAT -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_staff_chat.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_staff_chat?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow user to chat to staff assigned to their shifts
             </div>
@@ -69,7 +69,7 @@
     <!-- CLIENT_STAFF_EMAIL -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_staff_email.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_staff_email?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow access to staff email address
             </div>
@@ -80,7 +80,7 @@
     <!-- CLIENT_STAFF_MOB -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_staff_mob.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_staff_mob?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow access to staff phone number
             </div>
@@ -91,7 +91,7 @@
     <!-- CLIENT_SHIFTS_ALL -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions.client_shifts_all.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_shifts_all?.set" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Access all shifts belonging to the client
             </div>

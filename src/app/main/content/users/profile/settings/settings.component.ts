@@ -69,9 +69,11 @@ export class UsersProfileSettingsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.getCategoryListByUser();
         this.getUserOptions();
-        this.getUserPermissions();
+        if (this.user.lvl != 'owner') {
+            this.getUserPermissions();
+        }
+        this.getCategoryListByUser();
     }
 
     select(category) {
@@ -90,6 +92,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             .getUserOptions(this.user.id)
             .subscribe(res => {
                 this.userOptions = res;
+                 console.log(this.userPermissions);
             });
     }
 
@@ -98,6 +101,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             .getUserPermissions(this.user.id)
             .subscribe(res => {
                 this.userPermissions = res;
+                console.log(this.userPermissions);
             });
     }
 }
