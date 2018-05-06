@@ -32,12 +32,11 @@ import { UsersExportDialogComponent } from '../users/users-export-dialog/users-e
 import { TabComponent } from '../../tab/tab/tab.component';
 
 @Component({
-    selector   : 'fuse-home',
+    selector: 'fuse-home',
     templateUrl: './home.component.html',
-    styleUrls  : ['./home.component.scss']
+    styleUrls: ['./home.component.scss']
 })
-export class FuseHomeComponent implements OnInit, OnDestroy
-{
+export class FuseHomeComponent implements OnInit, OnDestroy {
     tabSubscription: Subscription;
     closeTabSubscription: Subscription;
 
@@ -160,10 +159,10 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
     async loadFCMservices() {
         await this.fcmService.requestPermission();
-       /**
-        * firebase token refreshed
-        */
-       this.fcmService.refreshToken();
+        /**
+         * firebase token refreshed
+         */
+        this.fcmService.refreshToken();
     }
 
     ngOnInit() {
@@ -185,6 +184,25 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         }
 
         this.handleURLParams();
+
+        if ('serviceWorker' in navigator) {
+            // ensure service worker is ready
+            /* never seems to be ready!!
+            navigator.serviceWorker.ready.then(function (reg) {
+                // listening for messages from service worker
+                console.log('sw ready');
+                navigator.serviceWorker.addEventListener('message', function (event) {
+                    var messageFromSW = event.data;
+                    console.log("message from SW: " + messageFromSW);
+                });
+            });*/
+            setTimeout(function () {
+                navigator.serviceWorker.addEventListener('message', function (event) {
+                    var messageFromSW = event.data;
+                    console.log("message from SW: " + messageFromSW);
+                });
+            }, 3000);
+        }
     }
 
     ngOnDestroy() {
@@ -204,7 +222,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
 
         if (_tab.url === 'tracking') {
             const trackingCategory = _tab.data;
-            if (JSON.stringify(_tab.data) !== '{}' ){
+            if (JSON.stringify(_tab.data) !== '{}') {
                 this.trackingService.toggleSelectedCategory(trackingCategory as TrackingCategory);
             }
         }
@@ -238,7 +256,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy
                                     panelClass: 'client-shifts-export-as-excel-dialog',
                                 });
 
-                                this.dialogRef.afterClosed().subscribe(res => {});
+                                this.dialogRef.afterClosed().subscribe(res => { });
                             }
                         },
 
@@ -333,19 +351,11 @@ export class FuseHomeComponent implements OnInit, OnDestroy
         }
     }
 
-    /**
-     * This function handles any actions provided query params in url, handles opening initial window when coming from notification
-     **/
-    private handleURLParams() {
-        const action = this.getUrlParameter('action');
-
+    private handleAction(action, id) {
         // Check what kind of action was passed
+        const level = this.tokenStorage.getUser().lvl;
         if (action === 'shift') {
-
-            const id = this.getUrlParameter('id');
-
-            /* TODO: Do I really need to use adminShiftTpl? */
-            const url = `admin/shift/${id}`;
+            const url = level + `/shift/${id}`;
 
             /* TODO: Add dynamic shift title by ID */
             const tab = new Tab('Test', 'adminShiftTpl', url, { id, url });
@@ -358,6 +368,15 @@ export class FuseHomeComponent implements OnInit, OnDestroy
             /* TODO: using tabb service directly does nto work for some reason */
             // this.tabService.openTab(TAB.USERS_TAB);
         }
+    }
+
+    /**
+     * This function handles any actions provided query params in url, handles opening initial window when coming from notification
+     **/
+    private handleURLParams() {
+        const action = this.getUrlParameter('action');
+        const id = this.getUrlParameter('id');
+        this.handleAction(action, id);
     }
 
     private getUrlParameter(name) {

@@ -17,12 +17,11 @@ import { AppSettingService } from './shared/services/app-setting.service';
 import { CustomLoadingService } from './shared/services/custom-loading.service';
 
 @Component({
-    selector   : 'fuse-root',
+    selector: 'fuse-root',
     templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss']
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit
-{
+export class AppComponent implements OnInit {
     socketService: SocketService;
     loading = false;
 
@@ -39,8 +38,7 @@ export class AppComponent implements OnInit
         private appSetting: AppSettingService,
         private titleService: Title,
         private spinner: CustomLoadingService
-    )
-    {
+    ) {
         // Add languages
         this.translate.addLangs(['en', 'tr']);
 

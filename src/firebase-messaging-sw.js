@@ -1,55 +1,52 @@
-// [START initialize_firebase_in_sw]
-// Give the service worker access to Firebase Messaging.
-// Note that you can only use Firebase Messaging here, other Firebase libraries
-// are not available in the service worker.
 importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-messaging.js');
 
-// Initialize the Firebase app in the service worker by passing in the
-// messagingSenderId.
 firebase.initializeApp({
   'messagingSenderId': '184388846598'//'557767382630'
 });
-
-
-
-// Retrieve an instance of Firebase Messaging so that it can handle background
-// messages.
+// Retrieve an instance of Firebase Messaging so that it can handle background messages.
 const messaging = firebase.messaging();
-// [END initialize_firebase_in_sw]
-
-
-// If you would like to customize notifications that are received in the
-// background (Web app is closed or not in browser focus) then you should
-// implement this optional method.
-
-
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-  console.log('Service Worker and Push is supported');
-
-  navigator.serviceWorker.register('sw.js')
-    .then(function (swReg) {
-      console.log('Service Worker is registered', swReg);
-
-      swRegistration = swReg;
-      initialiseUI();
-    })
-    .catch(function (error) {
-      console.error('Service Worker Error', error);
-    });
-} else {
-  console.warn('Push messaging is not supported');
-}
 
 self.addEventListener('notificationclick', function (event) {
-  console.log('[Service Worker] Notification click Received.');
-  console.log(event);
-
   event.notification.close();
 
-  event.waitUntil(
-    clients.openWindow('https://demo.staffconnect-app.com?action=' + event.notification.actions[0].action + '&id=' + event.notification.data.id)
-  );
+  const urlToOpen = new URL('/', self.location.origin);
+  const promiseChain = clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true
+  })
+    .then((windowClients) => {
+      let matchingClient = null;
+
+      for (let i = 0; i < windowClients.length; i++) {
+        const windowClient = windowClients[i];
+
+        var pathArray = windowClient.url.split('/');
+        var protocol = pathArray[0];
+        var host = pathArray[2];
+        var url = protocol + '//' + host + '/';
+
+        if (url === urlToOpen.href) {
+          matchingClient = windowClient;
+          break;
+        }
+      }
+
+      if (matchingClient) {
+        //do something in future?
+        matchingClient.postMessage({
+          action: event.notification.data.action,
+          id: event.notification.data.id
+        });
+        return matchingClient.focus();
+      } else {
+        urlToOpen.searchParams.set('action', event.notification.data.action);
+        urlToOpen.searchParams.append('id', event.notification.data.id);
+        return clients.openWindow(urlToOpen.href);
+      }
+    });
+
+  event.waitUntil(promiseChain);
 });
 
 self.addEventListener('push', function (event) {
@@ -57,9 +54,6 @@ self.addEventListener('push', function (event) {
   const title = payload.notification.title;
   const options = {
     body: payload.notification.body,
-    actions: [
-      { action: payload.data.action, title: payload.data.action }
-    ],
     data: payload.data,
     icon: payload.notification.icon
   };
