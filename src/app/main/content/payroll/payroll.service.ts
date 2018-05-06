@@ -23,6 +23,12 @@ export class PayrollService {
             .catch(this.handleError);
     }
 
+    getPayroll(id: number): Observable<any> {
+        const url = `${BASE_URL}/payroll/${id}`;
+        return this.http.get(url)
+            .catch(this.handleError);
+    }
+
     generatePayroll(type, from, to, completedOnly, trackingOptionId = null): Observable<any> {
         let url = `${BASE_URL}/payroll/generate/${type}/${from}/${to}/${completedOnly}`;
         if (trackingOptionId) {

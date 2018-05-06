@@ -84,7 +84,7 @@
         <ngx-datatable class="material striped" [rows]="payrolls" [loadingIndicator]="isLoading" [columnMode]="'force'"
             [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true" [selected]="selectedPayrolls" [externalPaging]="true" [count]="total"
             [offset]="pageNumber" [limit]="pageSize" [sortType]="'multi'" (page)="setPage($event)"
-            (sort)="onSort($event)" (select)="onSelect($event)">
+            (sort)="onSort($event)" (select)="onSelect($event)" (activate)="onActivate($event)">
 
             <!-- CHECKBOX -->
             <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"

@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { CustomLoadingService } from '../../../shared/services/custom-loading.service';
 import { PayrollService } from './payroll.service';
+import { TabService } from '../../tab/tab.service';
+import { Tab } from '../../tab/tab';
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -41,6 +43,7 @@ export class PayrollComponent implements OnInit {
     constructor(
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
+        private tabService: TabService,
         private payrollService: PayrollService
     ) { }
 
@@ -127,4 +130,11 @@ export class PayrollComponent implements OnInit {
 
     }
 
+    onActivate(event) {
+        if (event.type === 'click') {
+            const id = event.row.id;
+            const tab = new Tab(event.row.display, 'payrollDetailTpl', `payroll/${id}`, { id });
+            this.tabService.openTab(tab);
+        }
+    }
 }

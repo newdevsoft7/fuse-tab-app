@@ -87,7 +87,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
 
     @ViewChild('newMessageTpl') newMessageTpl;
     @ViewChild('emailTemplatesTpl') emailTemplatesTpl;
-    @ViewChild('trackingOptionTpl') trackingOptionTpl;
+    @ViewChild('payrollDetailTpl') payrollDetailTpl;
 
     socketService: SocketService;
     fcmService: FCMService;

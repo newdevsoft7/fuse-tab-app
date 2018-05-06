@@ -5,6 +5,7 @@ import { PayrollComponent } from './payroll.component';
 import { GeneratePayrollComponent } from './generate-payroll/generate-payroll.component';
 import { PayrollService } from './payroll.service';
 import { PayrollSearchBarComponent } from './search-bar/search-bar.component';
+import { PayrollDetailComponent } from './detail/detail.component';
 
 @NgModule({
     imports         : [
@@ -14,11 +15,13 @@ import { PayrollSearchBarComponent } from './search-bar/search-bar.component';
     declarations    : [
         PayrollComponent,
         GeneratePayrollComponent,
-        PayrollSearchBarComponent
+        PayrollSearchBarComponent,
+        PayrollDetailComponent
     ],
     exports         : [
         PayrollComponent,
-        GeneratePayrollComponent
+        GeneratePayrollComponent,
+        PayrollDetailComponent
     ],
     providers       : [
         PayrollService

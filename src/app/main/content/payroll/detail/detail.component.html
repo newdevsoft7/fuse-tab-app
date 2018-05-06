@@ -1,0 +1,118 @@
+<div id="invoice" class="compact page-layout blank" fxLayout="row" fusePerfectScrollbar>
+
+    <div class="invoice-container">
+
+        <!-- INVOICE -->
+        <div class="card">
+
+            <div class="header">
+                <div class="invoice-date">{{payroll?.created_at | date: 'MMM d, y'}}</div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between stretch">
+                    <div class="client">
+                        <div class="invoice-number" fxLayout="row" fxLayoutAlign="start center">
+                            <span class="title">{{payroll?.display}}</span>
+                        </div>
+
+                        <div class="info">
+                            <div class="title">{{payroll?.company?.name}}</div>
+                            <div class="address">
+                              <span *ngIf="payroll?.company?.address">{{payroll?.company?.address + ', '}}</span>
+                              <span *ngIf="payroll?.company?.postcode">{{payroll?.company?.postcode + ', '}}</span>
+                              <span *ngIf="payroll?.company?.city">{{payroll?.company?.city + ', '}}</span>
+                              <span *ngIf="payroll?.company?.state">{{payroll?.company?.state}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="issuer mat-accent-bg" fxLayout="row" fxLayoutAlign="start center">
+                        <div class="logo">
+                            <img [src]="logoUrl">
+                        </div>
+
+                        <div class="info">
+                            <div class="title">{{payroll?.user?.fname + ' ' + payroll?.user?.lname}}</div>
+                            <div class="address">
+                              <span *ngIf="payroll?.user?.address">{{payroll?.user?.address + ', '}}</span>
+                              <span *ngIf="payroll?.user?.postcode">{{payroll?.user?.postcode + ', '}}</span>
+                              <span *ngIf="payroll?.user?.city">{{payroll?.user?.city + ', '}}</span>
+                              <span *ngIf="payroll?.user?.state">{{payroll?.user?.state}}</span>
+                            </div>
+                            <div *ngIf="payroll?.user?.mob" class="phone">{{payroll?.user?.mob}}</div>
+                            <div *ngIf="payroll?.user?.email" class="email">{{payroll?.user?.email}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <table class="simple invoice-table">
+                    <thead>
+                        <tr>
+                            <th>TYPE</th>
+                            <th>TITLE</th>
+                            <th class="text-right">UNIT PRICE</th>
+                            <th class="text-right">QUANTITY</th>
+                            <th class="text-right">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of payroll?.travel">
+                            <td>
+                                <div class="title">
+                                    Travel
+                                </div>
+                            </td>
+                            <td>
+                                <div class="title">
+                                    {{item.title}}
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                {{item.u_amt | currency:'USD':'symbol'}}
+                            </td>
+                            <td class="text-right">
+                                {{item.qty}}
+                            </td>
+                            <td class="text-right">
+                                {{item.l_amt | currency:'USD':'symbol'}}
+                            </td>
+                        </tr>
+                        <!-- Double the invoice data for demo purposes -->
+                        <tr *ngFor="let item of payroll?.shift">
+                            <td>
+                                <div class="title">
+                                    Shift
+                                </div>
+                            </td>
+                            <td>
+                                <div class="title">
+                                    {{item.title}}
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                {{item.u_amt | currency:'USD':'symbol'}}
+                            </td>
+                            <td class="text-right">
+                                {{item.qty}}
+                            </td>
+                            <td class="text-right">
+                                {{item.l_amt | currency:'USD':'symbol'}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="simple invoice-table-footer">
+                    <tbody>
+                        <tr class="total">
+                            <td>TOTAL</td>
+                            <td>{{payroll?.total | currency:'USD':'symbol'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
