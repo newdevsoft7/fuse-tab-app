@@ -12,8 +12,17 @@ import { AppSettingService } from "../../../../shared/services/app-setting.servi
 export class PayrollDetailComponent implements OnInit {
   @Input() data: any;
 
-  payroll: any;
+  payroll: any = {};
   logoUrl: string;
+
+  readonly itemTypes = [
+    { value: 'bonus', title: 'Bonus' },
+    { value: 'deduction', title: 'Deduction' },
+    { value: 'expense', title: 'Expense' },
+    { value: 'shift', title: 'Shift' },
+    { value: 'travel', title: 'Travel' },
+    { value: 'other', title: 'Other' }
+  ];
 
   constructor(
     private toastrService: ToastrService,

@@ -15,7 +15,7 @@
                         </div>
 
                         <div class="info">
-                            <div class="title">{{payroll?.company?.name}}</div>
+                            <div *ngIf="payroll?.company?.name" class="title">{{payroll?.company?.name}}</div>
                             <div class="address">
                               <span *ngIf="payroll?.company?.address">{{payroll?.company?.address + ', '}}</span>
                               <span *ngIf="payroll?.company?.postcode">{{payroll?.company?.postcode + ', '}}</span>
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="info">
-                            <div class="title">{{payroll?.user?.fname + ' ' + payroll?.user?.lname}}</div>
+                            <div *ngIf="payroll?.user?.fname" class="title">{{payroll?.user?.fname + ' ' + payroll?.user?.lname}}</div>
                             <div class="address">
                               <span *ngIf="payroll?.user?.address">{{payroll?.user?.address + ', '}}</span>
                               <span *ngIf="payroll?.user?.postcode">{{payroll?.user?.postcode + ', '}}</span>
@@ -57,10 +57,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of payroll?.travel">
+                      <ng-container *ngFor="let type of itemTypes">
+                        <tr *ngFor="let item of payroll[type.value]">
                             <td>
                                 <div class="title">
-                                    Travel
+                                    {{type.title}}
                                 </div>
                             </td>
                             <td>
@@ -78,28 +79,7 @@
                                 {{item.l_amt | currency:'USD':'symbol'}}
                             </td>
                         </tr>
-                        <!-- Double the invoice data for demo purposes -->
-                        <tr *ngFor="let item of payroll?.shift">
-                            <td>
-                                <div class="title">
-                                    Shift
-                                </div>
-                            </td>
-                            <td>
-                                <div class="title">
-                                    {{item.title}}
-                                </div>
-                            </td>
-                            <td class="text-right">
-                                {{item.u_amt | currency:'USD':'symbol'}}
-                            </td>
-                            <td class="text-right">
-                                {{item.qty}}
-                            </td>
-                            <td class="text-right">
-                                {{item.l_amt | currency:'USD':'symbol'}}
-                            </td>
-                        </tr>
+                      </ng-container>
                     </tbody>
                 </table>
 

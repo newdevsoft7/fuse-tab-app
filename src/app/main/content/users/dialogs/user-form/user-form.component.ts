@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TrackingService } from '../../../tracking/tracking.service';
 import { ToastrService } from 'ngx-toastr';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
+import { UserService } from '../../user.service';
 
 @Component({
     selector     : 'app-users-user-form-dialog',
@@ -32,7 +32,7 @@ export class UserFormDialogComponent implements OnInit
         public dialogRef: MatDialogRef<UserFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private formBuilder: FormBuilder,
-        private trackingService: TrackingService,
+        private userService: UserService,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage) {
 
@@ -105,7 +105,11 @@ export class UserFormDialogComponent implements OnInit
     async filterUser(query: string, lvl: string) {
         if (!query) return;
         try {
-            this.users = await this.trackingService.fetchUsersByLevel(lvl, query).toPromise();
+            if (lvl === 'client') {
+                this.users = await this.userService.fetchClients(query);
+            } else {
+                this.users = await this.userService.fetchOutsourceCompanies(query);
+            }
         } catch (e) {
             this.toastr.error(e.error.message);
         }
@@ -116,6 +120,6 @@ export class UserFormDialogComponent implements OnInit
     }
 
     userDisplayFn(user?: any): string {
-        return user? user.name : '';
+        return user? user.cname : '';
     }
 }

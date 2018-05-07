@@ -98,7 +98,7 @@
                     <input type="text" matInput ngModel (ngModelChange)="checkBelongTo($event)" [ngModelOptions]="{standalone: true}" name="client" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser($event, 'client')">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="userDisplayFn">
                         <mat-option *ngFor="let user of users" [value]="user">
-                        {{ user.name }}
+                        {{ user.cname }}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
@@ -110,7 +110,7 @@
                     <input type="text" matInput ngModel (ngModelChange)="checkBelongTo($event)" [ngModelOptions]="{standalone: true}" name="ext" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterUser($event, 'ext')">
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="userDisplayFn">
                         <mat-option *ngFor="let user of users" [value]="user">
-                        {{ user.name }}
+                        {{ user.cname }}
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>

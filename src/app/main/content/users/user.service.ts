@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 
 const BASE_URL = `${environment.apiUrl}`;
 const USERS_URL = `${BASE_URL}/users`;
+const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
 
 @Injectable()
 export class UserService {
@@ -243,6 +244,16 @@ export class UserService {
     addUserAvailability(body): Promise<any> {
         const url = `${BASE_URL}/user/unavailability`;
         return this.http.post(url, body).toPromise();
+    }
+
+    fetchClients(query: string): Promise<any> {
+        const url = `${AUTOCOMPLETE_URL}/client/${query}`;
+        return this.http.get(url).toPromise();
+    }
+
+    fetchOutsourceCompanies(query: string): Promise<any> {
+        const url = `${AUTOCOMPLETE_URL}/outsourceCompany/${query}`;
+        return this.http.get(url).toPromise();
     }
 
     private handleError(error: Response | any) {
