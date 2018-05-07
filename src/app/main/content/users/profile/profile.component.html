@@ -11,8 +11,8 @@
         </div>
 
         <div fxLayout="column" fxLayoutAlign="start end">
-            <div fxLayout="row" *ngIf="isFavStatusShow" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
-                <button mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
+            <div fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
+                <button *ngIf="isFavStatusShow" mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
                     <mat-icon [ngClass]="{'white-fg': userInfo.fav === 0, 'amber-600-fg': userInfo.fav === 1}">star</mat-icon>
                 </button>
 

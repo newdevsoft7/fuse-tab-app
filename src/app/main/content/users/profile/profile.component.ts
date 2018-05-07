@@ -67,7 +67,7 @@ export class UsersProfileComponent implements OnInit {
 				this.userInfo = res;
 				this.isFavStatusShow =
 					['admin', 'owner'].some(v => this.currentUser.lvl.indexOf(v) > -1)
-					&& ['staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
+					&& ['admin', 'staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
 			});
 
 		this.userService.getUserRatings(this.user.id).subscribe(ratings => {
