@@ -5,8 +5,20 @@
 
         <div class="user-info" [ngClass.gt-xs]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
             <img class="profile-image avatar huge" [src]="getAvatar(userInfo)">
-            <div class="name">
-                {{userInfo.fname}} {{userInfo.lname}}
+            <div class="user-info" fxLayout="column">
+                <div class="name">
+                    {{userInfo.fname}} {{userInfo.lname}}
+                </div>
+                <div class="ml-8 white-fg" style="text-transform:capitalize;">
+                    {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ? "&sdot; "+userInfo.city : ""}}
+                    {{userInfo.state ? ", "+userInfo.state : ""}}
+                </div>
+                <div class="ml-8 light-blue-fg">
+                    {{userInfo.email}}
+                </div>
+                <div class="ml-8 white-fg">
+                    {{userInfo.mob}}
+                </div>
             </div>
         </div>
 
@@ -40,7 +52,7 @@
                 <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings" [settings]="settings"></app-users-profile-about>
             </mat-tab>
 
-            <mat-tab label="Skills & Qualifications">
+            <mat-tab label="Skills & Qualifications" *ngIf="isSkillsShow">
                 <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-attributes>
             </mat-tab>
 
@@ -57,7 +69,7 @@
                 <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-document>
             </mat-tab>
 
-            <mat-tab label="Work Areas" *ngIf="settings.work_areas_enable === '1'">
+            <mat-tab label="Work Areas" *ngIf="isWorkAreasShow">
                 <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-workareas>
             </mat-tab>
 
@@ -66,7 +78,7 @@
                 </app-users-profile-unavailability>
             </mat-tab>
 
-            <mat-tab label="Settings" *ngIf="currentUser.id == user.id || currentUser.lvl == 'owner' || (currentUser.lvl == 'admin' && userInfo.lvl != 'admin' && userInfo.lvl != 'owner')">
+            <mat-tab label="Settings" *ngIf="isSettingsShow">
                 <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-settings>
             </mat-tab>
 

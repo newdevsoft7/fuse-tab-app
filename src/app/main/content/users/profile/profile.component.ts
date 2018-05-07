@@ -20,8 +20,11 @@ export class UsersProfileComponent implements OnInit {
 	ratings = [];
 
 	settings: any = {};
-	isFavStatusShow = false;
 	isApproveRejectShow = false;
+	isFavStatusShow = false;
+	isSettingsShow = false;
+	isSkillsShow = false;
+	isWorkAreasShow = false;
 
 	dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -36,6 +39,7 @@ export class UsersProfileComponent implements OnInit {
 		this.getUserInfo();
 		this.currentUser = this.tokenStorage.getUser();
 		this.settings = this.tokenStorage.getSettings();
+		this.isWorkAreasShow = this.settings.work_areas_enable
 	}
 
 	async toggleFav() {
@@ -122,6 +126,13 @@ export class UsersProfileComponent implements OnInit {
 					&& ['admin', 'staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
 				this.isApproveRejectShow =
 					['registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
+				this.isSettingsShow =
+					['owner', 'admin', 'staff', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1) && (this.currentUser.id == this.user.id || this.currentUser.lvl == 'owner' || (this.currentUser.lvl == 'admin' && this.userInfo.lvl != 'admin' && this.userInfo.lvl != 'owner'));
+				if (['owner', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1)) {
+					this.isWorkAreasShow = false;
+				} else {
+					this.isSkillsShow = true;
+				}
 			});
 
 		this.userService.getUserRatings(this.user.id).subscribe(ratings => {
