@@ -4,6 +4,13 @@ export class SettingsSideNavModel {
     constructor() {
         this.model = [
             {
+                'id': 'change_password',
+                'title': 'Change Password',
+                'translate': 'SETTINGS.SIDE_NAV.CHANGE_PASSWORD',
+                'icon': 'lock',
+                'url': '/change_password'
+            },
+            {
                 'id': 'check_in_out',
                 'title': 'Check In / Out',
                 'translate': 'SETTINGS.SIDE_NAV.CHECK_IN_OUT',

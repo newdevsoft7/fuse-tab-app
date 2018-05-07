@@ -238,6 +238,12 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    changePassword(userId: number, password: string): Observable<any> {
+        const url = `${BASE_URL}/user/${userId}/password`;
+        return this.http.put(url, { password })
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

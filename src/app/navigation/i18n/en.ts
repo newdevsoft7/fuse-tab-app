@@ -90,6 +90,7 @@ export const locale = {
         },
         'SETTINGS': {
             'SIDE_NAV': {
+                'CHANGE_PASSWORD': 'Change Password',
                 'CHECK_IN_OUT': 'Check In / Out',
                 'CLIENT': 'Client',
                 'CLIENT_INVOICES': 'Client Invoices',
