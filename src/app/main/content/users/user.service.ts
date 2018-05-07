@@ -47,6 +47,16 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    approveRegistrant(id): Promise<any> {
+        const url = `${BASE_URL}/user/${id}/approve`;
+        return this.http.put(url, []).toPromise();
+    }
+
+    rejectRegistrant(id): Promise<any> {
+        const url = `${BASE_URL}/user/${id}/reject`;
+        return this.http.put(url, []).toPromise();
+    }
+
     createUser(user): Observable<any> {
         const url = `${BASE_URL}/user`;
         return this.http.post(url, user)
