@@ -1,0 +1,10 @@
+:host {
+  height: 40px;
+  line-height: 40px;
+  .editable-text {
+    cursor: pointer;
+    &.empty {
+      color: #f44336;
+    }
+  }
+}

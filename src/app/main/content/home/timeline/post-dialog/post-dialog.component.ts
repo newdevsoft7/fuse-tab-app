@@ -25,6 +25,7 @@ export class PostDialogComponent implements OnInit {
     post: any;
     user: any;
     canLoadPosts = false; // Ability to load more posts
+    lvl: string;
 
     constructor(
         private dialog: MatDialog,
@@ -34,6 +35,7 @@ export class PostDialogComponent implements OnInit {
         private toastr: ToastrService
     ) {
         this.user = this.data.user;
+        this.lvl = this.data.lvl;
     }
 
     ngOnInit() {

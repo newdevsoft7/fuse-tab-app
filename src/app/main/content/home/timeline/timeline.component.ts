@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -28,12 +28,12 @@ enum PostType {
 }
 
 @Component({
-    selector   : 'app-home-timeline',
+    selector   : 'app-timeline',
     templateUrl: './timeline.component.html',
     styleUrls  : ['./timeline.component.scss'],
     animations : fuseAnimations
 })
-export class HomeTimelineComponent implements OnInit
+export class TimelineComponent implements OnInit
 {
     activities = [];
 
@@ -48,6 +48,8 @@ export class HomeTimelineComponent implements OnInit
 
     user: any;
     dialogRef;
+
+    @Input() lvl: string;
 
     constructor(
         private dialog: MatDialog,
@@ -70,7 +72,9 @@ export class HomeTimelineComponent implements OnInit
         });
         this.getPosts(true);
         this.getPinnedPosts();
-        this.loadNotifications();
+        if (!this.lvl) {
+            this.loadNotifications();
+        }
     }
 
     async loadNotifications() {
@@ -83,9 +87,17 @@ export class HomeTimelineComponent implements OnInit
 
     getPosts(isFirstCall = false) {
 
+        let type;
+
+        if (this.lvl) {
+            type = this.lvl;
+        } else {
+            type = ['client', 'ext'].includes(this.user.lvl) ? this.user.lvl : 'main';
+        }
+
         if (this.canLoadPosts || isFirstCall) { // If loading posts first or there's more posts to fetch
             this.postLoading = true;
-            this.homeService.getPosts(this.page).subscribe(posts => {
+            this.homeService.getPosts(this.page, 10, type).subscribe(posts => {
                 this.postLoading = false;
                 const count = posts.length;
                 if (count > 0) {
@@ -119,7 +131,13 @@ export class HomeTimelineComponent implements OnInit
     }
 
     getPinnedPosts() {
-        const type = ['client', 'ext'].includes(this.user.lvl) ? this.user.lvl : 'main';
+        let type;
+
+        if (this.lvl) {
+            type = this.lvl;
+        } else {
+            type = ['client', 'ext'].includes(this.user.lvl) ? this.user.lvl : 'main';
+        }
 
         // TODO - Use id of client, outsource company
         this.homeService.getPinnedPosts(type, 0).subscribe(posts => {
@@ -283,7 +301,7 @@ export class HomeTimelineComponent implements OnInit
         if (this.file) { // If posting a file
             const formData = new FormData();
             formData.append('file', this.file, this.file.name);
-            formData.append('ptype', PostType.Main);
+            formData.append('ptype', this.lvl || PostType.Main);
             formData.append('content', content);
             this.homeService.createPost(formData).subscribe(post => {
                 this.spinner.hide();
@@ -293,7 +311,7 @@ export class HomeTimelineComponent implements OnInit
                 this.displayError(err);
             });
         } else { // If posting text
-            this.homeService.createPost({ content, ptype: PostType.Main }).subscribe(post => {
+            this.homeService.createPost({ content, ptype: this.lvl || PostType.Main }).subscribe(post => {
                 this.spinner.hide();
                this.addToPosts(post);
             }, err => {
@@ -404,7 +422,11 @@ export class HomeTimelineComponent implements OnInit
         this.dialogRef = this.dialog.open(PostDialogComponent, {
             disableClose: true,
             panelClass: 'post-dialog',
-            data: { postId, user: this.user }
+            data: { 
+                postId, 
+                user: this.user,
+                lvl: this.lvl
+            }
         });
         this.dialogRef.afterClosed().subscribe(mode => {
             if (mode === 'update') {

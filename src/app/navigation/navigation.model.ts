@@ -46,6 +46,22 @@ export const ADMIN_MODEL = [
         ]
     },
     {
+        'id': 'clients',
+        'title': 'Clients',
+        'translate': 'NAV.ADMIN.CLIENTS',
+        'type': 'item',
+        'icon': 'people',
+        'tab': TAB.CLIENTS_TAB
+    },
+    {
+        'id': 'outsource_companies',
+        'title': 'Outsource Companies',
+        'translate': 'NAV.ADMIN.OUTSOURCE_COMPANIES',
+        'type': 'item',
+        'icon': 'domain',
+        'tab': TAB.OUTSOURCE_COMPANIES_TAB
+    },
+    {
         'id': 'schedule',
         'title': 'Schedule',
         'translate': 'NAV.ADMIN.SCHEDULE',

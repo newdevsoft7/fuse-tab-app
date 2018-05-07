@@ -2,7 +2,7 @@
 
     <app-tabs>
         <app-tab [tabTitle]="'Home'" *ngIf="(!formData || formData.length === 0); else formBlock">
-            <app-home-timeline></app-home-timeline>
+            <app-timeline></app-timeline>
         </app-tab>
         <ng-template #formBlock>
             <app-tab [tabTitle]="form.name" [data]="form" *ngFor="let form of formData">
@@ -155,6 +155,10 @@
 
     <ng-template #payrollDetailTpl let-data="data">
         <app-payroll-detail [data]="data"></app-payroll-detail>
+    </ng-template>
+
+    <ng-template #clientsTpl>
+        <app-clients></app-clients>
     </ng-template>
 
 </div>

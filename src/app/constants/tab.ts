@@ -11,6 +11,10 @@ export const TAB = {
     'USERS_NEW_MESSAGE_TAB': new Tab('New Message', 'newMessageTpl', 'users/new-message', {}, true),
     'USERS_CHAT_TAB': new Tab('Chat', 'usersChatTpl', 'users/chat', {}),
 
+    'CLIENTS_TAB': new Tab('Clients', 'clientsTpl', 'clients', {}),
+
+    'OUTSOURCE_COMPANIES_TAB': new Tab('Outsource Companies', 'outsourceCompaniesTpl', 'outsource-companies', {}),
+
     'SCHEDULE_CALENDAR_TAB': new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {}),
     'SCHEDULE_ADMIN_LIST_TAB': new Tab('List', 'adminShiftListTpl', 'schedule/admin-list', {}),
     'SCHEDULE_ADMIN_SHIFT_TAB': new Tab('Shift', 'scheduleAdminShiftTpl', 'schedule/shift', {}),

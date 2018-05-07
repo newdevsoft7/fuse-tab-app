@@ -12,6 +12,10 @@ export const locale = {
                 'USERS_NEW_MESSAGE': 'New Message',
                 'USERS_CHAT': 'Chat',
 
+                'CLIENTS': 'Clients',
+
+                'OUTSOURCE_COMPANIES': 'Outsource Companies',
+
                 'SCHEDULE': 'Schedule',
                 'SCHEDULE_CALENDAR': 'Calendar',
                 'SCHEDULE_LIST': 'List',

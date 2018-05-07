@@ -16,7 +16,7 @@ import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module'
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { TrackingModule } from '../tracking/tracking.module';
 import { AccountingModule } from '../accounting/accounting.module';
-import { HomeTimelineComponent } from './timeline/timeline.component';
+import { TimelineComponent } from './timeline/timeline.component';
 import { HomeService } from './home.service';
 import { UserService } from '../users/user.service';
 import { EditPostDialogComponent } from './timeline/edit-post-dialog/edit-post-dialog.component';
@@ -25,15 +25,12 @@ import { PinPostDialogComponent } from './timeline/pin-post-dialog/pin-post-dial
 import { PostDialogComponent } from './timeline/post-dialog/post-dialog.component';
 import { PayrollModule } from '../payroll/payroll.module';
 import { TemplatesModule } from '../templates/templates.module';
+import { ClientsModule } from '../clients/clients.module';
+import { TimelineModule } from './timeline/timeline.module';
 
 @NgModule({
     declarations: [
-        FuseHomeComponent,
-        HomeTimelineComponent,
-        EditPostDialogComponent,
-        EditCommentDialogComponent,
-        PinPostDialogComponent,
-        PostDialogComponent
+        FuseHomeComponent
     ],
     imports     : [
         SharedModule,
@@ -50,7 +47,9 @@ import { TemplatesModule } from '../templates/templates.module';
         FormSignModule,
         QuizModule,
         PayrollModule,
-        TemplatesModule
+        TemplatesModule,
+        ClientsModule,
+        TimelineModule
     ],
     exports     : [
         FuseHomeComponent
@@ -60,10 +59,6 @@ import { TemplatesModule } from '../templates/templates.module';
         UserService
     ],
     entryComponents: [
-        EditPostDialogComponent,
-        EditCommentDialogComponent,
-        PinPostDialogComponent,
-        PostDialogComponent
     ]
 })
 

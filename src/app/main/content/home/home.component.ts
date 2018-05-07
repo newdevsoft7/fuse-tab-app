@@ -89,6 +89,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('emailTemplatesTpl') emailTemplatesTpl;
     @ViewChild('payrollDetailTpl') payrollDetailTpl;
 
+    @ViewChild('clientsTpl') clientsTpl;
+
     socketService: SocketService;
     fcmService: FCMService;
     alive: boolean = false;
@@ -336,7 +338,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 }
             ]
         };
-        navModel.splice(2, 0, payroll);
+        navModel.splice(3, 0, payroll);
     }
 
     onMessage(event: any) {

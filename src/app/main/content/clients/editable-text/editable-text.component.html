@@ -1,0 +1,24 @@
+<div 
+    fxFlex="1 0 auto"
+    class="editable-text"
+    [class.empty]="!text"
+    *ngIf="!formActive"
+    (click)="formActive = true">
+    {{text || 'Empty'}}
+</div>
+
+<form #editForm="ngForm" (ngSubmit)="formActive = false; saveChange.next(text)" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="formActive">
+
+    <mat-form-field floatPlaceholder="never">
+        <input matInput [(ngModel)]="text" #value="ngModel" name="value" fxFlex placeholder="Write a Value" required>
+    </mat-form-field>
+
+    <div fxLayout="row">
+        <button mat-icon-button fxFlex="0 1 auto" type="submit">
+            <mat-icon>check</mat-icon>
+        </button>
+        <button mat-icon-button fxFlex="0 1 auto" (click)="text = initText;formActive = false" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</form>
