@@ -14,7 +14,7 @@ import * as _ from 'lodash';
     styleUrls: ['./admin-options.component.scss']
 })
 export class UsersSettingsAdminOptionsComponent implements OnInit {
-
+    device : any;
     @Input() userOptions;
 
     @Output() optionChanged = new EventEmitter();
@@ -27,6 +27,9 @@ export class UsersSettingsAdminOptionsComponent implements OnInit {
     }
 
     toggleOption(option) {
+        alert("shit");
+        console.log(option);
+        console.log(this.device);
         this.optionChanged.emit(option);
     }
 }
