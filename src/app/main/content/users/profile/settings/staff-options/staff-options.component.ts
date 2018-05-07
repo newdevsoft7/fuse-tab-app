@@ -21,6 +21,7 @@ export class UsersSettingsStaffOptionsComponent implements OnInit {
     }
 
     toggleOption(option, event) {
+        this.userOptions[option].set=event.checked;
         this.optionChanged.emit({ oname: option, set: event.checked ? 1 : 0 });
     }
 }
