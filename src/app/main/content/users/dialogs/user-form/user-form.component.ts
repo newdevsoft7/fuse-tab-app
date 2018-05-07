@@ -6,23 +6,20 @@ import { TokenStorage } from '../../../../../shared/services/token-storage.servi
 import { UserService } from '../../user.service';
 
 @Component({
-    selector     : 'app-users-user-form-dialog',
-    templateUrl  : './user-form.component.html',
-    styleUrls    : ['./user-form.component.scss'],
+    selector: 'app-users-user-form-dialog',
+    templateUrl: './user-form.component.html',
+    styleUrls: ['./user-form.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 
-export class UserFormDialogComponent implements OnInit
-{
+export class UserFormDialogComponent implements OnInit {
     userForm: FormGroup;
     userFormErrors: any;
     users: any = [];
 
     types: any = [
-        { label: 'API', value: 'api' },
         { label: 'Owner', value: 'owner' },
         { label: 'Admin', value: 'admin' },
-        { label: 'Supervisor', value: 'supervisor' },
         { label: 'Staff', value: 'staff' }
     ];
 
@@ -57,19 +54,33 @@ export class UserFormDialogComponent implements OnInit
 
     ngOnInit() {
         this.userForm = this.formBuilder.group({
-            lvl     : ['staff'],
-            fname   : ['', Validators.required],
-            lname   : ['', Validators.required],
-            sex     : ['', Validators.required],
-            email   : ['', [Validators.required, Validators.email]],
-            mob     : ['', Validators.required],
+            lvl: ['staff'],
+            fname: ['', Validators.required],
+            lname: ['', Validators.required],
+            sex: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            mob: ['', Validators.required],
             password: ['', Validators.required],
             welcome_email: [true]
         });
 
+        this.belongTo = 1;
+
         this.userForm.valueChanges.subscribe(() => {
             this.onUserFormValuesChanged();
         });
+
+        this.userForm.controls['lvl'].valueChanges.subscribe(() => {
+            this.onUserFormLvlChanged();
+        });
+    }
+
+    onUserFormLvlChanged() {
+        if (this.userForm.controls['lvl'].value == 'client' || this.userForm.controls['lvl'].value == 'ext') {
+            this.belongTo = null;
+        } else {
+            this.belongTo = 1;
+        }
     }
 
     onUserFormValuesChanged() {
@@ -98,7 +109,7 @@ export class UserFormDialogComponent implements OnInit
         } else if (user.lvl === 'ext') {
             user.outsource_company_id = this.belongTo;
         }
-        // user.welcome_email = user.welcome_email ? 1 : 0;
+        user.welcome_email = user.welcome_email ? 1 : 0;
         this.dialogRef.close(user);
     }
 
@@ -120,6 +131,6 @@ export class UserFormDialogComponent implements OnInit
     }
 
     userDisplayFn(user?: any): string {
-        return user? user.cname : '';
+        return user ? user.cname : '';
     }
 }
