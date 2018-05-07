@@ -17,6 +17,8 @@ export class UsersSettingsAdminOptionsComponent implements OnInit {
 
     @Input() userOptions;
 
+    @Output() optionChanged = new EventEmitter();
+
     constructor(
         private toastr: ToastrService
     ) { }
@@ -24,4 +26,7 @@ export class UsersSettingsAdminOptionsComponent implements OnInit {
     ngOnInit() {
     }
 
+    toggleOption(option) {
+        this.optionChanged.emit(option);
+    }
 }

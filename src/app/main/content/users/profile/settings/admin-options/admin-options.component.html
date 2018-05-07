@@ -3,7 +3,7 @@
     <!-- ADMIN_CHAT_DISCOVERABLE -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userOptions?.admin_chat_discoverable?.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userOptions?.admin_chat_discoverable?.set" (change)="toggleOption('admin_chat_discoverable')" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Allow staff to find and message you
             </div>

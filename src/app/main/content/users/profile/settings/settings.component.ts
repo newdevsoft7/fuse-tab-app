@@ -92,7 +92,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             .getUserOptions(this.user.id)
             .subscribe(res => {
                 this.userOptions = res;
-                 console.log(this.userPermissions);
+                console.log(this.userPermissions);
             });
     }
 
@@ -103,5 +103,9 @@ export class UsersProfileSettingsComponent implements OnInit {
                 this.userPermissions = res;
                 console.log(this.userPermissions);
             });
+    }
+
+    toggleOption(str) {
+        alert(str);
     }
 }
