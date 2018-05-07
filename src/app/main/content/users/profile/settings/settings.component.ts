@@ -1,10 +1,10 @@
 import {
-    Component, OnInit, Input,
-    ViewChild
+    Component, OnInit, Input, ViewChild
 } from '@angular/core';
 import { UserService } from '../../user.service';
 
 import { MatSlideToggleChange, MatSelectChange } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 
@@ -66,6 +66,7 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     constructor(
         private userService: UserService,
+        private toastr: ToastrService,
     ) { }
 
     ngOnInit() {
@@ -92,7 +93,6 @@ export class UsersProfileSettingsComponent implements OnInit {
             .getUserOptions(this.user.id)
             .subscribe(res => {
                 this.userOptions = res;
-                console.log(this.userPermissions);
             });
     }
 
@@ -101,11 +101,24 @@ export class UsersProfileSettingsComponent implements OnInit {
             .getUserPermissions(this.user.id)
             .subscribe(res => {
                 this.userPermissions = res;
-                console.log(this.userPermissions);
             });
     }
 
-    toggleOption(str) {
-        alert(str);
+    async toggleOption(data) {
+        try {
+            const res = await this.userService.updateUserOption(this.user.id, data);
+            this.toastr.success(res.message);
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        }
+    }
+
+    async togglePermission(data) {
+        try {
+            const res = await this.userService.updateUserPermission(this.user.id, data);
+            this.toastr.success(res.message);
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        }
     }
 }

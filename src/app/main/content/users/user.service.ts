@@ -42,9 +42,19 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    updateUserOption(userId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/option`;
+        return this.http.put(url, data).toPromise();
+    }
+
     getUserPermissions(id: number): Observable<any> {
         return this.http.get(`${BASE_URL}/user/${id}/permissions`)
             .catch(this.handleError);
+    }
+
+    updateUserPermission(userId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/permission`;
+        return this.http.put(url, data).toPromise();
     }
 
     approveRegistrant(id): Promise<any> {

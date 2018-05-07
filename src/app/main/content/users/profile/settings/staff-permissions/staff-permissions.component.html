@@ -3,7 +3,7 @@
     <!-- STAFF_INVOICE -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions?.staff_invoice?.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.staff_invoice?.set" (change)="toggleOption('staff_invoice', $event)" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Generate invoices
             </div>

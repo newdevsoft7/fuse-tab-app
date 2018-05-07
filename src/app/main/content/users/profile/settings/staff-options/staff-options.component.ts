@@ -1,12 +1,6 @@
-import {
-    Component, OnInit, Input,
-    ViewEncapsulation, SimpleChanges,
-    OnChanges, Output, EventEmitter,
-    ViewChild, OnDestroy
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ToastrService } from 'ngx-toastr';
-import * as _ from 'lodash';
 
 @Component({
     selector: 'app-users-settings-staff-options',
@@ -17,6 +11,8 @@ export class UsersSettingsStaffOptionsComponent implements OnInit {
 
     @Input() userOptions;
     
+    @Output() optionChanged = new EventEmitter();
+
     constructor(
         private toastr: ToastrService
     ) { }
@@ -24,4 +20,7 @@ export class UsersSettingsStaffOptionsComponent implements OnInit {
     ngOnInit() {
     }
 
+    toggleOption(option, event) {
+        this.optionChanged.emit({ oname: option, set: event.checked ? 1 : 0 });
+    }
 }

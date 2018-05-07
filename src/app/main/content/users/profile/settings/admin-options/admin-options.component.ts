@@ -1,12 +1,6 @@
-import {
-    Component, OnInit, Input,
-    ViewEncapsulation, SimpleChanges,
-    OnChanges, Output, EventEmitter,
-    ViewChild, OnDestroy
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ToastrService } from 'ngx-toastr';
-import * as _ from 'lodash';
 
 @Component({
     selector: 'app-users-settings-admin-options',
@@ -14,7 +8,6 @@ import * as _ from 'lodash';
     styleUrls: ['./admin-options.component.scss']
 })
 export class UsersSettingsAdminOptionsComponent implements OnInit {
-    device : any;
     @Input() userOptions;
 
     @Output() optionChanged = new EventEmitter();
@@ -26,10 +19,9 @@ export class UsersSettingsAdminOptionsComponent implements OnInit {
     ngOnInit() {
     }
 
-    toggleOption(option) {
-        alert("shit");
-        console.log(option);
-        console.log(this.device);
-        this.optionChanged.emit(option);
+    toggleOption(option, event) {
+        console.log(this.userOptions);
+        this.userOptions[option].set=event.checked;
+        this.optionChanged.emit({ oname: option, set: event.checked ? 1 : 0 });
     }
 }

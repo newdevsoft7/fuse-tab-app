@@ -3,7 +3,7 @@
     <!-- STAFF_EMAIL_INVITATION -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userOptions?.staff_email_invitation?.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userOptions?.staff_email_invitation?.set" (change)="toggleOption('staff_email_invitation', $event)" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Receive job invitations by email
             </div>
@@ -14,7 +14,7 @@
     <!-- STAFF_EMAIL_NOTIFICATION -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userOptions?.staff_email_notification?.set" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userOptions?.staff_email_notification?.set" (change)="toggleOption('staff_email_notification', $event)" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Receive system notifications by email, eg. if you are selected for a shift
             </div>

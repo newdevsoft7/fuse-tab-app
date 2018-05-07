@@ -22,12 +22,12 @@
     <!-- CONTENT -->
     <div class="content p-24" fxFlex>
         <ng-container [ngSwitch]="selectedCategory?.id">
-            <app-users-settings-admin-options [userOptions]="userOptions" (optionChanged)="toggleOption(option)" *ngSwitchCase="'admin-options'"></app-users-settings-admin-options>
-            <app-users-settings-admin-permissions [userPermissions]="userPermissions" *ngSwitchCase="'admin-permissions'"></app-users-settings-admin-permissions>
-            <app-users-settings-staff-options [userOptions]="userOptions" *ngSwitchCase="'staff-options'"></app-users-settings-staff-options>
-            <app-users-settings-staff-permissions [userPermissions]="userPermissions" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
-            <app-users-settings-client-options [userOptions]="userOptions" *ngSwitchCase="'client-options'"></app-users-settings-client-options>
-            <app-users-settings-client-permissions [userPermissions]="userPermissions" *ngSwitchCase="'client-permissions'"></app-users-settings-client-permissions>
+            <app-users-settings-admin-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'admin-options'"></app-users-settings-admin-options>
+            <app-users-settings-admin-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'admin-permissions'"></app-users-settings-admin-permissions>
+            <app-users-settings-staff-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'staff-options'"></app-users-settings-staff-options>
+            <app-users-settings-staff-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
+            <app-users-settings-client-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'client-options'"></app-users-settings-client-options>
+            <app-users-settings-client-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'client-permissions'"></app-users-settings-client-permissions>
         </ng-container>
     </div>
     <!-- / CONTENT -->
