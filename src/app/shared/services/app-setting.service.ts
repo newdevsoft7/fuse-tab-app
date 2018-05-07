@@ -22,12 +22,7 @@ export class AppSettingService {
 
     initBaseUrl() {
         const host = window.location.hostname;
-
-        if (host.indexOf('localhost') > -1) {
-            this.baseUrl = 'http://localhost:8080/base.php';
-        } else {
-            this.baseUrl = 'https://admin.staffconnect-app.com/api/identify/' + host;
-        }
+        this.baseUrl = 'https://admin.staffconnect-app.com/api/identify/' + host;
     }
 
     getGlobalSettings() {
