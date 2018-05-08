@@ -222,10 +222,9 @@ export const ADMIN_MODEL = [
         'children': [
             {
                 'id': 'profile',
-                'title': 'Profile',
+                'title': 'Profile Setup',
                 'translate': 'NAV.ADMIN.SETTINGS_PROFILE',
                 'type': 'collapse',
-                'tab': TAB.SETTINGS_PROFILE_TAB,
                 'children': [
                     {
                         'id': 'attributes',
