@@ -6,7 +6,7 @@
         <mat-form-field>
             <input matInput placeholder="First name" formControlName="fname" required>
             <mat-error *ngIf="formErrors.fname.required">
-                First Name is required!
+                Please enter your first name
             </mat-error>
         </mat-form-field>
         <!-- / FIRST NAME  -->
@@ -15,7 +15,7 @@
         <mat-form-field>
             <input matInput placeholder="Last name" formControlName="lname" required>
             <mat-error *ngIf="formErrors.lname.required">
-                Last Name is required!
+                Please enter your last name
             </mat-error>
         </mat-form-field>
         <!-- / LAST NAME -->
@@ -24,7 +24,7 @@
         <mat-form-field>
             <input matInput placeholder="Email" formControlName="email" type="email" required>
             <mat-error *ngIf="formErrors.email.required">
-                Email is required!
+                Please enter your email address
             </mat-error>
         </mat-form-field>
         <!-- / EMAIL -->
@@ -33,7 +33,7 @@
         <mat-form-field>
             <input matInput placeholder="Enter a password" formControlName="password" type="password" required>
             <mat-error *ngIf="formErrors.password.required">
-                Password is required!
+                Please create a password
             </mat-error>
         </mat-form-field>
         <!-- / PASSWORD -->
@@ -42,7 +42,7 @@
         <mat-form-field>
             <input matInput placeholder="Mobile number" formControlName="mob" required>
             <mat-error *ngIf="formErrors.mob.required">
-                Mobile number is required!
+                Please enter your mobile number
             </mat-error>
         </mat-form-field>
         <!-- / MOBILE -->
