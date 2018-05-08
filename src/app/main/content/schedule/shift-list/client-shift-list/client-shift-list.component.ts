@@ -93,6 +93,8 @@ export class ClientShiftListComponent implements OnInit {
                 this.loadingIndicator = false;
                 this.shifts = res.data;
                 this.columns = res.columns;
+                console.log(this.columns);
+                console.log("Abbas..........");
                 this.pageSize = res.page_size;
                 this.pageNumber = res.page_number;
                 this.total = res.total_counts;

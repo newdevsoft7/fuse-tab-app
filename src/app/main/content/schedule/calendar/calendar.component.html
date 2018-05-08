@@ -4,6 +4,16 @@
   [ajax]="true"
   [loading]="loading"
   (optionChanged)="updateEvents($event)">
+
+  <div calendar-header fxLayout="row" fxLayoutAlign="end space-evenly">
+    <button mat-icon-button *ngFor="let flag of currentUserFlags.flags" (click)="toggleFlagClick(flag)"
+      (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
+        <mat-icon *ngIf="flag.set !== 0" 
+        [ngStyle]="{'color': flag.set !== 2 ? flag.color : 'white'}">flag</mat-icon>
+        <mat-icon *ngIf="flag.set === 0">highlight_off</mat-icon>
+    </button>
+</div>
+
   <div calendar-header fxLayout="row" fxLayoutAlign="start center">
     <mat-icon class="mr-8 mb-8" fxFlex="0 1 auto">search</mat-icon>
     <div fxFlex>
@@ -16,3 +26,4 @@
     </div>
   </div>
 </sc-calendar>
+

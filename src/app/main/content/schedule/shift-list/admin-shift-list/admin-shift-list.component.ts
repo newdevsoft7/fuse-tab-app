@@ -39,7 +39,12 @@ export class AdminShiftListComponent implements OnInit {
     selectedShifts: any[] = [];
     columns: any[];
     filters = [];
+    tmpFilters: any;
     sorts: any[];
+
+    currentUserFlags: any;
+    isSingle: boolean = false;
+    selectedFlags: any;
 
     hiddenColumns = ['id', 'status', 'border_color', 'bg_color', 'font_color', 'shift_group_id'];
 
@@ -47,6 +52,8 @@ export class AdminShiftListComponent implements OnInit {
     pageSize = 10;
     total: number;
     pageLengths = [10, 25, 50, 100, 200, 300];
+
+
 
     dialogRef: any;
     differ: any;
@@ -74,6 +81,12 @@ export class AdminShiftListComponent implements OnInit {
 
 	ngOnInit() {
         this.getShifts();
+     
+        this.currentUserFlags = this.tokenStorage.getSettings();
+        this.currentUserFlags.flags.map(function(flag){
+            return flag.set = 2;
+        });
+     
         this.filtersObservable = (text: string): Observable<any> => {
             const from = moment(this.period.from).format('YYYY-MM-DD');
             const to = moment(this.period.to).format('YYYY-MM-DD');
@@ -90,7 +103,7 @@ export class AdminShiftListComponent implements OnInit {
             sorts: this.sorts,
             from: moment(this.period.from).format('YYYY-MM-DD'),
             to: moment(this.period.to).format('YYYY-MM-DD'),
-            ...params
+           params
         };
 
         this.loadingIndicator = true;
@@ -207,7 +220,8 @@ export class AdminShiftListComponent implements OnInit {
     }
 
     onFiltersChanged(filters) {
-        this.filters = filters;
+        this.tmpFilters = this.filters = filters; 
+        this.filters = (this.selectedFlags) ? this.filters.concat(this.selectedFlags) : this.filters ;
         this.getShifts();
     }
 
@@ -257,4 +271,42 @@ export class AdminShiftListComponent implements OnInit {
         }
     }
 
+    // Toggles Flag and Filters the Calendar Values
+    toggleFlagClick(flag) {
+        this.isSingle = true;
+        if (flag.set === 0 ) { return; }
+        setTimeout(() => {
+        if (this.isSingle === true){
+            flag.set = flag.set === 1 ? 2 : 1;
+            this.updateFlagFilters();
+        }
+        }, 250);
+        
+    }
+
+    toggleFlagDblClick(flag) {
+        this.isSingle = false;
+        flag.set = flag.set === 0 ? 2 : 0;
+        this.updateFlagFilters();
+    }
+
+    // Updates the selected flags and concats them into the main filters variable
+    updateFlagFilters() {
+        this.selectedFlags = [];
+        this.currentUserFlags.flags.map((flag) => {
+        if (flag.set !== 2) 
+            { 
+            this.selectedFlags.push('flag:' + flag.id + ':' + flag.set);
+            }
+        });
+        if (this.tmpFilters) {
+        this.filters = [];
+        this.filters = this.tmpFilters;
+        this.filters = this.filters.concat(this.selectedFlags);
+        } else {
+        this.filters = this.selectedFlags;
+        }
+
+        this.getShifts();
+    }
 }

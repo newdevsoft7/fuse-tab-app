@@ -39,6 +39,16 @@
             </div>
         </ng-container>
 
+        <!-- Flags Bar -->
+        <div fxLayout="row" fxLayoutAlign="end space-evenly">
+            <button mat-icon-button *ngFor="let flag of currentUserFlags.flags" (click)="toggleFlagClick(flag)"
+              (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
+                <mat-icon *ngIf="flag.set !== 0" 
+                    [ngStyle]="{'color': flag.set !== 2 ? flag.color : 'white'}">flag</mat-icon>
+                <mat-icon *ngIf="flag.set === 0">highlight_off</mat-icon>
+            </button>
+        </div>
+        <!-- / Flags Bar -->
         <!-- SEARCHBAR -->
         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
 

@@ -26,6 +26,7 @@ export class ScheduleService {
 
   getShifts(params): Observable<any> {
     const filters = params.filters ? encodeURIComponent(JSON.stringify(params.filters)) : '';
+    console.log(filters);
     const sorts = params.sorts ? encodeURIComponent(JSON.stringify(params.sorts)) : '';
     const pageSize = params.pageSize ? params.pageSize : 5;
     const pageNumber = params.pageNumber ? params.pageNumber : 0;
@@ -34,6 +35,7 @@ export class ScheduleService {
     const view = params.view || 'list';
 
     const url = `${SHIFT_URL}/${fromDate}/${toDate}/${view}/${pageSize}/${pageNumber}/${filters}/${sorts}`;
+
     return this.http.get(url.replace(/\/+$/, ''))
       .catch(this.handleError);
   }

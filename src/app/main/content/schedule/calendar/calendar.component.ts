@@ -16,6 +16,7 @@ import { TabComponent } from '../../../tab/tab/tab.component';
 import { Subscription } from 'rxjs';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
+
 @Component({
   selector: 'app-schedule-calendar',
   templateUrl: './calendar.component.html',
@@ -29,9 +30,13 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   filtersObservable: any;
   filters: any;
-
+  tmpFilters: any;
   startDate: string;
   endDate: string;
+  
+  currentUserFlags: any;
+  isSingle: boolean = false;
+  selectedFlags: any;
 
   loading: boolean = false;
 
@@ -145,6 +150,12 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser();
+    if (['owner', 'admin'].includes(this.currentUser.lvl)) { 
+      this.currentUserFlags = this.tokenStorage.getSettings();
+      this.currentUserFlags.flags.map(function(flag){
+        return flag.set = 2;
+      });
+    }
     this.filtersObservable = (text: string): Observable<any> => {
       return Observable.of([]);
     };
@@ -166,7 +177,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   }
 
   onFiltersChanged(filters: any) {
-    this.filters = filters;
+    this.tmpFilters = this.filters = filters; 
+    this.filters = (this.selectedFlags) ? this.filters.concat(this.selectedFlags) : this.filters ;
     this.fetchEvents(true);
   }
 
@@ -269,5 +281,42 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong while fetching events.');
     }
+  }
+
+  // Toggles Flag and Filters the Calendar Values
+  toggleFlagClick(flag) {
+    this.isSingle = true;
+    if (flag.set === 0 ) { return; }
+    setTimeout(() => {
+      if (this.isSingle === true){
+        flag.set = flag.set === 1 ? 2 : 1;
+        this.updateFlagFilters();
+      }
+    }, 250);
+  }
+  toggleFlagDblClick(flag) {
+    this.isSingle = false;
+    flag.set = flag.set === 0 ? 2 : 0;
+    this.updateFlagFilters();
+  }
+
+  // Updates the selected flags and concats them into the main filters variable
+  updateFlagFilters() {
+    this.selectedFlags = [];
+    this.currentUserFlags.flags.map((flag) => {
+      if (flag.set !== 2) 
+        { 
+          this.selectedFlags.push('flag:' + flag.id + ':' + flag.set);
+        }
+    });
+    if (this.tmpFilters) {
+      this.filters = [];
+      this.filters = this.tmpFilters;
+      this.filters = this.filters.concat(this.selectedFlags);
+    } else {
+      this.filters = this.selectedFlags;
+    }
+    
+    this.fetchEvents(true);
   }
 }
