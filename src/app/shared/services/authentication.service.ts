@@ -12,9 +12,9 @@ import {TokenStorage} from './token-storage.service';
 
 import {UsersChatService} from '../../main/content/users/chat/chat.service';
 import {FavicoService} from './favico.service';
+import { AppSettingService } from './app-setting.service';
 
 const BASE_URL = `${environment.apiUrl}`;
-const LOGIN_URL = `${environment.loginUrl}`;
 const AUTH_URL = `${BASE_URL}/auth`;
 
 interface AccessData {
@@ -32,12 +32,16 @@ export class AuthenticationService {
 
   refreshing: boolean = false;
   tokenRefreshed$: BehaviorSubject<any> = new BehaviorSubject(null);
+  loginUrl: string;
 
   constructor(private http: HttpClient,
               private tokenStorage: TokenStorage,
               private router: Router,
               private usersChatService: UsersChatService,
+              private appSettingService: AppSettingService,
               private favicoService: FavicoService) {
+
+    this.loginUrl = `https://api.${appSettingService.baseData.name}.staffconnect-app.com/login`;
   }
 
   /**
@@ -109,7 +113,7 @@ export class AuthenticationService {
   public openWindowWithPost(windowoption: string, name: string, params: any) {
     const form = document.createElement('form');
     form.setAttribute('method', 'post');
-    form.setAttribute('action', LOGIN_URL);
+    form.setAttribute('action', this.loginUrl);
     form.setAttribute('target', name);
     for (let i in params) {
       if (params.hasOwnProperty(i)) {
@@ -169,6 +173,16 @@ export class AuthenticationService {
       this.favicoService.setBadge(0);
       this.router.navigate(['/login']);
     }
+  }
+
+  sendForgotPasswordLink(body): Promise<any> {
+    const url = `${AUTH_URL}/forgottenPassword`;
+    return this.http.post(url, body).toPromise();
+  }
+
+  resetPassword(body): Promise<any> {
+    const url = `${AUTH_URL}/resetPassword`;
+    return this.http.post(url, body).toPromise();
   }
 
   public verifyTokenRequest(url: string): boolean {

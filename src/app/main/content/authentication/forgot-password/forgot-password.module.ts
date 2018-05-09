@@ -3,11 +3,13 @@ import { SharedModule } from '../../../../core/modules/shared.module';
 import { RouterModule } from '@angular/router';
 
 import { FuseForgotPasswordComponent } from './forgot-password.component';
+import { UnauthGuardService } from '../../../../shared/guards/unauth-guard.service';
 
 const routes = [
     {
-        path     : 'pages/auth/forgot-password',
-        component: FuseForgotPasswordComponent
+        path     : 'forgot-password',
+        component: FuseForgotPasswordComponent,
+        canActivate: [ UnauthGuardService ]
     }
 ];
 

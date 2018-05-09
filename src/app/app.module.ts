@@ -21,6 +21,8 @@ import { AuthGuardService } from './shared/guards/auth-guard.service';
 import { SCHttpInterceptor } from './shared/interceptor/http-interceptor';
 import { AppSettingService } from './shared/services/app-setting.service';
 import { CustomLoadingService } from './shared/services/custom-loading.service';
+import { ResetPasswordModule } from './main/content/authentication/reset-password/reset-password.module';
+import { ForgotPasswordModule } from './main/content/authentication/forgot-password/forgot-password.module';
 
 export function init(config: AppSettingService) {
     return () => config.load();
@@ -61,6 +63,8 @@ const appRoutes: Routes = [
         FuseMainModule,
         FuseHomeModule,
         LoginModule,
+        ForgotPasswordModule,
+        ResetPasswordModule,
         LoadingModule.forRoot({
             fullScreenBackdrop: true
         })

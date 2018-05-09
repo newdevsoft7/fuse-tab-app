@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
 import { AppSettingService } from '../../../../shared/services/app-setting.service';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
+import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector   : 'fuse-forgot-password',
@@ -20,7 +23,10 @@ export class FuseForgotPasswordComponent implements OnInit
     constructor(
         private fuseConfig: FuseConfigService,
         private formBuilder: FormBuilder,
-        private appSettingService: AppSettingService
+        private appSettingService: AppSettingService,
+        private authService: AuthenticationService,
+        private spinner: CustomLoadingService,
+        private toastr: ToastrService
     )
     {
         this.fuseConfig.setSettings({
@@ -69,6 +75,19 @@ export class FuseForgotPasswordComponent implements OnInit
             {
                 this.forgotPasswordFormErrors[field] = control.errors;
             }
+        }
+    }
+
+    async sendLink() {
+        const payload = this.forgotPasswordForm.getRawValue();
+        try {
+            this.spinner.show();
+            await this.authService.sendForgotPasswordLink(payload);
+            this.toastr.success('The confirmation link has been sent to your inbox!');
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        } finally {
+            this.spinner.hide();
         }
     }
 }

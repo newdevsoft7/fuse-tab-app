@@ -3,6 +3,11 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { FuseConfigService } from '../../../../core/services/config.service';
 import { fuseAnimations } from '../../../../core/animations';
 import { AppSettingService } from '../../../../shared/services/app-setting.service';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
+import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
     selector   : 'fuse-reset-password',
@@ -17,10 +22,18 @@ export class FuseResetPasswordComponent implements OnInit
     logoUrl: string;
     backgroundImg: string;
 
+    email: string;
+    token: string;
+
     constructor(
         private fuseConfig: FuseConfigService,
         private formBuilder: FormBuilder,
-        private appSettingService: AppSettingService
+        private appSettingService: AppSettingService,
+        private authService: AuthenticationService,
+        private spinner: CustomLoadingService,
+        private toastrService: ToastrService,
+        private router: Router,
+        private route: ActivatedRoute
     )
     {
         this.fuseConfig.setSettings({
@@ -32,7 +45,6 @@ export class FuseResetPasswordComponent implements OnInit
         });
 
         this.resetPasswordFormErrors = {
-            email          : {},
             password       : {},
             passwordConfirm: {}
         };
@@ -44,7 +56,6 @@ export class FuseResetPasswordComponent implements OnInit
         this.backgroundImg = this.appSettingService.baseData.background;
 
         this.resetPasswordForm = this.formBuilder.group({
-            email          : ['', [Validators.required, Validators.email]],
             password       : ['', Validators.required],
             passwordConfirm: ['', [Validators.required, confirmPassword]]
         });
@@ -52,6 +63,32 @@ export class FuseResetPasswordComponent implements OnInit
         this.resetPasswordForm.valueChanges.subscribe(() => {
             this.onResetPasswordFormValuesChanged();
         });
+
+        this.route.queryParams.subscribe(params => {
+            if (!params.email || !params.token) {
+                this.toastrService.error('Insufficient params!');
+            }
+            this.email = params.email;
+            this.token = params.token;
+        });
+    }
+
+    async confirmEmail() {
+        try {
+            this.spinner.show();
+            await this.authService.resetPassword({
+                email: this.email,
+                token: this.token,
+                client_id: environment.clientId,
+                new_password: this.resetPasswordForm.get('password').value
+            });
+            this.toastrService.success('Password has been reset successfully!');
+            this.router.navigate(['/login']);
+        } catch (e) {
+            this.toastrService.error(e.error.message);
+        } finally {
+            this.spinner.hide();
+        }
     }
 
     onResetPasswordFormValuesChanged()
