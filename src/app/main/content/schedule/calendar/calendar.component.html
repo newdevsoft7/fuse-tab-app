@@ -6,8 +6,9 @@
   (optionChanged)="updateEvents($event)">
 
   <div calendar-header fxLayout="row" fxLayoutAlign="end space-evenly">
-    <button mat-icon-button *ngFor="let flag of currentUserFlags.flags" (click)="toggleFlagClick(flag)"
+    <button mat-icon-button *ngFor="let flag of currentUserFlags" (click)="toggleFlagClick(flag)"
       (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
+<<<<<<< HEAD
         <ng-template [ngIf]="flag.set !==0" [ngIfElse]="showNegative">
           <mat-icon [ngStyle]="{'color': flag.set !== 2 ? flag.color : 'white'}">flag</mat-icon>
         </ng-template>
@@ -15,6 +16,12 @@
           <mat-icon>highlight_off</mat-icon>
         </ng-template>
         
+=======
+        <mat-icon *ngIf="flag.set === 0; else flagBlock">highlight_off</mat-icon>
+        <ng-template #flagBlock>
+          <mat-icon [style.color]="flag.set !== 2 ? flag.color : 'white'">flag</mat-icon>
+        </ng-template>
+>>>>>>> a8a572d6262c89d9f135ce5ef7fe9f32d5648b65
     </button>
 </div>
 

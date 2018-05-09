@@ -8,13 +8,9 @@
                 <img [src]="logoUrl">
             </div>
 
-            <div class="title">LOGIN TO YOUR ACCOUNT</div>
-
             <div class="errors my-20" *ngIf="!isSuccess">
                 {{message}}
             </div>
-
-
 
             <form name="loginForm" id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()" onsubmit="(function() {
                     loginIframe();
@@ -43,7 +39,7 @@
                         Remember Me
                     </mat-checkbox>
 
-                    <a class="forgot-password" [routerLink]="'/pages/auth/forgot-password'">
+                    <a class="forgot-password">
                         Forgot Password?
                     </a>
                 </div>
@@ -52,7 +48,7 @@
                         [disabled]="loginForm.invalid || isSubmitted" type="submit"
 
                 >
-                    LOGIN
+                    Login
                 </button>
 
             </form>

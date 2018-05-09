@@ -42,7 +42,6 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
 import { SettingsUserStatusesComponent } from './user-statuses/user-statuses.component';
 import { UserStatusItemComponent } from './user-statuses/item/item.component';
 import { CategoryDialogComponent } from './tracking/category-dialog/category-dialog.component';
-import { SettingsChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
     imports: [
@@ -89,8 +88,7 @@ import { SettingsChangePasswordComponent } from './change-password/change-passwo
         ItemComponent,
         SettingsUserStatusesComponent,
         UserStatusItemComponent,
-        CategoryDialogComponent,
-        SettingsChangePasswordComponent
+        CategoryDialogComponent
     ],
 
     providers: [

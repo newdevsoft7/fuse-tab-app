@@ -36,6 +36,7 @@ import { UsersSettingsClientOptionsComponent } from './profile/settings/client-o
 import { UsersSettingsAdminPermissionsComponent } from './profile/settings/admin-permissions/admin-permissions.component';
 import { UsersSettingsStaffPermissionsComponent } from './profile/settings/staff-permissions/staff-permissions.component';
 import { UsersSettingsClientPermissionsComponent } from './profile/settings/client-permissions/client-permissions.component';
+import { UsersSettingsChangePasswordComponent } from './profile/settings/change-password/change-password.component';
 import { FuseChatStartComponent } from './chat/chat-start/chat-start.component';
 
 import { MessageComponent, MessageService } from './message';
@@ -91,6 +92,7 @@ import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-st
         UsersSettingsAdminPermissionsComponent,
         UsersSettingsStaffPermissionsComponent,
         UsersSettingsClientPermissionsComponent,
+        UsersSettingsChangePasswordComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,

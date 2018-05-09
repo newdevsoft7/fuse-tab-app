@@ -28,6 +28,7 @@
             <app-users-settings-staff-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
             <app-users-settings-client-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'client-options'"></app-users-settings-client-options>
             <app-users-settings-client-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'client-permissions'"></app-users-settings-client-permissions>
+            <app-users-settings-change-password *ngSwitchCase="'change-password'"></app-users-settings-change-password>
         </ng-container>
     </div>
     <!-- / CONTENT -->

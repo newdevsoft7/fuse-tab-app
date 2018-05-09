@@ -276,6 +276,12 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    changePassword(userId: number, password: string): Observable<any> {
+        const url = `${BASE_URL}/user/${userId}/password`;
+        return this.http.put(url, { password })
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

@@ -59,6 +59,12 @@ export class UsersProfileSettingsComponent implements OnInit {
             'title': 'Permissions',
             'lvls': ['client'],
             'vis': ['owner', 'admin']
+        },
+        {
+            'id': 'change-password',
+            'title': 'Change Password',
+            'lvls': ['owner','admin','staff','client','ext'],
+            'vis': ['owner','admin','staff','client','ext']
         }
     ];
 

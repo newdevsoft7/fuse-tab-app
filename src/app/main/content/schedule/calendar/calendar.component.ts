@@ -152,10 +152,10 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser();
     if (['owner', 'admin'].includes(this.currentUser.lvl)) { 
-      this.currentUserFlags = this.tokenStorage.getSettings();
-      this.currentUserFlags.flags.map(function(flag){
-        return flag.set = 2;
-      });
+      this.currentUserFlags = this.tokenStorage.getSettings().flags;
+      for (let flag of this.currentUserFlags) {
+        flag.set = 2;
+      }
     }
     this.filtersObservable = (text: string): Observable<any> => {
       return Observable.of([]);
@@ -304,11 +304,18 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   // Updates the selected flags and concats them into the main filters variable
   updateFlagFilters() {
     this.selectedFlags = [];
+<<<<<<< HEAD
     for (let flag of this.currentUserFlags.flags) {
       if (flag.set !== 2) 
         { 
           this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
         }
+=======
+    for (let flag of this.currentUserFlags) {
+      if (flag.set !== 2) {
+        this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
+      }
+>>>>>>> a8a572d6262c89d9f135ce5ef7fe9f32d5648b65
     }
     if (this.tmpFilters) {
       this.filters = [];
@@ -317,7 +324,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     } else {
       this.filters = this.selectedFlags;
     }
-    
+
     this.fetchEvents(true);
   }
 }
