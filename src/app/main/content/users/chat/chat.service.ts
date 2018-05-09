@@ -52,7 +52,7 @@ export class UsersChatService {
     const url = `${USER_URL}/device`;
     return this.http.post(url, { 
       firebase_token,
-      client_id: 2
+      client_id: environment.clientId
     }).map((_: any) => _.id).toPromise();
   }
 

@@ -12,6 +12,14 @@ import { AppSettingService } from '../services/app-setting.service';
 @Injectable()
 export class SCHttpInterceptor implements HttpInterceptor {
 
+  unauthEndpoints: any = [
+    'auth/login',
+    'auth/register',
+    'auth/logout',
+    'auth/forgottenPassword',
+    'auth/resetPassword'
+  ];
+
   constructor(
     private injector: Injector) {}
 
@@ -26,7 +34,7 @@ export class SCHttpInterceptor implements HttpInterceptor {
     req = this.getRequestWithToken(req, authService.getAccessToken());
 
     return next.handle(req).catch(error => {
-      if (error.status === 401) {
+      if (error.status === 401 && this.isAuthUrl(req.url)) {
         if (req.url.endsWith('refresh')) {
           authService.refreshing = false;
           authService.logout();
@@ -41,6 +49,17 @@ export class SCHttpInterceptor implements HttpInterceptor {
 
       return Observable.throw(error);
     });
+  }
+
+  private isAuthUrl(url: string): boolean {
+    let isAuth = true;
+    for (let endpoint of this.unauthEndpoints) {
+      if (url.indexOf(endpoint) > -1) {
+        isAuth = false;
+        break;
+      }
+    }
+    return isAuth;
   }
 
   private getRequestWithToken(req: HttpRequest<any>, token: string): HttpRequest<any> {

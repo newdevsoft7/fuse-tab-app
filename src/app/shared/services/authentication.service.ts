@@ -83,7 +83,7 @@ export class AuthenticationService {
 
       return this.http.post(`${AUTH_URL}/refresh`, {
         refresh_token: this.tokenStorage.getRefreshToken(),
-        client_id: 2
+        client_id: environment.clientId
       })
         .map((tokens: AccessData) => {
           this.saveAccessData(tokens);
@@ -103,7 +103,7 @@ export class AuthenticationService {
 
   public login(username: string, password: string) {
 
-    return this.http.post(`${AUTH_URL}/login`, {username, password, client_id: 2})
+    return this.http.post(`${AUTH_URL}/login`, {username, password, client_id: environment.clientId})
       .map((tokens: AccessData) => this.saveAccessData(tokens))
       .catch(this.handleError);
   }
