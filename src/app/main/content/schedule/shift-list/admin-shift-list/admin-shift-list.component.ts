@@ -293,12 +293,12 @@ export class AdminShiftListComponent implements OnInit {
     // Updates the selected flags and concats them into the main filters variable
     updateFlagFilters() {
         this.selectedFlags = [];
-        this.currentUserFlags.flags.map((flag) => {
-        if (flag.set !== 2) 
-            { 
-            this.selectedFlags.push('flag:' + flag.id + ':' + flag.set);
-            }
-        });
+        for (let flag of this.currentUserFlags.flags) {
+            if (flag.set !== 2) 
+              { 
+                this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
+              }
+          }
         if (this.tmpFilters) {
         this.filters = [];
         this.filters = this.tmpFilters;
