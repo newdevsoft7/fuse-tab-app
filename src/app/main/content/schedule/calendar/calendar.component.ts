@@ -15,8 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 import { TabComponent } from '../../../tab/tab/tab.component';
 import { Subscription } from 'rxjs';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { BADFLAGS } from 'dns';
-
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -304,18 +302,10 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   // Updates the selected flags and concats them into the main filters variable
   updateFlagFilters() {
     this.selectedFlags = [];
-<<<<<<< HEAD
-    for (let flag of this.currentUserFlags.flags) {
-      if (flag.set !== 2) 
-        { 
-          this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
-        }
-=======
     for (let flag of this.currentUserFlags) {
       if (flag.set !== 2) {
         this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
       }
->>>>>>> a8a572d6262c89d9f135ce5ef7fe9f32d5648b65
     }
     if (this.tmpFilters) {
       this.filters = [];
