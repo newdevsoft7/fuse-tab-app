@@ -1,6 +1,15 @@
 <div id="register-step6-container" class="p-24">
     <div class="content" fxLayout="column" fxFlex="100">
 
+        <div class="mb-24" *ngIf="settings.profile_work_areas_message">
+            <h1>
+                {{settings.profile_work_areas_message}}
+                <span class="secondary-text ml-4" *ngIf="settings.work_areas_required > 0">
+                    ({{settings.work_areas_required}}&nbsp; {{settings.work_areas_required > 1 ? 'choices' : 'choice'}} required)
+                </span>
+            </h1>
+        </div>
+
         <div *ngFor="let category of workAreas" class="profile-box info-box general" fxLayout="column">
 
             <header class="mat-accent-bg">

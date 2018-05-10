@@ -38,11 +38,4 @@ export class RegisterStep7Component {
     quit() {
         this.quitClicked.next(true);
     }
-
-    submit() {
-        this.spinner.show();
-
-        // TODO
-    }
-
 }
