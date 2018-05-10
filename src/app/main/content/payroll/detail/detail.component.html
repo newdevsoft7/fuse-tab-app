@@ -46,42 +46,37 @@
             </div>
 
             <div class="content">
-                <table class="simple invoice-table">
-                    <thead>
-                        <tr>
-                            <th>TYPE</th>
-                            <th>TITLE</th>
-                            <th class="text-right">UNIT PRICE</th>
-                            <th class="text-right">QUANTITY</th>
-                            <th class="text-right">TOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let type of itemTypes">
-                        <tr *ngFor="let item of payroll[type.value]">
-                            <td>
-                                <div class="title">
-                                    {{type.title}}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="title">
-                                    {{item.title}}
-                                </div>
-                            </td>
-                            <td class="text-right">
-                                {{item.u_amt | currency:'USD':'symbol'}}
-                            </td>
-                            <td class="text-right">
-                                {{item.qty}}
-                            </td>
-                            <td class="text-right">
-                                {{item.l_amt | currency:'USD':'symbol'}}
-                            </td>
-                        </tr>
-                      </ng-container>
-                    </tbody>
-                </table>
+                <ngx-datatable
+                    class="material invoice-table"
+                    [rows]="payrollItems"
+                    [columnMode]="'force'"
+                    [rowHeight]="'auto'">
+                    <ngx-datatable-column name="TYPE" prop="type" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="TITLE" prop="title" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="UNIT PRICE" prop="u_amt" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value | currency:'USD':'symbol'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="QUANTITY" prop="qty" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="TOTAL" prop="l_amt" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value | currency:'USD':'symbol'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
 
                 <table class="simple invoice-table-footer">
                     <tbody>

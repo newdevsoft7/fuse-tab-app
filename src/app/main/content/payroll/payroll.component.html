@@ -117,7 +117,7 @@
 
             <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false">
                 <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    <button mat-raised-button [matMenuTriggerFor]="actionMenu">
+                    <button mat-raised-button [matMenuTriggerFor]="actionMenu" (click)="$event.stopPropagation()">
                         <span fxLayout="row" fxLayoutAlign="center center">
                             <span>Actions</span>
                             <mat-icon class="s-20">arrow_drop_down</mat-icon>

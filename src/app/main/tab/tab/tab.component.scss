@@ -1,5 +1,6 @@
 :host {
-    &.users-chat {
+    &.users-chat,
+    &[class^="payroll-"] {
         .pane {
             padding: 0;
         }

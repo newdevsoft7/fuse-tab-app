@@ -7,13 +7,14 @@
         &.compact {
             padding: 0;
             overflow: auto;
-            margin: -10px 0px;
             width: 100%;
 
             .invoice-container {
                 width: 100%;
+                padding: 15px;
                 .card {
                     width: 100%;
+                    max-width: 1020px;
                     padding: 64px 88px;
                     overflow: hidden;
                     background: #FFFFFF;
