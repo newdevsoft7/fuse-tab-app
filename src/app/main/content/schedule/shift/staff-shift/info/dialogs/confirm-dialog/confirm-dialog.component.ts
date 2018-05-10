@@ -27,7 +27,7 @@ export class StaffShiftConfirmDialogComponent implements OnInit {
 
     openForm(form) {
         const tab = new Tab(
-            form.name,
+            form.fname,
             'formTpl',
             `form_confirm/${this.shiftId}/${form.id}`,
             form

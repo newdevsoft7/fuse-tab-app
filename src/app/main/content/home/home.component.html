@@ -5,7 +5,7 @@
             <app-timeline></app-timeline>
         </app-tab>
         <ng-template #formBlock>
-            <app-tab [tabTitle]="form.name" [data]="form" *ngFor="let form of formData">
+            <app-tab [tabTitle]="form.fname" [data]="form" *ngFor="let form of formData">
                 <app-form [data]="form"></app-form>
             </app-tab>
         </ng-template>

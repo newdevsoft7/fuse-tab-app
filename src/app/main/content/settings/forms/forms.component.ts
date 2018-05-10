@@ -209,7 +209,7 @@ export class SettingsFormsComponent implements OnInit {
             const res = await this.settingsService.getForm(form.id).toPromise();
             res.isEdit = true;
             const tab = new Tab(
-                form.name,
+                form.fname,
                 'formTpl',
                 `settings/form/${form.id}`,
                 res
