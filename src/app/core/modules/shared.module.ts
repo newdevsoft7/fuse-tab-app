@@ -39,6 +39,7 @@ import { AuthGuardService } from '../../shared/guards/auth-guard.service';
 import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
 import { StarRatingModule } from 'angular-star-rating';
 import { DebounceDirective } from '../directives/debounce/debounce.directive';
+import { EditableTextComponent } from '../components/editable-text/editable-text.component';
 
 @NgModule({
     declarations   : [
@@ -51,7 +52,8 @@ import { DebounceDirective } from '../directives/debounce/debounce.directive';
         FuseIfOnDomDirective,
         FusePerfectScrollbarDirective,
         DebounceDirective,
-        FuseMaterialColorPickerComponent
+        FuseMaterialColorPickerComponent,
+        EditableTextComponent
     ],
     imports        : [
         FlexLayoutModule,
@@ -92,7 +94,8 @@ import { DebounceDirective } from '../directives/debounce/debounce.directive';
         TextMaskModule,
         MaterialTimeControlModule,
         NgPipesModule,
-        StarRatingModule
+        StarRatingModule,
+        EditableTextComponent
     ],
     entryComponents: [
         FuseConfirmDialogComponent,

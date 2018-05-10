@@ -27,6 +27,7 @@ import { PayrollModule } from '../payroll/payroll.module';
 import { TemplatesModule } from '../templates/templates.module';
 import { ClientsModule } from '../clients/clients.module';
 import { TimelineModule } from './timeline/timeline.module';
+import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { TimelineModule } from './timeline/timeline.module';
         PayrollModule,
         TemplatesModule,
         ClientsModule,
+        OutsourceCompaniesModule,
         TimelineModule
     ],
     exports     : [

@@ -4,7 +4,6 @@ import { ClientsService } from "./clients.service";
 import { SharedModule } from "../../../core/modules/shared.module";
 import { CommonModule } from "@angular/common";
 import { ClientFormDialogComponent } from "./dialogs/client-form/client-form.component";
-import { EditableTextComponent } from "./editable-text/editable-text.component";
 import { TimelineModule } from "../home/timeline/timeline.module";
 
 @NgModule({
@@ -15,8 +14,7 @@ import { TimelineModule } from "../home/timeline/timeline.module";
   ],
   declarations: [
     ClientsComponent,
-    ClientFormDialogComponent,
-    EditableTextComponent
+    ClientFormDialogComponent
   ],
   exports: [
     ClientsComponent

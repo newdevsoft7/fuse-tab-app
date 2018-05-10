@@ -4,7 +4,7 @@
     [class.empty]="!text"
     *ngIf="!formActive"
     (click)="formActive = true">
-    {{text || 'Empty'}}
+    <span>{{text || 'Empty'}}</span>
 </div>
 
 <form #editForm="ngForm" (ngSubmit)="formActive = false; saveChange.next(text)" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="formActive">

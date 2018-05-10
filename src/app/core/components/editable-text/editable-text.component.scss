@@ -3,6 +3,9 @@
   line-height: 40px;
   .editable-text {
     cursor: pointer;
+    span {
+      border-bottom: 1px dashed;
+    }
     &.empty {
       color: #f44336;
     }
