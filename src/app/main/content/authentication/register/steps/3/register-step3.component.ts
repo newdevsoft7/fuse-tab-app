@@ -32,6 +32,8 @@ export class RegisterStep3Component implements OnInit, OnChanges {
     @Input() user;
     @Output() quitClicked = new EventEmitter;
     @Output() onStepSucceed = new EventEmitter;
+    
+    currentUser: any;
 
     constructor(
         private dialog: MatDialog,
@@ -44,6 +46,7 @@ export class RegisterStep3Component implements OnInit, OnChanges {
 
     ngOnInit() {
         this.settings = this.tokenStorage.getSettings() || {};
+        this.currentUser = this.tokenStorage.getUser();
     }
 
     ngOnChanges(changes: SimpleChanges) {

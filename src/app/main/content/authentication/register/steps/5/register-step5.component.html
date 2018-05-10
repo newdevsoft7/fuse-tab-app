@@ -1,12 +1,12 @@
 <div id="register-step5-container">
 
     <div class="mb-24" *ngIf="settings.profile_video_msg">
-        <h3>
+        <h1>
             {{settings.profile_video_msg}}
             <span class="secondary-text ml-4" *ngIf="settings.profile_video_required > 0">
                 ({{settings.profile_video_required}}&nbsp; {{settings.profile_video_required > 1 ? 'videos' : 'video'}} required)
             </span>
-        </h3>
+        </h1>
     </div>
 
     <!-- ADD FILE BUTTON -->

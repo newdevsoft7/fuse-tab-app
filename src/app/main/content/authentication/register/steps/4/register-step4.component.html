@@ -1,12 +1,12 @@
 <div id="register-step4-container">
 
     <div class="mb-24" *ngIf="settings.profile_doc_message">
-        <h3>
+        <h1>
             {{settings.profile_doc_message}}
             <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
                 ({{settings.profile_doc_required}}&nbsp; {{settings.profile_doc_required > 1 ? 'documents' : 'document'}} required)
             </span>
-        </h3>
+        </h1>
     </div>
 
     <!-- ADD FILE BUTTON -->

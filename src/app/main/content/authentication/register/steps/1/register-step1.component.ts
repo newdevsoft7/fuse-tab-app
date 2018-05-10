@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 import { UserService } from "../../../../users/user.service";
 import { RegisterService } from "../../register.service";
+import { TokenStorage } from "../../../../../../shared/services/token-storage.service";
 
 
 @Component({
@@ -23,14 +24,18 @@ export class RegisterStep1Component implements OnInit, OnChanges {
 
     profile: any;
 
+    message: string;
+
     constructor(
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private userService: UserService,
+        private tokenStorage: TokenStorage,
         private registerService: RegisterService
     ) {}
 
     ngOnInit() {
+        this.message = this.tokenStorage.getSettings().profile_info_message;
     }
 
     ngOnChanges(changes: SimpleChanges) {

@@ -2,12 +2,12 @@
 
     <!-- MESSAGE -->
     <div class="mb-24" *ngIf="settings.profile_photo_msg">
-        <h3>
+        <h1>
             {{settings.profile_photo_msg}}
             <span class="secondary-text ml-4" *ngIf="settings.profile_photo_required > 0">
                 ({{settings.profile_photo_required}}&nbsp; {{settings.profile_photo_required > 1 ? 'photos' : 'photo'}} required)
             </span>
-        </h3>
+        </h1>
     </div>
     <!-- / MESSAGE -->
 
@@ -49,7 +49,7 @@
 
         <div fxLayout="row" fxLayoutAlign="end">
 
-            <button mat-icon-button>
+            <button mat-icon-button *ngIf="currentUser.lvl.indexOf('registrant') === -1">
                 <mat-icon [class.fa-rotate-90]="!photo.main" fontSet="fa" fontIcon="fa-thumb-tack"
                     (click)="setPhoto(photo)"></mat-icon>
             </button>

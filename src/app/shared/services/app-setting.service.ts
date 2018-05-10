@@ -22,16 +22,7 @@ export class AppSettingService {
 
     initBaseUrl() {
         const host = window.location.hostname;
-        this.baseUrl = 'https://admin.staffconnect-app.com/api/identify/' + host;
-    }
-
-    getGlobalSettings() {
-        const url = `${BASE_URL}/settings`;
-        if (!this.globalPromise) {
-            this.globalPromise = this.http.get(url)
-                .toPromise();
-        }
-        return this.globalPromise;
+        this.baseUrl = `https://admin.staffconnect-app.com/api/identify/${host}`;
     }
 
     clean() {

@@ -1,5 +1,7 @@
 <div id="register-step1-container" class="p-24">
 
+    <h1 *ngIf="message">{{message}}</h1>
+
     <!-- PROFILES -->
     <ng-container *ngIf="profile">
         <ng-container *ngFor="let item of profile.data">

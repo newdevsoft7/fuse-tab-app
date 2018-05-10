@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { RegisterService } from "../../register.service";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 import { AuthenticationService } from "../../../../../../shared/services/authentication.service";
+import { AppSettingService } from "../../../../../../shared/services/app-setting.service";
 
 @Component({
     selector: 'app-register-step0',
@@ -19,13 +20,16 @@ export class RegisterStep0Component implements OnInit {
     form: FormGroup;
     formErrors: any;
 
+    title: string;
+
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,
         private registerService: RegisterService,
         private authService: AuthenticationService,
         private toastr: ToastrService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private appSetting: AppSettingService
     ) {
         this.formErrors = {
             fname   : {},
@@ -49,6 +53,8 @@ export class RegisterStep0Component implements OnInit {
         this.form.valueChanges.subscribe(() => {
             this.onFormValuesChanged();
         });
+
+        this.title = this.appSetting.baseData.registration_msg_welcome;
     }
 
     onFormValuesChanged() {

@@ -93,16 +93,11 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        // Load Global Settings
-        this.appSetting.getGlobalSettings().then(settings => {
-            this.titleService.setTitle(settings.system_name);
-        });
-
+        this.titleService.setTitle(this.appSetting.baseData.system_name);
         this.spinner.isLoading.subscribe(isLoading => {
             setTimeout(() => {
                 this.loading = isLoading;
             });
         });
     }
-
 }
