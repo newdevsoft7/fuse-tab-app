@@ -55,12 +55,12 @@ export class SettingsFormsComponent implements OnInit {
     getTrackingOptionName;
 
     readonly levels = [
-        { label: 'Owner',       value: 'owner' },
-        { label: 'Admin',       value: 'admin' },
-        { label: 'Staff',       value: 'staff' },
-        { label: 'Registrant',  value: 'registrant' },
-        { label: 'Client',      value: 'client' },
-        { label: 'Ext',         value: 'ext' }
+        { label: 'Owner', value: 'owner' },
+        { label: 'Admin', value: 'admin' },
+        { label: 'Staff', value: 'staff' },
+        { label: 'Registrant', value: 'registrant' },
+        { label: 'Client', value: 'client' },
+        { label: 'Ext', value: 'ext' }
     ];
 
     constructor(
@@ -104,8 +104,8 @@ export class SettingsFormsComponent implements OnInit {
             if (forms.length > 0) {
                 this.selectForm(this.forms[0]);
             }
-            this.drawer.open();
         });
+        this.drawer.open();
     }
 
     getForm(id) {
