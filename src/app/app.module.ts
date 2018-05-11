@@ -23,6 +23,7 @@ import { AppSettingService } from './shared/services/app-setting.service';
 import { CustomLoadingService } from './shared/services/custom-loading.service';
 import { ResetPasswordModule } from './main/content/authentication/reset-password/reset-password.module';
 import { ForgotPasswordModule } from './main/content/authentication/forgot-password/forgot-password.module';
+import { RegistrationGuardService } from './shared/guards/registration-guard.service';
 
 export function init(config: AppSettingService) {
     return () => config.load();
@@ -31,7 +32,8 @@ export function init(config: AppSettingService) {
 const appRoutes: Routes = [
     {
         path: 'register',
-        loadChildren: './main/content/authentication/register/register.module#RegisterModule'
+        loadChildren: './main/content/authentication/register/register.module#RegisterModule',
+        canActivate: [RegistrationGuardService]
     },
     {
         path: 'home',

@@ -65,7 +65,7 @@
                 Log in with Facebook
             </button>
 
-            <div class="register" fxLayout="column" fxLayoutAlign="center center">
+            <div class="register" fxLayout="column" fxLayoutAlign="center center" *ngIf="isRegisterEnabled">
                 <span class="text">Don't have an account?</span>
                 <a class="link" [routerLink]="'/register'">Create an account</a>
             </div>

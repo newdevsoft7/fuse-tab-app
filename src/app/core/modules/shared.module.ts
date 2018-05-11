@@ -40,6 +40,7 @@ import { UnauthGuardService } from '../../shared/guards/unauth-guard.service';
 import { StarRatingModule } from 'angular-star-rating';
 import { DebounceDirective } from '../directives/debounce/debounce.directive';
 import { EditableTextComponent } from '../components/editable-text/editable-text.component';
+import { RegistrationGuardService } from '../../shared/guards/registration-guard.service';
 
 @NgModule({
     declarations   : [
@@ -116,7 +117,8 @@ import { EditableTextComponent } from '../components/editable-text/editable-text
         TokenStorage,
         // guards
         AuthGuardService,
-        UnauthGuardService
+        UnauthGuardService,
+        RegistrationGuardService
     ]
 })
 

@@ -27,6 +27,8 @@ export class FuseLoginComponent implements OnInit
     logoUrl: string;
     backgroundImg: string;
 
+    isRegisterEnabled: boolean;
+
     constructor(
         private fuseConfig: FuseConfigService,
         private formBuilder: FormBuilder,
@@ -54,6 +56,7 @@ export class FuseLoginComponent implements OnInit
 
     ngOnInit()
     {
+        this.isRegisterEnabled = this.appSettingService.baseData.registration_enable === 1? true : false;
         this.logoUrl = this.appSettingService.baseData.logo;
         this.backgroundImg = this.appSettingService.baseData.background;
 

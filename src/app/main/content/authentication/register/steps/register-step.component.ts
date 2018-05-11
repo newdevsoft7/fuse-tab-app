@@ -1,11 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
   selector: 'app-register-step',
   template: ''
 })
-export class RegisterStepComponent implements OnInit {
+export class RegisterStepComponent {
 
-    ngOnInit() {
-    }
 }

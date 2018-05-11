@@ -35,7 +35,7 @@ export class RegisterStep1Component implements OnInit, OnChanges {
     ) {}
 
     ngOnInit() {
-        this.message = this.tokenStorage.getSettings().profile_info_message;
+        this.message = this.tokenStorage.getSettings()? this.tokenStorage.getSettings().profile_info_message : '';
     }
 
     ngOnChanges(changes: SimpleChanges) {
