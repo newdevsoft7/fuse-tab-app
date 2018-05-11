@@ -234,13 +234,6 @@ export const ADMIN_MODEL = [
                         'tab': TAB.SETTINGS_PROFILE_ATTRIBUTES_TAB
                     },
                     {
-                        'id': 'document_categories',
-                        'title': 'Document Categories',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_DOCUMENT_CATEGORIES',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_DOCUMENT_CATEGORIES_TAB
-                    },
-                    {
                         'id': 'experience',
                         'title': 'Experience',
                         'translate': 'NAV.ADMIN.SETTINGS_PROFILE_EXPERIENCE',
@@ -253,13 +246,6 @@ export const ADMIN_MODEL = [
                         'translate': 'NAV.ADMIN.SETTINGS_PROFILE_INFO',
                         'type': 'item',
                         'tab': TAB.SETTINGS_PROFILE_INFO_TAB
-                    },
-                    {
-                        'id': 'photo_categories',
-                        'title': 'Photo Categories',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_PHOTO_CATEGORIES',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_PHOTO_CATEGORIES_TAB
                     },
                     {
                         'id': 'ratings',
@@ -275,13 +261,6 @@ export const ADMIN_MODEL = [
                         'type': 'item',
                         'tab': TAB.SETTINGS_PROFILE_SHOWCASES_TAB
                     },
-                    {
-                        'id': 'video_categories',
-                        'title': 'Video Categories',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_VIDEO_CATEGORIES',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_VIDEO_CATEGORIES_TAB
-                    }
                 ]
             },
             {
