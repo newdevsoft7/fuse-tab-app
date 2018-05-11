@@ -135,6 +135,14 @@ export class TokenStorage {
     }
 
     /**
+     * Get registrant step
+     */
+    public getRegistrantStep(): number {
+        const step = parseInt(this.getUser().lvl.replace('registrant', ''));
+        return step < 8 ? step : 7;
+    }
+
+    /**
     * Remove tokens
     */
     public clear() {

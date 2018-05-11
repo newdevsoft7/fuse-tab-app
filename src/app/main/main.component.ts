@@ -70,7 +70,7 @@ export class FuseMainComponent implements OnInit, OnDestroy
     }
 
     get visibleToolbar(): boolean {
-       return !this.router.url.startsWith('/register');
+       return this.authService.isAuthorized() && !this.router.url.startsWith('/register');
     }
 
     get requiredFormData(): boolean {

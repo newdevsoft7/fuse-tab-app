@@ -196,8 +196,7 @@ export class AuthenticationService {
 
   public getCurrentStep(): number {
     if (this.isUserCompleted()) return 0;
-    const step = parseInt(this.tokenStorage.getUser().lvl.replace('registrant', ''));
-    return step < 8 ? step : 7;
+    return this.tokenStorage.getRegistrantStep();
   }
 
   // public getHeaders(token) {

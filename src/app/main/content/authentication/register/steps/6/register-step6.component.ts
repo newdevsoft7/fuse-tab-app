@@ -78,6 +78,10 @@ export class RegisterStep6Component implements OnInit, OnChanges {
             .subscribe(res => {
                 this.spinner.hide();
                 this.toastr.success(res.message);
+                if (this.tokenStorage.getRegistrantStep() < 7) {
+                    this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant7' } });
+                }
+                this.tokenStorage.setSteps(res.steps);
                 this.onStepSucceed.next(res.steps);
             }, err => {
                 this.spinner.hide();

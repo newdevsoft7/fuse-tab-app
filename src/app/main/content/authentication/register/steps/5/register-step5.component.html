@@ -41,7 +41,12 @@
 <!-- VIDEO TEMPLATE -->
 <ng-template #videoTpl let-video="video">
 
-    <img class="preview" src="assets/images/avatars/video_thumbnail.jpg" (click)="showVideo(video)">
+    <div class="preview">
+        <img [src]="video.thumbnail" (click)="showVideo(video)">
+        <button mat-icon-button (click)="showVideo(video)">
+            <mat-icon>play_circle_filled</mat-icon>
+        </button>
+    </div>
 
     <div class="title" fxLayout="row" fxLayoutAlign="end center">
         <button mat-icon-button (click)="deleteVideo(video)">

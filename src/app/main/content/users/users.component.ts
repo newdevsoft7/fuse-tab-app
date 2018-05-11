@@ -65,6 +65,7 @@ export class UsersComponent implements OnInit {
     dialogRef: any;
 
     differ: any;
+    isLoginAs: boolean = true;
 
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
@@ -253,6 +254,11 @@ export class UsersComponent implements OnInit {
 
     onTypeFilterChange(filter) {
         this.selectedTypeFilter = filter;
+        if (this.selectedTypeFilter.endsWith('incomplete') || this.selectedTypeFilter.endsWith('complete') || this.selectedTypeFilter.endsWith('rejected')) {
+            this.isLoginAs = false;
+        } else {
+            this.isLoginAs = true;
+        }
         this.getUsers();
 
         if (this.data.invite) {
