@@ -46,6 +46,7 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
 import { UsersProfileUnavailabilityComponent } from './profile/unavailability/unavailability.component';
 import { AddUnavailabilityDialogComponent } from './profile/unavailability/add-unavailability-dialog/add-unavailability-dialog.component';
 import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-status.component';
+import { UsersSettingsPermissionSublistComponent } from './profile/settings/permission-sublist/permission-sublist.component';
 
 @NgModule({
     imports: [
@@ -93,6 +94,7 @@ import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-st
         UsersSettingsStaffPermissionsComponent,
         UsersSettingsClientPermissionsComponent,
         UsersSettingsChangePasswordComponent,
+        UsersSettingsPermissionSublistComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,

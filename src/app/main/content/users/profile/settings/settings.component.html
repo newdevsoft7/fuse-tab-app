@@ -23,11 +23,31 @@
     <div class="content p-24" fxFlex>
         <ng-container [ngSwitch]="selectedCategory?.id">
             <app-users-settings-admin-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'admin-options'"></app-users-settings-admin-options>
-            <app-users-settings-admin-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'admin-permissions'"></app-users-settings-admin-permissions>
+            <app-users-settings-admin-permissions 
+                [userPermissions]="userPermissions" 
+                [workAreas]="workAreas"
+                [workAreaSource]="workAreaSource"
+                [trackingOptions]="trackingOptions"
+                [trackingOptionSource]="trackingOptionSource"
+                (filterSource)="filterSource($event)"
+                (addItem)="addItem($event)"
+                (removeItem)="removeItem($event)"
+                (optionChanged)="togglePermission($event)"
+                *ngSwitchCase="'admin-permissions'">
+            </app-users-settings-admin-permissions>
             <app-users-settings-staff-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'staff-options'"></app-users-settings-staff-options>
             <app-users-settings-staff-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
             <app-users-settings-client-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'client-options'"></app-users-settings-client-options>
-            <app-users-settings-client-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'client-permissions'"></app-users-settings-client-permissions>
+            <app-users-settings-client-permissions 
+                [userPermissions]="userPermissions" 
+                [trackingOptions]="trackingOptions"
+                [trackingOptionSource]="trackingOptionSource"
+                (filterSource)="filterSource($event)"
+                (addItem)="addItem($event)"
+                (removeItem)="removeItem($event)"
+                (optionChanged)="togglePermission($event)" 
+                *ngSwitchCase="'client-permissions'">
+            </app-users-settings-client-permissions>
             <app-users-settings-change-password *ngSwitchCase="'change-password'"></app-users-settings-change-password>
         </ng-container>
     </div>

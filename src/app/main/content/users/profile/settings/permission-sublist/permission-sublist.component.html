@@ -1,0 +1,24 @@
+<div class="mat-elevation-z1 p-16 mt-16">
+  <form #itemForm="ngForm" (ngSubmit)="addItem.next({item: selectedItem, type: type})">
+      <mat-form-field>
+          <input type="text" matInput ngModel name="item" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterSource.next({query: $event, type: type})" required>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="itemDisplayFn.bind(this)" (optionSelected)="selectItem($event)">
+              <mat-option *ngFor="let item of source" [value]="item">
+              {{ item[displayField] }}
+              </mat-option>
+          </mat-autocomplete>
+      </mat-form-field>
+      <button mat-raised-button color="accent" class="ml-16" type="submit" [disabled]="itemForm.invalid">Add</button>
+  </form>
+  <div>
+    <ng-container *ngFor="let item of data; let last = last">
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <span>{{item[displayField]}}</span>
+        <button mat-icon-button color="warn" (click)="removeItem.next({item: item, type: type})">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <mat-divider *ngIf="!last"></mat-divider>
+    </ng-container>
+  </div>
+</div>

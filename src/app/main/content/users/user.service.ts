@@ -282,6 +282,36 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getPermissionWorkAreas(userId: number): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/permissionWorkAreas`;
+        return this.http.get(url).toPromise();
+    }
+
+    updatePermissionWorkArea(userId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/permissionWorkArea`;
+        return this.http.put(url, data).toPromise();
+    }
+
+    getPermissionTrackingOptions(userId: number): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/permissionTrackingOptions`;
+        return this.http.get(url).toPromise();
+    }
+
+    updatePermissionTrackingOption(userId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/permissionTrackingOption`;
+        return this.http.put(url, data).toPromise();
+    }
+
+    searchWorkAreas(query: string): Promise<any> {
+        const url = `${AUTOCOMPLETE_URL}/workArea/${query}`;
+        return this.http.get(url).toPromise();
+    }
+
+    searchTrackingOptions(catId: number | string, query: string): Promise<any> {
+        const url = `${AUTOCOMPLETE_URL}/tracking/${catId}/options/${query}`;
+        return this.http.get(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

@@ -9,6 +9,16 @@
                 Access all staff
             </div>
         </div>
+        <app-users-profile-settings-permission-sublist
+            *ngIf="!userPermissions['admin_staff_all']?.set"
+            [type]="'workArea'"
+            [data]="workAreas"
+            [source]="workAreaSource"
+            [displayField]="'aname'"
+            (filterSource)="filterSource.next($event)"
+            (addItem)="addItem.next($event)"
+            (removeItem)="removeItem.next($event)">
+        </app-users-profile-settings-permission-sublist>
     </div>
     <!-- / ADMIN_STAFF_ALL -->
 
@@ -93,6 +103,16 @@
                 Access all shifts
             </div>
         </div>
+        <app-users-profile-settings-permission-sublist
+            *ngIf="!userPermissions['admin_shifts_all']?.set"
+            [type]="'trackingOption'"
+            [data]="trackingOptions"
+            [source]="trackingOptionSource"
+            [displayField]="'oname'"
+            (filterSource)="filterSource.next($event)"
+            (addItem)="addItem.next($event)"
+            (removeItem)="removeItem.next($event)">
+        </app-users-profile-settings-permission-sublist>
     </div>
     <!-- / ADMIN_SHIFTS_ALL -->
 
