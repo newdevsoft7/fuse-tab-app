@@ -20,7 +20,7 @@ export class ProfileInfoAddFieldComponent implements OnInit {
     VISIBILITY: any[] = [
         { value: 'hidden', label: 'Hidden' },
         { value: 'required', label: 'Required' },
-        { value: 'pay', label: 'Required for invoice' },
+        { value: 'pay', label: 'required for pay' },
         { value: 'optional', label: 'Optional' },
     ];
     
