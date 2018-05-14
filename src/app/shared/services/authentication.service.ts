@@ -25,6 +25,7 @@ interface AccessData {
   message: string;
   steps: any;
   forms_required: any[];
+  permissions: { staff_invoice?: boolean };
 }
 
 @Injectable()
@@ -213,7 +214,7 @@ export class AuthenticationService {
    * @private
    * @param {AccessData} data
    */
-  private saveAccessData({access_token, refresh_token, user, settings, steps, forms_required}: AccessData) {
+  private saveAccessData({access_token, refresh_token, user, settings, steps, forms_required, permissions}: AccessData) {
     if (access_token) {
       this.tokenStorage.setAccessToken(access_token);
     }
@@ -231,6 +232,9 @@ export class AuthenticationService {
     }
     if (forms_required && forms_required.length > 0) {
       this.tokenStorage.setFormData(forms_required);
+    }
+    if (permissions) {
+      this.tokenStorage.setPermissions(permissions);
     }
   }
 

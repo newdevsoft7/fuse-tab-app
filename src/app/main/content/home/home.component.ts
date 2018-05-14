@@ -92,6 +92,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('clientsTpl') clientsTpl;
     @ViewChild('outsourceCompaniesTpl') outsourceCompaniesTpl;
 
+    @ViewChild('clientInvoicesTpl') clientInvoicesTpl;
+
     socketService: SocketService;
     fcmService: FCMService;
     alive: boolean = false;
@@ -310,6 +312,32 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     );
                 }
                 break;
+            
+            case 'staff':
+                const permissions = this.tokenStorage.getPermissions();
+                const payMenu: any = {
+                    'id': 'invoices',
+                    'title': 'Pay',
+                    'translate': 'NAV.STAFF.PAY',
+                    'type': 'collapse',
+                    'icon': 'attach_money',
+                    'tab': TAB.STAFF_INVOICES_TAB
+                };
+                if (permissions && permissions.staff_invoice) {
+                    payMenu.children = [
+                        {
+                            'id': 'new_invoice',
+                            'title': 'New Invoice',
+                            'translate': 'NAV.STAFF.NEW_INVOICE',
+                            'type': 'item',
+                            'tab': TAB.STAFF_NEW_INVOICE_TAB
+                        }
+                    ];
+                } else {
+                    payMenu.type = 'item';
+                }
+                navModel.splice(1, 0, payMenu);
+                break;
 
             default:
                 break;
@@ -339,7 +367,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 }
             ]
         };
-        navModel.splice(3, 0, payroll);
+        navModel.splice(4, 0, payroll);
     }
 
     onMessage(event: any) {
