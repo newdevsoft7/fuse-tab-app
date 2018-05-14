@@ -167,7 +167,7 @@ export class ProfileInfoComponent implements OnInit {
         this.profileInfoService.createCategory(newCategory)
             .subscribe(res => {
                 const savedCategory = res.data;
-                this.profileFields.push(savedCategory);
+                this.profileFields.unshift(savedCategory);
             });
     }
 
