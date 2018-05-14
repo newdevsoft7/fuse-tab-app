@@ -25,7 +25,7 @@ export class ProfileInfoElementDialogComponent implements OnInit {
     VISIBILITY: any[] = [
         { value: 'hidden', label: 'Hidden' },
         { value: 'required', label: 'Required' },
-        { value: 'pay', label: 'required for pay' },
+        { value: 'pay', label: 'Required for pay' },
         { value: 'optional', label: 'Optional' },
     ];
 
