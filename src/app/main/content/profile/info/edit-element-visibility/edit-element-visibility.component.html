@@ -2,7 +2,7 @@
     <span class="field-visibility">{{visibility | uppercase}}</span>
 </div>
 
-<div [formGroup]="form" (ngSubmit)="onFormSubmit()" class="field-header-visibility-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+<div [formGroup]="form" class="field-header-visibility-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
 
     <mat-form-field fxFlex="1 0 auto">
         <mat-select formControlName="visibility" placeholder="Visibility">
@@ -12,7 +12,7 @@
         </mat-select>
     </mat-form-field>
 
-    <button mat-icon-button fxFlex="0 1 auto">
+    <button mat-icon-button fxFlex="0 1 auto" (click)="onFormSubmit()">
         <mat-icon>check</mat-icon>
     </button>
     <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">

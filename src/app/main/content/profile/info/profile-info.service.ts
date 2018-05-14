@@ -45,7 +45,11 @@ export class ProfileInfoService {
             .catch(this.handleError);
     }
 
-
+    setDisplayOrder(elements: any[]): Observable<any> {
+        const url = `${PROFILE_STRUCTURE_URL}/displayOrder`;
+        return this.http.put(url, { elements })
+            .catch(this.handleError);
+    }
 
     getElements(): Observable<any> {
         const url = `${PROFILE_STRUCTURE_URL}/element`;

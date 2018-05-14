@@ -14,6 +14,7 @@ import { ProfileInfoElementDialogComponent } from './dialogs/element/element.com
 import { ProfileInfoEditElementOptionsDialogComponent } from './dialogs/edit-element-options/edit-element-options.component';
 
 import * as _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-profile-info',
@@ -27,14 +28,23 @@ export class ProfileInfoComponent implements OnInit {
     dialogRef: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
+    orders: any[] = [];
+
     constructor(
         private profileInfoService: ProfileInfoService,
-        public dialog: MatDialog) { }
+        private toastr: ToastrService,
+        public dialog: MatDialog
+    ) { }
 
     ngOnInit() {
         this.profileInfoService.getFields()
             .subscribe(
                 res => {
+                    res.forEach((e, i) => {
+                        if (e.cname && !e.elements) {
+                            res[i].elements = [];
+                        }
+                    });
                     this.profileFields = [ ...res ];
                 },
                 (err) => {
@@ -48,6 +58,15 @@ export class ProfileInfoComponent implements OnInit {
         const parent = this.findParent(node, this.profileFields);
         node.profile_cat_id = parent == this.profileFields ? null : (parent as ProfileField).id;
         const element = _.cloneDeep(node);
+
+        this.orders = [];
+        this.profileFields.forEach(e => this.makeOrder(e));
+        this.profileInfoService.setDisplayOrder(this.orders).subscribe(res => {
+            this.toastr.success(res.message);
+        }, err => {
+            console.log(err);
+        });
+
         if (node.cname) {
             delete element.cname;
             this.profileInfoService.updateCategory(element)
@@ -61,6 +80,15 @@ export class ProfileInfoComponent implements OnInit {
                 });
         }
 
+    }
+
+    private makeOrder(element) {
+        if (element.cname) {
+            this.orders.push("c" + element.id);
+            if (element.elements) element.elements.forEach(e=> this.makeOrder(e));
+        } else {
+            this.orders.push(element.id);
+        }
     }
 
     click(model, evt) {
@@ -189,6 +217,7 @@ export class ProfileInfoComponent implements OnInit {
         const index = parent.findIndex(v => v == node);
         parent.splice(index, 1);
     }
+
 
     private findParent(element, searched) {
         if (searched instanceof Array) {
