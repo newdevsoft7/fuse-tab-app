@@ -106,6 +106,7 @@ export class ProfileInfoComponent implements OnInit {
         this.dialogRef.afterClosed()
             .subscribe((newCategory: ProfileField) => {
                 if (newCategory) {
+                    newCategory.profile_cat_id = category.id;
                     this.profileInfoService.createCategory(newCategory)
                         .subscribe(res => {
                             const savedCategory = res.data;
