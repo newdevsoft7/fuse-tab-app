@@ -4,18 +4,21 @@ import { SharedModule } from "../../../core/modules/shared.module";
 import { ClientInvoicesComponent } from "./client-invoices.component";
 import { ClientInvoicesService } from "./client-invoices.service";
 import { CustomMultiSelectModule } from "../../../core/components/custom-multi-select/custom-multi-select.module";
+import { ClientInvoicesDetailComponent } from "./detail/detail.component";
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
-    CustomMultiSelectModule,
+    CustomMultiSelectModule
   ],
   declarations: [
-    ClientInvoicesComponent
+    ClientInvoicesComponent,
+    ClientInvoicesDetailComponent
   ],
   exports: [
-    ClientInvoicesComponent
+    ClientInvoicesComponent,
+    ClientInvoicesDetailComponent
   ],
   providers: [
     ClientInvoicesService

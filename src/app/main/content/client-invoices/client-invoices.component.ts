@@ -4,6 +4,8 @@ import { ToastrService } from "ngx-toastr";
 import { Observable } from 'rxjs/Observable';
 
 import * as moment from 'moment';
+import { TabService } from "../../tab/tab.service";
+import { Tab } from "../../tab/tab";
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -42,6 +44,7 @@ export class ClientInvoicesComponent implements OnInit {
 
   constructor(
     private toastr: ToastrService,
+    private tabService: TabService,
     private clientInvoicesService: ClientInvoicesService
   ) {}
 
@@ -100,9 +103,8 @@ export class ClientInvoicesComponent implements OnInit {
 
   onActivate(event) {
     if (event.type === 'click') {
-      // const id = event.row.id;
-      // const tab = new Tab(event.row.display, 'payrollDetailTpl', `payroll/${id}`, { id });
-      // this.tabService.openTab(tab);
+      const tab = new Tab(event.row.display, 'clientInvoicesDetailTpl', `client-invoices/${event.row.id}`, { id: event.row.id, display: event.row.display });
+      this.tabService.openTab(tab);
     }
   }
 

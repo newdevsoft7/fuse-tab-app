@@ -20,6 +20,11 @@ export class ClientInvoicesService {
     return this.http.get(url.replace(/\/+$/, '')).toPromise();
   }
 
+  getInvoice(invoiceId: number): Promise<any> {
+    const url = `${CLIENT_URL}/invoice/${invoiceId}`;
+    return this.http.get(url).toPromise();
+  }
+
   searchClients(query: string): Observable<any> {
     const url = `${AUTOCOMPLETE_URL}/client/${query}`;
     return this.http.get(url);

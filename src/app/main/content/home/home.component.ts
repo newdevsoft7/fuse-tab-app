@@ -93,6 +93,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('outsourceCompaniesTpl') outsourceCompaniesTpl;
 
     @ViewChild('clientInvoicesTpl') clientInvoicesTpl;
+    @ViewChild('clientInvoicesDetailTpl') clientInvoicesDetailTpl;
 
     socketService: SocketService;
     fcmService: FCMService;
