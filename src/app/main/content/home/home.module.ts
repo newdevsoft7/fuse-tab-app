@@ -28,6 +28,7 @@ import { TemplatesModule } from '../templates/templates.module';
 import { ClientsModule } from '../clients/clients.module';
 import { TimelineModule } from './timeline/timeline.module';
 import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
+import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import { OutsourceCompaniesModule } from '../outsource-companies/outsource-compa
         PayrollModule,
         TemplatesModule,
         ClientsModule,
+        ClientInvoicesModule,
         OutsourceCompaniesModule,
         TimelineModule
     ],

@@ -121,7 +121,7 @@ export class CustomMultiSelectComponent implements ControlValueAccessor, OnInit,
     }
 
     writeValue(v): void {
-        this._value = v;
+        this._value = v || [];
     }
 
     ngOnInit() {
