@@ -59,7 +59,8 @@ export class FuseLoginComponent implements OnInit
         this.isRegisterEnabled = this.appSettingService.baseData.registration_enable === 1? true : false;
         this.logoUrl = this.appSettingService.baseData.logo;
         this.backgroundImg = this.appSettingService.baseData.background;
-
+console.log(this.appSettingService.baseData);
+console.log(this.isRegisterEnabled);
         this.loginForm = this.formBuilder.group({
             username   : ['', [Validators.required, Validators.email]], 
             password   : ['', Validators.required]
