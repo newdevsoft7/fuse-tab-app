@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -7,17 +7,21 @@ import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
-
+import { GroupSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
 
 @Component({
-    selector: 'app-admin-shift-reports-uploads',
+    selector: 'app-group-reports-uploads',
     templateUrl: './reports-uploads.component.html',
     styleUrls: ['./reports-uploads.component.scss']
 })
-export class AdminShiftReportsUploadsComponent implements OnInit {
+export class GroupReportsUploadsComponent implements OnInit {
 
-    @Input() shift;
+    @Input() shifts;
+    @Input() group;
+    @ViewChild('fileInput') fileInput: ElementRef;
+
     data: any = {};
+    shiftId: any;
 
     constructor(
         private dialog: MatDialog,
@@ -33,13 +37,30 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 
     async fetch() {
         try {
-            this.data = await this.scheduleService.getShiftReportsUploads(this.shift.id);
+            this.data = await this.scheduleService.getGroupReportsUploads(this.group.id);
         } catch (e) {
             this.displayError(e);
         }
     }
 
+    openShiftDialog() {
+        const dialogRef = this.dialog.open(GroupSelectShiftDialogComponent, {
+            disableClose: false,
+            panelClass: 'group-select-shift-dialog',
+            data: {
+                group: this.group,
+                inputEle: this.fileInput.nativeElement
+            }
+        });
+        dialogRef.afterClosed().subscribe(id => {
+            if (id !== false) { 
+                this.shiftId = id;
+            }
+        });
+    }
+
     async onUpload(event) {
+        if (!this.shiftId) { return; }
         const files = event.target.files;
         if (files && files.length > 0) {
 			this.spinner.show();
@@ -51,7 +72,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 			}
 
             formData.append('folder', 'shift');
-            formData.append('id', this.shift.id);
+            formData.append('id', this.shiftId);
 
 			try {
                 const res = await this.scheduleService.reportsUploads(formData);

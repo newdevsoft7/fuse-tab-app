@@ -100,7 +100,7 @@ export class UserService {
         const url = `${BASE_URL}/file/${fileType}/${fileId}`;
         return this.http.delete(url)
             .catch(this.handleError);
-    };
+    }
 
     setProfilePhoto(userId: number, photoId: number): Observable<any> {
         const url = `${BASE_URL}/profile/${userId}/photo/${photoId}`;
