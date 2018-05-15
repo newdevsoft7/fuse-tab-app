@@ -5,6 +5,7 @@ import { ClientInvoicesComponent } from "./client-invoices.component";
 import { ClientInvoicesService } from "./client-invoices.service";
 import { CustomMultiSelectModule } from "../../../core/components/custom-multi-select/custom-multi-select.module";
 import { ClientInvoicesDetailComponent } from "./detail/detail.component";
+import { ClientInvoiceGenerateComponent } from "./generate-invoice/generate-invoice.component";
 
 @NgModule({
   imports: [
@@ -14,11 +15,13 @@ import { ClientInvoicesDetailComponent } from "./detail/detail.component";
   ],
   declarations: [
     ClientInvoicesComponent,
-    ClientInvoicesDetailComponent
+    ClientInvoicesDetailComponent,
+    ClientInvoiceGenerateComponent
   ],
   exports: [
     ClientInvoicesComponent,
-    ClientInvoicesDetailComponent
+    ClientInvoicesDetailComponent,
+    ClientInvoiceGenerateComponent
   ],
   providers: [
     ClientInvoicesService

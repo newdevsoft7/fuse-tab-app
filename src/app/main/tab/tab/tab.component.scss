@@ -1,6 +1,7 @@
 :host {
     &.users-chat,
-    &[class^="payroll-"] {
+    &[class^="payroll-"],
+    &[class^="client-invoices-"] {
         .pane {
             padding: 0;
         }

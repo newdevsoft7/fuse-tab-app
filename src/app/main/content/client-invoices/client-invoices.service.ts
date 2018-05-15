@@ -44,4 +44,9 @@ export class ClientInvoicesService {
     const url = `${CLIENT_URL}/invoice/${invoiceId}`;
     return this.http.delete(url).toPromise();
   }
+
+  generateInvoice(clientId: number, from: string, to: string): Promise<any> {
+    const url = `${CLIENT_URL}/${clientId}/invoice/generate/${from}/${to}`;
+    return this.http.get(url).toPromise();
+  }
 }

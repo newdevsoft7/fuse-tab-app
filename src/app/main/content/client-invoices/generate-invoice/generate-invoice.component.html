@@ -1,0 +1,30 @@
+<div id="generate-client-invoice-container" class="p-16">
+  <form #generateForm="ngForm" fxLayout="row wrap" fxLayoutAlign="space-between center" (ngSubmit)="generate()">
+      <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <mat-form-field class="mr-48">
+            <mat-label>Search Client</mat-label>
+            <input type="text" matInput ngModel (ngModelChange)="checkIfEmpty($event)" name="client" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterClients($event)">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="clientDisplayFn">
+              <mat-option *ngFor="let client of clients" [value]="client">
+                {{ client.cname }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field class="date-picker mr-48">
+              <mat-label>From</mat-label>
+              <input matInput name="from" [matDatepicker]="fromPicker" [(ngModel)]="from" required>
+              <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+              <mat-datepicker #fromPicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="date-picker">
+              <mat-label>To</mat-label>
+              <input matInput name="to" [matDatepicker]="toPicker" [(ngModel)]="to" required>
+              <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+              <mat-datepicker #toPicker></mat-datepicker>
+          </mat-form-field>
+      </div>
+      <button mat-raised-button color="accent" [disabled]="generateForm.invalid || !selectedClient">GENERATE</button>
+    </form>
+</div>
