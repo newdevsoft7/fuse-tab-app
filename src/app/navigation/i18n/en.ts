@@ -14,6 +14,9 @@ export const locale = {
 
                 'CLIENTS': 'Clients',
 
+                'CLIENT_INVOICES': 'Client Invoices',
+                'CLIENT_INVOICE_GENERATE': 'Generate Client Invoice',
+
                 'OUTSOURCE_COMPANIES': 'Outsource Companies',
 
                 'SCHEDULE': 'Schedule',
@@ -72,7 +75,7 @@ export const locale = {
             'STAFF': {
                 'CALENDAR': 'Calendar',
 
-                'INVOICES': 'Invoices',
+                'PAY': 'Pay',
                 'NEW_INVOICE': 'New Invoice',
                 'FILES': 'Files',
                 'HELP': '',

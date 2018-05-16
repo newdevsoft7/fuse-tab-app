@@ -456,6 +456,31 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
+  getShiftReportsUploads(shiftId: any): Promise<any> {
+    const url = `${BASE_URL}/reportsUploads/shift/${shiftId}`;
+    return this.http.get(url).toPromise();
+  }
+
+  getGroupReportsUploads(groupId: any): Promise<any> {
+    const url = `${BASE_URL}/reportsUploads/group/${groupId}`;
+    return this.http.get(url).toPromise();
+  }
+
+  reportsUploads(body): Promise<any> {
+    const url = `${BASE_URL}/reportsUploads/upload`;
+    return this.http.post(url, body).toPromise();
+  }
+
+  reportsUploadsApprove(type, id, set = 1): Promise<any> {
+    const url = `${BASE_URL}/reportsUploads/approve/${type}/${id}/${set}`;
+    return this.http.put(url, {}).toPromise();
+  }
+
+  deleteCompletedReport(id): Promise<any> {
+    const url = `${BASE_URL}/report/completed/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

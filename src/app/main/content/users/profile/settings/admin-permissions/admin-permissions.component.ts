@@ -10,8 +10,15 @@ import { ToastrService } from 'ngx-toastr';
 export class UsersSettingsAdminPermissionsComponent implements OnInit {
 
     @Input() userPermissions;
+    @Input() workAreas;
+    @Input() workAreaSource;
+    @Input() trackingOptions;
+    @Input() trackingOptionSource;
 
     @Output() optionChanged = new EventEmitter();
+    @Output() filterSource: EventEmitter<any> = new EventEmitter();
+    @Output() addItem: EventEmitter<any> = new EventEmitter();
+    @Output() removeItem: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private toastr: ToastrService

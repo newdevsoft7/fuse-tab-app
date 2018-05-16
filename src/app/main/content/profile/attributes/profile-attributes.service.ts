@@ -32,12 +32,6 @@ export class ProfileAttributesService {
             .catch(this.handleError);
     }
 
-    updateAttributeUser(categoryId: number, attributeId: number, role: string): Observable<any> {
-        const url = `${BASE_URL}/attributeUser/${categoryId}/${attributeId}`;
-        return this.http.put(url, role)
-            .catch(this.handleError);
-    }
-
     deleteAttribute(id: number): Observable<any> {
         const url = `${ATTRIBUTE_URL}/${id}`;
         return this.http.delete(url)

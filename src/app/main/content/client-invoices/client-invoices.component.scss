@@ -1,0 +1,17 @@
+@import "src/app/core/scss/fuse";
+
+#client-invoices-container {
+
+    .date-picker {
+        width: 120px;
+    }
+
+    .link {
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    mat-button-toggle {
+        text-align: center;
+    }
+}

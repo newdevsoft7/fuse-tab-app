@@ -54,6 +54,23 @@ export const ADMIN_MODEL = [
         'tab': TAB.CLIENTS_TAB
     },
     {
+        'id': 'client_invoices',
+        'title': 'Client Invoices',
+        'translate': 'NAV.ADMIN.CLIENT_INVOICES',
+        'type': 'collapse',
+        'icon': 'account_balance',
+        'tab': TAB.CLIENT_INVOICES_TAB,
+        'children': [
+            {
+                'id': 'generate_client_invoice',
+                'title': 'Generate Client Invoice',
+                'translate': 'NAV.ADMIN.CLIENT_INVOICE_GENERATE',
+                'type': 'item',
+                'tab': TAB.CLIENT_INVOICE_GENERATE_TAB
+            }
+        ]
+    },
+    {
         'id': 'outsource_companies',
         'title': 'Outsource Companies',
         'translate': 'NAV.ADMIN.OUTSOURCE_COMPANIES',
@@ -355,23 +372,6 @@ export const STAFF_MODEL = [
         'icon': 'today',
         'type': 'item',
         'tab': TAB.SCHEDULE_CALENDAR_TAB
-    },
-    {
-        'id': 'invoices',
-        'title': 'Invoices',
-        'translate': 'NAV.STAFF.INVOICES',
-        'type': 'collapse',
-        'icon': 'attach_money',
-        'tab': TAB.STAFF_INVOICES_TAB,
-        'children': [
-            {
-                'id': 'new_invoice',
-                'title': 'New Invoice',
-                'translate': 'NAV.STAFF.NEW_INVOICE',
-                'type': 'item',
-                'tab': TAB.STAFF_NEW_INVOICE_TAB
-            }
-        ]
     },
     {
         'id': 'help',

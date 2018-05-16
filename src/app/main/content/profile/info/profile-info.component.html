@@ -1,11 +1,11 @@
 <div id="profile-info-wrapper">
     <!-- NEW CATEGORY / NEW ELEMENT BUTTON-->
-    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="mb-16">
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" class="mb-16">
         <app-profile-info-add-category (onCategoryAdd)="onCategoryAdd($event)">
         </app-profile-info-add-category>
 
-        <app-profile-info-add-field (onFieldAdd)="onFieldAdd($event)">
-        </app-profile-info-add-field>
+        <!-- <app-profile-info-add-field (onFieldAdd)="onFieldAdd($event)">
+        </app-profile-info-add-field> -->
     </div>
     <!-- / NEW CATEGORY / NEW ELEMENT BUTTON-->
     <div class="ngx-dnd-container" ngxDroppable="group" [model]="profileFields" (drop)="onDrop($event)">
@@ -20,7 +20,7 @@
                 <app-profile-info-edit-category-name fxFlex="1 0 auto" [category]="field"></app-profile-info-edit-category-name>
                 <div fxFlex="0 1 auto">
                     <button mat-icon-button [matMenuTriggerFor]="listCategoryMenu" class="mr-8">
-                        <mat-icon class="mat-primary-50-bg">add</mat-icon>
+                        <mat-icon class="white-fg mat-accent-bg">add</mat-icon>
                     </button>
                     <mat-menu #listCategoryMenu="matMenu">
                         <button mat-menu-item (click)="onAddCategory(field)">Add Subcategory</button>

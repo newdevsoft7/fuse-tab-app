@@ -95,6 +95,8 @@ import { GroupEditWorkareasComponent } from './shift/admin-shift-group/edit-work
 import { GroupEditWorkareasDialogComponent } from './shift/admin-shift-group/edit-workareas/edit-workareas-dialog/edit-workareas-dialog.component';
 import { GroupStaffComponent } from './shift/admin-shift-group/staff/staff.component';
 import { GroupAttachmentsComponent } from './shift/admin-shift-group/attachments/attachments.component';
+import { GroupReportsUploadsComponent } from './shift/admin-shift-group/reports-uploads/reports-uploads.component';
+import { GroupSelectShiftDialogComponent } from './shift/admin-shift-group/reports-uploads/select-shift-dialog/select-shift-dialog.component';
 
 
 @NgModule({
@@ -196,7 +198,9 @@ import { GroupAttachmentsComponent } from './shift/admin-shift-group/attachments
         GroupEditWorkareasComponent,
         GroupEditWorkareasDialogComponent,
         GroupStaffComponent,
-        GroupAttachmentsComponent
+        GroupAttachmentsComponent,
+        GroupReportsUploadsComponent,
+        GroupSelectShiftDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -217,7 +221,8 @@ import { GroupAttachmentsComponent } from './shift/admin-shift-group/attachments
         AddPayItemDialogComponent,
         GroupDialogComponent,
         GroupEditTrackingDialogComponent,
-        GroupEditWorkareasDialogComponent
+        GroupEditWorkareasDialogComponent,
+        GroupSelectShiftDialogComponent
     ],
     exports: [
         ScheduleComponent,

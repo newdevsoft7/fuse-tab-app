@@ -135,6 +135,28 @@ export class TokenStorage {
     }
 
     /**
+     * Set permission data
+     */
+    public setPermissions(permissions: any) {
+        localStorage.setItem('permissions', JSON.stringify(permissions));
+    }
+
+    /**
+     * Get permission data
+     */
+    public getPermissions() {
+        const permissions = localStorage.getItem('permissions');
+        return permissions? JSON.parse(permissions) : null;
+    }
+
+    /**
+     * Remove permission data
+     */
+    public removePermissions() {
+        localStorage.removeItem('permissions');
+    }
+
+    /**
      * Get registrant step
      */
     public getRegistrantStep(): number {
@@ -152,5 +174,6 @@ export class TokenStorage {
         localStorage.removeItem('secondaryUser');
         localStorage.removeItem('settings');
         localStorage.removeItem('formRequired');
+        localStorage.removeItem('permissions');
     }
 }

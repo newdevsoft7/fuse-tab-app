@@ -1,24 +1,15 @@
 :host {
+
+    mat-icon {
+        border-radius: 50%;
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+    }
+
     .new-category {
         border-radius: 2px;
         background-color: #EEF0F2;
-
-        .new-category-form-button {
-            text-transform: none;
-            font-size: 15px;
-            padding: 0 8px;
-            height: 54px;
-            margin: 0;
-            width: 100%;
-
-            mat-icon {
-                border-radius: 50%;
-                height: 40px;
-                width: 40px;
-                line-height: 40px;
-                margin-right: 8px;
-            }
-        }
 
         .new-category-form {
             padding: 8px;

@@ -91,11 +91,21 @@
     <!-- CLIENT_SHIFTS_ALL -->
     <div class="info">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-slide-toggle [checked]="userPermissions?.client_shifts_all?.set" (change)="toggleOption('client_shifts_all', $event)" color="accent" fxFlex="10"></mat-slide-toggle>
+            <mat-slide-toggle [checked]="userPermissions?.client_shift_all?.set" (change)="toggleOption('client_shift_all', $event)" color="accent" fxFlex="10"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="90">
                 Access all shifts belonging to the client
             </div>
         </div>
+        <app-users-profile-settings-permission-sublist
+            *ngIf="!userPermissions['client_shift_all']?.set"
+            [type]="'trackingOption'"
+            [data]="trackingOptions"
+            [source]="trackingOptionSource"
+            [displayField]="'oname'"
+            (filterSource)="filterSource.next($event)"
+            (addItem)="addItem.next($event)"
+            (removeItem)="removeItem.next($event)">
+        </app-users-profile-settings-permission-sublist>
     </div>
     <!-- / CLIENT_SHIFTS_ALL -->
 

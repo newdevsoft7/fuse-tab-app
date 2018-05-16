@@ -13,6 +13,9 @@ export const TAB = {
 
     'CLIENTS_TAB': new Tab('Clients', 'clientsTpl', 'clients', {}),
 
+    'CLIENT_INVOICES_TAB': new Tab('Client Invoices', 'clientInvoicesTpl', 'client-invoices', {}),
+    'CLIENT_INVOICE_GENERATE_TAB': new Tab('Generate Client Invoice', 'clientInvoiceGenerateTpl', 'client-invoice/generate', {}),
+
     'OUTSOURCE_COMPANIES_TAB': new Tab('Outsource Companies', 'outsourceCompaniesTpl', 'outsource-companies', {}),
 
     'SCHEDULE_CALENDAR_TAB': new Tab('Calendar', 'scheduleCalendarTpl', 'schedule/calendar', {}),
@@ -59,7 +62,7 @@ export const TAB = {
     'SETTINGS_HELP_UPDATES_CHANGELOG_TAB': new Tab('Updates & Changelog', '', 'settings/help/updates-changelog', {}),
 
     // Staff tabs
-    'STAFF_INVOICES_TAB': new Tab('Invoices', '', 'staff/invoices', {}),
+    'STAFF_INVOICES_TAB': new Tab('Pay', '', 'staff/invoices', {}),
     'STAFF_NEW_INVOICE_TAB': new Tab('New Invoice', '', 'staff/new-invoce', {}),
 
     // Client tabs

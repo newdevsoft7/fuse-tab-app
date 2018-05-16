@@ -1,0 +1,79 @@
+<div class="compact page-layout blank" fxLayout="row" fusePerfectScrollbar>
+
+    <div class="client-invoice-container">
+
+        <!-- INVOICE -->
+        <div class="card">
+
+            <div class="header">
+                <div class="invoice-date">{{invoice?.created_at | date: 'MMM d, y'}}</div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between stretch">
+                    <div class="client">
+                        <div class="invoice-number" fxLayout="row" fxLayoutAlign="start center">
+                            <span class="title">{{data?.display}}</span>
+                        </div>
+                    </div>
+
+                    <div class="issuer mat-accent-bg" fxLayout="row" fxLayoutAlign="start center">
+                        <div class="logo">
+                            <img [src]="logoUrl">
+                        </div>
+
+                        <div class="info">
+                            <div *ngIf="invoice?.client" class="title">{{invoice?.client}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <ngx-datatable
+                    class="material invoice-table"
+                    [rows]="invoice?.lines"
+                    [columnMode]="'force'"
+                    [rowHeight]="'auto'">
+                    <ngx-datatable-column name="TYPE" prop="item_type" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="TITLE" prop="title" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="UNIT PRICE" prop="u_amt" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value | currency:'USD':'symbol'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="QUANTITY" prop="qty" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="TOTAL" prop="l_amt" [sortable]="true" [canAutoResize]="true">
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            {{value | currency:'USD':'symbol'}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </ngx-datatable>
+
+                <table class="simple invoice-table-footer">
+                    <tbody>
+                        <tr class="total">
+                            <td>TOTAL</td>
+                            <td>{{invoice?.total | currency:'USD':'symbol'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="footer">
+                <div class="note" *ngIf="invoice?.memo">{{invoice?.memo}}</div>
+            </div>
+        </div>
+
+    </div>
+</div>
