@@ -208,10 +208,34 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    getQuizes(): Observable<any> {
+        const url = `${BASE_URL}/reports/quiz`;
+        return this.http.get(url)
+          .catch(this.handleError);
+    }
+
+    saveQuiz(id: number, params): Observable<any> {
+        const url = `${BASE_URL}/report/${id}`;
+        return this.http.put(url, params)
+          .catch(this.handleError);
+    }
+
+    getSurveys(): Observable<any> {
+        const url = `${BASE_URL}/reports/survey`;
+        return this.http.get(url)
+          .catch(this.handleError);
+    }
+
     getForm(id: number | string): Observable<any> {
         const url = `${BASE_URL}/form/${id}`;
         return this.http.get(url)
             .catch(this.handleError);
+    }
+
+    getQuiz(id: number | string): Observable<any> {
+        const url = `${BASE_URL}/form/${id}`;
+        return this.http.get(url)
+          .catch(this.handleError);
     }
 
     addFormLevelRequirement(formId, requirement, lvl): Observable<any> {

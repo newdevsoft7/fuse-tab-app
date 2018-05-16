@@ -1,5 +1,9 @@
 @import "src/app/core/scss/fuse";
 
+#settings-forms-container {
+    height: 100%;
+}
+
 :host {
 
     .info {
