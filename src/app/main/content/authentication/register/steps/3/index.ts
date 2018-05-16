@@ -1,2 +1,2 @@
 export * from './register-step3.component';
-export * from './photo-gallery-dialog/photo-gallery-dialog.component';
+export * from './experience-form-dialog/experience-form-dialog.component';

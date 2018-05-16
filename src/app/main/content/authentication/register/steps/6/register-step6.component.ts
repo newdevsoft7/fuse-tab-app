@@ -1,8 +1,8 @@
 import {
     Component, OnInit,
-    Input, OnChanges,
-    Output, EventEmitter,
-    SimpleChanges
+    ViewEncapsulation, Input,
+    SimpleChanges, Output,
+    EventEmitter, OnChanges
 } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { ToastrService } from "ngx-toastr";
@@ -11,23 +11,29 @@ import * as _ from 'lodash';
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 import { UserService } from "../../../../users/user.service";
 import { TokenStorage } from "../../../../../../shared/services/token-storage.service";
+
+import { RegisterVideoGalleryDialogComponent } from './video-gallery-dialog/video-gallery-dialog.component';
 import { RegisterService } from "../../register.service";
+
+const PROFILE_VIDEO = 'profile_video';
 
 @Component({
     selector: 'app-register-step6',
     templateUrl: './register-step6.component.html',
-    styleUrls: ['./register-step6.component.scss']
+    styleUrls: ['./register-step6.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class RegisterStep6Component implements OnInit, OnChanges {
 
-    settings: any = {};
-    workAreas = [];
+    videos: any[];
+    dialogRef: any;
 
     @Input() user;
     @Output() quitClicked = new EventEmitter;
     @Output() onStepSucceed = new EventEmitter;
 
     constructor(
+        private dialog: MatDialog,
         private userService: UserService,
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
@@ -36,36 +42,80 @@ export class RegisterStep6Component implements OnInit, OnChanges {
     ) { }
 
     ngOnInit() {
-        this.settings = this.tokenStorage.getSettings() || {};
+
+    }
+
+    get settings(): any {
+        return this.tokenStorage.getSettings() || {};
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.user.currentValue) {
-            this.getWorkAreas();
+            this.getVideos();
         }
     }
 
-    onUpdateWorkArea(workArea) {
-        const value = workArea.set ? 1 : 0;
-        this.userService.updateProfileWorkArea(this.user.id, workArea.id, value).subscribe(
-            res => {
-                this.toastr.success(res.message);
-            },
-            err => {
-                console.log(err);
+    showVideo(video) {
+        this.dialogRef = this.dialog.open(RegisterVideoGalleryDialogComponent, {
+            panelClass: 'register-video-gallery-dialog',
+            data: {
+                videos: this.videos,
+                video
             }
-        );
+        });
+
+        this.dialogRef.afterClosed()
+            .subscribe(res => { });
     }
 
-    private getWorkAreas() {
-        this.userService.getProfileWorkAreas(this.user.id).subscribe(
-            res => {
-                this.workAreas = res;
-            },
-            err => {
+    deleteVideo(video) {
+        this.userService.deleteProfileFile(video.id, PROFILE_VIDEO)
+            .subscribe(res => {
+                const index = this.videos.findIndex(v => v.id == video.id);
+                this.videos.splice(index, 1);
+            }, err => {
                 console.log(err);
+            });
+    }
+
+    onUploadVideo(event, isAdmin = 0) {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            this.spinner.show();
+
+            let formData = new FormData();
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('video[]', files[i], files[i].name);
             }
-        );
+
+
+            this.userService.uploadProfileVideo(this.user.id, formData)
+                .subscribe(res => {
+                    this.toastr.success(res.message);
+                    this.spinner.hide();
+                    res.data.map(video => {
+                        this.videos.push(video);
+                    });
+                }, err => {
+                    this.spinner.hide();
+                    _.forEach(err.error.errors, errors => {
+                        _.forEach(errors, (error: string) => {
+                            const message = _.replace(error, /video\.\d+/g, 'video');
+                            this.toastr.error(message);
+                        });
+                    });
+                });
+        }
+    }
+
+    private getVideos() {
+        this.userService.getProfileVideos(this.user.id)
+            .subscribe(res => {
+                this.videos = res;
+            }, err => {
+                console.log(err);
+            });
     }
 
     quit() {
@@ -88,4 +138,5 @@ export class RegisterStep6Component implements OnInit, OnChanges {
                 this.toastr.error(err.error.message);
             })
     }
+
 }

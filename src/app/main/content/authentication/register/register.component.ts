@@ -33,8 +33,9 @@ export class RegisterComponent implements OnInit {
     'step4': 0,
     'step5': 0,
     'step6': 0,
-    'step7': 0
-  }; // From step 1 to step 7
+    'step7': 0,
+    'step8': 0
+  }; // From step 1 to step 8
 
   dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -58,7 +59,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
 
-    _.times(8, (n) => {
+    _.times(9, (n) => {
       this.forms[n] = this.formBuilder.group({
         success: [null, Validators.required]
       });
@@ -70,8 +71,8 @@ export class RegisterComponent implements OnInit {
 
     this.route.firstChild.params.subscribe((res: {step: string}) => {
       let step = parseInt(res.step) || 0;
-      if (step >= 8) {
-        step = 7;
+      if (step >= 9) {
+        step = 8;
       }
       this.changeStep(step);
     });
@@ -101,7 +102,7 @@ export class RegisterComponent implements OnInit {
       success: 'success'
     });
 
-    // Sets forms from step1 to step7
+    // Sets forms from step1 to step8
     const keys = Object.keys(steps);
     this.steps = steps;
 

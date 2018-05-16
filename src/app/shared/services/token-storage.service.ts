@@ -175,5 +175,6 @@ export class TokenStorage {
         localStorage.removeItem('settings');
         localStorage.removeItem('formRequired');
         localStorage.removeItem('permissions');
+        localStorage.removeItem('steps');
     }
 }

@@ -24,8 +24,6 @@ export class RegisterStep1Component implements OnInit, OnChanges {
 
     profile: any;
 
-    message: string;
-
     constructor(
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
@@ -34,8 +32,12 @@ export class RegisterStep1Component implements OnInit, OnChanges {
         private registerService: RegisterService
     ) {}
 
+    get message(): string {
+        return this.tokenStorage.getSettings()? this.tokenStorage.getSettings().profile_info_message : '';
+    }
+
     ngOnInit() {
-        this.message = this.tokenStorage.getSettings()? this.tokenStorage.getSettings().profile_info_message : '';
+
     }
 
     ngOnChanges(changes: SimpleChanges) {

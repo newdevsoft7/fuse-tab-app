@@ -24,44 +24,52 @@
   </mat-step>
   <!-- / STEP 2 - SKILLS & QUALIFICATIONS -->
 
-  <!-- STEP 3 - UPLOAD PHOTOS -->
+  <!-- STEP 3 - EXPERIENCE -->
   <mat-step [stepControl]="forms[3]" *ngIf="steps.step3 !== null">
-    <ng-template matStepLabel>Upload photos</ng-template>
+    <ng-template matStepLabel>Experience</ng-template>
     <app-register-step3 [user]="user" (quitClicked)="quitStep($event)"
       (onStepSucceed)="onStepSucceed($event)"></app-register-step3>
   </mat-step>
-  <!-- / STEP 3 - UPLOAD PHOTOS -->
+  <!-- / STEP 3 - EXPERIENCE -->
 
-  <!-- STEP 4 - UPLOAD DOCUMENTS -->
+  <!-- STEP 4 - UPLOAD PHOTOS -->
   <mat-step [stepControl]="forms[4]" *ngIf="steps.step4 !== null">
-    <ng-template matStepLabel>Upload documents</ng-template>
+    <ng-template matStepLabel>Upload photos</ng-template>
     <app-register-step4 [user]="user" (quitClicked)="quitStep($event)"
       (onStepSucceed)="onStepSucceed($event)"></app-register-step4>
   </mat-step>
-  <!-- / STEP 4 - UPLOAD DOCUMENTS -->
+  <!-- / STEP 4 - UPLOAD PHOTOS -->
 
-  <!-- STEP 5 - UPLOAD VIDEOS -->
+  <!-- STEP 5 - UPLOAD DOCUMENTS -->
   <mat-step [stepControl]="forms[5]" *ngIf="steps.step5 !== null">
-    <ng-template matStepLabel>Upload videos</ng-template>
+    <ng-template matStepLabel>Upload documents</ng-template>
     <app-register-step5 [user]="user" (quitClicked)="quitStep($event)"
       (onStepSucceed)="onStepSucceed($event)"></app-register-step5>
   </mat-step>
-  <!-- / STEP 5 - UPLOAD VIDEOS -->
+  <!-- / STEP 5 - UPLOAD DOCUMENTS -->
 
-  <!-- STEP 6 - CHOOSE WORK AREAS -->
+  <!-- STEP 6 - UPLOAD VIDEOS -->
   <mat-step [stepControl]="forms[6]" *ngIf="steps.step6 !== null">
-    <ng-template matStepLabel>Choose work areas</ng-template>
+    <ng-template matStepLabel>Upload videos</ng-template>
     <app-register-step6 [user]="user" (quitClicked)="quitStep($event)"
       (onStepSucceed)="onStepSucceed($event)"></app-register-step6>
   </mat-step>
-  <!-- / STEP 6 - CHOOSE WORK AREAS -->
+  <!-- / STEP 6 - UPLOAD VIDEOS -->
 
-  <!-- STEP 7 - COMPLETE -->
-  <mat-step [stepControl]="forms[7]">
-    <ng-template matStepLabel>Complete</ng-template>
-    <app-register-step7 (quitClicked)="quitStep($event)"></app-register-step7>
+  <!-- STEP 7 - CHOOSE WORK AREAS -->
+  <mat-step [stepControl]="forms[7]" *ngIf="steps.step7 !== null">
+    <ng-template matStepLabel>Choose work areas</ng-template>
+    <app-register-step7 [user]="user" (quitClicked)="quitStep($event)"
+      (onStepSucceed)="onStepSucceed($event)"></app-register-step7>
   </mat-step>
-  <!-- / STEP 7 - COMPLETE -->
+  <!-- / STEP 7 - CHOOSE WORK AREAS -->
+
+  <!-- STEP 8 - COMPLETE -->
+  <mat-step [stepControl]="forms[8]">
+    <ng-template matStepLabel>Complete</ng-template>
+    <app-register-step8 (quitClicked)="quitStep($event)"></app-register-step8>
+  </mat-step>
+  <!-- / STEP 8 - COMPLETE -->
 
 </mat-horizontal-stepper>
 

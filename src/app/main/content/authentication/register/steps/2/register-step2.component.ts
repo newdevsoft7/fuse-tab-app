@@ -20,7 +20,6 @@ import { RegisterService } from "../../register.service";
 })
 export class RegisterStep2Component implements OnInit, OnChanges {
 
-    settings: any = {};
     attributes = [];
 
     @Input() user;
@@ -36,7 +35,7 @@ export class RegisterStep2Component implements OnInit, OnChanges {
     ) { }
 
     ngOnInit() {
-        this.settings = this.tokenStorage.getSettings() || {};
+
     }
 
     ngOnChanges(changes: SimpleChanges) {

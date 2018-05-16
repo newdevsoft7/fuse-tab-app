@@ -24,6 +24,26 @@ export class RegisterService {
             .catch(this.handleError);
     }
 
+    getExperiences(userId: number): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/experience`;
+        return this.http.get(url).toPromise();
+    }
+
+    createExperience(userId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/experience`;
+        return this.http.post(url, data).toPromise();
+    }
+
+    updateExperience(expId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}}/profile/experience/${expId}`;
+        return this.http.put(url, data).toPromise();
+    }
+
+    deleteExperience(expId: number): Promise<any> {
+        const url = `${BASE_URL}}/profile/experience/${expId}`;
+        return this.http.delete(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

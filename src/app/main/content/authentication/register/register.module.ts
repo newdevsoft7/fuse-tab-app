@@ -7,7 +7,7 @@ import {
   RegisterStep2Component, RegisterStep3Component,
   RegisterStep4Component, RegisterStep5Component,
   RegisterStep6Component, RegisterStep7Component,
-  RegisterStep0Component,
+  RegisterStep0Component, RegisterStep8Component
 } from "./steps";
 
 import {
@@ -19,7 +19,9 @@ import {
   RegisterProfileEditListmValueComponent,
   // Photo Step
   RegisterPhotoGalleryDialogComponent,
-  RegisterVideoGalleryDialogComponent
+  RegisterVideoGalleryDialogComponent,
+  // Experience Step
+  RegisterExperienceFormDialogComponent
 } from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
@@ -33,7 +35,8 @@ const stepComponents = [
   RegisterStep4Component,
   RegisterStep5Component,
   RegisterStep6Component,
-  RegisterStep7Component
+  RegisterStep7Component,
+  RegisterStep8Component
 ];
 
 const profileEditComponents = [
@@ -55,7 +58,8 @@ const profileEditComponents = [
     ...stepComponents,
     ...profileEditComponents,
     RegisterPhotoGalleryDialogComponent,
-    RegisterVideoGalleryDialogComponent
+    RegisterVideoGalleryDialogComponent,
+    RegisterExperienceFormDialogComponent
   ],
   providers: [
     UserService,
@@ -63,7 +67,8 @@ const profileEditComponents = [
   ],
   entryComponents: [
     RegisterPhotoGalleryDialogComponent,
-    RegisterVideoGalleryDialogComponent
+    RegisterVideoGalleryDialogComponent,
+    RegisterExperienceFormDialogComponent
   ]
 })
 export class RegisterModule {
