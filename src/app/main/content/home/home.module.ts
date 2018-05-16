@@ -29,6 +29,7 @@ import { ClientsModule } from '../clients/clients.module';
 import { TimelineModule } from './timeline/timeline.module';
 import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
 import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
+import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { ClientInvoicesModule } from '../client-invoices/client-invoices.module'
         ClientsModule,
         ClientInvoicesModule,
         OutsourceCompaniesModule,
-        TimelineModule
+        TimelineModule,
+        ReportsUploadsModule
     ],
     exports     : [
         FuseHomeComponent

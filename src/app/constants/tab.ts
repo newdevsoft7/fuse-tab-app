@@ -29,7 +29,7 @@ export const TAB = {
     'SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB': new Tab('Export Shifts as Excel', 'shiftsExportAsExcelTpl', 'schedule/export-shift/excel-spreadsheet', {}),
     'SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB': new Tab('Export Shifts as PDF', 'shiftsExportAsPdfTpl', 'schedule/export-shift/pdf-overview', {}),
 
-    'REPORTS_AND_UPLOADS_TAB': new Tab('Reports & Uploads', '', 'reports-and-uploads', {}),
+    'REPORTS_AND_UPLOADS_TAB': new Tab('Reports & Uploads', 'reportsUploadsTpl', 'reports-and-uploads', {}),
     'REPORTS_AND_UPLOADS_REPORT_DESIGNER_TAB': new Tab('Report Designer', '', 'reports-and-uploads/report-designer', {}),
     'REPORTS_AND_UPLOADS_SHARED_FILES_TAB': new Tab('Shared Files', '', 'reports-and-uploads/shared-file', {}),
 
