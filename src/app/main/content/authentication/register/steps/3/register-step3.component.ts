@@ -7,6 +7,7 @@ import { RegisterExperienceFormDialogComponent } from "./experience-form-dialog/
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-register-step3',
@@ -101,18 +102,22 @@ export class RegisterStep3Component implements OnInit, OnChanges {
       if (experience.id) {
         res = await this.registerService.updateExperience(experience);
         this.toastr.success(res.message);
-        const selectedExp = category.experience.find(exp => exp.id === experience.id);
-        if (selectedExp) {
-          for (let i = 0; i < res.data.length; i++) {
-            selectedExp.data[i] = res.data[i];
+        const experiences = _.cloneDeep(category.experience);
+        for (let exp of experiences) {
+          if (exp.id === parseInt(experience.id)) {
+            exp.data = res.data;
+            break;
           }
         }
+        category.experience = experiences;
       } else {
         experience.experience_cat_id = category.id;
         res = await this.registerService.createExperience(this.user.id, experience);
         this.toastr.success(res.message);
         delete res.message;
-        category.experience.push(res);
+        const experiences = _.cloneDeep(category.experience);
+        experiences.push(res);
+        category.experience = experiences;
       }
     } catch (e) {
       this.handleError(e);
