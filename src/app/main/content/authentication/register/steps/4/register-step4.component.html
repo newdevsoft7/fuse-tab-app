@@ -47,16 +47,20 @@
 
     <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
 
-        <div fxLayout="row" fxLayoutAlign="end">
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100-p">
 
-            <button mat-icon-button *ngIf="currentUser.lvl.indexOf('registrant') === -1">
-                <mat-icon [class.fa-rotate-90]="!photo.main" fontSet="fa" fontIcon="fa-thumb-tack"
-                    (click)="setPhoto(photo)"></mat-icon>
-            </button>
+            <div></div>
 
-            <button mat-icon-button (click)="deletePhoto(photo)">
-                <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
-            </button>
+            <div>
+                <button mat-icon-button *ngIf="user.lvl.indexOf('registrant') === -1">
+                    <mat-icon [class.fa-rotate-90]="!photo.main" fontSet="fa" fontIcon="fa-thumb-tack"
+                        (click)="setPhoto(photo)"></mat-icon>
+                </button>
+
+                <button mat-icon-button (click)="deletePhoto(photo)">
+                    <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+                </button>
+            </div>
 
         </div>
 

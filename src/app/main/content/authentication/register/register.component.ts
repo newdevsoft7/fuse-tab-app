@@ -9,6 +9,7 @@ import { UserService } from "../../users/user.service";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
 import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 import { AuthenticationService } from "../../../../shared/services/authentication.service";
+import { AppSettingService } from "../../../../shared/services/app-setting.service";
 
 @Component({
   selector: 'app-register',
@@ -26,16 +27,7 @@ export class RegisterComponent implements OnInit {
   forms: FormGroup[] = []; // From step 0 to step 6
 
   // For step visibility: null => hidden
-  steps: any = {
-    'step1': 0,
-    'step2': 0,
-    'step3': 0,
-    'step4': 0,
-    'step5': 0,
-    'step6': 0,
-    'step7': 0,
-    'step8': 0
-  }; // From step 1 to step 8
+  steps: any; // From step 1 to step 8
 
   dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -46,10 +38,11 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private tokenStorage: TokenStorage,
+    private appSettings: AppSettingService,
     private authService: AuthenticationService,
     private fuseConfig: FuseConfigService
   ) {
-
+    this.steps = this.appSettings.baseData.steps;
     this.user = this.tokenStorage.getUser();
     if (this.user) {
       // For registered, but not completed user, set steps

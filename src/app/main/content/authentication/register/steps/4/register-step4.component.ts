@@ -31,8 +31,6 @@ export class RegisterStep4Component implements OnInit, OnChanges {
     @Input() user;
     @Output() quitClicked = new EventEmitter;
     @Output() onStepSucceed = new EventEmitter;
-    
-    currentUser: any;
 
     constructor(
         private dialog: MatDialog,
@@ -44,7 +42,7 @@ export class RegisterStep4Component implements OnInit, OnChanges {
     ) {}
 
     ngOnInit() {
-        this.currentUser = this.tokenStorage.getUser();
+
     }
 
     get settings(): any {
@@ -149,7 +147,7 @@ export class RegisterStep4Component implements OnInit, OnChanges {
                 this.spinner.hide();
                 this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 5) {
-                    this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant5' } });
+                    this.tokenStorage.setUser({ ...this.user, ...{ lvl: 'registrant5' } });
                 }
                 this.tokenStorage.setSteps(res.steps);
                 this.onStepSucceed.next(res.steps);
