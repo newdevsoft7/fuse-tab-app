@@ -30,6 +30,7 @@ import { TimelineModule } from './timeline/timeline.module';
 import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
 import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
 import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
+import { ProfileExperienceModule } from '../profile/experience/experience.module';
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module'
         ProfileInfoModule,
         ProfileAttributesModule,
         ProfileRatingsModule,
+        ProfileExperienceModule,
         ScheduleModule,
         SettingsModule,
         TrackingModule,

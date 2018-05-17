@@ -1,0 +1,60 @@
+<div id="profile-experience-container">
+    
+    <!-- External Categories  -->
+    <div class="box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">External Experience</div>
+            <app-profile-experience-add-category
+                (onCategoryAdd)="onCategoryAdded($event)"></app-profile-experience-add-category>
+        </header>
+        
+        <div class="content ngx-dnd-container" ngxDroppable="category" [model]="categories"
+            (drop)="updateCategoriesDisplayOrder($event)">
+
+            <!-- Category -->
+            <div class="category box ngx-dnd-item" ngxDraggable
+                *ngFor="let category of categories" [model]="category">
+                <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="title" *ngIf="category.id === 1">{{category.cname}}</span>
+                        <app-editable-text class="title" [value]="category.cname" *ngIf="category.id !== 1"
+                            (saveChange)="updateCategory($event, category)"></app-editable-text>
+                    <div class="more">
+                        <button mat-icon-button (click)="addHeading(category)"
+                            matTooltip="Add Heading">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteCategory(category)" matTooltip="Delete Category"
+                            *ngIf="category.id !== 1">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="content ngx-dnd-container" [ngxDroppable]="category.cname"
+                    [model]="category.headings" fxLayout="row" fxLayoutWrap="wrap"
+                    (drop)="updateHeadingsDisplayOrder($event, category)">
+
+                    <!-- Heading -->
+                    <div class="heading ngx-dnd-item" *ngFor="let heading of category.headings"
+                        [model]="heading" ngxDraggable fxLayout="row" fxLayout="space-between center">
+                        <span class="name">{{heading.hname}}</span>
+                        <div>
+                            <button mat-icon-button (click)="editHeading(heading, category)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+
+                            <button mat-icon-button (click)="deleteHeading(heading, category)"
+                                *ngIf="!heading.date && !heading.role">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / Category -->
+
+        </div>
+    </div>
+    <!-- / External Categories  -->
+
+</div>
