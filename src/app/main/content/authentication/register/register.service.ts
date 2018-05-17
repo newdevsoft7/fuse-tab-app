@@ -34,13 +34,13 @@ export class RegisterService {
         return this.http.post(url, data).toPromise();
     }
 
-    updateExperience(expId: number, data: any): Promise<any> {
-        const url = `${BASE_URL}}/profile/experience/${expId}`;
+    updateExperience(data: any): Promise<any> {
+        const url = `${BASE_URL}/profile/experience/${data.id}`;
         return this.http.put(url, data).toPromise();
     }
 
     deleteExperience(expId: number): Promise<any> {
-        const url = `${BASE_URL}}/profile/experience/${expId}`;
+        const url = `${BASE_URL}/profile/experience/${expId}`;
         return this.http.delete(url).toPromise();
     }
 

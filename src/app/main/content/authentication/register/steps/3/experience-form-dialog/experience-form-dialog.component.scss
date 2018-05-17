@@ -1,0 +1,12 @@
+.dialog-content-wrapper {
+  mat-form-field.date-picker /deep/ {
+    .mat-form-field-infix {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      span.mat-form-field-placeholder-wrapper {
+        line-height: 30px;
+      }
+    }
+  }
+}

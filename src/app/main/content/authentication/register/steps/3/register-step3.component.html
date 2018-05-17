@@ -11,7 +11,7 @@
         </header>
 
         <div class="content" fxLayout="row" fxLayoutWrap>
-            <button mat-button class="mat-accent new-experience-button" mat-fab (click)="openForm()">
+            <button mat-button class="mat-accent new-experience-button" mat-fab (click)="openForm(category)">
                 <mat-icon>add</mat-icon>
             </button>
             <ngx-datatable class="material striped w-100-p" 
@@ -21,6 +21,25 @@
                 [footerHeight]="56" 
                 [rowHeight]="'auto'" 
                 [scrollbarH]="true">
+                <ngx-datatable-column [name]="heading.hname" prop="data" [sortable]="true" [canAutoResize]="true" *ngFor="let heading of category.headings; let i = index">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <ng-container [ngSwitch]="heading.type">
+                            <span *ngSwitchCase="'text'">{{value[i]}}</span>
+                            <span *ngSwitchCase="'list'">{{getDisplayValue(value[i], heading.options)}}</span>
+                            <span *ngSwitchCase="'date'">{{value[i]}}</span>
+                        </ng-container>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Actions" [sortable]="false" [canAutoResize]="true">
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        <button mat-icon-button color="accent" (click)="editExperience(category, row)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="deleteExperience(category, row)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
             </ngx-datatable>
         </div>
     </div>

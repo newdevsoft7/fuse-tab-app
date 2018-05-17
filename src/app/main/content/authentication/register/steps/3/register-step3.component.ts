@@ -3,8 +3,10 @@ import { TokenStorage } from "../../../../../../shared/services/token-storage.se
 import { RegisterService } from "../../register.service";
 import { ToastrService } from "ngx-toastr";
 import { MatDialog } from "@angular/material";
-import { RegisterExperienceFormDialogComponent } from ".";
+import { RegisterExperienceFormDialogComponent } from "./experience-form-dialog/experience-form-dialog.component";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-register-step3',
@@ -41,7 +43,7 @@ export class RegisterStep3Component implements OnInit, OnChanges {
     try {
       this.categories = await this.registerService.getExperiences(this.tokenStorage.getUser().id);
     } catch (e) {
-      this.toastr.error(e.error.message);
+      this.handleError(e);
     }
   }
 
@@ -60,8 +62,67 @@ export class RegisterStep3Component implements OnInit, OnChanges {
 
     this.dialogRef.afterClosed().subscribe(res => {
       if (!res) return;
-      console.log('=====', res);
+      this.saveExperience(res.category, res.experience);
     });
+  }
+
+  editExperience(category: any, rawExp: any): void {
+    let experience: any = {
+      id: rawExp.id
+    };
+    for (let i = 0; i < rawExp.data.length; i++) {
+      experience[`h${category.headings[i].id}`] = rawExp.data[i];
+      if (category.headings[i].type === 'date') {
+        experience[`h${category.headings[i].id}`] = moment(rawExp.data[i], category.dformat).format('YYYY-MM-DD');
+      } else if (category.headings[i].type === 'list') {
+        experience[`h${category.headings[i].id}`] = parseInt(rawExp.data[i]);
+      }
+    }
+    this.openForm(category, experience);
+  }
+
+  async deleteExperience(category: any, rawExp: any): Promise<any> {
+    try {
+      this.spinner.show();
+      await this.registerService.deleteExperience(rawExp.id);
+      const index = category.experience.findIndex(exp => exp.id === rawExp.id);
+      category.experience.splice(index, 1);
+    } catch (e) {
+      this.handleError(e);
+    } finally {
+      this.spinner.hide();
+    }
+  }
+
+  private async saveExperience(category: any, experience: any) {
+    try {
+      this.spinner.show();
+      let res;
+      if (experience.id) {
+        res = await this.registerService.updateExperience(experience);
+        this.toastr.success(res.message);
+        const selectedExp = category.experience.find(exp => exp.id === experience.id);
+        if (selectedExp) {
+          for (let i = 0; i < res.data.length; i++) {
+            selectedExp.data[i] = res.data[i];
+          }
+        }
+      } else {
+        experience.experience_cat_id = category.id;
+        res = await this.registerService.createExperience(this.user.id, experience);
+        this.toastr.success(res.message);
+        delete res.message;
+        category.experience.push(res);
+      }
+    } catch (e) {
+      this.handleError(e);
+    } finally {
+      this.spinner.hide();
+    }
+  }
+
+  getDisplayValue(value: string, options: any): string {
+    return options.find(option => option.id === parseInt(value)).oname;
   }
 
   quit() {
@@ -79,9 +140,13 @@ export class RegisterStep3Component implements OnInit, OnChanges {
       this.tokenStorage.setSteps(res.steps);
       this.onStepSucceed.next(res.steps);
     } catch (e) {
-      this.toastr.error(e.error.message);
+      this.handleError(e);
     } finally {
       this.spinner.hide();
     }
+  }
+
+  private handleError(e) {
+    this.toastr.error(e.error.message);
   }
 }
