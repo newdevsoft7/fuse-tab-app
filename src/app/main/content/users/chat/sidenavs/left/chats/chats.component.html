@@ -12,7 +12,8 @@
 
                     <mat-icon>search</mat-icon>
 
-                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search for or start a new conversation" (onValueChange)="searchUsers.next({searchText: $event, type: 'all'})" fxFlex>
+                    <input debounce [(ngModel)]="searchText" type="text" placeholder="Search for or start a new conversation" (onValueChange)="searchUsers.next({searchText: $event, type: 'all'})"
+                        fxFlex>
 
                 </div>
             </div>
@@ -37,18 +38,15 @@
         <div class="chat-list" fxLayout="column" *ngIf="!searchText">
 
             <div matSubheader>
-                Chat
+                Conversations
             </div>
 
-            <button mat-button class="contact"
-                    *ngFor="let thread of threads"
-                    (click)="fetchChat.next(thread.id)"
-                    [@animate]="{value:'*',params:{y:'100%'}}">
+            <button mat-button class="contact" *ngFor="let thread of threads" (click)="fetchChat.next(thread.id)" [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
 
                     <div class="avatar-wrapper" fxFlex="0 1 auto" fxLayoutAlign="center center">
-                        <img [src]="thread.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar"/>
+                        <img [src]="thread.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar" />
                     </div>
 
                     <div fxLayout="row" fxFlex>
@@ -64,7 +62,7 @@
                 </div>
             </button>
 
-            <p *ngIf="threads.length === 0" class="m-0 p-16">You don't have any contact yet. Please search and add ones.</p>
+            <p *ngIf="threads.length === 0" class="m-0 p-16">You don't have any conversations yet.</p>
 
         </div>
         <!-- / CHATS LIST-->
@@ -76,14 +74,11 @@
                 Search Result
             </div>
 
-            <button mat-button class="contact"
-                    *ngFor="let user of users"
-                    (click)="tapContact(user)"
-                    [@animate]="{value:'*',params:{y:'100%'}}">
+            <button mat-button class="contact" *ngFor="let user of users" (click)="tapContact(user)" [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <div class="avatar-wrapper" fxFlex="0 1 auto" fxLayoutAlign="center center">
-                        <img [src]="user.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar"/>
+                        <img [src]="user.ppic_a || 'https://staffconnect.net/images/nopic_thumb_male.jpg'" class="avatar" />
                     </div>
 
                     <div fxLayout="row" fxFlex>
