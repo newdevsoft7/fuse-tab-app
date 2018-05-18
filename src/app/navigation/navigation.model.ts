@@ -158,69 +158,17 @@ export const ADMIN_MODEL = [
         'id': 'reports_and_uploads',
         'title': 'Reports & Uploads',
         'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS',
-        'type': 'collapse',
+        'type': 'item',
         'icon': 'cloud_upload',
         'tab': TAB.REPORTS_AND_UPLOADS_TAB,
-        'children': [
-            {
-                'id': 'report_designer',
-                'title': 'Report Designer',
-                'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS_REPORT_DESIGNER',
-                'type': 'item',
-                'tab': TAB.REPORTS_AND_UPLOADS_REPORT_DESIGNER_TAB
-
-            },
-            {
-                'id': 'shared_files',
-                'title': 'Shared Files',
-                'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS_SHARED_FILES',
-                'type': 'item',
-                'tab': TAB.REPORTS_AND_UPLOADS_SHARED_FILES_TAB
-
-            }
-        ]
     },
     {
         'id': 'accounting',
         'title': 'Accounting',
         'translate': 'NAV.ADMIN.ACCOUNTING',
-        'type': 'collapse',
+        'type': 'item',
         'icon': 'attach_money',
         'tab': TAB.ACCOUNTING_TAB,
-        'children': [
-            {
-                'id': 'staff_invoices',
-                'title': 'Staff Invoices',
-                'translate': 'NAV.ADMIN.ACCOUNTING_STAFF_INVOICES',
-                'type': 'collapse',
-                'tab': TAB.ACCOUNTING_STAFF_INVOICES_TAB,
-                'children': [
-                    {
-                        'id': 'generate_staff_invoices',
-                        'title': 'Generate Staff Invoices',
-                        'translate': 'NAV.ADMIN.ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES',
-                        'type': 'item',
-                        'tab': TAB.ACCOUNTING_STAFF_INVOICES_GENERATE_STAFF_INVOICES_TAB
-                    },
-                    {
-                        'id': 'my_invoices',
-                        'title': 'My Invoices',
-                        'translate': 'NAV.ADMIN.ACCOUNTING_STAFF_INVOICES_MY_INVOICES',
-                        'type': 'collapse',
-                        'tab': TAB.ACCOUNTING_STAFF_INVOICES_MY_INVOICES_TAB,
-                        'children': [
-                            {
-                                'id': 'new_invoice',
-                                'title': 'New Invoice',
-                                'translate': 'NAV.ADMIN.ACCOUNTING_STAFF_INVOICES_MY_INVOICES_NEW_INVOICE',
-                                'type': 'item',
-                                'tab': TAB.ACCOUNTING_STAFF_INVOICES_MY_INVOICES_NEW_INVOICE_TAB
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
     },
     {
         'id': 'tracking',
@@ -382,12 +330,10 @@ export const CLIENT_MODEL = [
     }
 ];
 
-export class FuseNavigationModel implements FuseNavigationModelInterface
-{
+export class FuseNavigationModel implements FuseNavigationModelInterface {
     public model: any[];
 
-    constructor(level = Level.Admin)
-    {
+    constructor(level = Level.Admin) {
         switch (level) {
             case Level.Owner:
             case Level.Admin:
