@@ -7,7 +7,7 @@
 	<mat-form-field  floatPlaceholder="never" fxFlexLayout="start center">
 		<input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="data" fxFlex>
 		<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-		<mat-datepicker #picker></mat-datepicker>
+		<mat-datepicker #picker [startAt]="startDate"></mat-datepicker>
 	</mat-form-field>
 
 	<button mat-icon-button fxFlex="0 1 auto">

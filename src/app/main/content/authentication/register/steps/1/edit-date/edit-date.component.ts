@@ -25,12 +25,15 @@ export class RegisterProfileEditDateComponent implements OnInit {
 	@Input() field;
 	@Input() userId;
 
+	startDate: string;
+
 	constructor(
 		private formBuilder: FormBuilder,
 		private toastr: ToastrService,
 		private userService: UserService) { }
 
 	ngOnInit() {
+		this.startDate = moment().subtract(20, 'y').format('YYYY-MM-DD');
 	}
 
 	openForm() {
