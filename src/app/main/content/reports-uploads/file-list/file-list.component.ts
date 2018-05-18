@@ -72,6 +72,23 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
     this.files.push(...files);
   }
 
+  async deleteFile(file) {
+    try {
+      const index = this.files.findIndex(f => f.id == file.id);
+      this.files.splice(index, 1);
+      let res: any;
+      const temp = file.id.split(':');
+      if (temp[0] === 'f') {
+        res = await this.reportsUploadsService.deleteFile(temp[1]);
+      } else {
+        res = await this.reportsUploadsService.deleteCompletedReport(temp[1]);
+      }
+      this.toastr.success(res.message);
+    } catch (e) {
+      this.toastr.error(e.message);
+    }
+  }
+
   ngOnDestroy() {
     this.alive = false;
   }

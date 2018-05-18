@@ -101,6 +101,10 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  deleteFile(file) {
+    this.fileList.deleteFile(file);
+  }
+
   onUploaderClick() {
     const folders = this.folders;
     const selectedFolder = folders[folders.length - 1];

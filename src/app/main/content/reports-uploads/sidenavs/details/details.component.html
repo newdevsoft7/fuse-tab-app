@@ -3,7 +3,8 @@
 
     <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
 
-        <button mat-icon-button class="mat-icon-button" matTooltip="Delete">
+        <button mat-icon-button class="mat-icon-button" matTooltip="Delete"
+            *ngIf="selected.delete" (click)="delete()">
             <mat-icon>delete</mat-icon>
         </button>
 
@@ -18,10 +19,6 @@
 
     <div>
         <div class="title mb-8">{{selected.name}}</div>
-        <div class="subtitle secondary-text">
-            <span>Edited</span>
-            <span>: {{selected.modified}}</span>
-        </div>
     </div>
 </div>
 <!-- / SIDENAV HEADER -->
@@ -40,8 +37,10 @@
             </a>
         </div>
 
-        <div class="offline-switch" *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder">
-            <mat-slide-toggle ([ngModel])="selected.approved" labelPosition="before">Approved for client</mat-slide-toggle>
+        <div class="offline-switch"
+            *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder && selected.approve">
+            <mat-slide-toggle [checked]="selected.approved ? true : false" (change)="approve($event)"
+                labelPosition="before">Approved for client</mat-slide-toggle>
         </div>
 
         <div class="title">Info</div>
@@ -54,7 +53,7 @@
 
             <tr class="size">
                 <th>Size</th>
-                <td>{{selected.size === '' ? '-': selected.size}}</td>
+                <td>{{selected.size === '' ? '-' : selected.size}}</td>
             </tr>
 
             <tr class="location">
@@ -63,23 +62,18 @@
             </tr>
 
             <tr class="owner">
-                <th>Owner</th>
-                <td>{{selected.owner}}</td>
-            </tr>
-
-            <tr class="modified">
-                <th>Modified</th>
-                <td>{{selected.updated_at}}</td>
-            </tr>
-
-            <tr class="opened">
-                <th>Opened</th>
-                <td>{{selected.opened}}</td>
+                <th>Uploader</th>
+                <td>{{selected.uploader}}</td>
             </tr>
 
             <tr class="created">
                 <th>Created</th>
                 <td>{{selected.created_at}}</td>
+            </tr>
+
+            <tr class="shift" *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder">
+                <th>Shift</th>
+                <td (click)="openShift()">{{selected.shift_title}}</td>
             </tr>
         </table>
     </div>

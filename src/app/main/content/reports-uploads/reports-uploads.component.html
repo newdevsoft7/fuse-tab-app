@@ -71,7 +71,7 @@
       <!-- SIDENAV -->
       <mat-sidenav class="sidenav right-sidenav" align="end" opened="true" mode="side" #detailSideNav
                    fuseMatSidenavHelper="file-manager-right-sidenav" mat-is-locked-open="gt-md">
-          <app-reports-uploads-details-sidenav></app-reports-uploads-details-sidenav>
+          <app-reports-uploads-details-sidenav (onFileDeleted)="deleteFile($event)"></app-reports-uploads-details-sidenav>
       </mat-sidenav>
       <!-- / SIDENAV -->
 

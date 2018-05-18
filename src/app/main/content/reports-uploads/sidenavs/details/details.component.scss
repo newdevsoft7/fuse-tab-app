@@ -70,6 +70,12 @@
 
                     &.created {
                     }
+
+                    &.shift {
+                        td {
+                            cursor: pointer;
+                        }
+                    }
                 }
             }
         }

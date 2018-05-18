@@ -49,4 +49,19 @@ export class ReportsUploadsService {
     return this.http.post(url, body).toPromise();
   }
 
+  reportsUploadsApprove(type, id, set = 1): Promise<any> {
+    const url = `${BASE_URL}/reportsUploads/approve/${type}/${id}/${set}`;
+    return this.http.put(url, {}).toPromise();
+  }
+
+  deleteCompletedReport(id): Promise<any> {
+    const url = `${BASE_URL}/report/completed/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  deleteFile(fileId: number, fileType = 'file'): Promise<any> {
+    const url = `${BASE_URL}/file/${fileType}/${fileId}`;
+    return this.http.delete(url).toPromise();
+  }
+
 }
