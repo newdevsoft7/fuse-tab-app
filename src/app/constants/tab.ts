@@ -43,12 +43,6 @@ export const TAB = {
     'TRACKING_TAB': new Tab('Tracking', 'trackingTpl', 'tracking', {}),
 
     'SETTINGS_TAB': new Tab('Settings', 'settingsTpl', 'settings', {}),
-    'SETTINGS_PROFILE_TAB': new Tab('Profile', '', 'settings/profile', {}),
-    'SETTINGS_PROFILE_ATTRIBUTES_TAB': new Tab('Attributes', 'settingsProfileAttributesTpl', 'settings/profile/attributes', {}),
-    'SETTINGS_PROFILE_EXPERIENCE_TAB': new Tab('Experience', 'profileExperienceTpl', 'settings/profile/experience', {}),
-    'SETTINGS_PROFILE_INFO_TAB': new Tab('Profile Info', 'settingsProfileInfoTpl', 'settings/profile/info', {}),
-    'SETTINGS_PROFILE_RATINGS_TAB': new Tab('Ratings', 'settingsProfileRatingsTpl', 'settings/profile/rating', {}),
-    'SETTINGS_PROFILE_SHOWCASES_TAB': new Tab('Showcases', '', 'settings/profile/showcases', {}),
     'SETTINGS_SYSTEM_TAB': new Tab('System', '', 'settings/system', {}),
     'SETTINGS_TEMPLATES_TAB': new Tab('Templates', '', 'settings/templates', {}),
     'SETTINGS_TEMPLATES_EMAIL_TAB': new Tab('Email Templates', 'emailTemplatesTpl', 'settings/templates/email', {}),

@@ -238,49 +238,6 @@ export const ADMIN_MODEL = [
         'tab': TAB.SETTINGS_TAB,
         'children': [
             {
-                'id': 'profile',
-                'title': 'Profile Setup',
-                'translate': 'NAV.ADMIN.SETTINGS_PROFILE',
-                'type': 'collapse',
-                'children': [
-                    {
-                        'id': 'attributes',
-                        'title': 'Attributes',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_ATTRIBUTES',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_ATTRIBUTES_TAB
-                    },
-                    {
-                        'id': 'experience',
-                        'title': 'Experience',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_EXPERIENCE',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_EXPERIENCE_TAB
-                    },
-                    {
-                        'id': 'info',
-                        'title': 'Info',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_INFO',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_INFO_TAB
-                    },
-                    {
-                        'id': 'ratings',
-                        'title': 'Ratings',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_RATINGS',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_RATINGS_TAB
-                    },
-                    {
-                        'id': 'showcases',
-                        'title': 'Showcases',
-                        'translate': 'NAV.ADMIN.SETTINGS_PROFILE_SHOWCASES',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_PROFILE_SHOWCASES_TAB
-                    },
-                ]
-            },
-            {
                 'id': 'system',
                 'title': 'System',
                 'translate': 'NAV.ADMIN.SETTINGS_SYSTEM',

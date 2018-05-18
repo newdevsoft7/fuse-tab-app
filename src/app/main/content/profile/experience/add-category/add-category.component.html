@@ -1,8 +1,8 @@
-<div>
-	<button *ngIf="!formActive" mat-icon-button (click)="openForm()" matTooltip="Add Category">
-        <mat-icon>add</mat-icon>
-	</button>
+<button *ngIf="!formActive" mat-mini-fab color="warn" (click)="openForm()" matTooltip="Add Category">
+	<mat-icon class="white-fg">add</mat-icon>
+</button>
 
+<div class="new-category px-8 mat-elevation-z1">
     <form *ngIf="formActive" [formGroup]="form" (submit)="onFormSubmit()"
         fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
 

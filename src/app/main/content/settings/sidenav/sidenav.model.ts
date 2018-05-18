@@ -199,6 +199,34 @@ export class SettingsSideNavModel {
                 'icon': 'toc',
                 'url': '/xero'
             },
+            {
+                'id': 'profile_info',
+                'title': 'Profile Structure',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_INFO',
+                'icon': 'toc',
+                'url': '/profile_info'
+            },
+            {
+                'id': 'profile_attributes',
+                'title': 'Attributes',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_ATTRIBUTES',
+                'icon': 'toc',
+                'url': '/profile_attributes'
+            },
+            {
+                'id': 'profile_ratings',
+                'title': 'Ratings',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_RATINGS',
+                'icon': 'toc',
+                'url': '/profile_ratings'
+            },
+            {
+                'id': 'profile_experience',
+                'title': 'Experience',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_EXPERIENCE',
+                'icon': 'toc',
+                'url': '/profile_experience'
+            },
         ];
     }
 }

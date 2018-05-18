@@ -45,10 +45,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
-    @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
-    @ViewChild('settingsProfileAttributesTpl') settingsProfileAttributesTpl;
-    @ViewChild('settingsProfileRatingsTpl') settingsProfileRatingsTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
@@ -97,7 +94,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('clientInvoiceGenerateTpl') clientInvoiceGenerateTpl;
 
     @ViewChild('reportsUploadsTpl') reportsUploadsTpl;
-    @ViewChild('profileExperienceTpl') profileExperienceTpl;
 
     socketService: SocketService;
     fcmService: FCMService;

@@ -5,15 +5,12 @@ import { SharedModule } from '../../../core/modules/shared.module';
 import { TabModule } from '../../tab/tab.module';
 import { UsersModule } from '../users/users.module';
 import { ProfileModule } from '../profile/profile.module';
-import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { ScheduleModule } from '../schedule/schedule.module';
 import { FormSignModule } from '../form-sign/form-sign.module';
 import { QuizModule } from '../quiz/quiz.module';
 
 import { FuseHomeComponent } from './home.component';
 import { SettingsModule } from '../settings/settings.module';
-import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
-import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { TrackingModule } from '../tracking/tracking.module';
 import { AccountingModule } from '../accounting/accounting.module';
 import { TimelineComponent } from './timeline/timeline.component';
@@ -30,7 +27,6 @@ import { TimelineModule } from './timeline/timeline.module';
 import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
 import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
 import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
-import { ProfileExperienceModule } from '../profile/experience/experience.module';
 
 @NgModule({
     declarations: [
@@ -41,10 +37,6 @@ import { ProfileExperienceModule } from '../profile/experience/experience.module
         TabModule,
         UsersModule,
         ProfileModule,
-        ProfileInfoModule,
-        ProfileAttributesModule,
-        ProfileRatingsModule,
-        ProfileExperienceModule,
         ScheduleModule,
         SettingsModule,
         TrackingModule,
