@@ -19,13 +19,12 @@ import {
   RegisterProfileEditListmValueComponent,
   // Photo Step
   RegisterPhotoGalleryDialogComponent,
-  RegisterVideoGalleryDialogComponent,
-  // Experience Step
-  RegisterExperienceFormDialogComponent
+  RegisterVideoGalleryDialogComponent
 } from "./steps";
 import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
 import { RegisterService } from "./register.service";
+import { UsersProfileExperienceModule } from "../../users/profile/experience/experience.module";
 
 const stepComponents = [
   RegisterStep0Component,
@@ -50,7 +49,8 @@ const profileEditComponents = [
 @NgModule({
   imports: [
     SharedModule,
-    RegisterRoutingModule
+    RegisterRoutingModule,
+    UsersProfileExperienceModule
   ],
   declarations: [
     RegisterComponent,
@@ -58,8 +58,7 @@ const profileEditComponents = [
     ...stepComponents,
     ...profileEditComponents,
     RegisterPhotoGalleryDialogComponent,
-    RegisterVideoGalleryDialogComponent,
-    RegisterExperienceFormDialogComponent
+    RegisterVideoGalleryDialogComponent
   ],
   providers: [
     UserService,
@@ -67,8 +66,7 @@ const profileEditComponents = [
   ],
   entryComponents: [
     RegisterPhotoGalleryDialogComponent,
-    RegisterVideoGalleryDialogComponent,
-    RegisterExperienceFormDialogComponent
+    RegisterVideoGalleryDialogComponent
   ]
 })
 export class RegisterModule {

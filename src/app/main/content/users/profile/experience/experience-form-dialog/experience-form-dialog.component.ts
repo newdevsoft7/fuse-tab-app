@@ -5,17 +5,17 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'app-register-experience-form-dialog',
+    selector: 'app-users-profile-experience-form-dialog',
     templateUrl: './experience-form-dialog.component.html',
     styleUrls: ['./experience-form-dialog.component.scss']
 })
-export class RegisterExperienceFormDialogComponent implements OnInit {
+export class UsersProfileExperienceFormDialogComponent implements OnInit {
 
     category: any;
     experience: any;
 
     constructor(
-        public dialogRef: MatDialogRef<RegisterExperienceFormDialogComponent>,
+        public dialogRef: MatDialogRef<UsersProfileExperienceFormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         this.category = data.category;
