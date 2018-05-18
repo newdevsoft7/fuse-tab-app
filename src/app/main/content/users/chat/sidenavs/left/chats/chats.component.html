@@ -38,7 +38,7 @@
         <div class="chat-list" fxLayout="column" *ngIf="!searchText">
 
             <div matSubheader>
-                Chat
+                Conversations
             </div>
 
             <button mat-button class="contact" *ngFor="let thread of threads" (click)="fetchChat.next(thread.id)" [@animate]="{value:'*',params:{y:'100%'}}">

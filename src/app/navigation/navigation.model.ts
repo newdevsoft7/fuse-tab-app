@@ -12,30 +12,6 @@ export const ADMIN_MODEL = [
         'tab': TAB.USERS_TAB,
         'children': [
             {
-                'id': 'presentations',
-                'title': 'Presentations',
-                'translate': 'NAV.ADMIN.USERS_PRESENTATIONS',
-                'type': 'item',
-                'tab': TAB.USERS_PRESENTATIONS_TAB
-
-            },
-            {
-                'id': 'new_submission',
-                'title': 'New Submission',
-                'translate': 'NAV.ADMIN.USERS_NEW_SUBMISSION',
-                'type': 'item',
-                'tab': TAB.USERS_NEW_SUBMISSION_TAB
-
-            },
-            {
-                'id': 'recent_activity',
-                'title': 'Recent Activity',
-                'translate': 'NAV.ADMIN.USERS_RECENT_ACTIVITY',
-                'type': 'item',
-                'tab': TAB.USERS_RECENT_ACTIVITY_TAB
-
-            },
-            {
                 'id': 'new_message',
                 'title': 'New Message',
                 'translate': 'NAV.ADMIN.USERS_NEW_MESSAGE',
