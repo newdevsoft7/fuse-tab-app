@@ -67,6 +67,13 @@ export class SettingsSideNavModel {
                 'url': '/pay_levels'
             },
             {
+                'id': 'profile_attributes',
+                'title': 'Profile Attributes',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_ATTRIBUTES',
+                'icon': 'toc',
+                'url': '/profile_attributes'
+            },
+            {
                 'id': 'profile_documents',
                 'title': 'Profile Documents',
                 'translate': 'SETTINGS.SIDE_NAV.PROFILE_DOCUMENTS',
@@ -74,11 +81,32 @@ export class SettingsSideNavModel {
                 'url': '/profile_documents'
             },
             {
+                'id': 'profile_experience',
+                'title': 'Profile Experience',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_EXPERIENCE',
+                'icon': 'toc',
+                'url': '/profile_experience'
+            },
+            {
+                'id': 'profile_info',
+                'title': 'Profile Info',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_INFO',
+                'icon': 'toc',
+                'url': '/profile_info'
+            },
+            {
                 'id': 'profile_photos',
                 'title': 'Profile Photos',
                 'translate': 'SETTINGS.SIDE_NAV.PROFILE_PHOTOS',
                 'icon': 'photo_camera',
                 'url': '/profile_photos'
+            },
+            {
+                'id': 'profile_ratings',
+                'title': 'Profile Ratings',
+                'translate': 'SETTINGS.SIDE_NAV.PROFILE_RATINGS',
+                'icon': 'toc',
+                'url': '/profile_ratings'
             },
             {
                 'id': 'profile_videos',
@@ -198,34 +226,6 @@ export class SettingsSideNavModel {
                 'translate': 'SETTINGS.SIDE_NAV.XERO',
                 'icon': 'toc',
                 'url': '/xero'
-            },
-            {
-                'id': 'profile_info',
-                'title': 'Profile Structure',
-                'translate': 'SETTINGS.SIDE_NAV.PROFILE_INFO',
-                'icon': 'toc',
-                'url': '/profile_info'
-            },
-            {
-                'id': 'profile_attributes',
-                'title': 'Attributes',
-                'translate': 'SETTINGS.SIDE_NAV.PROFILE_ATTRIBUTES',
-                'icon': 'toc',
-                'url': '/profile_attributes'
-            },
-            {
-                'id': 'profile_ratings',
-                'title': 'Ratings',
-                'translate': 'SETTINGS.SIDE_NAV.PROFILE_RATINGS',
-                'icon': 'toc',
-                'url': '/profile_ratings'
-            },
-            {
-                'id': 'profile_experience',
-                'title': 'Experience',
-                'translate': 'SETTINGS.SIDE_NAV.PROFILE_EXPERIENCE',
-                'icon': 'toc',
-                'url': '/profile_experience'
             },
         ];
     }

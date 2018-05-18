@@ -235,14 +235,13 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.SETTINGS',
         'type': 'collapse',
         'icon': 'settings',
-        'tab': TAB.SETTINGS_TAB,
         'children': [
             {
                 'id': 'system',
                 'title': 'System',
-                'translate': 'NAV.ADMIN.SETTINGS_SYSTEM',
+                'translate': 'NAV.ADMIN.SETTINGS',
                 'type': 'item',
-                'tab': TAB.SETTINGS_SYSTEM_TAB
+                'tab': TAB.SETTINGS_TAB
             },
             {
                 'id': 'templates',
@@ -256,20 +255,6 @@ export const ADMIN_MODEL = [
                         'translate': 'NAV.ADMIN.SETTINGS_TEMPLATES_EMAIL',
                         'type': 'item',
                         'tab': TAB.SETTINGS_TEMPLATES_EMAIL_TAB
-                    },
-                    {
-                        'id': 'email_attachments',
-                        'title': 'Email Attachments',
-                        'translate': 'NAV.ADMIN.SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS_TAB
-                    },
-                    {
-                        'id': 'sms',
-                        'title': 'SMS',
-                        'translate': 'NAV.ADMIN.SETTINGS_TEMPLATES_SMS',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_TEMPLATES_SMS_TAB
                     },
                     {
                         'id': 'shift_notes',
