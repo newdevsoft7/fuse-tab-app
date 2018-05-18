@@ -84,45 +84,41 @@ export class RegisterStep3Component implements OnInit, OnChanges {
 
   async deleteExperience(category: any, rawExp: any): Promise<any> {
     try {
-      this.spinner.show();
-      await this.registerService.deleteExperience(rawExp.id);
       const index = category.experience.findIndex(exp => exp.id === rawExp.id);
       category.experience.splice(index, 1);
+      await this.registerService.deleteExperience(rawExp.id);
     } catch (e) {
       this.handleError(e);
-    } finally {
-      this.spinner.hide();
     }
   }
 
   private async saveExperience(category: any, experience: any) {
     try {
-      this.spinner.show();
-      let res;
       if (experience.id) {
-        res = await this.registerService.updateExperience(experience);
-        this.toastr.success(res.message);
         const experiences = _.cloneDeep(category.experience);
-        for (let exp of experiences) {
-          if (exp.id === parseInt(experience.id)) {
-            exp.data = res.data;
-            break;
+        const selectedExp = experiences.find(exp => exp.id === parseInt(experience.id));
+        if (selectedExp) {
+          let count = 0;
+          for (let key in experience) {
+            if (key !== 'id') {
+              selectedExp.data[count++] = experience[key];
+            }
           }
         }
         category.experience = experiences;
+        await this.registerService.updateExperience(experience);
       } else {
+        let count = 0, newExp = { id: null, data: [] };
+        for (let key in experience) {
+          newExp.data[count++] = experience[key];
+        }
+        category.experience.push(newExp);
         experience.experience_cat_id = category.id;
-        res = await this.registerService.createExperience(this.user.id, experience);
-        this.toastr.success(res.message);
-        delete res.message;
-        const experiences = _.cloneDeep(category.experience);
-        experiences.push(res);
-        category.experience = experiences;
+        const res = await this.registerService.createExperience(this.user.id, experience);
+        newExp.id = res.id;
       }
     } catch (e) {
       this.handleError(e);
-    } finally {
-      this.spinner.hide();
     }
   }
 

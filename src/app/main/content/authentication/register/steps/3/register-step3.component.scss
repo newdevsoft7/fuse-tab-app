@@ -24,11 +24,13 @@
             background-color: #FFF;
 
             .new-experience-button {
-              margin-bottom: 16px;
-
               mat-icon {
                 color: #FFF;
               }
+            }
+
+            ngx-datatable {
+              margin-top: 16px;
             }
         }
 

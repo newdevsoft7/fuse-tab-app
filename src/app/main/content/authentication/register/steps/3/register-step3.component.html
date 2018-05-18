@@ -15,6 +15,7 @@
                 <mat-icon>add</mat-icon>
             </button>
             <ngx-datatable class="material striped w-100-p" 
+                *ngIf="category?.experience.length > 0"
                 [rows]="category.experience"
                 [columnMode]="'force'" 
                 [headerHeight]="48" 
