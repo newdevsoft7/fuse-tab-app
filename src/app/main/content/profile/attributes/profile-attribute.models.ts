@@ -6,7 +6,7 @@ export const PROFILE_ATTRIBUTE_ROLE = [
 
 export const PROFILE_ATTRIBUTE_VISIBILITY = [
     { value: 'staff', label: 'Staff' },
-    { value: 'admin', label: 'Admin' },    
+    { value: 'admin', label: 'Admin Only' },    
 ];
 
 export class ProfileAttribute {
