@@ -1,0 +1,25 @@
+<form #companyForm="ngForm" (ngSubmit)="add(selectedCompany)">
+    <mat-form-field>
+        <input type="text" matInput ngModel (ngModelChange)="checkValue($event)" name="company" placeholder="Search outsource companies..." debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterCompany.next($event)" required>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="companyDisplayFn">
+            <mat-option *ngFor="let company of companySource" [value]="company">
+            {{ company.cname }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button mat-raised-button color="accent" class="ml-16" type="submit" [disabled]="companyForm.invalid || !selectedCompany">Add</button>
+</form>
+<div>
+  <div class="mb-12">
+    <mat-checkbox [(ngModel)]="isWorkHere" (ngModelChange)="toggleWorkHere.next($event)">Work Here</mat-checkbox>
+  </div>
+  <ng-container *ngFor="let company of companies; let last = last">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span>{{company.cname}}</span>
+      <button mat-icon-button color="warn" (click)="remove(company)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </ng-container>
+</div>

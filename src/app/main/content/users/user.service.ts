@@ -312,6 +312,16 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    getOutsourceCompaniesForUser(userId: number): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/outsourceCompanies`;
+        return this.http.get(url).toPromise();
+    }
+
+    updateOutsourceCompanyForUser(userId: number, companyId: number, set: boolean): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/outsourceCompany/${companyId}/${set? 1 : 0}`;
+        return this.http.put(url, {}).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

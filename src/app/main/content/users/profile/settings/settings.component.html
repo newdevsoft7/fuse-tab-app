@@ -49,6 +49,16 @@
                 *ngSwitchCase="'client-permissions'">
             </app-users-settings-client-permissions>
             <app-users-settings-change-password *ngSwitchCase="'change-password'"></app-users-settings-change-password>
+            <app-users-settings-staff-outsource
+                [companies]="userOutsourceCompanies"
+                [isWorkHere]="isWorkHere"
+                [companySource]="userOutsourceCompanySource"
+                (filterCompany)="filterOutsourceCompany($event)"
+                (addCompany)="addOutsourceCompany($event)"
+                (removeCompany)="removeOutsourceCompany($event)"
+                (toggleWorkHere)="toggleWorkHere($event)"
+                *ngSwitchCase="'staff-outsource'">
+            </app-users-settings-staff-outsource>
         </ng-container>
     </div>
     <!-- / CONTENT -->

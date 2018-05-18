@@ -28,6 +28,11 @@ export class UsersProfileSettingsComponent implements OnInit {
     trackingOptions: any = [];
     trackingOptionSource: any = [];
 
+    userOutsourceCompanies: any = [];
+    userOutsourceCompanySource: any = [];
+
+    isWorkHere: boolean = false;
+
     // Left Side Navs
     categories = [
         {
@@ -86,6 +91,15 @@ export class UsersProfileSettingsComponent implements OnInit {
         this.getUserOptions();
         if (this.user.lvl != 'owner') {
             this.getUserPermissions();
+        }
+        if (this.settings.outsource_enable === '1' && this.user.lvl === 'staff' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
+            this.categories.push({
+                'id': 'staff-outsource',
+                'title': 'Outsource',
+                'lvls': ['staff'],
+                'vis': ['owner','admin']
+            });
+            this.getOutsourceCompanies();
         }
         this.getCategoryListByUser();
     }
@@ -235,6 +249,52 @@ export class UsersProfileSettingsComponent implements OnInit {
             this.handleError(e);
         } finally {
             this.spinner.hide();
+        }
+    }
+
+    async getOutsourceCompanies(): Promise<any> {
+        try {
+            const res = await this.userService.getOutsourceCompaniesForUser(this.user.id);
+            this.userOutsourceCompanies = res.data;
+            this.isWorkHere = (res.works_here === 1);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async filterOutsourceCompany(query: string): Promise<any> {
+        if (!query) {
+            this.userOutsourceCompanySource = [];
+            return;
+        }
+        try {
+            this.userOutsourceCompanySource = await this.userService.fetchOutsourceCompanies(query);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async addOutsourceCompany(company: any): Promise<any> {
+        try {
+            await this.userService.updateOutsourceCompanyForUser(this.user.id, company.id, true);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async removeOutsourceCompany(company: any): Promise<any> {
+        try {
+            await this.userService.updateOutsourceCompanyForUser(this.user.id, company.id, false);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async toggleWorkHere(isWorkHere: boolean): Promise<any> {
+        try {
+            await this.userService.updateUser(this.user.id, { works_here: isWorkHere ? 1 : 0 });
+        } catch (e) {
+            this.handleError(e);
         }
     }
 
