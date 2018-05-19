@@ -5,7 +5,7 @@
         <mat-button-toggle fxFlex="1 0 auto" value="all">
             All
         </mat-button-toggle>
-        <mat-button-toggle fxFlex="1 0 auto" value="processing">
+        <mat-button-toggle fxFlex="1 0 auto" value="processing" *ngIf="currentUser?.lvl !== 'staff'">
             Draft
         </mat-button-toggle>
         <mat-button-toggle fxFlex="1 0 auto" value="paid">
@@ -27,7 +27,7 @@
     <!-- ADVANCED SEARCH -->
     <div *ngIf="isAdvancedSearch" class="mt-16">
         <div fxLayout="row wrap" fxLayoutAlign="start end">
-            <div fxFlex="1 0 auto">
+            <div fxFlex="1 0 auto" *ngIf="currentUser?.lvl !== 'staff'">
                 <app-payroll-search-bar labelBy="name" valueBy="id" avatar="ppic_a" placeholder="Users"
                     [autocompleteObservable]="usersObservable"
                     (valueChange)="onSearchChange($event)"></app-payroll-search-bar>
@@ -109,7 +109,7 @@
             <ngx-datatable-column name="Id" prop="display" [sortable]="false" [canAutoResize]="true">
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Staff" prop="name" [sortable]="false" [canAutoResize]="true">
+            <ngx-datatable-column name="Staff" prop="name" [sortable]="false" [canAutoResize]="true" *ngIf="currentUser?.lvl !== 'staff'">
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Status" prop="status" [sortable]="false" [canAutoResize]="true">

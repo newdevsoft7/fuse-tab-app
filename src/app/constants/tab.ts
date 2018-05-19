@@ -56,8 +56,8 @@ export const TAB = {
     'SETTINGS_HELP_UPDATES_CHANGELOG_TAB': new Tab('Updates & Changelog', '', 'settings/help/updates-changelog', {}),
 
     // Staff tabs
-    'STAFF_INVOICES_TAB': new Tab('Pay', '', 'staff/invoices', {}),
-    'STAFF_NEW_INVOICE_TAB': new Tab('New Invoice', '', 'staff/new-invoce', {}),
+    'STAFF_INVOICES_TAB': new Tab('Pay', 'payrollTpl', 'staff/invoices', {}),
+    'STAFF_NEW_INVOICE_TAB': new Tab('New Invoice', 'generatePayrollTpl', 'staff/new-invoice', {}),
 
     // Client tabs
     'SCHEDULE_CLIENT_LIST_TAB': new Tab('List', 'clientShiftListTpl', 'schedule/client-list', {}),

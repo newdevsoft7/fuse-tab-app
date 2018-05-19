@@ -9,6 +9,7 @@ import { CustomLoadingService } from '../../../shared/services/custom-loading.se
 import { PayrollService } from './payroll.service';
 import { TabService } from '../../tab/tab.service';
 import { Tab } from '../../tab/tab';
+import { TokenStorage } from '../../../shared/services/token-storage.service';
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -40,14 +41,18 @@ export class PayrollComponent implements OnInit {
     sorts: any[] = [];
     filters: any[] = [];
 
+    currentUser: any;
+
     constructor(
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
         private tabService: TabService,
-        private payrollService: PayrollService
+        private payrollService: PayrollService,
+        private tokenStorage: TokenStorage
     ) { }
 
     ngOnInit() {
+        this.currentUser = this.tokenStorage.getUser();
 
         this.usersObservable = (text: string): Observable<any> => {
             return this.payrollService.getUsers(text);
@@ -131,7 +136,7 @@ export class PayrollComponent implements OnInit {
     }
 
     onActivate(event) {
-        if (event.type === 'click') {
+        if (event.type === 'click' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
             const id = event.row.id;
             const tab = new Tab(event.row.display, 'payrollDetailTpl', `payroll/${id}`, { id });
             this.tabService.openTab(tab);

@@ -3,8 +3,8 @@
     <!-- MAIN FILTER -->
     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-form-field class="mr-48">
-                <mat-select [(ngModel)]="type" placeholder="Type">
+            <mat-form-field class="mr-48" *ngIf="currentUser?.lvl !== 'staff'">
+                <mat-select [(ngModel)]="type" placeholder="Type" >
                     <mat-option *ngFor="let option of types" [value]="option.value">{{option.label}}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -23,28 +23,33 @@
                 <mat-datepicker #toPicker></mat-datepicker>
             </mat-form-field>
         </div>
-        <button mat-raised-button color="accent" (click)="generate()">GENERATE</button>
+        <button mat-raised-button color="accent" (click)="generateStaffInvoice()" *ngIf="currentUser?.lvl === 'staff'; else adminBlock">GENERATE</button>
+        <ng-template #adminBlock>
+            <button mat-raised-button color="accent" (click)="generate()">GENERATE</button>
+        </ng-template>
     </div>
     <!-- / MAIN FILTER -->
 
-    <a class="link" (click)="additional = true;" *ngIf="!additional">additional options</a>
+    <ng-container *ngIf="currentUser?.lvl !== 'staff'">
+        <a class="link" (click)="additional = true;" *ngIf="!additional">additional options</a>
 
-    <!-- ADDITIONAL OPTIONS -->
-    <div *ngIf="additional" fxLayout="row wrap" fxLayoutAlign="start center">
-        <mat-checkbox [(ngModel)]="completedOnly">Completed Only</mat-checkbox>
+        <!-- ADDITIONAL OPTIONS -->
+        <div *ngIf="additional" fxLayout="row wrap" fxLayoutAlign="start center">
+            <mat-checkbox [(ngModel)]="completedOnly">Completed Only</mat-checkbox>
 
-        <mat-form-field class="ml-48">
-            <input type="text" placeholder="Tracking Option" matInput [matAutocomplete]="auto" [formControl]="trackingFilter">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-                <mat-optgroup *ngFor="let category of filteredOptions" [label]="category.cname">
-                    <mat-option *ngFor="let option of category.options" [value]="option">
-                        {{option.oname}}
-                    </mat-option>
-                </mat-optgroup>
-            </mat-autocomplete>
-        </mat-form-field>
-    </div>
-    <!-- / ADDITIONAL OPTIONS -->
+            <mat-form-field class="ml-48">
+                <input type="text" placeholder="Tracking Option" matInput [matAutocomplete]="auto" [formControl]="trackingFilter">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-optgroup *ngFor="let category of filteredOptions" [label]="category.cname">
+                        <mat-option *ngFor="let option of category.options" [value]="option">
+                            {{option.oname}}
+                        </mat-option>
+                    </mat-optgroup>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <!-- / ADDITIONAL OPTIONS -->
+    </ng-container>
 
     <!-- PAYROLLS -->
     <div class="payrolls">
