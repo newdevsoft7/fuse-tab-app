@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { FuseMatchMedia } from '../../../core/services/match-media.service';
 import { FuseNavbarVerticalService } from './navbar-vertical.service';
@@ -16,7 +16,7 @@ import { AppSettingService } from '../../../shared/services/app-setting.service'
     styleUrls: ['./navbar-vertical.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class FuseNavbarVerticalComponent implements OnInit, OnDestroy {
+export class FuseNavbarVerticalComponent implements OnInit, AfterViewInit, OnDestroy {
     private _backdropElement: HTMLElement | null = null;
     private _folded = false;
 
@@ -28,6 +28,7 @@ export class FuseNavbarVerticalComponent implements OnInit, OnDestroy {
     @HostBinding('class.folded-open') isFoldedOpen: boolean;
     @HostBinding('class.initialized') initialized: boolean;
     @ViewChild(FusePerfectScrollbarDirective) fusePerfectScrollbarDirective;
+    @ViewChild('logo') logoView: ElementRef;
 
     @Input()
     set folded(value: boolean) {
@@ -129,10 +130,26 @@ export class FuseNavbarVerticalComponent implements OnInit, OnDestroy {
         }
     }
 
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.resizeNavbarText();
+        });
+    }
+
     ngOnDestroy() {
         clearTimeout(this.fusePerfectScrollbarUpdateTimeout);
         this.matchMediaWatcher.unsubscribe();
         this.navigationServiceWatcher.unsubscribe();
+    }
+
+    resizeNavbarText() {
+        const logoText = this.logoView.nativeElement.children[1];
+        let fontSize = parseFloat(window.getComputedStyle(logoText, null).getPropertyValue('font-size'));
+        this._renderer.setStyle(logoText, 'font-size', `${fontSize - 1}px`);
+
+        if (logoText.clientHeight > this.logoView.nativeElement.clientHeight) {
+            this.resizeNavbarText();
+        }
     }
 
     openBar() {

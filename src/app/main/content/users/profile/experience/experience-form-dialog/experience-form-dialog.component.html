@@ -20,6 +20,9 @@
                         <ng-container *ngSwitchCase="'text'">
                             <input [(ngModel)]="experience['h' + heading.id]" [name]="'heading' + heading.id" matInput required>
                         </ng-container>
+                        <ng-container *ngSwitchCase="'number'">
+                            <input [(ngModel)]="experience['h' + heading.id]" [name]="'heading' + heading.id" type="number" matInput required>
+                        </ng-container>
                         <ng-container *ngSwitchCase="'date'">
                             <input matInput [name]="'heading' + heading.id" [matDatepicker]="datePicker" [(ngModel)]="experience['h' + heading.id]" required>
                             <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
@@ -31,6 +34,9 @@
                                   {{option.oname}}
                                 </mat-option>
                             </mat-select>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <input [(ngModel)]="experience['h' + heading.id]" [name]="'heading' + heading.id" matInput required>
                         </ng-container>
                     </ng-container>
                 </mat-form-field>
