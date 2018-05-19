@@ -2,7 +2,7 @@
 
     <div class="info-content" fxLayout="column" fxFlex="100" [fxFlex.gt-sm]="shift.show_files === 1 ? 65 : 100">
 
-        <div class="box info-box" fxLayout="column">
+        <div class="box info-box" fxLayout="column" *ngIf="shift.notes">
             <header class="mat-accent-bg">
                 <div class="title">Notes</div>
             </header>

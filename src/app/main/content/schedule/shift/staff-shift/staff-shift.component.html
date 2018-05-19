@@ -78,7 +78,9 @@
                 <app-staff-shift-info [shift]="shift"></app-staff-shift-info>
             </mat-tab>
 
-            <mat-tab label="Map">
+            <mat-tab label="Map"
+                *ngIf="settings.locations_enable === '0' || settings.location_address === '0'
+                        || !shift.lat || !shift.lon">
                 <app-staff-shift-map [shift]="shift"  #mapTab></app-staff-shift-map>
             </mat-tab>
 
