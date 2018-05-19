@@ -86,12 +86,15 @@ export class StaffShiftInfoComponent implements OnInit {
         let style;
         switch(action) {
             case Action.confirm:
+            case Action.apply:
                 style = 'mat-accent-bg'
                 break;
 
             case Action.replace:
+            case Action.not_available:
                 style = 'mat-warn-bg';
                 break;
+
 
             default:
                 style = 'mat-primary-50-bg';
@@ -102,6 +105,8 @@ export class StaffShiftInfoComponent implements OnInit {
     }
 
     doAction(action, role) {
+        let dialogRef;
+
         switch (action) {
             case Action.apply:
                 this.dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
@@ -125,12 +130,11 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.cancel_application:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: {
-                        title: 'Really cancel your application?'
-                    }
+                dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+                    disableClose: false
                 });
-                this.dialogRef.afterClosed().subscribe(result => {
+                dialogRef.componentInstance.confirmMessage = 'Really cancel your application?';
+                dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.applyCancelShiftRole(roleStaffId)
@@ -195,10 +199,11 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.cancel_replace:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: { title: 'Cancel your replacement request?'}
+                dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+                    disableClose: false
                 });
-                this.dialogRef.afterClosed().subscribe(result => {
+                dialogRef.componentInstance.confirmMessage = 'Really cancel your application?';
+                dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.replaceCancelShiftRole(roleStaffId)
@@ -220,10 +225,11 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.check_out:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: { title: 'Really check out from this role?' }
+                dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+                    disableClose: false
                 });
-                this.dialogRef.afterClosed().subscribe(result => {
+                dialogRef.componentInstance.confirmMessage = 'Really check out from this role?';
+                dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.checkOutShiftRole(roleStaffId)
