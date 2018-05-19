@@ -82,6 +82,25 @@ export class StaffShiftInfoComponent implements OnInit {
         return payItems.reduce((ac, item) => ac + item.total, 0);
     }
 
+    getStyle(action) {
+        let style;
+        switch(action) {
+            case Action.confirm:
+                style = 'mat-accent-bg'
+                break;
+
+            case Action.replace:
+                style = 'mat-warn-bg';
+                break;
+
+            default:
+                style = 'mat-primary-50-bg';
+                break;
+        }
+
+        return style;
+    }
+
     doAction(action, role) {
         switch (action) {
             case Action.apply:

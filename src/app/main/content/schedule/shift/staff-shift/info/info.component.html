@@ -65,7 +65,7 @@
                     
                     <div class="message">{{role.message}}</div>
                     <button mat-button *ngFor="let action of role.actions" (click)="doAction(action, role)"
-                        [style.background-color]="'#0000001f'">
+                        [ngClass]="getStyle(action)">
                         {{action.split('_').join(' ') | ucwords}}
                     </button> 
                 </div>
