@@ -322,6 +322,11 @@ export class UserService {
         return this.http.put(url, {}).toPromise();
     }
 
+    deleteUser(id: number): Promise<any> {
+        const url = `${BASE_URL}/user/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }
