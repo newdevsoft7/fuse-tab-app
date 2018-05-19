@@ -87,7 +87,8 @@
             <mat-tab label="Expenses">
             </mat-tab>
 
-            <mat-tab label="Reports & Uploads">
+            <mat-tab label="Reports & Uploads" *ngIf="shift.selected === 1">
+                <app-staff-shift-reports-uploads [shift]="shift"></app-staff-shift-reports-uploads>
             </mat-tab>
 
         </mat-tab-group>

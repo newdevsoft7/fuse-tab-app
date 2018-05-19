@@ -97,6 +97,7 @@ import { GroupStaffComponent } from './shift/admin-shift-group/staff/staff.compo
 import { GroupAttachmentsComponent } from './shift/admin-shift-group/attachments/attachments.component';
 import { GroupReportsUploadsComponent } from './shift/admin-shift-group/reports-uploads/reports-uploads.component';
 import { GroupSelectShiftDialogComponent } from './shift/admin-shift-group/reports-uploads/select-shift-dialog/select-shift-dialog.component';
+import { StaffShiftReportsUploadsComponent } from './shift/staff-shift/reports-uploads/reports-uploads.component';
 
 
 @NgModule({
@@ -150,6 +151,7 @@ import { GroupSelectShiftDialogComponent } from './shift/admin-shift-group/repor
         // Staff view of shift
         StaffShiftComponent,
         StaffShiftInfoComponent,
+        StaffShiftReportsUploadsComponent,
         StaffShiftReplaceDialogComponent,
         StaffShiftConfirmDialogComponent,
         StaffShiftPayItemDialogComponent,
