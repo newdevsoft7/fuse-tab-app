@@ -337,7 +337,10 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 } else {
                     payMenu.type = 'item';
                 }
-                navModel.splice(1, 0, payMenu);
+                const index = navModel.findIndex(m => m.id === 'invoices');
+                if (index < 0) {
+                    navModel.splice(1, 0, payMenu);
+                } 
                 break;
 
             default:
