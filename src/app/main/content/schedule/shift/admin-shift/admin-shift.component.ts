@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { MatTab, MatTabChangeEvent } from '@angular/material';
+import { MatTab, MatTabChangeEvent, MatDialog } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
@@ -14,6 +14,7 @@ import { AdminShiftStaffComponent } from './staff/staff.component';
 import { TabService } from '../../../../tab/tab.service';
 import { Tab } from '../../../../tab/tab';
 import { ActionService } from '../../../../../shared/services/action.service';
+import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 export enum TAB {
     Staff = 'Staff',
@@ -64,7 +65,8 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         private scheduleService: ScheduleService,
         private tabService: TabService,
         private actionService: ActionService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private dialog: MatDialog
     ) {
         // Invite Users to Role
         this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
@@ -111,6 +113,24 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.usersToInviteSubscription.unsubscribe();
         this.usersToSelectSubscription.unsubscribe();
+    }
+
+    deleteShift() {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result) {
+                try {
+                    const res = await this.scheduleService.deleteShift(this.shift.id);
+                    this.toastr.success(res.message);
+                    this.tabService.closeTab(this.url);
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
     }
 
     invite() {
@@ -228,6 +248,16 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             this.notes = _.clone(this.shift.notes);
         } catch (e) {
             this.toastr.error(e.message || 'Something is wrong while fetching events.');
+        }
+    }
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.message);
         }
     }
 
