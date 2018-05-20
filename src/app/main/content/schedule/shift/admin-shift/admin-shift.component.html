@@ -32,13 +32,13 @@
             <div fxLayout="column" fxLayoutAlign="start end">
                 <div fxLayout="row">
                     <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
-                        <mat-icon *ngIf="shift.locked === 1">lock_outline</mat-icon>
-                        <mat-icon *ngIf="shift.locked !== 1">lock_open</mat-icon>
+                        <mat-icon *ngIf="shift.locked === 1" matTooltip="Locked">lock_outline</mat-icon>
+                        <mat-icon *ngIf="shift.locked !== 1" class="black-fg" matTooltip="Unlocked">lock_open</mat-icon>
                     </button>
 
                     <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
-                        <mat-icon *ngIf="shift.live === 1">visibility</mat-icon>
-                        <mat-icon *ngIf="shift.live !== 1">visibility_off</mat-icon>
+                        <mat-icon *ngIf="shift.live === 1" matTooltip="Published">visibility</mat-icon>
+                        <mat-icon *ngIf="shift.live !== 1" class="black-fg" matTooltip="Unpublished">visibility_off</mat-icon>
                     </button>
 
                     <div>
