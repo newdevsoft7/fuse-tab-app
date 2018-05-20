@@ -1,13 +1,12 @@
 <div class="settings-pay-category-item">
     <div class="nav-item">
         <ng-container *ngIf="!formActive">
-            <div matRipple class="nav-link" fxLayout="row" fxLayoutAlign="space-between center"
-                [class.active]="selected">
+            <div matRipple class="nav-link" fxLayout="row" fxLayoutAlign="space-between center" [class.active]="selected">
                 <span class="name">
                     {{category.cname}}
                 </span>
 
-                <div fxLayout="row">
+                <div fxLayout="row" *ngIf="category.id">
                     <button mat-icon-button (click)="openForm()" fxFlex="0 1 auto">
                         <mat-icon class="s-20">edit</mat-icon>
                     </button>
@@ -22,8 +21,7 @@
         </ng-container>
 
         <!-- EDIT FORM -->
-        <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
-            class="px-24">
+        <form *ngIf="formActive" [formGroup]="form" fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="px-24">
 
             <mat-form-field floatPlaceholder="never" class="cname-field">
                 <input matInput formControlName="cname" #nameInput required>
