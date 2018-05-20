@@ -83,7 +83,15 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         title: 'Copy',
         icon: 'content_copy',
         callback: (event: EventEntity): void => {
-          // put some logic here
+          if (event.type === 'u') {
+            // For unavailabilities
+          } else if (event.type === 'g') {
+            // For group shift
+          } else {
+            const url = `schedule/new-shift/${event.id}`;
+            const tab = new Tab('New Shift', 'newShiftTpl', url, { url, shiftId: event.id });
+            this.tabService.openTab(tab);
+          }
         }
       },
       {
