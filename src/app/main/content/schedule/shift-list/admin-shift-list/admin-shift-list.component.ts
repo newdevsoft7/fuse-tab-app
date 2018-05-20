@@ -261,6 +261,24 @@ export class AdminShiftListComponent implements OnInit {
         return date ? moment(date, 'DD/MM/YYYY').format('MM/DD/YY') : '';
     }
 
+    deleteShift(shift) {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result) {
+                try {
+                    this.shifts = this.shifts.filter(s => s.id !== shift.id);
+                    const res = await this.scheduleService.deleteShift(shift.id);
+                    this.toastr.success(res.message);
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
+    }
+
     private displayError(e: any) {
         const errors = e.error.errors;
         if (errors) {
