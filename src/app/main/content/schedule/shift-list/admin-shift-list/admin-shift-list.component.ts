@@ -187,6 +187,12 @@ export class AdminShiftListComponent implements OnInit {
         });
     }
 
+    copyShift(shift) {
+        const url = `schedule/new-shift/${shift.id}`;
+        const tab = new Tab('New Shift', 'newShiftTpl', url, { url, shiftId: shift.id });
+        this.tabService.openTab(tab);
+    }
+
     // DATATABLE SORT
     onSort(event) {
         this.sorts = event.sorts.map(v => `${v.prop}:${v.dir}`);
