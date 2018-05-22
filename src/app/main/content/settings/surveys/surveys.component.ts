@@ -16,7 +16,7 @@ import { Tab } from '../../../tab/tab';
 import { SettingsService } from '../settings.service';
 
 enum Setting {
-    quiz_enable = 43
+    survey_enable = 86
 }
 
 
@@ -34,8 +34,6 @@ export class SettingsSurveysComponent implements OnInit {
 
     @ViewChild('drawer') drawer: MatDrawer;
     dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
-
-
 
     readonly Setting = Setting;
 
