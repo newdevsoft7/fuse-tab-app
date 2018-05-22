@@ -105,6 +105,12 @@ export class SettingsSurveysComponent implements OnInit {
         // this.getQuiz(quiz.id);
     }
 
+    editQuiz(quiz) {
+        this.settingsService.saveQuiz(quiz.id, quiz).subscribe(res => {
+            this.toastr.success(res.message);
+        });
+    }
+
     deleteQuiz(id, event: MouseEvent) {
         this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
             disableClose: false
