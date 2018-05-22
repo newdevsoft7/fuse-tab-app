@@ -1,16 +1,62 @@
-<div fxLayout="column">
-
-    <!-- SURVEY MODULE -->
-    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20">Survey Module</div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+<div id="settings-forms-container" fxLayout="column">
+    <div fxFlex="1 0 auto" fxLayout="column">
+        <!-- QUIZ MODULE -->
+        <div fxLayout="row wrap">
             <mat-slide-toggle color="accent" [checked]="value(Setting.survey_enable)"
-                (change)="onChange(Setting.survey_enable, $event)" fxFlex="15"></mat-slide-toggle>
+                              (change)="onChange(Setting.survey_enable, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
-                Enable the survey module to create and assign surveys to staff as requirements upon shift completing
+                Enable the survey module to create and assign scored quizs to staff as requirements for shift applications
             </div>
         </div>
+
+
+        <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
+
+
+            <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
+                <button class="btn-add-form" mat-mini-fab color="accent" (click)="addQuiz()">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <div class="pt-16 nav" fuseperfectscrollbar>
+                    <div class="nav-item" *ngFor="let quiz of quizes">
+                        <div matRipple
+                             (click)="selectQuiz(quiz)"
+                             [class.active]="quiz.id === selectedQuiz.id"
+                             class="nav-link" fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="name">
+                               {{ quiz.rname }}
+                            </span>
+
+                            <button mat-icon-button (click)="editQuiz(quiz, $event)" fxFlex="0 1 auto">
+                                <mat-icon class="s-20">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="deleteQuiz(quiz.id, $event)" fxFlex="0 1 auto">
+                                <mat-icon class="s-20">delete</mat-icon>
+                            </button>
+                        </div>
+
+                        <mat-divider></mat-divider>
+                    </div>
+                </div>
+            </mat-drawer>
+            <div class="form-container" *ngIf="selectedQuiz">
+                <div class="box info-box">
+                    <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                        <div class="title">Quiz instructions</div>
+                    </header>
+                    <div class="content" fxLayout="column">
+              <textarea name="quizInstructions" [(ngModel)]="selectedQuiz.instructions" placeholder="Enter instructions">
+
+              </textarea>
+                        <button mat-icon-button (click)="editQuiz(selectedQuiz, $event)" fxFlex="0 1 auto">
+                            <mat-icon class="s-20">save</mat-icon> Save
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </mat-drawer-container>
     </div>
-    <!-- / SURVEY MODULE -->
+    <!-- / QUIZ MODULE -->
 
 </div>

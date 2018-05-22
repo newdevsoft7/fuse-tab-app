@@ -21,6 +21,8 @@ import { fuseAnimations } from '../../../core/animations';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
 import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
+import { AssignReportDialogComponent} from './dialogs/assign-report/assign-report.component';
+
 
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -215,6 +217,35 @@ export class UsersComponent implements OnInit {
                 }
             }
         });
+    }
+
+    openAssignReportDialog() {
+        this.dialogRef = this.dialog.open(AssignReportDialogComponent, {
+            panelClass: 'user-assign-report-dialog',
+        });
+
+        this.dialogRef.afterClosed()
+          .subscribe((assignedReports) => {
+                console.log(assignedReports);
+              const userIds = this.selectedUsers.map(user => user.id);
+
+              const data = {
+                'user_ids' : userIds,
+                'deadline' : null,
+                'completions' : null,
+              };
+
+
+              for (let i = 0; i < assignedReports.length; i++) {
+                if(assignedReports[i].assign) {
+                  this.userService.assignReport(assignedReports[i].id, data).subscribe(res => {
+                    console.log(res);
+                  }, err => {
+                    console.log(err);
+                  });
+                }
+              }
+          });
     }
 
     openNewUser() {
