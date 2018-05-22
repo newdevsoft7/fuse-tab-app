@@ -83,7 +83,7 @@ export class FuseForgotPasswordComponent implements OnInit
         try {
             this.spinner.show();
             await this.authService.sendForgotPasswordLink(payload);
-            this.toastr.success('The confirmation link has been sent to your inbox!');
+            this.toastr.success('We have emailed you a link to reset your password.');
         } catch (e) {
             this.toastr.error(e.error.message);
         } finally {

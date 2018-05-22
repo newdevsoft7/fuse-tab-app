@@ -82,7 +82,7 @@ export class FuseResetPasswordComponent implements OnInit
                 client_id: environment.clientId,
                 new_password: this.resetPasswordForm.get('password').value
             });
-            this.toastrService.success('Password has been reset successfully!');
+            this.toastrService.success('Your password has been reset.');
             this.router.navigate(['/login']);
         } catch (e) {
             this.toastrService.error(e.error.message);
