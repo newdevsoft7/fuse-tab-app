@@ -5,7 +5,6 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { CustomLoadingService } from '../shared/services/custom-loading.service';
 import { AuthenticationService } from '../shared/services/authentication.service';
-import { Router } from '@angular/router';
 import { TokenStorage } from '../shared/services/token-storage.service';
 
 @Component({
@@ -21,7 +20,6 @@ export class FuseMainComponent implements OnInit, OnDestroy
     @HostBinding('attr.fuse-layout-mode') layoutMode;
 
     constructor(
-        private router: Router,
         private _renderer: Renderer2,
         private _elementRef: ElementRef,
         private fuseConfig: FuseConfigService,
@@ -66,11 +64,11 @@ export class FuseMainComponent implements OnInit, OnDestroy
     }
 
     get visibleNavbar(): boolean {
-        return this.authService.isAuthorized() && !this.router.url.startsWith('/register');
+        return this.authService.isAuthorized() && this.tokenStorage.getUser().lvl.indexOf('registrant') === -1;
     }
 
     get visibleToolbar(): boolean {
-       return this.authService.isAuthorized() && !this.router.url.startsWith('/register');
+       return this.authService.isAuthorized() && this.tokenStorage.getUser().lvl.indexOf('registrant') === -1;
     }
 
     get requiredFormData(): boolean {

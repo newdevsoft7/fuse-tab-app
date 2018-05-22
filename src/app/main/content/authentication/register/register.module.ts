@@ -7,7 +7,7 @@ import {
   RegisterStep2Component, RegisterStep3Component,
   RegisterStep4Component, RegisterStep5Component,
   RegisterStep6Component, RegisterStep7Component,
-  RegisterStep0Component,
+  RegisterStep0Component, RegisterStep8Component
 } from "./steps";
 
 import {
@@ -24,6 +24,7 @@ import {
 import { RegisterRoutingModule } from "./register-routing.module";
 import { UserService } from "../../users/user.service";
 import { RegisterService } from "./register.service";
+import { UsersProfileExperienceModule } from "../../users/profile/experience/experience.module";
 
 const stepComponents = [
   RegisterStep0Component,
@@ -33,7 +34,8 @@ const stepComponents = [
   RegisterStep4Component,
   RegisterStep5Component,
   RegisterStep6Component,
-  RegisterStep7Component
+  RegisterStep7Component,
+  RegisterStep8Component
 ];
 
 const profileEditComponents = [
@@ -47,7 +49,8 @@ const profileEditComponents = [
 @NgModule({
   imports: [
     SharedModule,
-    RegisterRoutingModule
+    RegisterRoutingModule,
+    UsersProfileExperienceModule
   ],
   declarations: [
     RegisterComponent,

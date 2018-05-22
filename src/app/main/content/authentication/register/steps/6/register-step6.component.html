@@ -1,39 +1,57 @@
-<div id="register-step6-container" class="p-24">
-    <div class="content" fxLayout="column" fxFlex="100">
+<div id="register-step6-container">
 
-        <div class="mb-24" *ngIf="settings.profile_work_areas_message">
-            <h1>
-                {{settings.profile_work_areas_message}}
-                <span class="secondary-text ml-4" *ngIf="settings.work_areas_required > 0">
-                    ({{settings.work_areas_required}}&nbsp; {{settings.work_areas_required > 1 ? 'choices' : 'choice'}} required)
-                </span>
-            </h1>
-        </div>
-
-        <div *ngFor="let category of workAreas" class="profile-box info-box general" fxLayout="column">
-
-            <header class="mat-accent-bg">
-                <div class="title">{{category.cname == '' ? 'Uncategorised' : category.cname}}</div>
-            </header>
-
-            <div class="content" fxLayout="row" fxLayoutWrap>
-                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex="25">
-                    <mat-checkbox [(ngModel)]="workarea.set" (change)="onUpdateWorkArea(workarea)">
-                        {{workarea.aname}}
-                    </mat-checkbox>
-                </div>
-            </div>
-        </div>
-
-        <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
-            <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
-                Quit
-            </button>
-
-            <button mat-raised-button type="button" color="accent" (click)="save()">
-                Save & Continue
-            </button>
-        </div>
-
+    <div class="mb-24" *ngIf="settings.profile_video_msg">
+        <h2>
+            {{settings.profile_video_msg}}
+            <span class="secondary-text ml-4" *ngIf="settings.profile_video_required > 0">
+                ({{settings.profile_video_required}}&nbsp; {{settings.profile_video_required > 1 ? 'videos' : 'video'}} required)
+            </span>
+        </h2>
     </div>
+
+    <!-- ADD FILE BUTTON -->
+    <div class="file-uploader">
+        <input hidden type="file" #fileInput (change)="onUploadVideo($event)" multiple/>
+        <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+            <mat-icon>file_upload</mat-icon>
+            <span>Upload</span>
+        </button>
+    </div>
+    <!-- / ADD FILE BUTTON -->
+
+    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="videos">
+        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of videos" [model]="video">
+            <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
+            Quit
+        </button>
+
+        <button mat-raised-button type="button" color="accent" (click)="save()">
+            Save & Continue
+        </button>
+    </div>
+
 </div>
+
+<!-- VIDEO TEMPLATE -->
+<ng-template #videoTpl let-video="video">
+
+    <div class="preview">
+        <img [src]="video.thumbnail" (click)="showVideo(video)">
+        <button mat-icon-button (click)="showVideo(video)">
+            <mat-icon>play_circle_filled</mat-icon>
+        </button>
+    </div>
+
+    <div class="title" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-icon-button (click)="deleteVideo(video)">
+            <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+        </button>
+    </div>
+</ng-template>
+<!-- / VIDEO TEMPLATE -->

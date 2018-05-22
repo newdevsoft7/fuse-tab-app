@@ -1,0 +1,19 @@
+:host {
+
+    /deep/ .mat-form-field-wrapper {
+        padding-bottom: unset;
+    }
+
+    /deep/ .mat-form-field-infix {
+        border-top: unset;
+    }
+
+    /deep/ .mat-form-field-underline {
+        bottom: unset;
+    }
+
+    .new-category {
+        border-radius: 2px;
+        background-color: #EEF0F2;
+    }
+}

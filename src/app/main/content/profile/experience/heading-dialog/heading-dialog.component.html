@@ -1,0 +1,56 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{heading.id ? 'Add' : 'Edit'}} Heading</span>
+            <button mat-button class="mat-icon-button"
+                    (click)="dialogRef.close()"
+                    aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <mat-form-field class="w-100-p">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="heading.hname" required minlength="1" maxlength="40">
+        </mat-form-field>
+
+        <mat-form-field class="w-100-p">
+            <mat-label>Answer Type</mat-label>
+            <mat-select [(ngModel)]="heading.type" (ngModelChange)="onTypeChange()">
+                <mat-option *ngFor="let option of types" [value]="option.value">
+                    {{option.label}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="heading.type === 'list'">
+            <ng-container  *ngFor="let option of heading.options; first as isFirst; index as idx">
+                <div fxLayout="start center" *ngIf="!option.deleted">
+                    <mat-form-field fxFlex>
+                        <mat-label>Option</mat-label>
+                        <input matInput [(ngModel)]="option.oname" (ngModelChange)="option.changed = true;">
+                    </mat-form-field>
+
+                    <button fxFlex="nogrow" mat-icon-button *ngIf="isFirst" (click)="addOption()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                    <button fxFlex="nogrow" mat-icon-button *ngIf="!isFirst" (click)="option.deleted = true;">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button [disabled]="!heading.hname || !heading.type"
+                (click)="save()" class="save-button mat-accent">
+            SAVE
+        </button>
+    </div>
+
+</div>
+    

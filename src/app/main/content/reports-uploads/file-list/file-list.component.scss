@@ -1,0 +1,21 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+    width: 100%;
+
+    .file-list-header {
+        height: 56px;
+        color: grey;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .file-list-item {
+        min-height: 64px;
+        cursor: pointer;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #ddd;
+        }
+    }
+
+}

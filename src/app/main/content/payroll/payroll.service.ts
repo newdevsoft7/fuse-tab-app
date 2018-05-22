@@ -54,6 +54,11 @@ export class PayrollService {
         return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
     }
 
+    generateStaffInvoice(from: string, to: string): Promise<any> {
+        const url = `${BASE_URL}/staffInvoice/generate/${from}/${to}`;
+        return this.http.get(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

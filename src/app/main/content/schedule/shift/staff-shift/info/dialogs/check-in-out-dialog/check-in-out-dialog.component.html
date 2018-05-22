@@ -1,0 +1,32 @@
+<div class="dialog-content-wrapper">
+    <h1 mat-dialog-title>{{data.mode === 'checkin' ? 'Check In' : 'Check Out'}}</h1>
+
+    <div mat-dialog-content>
+        <agm-map class="h-320 w-100-p" [minZoom]="5" [maxZoom]="24" [zoom]="18"
+        [latitude]="lat" [longitude]="lon" [mapTypeControl]="true"
+        [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
+        [scaleControl]="false" [streetViewControl]="false" [scrollwheel]="false" [styles]="styles">
+            <agm-marker [latitude]="lat" [longitude]="lon"></agm-marker>
+        </agm-map>
+
+        <!-- ADD FILE BUTTON -->
+        <div class="my-12">
+                <input hidden type="file" #fileInput (change)="change($event)"/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                    <mat-icon class="white-fg">add</mat-icon>
+                    <span>Add a photo</span>
+                </button>
+            </div>
+            <!-- / ADD FILE BUTTON -->
+    </div>
+    
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center">
+        <button mat-button class="mat-accent-bg" cdkFocusInitial (click)="save()">
+            {{data.mode === 'checkin' ? 'Check In' : 'Check Out'}}
+        </button>
+        <button mat-button  [mat-dialog-close]="false" class="mat-primary-50-bg">
+            Cancel
+        </button>
+    </div>
+
+</div>

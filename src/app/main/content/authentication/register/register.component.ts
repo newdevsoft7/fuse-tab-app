@@ -9,6 +9,7 @@ import { UserService } from "../../users/user.service";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
 import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 import { AuthenticationService } from "../../../../shared/services/authentication.service";
+import { AppSettingService } from "../../../../shared/services/app-setting.service";
 
 @Component({
   selector: 'app-register',
@@ -26,15 +27,7 @@ export class RegisterComponent implements OnInit {
   forms: FormGroup[] = []; // From step 0 to step 6
 
   // For step visibility: null => hidden
-  steps: any = {
-    'step1': 0,
-    'step2': 0,
-    'step3': 0,
-    'step4': 0,
-    'step5': 0,
-    'step6': 0,
-    'step7': 0
-  }; // From step 1 to step 7
+  steps: any; // From step 1 to step 8
 
   dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -45,10 +38,11 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private tokenStorage: TokenStorage,
+    private appSettings: AppSettingService,
     private authService: AuthenticationService,
     private fuseConfig: FuseConfigService
   ) {
-
+    this.steps = this.appSettings.baseData.steps;
     this.user = this.tokenStorage.getUser();
     if (this.user) {
       // For registered, but not completed user, set steps
@@ -58,7 +52,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
 
-    _.times(8, (n) => {
+    _.times(9, (n) => {
       this.forms[n] = this.formBuilder.group({
         success: [null, Validators.required]
       });
@@ -70,8 +64,8 @@ export class RegisterComponent implements OnInit {
 
     this.route.firstChild.params.subscribe((res: {step: string}) => {
       let step = parseInt(res.step) || 0;
-      if (step >= 8) {
-        step = 7;
+      if (step >= 9) {
+        step = 8;
       }
       this.changeStep(step);
     });
@@ -101,7 +95,7 @@ export class RegisterComponent implements OnInit {
       success: 'success'
     });
 
-    // Sets forms from step1 to step7
+    // Sets forms from step1 to step8
     const keys = Object.keys(steps);
     this.steps = steps;
 

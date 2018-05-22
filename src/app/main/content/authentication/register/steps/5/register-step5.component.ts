@@ -1,8 +1,7 @@
 import {
     Component, OnInit,
-    ViewEncapsulation, Input,
-    SimpleChanges, Output,
-    EventEmitter, OnChanges
+    ViewEncapsulation, Input, OnChanges,
+    Output, EventEmitter, SimpleChanges
 } from "@angular/core";
 import { MatDialog } from "@angular/material";
 import { ToastrService } from "ngx-toastr";
@@ -11,11 +10,9 @@ import * as _ from 'lodash';
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 import { UserService } from "../../../../users/user.service";
 import { TokenStorage } from "../../../../../../shared/services/token-storage.service";
-
-import { RegisterVideoGalleryDialogComponent } from './video-gallery-dialog/video-gallery-dialog.component';
 import { RegisterService } from "../../register.service";
 
-const PROFILE_VIDEO = 'profile_video';
+const PROFILE_DOCUMENT = 'profile_document';
 
 @Component({
     selector: 'app-register-step5',
@@ -25,8 +22,7 @@ const PROFILE_VIDEO = 'profile_video';
 })
 export class RegisterStep5Component implements OnInit, OnChanges {
 
-    settings: any = {};
-    videos: any[];
+    documents: any[];
     dialogRef: any;
 
     @Input() user;
@@ -34,48 +30,37 @@ export class RegisterStep5Component implements OnInit, OnChanges {
     @Output() onStepSucceed = new EventEmitter;
 
     constructor(
-        private dialog: MatDialog,
         private userService: UserService,
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
         private registerService: RegisterService
-    ) { }
+    ) {}
 
     ngOnInit() {
-        this.settings = this.tokenStorage.getSettings() || {};
+
+    }
+
+    get settings(): any {
+        return this.tokenStorage.getSettings() || {};
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.user.currentValue) {
-            this.getVideos();
+            this.getDocuments();
         }
     }
 
-    showVideo(video) {
-        this.dialogRef = this.dialog.open(RegisterVideoGalleryDialogComponent, {
-            panelClass: 'register-video-gallery-dialog',
-            data: {
-                videos: this.videos,
-                video
-            }
-        });
-
-        this.dialogRef.afterClosed()
-            .subscribe(res => { });
-    }
-
-    deleteVideo(video) {
-        this.userService.deleteProfileFile(video.id, PROFILE_VIDEO)
+    private getDocuments() {
+        this.userService.getProfileDocuments(this.user.id)
             .subscribe(res => {
-                const index = this.videos.findIndex(v => v.id == video.id);
-                this.videos.splice(index, 1);
+                this.documents = res;
             }, err => {
                 console.log(err);
             });
     }
 
-    onUploadVideo(event, isAdmin = 0) {
+    async onUploadDocument(event, isAdmin = 0) {
         const files = event.target.files;
         if (files && files.length > 0) {
             this.spinner.show();
@@ -83,33 +68,33 @@ export class RegisterStep5Component implements OnInit, OnChanges {
             let formData = new FormData();
 
             for (let i = 0; i < files.length; i++) {
-                formData.append('video[]', files[i], files[i].name);
+                formData.append('document[]', files[i], files[i].name);
             }
 
-
-            this.userService.uploadProfileVideo(this.user.id, formData)
-                .subscribe(res => {
-                    this.toastr.success(res.message);
-                    this.spinner.hide();
-                    res.data.map(video => {
-                        this.videos.push(video);
-                    });
-                }, err => {
-                    this.spinner.hide();
-                    _.forEach(err.error.errors, errors => {
-                        _.forEach(errors, (error: string) => {
-                            const message = _.replace(error, /video\.\d+/g, 'video');
-                            this.toastr.error(message);
-                        });
+            try {
+                const res = await this.userService.uploadProfileDocument(this.user.id, formData).toPromise();
+                this.toastr.success(res.message);
+                res.data.map(document => {
+                    this.documents.push(document);
+                });
+            } catch (e) {
+                _.forEach(e.error.errors, errors => {
+                    _.forEach(errors, (error: string) => {
+                        const message = _.replace(error, /document\.\d+/g, 'document');
+                        this.toastr.error(message);
                     });
                 });
+            } finally {
+                this.spinner.hide();
+            }
         }
     }
 
-    private getVideos() {
-        this.userService.getProfileVideos(this.user.id)
+    deleteDocument(document) {
+        this.userService.deleteProfileFile(document.id, PROFILE_DOCUMENT)
             .subscribe(res => {
-                this.videos = res;
+                const index = this.documents.findIndex(v => v.id == document.id);
+                this.documents.splice(index, 1);
             }, err => {
                 console.log(err);
             });
@@ -135,5 +120,4 @@ export class RegisterStep5Component implements OnInit, OnChanges {
                 this.toastr.error(err.error.message);
             })
     }
-
 }

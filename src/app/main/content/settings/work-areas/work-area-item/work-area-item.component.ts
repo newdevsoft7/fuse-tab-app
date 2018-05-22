@@ -50,7 +50,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         this.form = this.formBuilder.group({
             aname: [this.workArea.aname, Validators.required],
             php_tz: [this.workArea.php_tz],
-            work_area_cat_id: [this.workArea.work_area_cat_id, Validators.required],
+            work_area_cat_id: [this.workArea.work_area_cat_id],
         });
         this.formActive = true;
         this.focusNameField();

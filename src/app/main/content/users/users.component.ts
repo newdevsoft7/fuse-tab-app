@@ -20,6 +20,7 @@ import { TokenStorage } from '../../../shared/services/token-storage.service';
 import { fuseAnimations } from '../../../core/animations';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
 import { Router } from '@angular/router';
+import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
 
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -193,6 +194,27 @@ export class UsersComponent implements OnInit {
         if (this.data.invite && selected.length > 0) {
             this.data.invite_all = false;
         }
+    }
+
+    deleteUser(user) {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (result) {
+                try {
+                    this.users = this.users.filter(u => u.id !== user.id);
+                    const res = await this.userService.deleteUser(user.id);
+                    this.toastr.success(res.message);
+                } catch (e) {
+                    const errors = e.error.errors;
+                    Object.keys(errors).forEach(v => {
+                        this.toastr.error(errors[v]);
+                    });
+                }
+            }
+        });
     }
 
     openNewUser() {

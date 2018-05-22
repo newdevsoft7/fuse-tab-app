@@ -5,15 +5,12 @@ import { SharedModule } from '../../../core/modules/shared.module';
 import { TabModule } from '../../tab/tab.module';
 import { UsersModule } from '../users/users.module';
 import { ProfileModule } from '../profile/profile.module';
-import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { ScheduleModule } from '../schedule/schedule.module';
 import { FormSignModule } from '../form-sign/form-sign.module';
 import { QuizModule } from '../quiz/quiz.module';
 
 import { FuseHomeComponent } from './home.component';
 import { SettingsModule } from '../settings/settings.module';
-import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
-import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { TrackingModule } from '../tracking/tracking.module';
 import { AccountingModule } from '../accounting/accounting.module';
 import { TimelineComponent } from './timeline/timeline.component';
@@ -29,6 +26,7 @@ import { ClientsModule } from '../clients/clients.module';
 import { TimelineModule } from './timeline/timeline.module';
 import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
 import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
+import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
 
 @NgModule({
     declarations: [
@@ -39,9 +37,6 @@ import { ClientInvoicesModule } from '../client-invoices/client-invoices.module'
         TabModule,
         UsersModule,
         ProfileModule,
-        ProfileInfoModule,
-        ProfileAttributesModule,
-        ProfileRatingsModule,
         ScheduleModule,
         SettingsModule,
         TrackingModule,
@@ -53,7 +48,8 @@ import { ClientInvoicesModule } from '../client-invoices/client-invoices.module'
         ClientsModule,
         ClientInvoicesModule,
         OutsourceCompaniesModule,
-        TimelineModule
+        TimelineModule,
+        ReportsUploadsModule
     ],
     exports     : [
         FuseHomeComponent

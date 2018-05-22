@@ -78,14 +78,17 @@
                 <app-staff-shift-info [shift]="shift"></app-staff-shift-info>
             </mat-tab>
 
-            <mat-tab label="Map">
+            <mat-tab label="Map"
+                *ngIf="settings.locations_enable === '0' || settings.location_address === '0'
+                        || !shift.lat || !shift.lon">
                 <app-staff-shift-map [shift]="shift"  #mapTab></app-staff-shift-map>
             </mat-tab>
 
             <mat-tab label="Expenses">
             </mat-tab>
 
-            <mat-tab label="Reports & Uploads">
+            <mat-tab label="Reports & Uploads" *ngIf="shift.selected === 1">
+                <app-staff-shift-reports-uploads [shift]="shift"></app-staff-shift-reports-uploads>
             </mat-tab>
 
         </mat-tab-group>

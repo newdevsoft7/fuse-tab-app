@@ -1,6 +1,6 @@
 <div id="register-step1-container" class="p-24">
 
-    <h1 *ngIf="message">{{message}}</h1>
+    <h2 *ngIf="message">{{message}}</h2>
 
     <!-- PROFILES -->
     <ng-container *ngIf="profile">
@@ -36,36 +36,34 @@
     </div>
 
     <div *ngIf="item.ename" class="info-line">
-        <ng-container *ngIf="item.ename.indexOf('id') == -1">
-            <div class="title">
-                <span *ngIf="item.visibility == 'required'" class="required">*</span>
-                {{item.ename}}
-            </div>
-            <div class="info">
-                <ng-container *ngIf="item.etype == 'list'">
-                    <app-register-profile-edit-list-value [userId]="profile.id"
-                        [element]="item" fxFlex="0 1 auto">
-                    </app-register-profile-edit-list-value>
-                </ng-container>
+        <div class="title">
+            <span *ngIf="item.visibility == 'required'" class="required">*</span>
+            {{item.ename}}
+        </div>
+        <div class="info">
+            <ng-container *ngIf="item.etype === 'list'">
+                <app-register-profile-edit-list-value [userId]="profile.id"
+                    [element]="item" fxFlex="0 1 auto">
+                </app-register-profile-edit-list-value>
+            </ng-container>
 
-                <ng-container *ngIf="item.etype == 'listm'">
-                    <app-register-profile-edit-listm-value [userId]="profile.id"
-                        [element]="item" fxFlex="0 1 auto">
-                    </app-register-profile-edit-listm-value>
-                </ng-container>
+            <ng-container *ngIf="item.etype === 'listm'">
+                <app-register-profile-edit-listm-value [userId]="profile.id"
+                    [element]="item" fxFlex="0 1 auto">
+                </app-register-profile-edit-listm-value>
+            </ng-container>
 
-                <ng-container *ngIf="!['list', 'listm'].includes(item.etype)">
-                    <app-register-profile-edit-date *ngIf="item.ename == 'Date of Birth'"
-                        [userId]="profile.id" [element]="item" [field]="'data'" fxFlex="0 1 auto">
-                    </app-register-profile-edit-date>
+            <ng-container *ngIf="['list', 'listm'].indexOf(item.etype) === -1">
+                <app-register-profile-edit-date *ngIf="item.ename == 'Date of Birth'"
+                    [userId]="profile.id" [element]="item" [field]="'data'" fxFlex="0 1 auto">
+                </app-register-profile-edit-date>
 
-                    <app-register-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'"
-                        [userId]="profile.id" [element]="item" fxFlex="0 1 auto">
-                    </app-register-profile-edit-text-value>
-                </ng-container>
+                <app-register-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'"
+                    [userId]="profile.id" [element]="item" fxFlex="0 1 auto">
+                </app-register-profile-edit-text-value>
+            </ng-container>
 
-            </div>
-        </ng-container>
+        </div>
     </div>
 </ng-template>
 <!-- / TEMPLATE -->

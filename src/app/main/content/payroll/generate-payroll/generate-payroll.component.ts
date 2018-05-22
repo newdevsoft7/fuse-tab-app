@@ -58,7 +58,10 @@ export class GeneratePayrollComponent implements OnInit {
         'other'
     ];
 
+    currentUser: any;
+
     ngOnInit() {
+        this.currentUser = this.tokenStorage.getUser();
 
         this.getTrackingOptions();
 
@@ -78,7 +81,7 @@ export class GeneratePayrollComponent implements OnInit {
             });
     }
 
-    generate() {
+    async generate(): Promise<any> {
         const from = moment(this.from).format('YYYY-MM-DD');
         const to = moment(this.to).format('YYYY-MM-DD');
         const completedOnly = this.completedOnly ? 1 : 0;
@@ -93,16 +96,40 @@ export class GeneratePayrollComponent implements OnInit {
             trackingOptionId = typeof(trackingOptionId) !== 'string' ? trackingOptionId.id : null;
         }
 
-        this.payrollService
-            .generatePayroll(this.type, from, to, completedOnly, trackingOptionId)
-            .subscribe(res => {
-                if (res.payrolls.length > 0) {
-                    this.payrolls = res.payrolls;
-                    _.forEach(this.payrolls, (payroll, index) => payroll.id = index);
-                } else {
-                    this.toastr.error('No Payrolls!');
-                }
-            });
+        try {
+            const res = await this.payrollService.generatePayroll(this.type, from, to, completedOnly, trackingOptionId).toPromise();
+            if (res.payrolls.length > 0) {
+                this.payrolls = res.payrolls;
+                _.forEach(this.payrolls, (payroll, index) => payroll.id = index);
+            } else {
+                this.toastr.error('No Payrolls!');
+            }
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        }
+    }
+
+    async generateStaffInvoice(): Promise<any> {
+        const from = moment(this.from).format('YYYY-MM-DD');
+        const to = moment(this.to).format('YYYY-MM-DD');
+
+        if (!this.to || !this.from || !this.type) { return; }
+        if (from > to) {
+            this.toastr.error('Start date must be earlier than end date');
+            return;
+        }
+
+        try {
+            const res = await this.payrollService.generateStaffInvoice(from, to);
+            if (res.payrolls.length > 0) {
+                this.payrolls = res.payrolls;
+                _.forEach(this.payrolls, (payroll, index) => payroll.id = index);
+            } else {
+                this.toastr.error('No Invoices!');
+            }
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        }
     }
 
     getTrackingOptions() {

@@ -1,0 +1,20 @@
+<button *ngIf="!formActive" mat-mini-fab color="warn" (click)="openForm()" matTooltip="Add Category">
+	<mat-icon class="white-fg">add</mat-icon>
+</button>
+
+<div class="new-category px-8 mat-elevation-z1">
+    <form *ngIf="formActive" [formGroup]="form" (submit)="onFormSubmit()"
+        fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+		<mat-form-field floatPlaceholder="never" fxFlex>
+			<input matInput formControlName="cname" #nameInput placeholder="Write a Category Name" required>
+		</mat-form-field>
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>

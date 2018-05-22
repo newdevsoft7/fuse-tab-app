@@ -1,0 +1,11 @@
+<div id="register-step8-container">
+
+    <h2 *ngIf="settings.registration_msg_complete">{{settings.registration_msg_complete}}</h2>
+
+    <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
+            Quit
+        </button>
+    </div>
+
+</div>

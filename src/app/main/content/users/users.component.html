@@ -231,6 +231,11 @@
                                 <span>Change password</span>
                             </button>
 
+                            <button mat-menu-item *ngIf="currentUser.lvl === 'owner'" (click)="deleteUser(row)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+
                         </mat-menu>
 
                         <mat-menu #typeMenu="matMenu">

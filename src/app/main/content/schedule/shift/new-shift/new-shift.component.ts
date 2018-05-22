@@ -83,7 +83,7 @@ export class NewShiftComponent implements OnInit {
         };
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.shiftForm = this.formBuilder.group({
             title:   ['', Validators.required],
             generic_title: [''],
@@ -100,6 +100,73 @@ export class NewShiftComponent implements OnInit {
             isGroup: [false]
         });
 
+        try {
+            let res: any;
+            if (this.data.shiftId) { // Copy shift from calendar
+                res = await this.scheduleService.getShift(this.data.shiftId);
+                const tracking_option_ids = _.flattenDeep(res.tracking_categories.map(v => v.options.map(k => k.id)))
+                this.shiftForm.patchValue({
+                    title:   res.title,
+                    generic_title: res.generic_title,
+                    location: res.location,
+                    generic_location: res.generic_location,
+                    address: res.address,
+                    contact: res.contact,
+                    notes: res.notes,
+                    manager_ids: res.managers.map(v => v.id),
+                    client_id: res.client_id,
+                    work_area_ids: res.work_areas.map(v => v.id),
+                    tracking_option_ids: tracking_option_ids,
+                    isGroup: false
+                });
+                if (res.date) {
+                    const start = convertShiftTime(res.start);
+                    const end = convertShiftTime(res.end);
+                    const date = moment(res.date, 'DD/MM/YYYY').toISOString();
+                    this.dates.push(new ShiftDate(date, start, end));
+                }
+            } else {
+                this.dates.push(new ShiftDate(this.startDate));
+                this.init();
+            }
+
+            // Get Tracking Categories & Options
+            this.scheduleService.getShiftsData().subscribe(response => {
+                if (response.tracking) {
+                    this.categories = response.tracking;
+                    if (this.data.shiftId) {
+                        this.categories.forEach(c => {
+                            const index = res.tracking_categories.findIndex(v => v.id === c.id);
+                            if (index > -1) {
+                                c.value = res.tracking_categories[index].options.map(v => v.id);
+                            }
+                        });
+                    } else {
+                        this.categories.forEach(c => c.value = []);
+                    }
+                }
+
+                const clientId = this.shiftForm.getRawValue().client_id;
+                if (clientId) {
+                    const index = response.clients.findIndex(v => v.id === clientId);
+                    if (index > -1) {
+                        const clientName = response.clients[index].cname;
+                        this.clientControl.patchValue(clientName);
+                    }
+                }
+
+                // Client Autocomplete
+                this.init();
+
+                this.settings = response.settings;
+            });
+            
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    init () {
         this.managers = (text: string): Observable<any> => {
             return this.scheduleService.getManagers(text);
         };
@@ -108,11 +175,8 @@ export class NewShiftComponent implements OnInit {
             return this.scheduleService.getWorkAreas(text);
         };
 
-        this.dates.push(new ShiftDate(this.startDate));
-
         // Location Autocomplete
         this.locationControl.valueChanges
-            .startWith('')
             .debounceTime(300)
             .distinctUntilChanged()
             .subscribe(val => {
@@ -127,8 +191,7 @@ export class NewShiftComponent implements OnInit {
                     });
                 }
             });
-
-        // Client Autocomplete
+        
         this.clientControl.valueChanges
             .startWith('')
             .debounceTime(300)
@@ -138,11 +201,11 @@ export class NewShiftComponent implements OnInit {
                     this.shiftForm.patchValue({
                         client_id: null
                     });
-
                     this.scheduleService.getClients(val.trim().toLowerCase()).subscribe(res => {
                         if (res.length > 0) {
                             this.filteredClients = res;
-                        } else {
+                        }
+                        else {
                             this.filteredClients = val.trim().length > 0 ? [{
                                 id: SHOULD_BE_ADDED_OPTION,
                                 cname: val
@@ -151,16 +214,6 @@ export class NewShiftComponent implements OnInit {
                     });
                 }
             });
-
-        // Get Tracking Categories & Options
-        this.scheduleService.getShiftsData().subscribe(res => {
-            if (res.tracking) {
-                this.categories = res.tracking;
-                this.categories.forEach(c => c.value = []);
-            }
-
-            this.settings = res.settings;
-        });
 
         // Form Validation
         this.shiftForm.valueChanges.subscribe(() => {
@@ -356,4 +409,12 @@ function hours12to24(h, meridiem) {
 
 function removeNull(obj) {
     Object.keys(obj).forEach((key) => (obj[key] == null) && delete obj[key]);
+}
+
+function convertShiftTime(time: string) {
+    if (!time) { return; }
+    const [hour, temp] = time.split(':');
+    const [minute, meriden] = temp.split(' ');
+    // hour: 5, minute: 0, meriden: 'PM', format: 12
+    return { hour: +hour, minute: +minute, meriden: meriden.toUpperCase(), format: 12 };
 }

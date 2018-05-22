@@ -187,6 +187,12 @@ export class AdminShiftListComponent implements OnInit {
         });
     }
 
+    copyShift(shift) {
+        const url = `schedule/new-shift/${shift.id}`;
+        const tab = new Tab('New Shift', 'newShiftTpl', url, { url, shiftId: shift.id });
+        this.tabService.openTab(tab);
+    }
+
     // DATATABLE SORT
     onSort(event) {
         this.sorts = event.sorts.map(v => `${v.prop}:${v.dir}`);
@@ -259,6 +265,24 @@ export class AdminShiftListComponent implements OnInit {
 
     formatDate(date) {
         return date ? moment(date, 'DD/MM/YYYY').format('MM/DD/YY') : '';
+    }
+
+    deleteShift(shift) {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result) {
+                try {
+                    this.shifts = this.shifts.filter(s => s.id !== shift.id);
+                    const res = await this.scheduleService.deleteShift(shift.id);
+                    this.toastr.success(res.message);
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
     }
 
     private displayError(e: any) {

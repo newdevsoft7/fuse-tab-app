@@ -1,0 +1,29 @@
+<div class="dialog-content-wrapper">
+    <h1 mat-dialog-title>Select shift</h1>
+    <form [formGroup]="form">
+  
+        <div mat-dialog-content>
+          <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="date" (dateChange)="onDateChanged()">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field class="w-100-p">
+              <input type="text" placeholder="Choose a shift"  matInput [matAutocomplete]="auto"
+                  [formControl]="filter">
+              <mat-autocomplete #auto="matAutocomplete"
+                  [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                      {{option.text}}
+                  </mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
+        </div>
+  
+        <div mat-dialog-actions>
+            <button mat-button (click)="saveForm()" cdkFocusInitial>Ok</button>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+        </div>
+    </form>
+  </div>

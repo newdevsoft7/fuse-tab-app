@@ -1,0 +1,93 @@
+<div id="reports-uploads" class="p-24">
+
+    <!-- Files Section -->
+    <div class="group">
+
+        <div class="document">
+
+            <div class="group-title">
+                <span class="name">
+                    Files
+                    <span class="ml-4" *ngIf="data.files?.length > 0">( {{data.files.length}} )</span>
+                </span>
+                <span class="info"></span>
+            </div>
+
+            <!-- Add File Button -->
+            <div class="file-uploader">
+                <input hidden type="file" multiple #fileInput (change)="onUpload($event)"/>
+                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                    <mat-icon>file_upload</mat-icon>
+                    <span>Upload</span>
+                </button>
+            </div>
+            <!-- / Add File Button -->
+
+            <div class="group-media" fxLayout="row" fxLayoutWrap>
+                <div class="media" *ngFor="let file of data.files">
+                    <a [href]="file.path" target="blank">
+                        <img class="preview" [src]="file.thumbnail">
+                    </a>
+                    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span>{{file.oname}}</span>
+                        
+                        <button mat-icon-button *ngIf="file.delete" (click)="deleteFile(file)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                
+                    </div>
+                </div>
+                <div *ngIf="data.files?.length === 0">
+                    There is no files.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- / Files Section -->
+
+    <!-- Surveys Section -->
+    <div class="group">
+
+        <div class="document">
+
+            <div class="group-title">
+                <span class="name">
+                    Surveys
+                    <span class="ml-4" *ngIf="data.surveys?.length > 0">( {{data.surveys.length}} )</span>
+                </span>
+                <span class="info"></span>
+            </div>
+
+            <div class="group-media" fxLayout="row" fxLayoutWrap>
+                <div class="media" *ngFor="let survey of data.surveys">
+                    <a [href]="survey.path" target="blank">
+                        <img class="preview" [src]="survey.thumbnail">
+                    </a>
+                    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span>{{survey.rname}}</span>
+                        
+                        <div fxLayout="row" fxLayoutAlign="end center" *ngIf="survey.approve || survey.delete">
+                            <button mat-icon-button *ngIf="survey.approve" (click)="approve(survey, 'report')">
+                                <mat-icon *ngIf="!survey.approved" matTooltip="Unapproved">close</mat-icon>
+                                <mat-icon *ngIf="survey.approved" matTooltip="Approved">check</mat-icon>
+                            </button>
+                
+                            <button mat-icon-button *ngIf="survey.delete" (click)="deleteReport(survey)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                
+                    </div>
+                </div>
+                <div *ngIf="data.surveys?.length === 0">
+                    There is no surveys.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- / Surveys Section -->
+</div>

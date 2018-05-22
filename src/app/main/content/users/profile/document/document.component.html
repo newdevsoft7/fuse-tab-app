@@ -73,8 +73,9 @@
     <a [href]="document.path" target="blank">
         <img class="preview" [src]="document.thumbnail">
     </a>
-    <div class="title" fxLayout="row" fxLayoutAlign="end center">
-
+    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
+        <span>{{document.oname}}</span>
+        <div>
             <button mat-icon-button (click)="onLockedChanged(document)">
                 <mat-icon *ngIf="document.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
                 <mat-icon *ngIf="!document.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
@@ -83,6 +84,6 @@
             <button mat-icon-button (click)="deleteProfileDocument(document)">
                 <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
             </button>
-
+        </div>
     </div>
 </ng-template>

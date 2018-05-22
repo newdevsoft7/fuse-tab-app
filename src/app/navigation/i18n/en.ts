@@ -53,12 +53,6 @@ export const locale = {
                 'TRACKING_TEST': 'Test',
 
                 'SETTINGS': 'Settings',
-                'SETTINGS_PROFILE': 'Profile',
-                'SETTINGS_PROFILE_ATTRIBUTES': 'Attributes',
-                'SETTINGS_PROFILE_EXPERIENCE': 'Experience',
-                'SETTINGS_PROFILE_INFO': 'Info',
-                'SETTINGS_PROFILE_RATINGS': 'Ratings',
-                'SETTINGS_PROFILE_SHOWCASES': 'Showcases',
                 'SETTINGS_SYSTEM': 'System',
                 'SETTINGS_TEMPLATES': 'Templates',
                 'SETTINGS_TEMPLATES_EMAIL': 'Email',
@@ -118,7 +112,11 @@ export const locale = {
                 'WORK_AREAS': 'Work Areas',
                 'WORK_MARKET': 'Work Market',
                 'XERO': 'Xero',
-                'USER_STATUSES': 'User Statuses'
+                'USER_STATUSES': 'User Statuses',
+                'PROFILE_INFO': 'Profile Structure',
+                'PROFILE_ATTRIBUTES': 'Attributes',
+                'PROFILE_RATINGS': 'Ratings',
+                'PROFILE_EXPERIENCE': 'Experience'
             }
         }
     }

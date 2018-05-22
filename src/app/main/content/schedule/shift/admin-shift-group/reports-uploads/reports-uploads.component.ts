@@ -100,14 +100,11 @@ export class GroupReportsUploadsComponent implements OnInit {
         dialogRef.afterClosed().subscribe(async (result) => {
             if (!result) { return; }
             try {
-                this.spinner.show();
-                const res = await this.scheduleService.deleteFile(file.id);
                 const index = this.data.files.findIndex(f => f.id === file.id);
-                this.spinner.hide();
-                this.toastr.success(res.message);
                 this.data.files.splice(index, 1);
+                const res = await this.scheduleService.deleteFile(file.id);
+                this.toastr.success(res.message);
             } catch (e) {
-                this.spinner.hide();
                 this.toastr.error(e.message);
             }
         });
@@ -121,14 +118,11 @@ export class GroupReportsUploadsComponent implements OnInit {
         dialogRef.afterClosed().subscribe(async (result) => {
             if (!result) { return; }
             try {
-                this.spinner.show();
-                const res = await this.scheduleService.deleteCompletedReport(report.id);
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
-                this.spinner.hide();
-                this.toastr.success(res.message);
                 this.data.surveys.splice(index, 1);
+                const res = await this.scheduleService.deleteCompletedReport(report.id);
+                this.toastr.success(res.message);
             } catch (e) {
-                this.spinner.hide();
                 // To be removed
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
                 this.data.surveys.splice(index, 1);
@@ -139,14 +133,12 @@ export class GroupReportsUploadsComponent implements OnInit {
     async approve(file, type) {
         const value = file.approved ? 0 : 1;
         try {
-            this.spinner.show();
-            const res = await this.scheduleService.reportsUploadsApprove(type, file.id, value);
-            this.spinner.hide();
-            this.toastr.success(res.message);
             file.approved = value;
+            const res = await this.scheduleService.reportsUploadsApprove(type, file.id, value);
+            this.toastr.success(res.message);
         } catch (e) {
-            this.spinner.hide();
             this.displayError(e);
+            file.approved = value ? 0 : 1;
         }
     }
 

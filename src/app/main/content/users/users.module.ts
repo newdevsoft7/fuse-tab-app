@@ -47,6 +47,8 @@ import { UsersProfileUnavailabilityComponent } from './profile/unavailability/un
 import { AddUnavailabilityDialogComponent } from './profile/unavailability/add-unavailability-dialog/add-unavailability-dialog.component';
 import { EditUserStatusComponent } from './profile/edit-user-status/edit-user-status.component';
 import { UsersSettingsPermissionSublistComponent } from './profile/settings/permission-sublist/permission-sublist.component';
+import { UsersProfileExperienceModule } from './profile/experience/experience.module';
+import { UsersSettingsStaffOutsourceComponent } from './profile/settings/staff-outsource/staff-outsource.component';
 
 @NgModule({
     imports: [
@@ -54,7 +56,8 @@ import { UsersSettingsPermissionSublistComponent } from './profile/settings/perm
         SharedModule,
         CustomMultiSelectGroupModule,
         CustomMultiSelectModule,
-        CKEditor5Module
+        CKEditor5Module,
+        UsersProfileExperienceModule
     ],
     declarations: [
         UsersComponent,
@@ -95,6 +98,7 @@ import { UsersSettingsPermissionSublistComponent } from './profile/settings/perm
         UsersSettingsClientPermissionsComponent,
         UsersSettingsChangePasswordComponent,
         UsersSettingsPermissionSublistComponent,
+        UsersSettingsStaffOutsourceComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,

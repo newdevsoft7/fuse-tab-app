@@ -1,0 +1,41 @@
+<div id="file-list" *fuseIfOnDom [@animateStagger]="{value: '50'}">
+  <!-- Header -->
+  <div fxLayout="row" fxLayoutAlign="start center" class="file-list-header">
+    <div fxFlex="64px" class="pl-24"></div>
+    <div fxFlex>Name</div>
+    <div fxFlex fxHide fxShow.gt-md>Type</div>
+    <div fxFlex fxHide.xs>Uploader</div>
+    <div fxFlex fxHide.xs>Size</div>
+    <div fxFlex fxHide fxShow.gt-md>Modified</div>
+    <div fxFlex="48px" fxHide.gt-md></div>
+  </div>
+  <!-- / Header -->
+
+  <div fxLayout="row" fxLayoutAlign="start center" *ngIf="folders.length > 1"
+    (click)="goToParent()" class="file-list-item">
+    <div fxFlex="64px" class="pl-24"></div>
+    <div fxFlex>
+        <mat-icon>subdirectory_arrow_left</mat-icon>
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let file of files" class="file-list-item"
+    (click)="onSelect(file)" [ngClass]="{'mat-light-blue-50-bg':file == selected}">
+    <div fxFlex="64px" class="pl-24">
+        <mat-icon class="type-icon" [ngClass]="file.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
+    </div>
+    <div fxFlex>{{file.name}}</div>
+    <div fxFlex fxHide fxShow.gt-md>{{file.type}}</div>
+    <div fxFlex fxHide.xs>{{file.uploader ? file.uploader : '-'}}</div>
+    <div fxFlex fxHide.xs>{{file.size ? file.size : '-'}}</div>
+    <div fxFlex fxHide fxShow.gt-md>
+      {{file.updated_at ? file.updated_at : (file.created_at ? file.created_at : '-')}}</div>
+    <div fxFlex="48px" fxHide.gt-md>
+        <button mat-icon-button class="sidenav-toggle"
+          fuseMatSidenavToggler="file-manager-right-sidenav">
+          <mat-icon>info</mat-icon>
+        </button>
+    </div>
+  </div>
+</div>
+

@@ -293,9 +293,14 @@ export class ScheduleService {
     return this.http.post(url, {}).catch(this.handleError);
   }
 
-  checkOutShiftRole(roleStaffId: number): Observable<any> {
+  checkOutShiftRole(roleStaffId: number, body: FormData): Promise<any> {
     const url = `${BASE_URL}/role/checkOut/${roleStaffId}`;
-    return this.http.post(url, {}).catch(this.handleError);
+    return this.http.post(url, body).toPromise();
+  }
+
+  checkInShiftRole(roleStaffId: number, body: FormData): Promise<any> {
+    const url = `${BASE_URL}/role/checkIn/${roleStaffId}`;
+    return this.http.post(url, body).toPromise();
   }
 
   confirmStaffSelection(roleStaffId: number): Observable<any> {

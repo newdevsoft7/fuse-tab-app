@@ -25,6 +25,7 @@ import { StaffShiftConfirmDialogComponent } from './dialogs/confirm-dialog/confi
 import { StaffShiftPayItemDialogComponent } from './dialogs/pay-item-dialog/pay-item-dialog.component';
 import { StaffShiftApplyDialogComponent } from './dialogs/apply-dialog/apply-dialog.component';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
+import { StaffShiftCheckInOutDialogComponent } from './dialogs/check-in-out-dialog/check-in-out-dialog.component';
 
 enum Action {
     apply = 'apply',
@@ -82,7 +83,31 @@ export class StaffShiftInfoComponent implements OnInit {
         return payItems.reduce((ac, item) => ac + item.total, 0);
     }
 
+    getStyle(action) {
+        let style;
+        switch(action) {
+            case Action.confirm:
+            case Action.apply:
+                style = 'mat-accent-bg'
+                break;
+
+            case Action.replace:
+            case Action.not_available:
+                style = 'mat-warn-bg';
+                break;
+
+
+            default:
+                style = 'mat-primary-50-bg';
+                break;
+        }
+
+        return style;
+    }
+
     doAction(action, role) {
+        let dialogRef;
+
         switch (action) {
             case Action.apply:
                 this.dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
@@ -106,12 +131,11 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.cancel_application:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: {
-                        title: 'Really cancel your application?'
-                    }
+                dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+                    disableClose: false
                 });
-                this.dialogRef.afterClosed().subscribe(result => {
+                dialogRef.componentInstance.confirmMessage = 'Really cancel your application?';
+                dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.applyCancelShiftRole(roleStaffId)
@@ -176,10 +200,11 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.cancel_replace:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: { title: 'Cancel your replacement request?'}
+                dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+                    disableClose: false
                 });
-                this.dialogRef.afterClosed().subscribe(result => {
+                dialogRef.componentInstance.confirmMessage = 'Really cancel your application?';
+                dialogRef.afterClosed().subscribe(result => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.replaceCancelShiftRole(roleStaffId)
@@ -197,24 +222,47 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.check_in:
-
+                dialogRef = this.dialog.open(StaffShiftCheckInOutDialogComponent, {
+                    disableClose: false,
+                    panelClass: 'staff-shift-check-in-out-dialog',
+                    data: {
+                        mode: 'checkin'
+                    }
+                });
+                dialogRef.afterClosed().subscribe(async(result) => {
+                    if (result) {
+                        const roleStaffId = role.role_staff_id;
+                        try {
+                            const res = await this.scheduleService.checkInShiftRole(roleStaffId, result);
+                            this.toastr.success(res.message);
+                            role.message = res.role_message;
+                            role.actions = [...res.actions]
+                        } catch (e) {
+                            this.displayError(e);
+                        }
+                    }
+                });
                 break;
 
             case Action.check_out:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: { title: 'Really check out from this role?' }
+                dialogRef = this.dialog.open(StaffShiftCheckInOutDialogComponent, {
+                    disableClose: false,
+                    panelClass: 'staff-shift-check-in-out-dialog',
+                    data: {
+                        mode: 'checkout'
+                    }
                 });
-                this.dialogRef.afterClosed().subscribe(result => {
+                dialogRef.afterClosed().subscribe(async(result) => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
-                        this.scheduleService.checkOutShiftRole(roleStaffId)
-                            .subscribe(res => {
-                                this.toastr.success(res.message);
-                                role.message = res.role_message;
-                                role.actions = [...res.actions]
-                            }, err => {
-                                this.toastr.error(err.error.message);
-                            });
+                        try {
+                            const res = await this.scheduleService.checkOutShiftRole(roleStaffId, result);
+                            this.toastr.success(res.message);
+                            role.message = res.role_message;
+                            role.actions = [...res.actions]
+                        } catch (e) {
+                            this.displayError(e);
+                        }
                     }
                 });
                 break;
@@ -249,6 +297,16 @@ export class StaffShiftInfoComponent implements OnInit {
 
             default:
                 break;
+        }
+    }
+
+    private displayError(e: any) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.message);
         }
     }
 

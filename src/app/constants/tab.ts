@@ -29,7 +29,7 @@ export const TAB = {
     'SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB': new Tab('Export Shifts as Excel', 'shiftsExportAsExcelTpl', 'schedule/export-shift/excel-spreadsheet', {}),
     'SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB': new Tab('Export Shifts as PDF', 'shiftsExportAsPdfTpl', 'schedule/export-shift/pdf-overview', {}),
 
-    'REPORTS_AND_UPLOADS_TAB': new Tab('Reports & Uploads', '', 'reports-and-uploads', {}),
+    'REPORTS_AND_UPLOADS_TAB': new Tab('Reports & Uploads', 'reportsUploadsTpl', 'reports-and-uploads', {}),
     'REPORTS_AND_UPLOADS_REPORT_DESIGNER_TAB': new Tab('Report Designer', '', 'reports-and-uploads/report-designer', {}),
     'REPORTS_AND_UPLOADS_SHARED_FILES_TAB': new Tab('Shared Files', '', 'reports-and-uploads/shared-file', {}),
 
@@ -43,12 +43,6 @@ export const TAB = {
     'TRACKING_TAB': new Tab('Tracking', 'trackingTpl', 'tracking', {}),
 
     'SETTINGS_TAB': new Tab('Settings', 'settingsTpl', 'settings', {}),
-    'SETTINGS_PROFILE_TAB': new Tab('Profile', '', 'settings/profile', {}),
-    'SETTINGS_PROFILE_ATTRIBUTES_TAB': new Tab('Attributes', 'settingsProfileAttributesTpl', 'settings/profile/attributes', {}),
-    'SETTINGS_PROFILE_EXPERIENCE_TAB': new Tab('Experience', '', 'settings/profile/experience', {}),
-    'SETTINGS_PROFILE_INFO_TAB': new Tab('Profile Info', 'settingsProfileInfoTpl', 'settings/profile/info', {}),
-    'SETTINGS_PROFILE_RATINGS_TAB': new Tab('Ratings', 'settingsProfileRatingsTpl', 'settings/profile/rating', {}),
-    'SETTINGS_PROFILE_SHOWCASES_TAB': new Tab('Showcases', '', 'settings/profile/showcases', {}),
     'SETTINGS_SYSTEM_TAB': new Tab('System', '', 'settings/system', {}),
     'SETTINGS_TEMPLATES_TAB': new Tab('Templates', '', 'settings/templates', {}),
     'SETTINGS_TEMPLATES_EMAIL_TAB': new Tab('Email Templates', 'emailTemplatesTpl', 'settings/templates/email', {}),
@@ -62,8 +56,8 @@ export const TAB = {
     'SETTINGS_HELP_UPDATES_CHANGELOG_TAB': new Tab('Updates & Changelog', '', 'settings/help/updates-changelog', {}),
 
     // Staff tabs
-    'STAFF_INVOICES_TAB': new Tab('Pay', '', 'staff/invoices', {}),
-    'STAFF_NEW_INVOICE_TAB': new Tab('New Invoice', '', 'staff/new-invoce', {}),
+    'STAFF_INVOICES_TAB': new Tab('Pay', 'payrollTpl', 'staff/invoices', {}),
+    'STAFF_NEW_INVOICE_TAB': new Tab('New Invoice', 'generatePayrollTpl', 'staff/new-invoice', {}),
 
     // Client tabs
     'SCHEDULE_CLIENT_LIST_TAB': new Tab('List', 'clientShiftListTpl', 'schedule/client-list', {}),

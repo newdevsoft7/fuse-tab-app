@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TabComponent } from '../../../tab/tab/tab.component';
 import { Subscription } from 'rxjs';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -82,7 +83,15 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         title: 'Copy',
         icon: 'content_copy',
         callback: (event: EventEntity): void => {
-          // put some logic here
+          if (event.type === 'u') {
+            // For unavailabilities
+          } else if (event.type === 'g') {
+            // For group shift
+          } else {
+            const url = `schedule/new-shift/${event.id}`;
+            const tab = new Tab('New Shift', 'newShiftTpl', url, { url, shiftId: event.id });
+            this.tabService.openTab(tab);
+          }
         }
       },
       {
@@ -235,9 +244,30 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   }
 
   deleteEvent(event: EventEntity): void {
-    const index = this.options.events.indexOf(event);
-    if (index > -1) {
-      this.options.events.splice(index, 1);
+    if (event.type !== 'g') {
+      const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+        disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+      dialogRef.afterClosed().subscribe(async(result) => {
+        if (result) {
+          try {
+            const index = this.options.events.indexOf(event);
+            if (index > -1) {
+              this.options.events.splice(index, 1);
+            }
+            const res = await this.scheduleService.deleteShift(event.id);
+            this.toastrService.success(res.message);
+          } catch (e) {
+            this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
+          }
+        }
+      });
+    } else {
+      const index = this.options.events.indexOf(event);
+      if (index > -1) {
+        this.options.events.splice(index, 1);
+      }
     }
   }
 

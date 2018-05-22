@@ -70,7 +70,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 			});
 	}
 
-	onUploadDocument(event, isAdmin = 0) {
+	async onUploadDocument(event, isAdmin = 0) {
 		const files = event.target.files;
 		if (files && files.length > 0) {
 			this.spinner.show();
@@ -85,22 +85,22 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 				formData.append('adminOnly', '1');
 			}
 
-			this.userService.uploadProfileDocument(this.user.id, formData)
-				.subscribe(res => {
-					this.spinner.hide();
-					this.toastr.success(res.message);
-					res.data.map(document => {
-						this.documents.push(document);
-					});
-				}, err => {
-					this.spinner.hide();
-					_.forEach(err.error.errors, errors => {
-						_.forEach(errors, (error: string) => {
-							const message = _.replace(error, /document\.\d+/g, 'document');
-							this.toastr.error(message);
-						});
+			try {
+				const res = await this.userService.uploadProfileDocument(this.user.id, formData).toPromise();
+				this.toastr.success(res.message);
+				res.data.map(document => {
+					this.documents.push(document);
+				});
+			} catch (e) {
+				_.forEach(e.error.errors, errors => {
+					_.forEach(errors, (error: string) => {
+						const message = _.replace(error, /document\.\d+/g, 'document');
+						this.toastr.error(message);
 					});
 				});
+			} finally {
+				this.spinner.hide();
+			}
 		}
 	}
 

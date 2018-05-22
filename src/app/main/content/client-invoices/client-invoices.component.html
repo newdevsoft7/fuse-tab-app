@@ -72,7 +72,7 @@
       (select)="onSelect($event)" 
       (activate)="onActivate($event)">
 
-        <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+        <!-- <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
             [resizeable]="false" [headerCheckboxable]="true">
 
             <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
@@ -82,7 +82,7 @@
             <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
                 <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
             </ng-template>
-        </ngx-datatable-column>
+        </ngx-datatable-column> -->
 
         <ngx-datatable-column name="Date" prop="created_at" [sortable]="true" [canAutoResize]="true">
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>

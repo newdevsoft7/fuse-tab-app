@@ -12,31 +12,8 @@
 
             .preview {
                 width: 256px;
-                height: 208px;
-                background-color: black;
-                display: flex;
-                align-items: center;
-                position: relative;
-                img {
-                    width: 100%;
-                }
-                button {
-                    position: absolute;
-                    width: fit-content;
-                    height: fit-content;
-                    margin: auto;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    mat-icon {
-                        height: 50px;
-                        font-size: 50px;
-                        width: 50px;
-                        line-height: 50px;
-                        color: rgba(0,0,0,0.7);
-                    }
-                }
+                height: 256px;
+                display: block;
             }
 
             .title {

@@ -1,17 +1,17 @@
 <div id="register-step5-container">
 
-    <div class="mb-24" *ngIf="settings.profile_video_msg">
-        <h1>
-            {{settings.profile_video_msg}}
-            <span class="secondary-text ml-4" *ngIf="settings.profile_video_required > 0">
-                ({{settings.profile_video_required}}&nbsp; {{settings.profile_video_required > 1 ? 'videos' : 'video'}} required)
+    <div class="mb-24" *ngIf="settings.profile_doc_message">
+        <h2>
+            {{settings.profile_doc_message}}
+            <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
+                ({{settings.profile_doc_required}}&nbsp; {{settings.profile_doc_required > 1 ? 'documents' : 'document'}} required)
             </span>
-        </h1>
+        </h2>
     </div>
 
     <!-- ADD FILE BUTTON -->
     <div class="file-uploader">
-        <input hidden type="file" #fileInput (change)="onUploadVideo($event)" multiple/>
+        <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
         <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
             <mat-icon>file_upload</mat-icon>
             <span>Upload</span>
@@ -19,9 +19,9 @@
     </div>
     <!-- / ADD FILE BUTTON -->
 
-    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="videos">
-        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of videos" [model]="video">
-            <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
+    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="documents">
+        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of documents" [model]="document">
+            <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
             </ng-container>
         </div>
     </div>
@@ -38,20 +38,16 @@
 
 </div>
 
-<!-- VIDEO TEMPLATE -->
-<ng-template #videoTpl let-video="video">
-
-    <div class="preview">
-        <img [src]="video.thumbnail" (click)="showVideo(video)">
-        <button mat-icon-button (click)="showVideo(video)">
-            <mat-icon>play_circle_filled</mat-icon>
-        </button>
-    </div>
-
-    <div class="title" fxLayout="row" fxLayoutAlign="end center">
-        <button mat-icon-button (click)="deleteVideo(video)">
+<!-- DOCUMENT TEMPLATE -->
+<ng-template #documentTpl let-document="document">
+    <a [href]="document.path" target="blank">
+        <img class="preview" src="assets/images/avatars/pdf_thumbnail.jpg">
+    </a>
+    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
+        <span>{{document.oname}}</span>
+        <button mat-icon-button (click)="deleteDocument(document)">
             <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
         </button>
     </div>
 </ng-template>
-<!-- / VIDEO TEMPLATE -->
+<!-- / DOCUMENT TEMPLATE -->

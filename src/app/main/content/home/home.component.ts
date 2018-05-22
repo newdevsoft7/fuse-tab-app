@@ -45,10 +45,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
-    @ViewChild('settingsProfileInfoTpl') settingsProfileInfoTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
-    @ViewChild('settingsProfileAttributesTpl') settingsProfileAttributesTpl;
-    @ViewChild('settingsProfileRatingsTpl') settingsProfileRatingsTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
@@ -95,6 +92,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('clientInvoicesTpl') clientInvoicesTpl;
     @ViewChild('clientInvoicesDetailTpl') clientInvoicesDetailTpl;
     @ViewChild('clientInvoiceGenerateTpl') clientInvoiceGenerateTpl;
+
+    @ViewChild('reportsUploadsTpl') reportsUploadsTpl;
 
     socketService: SocketService;
     fcmService: FCMService;
@@ -338,7 +337,10 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 } else {
                     payMenu.type = 'item';
                 }
-                navModel.splice(1, 0, payMenu);
+                const index = navModel.findIndex(m => m.id === 'invoices');
+                if (index < 0) {
+                    navModel.splice(1, 0, payMenu);
+                } 
                 break;
 
             default:

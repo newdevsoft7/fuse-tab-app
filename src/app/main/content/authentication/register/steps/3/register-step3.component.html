@@ -1,34 +1,8 @@
-<div id="register-step3-container">
+<app-users-profile-experience [userInfo]="user" [settings]="settings"></app-users-profile-experience>
 
-    <!-- MESSAGE -->
-    <div class="mb-24" *ngIf="settings.profile_photo_msg">
-        <h1>
-            {{settings.profile_photo_msg}}
-            <span class="secondary-text ml-4" *ngIf="settings.profile_photo_required > 0">
-                ({{settings.profile_photo_required}}&nbsp; {{settings.profile_photo_required > 1 ? 'photos' : 'photo'}} required)
-            </span>
-        </h1>
-    </div>
-    <!-- / MESSAGE -->
+<div class="p-24 pt-0" fxLayout="column">
 
-    <!-- ADD FILE BUTTON -->
-    <div class="file-uploader">
-        <input hidden type="file" #fileInput (change)="onUploadPhoto($event)" multiple/>
-        <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
-            <mat-icon>file_upload</mat-icon>
-            <span>Upload</span>
-        </button>
-    </div>
-    <!-- / ADD FILE BUTTON -->
-
-    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="photos">
-        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of photos" [model]="photo">
-            <ng-container [ngTemplateOutlet]="photoTpl" [ngTemplateOutletContext]="{photo: photo}">
-            </ng-container>
-        </div>
-    </div>
-
-    <div class="pt-24" fxLayout="row" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="center center">
         <button mat-raised-button type="button" color="accent" class="mr-12" (click)="quit()">
             Quit
         </button>
@@ -39,27 +13,3 @@
     </div>
 
 </div>
-
-<!-- PHOTO TEMPLATE -->
-<ng-template #photoTpl let-photo="photo">
-
-    <img class="preview" [src]="photo.thumbnail" (click)="showFullImage(photo)">
-
-    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
-
-        <div fxLayout="row" fxLayoutAlign="end">
-
-            <button mat-icon-button *ngIf="currentUser.lvl.indexOf('registrant') === -1">
-                <mat-icon [class.fa-rotate-90]="!photo.main" fontSet="fa" fontIcon="fa-thumb-tack"
-                    (click)="setPhoto(photo)"></mat-icon>
-            </button>
-
-            <button mat-icon-button (click)="deletePhoto(photo)">
-                <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
-            </button>
-
-        </div>
-
-    </div>
-</ng-template>
-<!-- / PHOTO TEMPLATE -->

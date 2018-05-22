@@ -10,11 +10,11 @@ import { StaffShiftMapComponent } from './map/map.component';
 import { TabService } from '../../../../tab/tab.service';
 
 enum TAB {
-    Info = 0,
-    Map = 1,
-    Expenses = 2,
-    REPORTS_AND_UPLOADS = 3
-};
+    Info = 'Info',
+    Map = 'Map',
+    Expenses = 'Expenses',
+    Reports = 'Reports & Uploads'
+}
 
 @Component({
     selector: 'app-staff-shift',
@@ -29,6 +29,7 @@ export class StaffShiftComponent implements OnInit {
     showMoreBtn = true;
     timezones: any;
     managers = '';
+    settings: any;
 
     @ViewChild('mapTab') mapTab: StaffShiftMapComponent;
 
@@ -38,10 +39,13 @@ export class StaffShiftComponent implements OnInit {
         private userService: UserService,
         private scheduleService: ScheduleService,
         private tabService: TabService
-    ) { }
+    ) {
+        this.settings = this.tokenStorage.getSettings();
+    }
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
+
         this.fetch();
 
         // Get timezones
@@ -74,7 +78,7 @@ export class StaffShiftComponent implements OnInit {
     }
 
     selectedTabChange(event: MatTabChangeEvent) {
-        switch (event.index) {
+        switch (event.tab.textLabel) {
             case TAB.Map:
                 this.mapTab.refreshMap();
                 break;
