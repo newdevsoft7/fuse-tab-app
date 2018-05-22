@@ -2,12 +2,13 @@
 
 .user-assign-report-dialog {
 
+
     @include media-breakpoint('xs') {
         width: 100%;
     }
 
     @include media-breakpoint-up('xs') {
-        width: 400px;
+        width: 700px;
     }
 
     .mat-dialog-container {

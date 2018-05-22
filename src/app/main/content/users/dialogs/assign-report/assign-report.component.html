@@ -11,11 +11,32 @@
   <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
 
 
-      <div class="content" fxLayout="row" fxLayoutWrap>
-        <div *ngFor="let quiz of quizes" class="info" fxFlex="100">
-          <mat-checkbox [(ngModel)]="quiz.assign" (change)="onUpdateAttribute($event)">{{quiz.rname}}</mat-checkbox>
+    <div class="content">
+      <div *ngFor="let quiz of quizes" class="info" fxLayout.gt-xs="row wrap" fxLayout="column">
+        <div fxLayout="column" fxFlex="40">
+            <mat-checkbox [(ngModel)]="quiz.assign" (change)="onUpdateAttribute($event)">{{quiz.rname}}</mat-checkbox>
         </div>
+        <div fxLayout="column" fxFlex="60">
+          <div fxLayout.gt-xs="row wrap" fxLayout="column">
+            <div fxFlex="50" fxLayout="column" *ngIf="quiz.assign">
+                <mat-form-field class="date-picker" fxFlex="50" >
+                  <input matInput [matDatepicker]="datePicker" [(ngModel)]="quiz.deadline" placeholder="Deadline">
+                  <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #datePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div fxFlex="50" fxLayout="column" *ngIf="quiz.assign">
+              <mat-form-field fxFlex="50">
+                <input [(ngModel)]="quiz.completitions" type="number" matInput placeholder="Number of completitions" >
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+
+
       </div>
+    </div>
   </div>
 
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">

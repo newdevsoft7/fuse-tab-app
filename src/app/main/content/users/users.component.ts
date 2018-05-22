@@ -229,15 +229,16 @@ export class UsersComponent implements OnInit {
                 console.log(assignedReports);
               const userIds = this.selectedUsers.map(user => user.id);
 
-              const data = {
-                'user_ids' : userIds,
-                'deadline' : null,
-                'completions' : null,
-              };
+
 
 
               for (let i = 0; i < assignedReports.length; i++) {
-                if(assignedReports[i].assign) {
+                if (assignedReports[i].assign) {
+                    const data = {
+                        'user_ids' : userIds,
+                        'deadline' : assignedReports[i].deadline,
+                        'completions' : assignedReports[i].completitions,
+                    };
                   this.userService.assignReport(assignedReports[i].id, data).subscribe(res => {
                     console.log(res);
                   }, err => {
