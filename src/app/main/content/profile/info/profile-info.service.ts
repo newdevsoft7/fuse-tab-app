@@ -109,6 +109,12 @@ export class ProfileInfoService {
         });
     }
 
+    setOptionDisplayOrder(options: number[]) {
+        const url = `${PROFILE_STRUCTURE_URL}/options/displayOrder`;
+        return this.http.put(url, { options })
+            .catch(this.handleError);
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }
