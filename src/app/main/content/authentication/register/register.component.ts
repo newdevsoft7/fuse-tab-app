@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit {
       this.setSteps(this.steps);
     }
 
-    this.route.firstChild.params.subscribe((res: {step: string}) => {
+    this.route.firstChild.params.subscribe((res: { step: string }) => {
       let step = parseInt(res.step) || 0;
       if (step >= 9) {
         step = 8;
@@ -120,10 +120,10 @@ export class RegisterComponent implements OnInit {
 
       // Navigate last step, but consider skipped steps
       let stepsToSkip = 0;
-      for (let i = 1 ; i < index; i++) {
+      for (let i = 1; i < index; i++) {
         if (!steps[`step${i}`]) stepsToSkip++;
       }
-      const stepIndex = index -stepsToSkip;
+      const stepIndex = index - stepsToSkip;
       this.changeStep(stepIndex);
       this.router.navigate(['/register', stepIndex]);
     }
@@ -159,7 +159,7 @@ export class RegisterComponent implements OnInit {
         disableClose: false
       });
       this.dialogRef.componentInstance.confirmTitle = 'Really quit?';
-      this.dialogRef.componentInstance.confirmMessage = 'Your registration is incomplete. You may log in to resume where you left off at any time.';
+      this.dialogRef.componentInstance.confirmMessage = 'You may log in to resume where you left off at any time.';
       this.dialogRef.afterClosed().subscribe(result => {
         if (result) {
           this.authService.logout();
