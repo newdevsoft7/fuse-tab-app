@@ -1,5 +1,5 @@
 <div fxFlex="1 0 auto" *ngIf="!formActive" class="sex-element" (click)="openForm()">
-	<span class="sex-value">{{element.sex}}</span>
+	<span class="sex-value">{{element.data ? element.data : 'Empty'}}</span>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="sex-element-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">

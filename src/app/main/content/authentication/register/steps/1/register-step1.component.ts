@@ -24,6 +24,8 @@ export class RegisterStep1Component implements OnInit, OnChanges {
 
     profile: any;
 
+    sex: string;
+
     constructor(
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
@@ -51,6 +53,12 @@ export class RegisterStep1Component implements OnInit, OnChanges {
 
     quit() {
         this.quitClicked.next(true);
+    }
+
+    updateSex(sex: string) {
+        setTimeout(() => {
+            this.sex = sex;
+        });
     }
 
     save() {
