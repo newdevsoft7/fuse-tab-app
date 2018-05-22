@@ -10,7 +10,7 @@ export class RegistrationGuardService implements CanActivate {
     private router: Router) {}
 
   canActivate(route, state: RouterStateSnapshot): boolean {
-    if (!this.appSetting.baseData.registration_enable) {
+    if (this.appSetting.baseData.registration_enable !== '1') {
       this.router.navigate(['/login']);
       return false;
     }

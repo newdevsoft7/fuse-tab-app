@@ -7,9 +7,9 @@ import { FuseConfigService } from "../../../../core/services/config.service";
 import * as _ from "lodash";
 import { UserService } from "../../users/user.service";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
-import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 import { AuthenticationService } from "../../../../shared/services/authentication.service";
 import { AppSettingService } from "../../../../shared/services/app-setting.service";
+import { FuseConfirmYesNoDialogComponent } from "../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component";
 
 @Component({
   selector: 'app-register',
@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
   // For step visibility: null => hidden
   steps: any; // From step 1 to step 8
 
-  dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  dialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
 
   constructor(
     private dialog: MatDialog,
@@ -153,16 +153,21 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  quitStep(event) {
-    this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
-      disableClose: false
-    });
-    this.dialogRef.componentInstance.confirmMessage = 'Really quit?';
-    this.dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.authService.logout();
-      }
-    });
+  quitStep(event, hideConfirm?: boolean) {
+    if (!hideConfirm) {
+      this.dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+        disableClose: false
+      });
+      this.dialogRef.componentInstance.confirmTitle = 'Really quit?';
+      this.dialogRef.componentInstance.confirmMessage = 'Your registration is incomplete. You may log in to resume where you left off at any time.';
+      this.dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.authService.logout();
+        }
+      });
+    } else {
+      this.authService.logout();
+    }
   }
 
   doSubmit() {
