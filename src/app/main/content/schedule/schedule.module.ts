@@ -38,7 +38,6 @@ import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edi
 import { AdminShiftEditPeriodComponent } from './shift/admin-shift/edit-period/edit-period.component';
 import { AdminShiftEditManagersComponent } from './shift/admin-shift/edit-managers/edit-managers.component';
 import { AdminShiftListComponent } from './shift-list/admin-shift-list/admin-shift-list.component';
-import { ShiftsExportAsExcelComponent } from './shifts-export/shifts-export-as-excel/shifts-export-as-excel.component';
 import { ShiftsExportAsPdfComponent } from './shifts-export/shifts-export-as-pdf/shifts-export-as-pdf.component';
 
 // Staff Shift Components
@@ -99,6 +98,8 @@ import { GroupReportsUploadsComponent } from './shift/admin-shift-group/reports-
 import { GroupSelectShiftDialogComponent } from './shift/admin-shift-group/reports-uploads/select-shift-dialog/select-shift-dialog.component';
 import { StaffShiftReportsUploadsComponent } from './shift/staff-shift/reports-uploads/reports-uploads.component';
 import { StaffShiftCheckInOutDialogComponent } from './shift/staff-shift/info/dialogs/check-in-out-dialog/check-in-out-dialog.component';
+import { AdminExportAsExcelDialogComponent } from './shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
+import { AdminExportAsPdfDialogComponent } from './shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 
 
 @NgModule({
@@ -146,7 +147,6 @@ import { StaffShiftCheckInOutDialogComponent } from './shift/staff-shift/info/di
         AdminShiftListComponent,
         EditShiftComponent,
         ShiftsImportComponent,
-        ShiftsExportAsExcelComponent,
         ShiftsExportAsPdfComponent,
 
         // Staff view of shift
@@ -204,7 +204,9 @@ import { StaffShiftCheckInOutDialogComponent } from './shift/staff-shift/info/di
         GroupAttachmentsComponent,
         GroupReportsUploadsComponent,
         GroupSelectShiftDialogComponent,
-        StaffShiftCheckInOutDialogComponent
+        StaffShiftCheckInOutDialogComponent,
+        AdminExportAsExcelDialogComponent,
+        AdminExportAsPdfDialogComponent,
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -227,7 +229,9 @@ import { StaffShiftCheckInOutDialogComponent } from './shift/staff-shift/info/di
         GroupDialogComponent,
         GroupEditTrackingDialogComponent,
         GroupEditWorkareasDialogComponent,
-        GroupSelectShiftDialogComponent
+        GroupSelectShiftDialogComponent,
+        AdminExportAsExcelDialogComponent,
+        AdminExportAsPdfDialogComponent
     ],
     exports: [
         ScheduleComponent,
@@ -243,7 +247,6 @@ import { StaffShiftCheckInOutDialogComponent } from './shift/staff-shift/info/di
         ClientNewBookingComponent,
         ClientShiftComponent,
         ShiftsImportComponent,
-        ShiftsExportAsExcelComponent,
         ShiftsExportAsPdfComponent,
         ColumnMappingComponent,
         ImportHistoryComponent,

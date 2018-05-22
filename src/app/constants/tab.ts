@@ -26,7 +26,6 @@ export const TAB = {
     'SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING_TAB': new Tab('Column Mapping', 'columnMappingTpl', 'schedule/import-shifts/column-mapping', {}),
     'SCHEDULE_EXPORT_SHIFTS_TAB': new Tab('Export Shifts', '', 'schedule/export-shift', {}),
     'SCHEDULE_NEW_SHIFT_TAB': new Tab('New Shift', 'newShiftTpl', 'schedule/new-shift', { url: 'schedule/new-shift'}),
-    'SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB': new Tab('Export Shifts as Excel', 'shiftsExportAsExcelTpl', 'schedule/export-shift/excel-spreadsheet', {}),
     'SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB': new Tab('Export Shifts as PDF', 'shiftsExportAsPdfTpl', 'schedule/export-shift/pdf-overview', {}),
 
     'REPORTS_AND_UPLOADS_TAB': new Tab('Reports & Uploads', 'reportsUploadsTpl', 'reports-and-uploads', {}),
