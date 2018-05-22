@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../environments/environment';
 import { EventEntity } from '../../../core/components/sc-calendar';
+import * as _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 const BASE_URL = environment.apiUrl;
 const SHIFT_URL = `${BASE_URL}/shifts`;
@@ -13,7 +15,9 @@ const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
 @Injectable()
 export class ScheduleService {
   constructor(
-    private http: HttpClient) {}
+    private http: HttpClient,
+    private toastr: ToastrService
+  ) {}
 
   async getEvents(fromDate: string, toDate: string): Promise<EventEntity[]> {
     const url = `${SHIFT_URL}/${fromDate}/${toDate}/calendar`;
@@ -486,8 +490,46 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
+  getExtraUserInfo(query? : string): Observable<any> {
+    if (_.isNil(query)) { query = ''; }
+    const url = `${BASE_URL}/autocomplete/extraUserInfo/${query}`;
+    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
+  }
+
+  exportAsCSV(body: any = {}) {
+    const url = `${BASE_URL}/shifts/export/csv`;
+    return this.http.post(url, body, { observe: 'response', responseType: 'blob'}).toPromise()
+      .then(res => this.downloadFile(res['body']))
+      .catch(e => this.displayError(e))
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
+  }
+
+  downloadFile(data){
+    let dwldLink = document.createElement("a");
+    let url = URL.createObjectURL(data);
+    let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
+    if (isSafariBrowser) {  //if Safari open in new window to save file with random filename.
+        dwldLink.setAttribute("target", "_blank");
+    }
+    dwldLink.setAttribute("href", url);
+    dwldLink.setAttribute("download", "Shifts export.csv");
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+  private displayError(e: any) {
+    const errors = e.error.errors;
+    if (errors) {
+      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+    }
+    else {
+      this.toastr.error(e.message);
+    }
   }
 
 }

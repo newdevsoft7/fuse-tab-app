@@ -30,6 +30,8 @@ import { ShiftsExportAsExcelDialogComponent } from '../schedule/shifts-export/cl
 import { ShiftsExportAsPdfDialogComponent } from '../schedule/shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
 import { UsersExportDialogComponent } from '../users/users-export-dialog/users-export-dialog.component';
 import { TabComponent } from '../../tab/tab/tab.component';
+import { AdminExportAsExcelDialogComponent } from '../schedule/shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
+import { AdminExportAsPdfDialogComponent } from '../schedule/shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 
 @Component({
     selector: 'fuse-home',
@@ -51,7 +53,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('adminShiftListTpl') adminShiftListTpl;
     @ViewChild('adminShiftGroupTpl') adminShiftGroupTpl;
     @ViewChild('shiftsImportTpl') shiftsImportTpl;
-    @ViewChild('shiftsExportAsExcelTpl') shiftsExportAsExcelTpl;
     @ViewChild('shiftsExportAsPdfTpl') shiftsExportAsPdfTpl;
     @ViewChild('usersChatTpl') usersChatTpl;
     @ViewChild('adminShiftTpl') adminShiftTpl;
@@ -312,6 +313,66 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         },
                     );
                 }
+
+                const scheduleMenu = navModel.find(m => m.id === 'schedule');
+                if (scheduleMenu) {
+                    const exportShiftMenu = scheduleMenu.children.find(m => m.id === 'export_shifts');
+                    if (exportShiftMenu) {
+                        exportShiftMenu.function = () => {
+                            this.dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+                                panelClass: 'admin-shift-exports-as-excel-dialog',
+                                disableClose: false,
+                                data: {}
+                            });
+                            this.dialogRef.afterClosed().subscribe(res => {});
+                        };
+
+                        // Excel Spreadsheet
+                        if (_.findIndex(exportShiftMenu.children, ['id', 'excel_spreadsheet']) < 0) {
+                            exportShiftMenu.children.push(
+                                {
+                                    'id': 'excel_spreadsheet',
+                                    'title': 'Excel Spreadsheet',
+                                    'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
+                                    'type': 'item',
+                                    'function': () => {
+                                        this.dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+                                            panelClass: 'admin-shift-exports-as-excel-dialog',
+                                            disableClose: false,
+                                            data: {}
+                                        });
+
+                                        this.dialogRef.afterClosed().subscribe(res => { });
+                                    }
+                                },
+
+                            );
+                        }
+
+                        // PDF
+                        if (_.findIndex(exportShiftMenu.children, ['id', 'pdf_overview']) < 0) {
+                            exportShiftMenu.children.push(
+                                {
+                                    'id': 'pdf_overview',
+                                    'title': 'PDF Overview',
+                                    'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
+                                    'type': 'item',
+                                    'function': () => {
+                                        this.dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
+                                            panelClass: 'admin-shift-export-as-pdf-dialog',
+                                            disableClose: false,
+                                            data: {}
+                                        });
+
+                                        this.dialogRef.afterClosed().subscribe(res => { });
+                                    }
+                                },
+
+                            );
+                        }
+                    }
+                }
+                
                 break;
             
             case 'staff':

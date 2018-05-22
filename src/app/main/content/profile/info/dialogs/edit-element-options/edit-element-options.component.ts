@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProfileField } from '../../../profile-field.model';
 import { ProfileInfoService } from '../../profile-info.service';
 import * as _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 export const ASC = 'asc';
 export const DESC = 'desc';
@@ -16,6 +17,7 @@ export const DESC = 'desc';
 })
 export class ProfileInfoEditElementOptionsDialogComponent implements OnInit {
     sortOrder = ASC;
+    orderChanged = false;
     field: ProfileField;
     @ViewChild('optionInput') optionInputField;
 
@@ -23,7 +25,8 @@ export class ProfileInfoEditElementOptionsDialogComponent implements OnInit {
         public dialogRef: MatDialogRef<ProfileInfoEditElementOptionsDialogComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
         public dialog: MatDialog,
-        private profileInfoService: ProfileInfoService
+        private profileInfoService: ProfileInfoService,
+        private toastr: ToastrService
     ) { }
 
     ngOnInit() {
@@ -59,13 +62,30 @@ export class ProfileInfoEditElementOptionsDialogComponent implements OnInit {
     }
 
     onSortOptions() {
-        this.field.options = _.orderBy(this.field.options, ['display_order'], [this.sortOrder]);
+        this.field.options = _.orderBy(this.field.options, ['option'], [this.sortOrder]);
         this.sortOrder = this.sortOrder == ASC ? DESC : ASC;
+        this.orderChanged = true;
+    }
+
+    onDrop(event) {
+        this.orderChanged = true;
+    }
+
+    private saveDisplayOrder() {
+        const options = this.field.options.map(v => v.id);
+        this.profileInfoService.setOptionDisplayOrder(options).subscribe(res => {
+            this.toastr.success(res.message);
+        });
     }
 
     onSave() {
+        if (this.orderChanged) {
+            this.saveDisplayOrder();
+        }
         this.dialogRef.close(this.field);
     }
+
+    
 }
 
 

@@ -105,22 +105,7 @@ export const ADMIN_MODEL = [
                 'title': 'Export Shifts',
                 'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS',
                 'type': 'collapse',
-                'children': [
-                    {
-                        'id': 'excel_spreadsheet',
-                        'title': 'Excel Spreadsheet',
-                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET',
-                        'type': 'item',
-                        'tab': TAB.SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET_TAB
-                    },
-                    {
-                        'id': 'pdf_overview',
-                        'title': 'PDF Overview',
-                        'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
-                        'type': 'item',
-                        'tab': TAB.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW_TAB
-                    }
-                ]
+                'children': []
             },
             {
                 'id': 'new_shift',

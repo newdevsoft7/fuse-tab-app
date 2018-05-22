@@ -23,6 +23,7 @@ import { Tab } from '../../../../tab/tab';
 import { GroupDialogComponent } from './group-dialog/group-dialog.component';
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 
 @Component({
     selector: 'app-admin-shift-list',
@@ -332,5 +333,16 @@ export class AdminShiftListComponent implements OnInit {
         }
 
         this.getShifts();
+    }
+
+    export() {
+        const shiftIds = this.selectedShifts.map(v => v.id);
+        this.dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+            panelClass: 'admin-shift-exports-as-excel-dialog',
+            disableClose: false,
+            data: { shiftIds }
+        });
+
+        this.dialogRef.afterClosed().subscribe(res => { });
     }
 }
