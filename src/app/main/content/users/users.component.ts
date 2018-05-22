@@ -223,6 +223,29 @@ export class UsersComponent implements OnInit {
         this.dialogRef = this.dialog.open(AssignReportDialogComponent, {
             panelClass: 'user-assign-report-dialog',
         });
+
+        this.dialogRef.afterClosed()
+          .subscribe((assignedReports) => {
+                console.log(assignedReports);
+              const userIds = this.selectedUsers.map(user => user.id);
+
+              const data = {
+                'user_ids' : userIds,
+                'deadline' : null,
+                'completions' : null,
+              };
+
+
+              for (let i = 0; i < assignedReports.length; i++) {
+                if(assignedReports[i].assign) {
+                  this.userService.assignReport(assignedReports[i].id, data).subscribe(res => {
+                    console.log(res);
+                  }, err => {
+                    console.log(err);
+                  });
+                }
+              }
+          });
     }
 
     openNewUser() {

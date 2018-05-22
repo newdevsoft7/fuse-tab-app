@@ -12,7 +12,7 @@
 
 
       <div class="content" fxLayout="row" fxLayoutWrap>
-        <div *ngFor="let quiz of quizes" class="info" fxFlex="25">
+        <div *ngFor="let quiz of quizes" class="info" fxFlex="100">
           <mat-checkbox [(ngModel)]="quiz.assign" (change)="onUpdateAttribute($event)">{{quiz.rname}}</mat-checkbox>
         </div>
       </div>
@@ -21,7 +21,7 @@
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
 
     <button mat-raised-button (click)="onSave()" class="save-button mat-accent" aria-label="SAVE">
-      Save
+      Assign selected reports
     </button>
 
   </div>

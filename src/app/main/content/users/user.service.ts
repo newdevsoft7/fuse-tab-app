@@ -327,6 +327,13 @@ export class UserService {
         return this.http.delete(url).toPromise();
     }
 
+    assignReport(id: number, data: any): Observable<any> {
+        const url = `${BASE_URL}/report/${id}/assign`;
+        return this.http.post(url, data)
+          .catch(this.handleError);
+    }
+
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

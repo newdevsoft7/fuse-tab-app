@@ -36,7 +36,8 @@ export class AssignReportDialogComponent implements OnInit {
     }
 
     onSave() {
-
+        const assignedReports = this.quizes;
+        this.dialogRef.close(assignedReports);
     }
 
     onUpdateAttribute(attribute) {
