@@ -4,6 +4,7 @@ import { UsersComponent } from './users.component';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { UserService } from './user.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
+import { AssignReportDialogComponent } from './dialogs/assign-report/assign-report.component';
 import { UsersProfileComponent } from './profile/profile.component';
 import { UsersProfileAboutComponent } from './profile/about/about.component';
 import { UsersProfilePhotoComponent } from './profile/photo/photo.component';
@@ -102,7 +103,8 @@ import { UsersSettingsStaffOutsourceComponent } from './profile/settings/staff-o
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,
-        EditUserStatusComponent
+        EditUserStatusComponent,
+        AssignReportDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -132,7 +134,8 @@ import { UsersSettingsStaffOutsourceComponent } from './profile/settings/staff-o
         AddUserFormDialogComponent,
         RenameThreadFormDialogComponent,
         UsersExportDialogComponent,
-        AddUnavailabilityDialogComponent
+        AddUnavailabilityDialogComponent,
+        AssignReportDialogComponent
     ]
 })
 export class UsersModule { }

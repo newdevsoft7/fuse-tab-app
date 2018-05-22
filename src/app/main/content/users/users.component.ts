@@ -21,6 +21,8 @@ import { fuseAnimations } from '../../../core/animations';
 import { AuthenticationService } from '../../../shared/services/authentication.service';
 import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
+import { AssignReportDialogComponent} from './dialogs/assign-report/assign-report.component';
+
 
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -214,6 +216,12 @@ export class UsersComponent implements OnInit {
                     });
                 }
             }
+        });
+    }
+
+    openAssignReportDialog() {
+        this.dialogRef = this.dialog.open(AssignReportDialogComponent, {
+            panelClass: 'user-assign-report-dialog',
         });
     }
 

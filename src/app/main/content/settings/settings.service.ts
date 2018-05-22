@@ -226,6 +226,12 @@ export class SettingsService {
           .catch(this.handleError);
     }
 
+    getSurveysAndReports(): Observable<any> {
+        const url = `${BASE_URL}/reports`;
+        return this.http.get(url)
+          .catch(this.handleError);
+    }
+
     getForm(id: number | string): Observable<any> {
         const url = `${BASE_URL}/form/${id}`;
         return this.http.get(url)
