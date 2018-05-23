@@ -20,7 +20,8 @@ import { debounceTime, distinctUntilChanged, switchMap, first } from 'rxjs/opera
 import { UP_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
 
 export function arrayDiffObj(s: any[], v: any[], key: string) {
-    let reducedIds = v;
+    if (!s) { return []; }
+    const reducedIds = v.map(k => k.id);
     return s.filter((obj: any) => reducedIds.indexOf(obj[key]) === -1);
 };
 
@@ -63,20 +64,6 @@ export class CustomMultiSelectGroupComponent implements ControlValueAccessor, On
     _value = [];
     
     differ: any;
-
-    _selected = [];
-    get selected() {
-        return this._value.map((v, i) => {
-            const idx = this._selected.findIndex(s => s[this.valueBy] === v);
-            if (idx > -1) {
-                return this._selected[idx];
-            } else {
-                const idx2 = this.source.findIndex(r => r[this.valueBy] === v);
-                this._selected[idx] = idx2 > -1 ? this.source[idx2] : null;
-                return this._selected[idx];
-            }
-        });
-    }
 
     @Input('value')
     get value() { return this._value; }
@@ -140,10 +127,8 @@ export class CustomMultiSelectGroupComponent implements ControlValueAccessor, On
     add(event: MatAutocompleteSelectedEvent): void {
         const t = event.option.value;
 
-        this._value.push(t[this.valueBy]);
+        this._value.push(t);
         this.value = this._value;
-
-        this._selected.push(t);
 
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
@@ -156,8 +141,7 @@ export class CustomMultiSelectGroupComponent implements ControlValueAccessor, On
     }
 
     remove(tag): void {
-        this._selected = this._selected.filter(t => t[this.valueBy] !== tag[this.valueBy]);
-        this._value = this._value.filter((i) => i !== tag[this.valueBy]);
+        this._value = this._value.filter((v) => v[this.valueBy] !== tag[this.valueBy]);
         this.value = this._value;
         this.chipInput['nativeElement'].blur();
         this.getItemsFromObservable('');

@@ -192,7 +192,7 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
                 this.selectedFlags.forEach(v => body.filter.push(v));
             }
             if (this.filter.length > 0) {
-                this.filter.forEach(v => body.filter.push(v));
+                this.filter.forEach(v => body.filter.push(v.id));
             }
         }
 

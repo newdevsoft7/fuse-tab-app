@@ -1,0 +1,52 @@
+<div class="dialog-content-wrapper">
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
+            <span class="w-100">Template</span>
+            <mat-form-field class="w-100-p">
+                <input type="text" matInput ngModel name="template" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterTemplates($event)">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="templateDisplayFn" (optionSelected)="selectTemplate($event)">
+                    <mat-option *ngFor="let template of templates" [value]="template">
+                        {{ template.tname }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-icon-button (click)="selectAll()" matTooltip="Select All Roles">
+                <mat-icon>done_all</mat-icon>
+            </button>
+            <button mat-icon-button (click)="toggleSelection()" matTooltip="Toggle Selection">
+                <mat-icon>done</mat-icon>
+            </button>
+        </div>
+
+        <fieldset *ngFor="let shift of roles">
+            <legend>{{shift.date}} {{shift.title}}</legend>
+            <div>
+                <div  *ngFor="let role of shift.shift_roles">
+                    <mat-checkbox [(ngModel)]="role.checked">
+                        {{role.rname}}
+                    </mat-checkbox>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16">
+        <button mat-raised-button color="accent" (click)="message()" [disabled]="!isEnabled">
+            <ng-container>Message {{getLabel(selectedType)}} Staff</ng-container>
+        </button>
+        <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" class="btn-menu px-4"
+            [disabled]="!isEnabled">
+            <mat-icon class="white-fg">expand_more</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let type of types" (click)="selectedType = type.value;">
+                Message {{type.label}} Staff
+            </button>
+        </mat-menu>
+    </div>
+
+</div>
+  

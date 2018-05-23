@@ -15,6 +15,7 @@ import { TabService } from '../../../../tab/tab.service';
 import { Tab } from '../../../../tab/tab';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
 
 export enum TAB {
     Staff = 'Staff',
@@ -240,6 +241,18 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             { shift, url });
         this.tabService.closeTab(url);
         this.tabService.openTab(tab);
+    }
+
+    message(type) {
+        const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
+            disableClose: false,
+            panelClass: 'admin-shift-email-dialog',
+            data: {
+                shiftIds: [this.shift.id],
+                type
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
     }
 
     private async fetch() {

@@ -6,9 +6,10 @@ import * as _ from 'lodash';
 
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../../schedule.service';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent, MatDialog } from '@angular/material';
 import { GroupStaffComponent } from './staff/staff.component';
 import { ActionService } from '../../../../../shared/services/action.service';
+import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
 
 export enum TAB {
     Staff = 'Staff',
@@ -39,7 +40,8 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
-        private actionService: ActionService
+        private actionService: ActionService,
+        private dialog: MatDialog
     ) { }
 
     ngOnDestroy() {
@@ -114,6 +116,18 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         } catch (e) {
             this.displayError(e);
         }
+    }
+
+    message(type) {
+        const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
+            disableClose: false,
+            panelClass: 'admin-shift-email-dialog',
+            data: {
+                shiftIds: this.shifts.map(v => v.id),
+                type
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
     }
 
     private displayError(e: any) {

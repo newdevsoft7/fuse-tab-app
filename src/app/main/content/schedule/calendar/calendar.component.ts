@@ -185,7 +185,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   }
 
   onFiltersChanged(filters: any) {
-    this.tmpFilters = this.filters = filters; 
+    this.tmpFilters = this.filters = filters.map(v => v.id); 
     this.filters = (this.selectedFlags) ? this.filters.concat(this.selectedFlags) : this.filters ;
     this.fetchEvents(true);
   }

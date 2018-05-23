@@ -7,7 +7,7 @@
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms'}}"
                 fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
 
-                <button mat-raised-button class="mat-white-bg my-4">
+                <button mat-raised-button class="mat-white-bg my-4" (click)="email()">
                     <mat-icon>mail</mat-icon>
                     <span>Email</span>
                 </button>
