@@ -49,9 +49,9 @@ export class UsersProfileEditDateComponent implements OnInit {
 		if (this.form.valid) {
 			const value = moment(this.form.getRawValue().data).format('YYYY-MM-DD HH:mm:ss');
 			if (value != this.element[this.field]) {
+				this.element[this.field] = value; 
 				this.userService.updateProfile(this.userId, PROFILE_ELEMENT_DOB, value)
 					.subscribe(res => {
-						this.element[this.field] = value; 
 						this.toastr.success(res.message);
 					}, err => {
 						const errors = err.error.errors.data;

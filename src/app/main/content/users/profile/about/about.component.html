@@ -238,15 +238,21 @@
         </div>
     </div>
 
-    <div *ngIf="item.ename" class="info-line">
+    <div *ngIf="item.ename && !(item.sex && item.sex !== sex)" class="info-line">
         <div class="title">
             <span *ngIf="item.visibility == 'required'" class="required">*</span>
             {{item.ename}}
         </div>
         <div class="info">
-            <ng-container *ngIf="item.etype == 'list'">
-                <app-users-profile-edit-list-value [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
+            <ng-container *ngIf="item.etype === 'list'">
+                <app-users-profile-edit-list-value *ngIf="item.ename !== 'Sex'; else sexBlock" [userId]="userInfo.id"
+                    [element]="item" fxFlex="0 1 auto">
                 </app-users-profile-edit-list-value>
+                <ng-template #sexBlock>
+                    <app-users-profile-edit-sex [userId]="userInfo.id"
+                        [element]="item" (updateSex)="updateSex($event)" fxFlex="0 1 auto">
+                    </app-users-profile-edit-sex>
+                </ng-template>
             </ng-container>
 
             <ng-container *ngIf="item.etype == 'listm'">

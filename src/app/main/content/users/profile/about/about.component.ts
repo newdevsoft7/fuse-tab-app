@@ -24,6 +24,8 @@ export class UsersProfileAboutComponent implements OnInit {
     adminNoteForm: FormGroup;
     noteTemp: any; // Note template for update
 
+    sex: string;
+
     readonly noteTypes = [
         { value: 'info', label: 'Info' },
         { value: 'interview', label: 'Interview' },
@@ -141,6 +143,12 @@ export class UsersProfileAboutComponent implements OnInit {
         this.userService.setUserRatings(this.currentUser.id, rating.id, 0).subscribe(res => {
             const index = _.findIndex(this.ratings, ['id', rating.id]);
             this.ratings[index].score = 0;
+        });
+    }
+
+    updateSex(sex: string) {
+        setTimeout(() => {
+            this.sex = sex;
         });
     }
 }

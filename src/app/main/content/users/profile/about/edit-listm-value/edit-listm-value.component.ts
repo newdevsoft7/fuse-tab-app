@@ -41,9 +41,9 @@ export class UsersProfileEditListmValueComponent implements OnInit {
         if (this.form.valid) {
             const value = _.join(this.form.getRawValue().data, ',');
             if (value != this.element.data) {
+                this.element.data = value;
                 this.userService.updateProfile(this.userId, this.element.id, value)
                     .subscribe(res => {
-                        this.element.data = value;
                         this.toastr.success(res.message);
                     }, err => {
                         const errors = err.error.errors.data;

@@ -17,6 +17,8 @@ export class UsersProfileEditSexComponent implements OnInit {
     formActive = false;
     form: FormGroup;
     @Input() element;
+    @Input() userId;
+    @Output() updateSex: EventEmitter<string> = new EventEmitter();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -24,11 +26,12 @@ export class UsersProfileEditSexComponent implements OnInit {
         private userService: UserService) { }
 
     ngOnInit() {
+        this.updateSex.next(this.element.data);
     }
 
     openForm() {
         this.form = this.formBuilder.group({
-            sex: [this.element.sex]
+            sex: [this.element.data]
         });
         this.formActive = true;
     }
@@ -40,10 +43,11 @@ export class UsersProfileEditSexComponent implements OnInit {
     onFormSubmit() {
         if (this.form.valid) {
             const sex = this.form.getRawValue().sex;
-            if (sex != this.element.sex) {
-                this.userService.updateProfile(this.element.id, PROFILE_ELEMENT_SEX, sex)
+            if (sex != this.element.data) {
+                this.element.data = sex;
+                this.updateSex.next(sex);
+                this.userService.updateProfile(this.userId, this.element.id, sex)
                     .subscribe(res => {
-                        this.element.sex = sex;
                         this.toastr.success(res.message);
                     }, err => {
                         const errors = err.error.errors.data;
