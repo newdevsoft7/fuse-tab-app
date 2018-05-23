@@ -99,7 +99,7 @@ export class EmailTemplatesComponent implements OnInit {
         const folder = response.data;
         folder.templates = [];
         this.folders.splice(this.folders.length - 1, 0, folder);
-        this.toastr.success(response.message);
+        //this.toastr.success(response.message);
       } catch (e) {
         this.handleError(e);
       }
@@ -108,7 +108,7 @@ export class EmailTemplatesComponent implements OnInit {
         const fname = this.folderForm.getRawValue().fname;
         const response = await this.templatesService.updateFolder(this.selectedFolder.id, { fname });
         this.selectedFolder.fname = fname;
-        this.toastr.success(response.message);
+        //this.toastr.success(response.message);
       } catch (e) {
         this.handleError(e);
       }
@@ -129,7 +129,7 @@ export class EmailTemplatesComponent implements OnInit {
           unassignedFolder.templates.push(...this.selectedFolder.templates);
           const index = this.folders.findIndex(f => f.id === this.selectedFolder.id);
           this.folders.splice(index, 1);
-          this.toastr.success(response.message);
+          //this.toastr.success(response.message);
         } catch (e) {
           this.handleError(e);
         }

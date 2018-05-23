@@ -78,7 +78,7 @@ export class OutsourceCompaniesComponent {
             try {
               this.spinner.show();
               const res = await this.outsourceCompaniesService.createCompany(company);
-              this.toastr.success('Outsource Company has been created successfully!');
+              //this.toastr.success('Outsource Company has been created successfully!');
               this.companies.push(res.data);
             } catch (e) {
               this.handleError(e);

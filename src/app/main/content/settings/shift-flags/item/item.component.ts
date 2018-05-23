@@ -53,7 +53,7 @@ export class ItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteFlag(this.flag.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.onFlagDeleted.next(this.flag);
                 });
             }
@@ -64,7 +64,7 @@ export class ItemComponent implements OnInit {
     saveForm() {
         this.formActive = false;
         this.settingsService.updateFlag(this.form.id, this.form).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.flag = this.form;
         });
         this.formActive = false;

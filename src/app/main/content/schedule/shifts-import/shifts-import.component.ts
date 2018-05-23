@@ -82,7 +82,7 @@ export class ShiftsImportComponent implements OnInit {
             this.spinner.show();
             const res = await this.scheduleService.saveImport(this.result.shift_import_id, this.live);
             this.spinner.hide();
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.tabService.closeTab('schedule/import-shifts');
         } catch (e) {
             this.spinner.hide();
@@ -101,7 +101,7 @@ export class ShiftsImportComponent implements OnInit {
                     this.spinner.show();
                     const res = await this.scheduleService.deleteImport(this.result.shift_import_id);
                     this.spinner.hide();
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.result = null;
                 } catch (e) {
                     this.spinner.hide();
@@ -122,7 +122,7 @@ export class ShiftsImportComponent implements OnInit {
                     this.spinner.show();
                     const res = await this.scheduleService.deleteShift(item.id);
                     this.spinner.hide();
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = this.result.data.findIndex(v => v.id === item.id);
                     if (index > -1) {
                         const temp = [ ... this.result.data ];

@@ -48,7 +48,7 @@ export class RegisterProfileEditSexComponent implements OnInit {
                 this.updateSex.next(sex);
                 this.userService.updateProfile(this.userId, this.element.id, sex)
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                     }, err => {
                         const errors = err.error.errors.data;
                         errors.forEach(v => {

@@ -30,7 +30,7 @@ export class EditCommentDialogComponent implements OnInit {
         const content = this.comment.content.trim();
         if (!content) { return; }
         this.homeService.updateComment(this.comment.id, this.comment.content).subscribe(newComment => {
-            this.toastr.success('Saved');
+            //this.toastr.success('Saved');
             this.dialogRef.close(newComment);
         }, err => {
             this.displayError(err);

@@ -60,7 +60,7 @@ export class ProfileRatingsComponent implements OnInit {
         const newRating = { rname: newRatingName };
         this.ratingsService.createRating(newRating)
             .subscribe(res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.getRatings();
             });
     }
@@ -77,7 +77,7 @@ export class ProfileRatingsComponent implements OnInit {
 
                 this.ratingsService.deleteRating(rating.id)
                         .subscribe(res => {
-                            this.toastr.success(res.message);
+                            //this.toastr.success(res.message);
                             this.getRatings();
                         });
             }

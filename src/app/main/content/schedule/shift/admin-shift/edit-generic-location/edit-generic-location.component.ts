@@ -56,7 +56,7 @@ export class AdminShiftEditGenericLocationComponent implements OnInit {
 			if (genericLocation !== this.shift.generic_location) {
 				this.scheduleService.updateShift(this.shift.id, { generic_location: genericLocation })
 					.subscribe(res => {
-						this.toastr.success(res.message);
+						//this.toastr.success(res.message);
 						this.onGenericLocationChanged.next(genericLocation);
 					});
 			}

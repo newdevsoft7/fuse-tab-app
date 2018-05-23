@@ -37,7 +37,7 @@ export class ClientInvoiceGenerateComponent {
         this.to = moment(this.to).format('YYYY-MM-DD');
       }
       await this.clientInvoicesService.generateInvoice(this.selectedClient.id, this.from, this.to);
-      this.toastr.success('Invoice has been generated successfully!');
+      this.toastr.success('Invoice generated');
     } catch (e) {
       this.handleError(e);
     } finally {

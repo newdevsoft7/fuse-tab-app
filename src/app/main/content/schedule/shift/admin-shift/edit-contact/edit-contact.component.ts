@@ -56,7 +56,7 @@ export class AdminShiftEditContactComponent implements OnInit {
 			if (contact !== this.shift.contact) {
 				this.scheduleService.updateShift(this.shift.id, { contact })
 					.subscribe(res => {
-						this.toastr.success(res.message);
+						//this.toastr.success(res.message);
 						this.onContactChanged.next(contact);
 					});
 			}

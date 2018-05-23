@@ -120,7 +120,7 @@ export class RegisterStep4Component implements OnInit, OnChanges {
             this.userService.uploadProfilePhoto(this.user.id, formData)
                 .subscribe(res => {
                     this.spinner.hide();
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     res.data.map(photo => {
                         this.photos.push(photo);
                     });
@@ -145,7 +145,7 @@ export class RegisterStep4Component implements OnInit, OnChanges {
         this.registerService.registerByStep('step4', {})
             .subscribe(res => {
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 5) {
                     this.tokenStorage.setUser({ ...this.user, ...{ lvl: 'registrant5' } });
                 }

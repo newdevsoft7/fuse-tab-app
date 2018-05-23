@@ -89,7 +89,7 @@ export class AdminShiftStaffNAComponent implements OnInit {
     async loginAsUser(staff: any) {
         try {
             const res = await this.authService.loginAs(staff.user_id);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.tokenStorage.setSecondaryUser(res.user);
             this.tokenStorage.userSwitchListener.next(true);
             if (res.user.lvl.startsWith('registrant')) {
@@ -159,7 +159,7 @@ export class AdminShiftStaffNAComponent implements OnInit {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.scheduleService.getRoleStaffs(this.roleId, Query.Na)
                             .subscribe(res => {
                                 this.staffs = res;
@@ -175,7 +175,7 @@ export class AdminShiftStaffNAComponent implements OnInit {
         this.scheduleService.updateRoleStaff(staff.id, { team_leader })
             .subscribe(res => {
                 staff.team_leader = team_leader;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
     }
 

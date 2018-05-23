@@ -92,7 +92,7 @@ export class RegisterStep6Component implements OnInit, OnChanges {
 
             this.userService.uploadProfileVideo(this.user.id, formData)
                 .subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.spinner.hide();
                     res.data.map(video => {
                         this.videos.push(video);
@@ -127,7 +127,7 @@ export class RegisterStep6Component implements OnInit, OnChanges {
         this.registerService.registerByStep('step6', {})
             .subscribe(res => {
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 7) {
                     this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant7' } });
                 }

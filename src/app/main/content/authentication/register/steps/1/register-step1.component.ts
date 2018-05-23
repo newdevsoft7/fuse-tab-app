@@ -66,7 +66,7 @@ export class RegisterStep1Component implements OnInit, OnChanges {
         this.registerService.registerByStep('step1', {})
             .subscribe(res => {
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 2) {
                     this.tokenStorage.setUser({ ...this.user, ...{ lvl: 'registrant2' } });
                 }

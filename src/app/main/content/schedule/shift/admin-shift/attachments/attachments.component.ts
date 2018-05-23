@@ -50,7 +50,7 @@ export class AdminShiftAttachmentsComponent implements OnInit, OnChanges {
     saveNotes(notes) {
         this.scheduleService.updateShift(this.shift.id, { notes })
             .subscribe(res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.shift.notes = this.notes;
             }, err => {
                 this.toastr.error(err.error.message);
@@ -62,7 +62,7 @@ export class AdminShiftAttachmentsComponent implements OnInit, OnChanges {
             this.spinner.show();
             const res = await this.scheduleService.uploadFile(this.shift.id, file);
             this.spinner.hide();
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             const item = {
                 ...res.data.file,
                 thumb: res.data.thumb,
@@ -89,7 +89,7 @@ export class AdminShiftAttachmentsComponent implements OnInit, OnChanges {
                     this.spinner.show();
                     const res = await this.scheduleService.deleteFile(file.id);
                     this.spinner.hide();
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = this.files.findIndex(v => v.id === file.id);
                     if (index > -1) {
                         this.files.splice(index, 1);

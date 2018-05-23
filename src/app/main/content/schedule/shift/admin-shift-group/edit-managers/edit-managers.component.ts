@@ -61,7 +61,7 @@ export class GroupEditManagersComponent implements OnInit {
             const manager_ids = this.form.getRawValue().manager_ids;
             try {
                 const res = await this.scheduleService.updateShiftGroup(this.group.id, { manager_ids });
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.group.managers = this.managers.filter(m => manager_ids.includes(m.id)).map(v => {
                     return { id: v.id, name: v.name }
                 });

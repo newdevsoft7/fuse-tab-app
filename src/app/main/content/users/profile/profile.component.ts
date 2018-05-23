@@ -46,7 +46,7 @@ export class UsersProfileComponent implements OnInit {
 		const fav = this.userInfo.fav === 1 ? 0 : 1;
 		try {
 			const res = await this.userService.updateUser(this.userInfo.id, { fav });
-			this.toastr.success(res.message);
+			//this.toastr.success(res.message);
 			this.userInfo.fav = fav;
 		} catch (e) {
 			this.toastr.error(e.error.error);
@@ -68,7 +68,7 @@ export class UsersProfileComponent implements OnInit {
 	async approve() {
 		try {
 			const res = await this.userService.approveRegistrant(this.userInfo.id);
-			this.toastr.success(res.message);
+			//this.toastr.success(res.message);
 			this.userInfo.lvl = res.lvl;
 			this.userInfo.user_status = res.user_status;
 			this.isApproveRejectShow = ['registrant'].some(v => res.lvl.indexOf(v) > -1);
@@ -92,7 +92,7 @@ export class UsersProfileComponent implements OnInit {
 	async reject() {
 		try {
 			const res = await this.userService.rejectRegistrant(this.userInfo.id);
-			this.toastr.success(res.message);
+			//this.toastr.success(res.message);
 			this.userInfo.user_status = res.user_status;
 		} catch (e) {
 			this.toastr.error(e.error.error);

@@ -79,7 +79,7 @@ export class ClientsComponent implements OnInit, AfterViewInit {
             try {
               this.spinner.show();
               const res = await this.clientsService.createClient(client);
-              this.toastr.success('Client has been created successfully!');
+              //this.toastr.success('Client has been created successfully!');
               this.clients.push(res.data);
             } catch (e) {
               this.handleError(e);

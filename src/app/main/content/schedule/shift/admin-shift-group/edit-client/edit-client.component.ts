@@ -38,7 +38,7 @@ export class GroupEditClientComponent implements OnInit {
             if (client_id !== this.group.client_id) {
                 try {
                     const res = await this.scheduleService.updateShiftGroup(this.group.id, { client_id });
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.group.client_id = client_id;
                 } catch (e) {
                     this.displayError(e);

@@ -52,7 +52,7 @@ export class RegisterStep7Component implements OnInit, OnChanges {
         const value = workArea.set ? 1 : 0;
         this.userService.updateProfileWorkArea(this.user.id, workArea.id, value).subscribe(
             res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 console.log(err);
@@ -80,7 +80,7 @@ export class RegisterStep7Component implements OnInit, OnChanges {
         this.registerService.registerByStep('step7', {})
             .subscribe(res => {
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 8) {
                     this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant8' } });
                 }

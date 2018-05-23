@@ -332,7 +332,7 @@ export class NewShiftComponent implements OnInit {
         removeNull(params);
 
         this.scheduleService.createShift(params).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             // Open Role Edit Tab
             const shifts = res.data.map(shift => shift.id);
             this.openRoleTab(shifts);

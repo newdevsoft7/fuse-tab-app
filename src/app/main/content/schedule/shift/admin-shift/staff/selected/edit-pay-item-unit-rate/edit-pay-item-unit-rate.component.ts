@@ -44,7 +44,7 @@ export class EditPayItemUnitRateComponent implements OnInit {
         this.payItem.unit_rate = res.data.unit_rate;
         this.payItem.id = res.data.id;
         this.formActive = false;
-        this.toastr.success(res.message);
+        //this.toastr.success(res.message);
         this.onItemChanged.next(true);
       } catch (e) {
         this.formActive = false;

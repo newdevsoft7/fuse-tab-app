@@ -51,7 +51,7 @@ export class GroupEditGenericLocationComponent implements OnInit {
 			if (generic_location !== this.group.generic_location) {
 				try {
 					const res = await this.scheduleService.updateShiftGroup(this.group.id, { generic_location })
-					this.toastr.success(res.message);
+					//this.toastr.success(res.message);
 					this.group.generic_location = generic_location;
 				} catch (e) {
 					this.displayError(e);

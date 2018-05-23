@@ -34,7 +34,7 @@ export class ColumnMappingComponent implements OnInit {
     async saveColumnMap(value, item) {
         try {
             const res = await this.scheduleService.saveColumnMap(item.id, value);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
         }

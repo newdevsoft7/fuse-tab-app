@@ -65,7 +65,7 @@ export class AdminShiftBillComponent implements OnInit {
                         this.shift.bill_items[data.item_type] = [];
                     }
                     this.shift.bill_items[data.item_type].push(item);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                 } catch (e) {
                     this.displayError(e);
                 }
@@ -80,7 +80,7 @@ export class AdminShiftBillComponent implements OnInit {
             if (index > -1) {
                 this.shift.bill_items[type].splice(index, 1);
             }
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
         }
@@ -99,7 +99,7 @@ export class AdminShiftBillComponent implements OnInit {
             }
             this.scheduleService.updateRoleStaff(item.id, { [key]: value }).subscribe(res => {
                 item[field] = value;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.recalculateItemTotal(item, type);
             });
         } else {
@@ -119,7 +119,7 @@ export class AdminShiftBillComponent implements OnInit {
                         [key]: value,
                         role_staff_id: item.role_staff_id
                     });
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 item[field] = value;
                 item.id = res.data.id;
                 this.recalculateItemTotal(item, type);

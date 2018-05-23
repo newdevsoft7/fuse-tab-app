@@ -49,7 +49,7 @@ export class SettingsWorkMarketComponent implements OnInit {
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         });
     }
 

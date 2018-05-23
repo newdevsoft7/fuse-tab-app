@@ -88,7 +88,7 @@ export class PostDialogComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.homeService.deletePost(this.post.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     // TODO - Remove post in timeline
                     this.dialogRef.close('delete');
                 });
@@ -171,7 +171,7 @@ export class PostDialogComponent implements OnInit {
 
     deleteComment(comment) {
         this.homeService.deleteComment(comment.id).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             const index = _.findIndex(this.post.remarks, ['id', comment.id]);
             this.post.remarks.splice(index, 1);
             this.post.comments--;
@@ -182,7 +182,7 @@ export class PostDialogComponent implements OnInit {
         comment.approved = comment.approved === 0 ? 1 : 0;
         this.homeService.approveComment(comment.id, comment.approved).subscribe(
             res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 this.toastr.error(err.message);
@@ -194,7 +194,7 @@ export class PostDialogComponent implements OnInit {
         this.post.approved = this.post.approved === 0 ? 1 : 0;
         this.homeService.approvePost(this.post.id, this.post.approved).subscribe(
             res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 this.toastr.error(err.message);
@@ -207,7 +207,7 @@ export class PostDialogComponent implements OnInit {
         if (pinned === 0) { // Unpin
             this.homeService.pinPost(this.post.id, 0).subscribe(res => {
                 this.post.pinned = pinned;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
         } else { // Pin
             const dialogRef = this.dialog.open(PinPostDialogComponent, {
@@ -218,7 +218,7 @@ export class PostDialogComponent implements OnInit {
                 if (title) {
                     this.homeService.pinPost(this.post.id, 1, title).subscribe(res => {
                         this.post.pinned = pinned;
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                     });
                 }
             });

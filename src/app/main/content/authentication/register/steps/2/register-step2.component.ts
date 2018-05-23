@@ -48,7 +48,7 @@ export class RegisterStep2Component implements OnInit, OnChanges {
         const value = attr.set ? 1 : 0;
         this.userService.updateProfileAttribute(this.user.id, attr.id, value).subscribe(
             res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 console.log(err);
@@ -76,7 +76,7 @@ export class RegisterStep2Component implements OnInit, OnChanges {
         this.registerService.registerByStep('step2', {})
             .subscribe(res => {
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 3) {
                     this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant3' } });
                 }

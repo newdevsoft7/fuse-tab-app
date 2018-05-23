@@ -73,7 +73,7 @@ export class SettingsQuizsComponent implements OnInit {
     this.settingsService.setSetting(id, value).subscribe(res => {
       setting.value = value;
       this.settingsChange.next(this.settings);
-      this.toastr.success(res.message);
+      //this.toastr.success(res.message);
     });
   }
 
@@ -106,7 +106,7 @@ export class SettingsQuizsComponent implements OnInit {
 
   editQuiz(quiz) {
     this.settingsService.saveQuiz(quiz.id, quiz).subscribe(res => {
-      this.toastr.success(res.message);
+      //this.toastr.success(res.message);
     });
   }
 

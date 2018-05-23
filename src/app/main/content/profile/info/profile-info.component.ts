@@ -62,7 +62,7 @@ export class ProfileInfoComponent implements OnInit {
         this.orders = [];
         this.profileFields.forEach(e => this.makeOrder(e));
         this.profileInfoService.setDisplayOrder(this.orders).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         }, err => {
             console.log(err);
         });

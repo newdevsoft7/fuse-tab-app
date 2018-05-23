@@ -208,7 +208,7 @@ export class UsersComponent implements OnInit {
                 try {
                     this.users = this.users.filter(u => u.id !== user.id);
                     const res = await this.userService.deleteUser(user.id);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                 } catch (e) {
                     const errors = e.error.errors;
                     Object.keys(errors).forEach(v => {
@@ -262,7 +262,7 @@ export class UsersComponent implements OnInit {
                 this.userService
                     .createUser(user)
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.getUsers();
                     }, err => {
                         const errors = err.error.errors;
@@ -339,7 +339,7 @@ export class UsersComponent implements OnInit {
     async loginAsUser(user: any) {
         try {
             const res = await this.authService.loginAs(user.id);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.tokenStorage.setSecondaryUser(res.user);
             this.tokenStorage.userSwitchListener.next(true);
             if (res.user.lvl.startsWith('registrant')) {

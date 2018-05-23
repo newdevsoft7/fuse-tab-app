@@ -51,7 +51,7 @@ export class GroupEditLocationComponent implements OnInit {
 			if (location !== this.group.location) {
 				try {
 					const res = await this.scheduleService.updateShiftGroup(this.group.id, { location })
-					this.toastr.success(res.message);
+					//this.toastr.success(res.message);
 					this.group.location = location;
 				} catch (e) {
 					this.displayError(e);

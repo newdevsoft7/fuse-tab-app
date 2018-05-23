@@ -115,7 +115,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     async loginAsUser(staff: any) {
         try {
             const res = await this.authService.loginAs(staff.user_id);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.tokenStorage.setSecondaryUser(res.user);
             this.tokenStorage.userSwitchListener.next(true);
             if (res.user.lvl.startsWith('registrant')) {
@@ -150,7 +150,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
                         type: 'staff'
                     };
                     staff.pay_items.push(item);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.recalcuatePayItemsTotal(staff);
                 } catch (e) {
                     this.toastr.error(e.error.message);
@@ -166,7 +166,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         } else {
             try {
                 const res = await this.scheduleService.deletePayItem(payItem.id);
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 const index = staff.pay_items.findIndex(p => p.id === payItem.id);
                 if (index > -1) {
                     staff.pay_items.splice(index, 1);
@@ -221,7 +221,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
                             .subscribe(res => {
                                 this.staffs = res;
@@ -246,7 +246,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             staff_start: start.format('HH:mm'),
             staff_end: end.format('HH:mm')
         }).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         });
     }
 
@@ -259,7 +259,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         const pay_rate_type = event.payRateType;
         this.scheduleService.updateRoleStaff(staff.id, { pay_rate, pay_rate_type })
             .subscribe(res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 staff.pay_rate = pay_rate;
                 staff.pay_rate_type = pay_rate_type;
             });
@@ -270,7 +270,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         const bill_rate_type = event.billRateType;
         this.scheduleService.updateRoleStaff(staff.id, { bill_rate, bill_rate_type })
             .subscribe(res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 staff.bill_rate = bill_rate;
                 staff.bill_rate_type = bill_rate_type;
             });
@@ -285,7 +285,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         this.scheduleService.updateRoleStaff(staff.id, { times_locked })
             .subscribe(res => {
                 staff.times_locked = times_locked;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
     }
 
@@ -302,7 +302,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             if (result) {
                 this.scheduleService.removeRoleStaff(staff.id)
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
                             .subscribe(res => {
                                 this.staffs = res;
@@ -318,7 +318,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         this.scheduleService.updateRoleStaff(staff.id, { team_leader })
             .subscribe(res => {
                 staff.team_leader = team_leader;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
     }
 

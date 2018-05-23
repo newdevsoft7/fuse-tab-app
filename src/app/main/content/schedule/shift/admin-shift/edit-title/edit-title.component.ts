@@ -56,7 +56,7 @@ export class AdminShiftEditTitleComponent implements OnInit {
 			if (title !== this.shift.title) {
 				this.scheduleService.updateShift(this.shift.id, { title })
 					.subscribe(res => {
-						this.toastr.success(res.message);
+						//this.toastr.success(res.message);
 						this.onTitleChanged.next(title);
 					});
 			}

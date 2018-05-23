@@ -87,7 +87,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 
 			try {
 				const res = await this.userService.uploadProfileDocument(this.user.id, formData).toPromise();
-				this.toastr.success(res.message);
+				//this.toastr.success(res.message);
 				res.data.map(document => {
 					this.documents.push(document);
 				});

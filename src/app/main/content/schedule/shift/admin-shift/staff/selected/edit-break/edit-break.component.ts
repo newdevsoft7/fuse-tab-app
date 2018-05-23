@@ -47,7 +47,7 @@ export class AdminShiftEditBreakComponent implements OnInit {
         const body = this.form.value;
         this.scheduleService.updateRoleStaff(this.staff.id, body)
             .subscribe(res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.staff.unpaid_break = body.unpaid_break;
                 this.staff.paid_break = body.paid_break;
             }, err => {

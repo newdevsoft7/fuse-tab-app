@@ -83,7 +83,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
       } else {
         res = await this.reportsUploadsService.deleteCompletedReport(temp[1]);
       }
-      this.toastr.success(res.message);
+      //this.toastr.success(res.message);
     } catch (e) {
       this.toastr.error(e.message);
     }

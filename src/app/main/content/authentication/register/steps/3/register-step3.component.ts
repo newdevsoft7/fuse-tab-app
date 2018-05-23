@@ -35,7 +35,7 @@ export class RegisterStep3Component implements OnInit {
     try {
       this.spinner.show();
       const res = await this.registerService.registerByStep('step3', {}).toPromise();
-      this.toastr.success(res.message);
+      //this.toastr.success(res.message);
       if (this.tokenStorage.getRegistrantStep() < 4) {
         this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant4' } });
       }

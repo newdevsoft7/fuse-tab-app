@@ -51,7 +51,7 @@ export class GroupEditAddressComponent implements OnInit {
 			if (address !== this.group.address) {
 				try {
 					const res = await this.scheduleService.updateShiftGroup(this.group.id, { address });
-					this.toastr.success(res.message);
+					//this.toastr.success(res.message);
 					this.group.address = address;
 				} catch (e) {
 					this.displayError(e);

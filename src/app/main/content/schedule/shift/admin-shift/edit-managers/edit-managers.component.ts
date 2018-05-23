@@ -61,7 +61,7 @@ export class AdminShiftEditManagersComponent implements OnInit {
             const manager_ids = this.form.getRawValue().manager_ids;
             this.scheduleService.updateShift(this.shift.id, { manager_ids })
                 .subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const managers = this.managers.filter(m => manager_ids.includes(m.id)).map(v =>  { 
                         return { id: v.id, name: v.name } 
                     });

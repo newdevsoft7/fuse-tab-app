@@ -58,7 +58,7 @@ export class AdminShiftEditAddressComponent implements OnInit {
 				//	TODO
 				this.scheduleService.updateShift(this.shift.id, { address })
 					.subscribe(res => {
-						this.toastr.success(res.message);
+						//this.toastr.success(res.message);
 						this.onAddressChanged.next(address);
 					});
 			}

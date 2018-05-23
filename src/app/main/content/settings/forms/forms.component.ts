@@ -154,7 +154,7 @@ export class SettingsFormsComponent implements OnInit {
         const tracking_option_id = this.trackingFilter.value.id;
         if (!tracking_option_id) { return; }
         this.settingsService.addFormTrackRequirement(this.form.id, this.trackRequirement, tracking_option_id).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.form.required_tracks.push(res.data);
         });
     }
@@ -162,7 +162,7 @@ export class SettingsFormsComponent implements OnInit {
     addLevelRequirement() {
         if (!this.level || !this.levelRequirement) { return; }
         this.settingsService.addFormLevelRequirement(this.form.id, this.levelRequirement, this.level).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.form.required_lvls.push(res.data);
         });
     }
@@ -175,7 +175,7 @@ export class SettingsFormsComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteFormLevelRequirement(id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = this.form.required_lvls.findIndex(r => r.id === id);
                     this.form.required_lvls.splice(index, 1);
                 });
@@ -191,7 +191,7 @@ export class SettingsFormsComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteFormTrackRequirement(id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = this.form.required_tracks.findIndex(r => r.id === id);
                     this.form.required_tracks.splice(index, 1);
                 });

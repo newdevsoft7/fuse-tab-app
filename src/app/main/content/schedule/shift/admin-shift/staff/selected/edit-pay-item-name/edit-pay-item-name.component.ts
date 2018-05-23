@@ -44,7 +44,7 @@ export class EditPayItemNameComponent implements OnInit {
         this.payItem.item_name = res.data.item_name;
         this.payItem.id = res.data.id;
         this.formActive = false;
-        this.toastr.success(res.message);
+        //this.toastr.success(res.message);
       } catch (e) { 
         this.formActive = false;
         this.toastr.error(e.error.message);

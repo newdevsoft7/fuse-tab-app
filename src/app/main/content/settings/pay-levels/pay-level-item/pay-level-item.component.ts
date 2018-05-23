@@ -71,7 +71,7 @@ export class SettingsPayLevelItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deletePayLevel(this.level.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.onLevelDeleted.next(this.level);
                 });
             }
@@ -83,7 +83,7 @@ export class SettingsPayLevelItemComponent implements OnInit {
         const params = this.form.value;
         this.settingsService.updatePayLevel(this.level.id, params).subscribe(res => {
             this.level = { ...this.level, ...params };
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         }, err => {
             this.displayError(err);
         });

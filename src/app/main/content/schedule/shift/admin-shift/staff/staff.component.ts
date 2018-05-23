@@ -118,7 +118,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                             this.spinner.hide();
                             this.refreshTabByRole(role, section);
                             this.updateStaffsCount(role.id);
-                            this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
+                            //this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
                         }, err => {
                             this.spinner.hide();
                             this.updateStaffsCount(role.id);
@@ -215,7 +215,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.updateStaffsCount(role.id);
                 const index = this.roles.findIndex(v => v.id === role.id);
                 this.roles[index].section = Section.Invited;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 this.spinner.hide();
@@ -234,7 +234,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.updateStaffsCount(role.id);
                 const index = this.roles.findIndex(v => v.id === role.id);
                 this.roles[index].section = Section.Selected;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 this.spinner.hide();
@@ -447,7 +447,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             if (result) {
                 this.scheduleService.updateRoleStaffs(staffs.map(v => v.id), { staff_status_id: statusId })
                     .subscribe(res => {
-                        this.toastr.success(`Status${res.length > 1 ? 'es' : ''} updated.`);
+                        //this.toastr.success(`Status${res.length > 1 ? 'es' : ''} updated.`);
                         this.updateStaffsBySection(role);
                     }, err => {
                         this.updateStaffsBySection(role);

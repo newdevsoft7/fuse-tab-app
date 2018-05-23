@@ -51,7 +51,7 @@ export class GroupEditContactComponent implements OnInit {
 			if (contact !== this.group.contact) {
 				try {
 					const res = await this.scheduleService.updateShiftGroup(this.group.id, { contact });
-					this.toastr.success(res.message);
+					//this.toastr.success(res.message);
 					this.group.contact = contact;
 				} catch (e) {
 					this.displayError(e);

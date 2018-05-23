@@ -54,7 +54,7 @@ export class SettingsUserTableComponent implements OnInit {
     save() {
         const  value = this.displayedColumns.map(v => v.value);
         this.settingsService.setSetting(Setting.user_table_columns, value).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         }, err => {
             this.displayError(err);
         });

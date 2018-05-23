@@ -137,7 +137,7 @@ export class AdminShiftEditPeriodComponent implements OnInit {
         this.scheduleService.updateShift(this.shift.id, { timezone, shift_start: start, shift_end: end })
             .subscribe(res => {
                 this.onPeriodChanged.next({ start, end, timezone });
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
         this.formActive = false;
     }

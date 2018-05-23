@@ -56,7 +56,7 @@ export class AdminShiftEditGenericTitleComponent implements OnInit {
 			if (genericTitle !== this.shift.generic_title) {
 				this.scheduleService.updateShift(this.shift.id, { generic_title: genericTitle })
 					.subscribe(res => {
-						this.toastr.success(res.message);
+						//this.toastr.success(res.message);
 						this.onGenericTitleChanged.next(genericTitle);
 					});
 			}

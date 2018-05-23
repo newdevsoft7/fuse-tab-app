@@ -73,7 +73,7 @@ export class RegisterStep5Component implements OnInit, OnChanges {
 
             try {
                 const res = await this.userService.uploadProfileDocument(this.user.id, formData).toPromise();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 res.data.map(document => {
                     this.documents.push(document);
                 });
@@ -109,7 +109,7 @@ export class RegisterStep5Component implements OnInit, OnChanges {
         this.registerService.registerByStep('step5', {})
             .subscribe(res => {
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 if (this.tokenStorage.getRegistrantStep() < 6) {
                     this.tokenStorage.setUser({ ...this.tokenStorage.getUser(), ...{ lvl: 'registrant6' } });
                 }

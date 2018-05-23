@@ -37,7 +37,7 @@ export class ProfileExperienceComponent implements OnInit {
     async onCategoryAdded(cname) {
         try {
             const res = await this.experienceService.createCategory(cname);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.categories.push(res.data);
         } catch (e) {
             this.displayError(e);
@@ -55,7 +55,7 @@ export class ProfileExperienceComponent implements OnInit {
                     const index = this.categories.findIndex(c => c.id === category.id);
                     this.categories.splice(index, 1);
                     const res = await this.experienceService.deleteCategory(category.id);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                 } catch (e) {
                     this.displayError(e);
                 }
@@ -67,7 +67,7 @@ export class ProfileExperienceComponent implements OnInit {
         try {
             const elements: any[] = this.categories.map(c => c.id);
             const res = await this.experienceService.updateCategoriesDisplayOrder(elements);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
         }
@@ -77,7 +77,7 @@ export class ProfileExperienceComponent implements OnInit {
         try {
             const elements: any[] = category.headings.map(h => h.id);
             const res = await this.experienceService.updateHeadingsDisplayOrder({ elements });
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
         }
@@ -93,7 +93,7 @@ export class ProfileExperienceComponent implements OnInit {
         try {
             const res = await this.experienceService.updateCategory(category.id, { cname });
             category.cname = cname;
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
         }
@@ -142,7 +142,7 @@ export class ProfileExperienceComponent implements OnInit {
                             });
                         }
                     }
-                    this.toastr.success('Saved.');
+                    //this.toastr.success('Saved.');
                     category.headings.push(newHeading);
                 } catch (e) {
                     this.displayError(e);
@@ -214,7 +214,7 @@ export class ProfileExperienceComponent implements OnInit {
                     } else {
                         heading.options = [];
                     }
-                    this.toastr.success('Saved.');
+                    //this.toastr.success('Saved.');
                 } catch (e) {
                     this.displayError(e);
                 }
@@ -233,7 +233,7 @@ export class ProfileExperienceComponent implements OnInit {
                     const index = category.headings.findIndex(h => h.id === heading.id);
                     category.headings.splice(index, 1);
                     const res = await this.experienceService.deleteHeading(heading.id);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                 } catch (e) {
                     this.displayError(e);
                 }

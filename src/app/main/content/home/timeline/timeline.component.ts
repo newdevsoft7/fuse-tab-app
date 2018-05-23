@@ -206,7 +206,7 @@ export class TimelineComponent implements OnInit
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.homeService.deletePost(post.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = _.findIndex(this.posts, ['id', post.id]);
                     this.posts.splice(index, 1);
                 });
@@ -222,7 +222,7 @@ export class TimelineComponent implements OnInit
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.homeService.deleteComment(comment.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = _.findIndex(post.remarks, ['id', comment.id]);
                     post.remarks.splice(index, 1);
                     post.comments--;
@@ -255,7 +255,7 @@ export class TimelineComponent implements OnInit
         post.approved = post.approved === 0 ? 1 : 0;
         this.homeService.approvePost(post.id, post.approved).subscribe(
             res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 this.toastr.error(err.message);
@@ -267,7 +267,7 @@ export class TimelineComponent implements OnInit
         comment.approved = comment.approved === 0 ? 1 : 0;
         this.homeService.approveComment(comment.id, comment.approved).subscribe(
             res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             },
             err => {
                 this.toastr.error(err.message);
@@ -326,7 +326,7 @@ export class TimelineComponent implements OnInit
         if (pinned === 0) { // Unpin
             this.homeService.pinPost(post.id, 0).subscribe(res => {
                 post.pinned = pinned;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 const index = _.findIndex(this.pinnedPosts, ['post_id', post.id]);
                 this.pinnedPosts.splice(index, 1);
             });
@@ -339,7 +339,7 @@ export class TimelineComponent implements OnInit
                 if (title) {
                     this.homeService.pinPost(post.id, 1, title).subscribe(res => {
                         post.pinned = pinned;
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.pinnedPosts.push({
                             title,
                             post_id: res.data.post_id

@@ -139,7 +139,7 @@ export class SettingsStaffComponent implements OnInit, OnChanges, OnDestroy {
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         });
     }
 

@@ -60,7 +60,7 @@ export class SettingsTrackingComponent implements OnInit {
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         });
     }
 
@@ -79,7 +79,7 @@ export class SettingsTrackingComponent implements OnInit {
                 });
                 this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
                 this.trackingService.toggleCategories(this.categories);
-                this.toastr.success(response.message);
+                //this.toastr.success(response.message);
             } catch (e) {
                 this.handleError(e);
             }
@@ -102,7 +102,7 @@ export class SettingsTrackingComponent implements OnInit {
                     category.cname = response.data.cname;
                     this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
                     this.trackingService.toggleCategories(this.categories);
-                    this.toastr.success(response.message);
+                    //this.toastr.success(response.message);
                 } catch (e) {
                     this.handleError(e);
                 }
@@ -119,7 +119,7 @@ export class SettingsTrackingComponent implements OnInit {
             this.categories.splice(index, 1);
             this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
             this.trackingService.toggleCategories(this.categories);
-            this.toastr.success(response.message);
+            //this.toastr.success(response.message);
         } catch (e) {
             this.handleError(e);
         }

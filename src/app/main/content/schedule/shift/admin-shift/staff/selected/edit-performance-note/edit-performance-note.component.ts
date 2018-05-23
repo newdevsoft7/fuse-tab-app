@@ -38,7 +38,7 @@ export class AdminShiftEditPerformanceNoteComponent implements OnInit {
             };
             try {
                 const res = await this.scheduleService.updateRoleStaff(this.staff.id, body).toPromise();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.staff.performance_note = body.performance_note;
                 this.formActive = false;
             } catch (e) {

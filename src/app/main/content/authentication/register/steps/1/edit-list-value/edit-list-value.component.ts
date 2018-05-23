@@ -43,7 +43,7 @@ export class RegisterProfileEditListValueComponent implements OnInit {
                 this.element.data = value;
                 this.userService.updateProfile(this.userId, this.element.id, value)
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                     }, err => {
                         const errors = err.error.errors.data;
                         errors.forEach(v => {

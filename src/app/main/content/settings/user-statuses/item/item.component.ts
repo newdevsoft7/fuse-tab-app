@@ -54,7 +54,7 @@ export class UserStatusItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteUserStatus(this.status.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.onStatusDeleted.next(this.status);
                 });
             }
@@ -68,7 +68,7 @@ export class UserStatusItemComponent implements OnInit {
             if (this.form.editable) { data.sname = this.form.sname; }
             if (this.form.color_editable) { data.color = this.form.color; }
             this.settingsService.updateUserStatus(this.form.id, data).subscribe(res => {
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.status.name = res.data.sname;
                 this.status.color = res.data.color;
             }, err => {

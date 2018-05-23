@@ -56,7 +56,7 @@ export class SettingsWorkGroupItemComponent implements OnInit {
         const cname = this.form.getRawValue().cname;
         this.settingsService.updateWorkAreaCategory(this.category.id, cname).subscribe(res => {
             this.category.cname = cname;
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         }, err => {
             this.displayError(err);
         });
@@ -75,7 +75,7 @@ export class SettingsWorkGroupItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteWorkAreaCategory(this.category.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.onCategoryDeleted.next(this.category);
                 });
             }

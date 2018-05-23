@@ -63,7 +63,7 @@ export class UsersProfileEditBasicTextValueComponent implements OnInit {
 				this.element[this.field] = value;
 				this.userService.updateProfile(this.element.id, field, value)
 					.subscribe(res => {
-						this.toastr.success(res.message)
+						//this.toastr.success(res.message)
 					}, err => {
 						const errors = err.error.errors.data;
 						errors.forEach(v => {

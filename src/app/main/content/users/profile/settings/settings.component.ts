@@ -141,7 +141,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         try {
             this.spinner.show();
             const res = await this.userService.updateUserOption(this.user.id, data);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.handleError(e);
         } finally {
@@ -154,7 +154,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             this.spinner.show();
             const res = await this.userService.updateUserPermission(this.user.id, data);
             this.updateSublist(data);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.handleError(e);
         } finally {

@@ -145,7 +145,7 @@ export class SettingsWorkAreasComponent implements OnInit {
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         });
     }
 
@@ -164,7 +164,7 @@ export class SettingsWorkAreasComponent implements OnInit {
     addCategory() {
         const cname = this.categoryForm.getRawValue().cname;
         this.settingsService.createWorkAreaCategory(cname).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.categories.push(res.data);
             this.resetCategoryForm();
         }, err => {
@@ -176,7 +176,7 @@ export class SettingsWorkAreasComponent implements OnInit {
         let params = this.workAreaForm.getRawValue();
         params = { ...params, work_area_cat_id: this.selectedCategory.id };
         this.settingsService.createWorkArea(params).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.workAreas.push(res.data);
             this.resetworkAreaForm();
         }, err => {

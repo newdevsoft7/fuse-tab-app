@@ -74,7 +74,7 @@ export class ProfileInfoEditElementOptionsDialogComponent implements OnInit {
     private saveDisplayOrder() {
         const options = this.field.options.map(v => v.id);
         this.profileInfoService.setOptionDisplayOrder(options).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         });
     }
 

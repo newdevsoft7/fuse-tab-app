@@ -81,7 +81,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
         this.spinner.show();
         const res = await this.reportsUploadsService.reportsUploads(formData);
         this.spinner.hide();
-        this.toastr.success(res.message);
+        //this.toastr.success(res.message);
         const data = res.data.map(f => {
           f.id = f.id2;
           f.name = f.oname;

@@ -38,7 +38,7 @@ export class AdminShiftEditClientComponent implements OnInit {
             if (client_id !== this.shift.client_id) {
                 this.scheduleService.updateShift(this.shift.id, { client_id })
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.shift.client_id = client_id;
                     });
             }

@@ -44,7 +44,7 @@ export class EditPostDialogComponent implements OnInit {
         }
         this.homeService.updatePost(this.post.id, post).subscribe(newPost => {
             this.spinner.hide();
-            this.toastr.success('Saved');
+            //this.toastr.success('Saved');
             this.dialogRef.close(newPost);
         }, err => {
             this.spinner.hide();

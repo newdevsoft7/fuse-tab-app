@@ -51,7 +51,7 @@ export class GroupEditNameComponent implements OnInit {
 			if (gname !== this.group.gname) {
 				try {
 					const res = await this.scheduleService.updateShiftGroup(this.group.id, { gname });
-					this.toastr.success(res.message);
+					//this.toastr.success(res.message);
 					this.group.gname = gname;
 				} catch (e) {
 					this.displayError(e);

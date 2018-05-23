@@ -47,7 +47,7 @@ export class SettingsShiftFlagsComponent implements OnInit {
     addFlag() {
         if (!this.flag.fname || !this.flag.color) return;
         this.settingsService.createFlag(this.flag).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.flags.push({ ...res.data });
             this.resetForm();
         })

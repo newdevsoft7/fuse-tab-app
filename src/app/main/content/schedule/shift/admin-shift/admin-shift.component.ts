@@ -124,7 +124,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             if (result) {
                 try {
                     const res = await this.scheduleService.deleteShift(this.shift.id);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.tabService.closeTab(this.url);
                 } catch (e) {
                     this.displayError(e);
@@ -187,7 +187,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         this.scheduleService.publishShift(this.shift.id, live)
             .subscribe(res => {
                 this.shift.live = live;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
     }
 
@@ -196,7 +196,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         this.scheduleService.lockShift(this.shift.id, lock)
             .subscribe(res => {
                 this.shift.locked = lock;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
     }
 

@@ -291,7 +291,7 @@ export class ShiftRoleEditComponent implements OnInit {
         if (this.shifts) { // ROLE CREATE
             this.scheduleService.createShiftsRoles(this.shifts, role)
                 .subscribe(res => {
-                    this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles' : 'Role'} created.`);
+                    //this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles' : 'Role'} created.`);
 
                     // Confirm Dialog to ask whether to add another role or not
                     this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
@@ -314,7 +314,7 @@ export class ShiftRoleEditComponent implements OnInit {
         } else if (this.shift) { // ROLE CREATE FROM SHIFT TAB
             this.scheduleService.createShiftRole(this.shift.id, role)
                 .subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.tabService.closeTab(this.url);
                     this.openShiftTab(this.shift.id, this.shift.title);
                 }, err => {
@@ -323,7 +323,7 @@ export class ShiftRoleEditComponent implements OnInit {
         } else { // ROLE UPDATE
             this.scheduleService.updateShiftRole(this.role.id, role)
                 .subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.tabService.closeTab(this.url);
                     this.openShiftTab(this.role.shift_id, this.role.shift_title);
                 }, err => {

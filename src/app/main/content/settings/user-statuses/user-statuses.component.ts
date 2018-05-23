@@ -42,7 +42,7 @@ export class SettingsUserStatusesComponent implements OnInit {
     addStatus() {
         if (!this.status.sname || !this.status.color) return;
         this.settingsService.createUserStatus(this.status).subscribe(res => {
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.statuses.push(
                 {
                     ...res.data,

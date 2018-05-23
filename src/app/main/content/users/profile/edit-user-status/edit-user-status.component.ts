@@ -41,7 +41,7 @@ export class EditUserStatusComponent implements OnInit {
         const user_status_id = this.form.getRawValue().user_status_id;
         try {
             const res = await this.userService.updateUser(this.user.id, { user_status_id });
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.user.user_status = this.userStatuses.find(v => v.id === user_status_id);
         } catch (e) {
             this.toastr.error(e.error.error);

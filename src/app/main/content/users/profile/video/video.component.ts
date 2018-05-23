@@ -113,7 +113,7 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
 
             this.userService.uploadProfileVideo(this.user.id, formData)
                 .subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.spinner.hide();
                     res.data.map(video => {
                         this.videos.push(video);

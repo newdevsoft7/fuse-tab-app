@@ -121,7 +121,7 @@ export class StaffShiftInfoComponent implements OnInit {
                     if (reason) {
                         this.scheduleService.applyShiftRole(role.id, reason)
                             .subscribe(res => {
-                                this.toastr.success(res.message);
+                                //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                                 role.role_staff_id = res.id;
@@ -140,7 +140,7 @@ export class StaffShiftInfoComponent implements OnInit {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.applyCancelShiftRole(roleStaffId)
                             .subscribe(res => {
-                                this.toastr.success(res.message);
+                                //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                                 delete role.role_staff_id;
@@ -151,7 +151,7 @@ export class StaffShiftInfoComponent implements OnInit {
 
             case Action.not_available:
                 this.scheduleService.notAvailableShiftRole(role.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     role.message = res.role_message;
                     role.actions = [...res.actions];
                     role.role_staff_id = res.id;
@@ -174,7 +174,7 @@ export class StaffShiftInfoComponent implements OnInit {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.confirmStaffSelection(roleStaffId)
                             .subscribe(res => {
-                                this.toastr.success(res.message);
+                                //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions]
                             });
@@ -191,7 +191,7 @@ export class StaffShiftInfoComponent implements OnInit {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.replaceShiftRole(roleStaffId, reason)
                             .subscribe(res => {
-                                this.toastr.success(res.message);
+                                //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                             });
@@ -209,7 +209,7 @@ export class StaffShiftInfoComponent implements OnInit {
                         const roleStaffId = role.role_staff_id;
                         this.scheduleService.replaceCancelShiftRole(roleStaffId)
                             .subscribe(res => {
-                                this.toastr.success(res.message);
+                                //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions]
                             });
@@ -234,7 +234,7 @@ export class StaffShiftInfoComponent implements OnInit {
                         const roleStaffId = role.role_staff_id;
                         try {
                             const res = await this.scheduleService.checkInShiftRole(roleStaffId, result);
-                            this.toastr.success(res.message);
+                            //this.toastr.success(res.message);
                             role.message = res.role_message;
                             role.actions = [...res.actions]
                         } catch (e) {
@@ -257,7 +257,7 @@ export class StaffShiftInfoComponent implements OnInit {
                         const roleStaffId = role.role_staff_id;
                         try {
                             const res = await this.scheduleService.checkOutShiftRole(roleStaffId, result);
-                            this.toastr.success(res.message);
+                            //this.toastr.success(res.message);
                             role.message = res.role_message;
                             role.actions = [...res.actions]
                         } catch (e) {

@@ -129,7 +129,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(res => {
-                        this.toastr.success(res.message);
+                        //this.toastr.success(res.message);
                         this.scheduleService.getRoleStaffs(this.roleId, Query.Applicants)
                             .subscribe(res => {
                                 this.staffs = res;
@@ -170,7 +170,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
         this.scheduleService.updateRoleStaff(staff.id, { team_leader })
             .subscribe(res => {
                 staff.team_leader = team_leader;
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             });
     }
 

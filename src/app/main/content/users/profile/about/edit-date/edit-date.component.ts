@@ -52,7 +52,7 @@ export class UsersProfileEditDateComponent implements OnInit {
 				this.element[this.field] = value; 
 				this.userService.updateProfile(this.userId, PROFILE_ELEMENT_DOB, value)
 					.subscribe(res => {
-						this.toastr.success(res.message);
+						//this.toastr.success(res.message);
 					}, err => {
 						const errors = err.error.errors.data;
 						errors.forEach(v => {

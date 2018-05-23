@@ -132,7 +132,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
             content: this.template.content,
             attachments: this.template.attachments
           });
-          this.toastr.success(res.message);
+          //this.toastr.success(res.message);
           this.submitted = true;
           this.onTemplateAdded.next(res.data);
         } catch (e) {
@@ -155,7 +155,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
             folder_id: this.template.folder_id,
             active: this.template.active ? 1 : 0
           });
-          this.toastr.success(res.message);
+          //this.toastr.success(res.message);
           this.submitted = true;
           this.onTemplateUpdated.next(res.data);
         } catch (e) {
@@ -177,7 +177,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
       if (result) {
         try {
           const res = await this.templatesService.deleteTemplate(this.id);
-          this.toastr.success(res.message);
+          //this.toastr.success(res.message);
           this.mode = Mode.Create;
           this.resetTemplateForm();
           this.onTemplateDeleted.next(this.template);

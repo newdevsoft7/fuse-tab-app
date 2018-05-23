@@ -68,7 +68,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteWorkArea(this.workArea.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.onWorkAreaDeleted.next(this.workArea);
                 });
             }
@@ -80,7 +80,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         const params = this.form.value;
         this.settingsService.updateWorkArea(this.workArea.id, params).subscribe(res => {
             this.workArea = { ...this.workArea, ...params };
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         }, err => {
             this.displayError(err);
         });

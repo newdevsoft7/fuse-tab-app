@@ -145,7 +145,7 @@ export class AdminShiftListComponent implements OnInit {
                         shift_ids: this.selectedShifts.map(s => s.id.toString())
                     });
                     this.spinner.hide();
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.shifts.filter(v => ids.includes(v.id)).forEach(shift => {
                         shift.gname = res.shift_group.gname;
                         shift.shift_group_id = res.shift_group.id;
@@ -175,7 +175,7 @@ export class AdminShiftListComponent implements OnInit {
                     this.spinner.show();
                     const res = await this.scheduleService.ungroupGroups(groupIds, shiftIds);
                     this.spinner.hide();
-                    this.toastr.success('Saved.');
+                    //this.toastr.success('Saved.');
                     this.shifts.filter(v => shiftIds.includes(v.id.toString())).forEach(shift => {
                         shift.gname = null;
                         shift.shift_group_id = null;
@@ -278,7 +278,7 @@ export class AdminShiftListComponent implements OnInit {
                 try {
                     this.shifts = this.shifts.filter(s => s.id !== shift.id);
                     const res = await this.scheduleService.deleteShift(shift.id);
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                 } catch (e) {
                     this.displayError(e);
                 }

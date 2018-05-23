@@ -56,7 +56,7 @@ export class SettingsPayCategoryItemComponent implements OnInit {
         const cname = this.form.getRawValue().cname;
         this.settingsService.updatePayCategory(this.category.id, cname).subscribe(res => {
             this.category.cname = cname;
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         }, err => {
             this.displayError(err);
         });
@@ -75,7 +75,7 @@ export class SettingsPayCategoryItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deletePayCategory(this.category.id).subscribe(res => {
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     this.onCategoryDeleted.next(this.category);
                 });
             }

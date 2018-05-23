@@ -113,7 +113,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 			this.userService.uploadProfilePhoto(this.user.id, formData)
 				.subscribe(res => {
 					this.spinner.hide();
-					this.toastr.success(res.message);
+					//this.toastr.success(res.message);
 					res.data.map(photo => {
 						this.photos.push(photo);
 					});

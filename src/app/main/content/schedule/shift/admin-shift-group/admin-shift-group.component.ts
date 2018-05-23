@@ -87,7 +87,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         const live = this.group.live === 1 ? 0 : 1;
         try {
             const res = await this.scheduleService.updateShiftGroup(this.group.id, { live });
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.group.live = live;
         } catch (e) {
             this.displayError(e);
@@ -98,7 +98,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         const value = flag.set === 1 ? 0 : 1;
         try {
             const res = await this.scheduleService.setGroupFlag(this.group.id, flag.id, value);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             flag.set = value;
         } catch (e) {
             this.displayError(e);
@@ -109,7 +109,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         const locked = this.group.locked === 1 ? 0 : 1;
         try {
             const res = await this.scheduleService.updateShiftGroup(this.group.id, { locked });
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
             this.group.locked = locked;
         } catch (e) {
             this.displayError(e);

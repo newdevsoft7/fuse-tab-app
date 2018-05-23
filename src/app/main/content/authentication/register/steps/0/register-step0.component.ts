@@ -81,7 +81,7 @@ export class RegisterStep0Component implements OnInit {
         const params = this.form.value;
         this.authService.register(params).subscribe(res => {
             this.spinner.hide();
-            this.toastr.success("Saved");
+            //this.toastr.success("Saved");
             this.onUserCreated.next(res.user);
             this.onStepSucceed.next(res.steps);
         }, err => {

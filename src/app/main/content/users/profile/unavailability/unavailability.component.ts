@@ -71,7 +71,7 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
                         ...this.unavailabilities,
                         item
                     ];
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                 } catch (e) {
                     this.displayError(e);
                 }
@@ -83,7 +83,7 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
         try {
             const res = await this.userService.deleteUserAvailability(id);
             this.unavailabilities = this.unavailabilities.filter(v => v.id !== id);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
         }

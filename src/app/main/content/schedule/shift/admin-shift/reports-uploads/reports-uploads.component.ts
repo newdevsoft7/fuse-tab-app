@@ -56,7 +56,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 			try {
                 const res = await this.scheduleService.reportsUploads(formData);
                 this.spinner.hide();
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
                 this.data.files.push(...res.data);
             } catch (e) {
                 this.spinner.hide();
@@ -82,7 +82,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
                 const index = this.data.files.findIndex(f => f.id === file.id);
                 this.data.files.splice(index, 1);
                 const res = await this.scheduleService.deleteFile(file.id);
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             } catch (e) {
                 this.toastr.error(e.message);
             }
@@ -100,7 +100,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
                 this.data.surveys.splice(index, 1);
                 const res = await this.scheduleService.deleteCompletedReport(report.id);
-                this.toastr.success(res.message);
+                //this.toastr.success(res.message);
             } catch (e) {
                 // To be removed
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
@@ -114,7 +114,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
         try {
             file.approved = value;
             const res = await this.scheduleService.reportsUploadsApprove(type, file.id, value);
-            this.toastr.success(res.message);
+            //this.toastr.success(res.message);
         } catch (e) {
             this.displayError(e);
             file.approved = value ? 0 : 1;

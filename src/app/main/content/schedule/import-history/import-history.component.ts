@@ -48,7 +48,7 @@ export class ImportHistoryComponent implements OnInit {
                     this.spinner.show();
                     const res = await this.scheduleService.deleteImport(item.id);
                     this.spinner.hide();
-                    this.toastr.success(res.message);
+                    //this.toastr.success(res.message);
                     const index = this.history.findIndex(v => v.id === item.id);
                     if (index > -1) {
                         this.history.splice(index, 1);
