@@ -60,6 +60,8 @@ export class AdminShiftListComponent implements OnInit {
     dialogRef: any;
     differ: any;
 
+    hoverPopupData: any;
+
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
     // Initialize date range selector
@@ -355,5 +357,9 @@ export class AdminShiftListComponent implements OnInit {
             data: { shiftIds }
         });
         dialogRef.afterClosed().subscribe(res => {});
+    }
+    
+    async getHoverContent(eventId: number): Promise<any> {
+        this.hoverPopupData = await this.scheduleService.getPopupContent(eventId);
     }
 }

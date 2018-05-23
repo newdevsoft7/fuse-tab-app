@@ -43,6 +43,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   tabLoaded: boolean = false;
   tabActiveSubscription: Subscription;
 
+  hoverAsyncFn: any;
+
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
       // put some logic here for styling the day cells
@@ -158,7 +160,10 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser();
-    if (['owner', 'admin'].includes(this.currentUser.lvl)) { 
+
+    this.hoverAsyncFn = (shiftId: number) => this.scheduleService.getPopupContent(shiftId);
+
+    if (['owner', 'admin'].includes(this.currentUser.lvl)) {
       this.currentUserFlags = this.tokenStorage.getSettings().flags;
       for (let flag of this.currentUserFlags) {
         flag.set = 2;
