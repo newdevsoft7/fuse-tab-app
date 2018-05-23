@@ -500,7 +500,12 @@ export class ScheduleService {
     const url = `${BASE_URL}/shifts/export/csv`;
     return this.http.post(url, body, { observe: 'response', responseType: 'blob'}).toPromise()
       .then(res => this.downloadFile(res['body']))
-      .catch(e => this.displayError(e))
+      .catch(e => this.displayError(e));
+  }
+
+  getPopupContent(id): Promise<any> {
+    const url = `${BASE_URL}/shift/${id}/popUp`;
+    return this.http.get(url).toPromise();
   }
 
   private handleError(error: Response | any) {

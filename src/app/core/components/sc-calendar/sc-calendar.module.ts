@@ -30,6 +30,8 @@ import { PopoverModule } from './popover';
   ],
   providers: [],
   exports: [
+    PopoverModule,
+    SCCalendarHoverPopupComponent,
     SCCalendarComponent
   ]
 })

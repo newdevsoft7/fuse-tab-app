@@ -1,11 +1,12 @@
-<mat-card class="hover-popup">
-  <mat-card-title>{{event?.data?.title}}</mat-card-title>
+<mat-card class="hover-popup" *ngIf="data">
+  <mat-card-title>{{data?.location}}</mat-card-title>
   <mat-card-content>
-    <h4 class="name"><strong>Date</strong></h4>
-    <p class="value">{{event?.data?.startedAt?.format('ddd, MMMM DD, YYYY')}}</p>
-    <ng-container *ngIf="event?.data?.startedAt?.hours() || event?.data?.startedAt?.minutes()">
-      <h4 class="name"><strong>Time</strong></h4>
-      <p class="value">{{ event?.data?.startedAt?.format('h:mm a') + (event?.raw?.end? ' - ' + event?.data?.endedAt?.format('h:mm a') : '') }}</p>
-    </ng-container>
+    <p class="value">{{data?.start}} - {{data?.end}}</p>
+    <ul *ngIf="data?.selected" class="staffs">
+      <li fxLayout="row" fxLayoutAlign="start center" *ngFor="let staff of data?.selected">
+        <span class="dot" [style.backgroundColor]="staff?.staff_status[0]?.bg_color" [matTooltip]="staff?.staff_status[0]?.status"></span>
+        {{staff.name}}
+      </li>
+    </ul>
   </mat-card-content>
 </mat-card>
