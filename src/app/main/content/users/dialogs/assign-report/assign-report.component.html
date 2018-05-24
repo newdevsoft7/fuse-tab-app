@@ -13,20 +13,20 @@
 
     <div class="content">
       <div *ngFor="let quiz of quizes" class="info" fxLayout.gt-xs="row wrap" fxLayout="column">
-        <div fxLayout="column" fxFlex="40">
+        <div fxLayout="column" fxFlex="40" fxLayoutAlign="start center">
             <mat-checkbox [(ngModel)]="quiz.assign" (change)="onUpdateAttribute($event)">{{quiz.rname}}</mat-checkbox>
         </div>
-        <div fxLayout="column" fxFlex="60">
-          <div fxLayout.gt-xs="row wrap" fxLayout="column">
-            <div fxFlex="50" fxLayout="column" *ngIf="quiz.assign">
-                <mat-form-field class="date-picker" fxFlex="50" >
+        <div fxLayout="column" fxLayoutAlign="start center" fxFlex="60">
+          <div fxLayout.gt-xs="row wrap" fxLayout="column" *ngIf="quiz.assign">
+            <div fxFlex="30" fxLayout="column" >
+                <mat-form-field class="date-picker" fxFlex="30" class="deadline-picker">
                   <input matInput [matDatepicker]="datePicker" [(ngModel)]="quiz.deadline" placeholder="Deadline">
                   <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
                   <mat-datepicker #datePicker></mat-datepicker>
                 </mat-form-field>
             </div>
-            <div fxFlex="50" fxLayout="column" *ngIf="quiz.assign">
-              <mat-form-field fxFlex="50">
+            <div fxFlex="40" fxLayout="column">
+              <mat-form-field>
                 <input [(ngModel)]="quiz.completitions" type="number" matInput placeholder="Number of completitions" >
               </mat-form-field>
             </div>
