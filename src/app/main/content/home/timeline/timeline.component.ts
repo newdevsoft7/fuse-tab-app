@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +20,7 @@ import { TabService } from '../../../tab/tab.service';
 import { TAB } from '../../../../constants/tab';
 import { Tab } from '../../../tab/tab';
 import { ScheduleService } from '../../schedule/schedule.service';
+import { Subscription } from 'rxjs/Subscription';
 
 enum PostType {
     Main    = 'main',
@@ -33,7 +34,7 @@ enum PostType {
     styleUrls  : ['./timeline.component.scss'],
     animations : fuseAnimations
 })
-export class TimelineComponent implements OnInit
+export class TimelineComponent implements OnInit, OnDestroy
 {
     activities = [];
 
@@ -48,6 +49,7 @@ export class TimelineComponent implements OnInit
 
     user: any;
     dialogRef;
+    userSwitcherSubscription: Subscription;
 
     @Input() lvl: string;
 
@@ -65,7 +67,15 @@ export class TimelineComponent implements OnInit
     }
 
     ngOnInit() {
-        // FIX - Get user avatar. we should use local storage
+        this.fetchData();
+        this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
+            if (isSwitch) {
+                this.fetchData();
+            }
+        });
+    }
+
+    private fetchData() {
         this.userService.getUser(this.user.id).subscribe(res => {
             this.user = res;
             this.user.name = `${this.user.fname} ${this.user.lname}`;
@@ -75,6 +85,11 @@ export class TimelineComponent implements OnInit
         if (!this.lvl) {
             this.loadNotifications();
         }
+    }
+
+    ngOnDestroy() {
+        this.tokenStorage.userSwitchListener.next(false);
+        this.userSwitcherSubscription.unsubscribe();
     }
 
     async loadNotifications() {
@@ -109,6 +124,9 @@ export class TimelineComponent implements OnInit
                         post.isCommentsShow = false; // visibility of comments section
                         post.commentsLoading = false;
                     });
+                    if (isFirstCall) {
+                        this.posts = [];
+                    }
                     this.posts.push(...posts);
                 }
 
