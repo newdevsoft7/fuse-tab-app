@@ -24,6 +24,7 @@ import {
 import { Tab } from '../../../../../../tab/tab';
 import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
+import { TAB } from '../../../../../../../constants/tab';
 
 enum Query {
     Counts = 'counts',
@@ -172,6 +173,12 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
                 staff.team_leader = team_leader;
                 //this.toastr.success(res.message);
             });
+    }
+
+    sendMessage(staff) {
+        const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+        tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
+        this.tabService.openTab(tab);
     }
 
     ngOnInit() {

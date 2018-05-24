@@ -24,6 +24,7 @@ import {
 import { Tab } from '../../../../../../tab/tab';
 import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
+import { TAB } from '../../../../../../../constants/tab';
 
 enum Query {
     Counts = 'counts',
@@ -200,5 +201,9 @@ export class AdminShiftStaffStandbyComponent implements OnInit {
         this.onStaffCountChanged.next(true);
     }
 
-
+    sendMessage(staff) {
+        const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+        tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
+        this.tabService.openTab(tab);
+    }
 }

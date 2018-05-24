@@ -372,7 +372,6 @@ export class UsersComponent implements OnInit {
     select(messaging: boolean) {
         const shiftId = this.data.shiftId;
         const role = { id: this.data.selectedRoleId };
-        const section = 'Selected';
         const userIds = this.selectedUsers.map(v => v.id);
         if (!this.data.selectedRoleId) { return; }
         if (this.total === 0 || _.isEmpty(userIds)) { return; }
