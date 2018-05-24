@@ -14,6 +14,7 @@ export class StaffShiftCheckInOutDialogComponent implements OnInit {
     lon: any;
     file: any;
     formData = new FormData();
+    filename: string;
 
     styles = [
         {
@@ -121,6 +122,7 @@ export class StaffShiftCheckInOutDialogComponent implements OnInit {
         if (this.formData.has('photo')) { this.formData.delete('photo'); }
         const files = event.target.files; 
         if (files && files.length > 0) {
+            this.filename = files[0].name;
             this.formData.append('photo', files[0], files[0].name);
         }
     }

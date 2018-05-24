@@ -10,13 +10,17 @@
         </agm-map>
 
         <!-- ADD FILE BUTTON -->
-        <div class="my-12">
-                <input hidden type="file" #fileInput (change)="change($event)"/>
-                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+        <div class="my-12" fxLayout="row" fxLayoutAlign="start center">
+            <input hidden type="file" #fileInput (change)="change($event)"/>
+            <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                <ng-container *ngIf="filename; else default">Select a different photo</ng-container>
+                <ng-template #default>
                     <mat-icon class="white-fg">add</mat-icon>
                     <span>Add a photo</span>
-                </button>
-            </div>
+                </ng-template>
+            </button>
+            <div *ngIf="filename" class="ml-4 filename">{{filename}}</div>
+        </div>
             <!-- / ADD FILE BUTTON -->
     </div>
     
