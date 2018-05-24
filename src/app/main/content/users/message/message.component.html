@@ -29,7 +29,9 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
         <span class="w-100">Template</span>
         <mat-form-field class="w-100-p">
-          <input type="text" matInput ngModel name="template" debounce [delay]="300" [matAutocomplete]="auto" (onValueChange)="filterTemplates($event)">
+          <input type="text" matInput name="template" ngModel debounce [delay]="300"
+            #template
+            [matAutocomplete]="auto" (onValueChange)="filterTemplates($event)">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="templateDisplayFn" (optionSelected)="selectTemplate($event)">
             <mat-option *ngFor="let template of templates" [value]="template">
               {{ template.tname }}

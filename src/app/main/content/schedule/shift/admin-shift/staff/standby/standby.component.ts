@@ -24,6 +24,7 @@ import {
 import { Tab } from '../../../../../../tab/tab';
 import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
+import { TAB } from '../../../../../../../constants/tab';
 
 enum Query {
     Counts = 'counts',
@@ -172,9 +173,37 @@ export class AdminShiftStaffStandbyComponent implements OnInit {
             });
     }
 
+    remove(staff) {
+        let message = "Really remove this user?";
+
+        this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+
+        this.confirmDialogRef.componentInstance.confirmMessage = message;
+
+        this.confirmDialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.scheduleService.removeRoleStaff(staff.id)
+                    .subscribe(res => {
+                        //this.toastr.success(res.message);
+                        this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
+                            .subscribe(res => {
+                                this.staffs = res;
+                            })
+                        this.updateStaffCount();
+                    });
+            }
+        });
+    }
+
     private updateStaffCount() {
         this.onStaffCountChanged.next(true);
     }
 
-
+    sendMessage(staff) {
+        const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+        tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
+        this.tabService.openTab(tab);
+    }
 }

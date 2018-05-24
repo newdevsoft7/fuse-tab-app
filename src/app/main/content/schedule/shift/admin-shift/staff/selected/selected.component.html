@@ -47,7 +47,7 @@
                     </button>
 
                     <mat-menu #menu="matMenu">
-                        <button mat-menu-item>
+                        <button mat-menu-item (click)="sendMessage(staff)">
                             <mat-icon>mail_outline</mat-icon>
                             <span>Send Message</span>
                         </button>
@@ -77,10 +77,10 @@
                             Add Pay Item
                         </button>
                                 
-                        <!-- <button mat-menu-item (click)="remove(staff)">
+                        <button mat-menu-item (click)="remove(staff)">
                             <mat-icon>clear</mat-icon>
                             <span>Remove</span>
-                        </button> -->
+                        </button>
                     </mat-menu>
                     
                     <mat-menu #statusMenu="matMenu">

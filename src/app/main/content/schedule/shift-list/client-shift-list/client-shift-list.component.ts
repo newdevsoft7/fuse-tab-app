@@ -127,7 +127,7 @@ export class ClientShiftListComponent implements OnInit {
     }
 
     onFiltersChanged(filters) {
-        this.filters = filters;
+        this.filters = filters.map(v => v.id);
         this.getShifts();
     }
 

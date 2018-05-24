@@ -24,6 +24,7 @@ import {
     STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
 } from '../../../../../../../constants/staff-status';
+import { TAB } from '../../../../../../../constants/tab';
 
 enum Query {
     Counts = 'counts',
@@ -177,6 +178,12 @@ export class AdminShiftStaffNAComponent implements OnInit {
                 staff.team_leader = team_leader;
                 //this.toastr.success(res.message);
             });
+    }
+
+    sendMessage(staff) {
+        const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+        tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
+        this.tabService.openTab(tab);
     }
 
 }

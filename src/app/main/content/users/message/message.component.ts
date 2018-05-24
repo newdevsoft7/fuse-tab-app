@@ -1,8 +1,8 @@
-import { Component, ViewChild, ElementRef, Input, OnInit } from "@angular/core";
+import { Component, ViewChild, ElementRef, Input, OnInit, AfterViewInit } from "@angular/core";
 import { TokenStorage } from "../../../../shared/services/token-storage.service";
 import { MessageService } from "./message.service";
 import { Observable } from "rxjs/Observable";
-import { NgForm } from "@angular/forms";
+import { NgForm, FormControl } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { MatAutocompleteSelectedEvent } from "@angular/material";
 import { CustomMultiSelectComponent } from "../../../../core/components/custom-multi-select/custom-multi-select.component";
@@ -14,7 +14,7 @@ import { TAB } from "../../../../constants/tab";
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnInit, AfterViewInit {
 
   @Input() data: any = {};
 
@@ -26,19 +26,21 @@ export class MessageComponent implements OnInit {
   };
 
   fromEmails: any = [];
-
+  templateControl: FormControl = new FormControl();
+  
   recipientsFiltersObservable: any;
   attachmentsFiltersObservable: any;
   count: number = 0;
-
+  
   file: any;
-
+  
   sending: boolean = false;
   sent: boolean = false;
   templates: any = [];
-
+  
   props: any = {};
-
+  
+  @ViewChild('template') template: ElementRef;
   @ViewChild('uploadFile') uploadFile: ElementRef;
   @ViewChild('messageForm') messageForm: NgForm;
   @ViewChild('attachmentsSelector') attachmentsSelector: CustomMultiSelectComponent;
@@ -53,7 +55,10 @@ export class MessageComponent implements OnInit {
   init(): void {
     this.fromEmails = this.tokenStorage.getSettings().from_emails;
     this.message.from = this.fromEmails[0].id;
-    this.message.recipients = [];
+    this.message.recipients = this.props.recipients? this.props.recipients : [];
+    if (this.props.template) {
+      this.selectTemplate(this.props.template);
+    }
     this.recipientsFiltersObservable = (text: string): Observable<any> => {
       if (text) {
         return this.messageService.searchRecipients(this.props.action || 'normal', text);
@@ -81,11 +86,19 @@ export class MessageComponent implements OnInit {
     this.props.index = this.data.index;
     this.props.action = this.data.action;
     this.props.id = this.data.id;
+    this.props.recipients = this.data.recipients;
+    this.props.template = this.data.template;
 
     this.init();
 
     if (this.props.action) {
       this.fetchTemplateContent();
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.props.template) {
+      setTimeout(() => this.template.nativeElement.value = this.props.template.tname);
     }
   }
 
@@ -111,7 +124,7 @@ export class MessageComponent implements OnInit {
       const res = await this.messageService.send({
         content: 'test',
         count: 1,
-        recipients: filters
+        recipients: filters.map(v => v.id)
       });
       this.count = res.count;
       if (this.count < 2) {
@@ -153,7 +166,7 @@ export class MessageComponent implements OnInit {
       try {
         const res = await this.messageService.send({
           content: this.message.content,
-          recipients: this.message.recipients,
+          recipients: this.message.recipients.map(v => v.id),
           count: 0,
           thread: this.message.thread,
           email: this.message.email,
@@ -180,9 +193,15 @@ export class MessageComponent implements OnInit {
     return template? template.tname : '';
   }
 
-  async selectTemplate(event: MatAutocompleteSelectedEvent): Promise<any> {
+  async selectTemplate(event: any): Promise<any> {
     try {
-      const template = await this.messageService.getTemplate(event.option.value.id);
+      let id;
+      if (event instanceof MatAutocompleteSelectedEvent) {
+        id = event.option.value.id
+      } else {
+        id = event.id;
+      }
+      const template = await this.messageService.getTemplate(id);
       this.attachmentsSelector.value = [];
       for (let i = 0; i < template.attachments.length; i++) {
         this.file = { id: template.attachments[i].id, text: template.attachments[i].oname }

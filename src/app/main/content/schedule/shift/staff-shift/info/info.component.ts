@@ -125,7 +125,7 @@ export class StaffShiftInfoComponent implements OnInit {
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                                 role.role_staff_id = res.id;
-                            });
+                            }, err => this.displayError(err));
                     }
                 });
                 break;
@@ -144,7 +144,7 @@ export class StaffShiftInfoComponent implements OnInit {
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                                 delete role.role_staff_id;
-                            });
+                            }, err => this.displayError(err));
                     }
                 });
                 break;
@@ -155,9 +155,7 @@ export class StaffShiftInfoComponent implements OnInit {
                     role.message = res.role_message;
                     role.actions = [...res.actions];
                     role.role_staff_id = res.id;
-                }, err => {
-                    this.toastr.error(err.error.message);
-                });
+                }, err => this.displayError(err));
                 break;
 
             case Action.confirm:
@@ -177,7 +175,7 @@ export class StaffShiftInfoComponent implements OnInit {
                                 //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions]
-                            });
+                            }, err => this.displayError(err));
                     }
                 });
                 break;
@@ -194,7 +192,7 @@ export class StaffShiftInfoComponent implements OnInit {
                                 //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
-                            });
+                            }, err => this.displayError(err));
                     }
                 });
                 break;
@@ -212,7 +210,7 @@ export class StaffShiftInfoComponent implements OnInit {
                                 //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions]
-                            });
+                            }, err => this.displayError(err));
                     }
                 });
                 break;

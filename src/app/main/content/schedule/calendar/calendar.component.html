@@ -3,6 +3,7 @@
   [contextMenu]="contextMenu"
   [ajax]="true"
   [loading]="loading"
+  [hoverAsyncFn]="hoverAsyncFn"
   (optionChanged)="updateEvents($event)">
 
   <div calendar-header fxLayout="row" fxLayoutAlign="end space-evenly">
@@ -13,7 +14,7 @@
           <mat-icon [style.color]="flag.set !== 2 ? flag.color : 'white'">flag</mat-icon>
         </ng-template>
     </button>
-</div>
+  </div>
 
   <div calendar-header fxLayout="row" fxLayoutAlign="start center">
     <mat-icon class="mr-8 mb-8" fxFlex="0 1 auto">search</mat-icon>
@@ -27,4 +28,3 @@
     </div>
   </div>
 </sc-calendar>
-

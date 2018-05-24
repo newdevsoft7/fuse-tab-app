@@ -12,9 +12,13 @@ import { MatMenu } from '@angular/material';
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
+  @Input() hoverAsyncFn: (shiftId: number) => Promise<any>;
+
   @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('monthView') monthView: any;
   @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;
+
   @HostListener('window:resize', ['$event'])
   onResize() {
     this.updateCellHeight();
@@ -30,13 +34,15 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   positions:any;
   rowData:any;
 
-  hoverPopupEvent: any;
+  hoverPopupData: any;
+
   menuEvent: any;
 
   viewStartDate: any;
   viewEndDate: any;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private renderer: Renderer2) {}
 
   ngOnInit() {
     this.updateCellHeight();
@@ -218,8 +224,8 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     this.options.eventRender(data.event, data.element);
   }
 
-  onPopupShown(event): void {
-    this.hoverPopupEvent = event;
+  async onPopupShown(event): Promise<any> {
+    this.hoverPopupData = await this.hoverAsyncFn(event.raw.id);
   }
 
   onMenuShown(event): void {

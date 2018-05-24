@@ -55,7 +55,7 @@
                 </button>
 
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="sendMessage(row)">
                         <mat-icon>mail_outline</mat-icon>
                         <span>Send Message</span>
                     </button>
@@ -70,7 +70,7 @@
                         <span>Change Status</span>
                     </button>
 
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="remove(row)">
                         <mat-icon>clear</mat-icon>
                         <span>Remove</span>
                     </button>

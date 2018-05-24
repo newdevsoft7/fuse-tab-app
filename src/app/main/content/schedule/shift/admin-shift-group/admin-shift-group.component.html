@@ -45,9 +45,9 @@
                             <button mat-menu-item>Add Role</button>
                             <button mat-menu-item>Invite</button>
                             <button mat-menu-item>Chat</button>
-                            <button mat-menu-item>Messaged Selected</button>
-                            <button mat-menu-item>Messaged Applicants</button>
-                            <button mat-menu-item>Messaged Invited</button>
+                            <button mat-menu-item (click)="message('selected')">Messaged Selected</button>
+                            <button mat-menu-item (click)="message('applicants')">Messaged Applicants</button>
+                            <button mat-menu-item (click)="message('invited')">Messaged Invited</button>
                         </mat-menu>
                     </div>
                 </div>

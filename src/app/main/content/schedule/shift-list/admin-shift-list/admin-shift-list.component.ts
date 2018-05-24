@@ -24,6 +24,7 @@ import { GroupDialogComponent } from './group-dialog/group-dialog.component';
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
+import { ShiftListEmailDialogComponent } from './email-dialog/email-dialog.component';
 
 @Component({
     selector: 'app-admin-shift-list',
@@ -58,6 +59,8 @@ export class AdminShiftListComponent implements OnInit {
 
     dialogRef: any;
     differ: any;
+
+    hoverPopupData: any;
 
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
@@ -227,7 +230,7 @@ export class AdminShiftListComponent implements OnInit {
     }
 
     onFiltersChanged(filters) {
-        this.tmpFilters = this.filters = filters; 
+        this.tmpFilters = this.filters = filters.map(v => v.id); 
         this.filters = (this.selectedFlags) ? this.filters.concat(this.selectedFlags) : this.filters ;
         this.getShifts();
     }
@@ -344,5 +347,19 @@ export class AdminShiftListComponent implements OnInit {
         });
 
         this.dialogRef.afterClosed().subscribe(res => { });
+    }
+
+    email() {
+        const shiftIds = this.selectedShifts.map(v => v.id);
+        const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
+            disableClose: false,
+            panelClass: 'admin-shift-email-dialog',
+            data: { shiftIds }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
+    }
+    
+    async getHoverContent(eventId: number): Promise<any> {
+        this.hoverPopupData = await this.scheduleService.getPopupContent(eventId);
     }
 }

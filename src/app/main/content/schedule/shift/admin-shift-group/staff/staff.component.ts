@@ -383,7 +383,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Selected)
                     .subscribe(res => {
                         const index = roles.findIndex(v => v.id === role.id);
-                        roles[index].selected = res.role_staff;
+                        roles[index].selected = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -393,7 +393,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Standby)
                     .subscribe(res => {
                         const index = roles.findIndex(v => v.id === role.id);
-                        roles[index].standby = res.role_staff;
+                        roles[index].standby = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -403,7 +403,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Applicants)
                     .subscribe(res => {
                         const index = roles.findIndex(v => v.id === role.id);
-                        roles[index].applicants = res.role_staff;
+                        roles[index].applicants = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -413,7 +413,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Invited)
                     .subscribe(res => {
                         const index = roles.findIndex(v => v.id === role.id);
-                        roles[index].invited = res.role_staff;
+                        roles[index].invited = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -423,7 +423,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.scheduleService.getRoleStaffs(role.id, Query.Na)
                     .subscribe(res => {
                         const index = roles.findIndex(v => v.id === role.id);
-                        roles[index].na = res.role_staff;
+                        roles[index].na = res;
                     }, err => {
                         this.toastr.error(err.error.message);
                     });
@@ -497,10 +497,19 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
     }
 
     onAddStaffToRole(role) {
+        const roles = this.shifts.find(v => v.id === role.shift_id).shift_roles.map(v => {
+            return {
+                id: v.id,
+                name: v.rname
+            };
+        });
         const filters = [];
         const data = {
+            roles,
+            shiftId: role.shift_id,
+            select: true,
             filters,
-            role,
+            selectedRoleId: role.id,
             tab: `admin/shift/${role.shift_id}`
         };
 

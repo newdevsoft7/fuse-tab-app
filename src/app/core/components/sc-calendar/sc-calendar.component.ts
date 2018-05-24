@@ -18,6 +18,8 @@ export class SCCalendarComponent implements OnInit, OnDestroy, DoCheck {
     this.toggleLoader(value);
   }
 
+  @Input() hoverAsyncFn: (shiftId: number) => Promise<any>;
+
   @Output() optionChanged: EventEmitter<{startDate: string, endDate: string}> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();
 

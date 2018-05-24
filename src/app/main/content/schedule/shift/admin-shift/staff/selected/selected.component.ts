@@ -31,6 +31,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { AddPayItemDialogComponent } from './add-pay-item-dialog/add-pay-item-dialog.component';
 import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
+import { TAB } from '../../../../../../../constants/tab';
 
 enum Query {
     Counts = 'counts',
@@ -347,6 +348,12 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         } catch (e) {
             this.displayError(e);
         }
+    }
+
+    sendMessage(staff) {
+        const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+        tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
+        this.tabService.openTab(tab);
     }
 
     private displayError(e: any) {

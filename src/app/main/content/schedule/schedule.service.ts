@@ -496,11 +496,26 @@ export class ScheduleService {
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
   }
 
+  getUsersToMessage(type: string, shiftRoleIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/shifts/message/${type}`;
+    return this.http.put(url, { shift_role_ids: shiftRoleIds }).toPromise();
+  }
+
+  getRolesForShiftMessage(shiftIds: number[]): Promise<any> {
+    const url = `${BASE_URL}/helpers/roles/message`;
+    return this.http.put(url, { shift_ids: shiftIds }).toPromise();
+  }
+
   exportAsCSV(body: any = {}) {
     const url = `${BASE_URL}/shifts/export/csv`;
     return this.http.post(url, body, { observe: 'response', responseType: 'blob'}).toPromise()
       .then(res => this.downloadFile(res['body']))
-      .catch(e => this.displayError(e))
+      .catch(e => this.displayError(e));
+  }
+
+  getPopupContent(id): Promise<any> {
+    const url = `${BASE_URL}/shift/${id}/popUp`;
+    return this.http.get(url).toPromise();
   }
 
   private handleError(error: Response | any) {

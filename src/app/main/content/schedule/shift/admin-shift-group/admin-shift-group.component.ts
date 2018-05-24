@@ -6,9 +6,10 @@ import * as _ from 'lodash';
 
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../../schedule.service';
-import { MatTabChangeEvent } from '@angular/material';
+import { MatTabChangeEvent, MatDialog } from '@angular/material';
 import { GroupStaffComponent } from './staff/staff.component';
 import { ActionService } from '../../../../../shared/services/action.service';
+import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
 
 export enum TAB {
     Staff = 'Staff',
@@ -33,17 +34,20 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
     shiftData: any; // For edit tracking & work areas
     selectedTabIndex: number = 0; // Set staff tab as initial tab
     usersToInviteSubscription: Subscription;
+    usersToSelectSubscription: Subscription;
     showMoreBtn = true;
 
     constructor(
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
-        private actionService: ActionService
+        private actionService: ActionService,
+        private dialog: MatDialog
     ) { }
 
     ngOnDestroy() {
         this.usersToInviteSubscription.unsubscribe();
+        this.usersToSelectSubscription.unsubscribe();
     }
     
     ngOnInit() {
@@ -66,6 +70,16 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
                 if (index > -1) {
                     this.selectedTabIndex = 0; // Set staff tab active
                     this.staffTab.inviteStaffs({ shiftId, userIds, filters, role, inviteAll });
+                }
+            });
+
+        // add Users to Role
+        this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
+            ({ shiftId, userIds, role }) => {
+                const index = this.shifts.findIndex(v => v.id === shiftId);
+                if (index > -1) {
+                    this.selectedTabIndex = 0; // Set staff tab active
+                    this.staffTab.selectStaffs({ shiftId, userIds, role });
                 }
             });
     }
@@ -114,6 +128,18 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         } catch (e) {
             this.displayError(e);
         }
+    }
+
+    message(type) {
+        const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
+            disableClose: false,
+            panelClass: 'admin-shift-email-dialog',
+            data: {
+                shiftIds: this.shifts.map(v => v.id),
+                type
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
     }
 
     private displayError(e: any) {
