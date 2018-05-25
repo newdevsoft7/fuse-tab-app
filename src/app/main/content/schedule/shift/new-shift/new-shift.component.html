@@ -122,7 +122,7 @@
                                 </button>
                             </div>
 
-                            <mat-checkbox *ngIf="dates.length > 1" formControlName="isGroup">Group shifts</mat-checkbox>
+                            <mat-checkbox *ngIf="dates.length > 1 || data.shiftId" formControlName="isGroup">Group shifts</mat-checkbox>
 
                         </div>
                     </div>
