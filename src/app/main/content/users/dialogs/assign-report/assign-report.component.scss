@@ -1,7 +1,9 @@
 @import "src/app/core/scss/fuse";
 
 .user-assign-report-dialog {
-
+    .deadline-picker {
+        margin-right: 20%;
+    }
 
     @include media-breakpoint('xs') {
         width: 100%;

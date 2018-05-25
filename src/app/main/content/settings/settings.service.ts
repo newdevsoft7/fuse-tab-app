@@ -239,7 +239,7 @@ export class SettingsService {
     }
 
     getQuiz(id: number | string): Observable<any> {
-        const url = `${BASE_URL}/form/${id}`;
+        const url = `${BASE_URL}/reports/${id}`;
         return this.http.get(url)
           .catch(this.handleError);
     }
