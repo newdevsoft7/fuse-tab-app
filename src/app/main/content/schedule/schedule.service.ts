@@ -325,7 +325,7 @@ export class ScheduleService {
   }
 
   getRoleRequirementsByRole(roleId: number | string): Observable<any> {
-    const url = `${BASE_URL}/role/${roleId}/roleRequirements`;
+    const url = `${BASE_URL}/role/${roleId}/roleRequirements/1`;
     return this.http.get(url).catch(this.handleError);
   }
 
