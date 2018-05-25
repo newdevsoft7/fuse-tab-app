@@ -44,6 +44,7 @@ export class SettingsQuizsComponent implements OnInit {
 
   constructor(private settingsService: SettingsService,
               private toastr: ToastrService,
+              private toastrService: ToastrService,
               private tabService: TabService,
               private dialog: MatDialog) {
   }
@@ -89,6 +90,25 @@ export class SettingsQuizsComponent implements OnInit {
     this.tabService.openTab(tab);
   }
 
+
+  async editQuiz(quiz, event: MouseEvent) {
+    event.stopPropagation();
+    try {
+      console.log(quiz);
+      //const res = await this.settingsService.getQuiz(quiz.id).toPromise();
+      quiz.isEdit = true;
+      const tab = new Tab(
+        quiz.rname,
+        'quizTpl',
+        `settings/quiz/${quiz.id}`,
+        quiz
+      );
+      this.tabService.openTab(tab);
+    } catch (e) {
+      this.handleError(e.error);
+    }
+  }
+
   getQuizes() {
     this.settingsService.getQuizes().subscribe(quizes => {
       console.log(quizes);
@@ -104,11 +124,6 @@ export class SettingsQuizsComponent implements OnInit {
     this.settingsService.getQuiz(id).subscribe(quiz => this.quiz = quiz);
   }
 
-  editQuiz(quiz) {
-    this.settingsService.saveQuiz(quiz.id, quiz).subscribe(res => {
-      //this.toastr.success(res.message);
-    });
-  }
 
   selectQuiz(quiz) {
     this.selectedQuiz = quiz;
@@ -127,6 +142,10 @@ export class SettingsQuizsComponent implements OnInit {
       }
     });
     event.stopPropagation();
+  }
+
+  handleError(e): void {
+    this.toastrService.error(e.message || 'Something is wrong');
   }
 
 }
