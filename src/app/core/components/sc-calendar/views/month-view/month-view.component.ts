@@ -12,7 +12,7 @@ import { MatMenu } from '@angular/material';
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
-  @Input() hoverAsyncFn: (shiftId: number) => Promise<any>;
+  @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
 
   @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
 
@@ -225,7 +225,25 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   }
 
   async onPopupShown(event): Promise<any> {
-    this.hoverPopupData = await this.hoverAsyncFn(event.raw.id);
+    if (!this.hoverPopupData) {
+      this.hoverPopupData = [
+        {
+          start: event.data.startedAt.format('h:mm a'),
+          end: event.data.endedAt.format('h:mm a')
+        }
+      ];
+    }
+    switch (event.raw.type) {
+      case 'u':
+        this.hoverPopupData = null;
+        break;
+      case 'g':
+        this.hoverPopupData = await this.hoverAsyncFn(event.raw.id, true);
+        break;
+      default:
+        this.hoverPopupData = [await this.hoverAsyncFn(event.raw.id)];
+        break;
+    }
   }
 
   onMenuShown(event): void {

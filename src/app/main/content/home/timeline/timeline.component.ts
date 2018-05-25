@@ -548,6 +548,15 @@ export class TimelineComponent implements OnInit, OnDestroy
         }
     }
 
+    onClickNotification(activity) {
+        if (activity.action === 'completed_registrants') {
+            const tab = _.cloneDeep(TAB.USERS_TAB);
+            tab.data = { selectedTypeFilter: 'utype:=:complete' };
+            this.tabService.closeTab(tab.url);
+            this.tabService.openTab(tab);
+        }
+    }
+
     private displayError(error) {
         const errors = error.error.errors;
         Object.keys(errors).forEach(e => {

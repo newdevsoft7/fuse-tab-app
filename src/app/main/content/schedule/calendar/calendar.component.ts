@@ -161,7 +161,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentUser = this.tokenStorage.getUser();
 
-    this.hoverAsyncFn = (shiftId: number) => this.scheduleService.getPopupContent(shiftId);
+    this.hoverAsyncFn = (shiftId: number, group?: boolean) => this.scheduleService.getPopupContent(shiftId, group);
 
     if (['owner', 'admin'].includes(this.currentUser.lvl)) {
       this.currentUserFlags = this.tokenStorage.getSettings().flags;

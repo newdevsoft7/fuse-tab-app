@@ -109,6 +109,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 shift.shift_roles[index] = {
                     ...role,
                     index,
+                    shift_id: shift.id,
                     selected: role.role_staff,
                     section: Section.Selected
                 };

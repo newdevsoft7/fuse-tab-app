@@ -17,6 +17,7 @@ import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { Tab } from '../../../../tab/tab';
+import { TAB } from '../../../../../constants/tab';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';
 
@@ -331,11 +332,18 @@ export class NewShiftComponent implements OnInit {
         params = { ...params, tracking_option_ids };
         removeNull(params);
 
+        if (this.data.shiftId) {
+            params = { ...params, shift_id: this.data.shiftId };
+        }
         this.scheduleService.createShift(params).subscribe(res => {
             //this.toastr.success(res.message);
             // Open Role Edit Tab
             const shifts = res.data.map(shift => shift.id);
-            this.openRoleTab(shifts);
+            if (this.data.shiftId) {
+                // TODO    
+            } else {
+                this.openRoleTab(shifts);
+            }
 
             this.tabService.closeTab(this.data.url);
         }, err => {

@@ -325,7 +325,7 @@ export class ScheduleService {
   }
 
   getRoleRequirementsByRole(roleId: number | string): Observable<any> {
-    const url = `${BASE_URL}/role/${roleId}/roleRequirements`;
+    const url = `${BASE_URL}/role/${roleId}/roleRequirements/1`;
     return this.http.get(url).catch(this.handleError);
   }
 
@@ -513,8 +513,8 @@ export class ScheduleService {
       .catch(e => this.displayError(e));
   }
 
-  getPopupContent(id): Promise<any> {
-    const url = `${BASE_URL}/shift/${id}/popUp`;
+  getPopupContent(id: number, group?: boolean): Promise<any> {
+    const url = group? `${BASE_URL}/group/${id}/popUp` : `${BASE_URL}/shift/${id}/popUp`;
     return this.http.get(url).toPromise();
   }
 

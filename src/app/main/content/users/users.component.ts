@@ -22,6 +22,7 @@ import { AuthenticationService } from '../../../shared/services/authentication.s
 import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
 import { AssignReportDialogComponent} from './dialogs/assign-report/assign-report.component';
+import { TAB } from '../../../constants/tab';
 
 
 
@@ -104,6 +105,11 @@ export class UsersComponent implements OnInit {
         private router: Router) { }
 
     async ngOnInit() {
+
+        if (this.data.selectedTypeFilter) {
+            this.filters = [];
+            this.selectedTypeFilter = this.data.selectedTypeFilter;
+        }
 
         // For invitation to a shift
         if (this.data.invite) {
@@ -361,12 +367,12 @@ export class UsersComponent implements OnInit {
         if ((this.data.invite_all && this.total === 0) || (!this.data.invite_all && _.isEmpty(userIds))) { return; }
 
         if (messaging) {
-            // TODO - Open message composer tab
+            this.openMessageTab();
         } else {
             // Invite Staffs
             this.actionService.inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll });
-            this.removeInvitationBar();
         }
+        this.removeInvitationBar();
     }
 
     select(messaging: boolean) {
@@ -377,12 +383,12 @@ export class UsersComponent implements OnInit {
         if (this.total === 0 || _.isEmpty(userIds)) { return; }
 
         if (messaging) {
-            // TODO - Open message composer tab
+            this.openMessageTab();
         } else {
             // select Staffs
             this.actionService.selectUsersToRole({ shiftId, userIds, role });
-            this.removeSelectBar();
         }
+        this.removeSelectBar();
     }
 
     async onRoleChange() {
@@ -399,6 +405,19 @@ export class UsersComponent implements OnInit {
     removeSelectBar() {
         this.data.select = false;
         this.resetFilters();
+    }
+
+    openMessageTab() {
+        if (!this.selectedUsers.length) { return; }
+        const users = this.selectedUsers.map(v => {
+            return {
+                id: v.id,
+                text: `${v.fname} ${v.lname}`
+            };
+        });
+        const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+        tab.data.recipients = users;
+        this.tabService.openTab(tab);
     }
 
     private resetFilters() {

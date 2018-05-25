@@ -129,7 +129,7 @@
 
                         <ng-template *ngIf="column.key_name === 'title'" ngx-datatable-cell-template let-value="value" let-row="row">
                             <span class="shift-title"
-                                (mouseenter)="getHoverContent(row.id)"
+                                (mouseenter)="getHoverContent(row)"
                                 [popover]="hoverPopup"
                                 [popoverOnHover]="true"
                                 [popoverCloseOnMouseOutside]="true"
