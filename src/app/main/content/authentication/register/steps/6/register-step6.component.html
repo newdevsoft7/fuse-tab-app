@@ -1,4 +1,4 @@
-<div id="register-step6-container">
+<div id="register-step6-container" class="p-0 px-4 p-sm-24">
 
     <div class="mb-24" *ngIf="settings.profile_video_msg">
         <h2>
@@ -19,7 +19,7 @@
     </div>
     <!-- / ADD FILE BUTTON -->
 
-    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="videos">
+    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap ngxDroppable="group" [model]="videos">
         <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of videos" [model]="video">
             <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
             </ng-container>
