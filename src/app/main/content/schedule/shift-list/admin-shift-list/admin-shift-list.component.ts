@@ -359,7 +359,14 @@ export class AdminShiftListComponent implements OnInit {
         dialogRef.afterClosed().subscribe(res => {});
     }
     
-    async getHoverContent(eventId: number): Promise<any> {
-        this.hoverPopupData = await this.scheduleService.getPopupContent(eventId);
+    async getHoverContent(event: any): Promise<any> {
+        if (!this.hoverPopupData) {
+            this.hoverPopupData = [
+                {
+                    duration: event.shift_end
+                }
+            ];
+        }
+        this.hoverPopupData = [await this.scheduleService.getPopupContent(event.id)];
     }
 }
