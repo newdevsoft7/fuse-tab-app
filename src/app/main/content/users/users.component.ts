@@ -106,6 +106,11 @@ export class UsersComponent implements OnInit {
 
     async ngOnInit() {
 
+        if (this.data.selectedTypeFilter) {
+            this.filters = [];
+            this.selectedTypeFilter = this.data.selectedTypeFilter;
+        }
+
         // For invitation to a shift
         if (this.data.invite) {
             this.data.invite_all = true;

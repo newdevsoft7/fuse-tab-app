@@ -247,7 +247,7 @@
 
                         <div fxLayout="column">
                             <div>
-                                <span class="message"> {{activity.text}}</span>
+                                <span class="message pointer" (click)="onClickNotification(activity)"> {{activity.text}}</span>
                             </div>
                             <span class="time secondary-text">{{activity.ago || 'Just now'}}</span>
                         </div>
