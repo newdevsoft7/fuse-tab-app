@@ -14,7 +14,7 @@
 
                     <input debounce [(ngModel)]="searchText" type="text" placeholder="Search for or start a new conversation" (onValueChange)="searchUsers.next({searchText: $event, type: 'all'})"
                         fxFlex>
-
+                    <mat-icon class="clear" (click)="searchText=''">clear</mat-icon>
                 </div>
             </div>
             <!-- / SEARCH -->
