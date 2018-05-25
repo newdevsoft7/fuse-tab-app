@@ -333,6 +333,10 @@ export class UserService {
           .catch(this.handleError);
     }
 
+    getAvailableForms(userId: number): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/forms`;
+        return this.http.get(url).toPromise();
+    }
 
     private handleError(error: Response | any) {
         return Observable.throw(error);
