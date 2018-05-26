@@ -1,3 +1,5 @@
+@import "src/app/core/scss/fuse";
+
 :host {
 
     padding: 12px;
@@ -5,5 +7,29 @@
     /deep/ .mat-horizontal-content-container {
         height: calc(100% - 72px);
         overflow: auto;
+    }
+
+    mat-vertical-stepper {
+        overflow: auto;
+
+        /deep/ {
+            .mat-vertical-stepper-header {
+                padding: 24px 10px;
+            }
+            .mat-vertical-content-container {
+                margin-left: 0;
+                .mat-vertical-content {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+                &:before {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-down('xs') {
+        padding: 0;
     }
 }
