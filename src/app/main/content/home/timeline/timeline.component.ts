@@ -52,6 +52,7 @@ export class TimelineComponent implements OnInit, OnDestroy
     userSwitcherSubscription: Subscription;
 
     @Input() lvl: string;
+    @Input() otherId: number;
 
     constructor(
         private dialog: MatDialog,
@@ -112,7 +113,7 @@ export class TimelineComponent implements OnInit, OnDestroy
 
         if (this.canLoadPosts || isFirstCall) { // If loading posts first or there's more posts to fetch
             this.postLoading = true;
-            this.homeService.getPosts(this.page, 10, type).subscribe(posts => {
+            this.homeService.getPosts(this.page, 10, type, this.otherId || 0).subscribe(posts => {
                 this.postLoading = false;
                 const count = posts.length;
                 if (count > 0) {
@@ -157,8 +158,7 @@ export class TimelineComponent implements OnInit, OnDestroy
             type = ['client', 'ext'].includes(this.user.lvl) ? this.user.lvl : 'main';
         }
 
-        // TODO - Use id of client, outsource company
-        this.homeService.getPinnedPosts(type, 0).subscribe(posts => {
+        this.homeService.getPinnedPosts(type, this.otherId || 0).subscribe(posts => {
             this.pinnedPosts = posts;
         });
     }
@@ -321,6 +321,9 @@ export class TimelineComponent implements OnInit, OnDestroy
             formData.append('file', this.file, this.file.name);
             formData.append('ptype', this.lvl || PostType.Main);
             formData.append('content', content);
+            if (this.otherId) {
+                formData.append('other_id', `${this.otherId}`);
+            }
             this.homeService.createPost(formData).subscribe(post => {
                 this.spinner.hide();
                 this.addToPosts(post);
@@ -329,7 +332,14 @@ export class TimelineComponent implements OnInit, OnDestroy
                 this.displayError(err);
             });
         } else { // If posting text
-            this.homeService.createPost({ content, ptype: this.lvl || PostType.Main }).subscribe(post => {
+            let body: any = {
+                content,
+                ptype: this.lvl || PostType.Main
+            };
+            if (this.otherId) {
+                body.other_id = this.otherId;
+            }
+            this.homeService.createPost(body).subscribe(post => {
                 this.spinner.hide();
                this.addToPosts(post);
             }, err => {

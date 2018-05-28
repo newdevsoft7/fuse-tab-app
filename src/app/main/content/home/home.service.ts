@@ -125,8 +125,8 @@ export class HomeService {
      * @param pageNumber
      * @param type
      */
-    getPosts(pageNumber = 0, pageSize = 10, type = 'main'): Observable<any> {
-        const url = `${BASE_URL}/posts/${type}/0/${pageSize}/${pageNumber}`;
+    getPosts(pageNumber = 0, pageSize = 10, type = 'main', id = 0): Observable<any> {
+        const url = `${BASE_URL}/posts/${type}/${id}/${pageSize}/${pageNumber}`;
         return this.http.get(url)
             .catch(this.handleError);
     }

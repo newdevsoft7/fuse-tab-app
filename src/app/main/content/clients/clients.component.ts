@@ -54,16 +54,19 @@ export class ClientsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async changeClient(client: any) {
-    this.selectedClient = client;
-    try {
-      this.spinner.show();
-      this.clientInfo = await this.clientsService.getClient(this.selectedClient.id);
-    } catch (e) {
-      this.handleError(e);
-    } finally {
-      this.spinner.hide();
-    }
+  changeClient(client: any) {
+    this.selectedClient = null;
+    setTimeout(async () => {
+      this.selectedClient = client;
+      try {
+        this.spinner.show();
+        this.clientInfo = await this.clientsService.getClient(this.selectedClient.id);
+      } catch (e) {
+        this.handleError(e);
+      } finally {
+        this.spinner.hide();
+      }
+    });
   }
 
   openForm() {

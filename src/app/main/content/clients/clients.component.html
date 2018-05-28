@@ -33,10 +33,10 @@
             <div class="content mat-elevation-z4 mat-white-bg">
                 <mat-tab-group *ngIf="selectedClient" class="w-100-p">
                     <mat-tab label="Home Screen">
-                      <app-timeline [lvl]="'client'"></app-timeline>
+                      <app-timeline [lvl]="'client'" [otherId]="selectedClient.id"></app-timeline>
                     </mat-tab>
                     <mat-tab label="Info">
-                      <div fxLayout="row" fxLayoutWrap>
+                      <div fxLayout="row" fxLayoutWrap class="p-16">
                         <div fxFlex.lt-lg="100" class="ml-4 mt-4">
                           <header class="mat-accent-bg p-16">
                               <div class="title font-size-16">Basic Information</div>
