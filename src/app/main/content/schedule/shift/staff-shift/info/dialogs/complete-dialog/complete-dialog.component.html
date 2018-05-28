@@ -1,8 +1,9 @@
 <div class="dialog-content-wrapper">
-    <div mat-dialog-content fusePerfectScrollbar>
-        <mat-form-field class="w-100-p">
-            <textarea matInput [(ngModel)]="notes" placeholder="Notes"></textarea>
-        </mat-form-field>
+    <h1 mat-dialog-title>Complete a shift</h1>
+    <div mat-dialog-content>
+        <p *ngIf="settings.shift_msg_completion !== ''">
+            {{settings.shift_msg_completion}}
+        </p>
     </div>
     <div mat-dialog-actions>
         <button mat-button class="mat-accent-bg" (click)="onComplete()">Complete</button>
