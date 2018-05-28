@@ -334,8 +334,7 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
-  addPayItem(body: { item_name, item_type, unit_rate, units,
-    bill_unit_rate?, bill_units?, shift_id?, shift_role_id?, role_staff_id? }): Promise<any> {
+  addPayItem(body: any): Promise<any> {
     const url = `${BASE_URL}/payItem`;
     return this.http.post(url, body).toPromise();
   }
@@ -345,8 +344,7 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
-  updatePayItem(payItemId,
-    body: { item_name?, item_type?, unit_rate?, units?, bill_unit_rate?, bill_units?, role_staff_id? }): Promise<any> {
+  updatePayItem(payItemId, body: any): Promise<any> {
     const url = `${BASE_URL}/payItem/${payItemId}`;
     return this.http.put(url, body).toPromise();
   }
