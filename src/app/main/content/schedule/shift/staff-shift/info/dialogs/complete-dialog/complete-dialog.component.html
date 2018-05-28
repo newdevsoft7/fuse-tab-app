@@ -1,0 +1,11 @@
+<div class="dialog-content-wrapper">
+    <div mat-dialog-content fusePerfectScrollbar>
+        <mat-form-field class="w-100-p">
+            <textarea matInput [(ngModel)]="notes" placeholder="Notes"></textarea>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button class="mat-accent-bg" (click)="onComplete()">Complete</button>
+        <button mat-button [mat-dialog-close]="false" cdkFocusInitial class="mat-primary-50-bg">Cancel</button>
+    </div>
+</div>

@@ -26,6 +26,7 @@ import { StaffShiftPayItemDialogComponent } from './dialogs/pay-item-dialog/pay-
 import { StaffShiftApplyDialogComponent } from './dialogs/apply-dialog/apply-dialog.component';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 import { StaffShiftCheckInOutDialogComponent } from './dialogs/check-in-out-dialog/check-in-out-dialog.component';
+import { StaffShiftCompleteDialogComponent } from './dialogs/complete-dialog/complete-dialog.component';
 
 enum Action {
     apply = 'apply',
@@ -266,7 +267,23 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.complete:
-
+                dialogRef = this.dialog.open(StaffShiftCompleteDialogComponent, {
+                    disableClose: false,
+                    panelClass: 'staff-shift-complete-dialog',
+                    data: {}
+                });
+                dialogRef.afterClosed().subscribe(async(result) => {
+                    if (result) {
+                        const roleStaffId = role.role_staff_id;
+                        try {
+                            const res = await this.scheduleService.completeShiftRole(roleStaffId, result);
+                            role.message = res.role_message;
+                            role.actions = [...res.actions];
+                        } catch (e) {
+                            this.displayError(e);
+                        }
+                    }
+                });
                 break;
 
             case Action.expenses:

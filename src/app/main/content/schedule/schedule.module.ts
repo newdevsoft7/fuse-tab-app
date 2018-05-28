@@ -101,6 +101,7 @@ import { StaffShiftCheckInOutDialogComponent } from './shift/staff-shift/info/di
 import { AdminExportAsExcelDialogComponent } from './shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { AdminExportAsPdfDialogComponent } from './shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { ShiftListEmailDialogComponent } from './shift-list/admin-shift-list/email-dialog/email-dialog.component';
+import { StaffShiftCompleteDialogComponent } from './shift/staff-shift/info/dialogs/complete-dialog/complete-dialog.component';
 
 
 @NgModule({
@@ -209,6 +210,7 @@ import { ShiftListEmailDialogComponent } from './shift-list/admin-shift-list/ema
         AdminExportAsExcelDialogComponent,
         AdminExportAsPdfDialogComponent,
         ShiftListEmailDialogComponent,
+        StaffShiftCompleteDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -220,6 +222,7 @@ import { ShiftListEmailDialogComponent } from './shift-list/admin-shift-list/ema
         StaffShiftPayItemDialogComponent,
         StaffShiftApplyDialogComponent,
         StaffShiftCheckInOutDialogComponent,
+        StaffShiftCompleteDialogComponent,
 
         // Client
         ShiftsExportAsExcelDialogComponent,

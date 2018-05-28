@@ -312,6 +312,11 @@ export class ScheduleService {
     return this.http.post(url, {}).catch(this.handleError);
   }
 
+  completeShiftRole(roleStaffId: number, body: any): Promise<any> {
+    const url = `${BASE_URL}/role/complete/${roleStaffId}`;
+    return this.http.post(url, body).toPromise();
+  }
+
   setShiftTrackingOptions(shiftId, catgegoryId, optionIds: number[]): Promise<any> {
     const url = `${BASE_URL}/shift/${shiftId}/tracking/${catgegoryId}`;
     const body = optionIds.length > 0 ? { ids: optionIds } : {};
