@@ -53,16 +53,19 @@ export class OutsourceCompaniesComponent {
     }
   }
 
-  async changeCompany(company: any) {
-    this.selectedCompany = company;
-    try {
-      this.spinner.show();
-      this.companyInfo = await this.outsourceCompaniesService.getCompany(this.selectedCompany.id);
-    } catch (e) {
-      this.handleError(e);
-    } finally {
-      this.spinner.hide();
-    }
+  changeCompany(company: any) {
+    this.selectedCompany = null;
+    setTimeout(async () => {
+      this.selectedCompany = company;
+      try {
+        this.spinner.show();
+        this.companyInfo = await this.outsourceCompaniesService.getCompany(this.selectedCompany.id);
+      } catch (e) {
+        this.handleError(e);
+      } finally {
+        this.spinner.hide();
+      }
+    });
   }
 
   openForm() {

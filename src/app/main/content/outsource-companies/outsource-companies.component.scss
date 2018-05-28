@@ -6,7 +6,6 @@
 .content {
   mat-tab-group {
       /deep/ .mat-tab-body-wrapper {
-          padding: 16px;
           flex: 1;
       }
   }
