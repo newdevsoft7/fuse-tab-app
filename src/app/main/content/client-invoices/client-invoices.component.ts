@@ -32,7 +32,7 @@ export class ClientInvoicesComponent implements OnInit {
 
   from: any;
   to: any;
-  clients: number[] = [];
+  clients: any[] = [];
   clientsFilterObservable: any;
 
   pageNumber: number = 0;
@@ -73,7 +73,7 @@ export class ClientInvoicesComponent implements OnInit {
           this.filters.push(`to:${this.to}`);
       }
       if (this.clients && this.clients.length > 0) {  
-          this.filters.push(`client:${JSON.stringify(this.clients)}`);
+          this.filters.push(`client:${JSON.stringify(this.clients.map(v => v.id))}`);
       }
 
       this.isLoading = true;

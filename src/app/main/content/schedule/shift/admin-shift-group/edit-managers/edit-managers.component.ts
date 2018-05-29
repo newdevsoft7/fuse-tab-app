@@ -46,7 +46,7 @@ export class GroupEditManagersComponent implements OnInit {
 
     openForm() {
         this.form = this.formBuilder.group({
-            manager_ids: [this.group.managers.map(m => m.id)]
+            manager_ids: [this.group.managers]
         });
         this.formActive = true;
     }
@@ -58,7 +58,7 @@ export class GroupEditManagersComponent implements OnInit {
 
     async saveForm() {
         if (this.form.valid) {
-            const manager_ids = this.form.getRawValue().manager_ids;
+            const manager_ids = this.form.getRawValue().manager_ids.map(v => v.id);
             try {
                 const res = await this.scheduleService.updateShiftGroup(this.group.id, { manager_ids });
                 //this.toastr.success(res.message);

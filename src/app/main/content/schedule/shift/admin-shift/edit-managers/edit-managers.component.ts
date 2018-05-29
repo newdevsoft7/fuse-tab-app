@@ -46,7 +46,7 @@ export class AdminShiftEditManagersComponent implements OnInit {
 
     openForm() {
         this.form = this.formBuilder.group({
-            manager_ids: [this.shift.managers.map(m => m.id)]
+            manager_ids: [this.shift.managers]
         });
         this.formActive = true;
     }
@@ -58,7 +58,7 @@ export class AdminShiftEditManagersComponent implements OnInit {
 
     saveForm() {
         if (this.form.valid) {
-            const manager_ids = this.form.getRawValue().manager_ids;
+            const manager_ids = this.form.getRawValue().manager_ids.map(v => v.id);
             this.scheduleService.updateShift(this.shift.id, { manager_ids })
                 .subscribe(res => {
                     //this.toastr.success(res.message);
