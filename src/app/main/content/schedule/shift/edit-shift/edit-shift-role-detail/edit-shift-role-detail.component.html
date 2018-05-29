@@ -305,6 +305,19 @@
         </div>
     </div>
     <!-- / UPLOADS REQUIRED -->
+
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" fxLayoutWrap>
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.reports.checked">Reports:</mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <app-custom-multi-select [autocompleteObservable]="reports$" [labelBy]="'rname'" [valueBy]="'id'"
+                    [class.disabled]="!list.reports.checked" [(value)]="list.reports.value"></app-custom-multi-select>
+            </div>
+        </div>
+    </div>
     
     <div class="info-line mt-20">
         <button mat-raised-button color="accent" (click)="applyRole()" [disabled]="shifts.length === 0">Apply</button>

@@ -82,6 +82,11 @@ export class ScheduleService {
     return this.http.post(url, params).catch(this.handleError);
   }
 
+  updateMultipleRoles(params): Observable<any> {
+    const url = `${BASE_URL}/shift/roles/edit`;
+    return this.http.put(url, params).catch(this.handleError);
+  }
+
   getManagers(query): Observable<any> {
     const url = `${AUTOCOMPLETE_URL}/manager/${query}`;
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
