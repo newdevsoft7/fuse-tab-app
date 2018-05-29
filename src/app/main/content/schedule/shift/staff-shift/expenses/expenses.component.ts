@@ -92,7 +92,7 @@ export class StaffShiftExpensesComponent implements OnInit {
                     const res = await this.scheduleService.deletePayItem(expense.id);
                     const index = this.shift.expenses.findIndex(v => v.id === expense.id);
                     if (index > -1) {
-                        this.shift.expenses[index].splice(index, 1);
+                        this.shift.expenses.splice(index, 1);
                     }
                 } catch (e) {
                     this.displayError(e);
