@@ -14,4 +14,14 @@
         max-height: 85vh;
     }
 
+    fieldset {
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        margin-bottom: 16px;
+
+        legend {
+            padding: 0 4px;
+        }
+    }
+
 }

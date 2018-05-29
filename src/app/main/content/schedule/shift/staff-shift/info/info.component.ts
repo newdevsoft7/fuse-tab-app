@@ -27,6 +27,7 @@ import { StaffShiftApplyDialogComponent } from './dialogs/apply-dialog/apply-dia
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 import { StaffShiftCheckInOutDialogComponent } from './dialogs/check-in-out-dialog/check-in-out-dialog.component';
 import { StaffShiftCompleteDialogComponent } from './dialogs/complete-dialog/complete-dialog.component';
+import { TabService } from '../../../../../tab/tab.service';
 
 enum Action {
     apply = 'apply',
@@ -66,11 +67,30 @@ export class StaffShiftInfoComponent implements OnInit {
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
-        private tokenStorage: TokenStorage
+        private tokenStorage: TokenStorage,
+        private tabService: TabService
     ) { }
 
 	ngOnInit() {
         this.settings = this.tokenStorage.getSettings();
+
+        if (window.addEventListener) {
+            window.addEventListener('message', this.onMessage.bind(this), false);
+        } else if ((<any>window).attachEvent) {
+            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
+        }
+    }
+
+    onMessage(event: any) {
+        if (event.data && event.data.func) {
+            const id = this.tabService.currentTab.data.id;
+            if (this.tabService.currentTab.url === `staff-shift/reports/${id}`) {
+                const action = this.tabService.currentTab.data.action;
+                const role = this.tabService.currentTab.data.role;
+                this.doAction(action, role);
+            }
+            this.tabService.closeTab(this.tabService.currentTab.url);
+        }
     }
 
     openPayItemDialog(payItems) {
@@ -271,7 +291,9 @@ export class StaffShiftInfoComponent implements OnInit {
                     disableClose: false,
                     panelClass: 'staff-shift-complete-dialog',
                     data: {
-                        roleStaffId: role.role_staff_id
+                        roleStaffId: role.role_staff_id,
+                        action,
+                        role
                     }
                 });
                 dialogRef.afterClosed().subscribe(async(result) => {
@@ -282,7 +304,7 @@ export class StaffShiftInfoComponent implements OnInit {
                             role.message = res.role_message;
                             role.actions = [...res.actions];
                         } catch (e) {
-                            this.displayError(e);
+                            this.toastr.error(e.error.message);
                         }
                     }
                 });

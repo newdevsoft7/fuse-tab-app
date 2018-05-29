@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { TokenStorage } from '../../../../../../../../shared/services/token-storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from '../../../../../schedule.service';
+import { TabService } from '../../../../../../../tab/tab.service';
+import { Tab } from '../../../../../../../tab/tab';
 
 @Component({
     selector: 'app-staff-shift-complete-dialog',
@@ -22,7 +24,8 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private data: any,
         private tokenStorage: TokenStorage,
         private toastr: ToastrService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private tabService: TabService
     ) {
         this.settings = this.tokenStorage.getSettings();
         
@@ -45,6 +48,21 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
 
     onComplete() {
         this.dialogRef.close(true);
+    }
+
+    openReport(report) {
+        const tab = new Tab(
+            report.rname,
+            'quizTpl',
+            `staff-shift/reports/${report.id}`,
+            {
+                action: this.data.action,
+                role: this.data.role,
+                ...report
+            }
+        );
+        this.tabService.openTab(tab);
+        this.dialogRef.close();
     }
 
 }
