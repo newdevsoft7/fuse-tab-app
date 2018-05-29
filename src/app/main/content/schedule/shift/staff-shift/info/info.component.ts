@@ -270,13 +270,15 @@ export class StaffShiftInfoComponent implements OnInit {
                 dialogRef = this.dialog.open(StaffShiftCompleteDialogComponent, {
                     disableClose: false,
                     panelClass: 'staff-shift-complete-dialog',
-                    data: {}
+                    data: {
+                        roleStaffId: role.role_staff_id
+                    }
                 });
                 dialogRef.afterClosed().subscribe(async(result) => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         try {
-                            const res = await this.scheduleService.completeShiftRole(roleStaffId, result);
+                            const res = await this.scheduleService.completeShiftRole(roleStaffId);
                             role.message = res.role_message;
                             role.actions = [...res.actions];
                         } catch (e) {

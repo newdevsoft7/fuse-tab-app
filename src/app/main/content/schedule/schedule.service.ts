@@ -317,9 +317,14 @@ export class ScheduleService {
     return this.http.post(url, {}).catch(this.handleError);
   }
 
-  completeShiftRole(roleStaffId: number, body: any): Promise<any> {
+  completeShiftRole(roleStaffId: number): Promise<any> {
     const url = `${BASE_URL}/role/complete/${roleStaffId}`;
-    return this.http.post(url, body).toPromise();
+    return this.http.post(url, {}).toPromise();
+  }
+
+  completeCheck(roleStaffId: number): Promise<any> {
+    const url = `${BASE_URL}/role/complete/${roleStaffId}`;
+    return this.http.get(url).toPromise();
   }
 
   setShiftTrackingOptions(shiftId, catgegoryId, optionIds: number[]): Promise<any> {

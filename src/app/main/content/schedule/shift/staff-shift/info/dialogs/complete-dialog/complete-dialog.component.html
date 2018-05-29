@@ -4,6 +4,10 @@
         <p *ngIf="settings.shift_msg_completion !== ''">
             {{settings.shift_msg_completion}}
         </p>
+
+        <p class="mt-8" *ngIf="uploads_required > 0">
+            Uploads: <span [ngStyle]="{'color': num_uploaded < uploads_required ? 'red' : 'green'}">{{num_uploaded}}</span> / <span>{{uploads_required}}</span>
+        </p>
     </div>
     <div mat-dialog-actions>
         <button mat-button class="mat-accent-bg" (click)="onComplete()">Complete</button>
