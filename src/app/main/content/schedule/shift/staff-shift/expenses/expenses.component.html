@@ -4,9 +4,9 @@
         <mat-icon>add</mat-icon>
     </button>
 
-    <div *ngIf="shift.expenses?.length > 0" class="mt-92">
+    <div *ngIf="expenses.length > 0" class="mt-92">
 
-        <div fxLayout="row" fxLayoutAlign.gt-xs="start center" *ngFor="let expense of shift.expenses"
+        <div fxLayout="row" fxLayoutAlign.gt-xs="start center" *ngFor="let expense of expenses"
             class="expense" fxLayout.xs="column">
             <div fxFlex>
                 <span matTooltip="Expense Category">{{getExpenseCategoryName(expense.expense_cat_id)}}</span>

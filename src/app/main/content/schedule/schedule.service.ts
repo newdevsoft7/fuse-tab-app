@@ -346,7 +346,7 @@ export class ScheduleService {
 
   updatePayItem(payItemId, body: any): Promise<any> {
     const url = `${BASE_URL}/payItem/${payItemId}`;
-    return this.http.put(url, body).toPromise();
+    return this.http.post(url, body).toPromise();
   }
 
   getShiftAdminNoteType(): Observable<any> {

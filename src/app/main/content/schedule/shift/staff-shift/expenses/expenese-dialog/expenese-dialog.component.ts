@@ -48,9 +48,11 @@ export class StaffShiftExpeneseDialogComponent implements OnInit {
         const body = new FormData();
         body.append('role_staff_id', this.data.role_staff_id);
         body.append('item_name', this.expense.item_name);
-        body.append('item_type', 'expense'),
+        if (this.mode === 'add') {
+            body.append('item_type', 'expense'),
+            body.append('units', '1');
+        }
         body.append('unit_rate', this.expense.unit_rate);
-        body.append('units', '1');
         body.append('expense_cat_id', this.expense.expense_cat_id);
         if (this.file) {
             body.append('receipt', this.file, this.file.name);

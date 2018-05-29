@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class StaffShiftExpensesComponent implements OnInit {
 
     @Input() shift;
+    expenses: any[] = [];
 
     constructor(
         private dialog: MatDialog,
@@ -21,6 +22,10 @@ export class StaffShiftExpensesComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.shift.shift_roles.forEach(role => {
+            role.pay_items.filter(v => v.item_type === 'expense' && v.type === 'staff')
+                          .forEach(v => this.expenses.push(v));
+        });
     }
 
     getExpenseCategoryName(categoryId) {
@@ -46,7 +51,7 @@ export class StaffShiftExpensesComponent implements OnInit {
                         ...res.data,
                         expense_cat_id: +res.data.expense_cat_id
                     };
-                    this.shift.expenses.push(res.data);
+                    this.expenses.push(res.data);
                 } catch (e) {
                     this.displayError(e);
                 }
@@ -71,9 +76,9 @@ export class StaffShiftExpensesComponent implements OnInit {
             if (result) {
                 try {
                     const res = await this.scheduleService.updatePayItem(expense.id, result);
-                    expense.item_name = res.data.item_name;
-                    expense.expense_cat_id = +res.data.expense_cat_id;
-                    expense.unit_rate = +res.data.unit_rate;
+                    const index = this.expenses.findIndex(v => v.id === expense.id);
+                    res.data.unit_rate = +res.data.unit_rate;
+                    this.expenses.splice(index, 1, res.data);
                 } catch (e) {
                     this.displayError(e);
                 }
@@ -90,9 +95,9 @@ export class StaffShiftExpensesComponent implements OnInit {
             if (result) {
                 try {
                     const res = await this.scheduleService.deletePayItem(expense.id);
-                    const index = this.shift.expenses.findIndex(v => v.id === expense.id);
+                    const index = this.expenses.findIndex(v => v.id === expense.id);
                     if (index > -1) {
-                        this.shift.expenses.splice(index, 1);
+                        this.expenses.splice(index, 1);
                     }
                 } catch (e) {
                     this.displayError(e);
