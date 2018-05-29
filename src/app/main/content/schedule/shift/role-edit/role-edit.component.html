@@ -229,6 +229,14 @@
                             <input matInput formControlName="uploads_required" type="number" min="0" max="99">
                         </mat-form-field>
                     </div>
+
+                    <div class="info-line px-12" *ngIf="settings.survey_enable === '1'">
+                            <app-custom-multi-select [autocompleteObservable]="reports$"
+                            [placeholder]="'Reports'"
+                            [labelBy]="'rname'"
+                            [valueBy]="'id'"
+                            formControlName="reports"></app-custom-multi-select>
+                    </div>
                 </div>
 
             </div>

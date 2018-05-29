@@ -521,6 +521,13 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
+  getReports(query?): Observable<any> {
+    query = query || '';
+    const url = `${BASE_URL}/autocomplete/report/survey/${query}`;
+    return this.http.get(url.replace(/\/+$/, ''))
+      .catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
