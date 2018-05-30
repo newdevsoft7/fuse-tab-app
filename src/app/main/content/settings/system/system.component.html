@@ -39,6 +39,24 @@
     </div>
     <!-- / WEBSITE -->
 
+    <!-- COUNTRY CODE -->
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
+        <div class="name" fxFlex="20">Default Timezone</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <div fxFlex.gt-xs="0 1 auto">
+                <mat-form-field>
+                    <mat-select [value]="items[Setting.php_tz]" (selectionChange)="onChange(Setting.php_tz, $event)">
+                        <mat-option *ngFor="let option of timezones" [value]="option.value">
+                          {{option.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="desc secondary-text" fxFlex.gt-xs="1 0 auto">Select the default timezone your company operates in</div>
+        </div>
+    </div>
+    <!-- / COUNTRY CODE -->
+
     <!-- ADDRESS -->
     <div class="box info-box mt-16">
         <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
@@ -104,9 +122,9 @@
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <div fxFlex.gt-xs="25">
                         <mat-form-field [style.width.px]="150">
-                            <mat-select [value]="items[Setting.company_country]" (selectionChange)="onChange(Setting.company_country, $event)">
-                                <mat-option *ngFor="let option of countries" [value]="option">
-                                  {{option}}
+                            <mat-select [value]="items[Setting.company_country_code]" (selectionChange)="onChange(Setting.company_country_code, $event)">
+                                <mat-option *ngFor="let option of countries" [value]="option.iso2">
+                                  {{option.display}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>

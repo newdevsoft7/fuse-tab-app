@@ -65,6 +65,9 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
     // Form Controls
     deadline = new FormControl();
 
+    shiftStatuses: any[] = [];
+    staffStatuses: any[] = [];
+
     // Slide Togglable Items
     checkableItems = [
         Setting.shift_enable,
@@ -119,7 +122,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
 
     }
 
-    ngOnInit() {
+    async ngOnInit() {
 
         // Deadline Control
         this.deadline.valueChanges
@@ -129,6 +132,47 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
             .subscribe(value => {
                 this.onChange(Setting.shift_replacement_request_deadline, value);
             });
+
+        this.fetchShiftStatues();
+        this.fetchStaffStatues();
+    }
+
+    async fetchShiftStatues() {
+        try {
+            this.shiftStatuses = await this.settingsService.getShiftStatuses();
+        } catch (e) {
+            this.toastr.error(e.message || 'Something is wrong!');
+        }
+    }
+
+    async fetchStaffStatues() {
+        try {
+            this.staffStatuses = await this.settingsService.getStaffStatuses();
+        } catch (e) {
+            this.toastr.error(e.message || 'Something is wrong!');
+        }
+    }
+
+    async onShiftChange(value, status, type) {
+        if (value !== '') {
+            const body = { [type]: value };
+            try {
+                await this.settingsService.saveShiftStatus(status.id, body);
+            } catch (e) {
+                this.toastr.error(e.message || 'Something is wrong!');
+            }
+        }
+    }
+
+    async onStaffChange(value, status, type) {
+        if (value !== '') {
+            const body = { [type]: value };
+            try {
+                await this.settingsService.saveStaffStatus(status.id, body);
+            } catch (e) {
+                this.toastr.error(e.message || 'Something is wrong!');
+            }
+        }
     }
 
     ngOnDestroy() {

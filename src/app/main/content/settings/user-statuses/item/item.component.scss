@@ -3,7 +3,11 @@
     .name {
     }
 
-    .color input {
-        width: 150px;
+    .color {
+        position: relative;
+         
+        input {
+            width: 150px;
+        }
     }
 }

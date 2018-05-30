@@ -222,4 +222,58 @@
     </div>
     <!-- REPLACEMENT REQUESTS -->
 
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Shift Statuses</div>
+        </header>
+
+        <div class="content" fxLayout="column">
+            <ng-container  *ngFor="let status of shiftStatuses">
+                <div fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="start center" fxLayout.xs="column" fxLayoutGap.gt-xs="16px"
+                    class="item">
+                    <div fxFlex.gt-xs="200px">{{status.status}}</div>
+                    <div class="color" fxFlex.gt-xs="150px" [style.background]="status.bg_color" matTooltip="Background Color">
+                        <input [(colorPicker)]="status.bg_color" [value]="status.bg_color"
+                            [style.background]="status.bg_color" (colorPickerChange)="onShiftChange($event, status, 'bg_color')"/>
+                    </div>
+                    <div class="color" fxFlex.gt-xs="150px" [style.background]="status.border_color" matTooltip="Border Color">
+                        <input [(colorPicker)]="status.border_color" [value]="status.border_color"
+                            [style.background]="status.border_color" (colorPickerChange)="onShiftChange($event, status, 'border_color')"/>
+                    </div>
+                    <div class="color" fxFlex.gt-xs="150px" [style.background]="status.font_color" matTooltip="Font Color">
+                        <input [(colorPicker)]="status.font_color" [value]="status.font_color"
+                            [style.background]="status.font_color" (colorPickerChange)="onShiftChange($event, status, 'font_color')"/>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Staff Statuses</div>
+        </header>
+
+        <div class="content" fxLayout="column">
+            <ng-container  *ngFor="let status of staffStatuses">
+                <div fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="start center" fxLayout.xs="column" fxLayoutGap.gt-xs="16px"
+                    class="item">
+                    <div fxFlex.gt-xs="200px">{{status.status}}</div>
+                    <div class="color" fxFlex.gt-xs="150px" [style.background]="status.bg_color" matTooltip="Background Color">
+                        <input [(colorPicker)]="status.bg_color" [value]="status.bg_color"
+                            [style.background]="status.bg_color" (colorPickerChange)="onStaffChange($event, status, 'bg_color')"/>
+                    </div>
+                    <div class="color" fxFlex.gt-xs="150px" [style.background]="status.border_color" matTooltip="Border Color">
+                        <input [(colorPicker)]="status.border_color" [value]="status.border_color"
+                            [style.background]="status.border_color" (colorPickerChange)="onStaffChange($event, status, 'border_color')"/>
+                    </div>
+                    <div fxFlex matTooltip="Message">
+                        <input [(ngModel)]="status.message" debounce [delay]="1000"
+                            class="w-100-p" (onValueChange)="onStaffChange($event, status, 'message')"/>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
 </div>

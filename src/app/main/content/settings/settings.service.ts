@@ -275,6 +275,64 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    getExternalEmails(): Promise<any[]> {
+        const url = `${BASE_URL}/externalEmail`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    saveExternalEmail(body: { name: string, email: string }): Promise<any> {
+        const url = `${BASE_URL}/externalEmail`;
+        return this.http.post(url, body).toPromise();
+    }
+
+    deleteExternalEmail(id: number): Promise<any> {
+        const url = `${BASE_URL}/externalEmail/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+    
+    getExpenseCategories(): Promise<any[]> {
+        const url = `${BASE_URL}/expenseCategories`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    saveExpenseCategory(body: { cname: string }): Promise<any> {
+        const url = `${BASE_URL}/expenseCategory`;
+        return this.http.post(url, body).toPromise();
+    }
+
+    deleteExpenseCategory(id: number): Promise<any> {
+        const url = `${BASE_URL}/expenseCategory/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+
+    getShiftStatuses(): Promise<any[]> {
+        const url = `${BASE_URL}/shiftStatuses`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    saveShiftStatus(id, body: {
+                    bg_color?: string,
+                    border_color?: string,
+                    font_color?: string
+    }): Promise<any> {
+        const url = `${BASE_URL}/shiftStatus/${id}`;
+        return this.http.put(url, body).toPromise();
+    }
+
+    getStaffStatuses(): Promise<any[]> {
+        const url = `${BASE_URL}/staffStatuses`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    saveStaffStatus(id, body: {
+                    bg_color?: string,
+                    border_color?: string,
+                    message?: string
+    }): Promise<any> {
+        const url = `${BASE_URL}/staffStatus/${id}`;
+        return this.http.put(url, body).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

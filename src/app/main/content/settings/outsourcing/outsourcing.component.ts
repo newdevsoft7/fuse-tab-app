@@ -10,7 +10,9 @@ import * as _ from 'lodash';
 import { SettingsService } from '../settings.service';
 
 enum Setting {
-    outsource_enable = 34
+    outsource_enable = 34,
+    ext_timeline_post = 121,
+    ext_timeline_comment = 122
 }
 
 @Component({

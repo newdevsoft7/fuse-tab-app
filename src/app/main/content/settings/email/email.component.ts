@@ -5,7 +5,7 @@ import {
     ViewChild, ElementRef
 } from '@angular/core';
 
-import { FormControl, Validators } from '@angular/forms'
+import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms'
 
 import { Observable } from 'rxjs/Rx';
 
@@ -18,7 +18,10 @@ import { SettingsService } from '../settings.service';
 enum Setting {
     company_email_from = 24,
     company_email_address = 25,
-    company_email_signature = 26
+    company_email_signature = 26,
+    email_header = 123,
+    email_subcopy = 124,
+    email_footer = 125
 }
 
 
@@ -47,11 +50,14 @@ export class SettingsEmailComponent implements OnInit, OnChanges {
     readonly Setting = Setting;
 
     items: any = {};
+    externalEmails: any[] = [];
     signature = new FormControl();
+    form: FormGroup;
 
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private formBuilder: FormBuilder
     ) {}
 
     ngOnChanges(changes: SimpleChanges) {
@@ -70,7 +76,7 @@ export class SettingsEmailComponent implements OnInit, OnChanges {
         }
     }
 
-    ngOnInit() {
+    async ngOnInit() {
 
         // Main Email Signature
         this.signature.valueChanges
@@ -79,6 +85,17 @@ export class SettingsEmailComponent implements OnInit, OnChanges {
             .subscribe(value => {
                 this.onChange(Setting.company_email_signature, value);
             });
+
+        this.form = this.formBuilder.group({
+            name: ['', Validators.required],
+            email: ['', Validators.required]
+        });
+        
+        try {
+            this.externalEmails = await this.settingsService.getExternalEmails();
+        } catch(e) {
+            this.toastr.error(e.message || 'Something is wrong!');
+        }
     }
 
     onChange(id: Setting, event: MatSlideToggleChange | string) {
@@ -99,4 +116,28 @@ export class SettingsEmailComponent implements OnInit, OnChanges {
         });
     }
 
+    async addExternalEmail() {
+        if (this.externalEmails.length < 10) {
+            try {
+                const res = await this.settingsService.saveExternalEmail(this.form.getRawValue());
+                const data = {
+                    id: res.data.id,
+                    name: `${res.data.name} <${res.data.email}>`
+                };
+                this.externalEmails.push(data);
+            } catch (e) {
+                this.toastr.error(e.message || 'Something is wrong!');
+            }
+        }
+    }
+
+    async deleteExternalEmail(email) {
+        try {
+            const index = this.externalEmails.findIndex(v => v.id === email.id);
+            this.externalEmails.splice(index, 1);
+            await this.settingsService.deleteExternalEmail(email.id);
+        } catch (e) {
+            this.toastr.error(e.message || 'Something is wrong!');
+        }
+    }
 }

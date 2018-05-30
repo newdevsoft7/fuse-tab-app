@@ -35,4 +35,30 @@
     </div>
     <!-- / RECEIPT REQUIRED -->
 
+
+    <div class="box info-box mt-16">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Categories</div>
+        </header>
+        <div class="content" fxLayout="column">
+            <form [formGroup]="form" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="start center" fxLayout.xs="column">
+                <mat-form-field>
+                    <input matInput formControlName="cname" type="text" placeholder="Name">
+                </mat-form-field>
+                <button mat-icon-button color="accent" [disabled]="form.invalid" (click)="addCategory()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </form>
+
+            <div>
+                <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let category of categories">
+                    <div fxFlex.gt-xs="300px">{{category.cname}}</div>
+                    <button class="ml-8" mat-icon-button (click)="deleteCategory(category)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

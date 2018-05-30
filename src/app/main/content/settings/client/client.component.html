@@ -24,4 +24,36 @@
     </div>
     <!-- / CLIENT BOOKINGS -->
 
+    <div class="box info-box">
+        <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="title">Permissisons</div>
+        </header>
+
+        <div class="content" fxLayout="column">
+
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="w-100-p info">
+                <div class="name" fxFlex="20">Post on timeline</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="value(Setting.client_timeline_post)"
+                        (change)="onChange(Setting.client_timeline_post, $event)" fxFlex="20"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="80">
+                        Allow client to post on the home timeline
+                    </div>            
+                </div>
+            </div>
+
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="w-100-p info">
+                <div class="name" fxFlex="20">Comment on timeline posts</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="value(Setting.client_timeline_comment)"
+                        (change)="onChange(Setting.client_timeline_comment, $event)" fxFlex="20"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="80">
+                        Allow client to comment on timeline posts
+                    </div>            
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>

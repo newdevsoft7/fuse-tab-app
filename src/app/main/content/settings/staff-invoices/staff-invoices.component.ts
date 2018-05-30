@@ -24,7 +24,8 @@ enum Setting {
     staff_invoice_deadline = 82,
     staff_invoice_msg_creation = 83,
     staff_invoice_top = 84,
-    staff_invoice_financial = 85
+    staff_invoice_financial = 85,
+    staff_invoice_per_shift = 104
 }
 
 @Component({
@@ -57,7 +58,8 @@ export class SettingsStaffInvoicesComponent implements OnInit {
     checkableItems = [
         Setting.staff_invoice_enable,
         Setting.staff_invoice_combine,
-        Setting.staff_invoice_weekly
+        Setting.staff_invoice_weekly,
+        Setting.staff_invoice_per_shift
     ];
 
     // Number Items

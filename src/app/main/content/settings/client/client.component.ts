@@ -11,7 +11,9 @@ import { SettingsService } from '../settings.service';
 
 enum Setting {
     client_enable = 16,
-    client_booking = 17
+    client_booking = 17,
+    client_timeline_post = 119,
+    client_timeline_comment = 120
 }
 
 @Component({

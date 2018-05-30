@@ -39,13 +39,65 @@
     </div>
     <!-- / MAIN EMAIL SIGNATURE-->
 
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Email Header</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.email_header]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.email_header, $event)"
+                    placeholder="Enter any content to appear in the header of all outgoing emails." />
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Email Subcopy</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.email_subcopy]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.email_subcopy, $event)"
+                    placeholder="Enter any content to appear in the subcopy of all outgoing emails." />
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Email Footer</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.email_footer]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.email_footer, $event)"
+                    placeholder="Enter any content to appear in the footer of all outgoing emails." />
+            </mat-form-field>
+        </div>
+    </div>
+
     <!-- OTHER EMAIL ADDRESSES -->
     <div class="box info-box mt-16">
         <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">Other Email Addresses</div>
         </header>
         <div class="content" fxLayout="column">
-        <!-- TODO -->
+            <form [formGroup]="form" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="start center" fxLayout.xs="column">
+                <mat-form-field>
+                    <input matInput formControlName="name" type="text" placeholder="From">
+                </mat-form-field>
+                <mat-form-field [ngClass.gt-xs]="'ml-8'">
+                    <input matInput formControlName="email" type="email" placeholder="Email">
+                </mat-form-field>
+                <button mat-icon-button color="accent" [disabled]="form.invalid" (click)="addExternalEmail()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </form>
+
+            <div>
+                <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let email of externalEmails">
+                    <div fxFlex.gt-xs="300px">{{email.name}}</div>
+                    <button class="ml-8" mat-icon-button (click)="deleteExternalEmail(email)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <!-- / OTHER EMAIL ADDRESSES -->

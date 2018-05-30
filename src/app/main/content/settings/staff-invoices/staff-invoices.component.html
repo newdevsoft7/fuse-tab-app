@@ -33,6 +33,17 @@
     </div>
     <!-- / INVOICE GENERATION -->
 
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">One Invoice Per Shift</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [checked]="items[Setting.staff_invoice_per_shift]"
+                (change)="onChange(Setting.staff_invoice_per_shift, $event)" fxFlex="25"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="75">
+                Enable to force one invoice per shift.
+            </div>            
+        </div>
+    </div>
+
     <!-- COMBINE INVOICES -->
     <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Combine Invoices</div>

@@ -20,11 +20,13 @@ enum Setting {
     company_name = 87,
     system_name = 88,
     company_website = 89,
+    php_tz = 1,
     company_address = 90,
     company_city = 91,
-    company_state = 92,
+    company_state = 138,
     company_postcode = 93,
-    company_country = 93
+    company_country_code = 2,
+
 }
 
 @Component({
@@ -46,7 +48,8 @@ export class SettingsSystemComponent implements OnInit, OnChanges {
     }
 
     @Input() options = [];
-    countries = [];
+    countries: any[] = [];
+    timezones: any[] = [];
 
     @Output() settingsChange = new EventEmitter();
 
@@ -73,6 +76,13 @@ export class SettingsSystemComponent implements OnInit, OnChanges {
         if (changes.options) {
             if (!_.isEmpty(this.options)) {
                 this.countries = this.options['2']; // 2 is country in options
+
+                this.timezones = Object.keys(this.options[Setting.php_tz]).map(v => {
+                   return {
+                       label: this.options[Setting.php_tz][v],
+                       value: v
+                   };
+                });
             }
         }
     }

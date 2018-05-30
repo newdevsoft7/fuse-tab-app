@@ -33,6 +33,9 @@ enum Setting {
     staff_see_role_required = 75,
     staff_change_work_areas = 76,
     staff_upload_shift_files = 77,
+    staff_timeline_post = 116,
+    staff_timeline_comment = 117,
+    staff_timeline_approval = 118
 }
 
 @Component({

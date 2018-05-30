@@ -4,7 +4,7 @@
     <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Work Market Integration</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="value(Setting.work_market_enable)"
+            <mat-slide-toggle color="accent" [checked]="items[Setting.work_market_enable]"
                 (change)="onChange(Setting.work_market_enable, $event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable the Work Market module to pay staff via Work Market
@@ -12,5 +12,27 @@
         </div>
     </div>
     <!-- / WORK MARKET INTEGRATION -->
+
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.work_market_key]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.work_market_key, $event)"
+                    placeholder="Work Market integration API consumer key" matTooltip="Work Market key"/>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20"></div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.work_market_secret]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.work_market_secret, $event)"
+                    placeholder="Work Market integration API consumer secret" matTooltip="Work Market Secret"/>
+            </mat-form-field>
+        </div>
+    </div>
 
 </div>

@@ -251,7 +251,7 @@
             <!-- / CHANGE WORK AREAS  -->
 
             <!-- UPLOAD SHIFT FILES -->
-            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
                 <div class="name" fxFlex="20">Upload shift files</div>
                 <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
                     <mat-slide-toggle color="accent" [checked]="items[Setting.staff_upload_shift_files]"
@@ -262,6 +262,39 @@
                 </div>
             </div>
             <!-- / UPLOAD SHIFT FILES  -->
+
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="20">Post on timeline</div>
+                <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items[Setting.staff_timeline_post]"
+                        (change)="onChange(Setting.staff_timeline_post, $event)" fxFlex="25"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="75">
+                        Allow staff to post on the home timeline
+                    </div>            
+                </div>
+            </div>
+
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="30">Comment on timeline posts</div>
+                <div fxLayout="row wrap" fxFlex="70" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items[Setting.staff_timeline_comment]"
+                        (change)="onChange(Setting.staff_timeline_comment, $event)" fxFlex="15"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="85">
+                        Allow staff to comment on timeline posts
+                    </div>            
+                </div>
+            </div>
+
+            <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+                <div class="name" fxFlex="30">Posts & Commens require approval</div>
+                <div fxLayout="row wrap" fxFlex="70" fxLayoutAlign="start center">
+                    <mat-slide-toggle color="accent" [checked]="items[Setting.staff_timeline_approval]"
+                        (change)="onChange(Setting.staff_timeline_approval, $event)" fxFlex="15"></mat-slide-toggle>
+                    <div class="desc secondary-text" fxFlex="85">
+                        Require staff posts and comment to be approved by an administrator before becoming visible
+                    </div>            
+                </div>
+            </div>
 
         </div>
     </div>

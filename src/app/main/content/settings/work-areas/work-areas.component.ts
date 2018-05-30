@@ -18,7 +18,9 @@ import * as _ from 'lodash';
 import { SettingsService } from '../settings.service';
 
 enum Setting {
-    work_areas_enable = 95
+    work_areas_enable = 95,
+    work_areas_msg = 129,
+    work_areas_required = 128
 }
 
 
@@ -60,6 +62,7 @@ export class SettingsWorkAreasComponent implements OnInit {
 
     // Number Items
     numberItems = [
+        Setting.work_areas_required
     ];
 
     componentDestroyed = new Subject();
@@ -70,6 +73,8 @@ export class SettingsWorkAreasComponent implements OnInit {
 
     workAreaForm: FormGroup;
     categoryForm: FormGroup;
+
+    numberRequired = new FormControl();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -89,7 +94,14 @@ export class SettingsWorkAreasComponent implements OnInit {
                     if (this.checkableItems.includes(item.id)) { // Slide Togglable Items
                         this.items = { ...this.items, [item.id]: _.toInteger(item.value) === 0 ? false : true };
                     } else if (this.numberItems.includes(item.id)) { // Number Fields
-
+                        switch (item.id) {
+                            case Setting.work_areas_required:
+                                this.numberRequired.patchValue(item.value);
+                                break;
+                            
+                            default:
+                                break;
+                        }
                     } else { // Text Fields
                         this.items = { ...this.items, [item.id]: item.value };
                     }
@@ -108,6 +120,15 @@ export class SettingsWorkAreasComponent implements OnInit {
             }
             this.drawer.open();
         });
+
+        // Invoice Deadline Control
+        this.numberRequired.valueChanges
+            .debounceTime(1000)
+            .distinctUntilChanged()
+            .takeUntil(this.componentDestroyed)
+            .subscribe(value => {
+                this.onChange(Setting.work_areas_required, value);
+            });
 
         this.getTimezones();
 

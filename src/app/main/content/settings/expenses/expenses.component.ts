@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 enum Setting {
     expenses_enable = 27,
@@ -28,13 +29,25 @@ export class SettingsExpensesComponent implements OnInit {
     @Output() settingsChange = new EventEmitter();
     
     readonly Setting = Setting;
+    form: FormGroup;
+    categories: any[];
 
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private formBuilder: FormBuilder
     ) { }
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.form = this.formBuilder.group({
+            cname: ['', Validators.required],
+        });
+        
+        try {
+            this.categories = await this.settingsService.getExpenseCategories();
+        } catch(e) {
+            this.toastr.error(e.message || 'Something is wrong!');
+        }
     }
     
     value(id: Setting) {
@@ -54,6 +67,35 @@ export class SettingsExpensesComponent implements OnInit {
             //this.toastr.success(res.message);
         });
     }
+
+    async addCategory() {
+        try {
+            const res = await this.settingsService.saveExpenseCategory(this.form.getRawValue());
+            this.categories.push(res.data);
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+    async deleteCategory(category) {
+        try {
+            const index = this.categories.findIndex(v => v.id === category.id);
+            this.categories.splice(index, 1);
+            await this.settingsService.deleteExpenseCategory(category.id);
+        } catch (e) {
+            this.toastr.error(e.message || 'Something is wrong!');
+        }
+    }
+
+    private displayError(e: any) {
+		const errors = e.error.errors;
+		if (errors) {
+			Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+		}
+		else {
+			this.toastr.error(e.message);
+		}
+	}
 
 
 }

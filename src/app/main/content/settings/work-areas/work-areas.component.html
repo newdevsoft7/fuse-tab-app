@@ -1,7 +1,7 @@
 <div id="settings-work-areas-container" fxLayout="column">
 
     <!-- WORK AREAS MODULE -->
-    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" [ngClass.xs]="'info'">
         <div class="name" fxFlex="20">Work Areas Module</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="items[Setting.work_areas_enable]"
@@ -12,6 +12,35 @@
         </div>
     </div>
     <!-- / WORK AREAS MODULE -->
+
+    <!-- Message -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.work_areas_msg]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.work_areas_msg, $event)"
+                    placeholder="Enter any text you would like displayed in the work areas section of staff profiles" />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / Message -->
+
+    <!-- Number Required -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Number Required</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <div  fxFlex="25">
+                <mat-form-field floatPlaceholder="never" [style.width.px]="40">
+                    <input matInput type="number" min="1" max="9" [formControl]="numberRequired"/>
+                </mat-form-field>
+            </div>
+            <div class="desc secondary-text" fxFlex="75">
+                Enter the minimum number of work areas staff must select.
+            </div>  
+        </div>
+    </div>
+    <!-- / Number Required -->
 
     <div class="nav" fxFlex="1 0 auto" fxLayout="column">
         <mat-drawer-container class="draw-container" autosize fxFlex="1 0 auto">
