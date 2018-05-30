@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'app-quiz',
@@ -14,18 +14,26 @@ export class QuizComponent implements OnInit {
     this.data = data;
     console.log(data);
     if (this.data && this.data.other_id && !this.data.isEdit) {
-      alert("view");
       this.iframeUrl = `https://quizconnect.net/main/surveys/view/${this.data.other_id}?provider=staffconnect&type=iframe`;
+
+      if (this.data.shift_id) {
+        this.iframeUrl += '&shift' + this.data.shift_id;
+      }
     } else if (this.data && this.data.other_id && this.data.isEdit) {
-      alert("edit");
       this.iframeUrl = `https://quizconnect.net/main/surveys/edit/${this.data.other_id}?provider=staffconnect&type=iframe`;
     } else if (this.data && !this.data.other_id) {
-      alert("create");
-      this.iframeUrl = `https://quizconnect.net/main/surveys/create?provider=staffconnect&type=iframe`;
+      if (data.type === 'survey') {
+        this.iframeUrl = `https://quizconnect.net/main/surveys/create?provider=staffconnect&type=iframe&kind=survey`;
+      } else {
+        this.iframeUrl = `https://quizconnect.net/main/surveys/create?provider=staffconnect&type=iframe&kind=quiz`;
+      }
+
     }
   }
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

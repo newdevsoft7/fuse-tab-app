@@ -84,9 +84,22 @@ export class SettingsQuizsComponent implements OnInit {
       'quizTpl',
       `settings/quiz/new`,
       {
-        name: 'New Quiz'
+        name: 'New Quiz',
+        type: 'quiz'
       }
     );
+    this.tabService.openTab(tab);
+  }
+
+  async fillQuiz(quiz, event) {
+    quiz.isEdit = false;
+    const tab = new Tab(
+      quiz.rname,
+      'quizTpl',
+      `settings/quiz/${quiz.id}`,
+      quiz
+    );
+
     this.tabService.openTab(tab);
   }
 
