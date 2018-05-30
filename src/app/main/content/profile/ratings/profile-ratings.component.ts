@@ -22,7 +22,6 @@ export class ProfileRatingsComponent implements OnInit {
     reorderable = true;
 
     @ViewChild(DatatableComponent) table: DatatableComponent
-    @ViewChild('searchInput') search: ElementRef;
 
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -43,8 +42,6 @@ export class ProfileRatingsComponent implements OnInit {
             .subscribe(res => {
                 this.loadingIndicator = false;
                 this.ratings = res;
-
-                this.updateFilter(this.search.nativeElement.value);
             }, err => {
                 if (err.status && err.status == 403) {
                     this.toastr.error('You have no permission!');
@@ -85,24 +82,24 @@ export class ProfileRatingsComponent implements OnInit {
     }
 
 
-    updateFilter(value) {
-        const val = value.toLowerCase();
+    // updateFilter(value) {
+    //     const val = value.toLowerCase();
 
-        const filteredRatings = this.ratings.filter(function (cat) {
-            return Object.keys(cat).some(key => {
-                ;
-                return (cat[key] ? cat[key] : '')
-                    .toString()
-                    .toLowerCase()
-                    .indexOf(val) !== -1 || !val
-            })
-        });
+    //     const filteredRatings = this.ratings.filter(function (cat) {
+    //         return Object.keys(cat).some(key => {
+    //             ;
+    //             return (cat[key] ? cat[key] : '')
+    //                 .toString()
+    //                 .toLowerCase()
+    //                 .indexOf(val) !== -1 || !val
+    //         })
+    //     });
 
-        this.filteredRatings = filteredRatings;
-        if (this.table) {
-            this.table.offset = 0;
-        }
-    }
+    //     this.filteredRatings = filteredRatings;
+    //     if (this.table) {
+    //         this.table.offset = 0;
+    //     }
+    // }
 
     onSelect(evt){
 

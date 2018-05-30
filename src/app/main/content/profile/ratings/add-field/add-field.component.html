@@ -1,12 +1,8 @@
-<div class="list new-field mat-elevation-z1">
+<button *ngIf="!formActive" mat-icon-button (click)="openForm()"  matTooltip="Add a rating">
+	<mat-icon class="mat-red-bg white-fg">add</mat-icon>
+</button>
 
-	<button *ngIf="!formActive" mat-button class="new-field-form-button" (click)="openForm()">
-		<div fxLayout="row" fxLayoutAlign="start center">
-			<mat-icon class="mat-red-bg">add</mat-icon>
-			<span>Add a Rating</span>
-		</div>
-	</button>
-
+<div class="list mat-elevation-z1 new-field">
 	<form *ngIf="formActive" class="new-field-form" [formGroup]="form" (submit)="onFormSubmit()" fxLayout="row" fxLayoutAlign="start center"
 		fxFlex="1 0 auto">
 
@@ -22,3 +18,5 @@
 		</button>
 	</form>
 </div>
+	
+	

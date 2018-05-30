@@ -1,10 +1,13 @@
 .ratings-wrapper{
-    .header{
+
+    .header {
         background-image: none !important;
     }
-    .ratings-table{
+
+    .ratings-table {
         width:100%;
     }
+
     .datatable-checkbox input[type='checkbox'] {
         &:after, &:before {
             width: 16px;
