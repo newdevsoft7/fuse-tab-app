@@ -1,0 +1,20 @@
+@import "src/app/core/scss/fuse";
+
+.staff-shift-expense-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up('xs') {
+        width: 450px;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+    }
+
+    .filename {
+        margin-top: -24px;
+    }
+}

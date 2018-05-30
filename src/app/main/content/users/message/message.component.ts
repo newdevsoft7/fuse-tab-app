@@ -172,7 +172,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
           email: this.message.email,
           subject: this.message.subject,
           from: this.message.from,
-          attachments: this.message.attachments
+          attachments: this.message.attachments.map(v => v.id)
         });
         this.toastrService.success('Email has been sent successfully!');
         this.messageForm.reset(this.message);

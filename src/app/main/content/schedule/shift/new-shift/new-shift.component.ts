@@ -94,7 +94,7 @@ export class NewShiftComponent implements OnInit {
             address: [''],
             contact: [''],
             notes: [''],
-            manager_ids: [[this.tokenStorage.getUser().id]],
+            manager_ids: [[]],
             client_id: [null],
             work_area_ids: [[]],
             tracking_option_ids: [[]],
@@ -114,9 +114,9 @@ export class NewShiftComponent implements OnInit {
                     address: res.address,
                     contact: res.contact,
                     notes: res.notes,
-                    manager_ids: res.managers.map(v => v.id),
+                    manager_ids: res.managers,
                     client_id: res.client_id,
-                    work_area_ids: res.work_areas.map(v => v.id),
+                    work_area_ids: res.work_areas,
                     tracking_option_ids: tracking_option_ids,
                     isGroup: false
                 });
@@ -312,6 +312,11 @@ export class NewShiftComponent implements OnInit {
         }
 
         let params = _.cloneDeep(this.shiftForm.value);
+        params = {
+            ...params,
+            manager_ids: params.manager_ids.map(v => v.id),
+            work_area_ids: params.work_area_ids.map(v => v.id)
+        };
 
         const isGroup = this.shiftForm.getRawValue().isGroup;
         params = { ...params, grouped: isGroup ? 1 : 0 };

@@ -98,6 +98,7 @@ export class ShiftRoleEditComponent implements OnInit {
     role_pay_items: any[] = [];
 
     settings: any;
+    reports$;
 
     readonly types: string[] = [
         'bonus',
@@ -126,6 +127,10 @@ export class ShiftRoleEditComponent implements OnInit {
 
     ngOnInit() {
 
+        this.reports$ = (text: string): Observable<any> => {
+            return this.scheduleService.getReports(text);
+        };
+
         // FOR ROLE CREATE FROM NEW SHIFT TAB
         this.shifts = this.data.shifts;
         this.url = this.data.url;
@@ -141,14 +146,15 @@ export class ShiftRoleEditComponent implements OnInit {
                 num_required: [this.role.num_required],
                 rname: [this.role.rname, Validators.required],
                 application_deadline: [this.role.application_deadline ? moment(this.role.application_deadline) : null],
-                notes: [this.role.notes],
+                notes: [this.role.notes ? this.role.notes : ''],
                 bill_rate: [this.role.bill_rate],
                 pay_rate: [this.role.pay_rate],
                 pay_category_id: [this.role.pay_category_id ? this.role.pay_category_id : 'none'],
                 expense_limit: [this.role.expense_limit],
-                completion_notes: [this.role.completion_notes],
+                completion_notes: [this.role.completion_notes ? this.role.completion_notes : ''] ,
                 requirements: [[]], // TODO - ROLE REQUIREMENTS,
-                uploads_required: [this.role.uploads_required]
+                uploads_required: [this.role.uploads_required],
+                reports: [this.role.reports]
             });
 
             // SET RATE TYPE
@@ -180,7 +186,8 @@ export class ShiftRoleEditComponent implements OnInit {
                 expense_limit: [0],
                 completion_notes: [''],
                 requirements: [[]],
-                uploads_required: [null]
+                uploads_required: [null],
+                reports: [[]]
             });
         }
 
@@ -242,10 +249,10 @@ export class ShiftRoleEditComponent implements OnInit {
 
         // Make Role Param
         let role = _.cloneDeep(this.roleForm.value);
-        const requirements = role.requirements.map(v => v.id);
         role = {
             ...role,
-            requirements,
+            requirements: role.requirements.map(v => v.id),
+            reports: role.reports.map(v => v.id),
             pay_rate_type: this.payRateType,
             bill_rate_type: this.billRateType
         };
@@ -354,7 +361,8 @@ export class ShiftRoleEditComponent implements OnInit {
             expense_limit: 0,
             completion_notes: '',
             requirements: [],
-            uploads_required: []
+            uploads_required: [],
+            reports: []
         });
         this.formErrors = {
             rname: {}

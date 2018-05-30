@@ -1,4 +1,4 @@
-<div id="register-step5-container">
+<div id="register-step5-container" class="p-0 px-4 p-sm-24">
 
     <div class="mb-24" *ngIf="settings.profile_doc_message">
         <h2>
@@ -19,7 +19,7 @@
     </div>
     <!-- / ADD FILE BUTTON -->
 
-    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="documents">
+    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap ngxDroppable="group" [model]="documents">
         <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of documents" [model]="document">
             <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
             </ng-container>

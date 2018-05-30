@@ -92,7 +92,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
         try {
           this.mode = Mode.Edit;
           const template = await this.templatesService.getTemplate(this.id);
-          const attachments = template.attachments.map(v => v.id);
+          const attachments = template.attachments.map(v => { return { id: v.id, text: v.oname }; });
           this.template = {
             ...template,
             attachments
@@ -130,7 +130,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
             from: this.template.from,
             subject: this.template.subject,
             content: this.template.content,
-            attachments: this.template.attachments
+            attachments: this.template.attachments.map(v => v.id)
           });
           //this.toastr.success(res.message);
           this.submitted = true;
@@ -151,7 +151,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
             from: this.template.from,
             subject: this.template.subject,
             content: this.template.content,
-            attachments: this.template.attachments,
+            attachments: this.template.attachments.map(v => v.id),
             folder_id: this.template.folder_id,
             active: this.template.active ? 1 : 0
           });

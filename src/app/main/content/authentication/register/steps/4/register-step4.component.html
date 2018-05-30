@@ -1,4 +1,4 @@
-<div id="register-step4-container">
+<div id="register-step4-container" class="p-0 px-4 p-sm-24">
 
     <!-- MESSAGE -->
     <div class="mb-24" *ngIf="settings.profile_photo_msg">
@@ -21,7 +21,7 @@
     </div>
     <!-- / ADD FILE BUTTON -->
 
-    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="photos">
+    <div class="group-media ngx-dnd-container" fxLayout="row" fxLayout.xs="column" fxLayoutWrap ngxDroppable="group" [model]="photos">
         <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of photos" [model]="photo">
             <ng-container [ngTemplateOutlet]="photoTpl" [ngTemplateOutletContext]="{photo: photo}">
             </ng-container>

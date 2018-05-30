@@ -135,8 +135,8 @@ export class EditShiftDetailComponent implements OnInit {
 
                 case 'manager_ids':
                 case 'work_area_ids':
-                    value = this.list[key].value.length > 0 ? this.list[key].value : null;
-                    params = { ...params, [key]: value };
+                    value = this.list[key].value.length > 0 ? this.list[key].value : [];
+                    params = { ...params, [key]: value.map(v => v.id) };
                     break;
 
                 case 'locked':

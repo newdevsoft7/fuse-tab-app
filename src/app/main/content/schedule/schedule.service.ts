@@ -82,6 +82,11 @@ export class ScheduleService {
     return this.http.post(url, params).catch(this.handleError);
   }
 
+  updateMultipleRoles(params): Observable<any> {
+    const url = `${BASE_URL}/shift/roles/edit`;
+    return this.http.put(url, params).catch(this.handleError);
+  }
+
   getManagers(query): Observable<any> {
     const url = `${AUTOCOMPLETE_URL}/manager/${query}`;
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
@@ -312,6 +317,16 @@ export class ScheduleService {
     return this.http.post(url, {}).catch(this.handleError);
   }
 
+  completeShiftRole(roleStaffId: number): Promise<any> {
+    const url = `${BASE_URL}/role/complete/${roleStaffId}`;
+    return this.http.post(url, {}).toPromise();
+  }
+
+  completeCheck(roleStaffId: number): Promise<any> {
+    const url = `${BASE_URL}/role/complete/${roleStaffId}`;
+    return this.http.get(url).toPromise();
+  }
+
   setShiftTrackingOptions(shiftId, catgegoryId, optionIds: number[]): Promise<any> {
     const url = `${BASE_URL}/shift/${shiftId}/tracking/${catgegoryId}`;
     const body = optionIds.length > 0 ? { ids: optionIds } : {};
@@ -329,8 +344,7 @@ export class ScheduleService {
     return this.http.get(url).catch(this.handleError);
   }
 
-  addPayItem(body: { item_name, item_type, unit_rate, units,
-    bill_unit_rate?, bill_units?, shift_id?, shift_role_id?, role_staff_id? }): Promise<any> {
+  addPayItem(body: any): Promise<any> {
     const url = `${BASE_URL}/payItem`;
     return this.http.post(url, body).toPromise();
   }
@@ -340,10 +354,9 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
-  updatePayItem(payItemId,
-    body: { item_name?, item_type?, unit_rate?, units?, bill_unit_rate?, bill_units?, role_staff_id? }): Promise<any> {
+  updatePayItem(payItemId, body: any): Promise<any> {
     const url = `${BASE_URL}/payItem/${payItemId}`;
-    return this.http.put(url, body).toPromise();
+    return this.http.post(url, body).toPromise();
   }
 
   getShiftAdminNoteType(): Observable<any> {
@@ -516,6 +529,13 @@ export class ScheduleService {
   getPopupContent(id: number, group?: boolean): Promise<any> {
     const url = group? `${BASE_URL}/group/${id}/popUp` : `${BASE_URL}/shift/${id}/popUp`;
     return this.http.get(url).toPromise();
+  }
+
+  getReports(query?): Observable<any> {
+    query = query || '';
+    const url = `${BASE_URL}/autocomplete/report/survey/${query}`;
+    return this.http.get(url.replace(/\/+$/, ''))
+      .catch(this.handleError);
   }
 
   private handleError(error: Response | any) {

@@ -1,0 +1,37 @@
+<div id="staff-shift-expense-container" fusePerfectScrollbar>
+    <button *ngIf="shift.claim_expenses === 1" 
+        mat-fab color="accent" class="add-button mat-accent-bg" (click)="addExpense()">
+        <mat-icon>add</mat-icon>
+    </button>
+
+    <div *ngIf="expenses.length > 0" class="mt-92">
+
+        <div fxLayout="row" fxLayoutAlign.gt-xs="start center" *ngFor="let expense of expenses"
+            class="expense" fxLayout.xs="column">
+            <div fxFlex>
+                <span matTooltip="Expense Category">{{getExpenseCategoryName(expense.expense_cat_id)}}</span>
+            </div>
+            <div fxFlex>
+                <span matTooltip="Item Name">{{expense.item_name}}</span>
+            </div>
+            <div fxFlex>
+                <a *ngIf="expense.file?.path" [href]="expense.file.path" target="blank" matTooltip="Receipt">
+                    {{expense.file.oname}}
+                </a>
+            </div>
+            <div fxFlex.gt-xs="80px">
+                <span matTooltip="Amount">{{expense.unit_rate | currency}}</span>
+            </div>
+            <div fxFlex.gt-xs="100px" fxLayout="row">
+                <button mat-icon-button (click)="editExpense(expense)" *ngIf="expense.edit === 1">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteExpense(expense)" *ngIf="expense.delete === 1">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>

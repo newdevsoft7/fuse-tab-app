@@ -3,6 +3,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, FormControl } f
 import { ToastrService } from "ngx-toastr";
 import { environment } from "../../../../environments/environment";
 import { TokenStorage } from "../../../shared/services/token-storage.service";
+import { AppSettingService } from "../../../shared/services/app-setting.service";
 
 const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -43,16 +44,28 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
   editor: any;
 
   constructor(
+    private appSettings: AppSettingService,
     private tokenStorage: TokenStorage,
     private toastrService: ToastrService) {
 
-    this.uploadUrl = `${environment.apiUrl}/editor/image`;
+    this.uploadUrl = `https://api.${appSettings.baseData.name}.staffconnect-app.com/api/editor/image`;
     this.token = tokenStorage.getAccessToken();
   }
 
   ngOnInit() {
     ClassicEditor
       .create(this.editorWrapper.nativeElement, {
+        heading: {
+          options: [
+            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+            { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+            { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+            { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+          ]
+        },
         ckfinder: {
           uploadUrl: this.uploadUrl,
           token: this.token

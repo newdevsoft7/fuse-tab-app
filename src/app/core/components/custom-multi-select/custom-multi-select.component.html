@@ -1,12 +1,10 @@
 <mat-form-field fxFlex="100">
 
     <mat-chip-list #chipList>
-        <ng-container *ngFor="let tag of selected">
-            <mat-chip  *ngIf="tag" (remove)="remove(tag)">
-                {{tag[labelBy]}}
-                <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-        </ng-container>
+        <mat-chip  *ngFor="let tag of _value" (remove)="remove(tag)">
+            {{tag[labelBy]}}
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
         <input #chipInput
                ngModel
                debounce

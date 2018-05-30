@@ -129,7 +129,7 @@
                 <div *ngIf="staff.pay_items.length > 0; else noPayItems">
                     <div class="item-line" *ngFor="let item of staff.pay_items"
                         fxLayout="row" fxLayoutAlign="start center">
-                        <div fxFlex="20%">
+                        <div fxFlex="10%">
                             {{item.item_type | capitalize}}
                         </div>
                         <div fxFlex="20%">
@@ -137,7 +137,7 @@
                                 [staff]="staff" [payItem]="item" [editable]="editable">
                             </app-admin-shift-edit-pay-item-name>
                         </div>
-                        <div fxFlex="20%">
+                        <div fxFlex="10%">
                             <app-admin-shift-edit-pay-item-units
                                 [staff]="staff" [payItem]="item" [editable]="editable"
                                 (onItemChanged)="recalcuatePayItemsTotal(staff)">
@@ -149,12 +149,39 @@
                                 (onItemChanged)="recalcuatePayItemsTotal(staff)">
                             </app-admin-shift-edit-pay-item-unit-rate>
                         </div>
-                        <div fxFlex="10%">
-                            <button mat-icon-button *ngIf="item.item_type === 'expense'" class="pull-right" matTooltip="View / Upload receipt">
-                                <mat-icon>add</mat-icon>
-                            </button>
+                        <div fxFlex="20%">
+                            <ng-container *ngIf="item.item_type === 'expense' && item.type === 'staff'">
+                                <button mat-icon-button *ngIf="!item.file; else fileBlock" class="pull-right" matTooltip="View / Upload receipt" (click)="selectedPayItem = item; payItemUploader.click()">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                                <ng-template #fileBlock>
+                                    <div fxLayout="row" fxLayoutAlign="end center">
+                                        <a target="_blank" [href]="item.file.path">{{item.file.oname}}</a>
+                                        <button mat-icon-button matTooltip="Change File" (click)="selectedPayItem = item; payItemUploader.click()">
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </ng-container>
                         </div>
-
+                        <div fxFlex="10%">
+                            <ng-container *ngIf="item.type === 'staff'">
+                                <button mat-icon-button *ngIf="shift.approve_expenses === 1; else iconBlock" class="pull-right" (click)="toggleApproved(item)">
+                                    <ng-container [ngSwitch]="item.approved">
+                                        <mat-icon *ngSwitchCase="null" matTooltip="Unapproved" class="grey-fg">block</mat-icon>
+                                        <mat-icon *ngSwitchCase="0" matTooltip="Rejected" class="red-fg">block</mat-icon>
+                                        <mat-icon *ngSwitchCase="1" matTooltip="Approved" class="green-fg">check</mat-icon>
+                                    </ng-container>
+                                </button>
+                                <ng-template #iconBlock>
+                                    <ng-container [ngSwitch]="item.approved">
+                                        <mat-icon *ngSwitchCase="null" matTooltip="Unapproved" class="grey-fg pull-right">block</mat-icon>
+                                        <mat-icon *ngSwitchCase="0" matTooltip="Rejected" class="red-fg pull-right">block</mat-icon>
+                                        <mat-icon *ngSwitchCase="1" matTooltip="Approved" class="green-fg pull-right">check</mat-icon>
+                                    </ng-container>
+                                </ng-template>
+                            </ng-container>
+                        </div>
                         <div fxFlex="10%">
                             <button mat-icon-button *ngIf="item.type === 'staff'" (click)="removePayItem(staff, item)" class="pull-right" matTooltip="Delete">
                                 <mat-icon>close</mat-icon>
@@ -170,4 +197,5 @@
         </div>
     </div>
 
+    <input type="file" #payItemUploader hidden />
 </div>

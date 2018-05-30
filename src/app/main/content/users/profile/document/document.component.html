@@ -14,15 +14,21 @@
 
         <div class="document">
 
-            <!-- ADD FILE BUTTON -->
-            <div class="file-uploader">
-                <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
-                <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
-                    <mat-icon>file_upload</mat-icon>
-                    <span>Upload</span>
+            <div fxLayout="row" fxLayoutAlign="start center" class="mb-24">
+                <!-- ADD FILE BUTTON -->
+                <div class="file-uploader">
+                    <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
+                    <button mat-raised-button color="accent" (click)="fileInput.click()">
+                        <mat-icon>file_upload</mat-icon>
+                        <span>Upload</span>
+                    </button>
+                </div>
+                <!-- / ADD FILE BUTTON -->
+
+                <button *ngIf="user.id === currentUser.id" mat-raised-button class="ml-8" color="accent" (click)="openFormModal()">
+                    Complete Forms
                 </button>
             </div>
-            <!-- / ADD FILE BUTTON -->
 
             <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicDocuments" (drop)="onDrop($event)">
                 <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of basicDocuments" [model]="document">

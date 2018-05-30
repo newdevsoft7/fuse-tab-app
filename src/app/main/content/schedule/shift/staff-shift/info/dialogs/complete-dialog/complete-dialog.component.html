@@ -1,0 +1,28 @@
+<div class="dialog-content-wrapper">
+    <h1 mat-dialog-title>Complete a shift</h1>
+    <div mat-dialog-content>
+        <p *ngIf="settings.shift_msg_completion !== ''">
+            {{settings.shift_msg_completion}}
+        </p>
+
+        <p class="mt-8" *ngIf="uploads_required > 0">
+            Uploads: <span [ngStyle]="{'color': num_uploaded < uploads_required ? 'red' : 'green'}">{{num_uploaded}}</span> / <span>{{uploads_required}}</span>
+        </p>
+
+        <fieldset>
+            <legend>Reports</legend>
+            <div>
+                <div *ngFor="let report of reports; last as last" [class.mb-8]="!last" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon [ngClass]="report.completed === 0 ? 'red-fg' : 'green-fg'">
+                        {{report.completed === 0 ? 'flash_on' : 'done'}}
+                    </mat-icon>
+                    <a href="javascript:void(0)" (click)="openReport(report)">{{report.rname}}</a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button class="mat-accent-bg" (click)="onComplete()">Complete</button>
+        <button mat-button [mat-dialog-close]="false" cdkFocusInitial class="mat-primary-50-bg">Cancel</button>
+    </div>
+</div>

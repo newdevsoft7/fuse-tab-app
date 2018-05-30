@@ -1,0 +1,35 @@
+<div class="dialog-content-wrapper">
+    <div mat-dialog-content fusePerfectScrollbar>
+        <div>
+            <mat-form-field class="w-100-p">
+                <mat-select [(ngModel)]="expense.expense_cat_id" placeholder="Expense Category">
+                    <mat-option *ngFor="let option of categories" [value]="option.id">{{option.cname}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="w-100-p">
+                <input matInput [(ngModel)]="expense.item_name" placeholder="Item">
+            </mat-form-field>
+            <mat-form-field class="w-100-p">
+                <input matInput [(ngModel)]="expense.unit_rate" min="0" type="number" placeholder="Amount">
+            </mat-form-field>
+        </div>
+
+        <!-- ADD FILE BUTTON -->
+        <div class="my-12" fxLayout="row" fxLayoutAlign="start center">
+            <input hidden type="file" #fileInput (change)="change($event)"/>
+            <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
+                <ng-container *ngIf="filename; else default">Select a different receipt</ng-container>
+                <ng-template #default>
+                    <mat-icon class="white-fg">add</mat-icon>
+                    <span>Upload Recipt</span>
+                </ng-template>
+            </button>
+            <div *ngIf="filename" class="ml-4 filename">{{filename}}</div>
+        </div>
+        <!-- / ADD FILE BUTTON -->
+    </div>
+    <div mat-dialog-actions class="pt-24">
+        <button mat-raised-button color="accent" (click)="save()" [disabled]="!isValid()">Save</button>
+        <button mat-raised-button [mat-dialog-close]="false" cdkFocusInitial class="mat-primary-50-bg">Cancel</button>
+    </div>
+</div>

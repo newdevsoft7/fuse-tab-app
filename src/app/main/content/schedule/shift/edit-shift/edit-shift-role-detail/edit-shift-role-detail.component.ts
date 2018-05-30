@@ -25,7 +25,7 @@ class ShiftTime {
             .hours(hours12to24(this.time.hour, this.time.meriden))
             .minute(this.time.minute);
 
-        return time.format('YYYY-MM-DD HH:mm:ss');
+        return time.format('HH:mm');
     }
 
 }
@@ -48,6 +48,7 @@ export class EditShiftRoleDetailComponent implements OnInit {
     role;
 
     payCategories: any[] = [];
+    reports$;
 
     list = {
         num_required: { checked: false, value: 1 },
@@ -70,7 +71,8 @@ export class EditShiftRoleDetailComponent implements OnInit {
         bill_travel_group: { checked: false, value: { travel_rate: '', travel_type: 'flat', travel_value: '' } },
         pay_travel_group: { checked: false, value: { travel_rate: '', travel_type: 'flat', travel_value: ''} },
         uploads_required: { checked: false, value: '' },
-        requirements: { checked: false, value: [] }
+        requirements: { checked: false, value: [] },
+        reports: { checked: false, value: [] }
     };
 
     constructor(
@@ -83,15 +85,74 @@ export class EditShiftRoleDetailComponent implements OnInit {
 
         // Get Role Data
         this.scheduleService.getRoleData(this.shifts.map(v => v.id)).subscribe(res => {
-            this.roles = res.roles;
+            this.roles = res;
             this.role = this.roles[0];
         });
 
         // Get Pay Categories
         this.scheduleService.getPayLevelCategory().subscribe(res => this.payCategories = res);
+
+        this.reports$ = (text: string): Observable<any> => {
+            return this.scheduleService.getReports(text);
+        };
+
     }
 
     applyRole() {
+        let params: any = {
+            shift_ids: this.shifts.map(v => v.id),
+            rname_to_edit: this.role
+        };
+
+
+        let value;
+        // FILTER LIST CHECKED
+        const filteredList = Object.keys(this.list).filter(key => this.list[key].checked);
+        filteredList.forEach(key => {
+            switch (key) {
+                case 'times':
+                    if (!this.list[key].value.same_as_shift) {
+                        params = {
+                            ...params,
+                            role_start: this.list[key].value.from.toString(),
+                            role_end: this.list[key].value.to.toString()
+                        };
+
+                    }
+                    break;
+
+                case 'reports':
+                case 'requirements':
+                    value = this.list[key].value.length > 0 ? this.list[key].value : [];
+                    params = { ...params, [key]: value.map(v => v.id) };
+                    break;
+
+                case 'bill_rate_group':
+                    params = {
+                        ...params,
+                        'bill_rate': this.list[key].value.bill_rate,
+                        'bill_rate_type': this.list[key].value.bill_rate_type
+                    };
+                    break;
+                
+                case 'pay_rate_group':
+                    params = {
+                        ...params,
+                        'pay_rate': this.list[key].value.pay_rate,
+                        'pay_rate_type': this.list[key].value.pay_rate_type
+                    };
+                    break;
+                    
+                default: // If key is one of title, location, generic_location, generic_title, address, contact, notes, timezone
+                    params = { ...params, [key]: this.list[key].value};
+                    break;
+            }
+        });
+        this.scheduleService.updateMultipleRoles(params).subscribe(res => {
+            //this.toastr.success(res.message);
+        }, err => {
+            this.toastr.error(err.error.message);
+        })
     }
 
     addNewRole() {

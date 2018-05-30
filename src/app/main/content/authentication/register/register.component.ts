@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { MatHorizontalStepper, MatDialog, MatDialogRef } from "@angular/material";
+import { MatHorizontalStepper, MatDialog, MatDialogRef, MatVerticalStepper } from "@angular/material";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FuseConfigService } from "../../../../core/services/config.service";
 
@@ -11,6 +11,8 @@ import { AuthenticationService } from "../../../../shared/services/authenticatio
 import { AppSettingService } from "../../../../shared/services/app-setting.service";
 import { FuseConfirmYesNoDialogComponent } from "../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component";
 
+const MIN_DESKTOP_WIDTH = 600;
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -18,7 +20,10 @@ import { FuseConfirmYesNoDialogComponent } from "../../../../core/components/con
 })
 export class RegisterComponent implements OnInit {
 
-  @ViewChild('stepper') stepper: MatHorizontalStepper;
+  @ViewChild('horizontalStepper') horizontalStepper: MatHorizontalStepper;
+  @ViewChild('verticalStepper') verticalStepper: MatVerticalStepper; 
+
+  stepper: any;
 
   user;
 
@@ -51,6 +56,12 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (window.innerWidth >= MIN_DESKTOP_WIDTH) {
+      this.stepper = this.horizontalStepper;
+    } else {
+      this.stepper = this.verticalStepper;
+    }
 
     _.times(9, (n) => {
       this.forms[n] = this.formBuilder.group({

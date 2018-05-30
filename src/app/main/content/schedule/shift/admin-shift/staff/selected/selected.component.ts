@@ -3,7 +3,8 @@ import {
     ViewEncapsulation, Input,
     Output, EventEmitter,
     ViewChild,
-    ChangeDetectorRef
+    ChangeDetectorRef,
+    ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -32,6 +33,7 @@ import { AddPayItemDialogComponent } from './add-pay-item-dialog/add-pay-item-di
 import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
 import { TAB } from '../../../../../../../constants/tab';
+import { FuseConfirmYesNoDialogComponent } from '../../../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 
 enum Query {
     Counts = 'counts',
@@ -73,6 +75,9 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     @Output() onStaffCountChanged = new EventEmitter();
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
+    @ViewChild('payItemUploader') payItemUploader: ElementRef;
+    selectedPayItem: any;
+
     constructor(
         private spinner: CustomLoadingService,
         private tabService: TabService,
@@ -90,6 +95,13 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             s.pay_items_show === false;
             s.pay_items = s.pay_items ? s.pay_items : []
         });
+
+        this.payItemUploader.nativeElement.onchange = (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                this.uploadFile(files[0]);
+            }
+        }
     }
 
     openUser(staff, event: Event) {
@@ -160,22 +172,61 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         });
     }
 
-    async removePayItem(staff, payItem) {
+    removePayItem(staff, payItem) {
         if (payItem.type === 'role') {
             this.toastr.error('This is a role pay item and must be deleted from the role.');
             return;
         } else {
-            try {
-                const res = await this.scheduleService.deletePayItem(payItem.id);
-                //this.toastr.success(res.message);
-                const index = staff.pay_items.findIndex(p => p.id === payItem.id);
-                if (index > -1) {
-                    staff.pay_items.splice(index, 1);
+            const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+                disableClose: false
+            });
+
+            dialogRef.componentInstance.confirmTitle = 'Delete Pay Item';
+            dialogRef.componentInstance.confirmMessage = 'Really delete?';
+            dialogRef.afterClosed().subscribe(async (result) => {
+                if (result) {
+                    try {
+                        const res = await this.scheduleService.deletePayItem(payItem.id);
+                        //this.toastr.success(res.message);
+                        const index = staff.pay_items.findIndex(p => p.id === payItem.id);
+                        if (index > -1) {
+                            staff.pay_items.splice(index, 1);
+                        }
+                        this.recalcuatePayItemsTotal(staff);
+                    } catch (e) {
+                        this.toastr.error(e.error.message);
+                    }
                 }
-                this.recalcuatePayItemsTotal(staff);
-            } catch (e) {
-                this.toastr.error(e.error.message);
+            });
+        }
+    }
+
+    async uploadFile(file: File) {
+        if (!this.selectedPayItem) return;
+        try {
+            this.spinner.show();
+            let formData = new FormData();
+            formData.append('receipt', file);
+            const res = await this.scheduleService.updatePayItem(this.selectedPayItem.id, formData);
+            this.selectedPayItem.file = res.data.file;
+            this.selectedPayItem.file_id = res.data.file_id;
+        } catch (e) {
+            this.toastr.error(e.error.message);
+        } finally {
+            this.spinner.hide();
+        }
+    }
+
+    async toggleApproved(item: any) {
+        try {
+            if (item.approved) {
+                item.approved = 0;
+            } else {
+                item.approved = 1;
             }
+            await this.scheduleService.updatePayItem(item.id, { approved: item.approved });
+        } catch (e) {
+            this.toastr.error(e.error.message);
         }
     }
 
