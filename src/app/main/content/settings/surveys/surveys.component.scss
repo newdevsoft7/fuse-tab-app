@@ -12,6 +12,10 @@
         padding: 16px;
     }
 
+    .draw-container {
+        min-height: 100px !important;
+    }
+
     .box {
         margin-bottom: 16px;
         @include mat-elevation(2);

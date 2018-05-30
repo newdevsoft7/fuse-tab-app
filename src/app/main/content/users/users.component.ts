@@ -231,27 +231,23 @@ export class UsersComponent implements OnInit {
         });
 
         this.dialogRef.afterClosed()
-          .subscribe((assignedReports) => {
-                console.log(assignedReports);
+          .subscribe((assignedReport) => {
+                console.log(assignedReport);
               const userIds = this.selectedUsers.map(user => user.id);
 
 
+              const data = {
+                  'user_ids' : userIds,
+                  'deadline' : assignedReport.deadline,
+                  'completions' : assignedReport.completitions,
+              };
 
+              this.userService.assignReport(assignedReport.id, data).subscribe(res => {
+                  console.log(res);
+              }, err => {
+                  console.log(err);
+              });
 
-              for (let i = 0; i < assignedReports.length; i++) {
-                if (assignedReports[i].assign) {
-                    const data = {
-                        'user_ids' : userIds,
-                        'deadline' : assignedReports[i].deadline,
-                        'completions' : assignedReports[i].completitions,
-                    };
-                  this.userService.assignReport(assignedReports[i].id, data).subscribe(res => {
-                    console.log(res);
-                  }, err => {
-                    console.log(err);
-                  });
-                }
-              }
           });
     }
 

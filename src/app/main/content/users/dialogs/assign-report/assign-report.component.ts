@@ -1,10 +1,13 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { UserService } from '../../user.service';
 import { SettingsService } from '../../../settings/settings.service';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent  } from '@angular/material';
+
+
 
 @Component({
     selector: 'app-users-assign-report-dialog',
@@ -16,6 +19,13 @@ import { SettingsService } from '../../../settings/settings.service';
 export class AssignReportDialogComponent implements OnInit {
 
     quizes: any[] = [];
+    reportForm: FormGroup;
+
+    selectedReport: any;
+
+    filteredReports = [];
+    reportControl: FormControl = new FormControl();
+
 
     constructor(
         public dialogRef: MatDialogRef<AssignReportDialogComponent>,
@@ -23,12 +33,35 @@ export class AssignReportDialogComponent implements OnInit {
         private settingsService: SettingsService,
         private userService: UserService,
         private toastr: ToastrService,
+        private formBuilder: FormBuilder,
         private tokenStorage: TokenStorage) {
 
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        this.reportForm = this.formBuilder.group({
+            report_id: [null],
+            deadline: [null],
+            completitions: [null],
+        });
         this.getQuizes();
+
+
+        this.reportControl.valueChanges
+          .startWith('')
+          .debounceTime(300)
+          .distinctUntilChanged()
+          .subscribe(val => {
+              console.log(val);
+              if (typeof val === 'string') {
+                  this.settingsService.getQuizesAutoComplete(val.trim().toLowerCase()).subscribe(res => {
+                      console.log(res);
+                      if (res.length > 0) {
+                          this.filteredReports = res;
+                      }
+                  });
+              }
+          });
     }
 
     onUserFormLvlChanged() {
@@ -36,8 +69,18 @@ export class AssignReportDialogComponent implements OnInit {
     }
 
     onSave() {
-        const assignedReports = this.quizes;
-        this.dialogRef.close(assignedReports);
+        const assignedReport = this.selectedReport;
+        this.dialogRef.close(assignedReport);
+    }
+
+    reportDisplayFn(value: any): string {
+        return value && typeof value === 'object' ? value.rname : value;
+    }
+
+    selectReport(event: MatAutocompleteSelectedEvent) {
+        this.selectedReport = event.option.value;
+        console.log(this.selectedReport);
+        // const value = event.option.value.cname;
     }
 
     onUpdateAttribute(attribute) {

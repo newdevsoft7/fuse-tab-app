@@ -73,11 +73,12 @@ export class SettingsSurveysComponent implements OnInit {
 
     addQuiz(): void {
         const tab = new Tab(
-          'New Quiz',
+          'New survey',
           'quizTpl',
           `settings/quiz/new`,
           {
-              name: 'New Quiz'
+              name: 'New Survey',
+              type: 'survey'
           }
         );
         this.tabService.openTab(tab);

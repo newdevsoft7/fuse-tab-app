@@ -10,6 +10,8 @@ import * as _ from 'lodash';
 
 const BASE_URL = `${environment.apiUrl}`;
 const WORK_AREA_URL = `${environment.apiUrl}/workArea`;
+const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
+
 
 @Injectable()
 export class SettingsService {
@@ -242,6 +244,11 @@ export class SettingsService {
         const url = `${BASE_URL}/reports/${id}`;
         return this.http.get(url)
           .catch(this.handleError);
+    }
+
+    getQuizesAutoComplete(query): Observable<any> {
+        const url = `${AUTOCOMPLETE_URL}/report/quiz/${query}`;
+        return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
     }
 
     addFormLevelRequirement(formId, requirement, lvl): Observable<any> {

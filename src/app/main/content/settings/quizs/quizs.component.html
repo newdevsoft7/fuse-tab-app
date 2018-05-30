@@ -27,6 +27,9 @@
                                {{ quiz.rname }}
                             </span>
 
+              <button mat-icon-button (click)="fillQuiz(quiz, $event)" fxFlex="0 1 auto">
+                view
+              </button>
               <button mat-icon-button (click)="editQuiz(quiz, $event)" fxFlex="0 1 auto">
                 <mat-icon class="s-20">edit</mat-icon>
               </button>
