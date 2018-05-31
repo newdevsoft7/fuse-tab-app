@@ -1,26 +1,34 @@
 // ######################
 // SIZE HELPERS
 // ######################
-@each $prop, $abbrev in (height: h, width: w) {
+@each $breakpoint in map-keys($grid-breakpoints) {
 
-    @for $index from 0 through 128 {
-        $size: $index * 4;
-        $length: #{$size}px;
+    @include media-breakpoint-up($breakpoint) {
 
-        .#{$abbrev}-#{$size} {
-            #{$prop}: $length !important;
-            min-#{$prop}: $length !important;
-            max-#{$prop}: $length !important;
-        }
-    }
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
-    // Percentage
-    @for $i from 0 through 20 {
-        $i-p: 5 * $i;
-        $size-p: 5% * $i;
+        @each $prop, $abbrev in (height: h, width: w) {
 
-        .#{$abbrev}-#{$i-p}-p {
-            #{$prop}: $size-p !important;
+            @for $index from 0 through 128 {
+                $size: $index * 4;
+                $length: #{$size}px;
+
+                .#{$abbrev}#{$infix}-#{$size} {
+                    #{$prop}: $length !important;
+                    min-#{$prop}: $length !important;
+                    max-#{$prop}: $length !important;
+                }
+            }
+
+            // Percentage
+            @for $i from 0 through 20 {
+                $i-p: 5 * $i;
+                $size-p: 5% * $i;
+
+                .#{$abbrev}#{$infix}-#{$i-p}-p {
+                    #{$prop}: $size-p !important;
+                }
+            }
         }
     }
 }

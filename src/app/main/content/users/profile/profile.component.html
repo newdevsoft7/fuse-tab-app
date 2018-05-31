@@ -3,8 +3,8 @@
     <!-- HEADER -->
     <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
 
-        <div class="user-info" [ngClass.gt-xs]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
-            <img class="profile-image avatar huge" [src]="getAvatar(userInfo)">
+        <div class="user-info" [ngClass.sm]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start center">
+            <img class="profile-image avatar huge w-md-156 h-md-156" [src]="getAvatar(userInfo)">
             <div class="user-info" fxLayout="column">
                 <div class="name">
                     {{userInfo.fname}} {{userInfo.lname}}
