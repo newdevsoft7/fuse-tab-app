@@ -8,7 +8,10 @@
                     <mat-icon class="red-fg">
                         flash_on
                     </mat-icon>
-                    <a href="javascript:void(0)" (click)="openQuiz(quiz)">{{quiz.rname}}</a>
+                    <a href="javascript:void(0)" (click)="openQuiz(quiz)" class="mr-4">
+                        {{quiz.rname}}. 
+                    </a>
+                    Required score: {{quiz.required_score}}% {{ quiz.completed_score === null ? '' : (', your score: ' + quiz.completed_score + '%') }}
                 </div>
             </div>
         </fieldset>
