@@ -86,9 +86,23 @@ export class StaffShiftInfoComponent implements OnInit {
         if (event.data && event.data.func) {
             const id = this.tabService.currentTab.data.id;
             if (this.tabService.currentTab.url === `staff-shift/reports/${id}`) {
-                const action = this.tabService.currentTab.data.action;
                 const role = this.tabService.currentTab.data.role;
-                this.doAction(action, role);
+                const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
+                if (index > -1) {
+                    const action = this.tabService.currentTab.data.action;
+                    this.doAction(action, role);
+                }
+            } else if (this.tabService.currentTab.url === `staff-shift/quiz/${id}`) {
+                const role = this.tabService.currentTab.data.role;
+                const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
+                if (index > -1) {
+                    const score = event.data.score; // assume that quizconnect returns score
+                    const quiz = this.shift.shift_roles[index].quizs.find(v => v.id === id);
+                    if (quiz) {
+                        quiz.completed_score = score;
+                        quiz.required = score >= quiz.required_score ? 0 : 1;
+                    }
+                }
             }
             this.tabService.closeTab(this.tabService.currentTab.url);
         }
