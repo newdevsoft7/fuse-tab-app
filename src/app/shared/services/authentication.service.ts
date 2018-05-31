@@ -158,7 +158,9 @@ export class AuthenticationService {
 
   public async logout() {
     if (this.tokenStorage.isExistSecondaryUser()) {
-      await this.logoutAs();
+      try {
+        await this.logoutAs();
+      } catch (e) {}
       this.tokenStorage.removeSecondaryUser();
       this.favicoService.setBadge(0);
       this.tokenStorage.userSwitchListener.next(true);
