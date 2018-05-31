@@ -1,7 +1,7 @@
 <div id="settings-forms-container" fxLayout="column">
   <div fxFlex="1 0 auto" fxLayout="column">
     <!-- QUIZ MODULE -->
-    <div fxLayout="row wrap">
+    <div fxLayout="row wrap" class="mb-8">
       <mat-slide-toggle color="accent" [checked]="value(Setting.quiz_enable)"
                         (change)="onChange(Setting.quiz_enable, $event)" fxFlex="15"></mat-slide-toggle>
       <div class="desc secondary-text" fxFlex="85">
@@ -27,15 +27,17 @@
                                {{ quiz.rname }}
                             </span>
 
-              <button mat-icon-button (click)="fillQuiz(quiz, $event)" fxFlex="0 1 auto">
-                view
-              </button>
-              <button mat-icon-button (click)="editQuiz(quiz, $event)" fxFlex="0 1 auto">
-                <mat-icon class="s-20">edit</mat-icon>
-              </button>
-              <button mat-icon-button (click)="deleteQuiz(quiz.id, $event)" fxFlex="0 1 auto">
-                <mat-icon class="s-20">delete</mat-icon>
-              </button>
+              <div fxFlex="0 1 auto" fxLayout="row">
+                <button mat-icon-button (click)="fillQuiz(quiz, $event)" fxFlex="0 1 auto" matTooltip="View">
+                  <mat-icon>remove_red_eye</mat-icon>
+                </button>
+                <button mat-icon-button (click)="editQuiz(quiz, $event)" fxFlex="0 1 auto" matTooltip="Edit">
+                  <mat-icon class="s-20">edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteQuiz(quiz.id, $event)" fxFlex="0 1 auto" matTooltip="Delete">
+                  <mat-icon class="s-20">delete</mat-icon>
+                </button>
+              </div>
             </div>
 
             <mat-divider></mat-divider>
@@ -48,12 +50,13 @@
             <div class="title">Quiz instructions</div>
           </header>
           <div class="content" fxLayout="column">
-              <textarea name="quizInstructions" [(ngModel)]="selectedQuiz.instructions" placeholder="Enter instructions">
-
-              </textarea>
-              <button mat-icon-button (click)="editQuiz(selectedQuiz, $event)" fxFlex="0 1 auto">
-                <mat-icon class="s-20">save</mat-icon> Save
+            <textarea name="quizInstructions" [(ngModel)]="selectedQuiz.instructions" placeholder="Enter instructions">
+            </textarea>
+            <div class="mt-8">
+              <button mat-raised-button color="accent" (click)="editQuiz(selectedQuiz, $event)">
+                <mat-icon class="s-20 white-fg">save</mat-icon> Save
               </button>
+            </div>
           </div>
         </div>
 
