@@ -74,6 +74,22 @@ export class TimelineComponent implements OnInit, OnDestroy
                 this.fetchData();
             }
         });
+
+        if (window.addEventListener) {
+            window.addEventListener('message', this.onMessage.bind(this), false);
+        } else if ((<any>window).attachEvent) {
+            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
+        }
+    }
+
+    onMessage(event: any) {
+        if (event.data && event.data.func) {
+            const id = this.tabService.currentTab.data.other_id;
+            if (this.tabService.currentTab.url === `home/report/${id}`) {
+                this.loadNotifications();
+            }
+            this.tabService.closeTab(this.tabService.currentTab.url);
+        }
     }
 
     private fetchData() {
@@ -506,6 +522,13 @@ export class TimelineComponent implements OnInit, OnDestroy
             case 'profile':
                 this.openProfileTab(activity.other_id);
                 break;
+            case 'completed_registrants':
+                this.openCompletedRegistrants(activity)
+                break;
+            case 'report':
+                this.openReport(activity.data)
+                break;
+
         }
     }
 
@@ -558,7 +581,19 @@ export class TimelineComponent implements OnInit, OnDestroy
         }
     }
 
-    onClickNotification(activity) {
+    openReport(report) {
+        const tab = new Tab(
+            report.rname,
+            'quizTpl',
+            `home/report/${report.other_id}`,
+            {
+                ...report
+            }
+        );
+        this.tabService.openTab(tab);
+    }
+
+    openCompletedRegistrants(activity) {
         if (activity.action === 'completed_registrants') {
             const tab = _.cloneDeep(TAB.USERS_TAB);
             tab.data = { selectedTypeFilter: 'utype:=:complete' };
