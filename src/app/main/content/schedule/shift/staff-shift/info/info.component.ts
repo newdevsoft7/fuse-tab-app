@@ -28,6 +28,7 @@ import { TokenStorage } from '../../../../../../shared/services/token-storage.se
 import { StaffShiftCheckInOutDialogComponent } from './dialogs/check-in-out-dialog/check-in-out-dialog.component';
 import { StaffShiftCompleteDialogComponent } from './dialogs/complete-dialog/complete-dialog.component';
 import { TabService } from '../../../../../tab/tab.service';
+import { StaffShiftQuizDialogComponent } from './dialogs/quiz-dialog/quiz-dialog.component';
 
 enum Action {
     apply = 'apply',
@@ -126,29 +127,46 @@ export class StaffShiftInfoComponent implements OnInit {
         return style;
     }
 
+    openQuizDialog(role, quizs) {
+        const dialogRef = this.dialog.open(StaffShiftQuizDialogComponent, {
+            disableClose: false,
+            panelClass: 'staff-shift-quiz-dialog',
+            data: {
+                role,
+                quizs
+            }
+        });
+        dialogRef.afterClosed().subscribe(_ => {});
+    }
+
     doAction(action, role) {
         let dialogRef;
-
+        let quizs;
         switch (action) {
             case Action.apply:
-                this.dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
-                    panelClass: 'staff-shift-apply-dialog',
-                    data: {
-                        forms: this.shift.forms_apply,
-                        shift_id: this.shift.id
-                    }
-                });
-                this.dialogRef.afterClosed().subscribe(reason => {
-                    if (reason) {
-                        this.scheduleService.applyShiftRole(role.id, reason)
-                            .subscribe(res => {
-                                //this.toastr.success(res.message);
-                                role.message = res.role_message;
-                                role.actions = [...res.actions];
-                                role.role_staff_id = res.id;
-                            }, err => this.displayError(err));
-                    }
-                });
+                quizs = role.quizs.filter(v => v.required === 1);
+                if (role.show_quizs === 1 && quizs.length > 0) {
+                    this.openQuizDialog(role, quizs);
+                } else {
+                    this.dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
+                        panelClass: 'staff-shift-apply-dialog',
+                        data: {
+                            forms: this.shift.forms_apply,
+                            shift_id: this.shift.id
+                        }
+                    });
+                    this.dialogRef.afterClosed().subscribe(reason => {
+                        if (reason) {
+                            this.scheduleService.applyShiftRole(role.id, reason)
+                                .subscribe(res => {
+                                    //this.toastr.success(res.message);
+                                    role.message = res.role_message;
+                                    role.actions = [...res.actions];
+                                    role.role_staff_id = res.id;
+                                }, err => this.displayError(err));
+                        }
+                    });
+                }
                 break;
 
             case Action.cancel_application:
@@ -180,25 +198,30 @@ export class StaffShiftInfoComponent implements OnInit {
                 break;
 
             case Action.confirm:
-                this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
-                    data: {
-                        title: 'Really confirm this role?',
-                        heading: this.settings.shift_msg_confirmation,
-                        forms: this.shift.forms_confirm,
-                        shift_id: this.shift.id
-                    }
-                });
-                this.dialogRef.afterClosed().subscribe(result => {
-                    if (result) {
-                        const roleStaffId = role.role_staff_id;
-                        this.scheduleService.confirmStaffSelection(roleStaffId)
-                            .subscribe(res => {
-                                //this.toastr.success(res.message);
-                                role.message = res.role_message;
-                                role.actions = [...res.actions]
-                            }, err => this.displayError(err));
-                    }
-                });
+                quizs = role.quizs.filter(v => v.required === 1);
+                if (role.show_quizs === 1 && quizs.length > 0) {
+                    this.openQuizDialog(role, quizs);
+                } else {
+                    this.dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
+                        data: {
+                            title: 'Really confirm this role?',
+                            heading: this.settings.shift_msg_confirmation,
+                            forms: this.shift.forms_confirm,
+                            shift_id: this.shift.id
+                        }
+                    });
+                    this.dialogRef.afterClosed().subscribe(result => {
+                        if (result) {
+                            const roleStaffId = role.role_staff_id;
+                            this.scheduleService.confirmStaffSelection(roleStaffId)
+                                .subscribe(res => {
+                                    //this.toastr.success(res.message);
+                                    role.message = res.role_message;
+                                    role.actions = [...res.actions]
+                                }, err => this.displayError(err));
+                        }
+                    });
+                }
                 break;
 
             case Action.replace:

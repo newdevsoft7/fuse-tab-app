@@ -1,0 +1,19 @@
+<div class="dialog-content-wrapper">
+    <h1 mat-dialog-title>Please complete the following first:</h1>
+    <div mat-dialog-content>
+        <fieldset>
+            <legend>Quiz</legend>
+            <div>
+                <div *ngFor="let quiz of quizs; last as last" [class.mb-8]="!last" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon class="red-fg">
+                        flash_on
+                    </mat-icon>
+                    <a href="javascript:void(0)" (click)="openQuiz(quiz)">{{quiz.rname}}</a>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false" cdkFocusInitial class="mat-primary-50-bg">Cancel</button>
+    </div>
+</div>
