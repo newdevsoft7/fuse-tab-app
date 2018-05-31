@@ -338,6 +338,11 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    getTimezones(): Promise<any> {
+        const url = `${BASE_URL}/helpers/timezones`;
+        return this.http.get(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

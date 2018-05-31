@@ -19,6 +19,7 @@ export class UsersProfileSettingsComponent implements OnInit {
     @Input('userInfo') user;
     @Input() currentUser;
     @Input() settings: any = {};
+    @Input() timezones;
 
     userOptions: any;
     userPermissions: any;

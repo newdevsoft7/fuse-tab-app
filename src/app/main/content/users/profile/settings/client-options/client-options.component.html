@@ -1,3 +1,12 @@
 <div fxLayout="column" class="p-24">
-
+    <div class="info">
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+            <span>Timezone</span>
+            <mat-form-field class="ml-16">
+                <mat-select [value]="timezone" (valueChange)="onTimezoneChange($event)">
+                    <mat-option *ngFor="let item of timezones" [value]="item.value">{{item.label}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
 </div>

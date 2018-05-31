@@ -25,6 +25,7 @@ export class UsersProfileComponent implements OnInit {
 	isSettingsShow = false;
 	isSkillsShow = false;
 	isWorkAreasShow = false;
+	timezones: any[] = [];
 
 	dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -37,6 +38,7 @@ export class UsersProfileComponent implements OnInit {
 
 	ngOnInit() {
 		this.getUserInfo();
+		this.getTimezones();
 		this.currentUser = this.tokenStorage.getUser();
 		this.settings = this.tokenStorage.getSettings();
 		this.isWorkAreasShow = this.settings.work_areas_enable
@@ -138,6 +140,20 @@ export class UsersProfileComponent implements OnInit {
 		this.userService.getUserRatings(this.user.id).subscribe(ratings => {
 			this.ratings = ratings;
 		});
+	}
+
+	async getTimezones() {
+		try {
+			const res = await this.userService.getTimezones();
+			this.timezones = Object.keys(res).map(key => {
+				return {
+					value: key,
+					label: res[key]
+				};
+			});
+		} catch (e) {
+			this.displayError(e);
+		}
 	}
 
 	private displayError(e: any) {
