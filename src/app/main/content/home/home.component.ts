@@ -3,6 +3,8 @@ import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
+import 'moment-timezone';
 
 import { FuseTranslationLoaderService } from '../../../core/services/translation-loader.service';
 import { FuseNavigationService } from '../../../core/components/navigation/navigation.service';
@@ -32,6 +34,9 @@ import { UsersExportDialogComponent } from '../users/users-export-dialog/users-e
 import { TabComponent } from '../../tab/tab/tab.component';
 import { AdminExportAsExcelDialogComponent } from '../schedule/shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { AdminExportAsPdfDialogComponent } from '../schedule/shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
+import { UserService } from '../users/user.service';
+import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'fuse-home',
@@ -117,6 +122,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         private trackingService: TrackingService,
         private authService: AuthenticationService,
         private dialog: MatDialog,
+        private userService: UserService,
+        private toastr: ToastrService
     ) {
 
         this.socketService = injector.get(SocketService);
@@ -183,12 +190,14 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 this.switchUser();
             }
         });
-
         if (window.addEventListener) {
             window.addEventListener('message', this.onMessage.bind(this), false);
         } else if ((<any>window).attachEvent) {
             (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
         }
+
+        // Detect timezone
+        this.setTimezone();
 
         this.handleURLParams();
 
@@ -209,6 +218,38 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     console.log("message from SW: " + messageFromSW);
                 });
             }, 3000);
+        }
+    }
+
+    async setTimezone() {
+        const user = this.tokenStorage.getUser();
+        const tz = moment.tz.guess();
+        if ( user && user.php_tz !== tz) {
+            try {
+                const timezones = await this.userService.getTimezones();
+                setTimeout(() => {
+                    if (timezones && timezones[tz]) {
+                        const dialogRef = this.dialog.open(SetUserTimezoneDialogComponent, {
+                            disableClose: true,
+                            panelClass: 'set-user-timezone-dialog',
+                            data: {
+                                timezone: timezones[tz]
+                            }
+                        });
+                        dialogRef.afterClosed().subscribe(async (result) => {
+                            if (result) {
+                                try {
+                                    const res = await this.userService.updateUser(user.id, { php_tz: tz });
+                                    user.php_tz = tz;
+                                    this.tokenStorage.setUser(user);
+                                } catch (e) {
+                                    this.toastr.error(e.message || 'Something is wrong!');
+                                }
+                            }
+                        });
+                    }
+                }, 1500);
+            } catch (e) { }
         }
     }
 

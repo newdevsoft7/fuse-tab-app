@@ -27,10 +27,12 @@ import { TimelineModule } from './timeline/timeline.module';
 import { OutsourceCompaniesModule } from '../outsource-companies/outsource-companies.module';
 import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
 import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
+import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
 
 @NgModule({
     declarations: [
-        FuseHomeComponent
+        FuseHomeComponent,
+        SetUserTimezoneDialogComponent
     ],
     imports     : [
         SharedModule,
@@ -59,6 +61,7 @@ import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module'
         UserService
     ],
     entryComponents: [
+        SetUserTimezoneDialogComponent
     ]
 })
 
