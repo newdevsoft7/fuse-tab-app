@@ -165,7 +165,7 @@
                             </ng-container>
                         </div>
                         <div fxFlex="10%">
-                            <ng-container *ngIf="item.type === 'staff'">
+                            <ng-container *ngIf="item.type === 'staff' && item.item_type === 'expense'">
                                 <button mat-icon-button *ngIf="shift.approve_expenses === 1; else iconBlock" class="pull-right" (click)="toggleApproved(item)">
                                     <ng-container [ngSwitch]="item.approved">
                                         <mat-icon *ngSwitchCase="null" matTooltip="Unapproved" class="grey-fg">block</mat-icon>
