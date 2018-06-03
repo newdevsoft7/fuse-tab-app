@@ -12,7 +12,7 @@
 
             <div class="content" fxLayout="row" fxLayoutWrap>
                 <div *ngFor="let attribute of category.attributes" class="info" fxFlex="25">
-                    <mat-checkbox [(ngModel)]="attribute.set" (change)="onUpdateAttribute(attribute)">{{attribute.aname}}</mat-checkbox>
+                    <mat-checkbox [(ngModel)]="attribute.set" (change)="onUpdateAttribute(attribute)" class="{{ attribute.visibility == 'admin' ? 'red-fg' : ''}}">{{attribute.aname}}</mat-checkbox>
                 </div>
             </div>
         </div>
