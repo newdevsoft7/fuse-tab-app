@@ -77,11 +77,11 @@ export class UsersProfileAboutComponent implements OnInit {
     onPostAdminNote() {
         const data = this.adminNoteForm.value;
         this.canSavePost = false;
-        this.userService.createAdminNote(this.currentUser.id, data)
+        this.userService.createAdminNote(this.userInfo.id, data)
             .subscribe(res => {
                 const note = res.data;
-                note.creator_ppic_a = this.userInfo.ppic_a;
-                note.creator_name = `${this.userInfo.fname} ${this.userInfo.lname}`;
+                note.creator_ppic_a = this.currentUser.ppic_a;
+                note.creator_name = `${this.currentUser.fname} ${this.currentUser.lname}`;
 
                 this.adminNotes.unshift(note);
 
