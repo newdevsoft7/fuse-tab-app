@@ -19,7 +19,6 @@
                 border-radius: 2px;
                 margin-bottom: 12px;
                 margin-right: 12px;
-                width: 170px;
 
                 legend {
                     padding: 0 10px;
@@ -37,6 +36,10 @@
 
                 star-rating-comp {
                     margin-top: 6px;
+
+                    &.average-rating {
+                        margin-top: 10px;
+                    }
                 }
             }
         }

@@ -4,6 +4,14 @@
 
         <div *ngIf="ratings.length > 0 && (userInfo.lvl.indexOf('registrant') > -1 || userInfo.lvl == 'staff' || userInfo.lvl == 'admin')"
             fxLayout="row" fxLayoutWrap>
+            <fieldset class="rating" *ngIf="userInfo.show_performance === 1">
+                <legend>Average Performance Rating</legend>
+                <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'"
+                    [rating]="userInfo.rating" [step]="0.5" [showHalfStars]="true"
+                    [disabled]="true" class="average-rating">
+                    </star-rating-comp>
+            </fieldset>
+
             <fieldset class="rating" *ngFor="let rating of ratings">
                 <legend>{{rating.rname}}</legend>
                 <div fxLayout="row" fxLayoutAlign="start center">
