@@ -23,6 +23,8 @@ import { Router } from '@angular/router';
 import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
 import { AssignReportDialogComponent} from './dialogs/assign-report/assign-report.component';
 import { TAB } from '../../../constants/tab';
+import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
+import { UserPasswordDialogComponent } from './dialogs/password/password.component';
 
 
 
@@ -422,4 +424,59 @@ export class UsersComponent implements OnInit {
         this.filters = [];
         this.getUsers();
     }
+
+    onTypeChange(user, type) {
+        let body: any;
+        switch (type) {
+            case 'admin':
+            case 'owner':
+            case 'staff':
+                body = { lvl: type };
+                break;
+            case 'inactive':
+            case 'active':
+            case 'blacklisted':
+                body = { active: type };
+                break;
+        }
+        const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async (result) => {
+            if (result) {
+                try {
+                    await this.userService.updateUser(user.id, body);
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
+    }
+
+    openPasswordDialog(user) {
+        const dialogRef = this.dialog.open(UserPasswordDialogComponent, {
+            disableClose: false,
+            panelClass: 'user-password-form-dialog'
+        });
+        dialogRef.afterClosed().subscribe(async (password) => {
+            if (password) {
+                try {
+                    await this.userService.changePassword(user.id, password).toPromise();
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
+    }
+
+    private displayError(e: any) {
+		const errors = e.error.errors;
+		if (errors) {
+			Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+		}
+		else {
+			this.toastr.error(e.message);
+		}
+	}
 }

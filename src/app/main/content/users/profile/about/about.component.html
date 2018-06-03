@@ -2,7 +2,8 @@
 
     <div class="about-content" fxLayout="column" fxFlex.lt-lg="100" [fxFlex.gt-md]="(currentUser.id != userInfo.id && (currentUser.lvl == 'owner' || currentUser.lvl == 'admin')) ? 65 : 100">
 
-        <div *ngIf="ratings.length > 0 && (userInfo.lvl.indexOf('registrant') > -1 || userInfo.lvl == 'staff' || userInfo.lvl == 'admin')"
+        <div *ngIf="ratings.length > 0 && (userInfo.lvl === 'staff' || userInfo.lvl === 'admin') &&
+                    (currentUser.lvl === 'admin' || currentUser.lvl === 'owner')"
             fxLayout="row" fxLayoutWrap>
             <fieldset class="rating" *ngIf="userInfo.show_performance === 1" title="Average performance of shifts worked on the system">
                 <legend>Performance</legend>

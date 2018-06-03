@@ -51,6 +51,7 @@ import { UsersSettingsPermissionSublistComponent } from './profile/settings/perm
 import { UsersProfileExperienceModule } from './profile/experience/experience.module';
 import { UsersSettingsStaffOutsourceComponent } from './profile/settings/staff-outsource/staff-outsource.component';
 import { DocumentFormsDialogComponent } from './profile/document/forms-dialog/forms-dialog.component';
+import { UserPasswordDialogComponent } from './dialogs/password/password.component';
 
 @NgModule({
     imports: [
@@ -106,7 +107,8 @@ import { DocumentFormsDialogComponent } from './profile/document/forms-dialog/fo
         AddUnavailabilityDialogComponent,
         EditUserStatusComponent,
         AssignReportDialogComponent,
-        DocumentFormsDialogComponent
+        DocumentFormsDialogComponent,
+        UserPasswordDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -138,7 +140,8 @@ import { DocumentFormsDialogComponent } from './profile/document/forms-dialog/fo
         UsersExportDialogComponent,
         AddUnavailabilityDialogComponent,
         AssignReportDialogComponent,
-        DocumentFormsDialogComponent
+        DocumentFormsDialogComponent,
+        UserPasswordDialogComponent
     ]
 })
 export class UsersModule { }

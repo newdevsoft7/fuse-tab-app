@@ -221,12 +221,12 @@
                                 <span>Login as user</span>
                             </button>
 
-                            <button mat-menu-item [matMenuTriggerFor]="typeMenu">
+                            <button mat-menu-item [matMenuTriggerFor]="typeMenu" *ngIf="currentUser.lvl === 'owner'">
                                 <mat-icon>shuffle</mat-icon>
                                 <span>Change type</span>
                             </button>
 
-                            <button mat-menu-item>
+                            <button mat-menu-item (click)="openPasswordDialog(row)">
                                 <mat-icon>vpn_key</mat-icon>
                                 <span>Change password</span>
                             </button>
@@ -240,12 +240,15 @@
 
                         <mat-menu #typeMenu="matMenu">
 
-                            <button mat-menu-item>Owner</button>
-                            <button mat-menu-item>Administrator</button>
-                            <button mat-menu-item>Supervisor</button>
-                            <button mat-menu-item>Staff</button>
-                            <button mat-menu-item>Inactive</button>
-                            <button mat-menu-item>Blacklisted</button>
+                            <button mat-menu-item (click)="onTypeChange(row, 'owner')">Owner</button>
+                            <button mat-menu-item (click)="onTypeChange(row, 'admin')">Administrator</button>
+                            <button mat-menu-item (click)="onTypeChange(row, 'staff')">Staff</button>
+                            <button mat-menu-item (click)="onTypeChange(row, 'active')"
+                                *ngIf="selectedTypeFilter.endsWith('inactive') || selectedTypeFilter.endsWith('blacklisted')">Active</button>
+                            <button mat-menu-item (click)="onTypeChange(row, 'inactive')"
+                                *ngIf="!selectedTypeFilter.endsWith('inactive')">Inactive</button>
+                            <button mat-menu-item (click)="onTypeChange(row, 'blacklisted')"
+                                *ngIf="!selectedTypeFilter.endsWith('blacklisted')">Blacklisted</button>
 
                         </mat-menu>
 
