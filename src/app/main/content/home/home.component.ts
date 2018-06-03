@@ -230,7 +230,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 setTimeout(() => {
                     if (timezones && timezones[tz]) {
                         const dialogRef = this.dialog.open(SetUserTimezoneDialogComponent, {
-                            disableClose: true,
+                            disableClose: false,
                             panelClass: 'set-user-timezone-dialog',
                             data: {
                                 timezone: timezones[tz]

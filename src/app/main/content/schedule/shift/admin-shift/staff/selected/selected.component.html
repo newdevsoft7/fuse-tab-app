@@ -6,7 +6,8 @@
     <div class="person" *ngFor="let staff of staffs">
         <div class="main-info" >
             <div fxLayout="row" fxLayoutAlign="start center">
-                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center" fxFlex>
+                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center"
+                    [fxFlex]="staff.staff_status.id === 11 ? '0 1 auto' : ''">
                     <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)"
                         [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                         [matTooltip]="staff.staff_status.status" />
@@ -14,32 +15,38 @@
                     <div *ngIf="staff.user_status!=null" class="status" [style.background]="staff.user_status.color"
                         [matTooltip]="staff.user_status.sname"></div>
                 </div>
-
-                <div class="check-in-out px-12" matTooltip="Check In Time" fxFlex="1 1 80px">
-                    <div matTooltip="Check In Time" [style.color]="staff.check_in_color">
-                        {{staff.check_in}}
+                <ng-container *ngIf="staff.staff_status.id === 11; else default">
+                    <div class="reason px-12" fxFlex="1 0 auto">
+                        {{staff.replace_reason}}
                     </div>
-                    <div matTooltip="Check Out Time" [style.color]="staff.check_out_color">
-                        {{staff.check_out}}
+                </ng-container>
+                <ng-template #default>
+                    <div class="check-in-out px-12" matTooltip="Check In Time" fxFlex="1 1 80px">
+                        <div matTooltip="Check In Time" [style.color]="staff.check_in_color">
+                            {{staff.check_in}}
+                        </div>
+                        <div matTooltip="Check Out Time" [style.color]="staff.check_out_color">
+                            {{staff.check_out}}
+                        </div>
                     </div>
-                </div>
 
-                <div class="times-break px-12" fxFlex>
-                    <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)"
-                        [editable]="editable"></app-admin-shift-edit-time>
-                    <app-admin-shift-edit-break [staff]="staff" [editable]="editable">
-                    </app-admin-shift-edit-break>
-                </div>
+                    <div class="times-break px-12" fxFlex>
+                        <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)"
+                            [editable]="editable"></app-admin-shift-edit-time>
+                        <app-admin-shift-edit-break [staff]="staff" [editable]="editable">
+                        </app-admin-shift-edit-break>
+                    </div>
 
-                <div class="pay-rate px-12" fxFlex>
-                    <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable"
-                        (onPayItemsChanged)="onPayItemsChanged($event, staff)">
-                    </app-admin-shift-edit-payitems>
-                </div>
+                    <div class="pay-rate px-12" fxFlex>
+                        <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable"
+                            (onPayItemsChanged)="onPayItemsChanged($event, staff)">
+                        </app-admin-shift-edit-payitems>
+                    </div>
 
-                <div class="total px-12" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
-                    {{staff.pay_items_total !== null ? (staff.pay_items_total | currency) : '-'}}
-                </div>
+                    <div class="total px-12" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
+                        {{staff.pay_items_total !== null ? (staff.pay_items_total | currency) : '-'}}
+                    </div>
+                </ng-template>
 
                 <div class="action-button" fxFLex>
                     <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="editable !== 1">
