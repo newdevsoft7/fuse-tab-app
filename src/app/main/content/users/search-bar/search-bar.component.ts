@@ -24,6 +24,8 @@ import { UserService } from '../user.service';
 import { UsersAddFilterDialogComponent } from './add-filter/add-filter.component';
 
 import * as _ from 'lodash';
+import { TabService } from '../../../tab/tab.service';
+import { Tab } from '../../../tab/tab';
 
 export interface Tag {
     id: string;
@@ -84,6 +86,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
+        private tabService: TabService,
         private userService: UserService) {
     }
 
@@ -139,15 +142,21 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
     add(event: MatAutocompleteSelectedEvent): void {
         const t: Tag = event.option.value;
+        if (t.id.indexOf('user:') === 0) {
+            const id = t.id.split(':=:')[1];
+            const tab = new Tab(`${t.text}`, 'usersProfileTpl', `users/user/${id}`, { id });
+            this.tabService.openTab(tab);
+        } else {
+            this._value.push(t);
+            this.value = this._value;
 
-        this._value.push(t);
-        this.value = this._value;
+            this.onSearchChange('');
+        }
 
         this.chipInput['nativeElement'].value = '';
         this.chipInput['nativeElement'].blur();
-        this.onSearchChange('');
     }
-
+        
     addNew(input: MatInput): void {
         const inputValue = input.value.trim();
         let searchedTag: Tag;
