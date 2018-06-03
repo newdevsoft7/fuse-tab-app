@@ -11,7 +11,7 @@
 </form>
 <div>
   <div class="mb-12">
-    <mat-checkbox [(ngModel)]="isWorkHere" (ngModelChange)="toggleWorkHere.next($event)">Work Here</mat-checkbox>
+    <mat-checkbox [(ngModel)]="isWorkHere" (ngModelChange)="toggleWorkHere.next($event)">This Company</mat-checkbox>
   </div>
   <ng-container *ngFor="let company of companies; let last = last">
     <div fxLayout="row" fxLayoutAlign="space-between center">
