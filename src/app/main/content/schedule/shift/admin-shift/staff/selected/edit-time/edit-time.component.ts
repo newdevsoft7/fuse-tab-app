@@ -73,7 +73,6 @@ export class AdminShiftEditTimeComponent implements OnInit {
     }
 
     saveForm() {
-        if (!this.validate()) return;
         const start = this.start.toString();
         const end = this.end.toString();
         this.onTimeChanged.next({ start, end });
@@ -82,19 +81,6 @@ export class AdminShiftEditTimeComponent implements OnInit {
 
     closeForm() {
         this.formActive = false;
-    }
-
-    private validate() {
-
-            if (this.start.time.hour === '' ||
-                this.end.time.hour === '' ||
-                (this.start.time.meriden === 'PM' && this.end.time.meriden === 'AM')) { return false; }
-
-            if (this.start.time.meriden === this.end.time.meriden) {
-                return this.start.time.hour < this.end.time.hour ? true :
-                    (this.start.time.hour === this.end.time.hour ? (this.start.time.minute < this.end.time.minute ? true : false) : false);
-            }
-            return true;
     }
 
 }

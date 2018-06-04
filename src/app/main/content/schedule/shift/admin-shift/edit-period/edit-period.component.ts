@@ -34,7 +34,6 @@ class ShiftTime {
     constructor(dateTime = null) {
         if (!dateTime) {
             const now = new Date();
-            const _date = moment(now, 'YYYY-MM-DD HH:mm:ss');
             this.date = moment(now, 'YYYY-MM-DD');
             this.time = { hour: 8, minute: 0, meriden: 'AM', format: 12 };
             return;
@@ -147,16 +146,9 @@ export class AdminShiftEditPeriodComponent implements OnInit {
     }
 
     private validatePeriod() {
-        if (this.start.time.hour === '' ||
-            this.end.time.hour === '' ||
-            (this.start.time.meriden === 'PM' && this.end.time.meriden === 'AM')) { return false; }
-
-        if (this.start.time.meriden === this.end.time.meriden) {
-            return this.start.time.hour < this.end.time.hour ? true :
-                (this.start.time.hour === this.end.time.hour ? (this.start.time.minute < this.end.time.minute ? true : false) : false);
-        }
-
-        return true;
+        const start = moment(this.start.toString(), 'YYYY-MM-DD HH:mm:ss');
+        const end = moment(this.end.toString(), 'YYYY-MM-DD HH:mm:ss');
+        return start.isBefore(end) ? true : false;
     }
 
 }

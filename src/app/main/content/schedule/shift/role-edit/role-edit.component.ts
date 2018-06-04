@@ -230,20 +230,6 @@ export class ShiftRoleEditComponent implements OnInit {
         return this.roleForm.invalid ? false : true;
     }
 
-    /* not needed as role time may be eg 11pm - 2am
-    private roleTimeValidate(): boolean {
-        const period = this.rolePeriod;
-        if (period.from.hour === '' ||
-            period.to.hour === '' ||
-            (period.from.meriden === 'PM' && period.to.meriden === 'AM')) { return false; }
-
-        if (period.from.meriden === period.to.meriden) {
-            return period.from.hour < period.to.hour ? true :
-                (period.from.hour === period.to.hour ? (period.from.minute < period.to.minute ? true : false) : false);
-        }
-        return true;
-    }*/
-
     onSave() {
         if (!this.validate) { return false; }
 
