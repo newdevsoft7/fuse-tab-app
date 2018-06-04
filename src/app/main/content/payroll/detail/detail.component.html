@@ -46,37 +46,38 @@
             </div>
 
             <div class="content">
-                <ngx-datatable
-                    class="material invoice-table"
-                    [rows]="payrollItems"
-                    [columnMode]="'force'"
-                    [rowHeight]="'auto'">
-                    <ngx-datatable-column name="TYPE" prop="type" [sortable]="true" [canAutoResize]="true">
-                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                            {{value}}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="TITLE" prop="title" [sortable]="true" [canAutoResize]="true">
-                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                            {{value}}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="UNIT PRICE" prop="u_amt" [sortable]="true" [canAutoResize]="true">
-                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                            {{value | currency:'USD':'symbol'}}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="QUANTITY" prop="qty" [sortable]="true" [canAutoResize]="true">
-                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                            {{value}}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="TOTAL" prop="l_amt" [sortable]="true" [canAutoResize]="true">
-                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                            {{value | currency:'USD':'symbol'}}
-                        </ng-template>
-                    </ngx-datatable-column>
-                </ngx-datatable>
+                <table class="simple invoice-table" *ngIf="payrollItems">
+                    <thead>
+                        <tr>
+                            <th>TYPE</th>
+                            <th>TITLE</th>
+                            <th class="text-right">UNIT PRICE</th>
+                            <th class="text-right">QUANTITY</th>
+                            <th class="text-right">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let line of payrollItems">
+                            <td>
+                                <div class="title">
+                                    {{line.type}}
+                                </div>
+                            </td>
+                            <td>
+                                {{line.title}}
+                            </td>
+                            <td class="text-right">
+                                {{line.u_amt | currency:'USD':'symbol'}}
+                            </td>
+                            <td class="text-right">
+                                {{line.qty}}
+                            </td>
+                            <td class="text-right">
+                                {{line.l_amt | currency:'USD':'symbol'}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <table class="simple invoice-table-footer">
                     <tbody>
