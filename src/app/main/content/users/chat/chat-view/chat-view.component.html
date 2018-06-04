@@ -110,14 +110,14 @@
                     [delay]="2000"
                     ngModel
                     [placeholder]="placeholder"
-                    [disabled]="!thread?.active"
+                    [disabled]="!thread?.active || isLoggedAs"
                     (onValueChange)="stopTyping()"
                     (keypress)="continueTyping()" 
                     (blur)="updatePendingMessage.next(replyForm.form.value.message)" 
                     name="message"></textarea>
             </mat-form-field>
 
-            <button mat-fab class="" type="submit" [disabled]="!replyForm.form.value.message || !thread?.active" aria-label="Send message">
+            <button mat-fab class="" type="submit" [disabled]="!replyForm.form.value.message || !thread?.active || isLoggedAs" aria-label="Send message">
                 <mat-icon>send</mat-icon>
             </button>
 

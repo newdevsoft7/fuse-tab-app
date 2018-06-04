@@ -326,6 +326,13 @@ export class UsersProfileSettingsComponent implements OnInit {
     }
 
     private handleError(e) {
-        this.toastr.error(e.error.message);
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        } else if (e.error.error) {
+            this.toastr.error(e.error.error);
+        } else {
+            this.toastr.error(e.message);
+        }
     }
 }

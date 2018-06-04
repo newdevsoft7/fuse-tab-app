@@ -64,6 +64,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
     loading: boolean = true;    
 
     placeholder: string;
+    isLoggedAs: boolean = false;
 
     constructor(
         private tokenStorage: TokenStorage,
@@ -72,6 +73,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
         private tabService: TabService
     ) {
         this.authenticatedUser = tokenStorage.getUser();
+        this.isLoggedAs = tokenStorage.isExistSecondaryUser();
     }
 
     ngOnInit() {}
@@ -140,6 +142,7 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
 
     reply(event)
     {
+        if (this.isLoggedAs) { return; }
         if (!this.replyForm.form.value.message) return;
         if (!this.thread.active) {
             this.toastrService.error('The conversation is inactive, messages can no longer be sent.');
