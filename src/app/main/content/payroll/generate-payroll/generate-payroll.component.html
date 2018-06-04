@@ -72,10 +72,10 @@
                                 <table class="category-table" cellpadding="4">
                                     <tr *ngFor="let item of payroll[category]" class="line">
                                         <td class="title">{{item.title}}</td>
-                                        <td matTooltip="Unit Amount">{{item.u_amt}}</td>
-                                        <td matTooltip="Quantity">{{item.qty}}</td>
-                                        <td matTooltip="Line Amount">{{item.l_amt}}</td>
-                                        <td class="w-60">
+                                        <td matTooltip="Unit Amount" class="amount">{{item.u_amt}}</td>
+                                        <td matTooltip="Quantity" class="quantity">{{item.qty}}</td>
+                                        <td matTooltip="Line Amount"  class="line-amount">{{item.l_amt}}</td>
+                                        <td class="line-menu">
                                             <button mat-icon-button [matMenuTriggerFor]="lineMenu">
                                                 <mat-icon>more_vert</mat-icon>
                                             </button>

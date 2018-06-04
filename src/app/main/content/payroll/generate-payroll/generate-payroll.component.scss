@@ -52,4 +52,22 @@
             }
         }
     }
+
+    table.category-table {
+
+        td.title {
+            width: 50%;
+        }
+
+        td.amount,
+        td.quantity,
+        td.line-amount {
+            width: 14%;
+        }
+
+        td.line-menu {
+            width: 8%;
+            text-align: right;
+        }
+    }
 }
