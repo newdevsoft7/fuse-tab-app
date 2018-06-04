@@ -56,6 +56,9 @@ export class MessageComponent implements OnInit, AfterViewInit {
     this.fromEmails = this.tokenStorage.getSettings().from_emails;
     this.message.from = this.fromEmails[0].id;
     this.message.recipients = this.props.recipients? this.props.recipients : [];
+    if (this.message.recipients.length > 0) {
+      this.onRecipientFiltersChanged(this.message.recipients);
+    }
     if (this.props.template) {
       this.selectTemplate(this.props.template);
     }
@@ -129,6 +132,8 @@ export class MessageComponent implements OnInit, AfterViewInit {
       this.count = res.count;
       if (this.count < 2) {
         this.message.thread = 0;
+      } else {
+        this.message.thread = 1;
       }
     } catch (e) {
       this.handleError(e.error);
