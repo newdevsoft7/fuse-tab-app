@@ -17,6 +17,7 @@ import { CustomLoadingService } from '../../../../../shared/services/custom-load
 export class UsersProfileSettingsComponent implements OnInit {
 
     @Input('userInfo') user;
+    @Input() links: any = [];
     @Input() currentUser;
     @Input() settings: any = {};
     @Input() timezones;
@@ -75,6 +76,12 @@ export class UsersProfileSettingsComponent implements OnInit {
         {
             'id': 'change-password',
             'title': 'Change Password',
+            'lvls': ['owner','admin','staff','client','ext'],
+            'vis': ['owner','admin','staff','client','ext']
+        },
+        {
+            'id': 'link-other-account',
+            'title': 'Link to other StaffConnect accounts',
             'lvls': ['owner','admin','staff','client','ext'],
             'vis': ['owner','admin','staff','client','ext']
         }
@@ -294,6 +301,25 @@ export class UsersProfileSettingsComponent implements OnInit {
     async toggleWorkHere(isWorkHere: boolean): Promise<any> {
         try {
             await this.userService.updateUser(this.user.id, { works_here: isWorkHere ? 1 : 0 });
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async toggleLinked(linked: boolean): Promise<any> {
+        try {
+            this.user.linked = linked ? 0 : null;
+            await this.userService.updateLink(this.user.id, linked);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async approveCompany(companyId: number): Promise<any> {
+        try {
+            const selected = this.links.find(link => link.id === companyId);
+            selected.approved = true;
+            await this.userService.approveCompany(companyId);
         } catch (e) {
             this.handleError(e);
         }

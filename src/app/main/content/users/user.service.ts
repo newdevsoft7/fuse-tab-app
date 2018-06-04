@@ -343,6 +343,21 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    getLinkedAccounts(userId: number): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/links`;
+        return this.http.get(url).toPromise();
+    }
+
+    updateLink(userId: number, linked: boolean): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/${linked ? 'link' : 'unlink'}`;
+        return this.http.put(url, {}).toPromise();
+    }
+
+    approveCompany(linkId: number): Promise<any> {
+        const url = `${BASE_URL}/profile/link/${linkId}/approve`;
+        return this.http.put(url, {}).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

@@ -1,0 +1,34 @@
+<div fxLayout="column" class="p-24">
+
+    <mat-slide-toggle [checked]="user.linked !== null" (change)="changeLinkedStatus($event)">Linked</mat-slide-toggle>
+    <div class="mt-16" *ngIf="user.linked !== null">
+        <p *ngIf="user.linked === 0; else approvedBlock">
+            Profile sync is pending approval. Please log in to any of the other StaffConnect websites you have an account with and go to this settings page to approve.
+        </p>
+        <ng-template #approvedBlock>
+            <ngx-datatable class="material striped"
+                *ngIf="links.length > 0" 
+                [rows]="links"
+                [columnMode]="'force'" 
+                [headerHeight]="48" 
+                [footerHeight]="56" 
+                [rowHeight]="'auto'" 
+                [scrollbarH]="true"
+                [selectAllRowsOnPage]="true" 
+                [externalPaging]="true" 
+                [count]="links.length" 
+                [limit]="10">
+                <ngx-datatable-column name="Company name" prop="company" [sortable]="false" [canAutoResize]="true">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Approved" prop="approved" [sortable]="false" [canAutoResize]="false">
+                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <a *ngIf="!value; else approvedBlock" href="javascript:void(0)" (click)="approveCompany.next(row.id)">Approve</a>
+                        <ng-template #approvedBlock>
+                            <span class="green-fg">Approved</span>
+                        </ng-template>
+                    </ng-template>
+                </ngx-datatable-column>
+            </ngx-datatable>
+        </ng-template>
+    </div>
+</div>

@@ -59,6 +59,13 @@
                 (toggleWorkHere)="toggleWorkHere($event)"
                 *ngSwitchCase="'staff-outsource'">
             </app-users-settings-staff-outsource>
+            <app-users-settings-link-other-accounts
+                [user]="user"
+                [links]="links"
+                (toggleLinked)="toggleLinked($event)"
+                (approveCompany)="approveCompany($event)"
+                *ngSwitchCase="'link-other-account'">
+            </app-users-settings-link-other-accounts>
         </ng-container>
     </div>
     <!-- / CONTENT -->

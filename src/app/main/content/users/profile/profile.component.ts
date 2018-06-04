@@ -17,7 +17,7 @@ export class UsersProfileComponent implements OnInit {
 
 	currentUser: any;
 	userInfo: any;
-	ratings = [];
+	ratings: any = [];
 
 	settings: any = {};
 	isApproveRejectShow = false;
@@ -26,6 +26,8 @@ export class UsersProfileComponent implements OnInit {
 	isSkillsShow = false;
 	isWorkAreasShow = false;
 	timezones: any[] = [];
+
+	linkedUsers: any = [];
 
 	dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -118,28 +120,29 @@ export class UsersProfileComponent implements OnInit {
 		this.userInfo.ppic_a = avatar;
 	}
 
-	private getUserInfo() {
-		this.userService
-			.getUser(this.user.id)
-			.subscribe(res => {
-				this.userInfo = res;
-				this.isFavStatusShow =
-					['admin', 'owner'].some(v => this.currentUser.lvl.indexOf(v) > -1)
-					&& ['admin', 'staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
-				this.isApproveRejectShow =
-					['registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
-				this.isSettingsShow =
-					['owner', 'admin', 'staff', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1) && (this.currentUser.id == this.user.id || this.currentUser.lvl == 'owner' || (this.currentUser.lvl == 'admin' && this.userInfo.lvl != 'admin' && this.userInfo.lvl != 'owner'));
-				if (['owner', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1)) {
-					this.isWorkAreasShow = false;
-				} else {
-					this.isSkillsShow = true;
-				}
-			});
+	private async getUserInfo() {
+		try {
+			this.userInfo = await this.userService.getUser(this.user.id).toPromise();
+			this.isFavStatusShow =
+				['admin', 'owner'].some(v => this.currentUser.lvl.indexOf(v) > -1)
+				&& ['admin', 'staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
+			this.isApproveRejectShow =
+				['registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
+			this.isSettingsShow =
+				['owner', 'admin', 'staff', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1) && (this.currentUser.id == this.user.id || this.currentUser.lvl == 'owner' || (this.currentUser.lvl == 'admin' && this.userInfo.lvl != 'admin' && this.userInfo.lvl != 'owner'));
+			if (['owner', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1)) {
+				this.isWorkAreasShow = false;
+			} else {
+				this.isSkillsShow = true;
+			}
 
-		this.userService.getUserRatings(this.user.id).subscribe(ratings => {
-			this.ratings = ratings;
-		});
+			this.ratings = await this.userService.getUserRatings(this.user.id);
+			if (this.userInfo.linked === 1) {
+				this.linkedUsers = await this.userService.getLinkedAccounts(this.user.id);
+			}
+		} catch (e) {
+			this.displayError(e);
+		}
 	}
 
 	async getTimezones() {

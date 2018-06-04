@@ -52,6 +52,7 @@ import { UsersProfileExperienceModule } from './profile/experience/experience.mo
 import { UsersSettingsStaffOutsourceComponent } from './profile/settings/staff-outsource/staff-outsource.component';
 import { DocumentFormsDialogComponent } from './profile/document/forms-dialog/forms-dialog.component';
 import { UserPasswordDialogComponent } from './dialogs/password/password.component';
+import { UsersSettingsLinkOtherAccountsComponent } from './profile/settings/link-other-accounts/link-other-accounts.component';
 
 @NgModule({
     imports: [
@@ -102,6 +103,7 @@ import { UserPasswordDialogComponent } from './dialogs/password/password.compone
         UsersSettingsChangePasswordComponent,
         UsersSettingsPermissionSublistComponent,
         UsersSettingsStaffOutsourceComponent,
+        UsersSettingsLinkOtherAccountsComponent,
         MessageComponent,
         UsersProfileUnavailabilityComponent,
         AddUnavailabilityDialogComponent,
