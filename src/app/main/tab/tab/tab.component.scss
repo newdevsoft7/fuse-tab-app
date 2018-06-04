@@ -1,3 +1,5 @@
+@import "src/app/core/scss/fuse";
+
 :host {
     &.users-chat,
     &[class^="payroll-"],
@@ -7,7 +9,12 @@
         }
     }
     .pane {
-        padding: 1em;
+        @include media-breakpoint('xs') {
+            padding: 1em 0;
+        }
+        @include media-breakpoint-up('xs') {
+            padding: 1em;
+        }
         border: 1px solid rgba(197, 198, 203, 0.3);
         border-top: none;
         height: calc(-49px + 100%);
