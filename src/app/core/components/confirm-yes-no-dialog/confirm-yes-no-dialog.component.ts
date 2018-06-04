@@ -10,6 +10,10 @@ export class FuseConfirmYesNoDialogComponent implements OnInit
 {
     public confirmMessage: string;
     public confirmTitle = 'Confirm';
+    public visibleBtnYes: boolean = true;
+    public visibleBtnNo: boolean = true;
+    public btnYesTitle: string = 'Yes';
+    public btnNoTitle: string = 'No';
 
     constructor(public dialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>)
     {

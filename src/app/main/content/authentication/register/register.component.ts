@@ -10,6 +10,7 @@ import { TokenStorage } from "../../../../shared/services/token-storage.service"
 import { AuthenticationService } from "../../../../shared/services/authentication.service";
 import { AppSettingService } from "../../../../shared/services/app-setting.service";
 import { FuseConfirmYesNoDialogComponent } from "../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component";
+import { ToastrService } from "ngx-toastr";
 
 const MIN_DESKTOP_WIDTH = 600;
 
@@ -35,6 +36,7 @@ export class RegisterComponent implements OnInit {
   steps: any; // From step 1 to step 8
 
   dialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
+  showLinkDialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
 
   constructor(
     private dialog: MatDialog,
@@ -45,7 +47,8 @@ export class RegisterComponent implements OnInit {
     private tokenStorage: TokenStorage,
     private appSettings: AppSettingService,
     private authService: AuthenticationService,
-    private fuseConfig: FuseConfigService
+    private fuseConfig: FuseConfigService,
+    private toastr: ToastrService
   ) {
     this.steps = this.appSettings.baseData.steps;
     this.user = this.tokenStorage.getUser();
@@ -137,6 +140,33 @@ export class RegisterComponent implements OnInit {
       const stepIndex = index - stepsToSkip;
       this.changeStep(stepIndex);
       this.router.navigate(['/register', stepIndex]);
+    }
+
+    // show link modal
+    if (this.user.show_link === 1) {
+      setTimeout(() => {
+        this.showLinkDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+          disableClose: false
+        });
+        this.showLinkDialogRef.componentInstance.confirmTitle = 'Link to other Staffconnect accounts';
+        this.showLinkDialogRef.componentInstance.confirmMessage = 'A StaffConnect account with a different company has been detected. Would you like to sync your accounts? Syncing your account will speed up the registration process as your basic profile info, photos and videos will be shared.';
+        this.showLinkDialogRef.afterClosed().subscribe(async result => {
+          if (result) {
+            try {
+              const res = await this.userService.updateLink(this.user.id, true);
+              const confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+                disableClose: false
+              });
+              confirmDialogRef.componentInstance.confirmTitle = 'Linked!';
+              confirmDialogRef.componentInstance.confirmMessage = res.message;
+              confirmDialogRef.componentInstance.visibleBtnNo = false;
+              confirmDialogRef.componentInstance.btnYesTitle = 'Close';
+            } catch (e) {
+              this.toastr.error(e.error.message);
+            }
+          }
+        });
+      });
     }
   }
 
