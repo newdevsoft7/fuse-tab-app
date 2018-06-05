@@ -1,7 +1,7 @@
 <div class="users-wrapper page-layout simple">
 
     <!-- HEADER -->
-    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-16 p-sm-24'" fxLayout="column">
+    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-16 p-sm-24'"  [ngClass.xs]="'p-8'" fxLayout="column">
 
         <!-- INVITATION BAR -->
         <div *ngIf="data.invite" fxLayout.gt-xs="row" fxLayout="column" class="invitation-bar"
@@ -100,7 +100,7 @@
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content" [ngClass.gt-xs]="'p-24 pt-40 pb-56'" [ngClass.xs]="'py-4'">
+    <div class="content ps ps--active-y" [ngClass.gt-xs]="'p-24 pt-40 pb-56'" [ngClass.xs]="'py-4'">
 
         <!-- TABLE -->
         <div *ngIf="users" class="users-table">
