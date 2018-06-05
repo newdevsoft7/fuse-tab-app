@@ -261,8 +261,26 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
             if (index > -1) {
               this.options.events.splice(index, 1);
             }
-            const res = await this.scheduleService.deleteShift(event.id);
-            this.toastrService.success(res.message);
+            await this.scheduleService.deleteShift(event.id);
+            // this.toastrService.success(res.message);
+          } catch (e) {
+            this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
+          }
+        }
+      });
+    } else if (event.type === 'g') {
+      const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+        disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+      dialogRef.afterClosed().subscribe(async(result) => {
+        if (result) {
+          try {
+            const index = this.options.events.indexOf(event);
+            if (index > -1) {
+              this.options.events.splice(index, 1);
+            }
+            await this.scheduleService.deleteGroup(event.id); 
           } catch (e) {
             this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
           }

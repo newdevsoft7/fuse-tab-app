@@ -429,6 +429,11 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
+  deleteGroup(id: number | string): Promise<any> {
+    const url = `${BASE_URL}/group/${id}/all`;
+    return this.http.delete(url).toPromise();
+  }
+
   updateShiftGroup(id, body: {
     gname?: string,
     apply_all_or_nothing?: number,
