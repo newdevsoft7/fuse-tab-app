@@ -210,6 +210,11 @@ export class SettingsService {
             .catch(this.handleError);
     }
 
+    deleteForm(id: number | string): Promise<any> {
+        const url = `${BASE_URL}/form/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+
     getQuizes(): Observable<any> {
         const url = `${BASE_URL}/reports/quiz`;
         return this.http.get(url)

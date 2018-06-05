@@ -123,9 +123,15 @@ export class SettingsFormsComponent implements OnInit {
             disableClose: false
         });
         this.dialogRef.componentInstance.confirmMessage = 'Are you sure?';
-        this.dialogRef.afterClosed().subscribe(result => {
+        this.dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
-                // TODO - Delete Form
+                try {
+                    const index = this.forms.findIndex(v => v.id === id);
+                    if (index > -1) { this.forms.splice(index, 1); }
+                    await this.settingsService.deleteForm(id);
+                } catch (e) {
+                    this.handleError(e);
+                }
             }
         });
         event.stopPropagation();
