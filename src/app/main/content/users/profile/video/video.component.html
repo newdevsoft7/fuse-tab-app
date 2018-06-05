@@ -1,4 +1,4 @@
-<div id="videos" class="p-24">
+<div id="videos" [ngClass.gt-xs]="'p-24'">
 
     <div class="mb-24" *ngIf="settings.profile_video_msg">
         <h3>

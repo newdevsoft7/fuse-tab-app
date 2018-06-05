@@ -1,4 +1,4 @@
-<div id="generate-client-invoice-container" class="p-16">
+<div id="generate-client-invoice-container" [ngClass.gt-xs]="'p-16'">
   <form #generateForm="ngForm" fxLayout="row wrap" fxLayoutAlign="space-between center" (ngSubmit)="generate()">
       <div fxLayout="row wrap" fxLayoutAlign="start center">
           <mat-form-field class="mr-48">

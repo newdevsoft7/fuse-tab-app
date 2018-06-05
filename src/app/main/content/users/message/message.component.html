@@ -1,5 +1,5 @@
 <form novalidate #messageForm="ngForm" (ngSubmit)="sendMessage()">
-  <div class="header px-12" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start" fxLayoutAlign.xs="start">
+  <div class="header" [ngClass.gt-xs]="'px-12'" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between start" fxLayoutAlign.xs="start">
     <div class="form-inputs" fxLayout="column">
       <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" fxLayoutAlign.xs="start">
         <span class="w-100">To</span>
@@ -79,13 +79,13 @@
         (ngModelChange)="updateEmailToggler($event)">Email</mat-slide-toggle>
     </div>
   </div>
-  <div class="content px-12 pt-16">
+  <div class="content" [ngClass.gt-xs]="'px-12 pt-16'" [ngClass.xs]="'pt-4'">
     <app-ckeditor-v5
       [(ngModel)]="message.content"
       name="content"
       require></app-ckeditor-v5>
   </div>
-  <div class="footer px-12 pt-20">
+  <div class="footer" [ngClass.gt-xs]="'px-12 pt-20'" [ngClass.xs]="'py-4'">
     <button mat-raised-button color="accent" type="submit" [disabled]="(sent && messageForm.pristine) || sending">
       <ng-container *ngIf="!sending && (!messageForm.pristine || !sent)">{{ message.thread === 0 ? 'Send Individually' : 'Send to Group' }}{{ !count? '' : ' (' + count + ' recipients)' }}</ng-container>
       <ng-container *ngIf="sent && messageForm.pristine">Sent</ng-container>

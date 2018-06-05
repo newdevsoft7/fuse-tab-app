@@ -1,4 +1,4 @@
-<div class="p-24">
+<div [ngClass.gt-xs]="'p-24'">
     <button class="mb-16" mat-raised-button color="accent" (click)="openDialog()">Add</button>
     <ngx-datatable
         class="material striped"

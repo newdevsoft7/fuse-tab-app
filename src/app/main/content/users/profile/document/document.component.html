@@ -1,4 +1,4 @@
-<div id="documents" class="p-24">
+<div id="documents" [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'">
 
     <div class="mb-24" *ngIf="settings.profile_doc_message">
         <h3>

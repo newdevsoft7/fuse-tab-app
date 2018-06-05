@@ -1,4 +1,4 @@
-<div id="about" class="p-24" fxLayout="row" fxLayoutWrap>
+<div id="about" [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'" fxLayout="row" fxLayoutWrap>
 
     <div class="about-content" fxLayout="column" fxFlex.lt-lg="100" [fxFlex.gt-md]="(currentUser.id != userInfo.id && (currentUser.lvl == 'owner' || currentUser.lvl == 'admin')) ? 65 : 100">
 

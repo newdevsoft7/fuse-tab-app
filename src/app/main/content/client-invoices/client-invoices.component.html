@@ -1,4 +1,4 @@
-<div id="client-invoices-container" class="p-24">
+<div id="client-invoices-container" [ngClass.gt-xs]="'p-24'">
   <mat-button-toggle-group [(ngModel)]="status" fxLayout="row" (ngModelChange)="fetchInvoices()">
       <mat-button-toggle fxFlex="1 0 auto" value="all">
           All

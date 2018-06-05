@@ -1,7 +1,7 @@
 <div id="new-shift" class="page-layout simple fullwidth" fusePerfectScrollbar>
 
     <!-- CONTENT -->
-    <div class="content p-12 mat-white-bg">
+    <div class="content mat-white-bg" [ngClass.gt-xs]="'p-12'">
 
         <form [formGroup]="shiftForm" novalidate fxLayout="column">
 

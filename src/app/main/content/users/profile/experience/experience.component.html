@@ -1,4 +1,4 @@
-<div id="experience-container" class="p-0 px-4 p-sm-24" fxLayout="column">
+<div id="experience-container" [ngClass.gt-xs]="'p-0 px-4 p-sm-24'" [ngClass.xs]="'py-4'" fxLayout="column">
 
     <h2 *ngIf="settings?.profile_experience_msg">{{settings?.profile_experience_msg}}</h2>
   

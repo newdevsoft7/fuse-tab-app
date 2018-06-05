@@ -1,4 +1,4 @@
-<div id="payrolls-container" class="p-24">
+<div id="payrolls-container" [ngClass.gt-xs]="'p-24'">
 
     <!-- STATUS TOGGLE BUTTONS -->
     <mat-button-toggle-group [(ngModel)]="status" fxLayout="row" (ngModelChange)="getPayrolls()">

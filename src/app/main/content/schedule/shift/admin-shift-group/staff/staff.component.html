@@ -1,4 +1,4 @@
-<div class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
+<div [ngClass.gt-xs]="'pt-24 px-4'" fxLayout="row" fxLayoutWrap>
     <div class="staff-content" fxLayout="column" fxFlex.lt-lg="100"
         [fxFlex.gt-md]="(currentUser.lvl == 'owner' || currentUser.lvl == 'admin') ? 65 : 100">
 

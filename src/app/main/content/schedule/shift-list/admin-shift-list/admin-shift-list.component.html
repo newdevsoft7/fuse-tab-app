@@ -1,7 +1,7 @@
 <div class="admin-shift-list-wrapper page-layout simple">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
+    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-16 p-sm-24'" fxLayout="column">
 
         <ng-container *ngIf="selectedShifts.length > 0">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms'}}"
@@ -88,7 +88,7 @@
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content p-24 pt-40 pb-56">
+    <div class="content" [ngClass.gt-xs]="'p-24 pt-40 pb-56'" [ngClass.xs]="'py-4'">
 
         <!-- TABLE -->
         <div *ngIf="shifts" class="shifts-table" #tableWrapper>

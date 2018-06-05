@@ -1,4 +1,4 @@
-<div id="staff-shift-info" class="pt-24 px-4" fxLayout="row" fxLayoutWrap>
+<div id="staff-shift-info" [ngClass.gt-xs]="'pt-24 px-4'" fxLayout="row" fxLayoutWrap>
 
     <div class="info-content" fxLayout="column" fxFlex="100" [fxFlex.gt-sm]="shift.show_files === 1 ? 65 : 100">
 

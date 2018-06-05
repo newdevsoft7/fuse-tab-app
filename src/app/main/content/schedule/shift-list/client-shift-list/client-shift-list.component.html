@@ -1,7 +1,7 @@
     <div class="client-shift-list-wrapper page-layout simple">
 
     <!-- HEADER -->
-    <div class="header p-16 p-sm-24 mat-accent-bg" fxLayout="column">
+    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-16 p-sm-24'" fxLayout="column">
 
         <!-- SEARCHBAR -->
         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
@@ -39,7 +39,7 @@
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content p-24 pt-40 pb-56">
+    <div class="content" [ngClass.gt-xs]="'p-24 pt-40 pb-56'" [ngClass.xs]="'py-4'">
 
         <!-- TABLE -->
         <div *ngIf="shifts" class="shifts-table" #tableWrapper>

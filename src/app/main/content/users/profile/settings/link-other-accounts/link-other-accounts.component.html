@@ -1,4 +1,4 @@
-<div fxLayout="column" class="p-24">
+<div fxLayout="column" [ngClass.gt-xs]="'p-24'">
 
     <mat-slide-toggle [checked]="user.linked !== null" (change)="changeLinkedStatus($event)">Linked</mat-slide-toggle>
     <div class="mt-16" *ngIf="user.linked !== null">
