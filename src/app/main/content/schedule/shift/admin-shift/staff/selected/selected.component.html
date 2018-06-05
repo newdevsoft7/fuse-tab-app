@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <div class="times-break px-12" fxFlex>
+                    <div class="times-break px-12" fxFlex fxHide.xs>
                         <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)"
                             [editable]="editable"></app-admin-shift-edit-time>
                         <app-admin-shift-edit-break [staff]="staff" [editable]="editable">

@@ -1,7 +1,7 @@
 <div id="profile" class="page-layout simple tabbed" fusePerfectScrollbar *ngIf="userInfo">
 
     <!-- HEADER -->
-    <div class="header" fxLayout="column" [ngClass.gt-xs]="'p-24'" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
+    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
 
         <div class="user-info" [ngClass.sm]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start end">
             <img class="profile-image avatar huge w-md-156 h-md-156" [src]="getAvatar(userInfo)">
