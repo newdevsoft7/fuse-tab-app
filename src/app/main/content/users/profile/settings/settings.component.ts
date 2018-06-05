@@ -18,6 +18,7 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     @Input('userInfo') user;
     @Input() links: any = [];
+    @Input() linkStatus;
     @Input() currentUser;
     @Input() settings: any = {};
     @Input() timezones;
@@ -76,14 +77,14 @@ export class UsersProfileSettingsComponent implements OnInit {
         {
             'id': 'change-password',
             'title': 'Change Password',
-            'lvls': ['owner','admin','staff','client','ext'],
-            'vis': ['owner','admin','staff','client','ext']
+            'lvls': ['owner', 'admin', 'staff', 'client', 'ext'],
+            'vis': ['owner', 'admin', 'staff', 'client', 'ext']
         },
         {
             'id': 'link-other-account',
             'title': 'Link to other StaffConnect accounts',
-            'lvls': ['owner','admin','staff','client','ext'],
-            'vis': ['owner','admin','staff','client','ext']
+            'lvls': ['owner', 'admin', 'staff', 'client', 'ext'],
+            'vis': ['owner', 'admin', 'staff', 'client', 'ext']
         }
     ];
 
@@ -97,7 +98,7 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     ngOnInit() {
         this.getUserOptions();
-        if (this.user.lvl != 'owner') {
+        if (this.user.lvl != 'owner' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
             this.getUserPermissions();
         }
         if (this.settings.outsource_enable === '1' && this.user.lvl === 'staff' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
@@ -105,11 +106,12 @@ export class UsersProfileSettingsComponent implements OnInit {
                 'id': 'staff-outsource',
                 'title': 'Outsource',
                 'lvls': ['staff'],
-                'vis': ['owner','admin']
+                'vis': ['owner', 'admin']
             });
             this.getOutsourceCompanies();
         }
         this.getCategoryListByUser();
+        this.linkStatus = "Profile sync is pending approval. Please log in to any of the other StaffConnect websites you have an account with and go to this settings page to approve.";
     }
 
     select(category) {
@@ -309,7 +311,8 @@ export class UsersProfileSettingsComponent implements OnInit {
     async toggleLinked(linked: boolean): Promise<any> {
         try {
             this.user.linked = linked ? 0 : null;
-            await this.userService.updateLink(this.user.id, linked);
+            const res = await this.userService.updateLink(this.user.id, linked);
+            this.linkStatus = res.message;
         } catch (e) {
             this.handleError(e);
         }

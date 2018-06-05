@@ -9,6 +9,7 @@ import { MatSlideToggleChange } from "@angular/material";
 export class UsersSettingsLinkOtherAccountsComponent {
     @Input() user: any;
     @Input() links: any;
+    @Input() linkStatus: any;
     @Output() toggleLinked: EventEmitter<boolean> = new EventEmitter();
     @Output() approveCompany: EventEmitter<number> = new EventEmitter();
 

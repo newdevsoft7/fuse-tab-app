@@ -3,15 +3,15 @@
     <mat-slide-toggle [checked]="user.linked !== null" (change)="changeLinkedStatus($event)">Linked</mat-slide-toggle>
     <div class="mt-16" *ngIf="user.linked !== null">
         <p *ngIf="user.linked === 0; else approvedBlock">
-            Profile sync is pending approval. Please log in to any of the other StaffConnect websites you have an account with and go to this settings page to approve.
+            {{ linkStatus }}
         </p>
         <ng-template #approvedBlock>
             <ngx-datatable class="material striped"
                 *ngIf="links.length > 0" 
                 [rows]="links"
                 [columnMode]="'force'" 
-                [headerHeight]="48" 
-                [footerHeight]="56" 
+                [headerHeight]="0" 
+                [footerHeight]="0" 
                 [rowHeight]="'auto'" 
                 [scrollbarH]="true"
                 [selectAllRowsOnPage]="true" 
