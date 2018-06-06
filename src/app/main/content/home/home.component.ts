@@ -161,7 +161,9 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             this.addMenuByUserLevel();
             this.addPayRollMenu();
         });
-        this.loadFCMservices();
+        if (!this.tokenStorage.isExistSecondaryUser()) {
+            this.loadFCMservices();
+        }
     }
 
     startSocket() {
