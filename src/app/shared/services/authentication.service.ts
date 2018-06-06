@@ -109,34 +109,6 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
-
-  /* Workaround to authentificate user with passport as OAuth provider */
-  public openWindowWithPost(windowoption: string, name: string, params: any) {
-    const form = document.createElement('form');
-    form.setAttribute('method', 'post');
-    form.setAttribute('action', this.loginUrl);
-    form.setAttribute('target', name);
-    for (let i in params) {
-      if (params.hasOwnProperty(i)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = i;
-        input.value = params[i];
-        form.appendChild(input);
-      }
-    }
-    document.body.appendChild(form);
-    // note I am using a post.htm page since I did not want to make double request to the page
-    // it might have some Page_Load call which might screw things up.
-    const loginWindow = window.open('post.htm', name, windowoption);
-    form.submit();
-    document.body.removeChild(form);
-    setTimeout(function () {
-      loginWindow.close();
-    }, 5000);
-
-  }
-
   public register(params) {
     return this.http.post(`${BASE_URL}/auth/register`, params)
       .map((tokens: AccessData) => {
