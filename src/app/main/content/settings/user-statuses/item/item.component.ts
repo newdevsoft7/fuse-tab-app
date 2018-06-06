@@ -20,6 +20,7 @@ export class UserStatusItemComponent implements OnInit {
 
     @Input() status;
     @Output() onStatusDeleted = new EventEmitter;
+    @Output() onStatusUpdated = new EventEmitter;
 
     form: any = {};
 
@@ -71,6 +72,7 @@ export class UserStatusItemComponent implements OnInit {
                 //this.toastr.success(res.message);
                 this.status.name = res.data.sname;
                 this.status.color = res.data.color;
+                this.onStatusUpdated.next(this.status);
             }, err => {
                 this.toastr.error(err.error.message)
             });

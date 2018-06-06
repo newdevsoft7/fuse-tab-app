@@ -3,7 +3,8 @@
         shifts.
     </p>
     <app-settings-status-item *ngFor="let status of statuses" [status]="status"
-        (onStatusDeleted)="onStatusDeleted($event)"></app-settings-status-item>
+        (onStatusDeleted)="onStatusDeleted($event)"
+        (onStatusUpdated)="onStatusUpdated($event)"></app-settings-status-item>
 
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
         <mat-form-field floatPlaceholder="never" class="name" fxFlex="200px">

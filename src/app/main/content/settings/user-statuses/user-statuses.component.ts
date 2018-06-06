@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-settings-user-statuses',
@@ -17,12 +18,12 @@ import { SettingsService } from '../settings.service';
 export class SettingsUserStatusesComponent implements OnInit {
 
     statuses = [];
-
     status: any;
     
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private tokenStorage: TokenStorage
     ) { }
 
     ngOnInit() {
@@ -37,6 +38,23 @@ export class SettingsUserStatusesComponent implements OnInit {
     onStatusDeleted(status) {
         const index = _.findIndex(this.statuses, ['id', status.id]);
         this.statuses.splice(index, 1);
+        this.syncUserStatuses();
+    }
+
+    syncUserStatuses() {
+        const settings = this.tokenStorage.getSettings();
+        settings.user_statuses = this.statuses.map(v => {
+            return {
+                id: v.id,
+                sname: v.name,
+                color: v.color
+            };
+        });
+        this.tokenStorage.setSettings(settings);
+    }
+
+    onStatusUpdated(status) {
+        this.syncUserStatuses();
     }
 
     addStatus() {
@@ -52,6 +70,7 @@ export class SettingsUserStatusesComponent implements OnInit {
                     color_editable: 1
                 }
             );
+            this.syncUserStatuses();
             this.resetForm();
         })
     }

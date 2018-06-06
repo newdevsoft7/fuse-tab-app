@@ -185,8 +185,14 @@ export class UsersComponent implements OnInit {
         }
     }
 
-    toggleFav(user, evt: Event) {
+    async toggleFav(user, evt: Event) {
         user.fav = user.fav === 1 ? 0 : 1;
+        try {
+			const res = await this.userService.updateUser(user.id, { fav: user.fav });
+		} catch (e) {
+            this.displayError(e);
+            user.fav = user.fav === 1 ? 0 : 1;
+		}
         evt.stopPropagation();
     }
 
@@ -214,9 +220,8 @@ export class UsersComponent implements OnInit {
         dialogRef.afterClosed().subscribe(async (result) => {
             if (result) {
                 try {
-                    this.users = this.users.filter(u => u.id !== user.id);
                     const res = await this.userService.deleteUser(user.id);
-                    //this.toastr.success(res.message);
+                    this.getUsers();
                 } catch (e) {
                     const errors = e.error.errors;
                     Object.keys(errors).forEach(v => {
@@ -234,9 +239,7 @@ export class UsersComponent implements OnInit {
 
         this.dialogRef.afterClosed()
           .subscribe((assignedReport) => {
-                console.log(assignedReport);
               const userIds = this.selectedUsers.map(user => user.id);
-
 
               const data = {
                   'user_ids' : userIds,
@@ -266,7 +269,6 @@ export class UsersComponent implements OnInit {
                 this.userService
                     .createUser(user)
                     .subscribe(res => {
-                        //this.toastr.success(res.message);
                         this.getUsers();
                     }, err => {
                         const errors = err.error.errors;
@@ -447,6 +449,7 @@ export class UsersComponent implements OnInit {
             if (result) {
                 try {
                     await this.userService.updateUser(user.id, body);
+                    this.getUsers();
                 } catch (e) {
                     this.displayError(e);
                 }
