@@ -26,9 +26,29 @@ class ShiftDate {
     from;
     to;
     constructor(date = null, from = null, to = null) {
-        this.date = date || '';
+        this.date = date || moment(new Date(), 'YYYY-MM-DD');;
         this.from = from || { hour: 8, minute: 0, meriden: 'AM', format: 12 };
         this.to = to || { hour: 5, minute: 0, meriden: 'PM', format: 12 };
+    }
+
+    isValid() {
+        const date = moment(this.date, 'YYYY-MM-DD');
+        const year = date.year();
+        const month = date.month();
+        const day = date.date();
+
+        const from = moment({
+            year, month, day,
+            hour: hours12to24(this.from.hour, this.from.meriden),
+            minute: this.from.minute
+        });
+
+        const to = moment({
+            year, month, day,
+            hour: hours12to24(this.to.hour, this.to.meriden),
+            minute: this.to.minute
+        });
+        return from.isBefore(to) ? true : false;
     }
 }
 
@@ -371,21 +391,8 @@ export class NewShiftComponent implements OnInit {
     }
 
     private validate() {
-        const dates_validation = this.dates.every(date => {
-            if (date.date === '' ||
-                date.from.hour === '' ||
-                date.to.hour === '' ||
-                (date.from.meriden === 'PM' && date.to.meriden === 'AM')) { return false; }
-
-            if (date.from.meriden === date.to.meriden) {
-                return date.from.hour < date.to.hour ? true :
-                    (date.from.hour === date.to.hour ? (date.from.minute < date.to.minute ? true : false) : false);
-            }
-            return true;
-        });
-
+        const dates_validation = this.dates.every((date: ShiftDate) => date.isValid());
         if (!dates_validation || !this.shiftForm.valid) { return false; }
-
         return true;
     }
 
