@@ -125,7 +125,7 @@ export class UsersProfileComponent implements OnInit {
 			this.userInfo = await this.userService.getUser(this.user.id).toPromise();
 			this.isFavStatusShow =
 				['admin', 'owner'].some(v => this.currentUser.lvl.indexOf(v) > -1)
-				&& ['admin', 'staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
+				&& ['staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
 			this.isApproveRejectShow =
 				['registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
 			this.isSettingsShow =

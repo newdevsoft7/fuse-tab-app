@@ -30,6 +30,9 @@
 
                 <app-edit-user-status [user]="userInfo" class="ml-8 white-fg"></app-edit-user-status>
             </div>
+            <div *ngIf="!isFavStatusShow" class="white-fg">
+                {{userInfo.lvl | capitalize}}
+            </div>
             <div *ngIf="isApproveRejectShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
                 <button mat-icon-button (click)="confirmApprove()" matTooltip="Approve">
                     <mat-icon class="green-fg">check</mat-icon>
