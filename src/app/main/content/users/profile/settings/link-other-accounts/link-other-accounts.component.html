@@ -2,33 +2,22 @@
 
     <mat-slide-toggle [checked]="user.linked !== null" (change)="changeLinkedStatus($event)">Linked</mat-slide-toggle>
     <div class="mt-16" *ngIf="user.linked !== null">
-        <p *ngIf="user.linked === 0; else approvedBlock">
+        <p *ngIf="linkStatus">
             {{ linkStatus }}
         </p>
-        <ng-template #approvedBlock>
-            <ngx-datatable class="material striped"
-                *ngIf="links.length > 0" 
-                [rows]="links"
-                [columnMode]="'force'" 
-                [headerHeight]="0" 
-                [footerHeight]="0" 
-                [rowHeight]="'auto'" 
-                [scrollbarH]="true"
-                [selectAllRowsOnPage]="true" 
-                [externalPaging]="true" 
-                [count]="links.length" 
-                [limit]="10">
-                <ngx-datatable-column name="Company name" prop="company" [sortable]="false" [canAutoResize]="true">
-                </ngx-datatable-column>
-                <ngx-datatable-column name="Approved" prop="approved" [sortable]="false" [canAutoResize]="false">
-                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                        <a *ngIf="!value; else approvedBlock" href="javascript:void(0)" (click)="approveCompany.next(row.id)">Approve</a>
+        <div class="mat-elevation-z2">
+            <ng-container *ngFor="let link of links; let last = last">
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="p-12">
+                    <span>{{link.company}}</span>
+                    <ng-container>
+                        <a *ngIf="!link.approved; else approvedBlock" href="javascript:void(0)" (click)="approveCompany.next(link.id)">Approve</a>
                         <ng-template #approvedBlock>
                             <span class="green-fg">Approved</span>
                         </ng-template>
-                    </ng-template>
-                </ngx-datatable-column>
-            </ngx-datatable>
-        </ng-template>
+                    </ng-container>
+                </div>
+                <mat-divider *ngIf="!last"></mat-divider>
+            </ng-container>
+        </div>
     </div>
 </div>

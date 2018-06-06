@@ -62,6 +62,7 @@
             <app-users-settings-link-other-accounts
                 [user]="user"
                 [links]="links"
+                [linkStatus]="linkStatus"
                 (toggleLinked)="toggleLinked($event)"
                 (approveCompany)="approveCompany($event)"
                 *ngSwitchCase="'link-other-account'">

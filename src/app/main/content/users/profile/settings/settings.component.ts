@@ -18,7 +18,6 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     @Input('userInfo') user;
     @Input() links: any = [];
-    @Input() linkStatus;
     @Input() currentUser;
     @Input() settings: any = {};
     @Input() timezones;
@@ -35,6 +34,7 @@ export class UsersProfileSettingsComponent implements OnInit {
     userOutsourceCompanySource: any = [];
 
     isWorkHere: boolean = false;
+    linkStatus: string;
 
     // Left Side Navs
     categories = [
@@ -111,7 +111,6 @@ export class UsersProfileSettingsComponent implements OnInit {
             this.getOutsourceCompanies();
         }
         this.getCategoryListByUser();
-        this.linkStatus = "Profile sync is pending approval. Please log in to any of the other StaffConnect websites you have an account with and go to this settings page to approve.";
     }
 
     select(category) {
