@@ -42,28 +42,28 @@
         </div>
         <div class="info">
             <ng-container *ngIf="item.etype === 'list'">
-                <app-register-profile-edit-list-value *ngIf="item.ename !== 'Sex'; else sexBlock" [userId]="profile.id"
+                <app-register-profile-edit-list-value #tag *ngIf="item.ename !== 'Sex'; else sexBlock" [userId]="profile.id"
                     [element]="item" fxFlex="0 1 auto">
                 </app-register-profile-edit-list-value>
                 <ng-template #sexBlock>
-                    <app-register-profile-edit-sex [userId]="profile.id"
+                    <app-register-profile-edit-sex #tag [userId]="profile.id"
                         [element]="item" (updateSex)="updateSex($event)" fxFlex="0 1 auto">
                     </app-register-profile-edit-sex>
                 </ng-template>
             </ng-container>
 
             <ng-container *ngIf="item.etype === 'listm'">
-                <app-register-profile-edit-listm-value [userId]="profile.id"
+                <app-register-profile-edit-listm-value #tag [userId]="profile.id"
                     [element]="item" fxFlex="0 1 auto">
                 </app-register-profile-edit-listm-value>
             </ng-container>
 
             <ng-container *ngIf="['list', 'listm'].indexOf(item.etype) === -1">
-                <app-register-profile-edit-date *ngIf="item.ename == 'Date of Birth'"
+                <app-register-profile-edit-date #tag *ngIf="item.ename == 'Date of Birth'"
                     [userId]="profile.id" [element]="item" [field]="'data'" fxFlex="0 1 auto">
                 </app-register-profile-edit-date>
 
-                <app-register-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'"
+                <app-register-profile-edit-text-value #tag *ngIf="item.ename != 'Date of Birth'"
                     [userId]="profile.id" [element]="item" fxFlex="0 1 auto">
                 </app-register-profile-edit-text-value>
             </ng-container>

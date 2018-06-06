@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
@@ -18,6 +18,7 @@ export class RegisterProfileEditSexComponent implements OnInit {
     form: FormGroup;
     @Input() element;
     @Input() userId;
+    @ViewChildren('select') select: QueryList<any>;
     @Output() updateSex: EventEmitter<string> = new EventEmitter();
 
     constructor(
@@ -34,6 +35,7 @@ export class RegisterProfileEditSexComponent implements OnInit {
             sex: [this.element.data]
         });
         this.formActive = true;
+        setTimeout(() => this.select.first.open());
     }
 
     closeForm() {
@@ -41,6 +43,11 @@ export class RegisterProfileEditSexComponent implements OnInit {
     }
 
     onFormSubmit() {
+        this.saveForm();
+        this.formActive = false;
+    }
+
+    saveForm() {
         if (this.form.valid) {
             const sex = this.form.getRawValue().sex;
             if (sex != this.element.data) {
@@ -56,8 +63,6 @@ export class RegisterProfileEditSexComponent implements OnInit {
                         });
                     });
             }
-
-            this.formActive = false;
         }
     }
 }

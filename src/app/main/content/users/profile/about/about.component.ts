@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewChildren, QueryList, AfterViewChecked } from '@angular/core';
 import { UserService } from '../../user.service';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,12 +11,14 @@ import { OnRatingChangeEven } from 'angular-star-rating';
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.scss']
 })
-export class UsersProfileAboutComponent implements OnInit {
+export class UsersProfileAboutComponent implements OnInit, AfterViewChecked {
 
     @Input() userInfo;
     @Input() currentUser;
     @Input() settings: any = {};
     @ViewChild('adminNoteInput') adminNoteInput;
+    @ViewChildren('tag') tags: QueryList<any>;
+    prevOpenedField: any;
 
     canSavePost = false;
 
@@ -58,6 +60,21 @@ export class UsersProfileAboutComponent implements OnInit {
         this.adminNoteForm.valueChanges.subscribe(() => {
             this.onAdminNoteFormValuesChanged();
         });
+
+    }
+
+    ngAfterViewChecked() {
+        const openedFields = this.tags.filter(v => v.formActive);
+        switch (openedFields.length) {
+            case 0:
+                break;
+            case 1:
+                setTimeout(() => this.prevOpenedField = openedFields[0]);
+                break;
+            case 2:
+                setTimeout(() => this.prevOpenedField.onFormSubmit());
+                break;
+        }
     }
 
     onAdminNoteFormValuesChanged() {
@@ -151,4 +168,5 @@ export class UsersProfileAboutComponent implements OnInit {
             this.sex = sex;
         });
     }
+
 }

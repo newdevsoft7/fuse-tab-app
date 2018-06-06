@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,7 @@ export class RegisterProfileEditListValueComponent implements OnInit {
     form: FormGroup;
     @Input() element;
     @Input() userId;
+    @ViewChildren('select') select: QueryList<any>;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -30,6 +31,7 @@ export class RegisterProfileEditListValueComponent implements OnInit {
             data: [this.element.data]
         });
         this.formActive = true;
+        setTimeout(() => this.select.first.open());
     }
 
     closeForm() {
@@ -37,6 +39,11 @@ export class RegisterProfileEditListValueComponent implements OnInit {
     }
 
     onFormSubmit() {
+        this.saveForm();
+        this.formActive = false;
+    }
+
+    saveForm() {
         if (this.form.valid) {
             const value = this.form.getRawValue().data;
             if (value != this.element.data) {
@@ -51,7 +58,6 @@ export class RegisterProfileEditListValueComponent implements OnInit {
                         });
                     });
             }
-            this.formActive = false;
         }
     }
 }

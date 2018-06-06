@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation, ViewChildren, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UserService } from '../../../user.service';
 import * as _ from 'lodash';
@@ -18,6 +18,8 @@ export class UsersProfileEditSexComponent implements OnInit {
     form: FormGroup;
     @Input() element;
     @Input() userId;
+    @Input() field;
+    @ViewChildren('select') select: QueryList<any>;
     @Output() updateSex: EventEmitter<string> = new EventEmitter();
 
     constructor(
@@ -26,27 +28,34 @@ export class UsersProfileEditSexComponent implements OnInit {
         private userService: UserService) { }
 
     ngOnInit() {
-        this.updateSex.next(this.element.data);
+        this.updateSex.next(this.element[this.field]);
     }
 
     openForm() {
         this.form = this.formBuilder.group({
-            sex: [this.element.data]
+            sex: [this.element[this.field]]
         });
         this.formActive = true;
+        setTimeout(() => this.select.first.open());
     }
 
     closeForm() {
         this.formActive = false;
     }
 
+
     onFormSubmit() {
+        this.saveForm();
+        this.formActive = false;
+    }
+
+    saveForm() {
         if (this.form.valid) {
             const sex = this.form.getRawValue().sex;
-            if (sex != this.element.data) {
-                this.element.data = sex;
+            if (sex != this.element[this.field]) {
+                this.element[this.field] = sex;
                 this.updateSex.next(sex);
-                this.userService.updateProfile(this.userId, this.element.id, sex)
+                this.userService.updateProfile(this.userId, PROFILE_ELEMENT_SEX, sex)
                     .subscribe(res => {
                         //this.toastr.success(res.message);
                     }, err => {
@@ -56,8 +65,6 @@ export class UsersProfileEditSexComponent implements OnInit {
                         });
                     });
             }
-
-            this.formActive = false;
         }
     }
 }

@@ -64,8 +64,8 @@ export class RegisterProfileEditDateComponent implements OnInit {
 						});
 					});
 			}
-			this.formActive = false;
 		}
+		this.formActive = false;
 	}
 
 }

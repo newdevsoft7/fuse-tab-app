@@ -45,7 +45,6 @@ export class UsersProfileEditBasicTextValueComponent implements OnInit {
 		this.formActive = false;
 	}
 
-
 	onFormSubmit() {
 		if (this.form.valid) {
 			const value = this.form.getRawValue().data;
@@ -71,8 +70,8 @@ export class UsersProfileEditBasicTextValueComponent implements OnInit {
 						});
 					});
 			}
-			this.formActive = false;
 		}
+		this.formActive = false;
 	}
 
 }

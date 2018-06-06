@@ -40,7 +40,7 @@
                         First Name
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'fname'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'fname'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         Last Name
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'lname'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'lname'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="info-line">
                     <div class="title">Alias</div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'alias'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'alias'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                         Email
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'email'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'email'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                         Mobile Number
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'mob'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'mob'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                 <div class="info-line">
                     <div class="title">Address</div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'address'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'address'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                 <div class="info-line">
                     <div class="title">City</div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'city'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'city'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 <div class="info-line">
                     <div class="title">State</div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'state'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'state'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                 <div class="info-line">
                     <div class="title">Postal Code</div>
                     <div class="info">
-                        <app-users-profile-edit-basic-text-value [element]="userInfo" [field]="'postcode'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-basic-text-value #tag [element]="userInfo" [field]="'postcode'" fxFlex="0 1 auto">
                         </app-users-profile-edit-basic-text-value>
                     </div>
                 </div>
@@ -124,7 +124,8 @@
                         Sex
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-sex [element]="userInfo" fxFlex="0 1 auto">
+                        <app-users-profile-edit-sex #tag [userId]="userInfo.id" [element]="userInfo" [field]="'sex'"
+                            (updateSex)="updateSex($event)" fxFlex="0 1 auto">
                         </app-users-profile-edit-sex>
                     </div>
                 </div>
@@ -135,7 +136,7 @@
                         Date of Birth
                     </div>
                     <div class="info">
-                        <app-users-profile-edit-date [userId]="userInfo.id" [element]="userInfo" [field]="'dob'" fxFlex="0 1 auto">
+                        <app-users-profile-edit-date #tag [userId]="userInfo.id" [element]="userInfo" [field]="'dob'" fxFlex="0 1 auto">
                         </app-users-profile-edit-date>
                     </div>
                 </div>
@@ -254,27 +255,27 @@
         </div>
         <div class="info">
             <ng-container *ngIf="item.etype === 'list'">
-                <app-users-profile-edit-list-value *ngIf="item.ename !== 'Sex'; else sexBlock" [userId]="userInfo.id"
+                <app-users-profile-edit-list-value #tag *ngIf="item.ename !== 'Sex'; else sexBlock" [userId]="userInfo.id"
                     [element]="item" fxFlex="0 1 auto">
                 </app-users-profile-edit-list-value>
                 <ng-template #sexBlock>
-                    <app-users-profile-edit-sex [userId]="userInfo.id"
+                    <app-users-profile-edit-sex #tag [userId]="userInfo.id" [field]="'data'"
                         [element]="item" (updateSex)="updateSex($event)" fxFlex="0 1 auto">
                     </app-users-profile-edit-sex>
                 </ng-template>
             </ng-container>
 
             <ng-container *ngIf="item.etype == 'listm'">
-                <app-users-profile-edit-listm-value [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
+                <app-users-profile-edit-listm-value #tag [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
                 </app-users-profile-edit-listm-value>
             </ng-container>
 
             <ng-container *ngIf="!['list', 'listm'].includes(item.etype)">
-                <app-users-profile-edit-date *ngIf="item.ename == 'Date of Birth'" [userId]="userInfo.id" [element]="item" [field]="'data'"
+                <app-users-profile-edit-date #tag *ngIf="item.ename == 'Date of Birth'" [userId]="userInfo.id" [element]="item" [field]="'data'"
                     fxFlex="0 1 auto">
                 </app-users-profile-edit-date>
 
-                <app-users-profile-edit-text-value *ngIf="item.ename != 'Date of Birth'" [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
+                <app-users-profile-edit-text-value #tag *ngIf="item.ename != 'Date of Birth'" [userId]="userInfo.id" [element]="item" fxFlex="0 1 auto">
                 </app-users-profile-edit-text-value>
             </ng-container>
 

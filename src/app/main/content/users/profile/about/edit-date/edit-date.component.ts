@@ -44,7 +44,6 @@ export class UsersProfileEditDateComponent implements OnInit {
 		this.formActive = false;
 	}
 
-
 	onFormSubmit() {
 		if (this.form.valid) {
 			const value = moment(this.form.getRawValue().data).format('YYYY-MM-DD HH:mm:ss');
@@ -60,8 +59,8 @@ export class UsersProfileEditDateComponent implements OnInit {
 						});
 					});
 			}
-			this.formActive = false;
 		}
+		this.formActive = false;
 	}
 
 }

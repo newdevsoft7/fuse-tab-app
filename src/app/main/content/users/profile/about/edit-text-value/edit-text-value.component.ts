@@ -61,8 +61,8 @@ export class UsersProfileEditTextValueComponent implements OnInit {
 						});
 					});
 			}
-			this.formActive = false;
 		}
+		this.formActive = false;
 	}
 
 }
