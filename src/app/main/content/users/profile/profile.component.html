@@ -10,8 +10,8 @@
                     {{userInfo.fname}} {{userInfo.lname}}
                 </div>
                 <div class="ml-8 white-fg" style="text-transform:capitalize;">
-                    {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ? "&sdot; "+userInfo.city : ""}}
-                    {{userInfo.state ? ", "+userInfo.state : ""}}
+                    {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ? "&sdot; "+userInfo.city
+                    : ""}} {{userInfo.state ? ", "+userInfo.state : ""}}
                 </div>
                 <div class="ml-8 light-blue-fg">
                     {{userInfo.email}}
@@ -23,8 +23,8 @@
         </div>
 
         <div fxLayout="column" fxLayoutAlign="start end">
-            <div fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
-                <button *ngIf="isFavStatusShow" mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
+            <div *ngIf="isFavStatusShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
+                <button mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
                     <mat-icon [ngClass]="{'white-fg': userInfo.fav === 0, 'amber-600-fg': userInfo.fav === 1}">star</mat-icon>
                 </button>
 
@@ -83,7 +83,8 @@
             </mat-tab>
 
             <mat-tab label="Settings" *ngIf="isSettingsShow">
-                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers" [settings]="settings" [timezones]="timezones"></app-users-profile-settings>
+                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers" [settings]="settings"
+                    [timezones]="timezones"></app-users-profile-settings>
             </mat-tab>
 
         </mat-tab-group>
