@@ -9,7 +9,7 @@
             Uploads: <span [ngStyle]="{'color': num_uploaded < uploads_required ? 'red' : 'green'}">{{num_uploaded}}</span> / <span>{{uploads_required}}</span>
         </p>
 
-        <fieldset>
+        <fieldset *ngIf="reports.length > 0">
             <legend>Reports</legend>
             <div>
                 <div *ngFor="let report of reports; last as last" [class.mb-8]="!last" fxLayout="row" fxLayoutAlign="start center">
