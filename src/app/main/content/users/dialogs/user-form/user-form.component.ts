@@ -59,7 +59,7 @@ export class UserFormDialogComponent implements OnInit {
             lname: ['', Validators.required],
             sex: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
-            mob: ['', Validators.required],
+            mob: [''],
             password: ['', Validators.required],
             welcome_email: [true]
         });
