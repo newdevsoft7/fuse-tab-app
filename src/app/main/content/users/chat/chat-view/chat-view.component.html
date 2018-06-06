@@ -109,7 +109,7 @@
                     debounce
                     [delay]="2000"
                     ngModel
-                    [placeholder]="placeholder"
+                    [placeholder]="isLoggedAs ? 'You cannot send messages when logged in as another user' : placeholder"
                     [disabled]="!thread?.active || isLoggedAs"
                     (onValueChange)="stopTyping()"
                     (keypress)="continueTyping()" 
