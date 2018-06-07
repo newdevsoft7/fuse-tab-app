@@ -11,7 +11,7 @@
 
         <!-- ADD FILE BUTTON -->
         <div class="my-12" fxLayout="row" fxLayoutAlign="start center">
-            <input hidden type="file" #fileInput (change)="change($event)"/>
+            <input hidden type="file" #fileInput (change)="change($event)" accept="image/*"/>
             <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
                 <ng-container *ngIf="filename; else default">Select a different photo</ng-container>
                 <ng-template #default>
@@ -25,7 +25,7 @@
     </div>
     
     <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center">
-        <button mat-button class="mat-accent-bg" cdkFocusInitial (click)="save()">
+        <button mat-raised-button color="accent" cdkFocusInitial (click)="save()" [disabled]="invalid()">
             {{data.mode === 'checkin' ? 'Check In' : 'Check Out'}}
         </button>
         <button mat-button  [mat-dialog-close]="false" class="mat-primary-50-bg">

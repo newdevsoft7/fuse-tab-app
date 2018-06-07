@@ -282,7 +282,8 @@ export class StaffShiftInfoComponent implements OnInit {
                     disableClose: false,
                     panelClass: 'staff-shift-check-in-out-dialog',
                     data: {
-                        mode: 'checkin'
+                        mode: 'checkin',
+                        photoRequired: this.shift.check_in_photo
                     }
                 });
                 dialogRef.afterClosed().subscribe(async(result) => {
@@ -305,7 +306,8 @@ export class StaffShiftInfoComponent implements OnInit {
                     disableClose: false,
                     panelClass: 'staff-shift-check-in-out-dialog',
                     data: {
-                        mode: 'checkout'
+                        mode: 'checkout',
+                        photoRequired: this.shift.check_out_photo
                     }
                 });
                 dialogRef.afterClosed().subscribe(async(result) => {
