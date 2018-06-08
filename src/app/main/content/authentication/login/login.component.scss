@@ -30,8 +30,13 @@
                 }
 
                 .logo {
-                    width: 128px;
-                    margin: 32px auto;
+                    width: 200px;
+                    margin: 8px auto;
+
+                    img {
+                        width: 200px;
+                        height: 200px;
+                    }
                 }
 
                 .title {
