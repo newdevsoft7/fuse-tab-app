@@ -130,11 +130,11 @@ export class AuthenticationService {
 
   public async logout() {
     if (this.tokenStorage.isExistSecondaryUser()) {
+      this.tokenStorage.removeSecondaryUser();
+      this.favicoService.setBadge(0);
       try {
         await this.logoutAs();
       } catch (e) {}
-      this.tokenStorage.removeSecondaryUser();
-      this.favicoService.setBadge(0);
       this.tokenStorage.userSwitchListener.next(true);
     } else {
       try {
@@ -142,11 +142,11 @@ export class AuthenticationService {
       } catch (e) {
       }
       this.usersChatService.Device = null;
-      this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {
-      });
       this.tokenStorage.clear();
       this.favicoService.setBadge(0);
       this.router.navigate(['/login']);
+      this.http.post(`${AUTH_URL}/logout`, {}).subscribe(res => {
+      });
     }
   }
 
