@@ -483,7 +483,9 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         const settings = this.tokenStorage.getSettings();
         const navModel = this.fuseNavigationService.getNavigationModel();
         if (settings.client_enable != 1) {
-            const index = navModel.findIndex(v => v.id === 'clients');
+            let index = navModel.findIndex(v => v.id === 'clients');
+            if (index > -1) { navModel.splice(index, 1); }
+            index = navModel.findIndex(v => v.id === 'client_invoices');
             if (index > -1) { navModel.splice(index, 1); }
         }
         if (settings.outsource_enable != 1) {
