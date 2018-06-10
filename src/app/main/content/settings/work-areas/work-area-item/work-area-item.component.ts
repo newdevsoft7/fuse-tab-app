@@ -78,6 +78,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
 
     saveForm() {
         const params = this.form.value;
+        if (!params.php_tz) { delete params.php_tz; }
         this.settingsService.updateWorkArea(this.workArea.id, params).subscribe(res => {
             this.workArea = { ...this.workArea, ...params };
             //this.toastr.success(res.message);

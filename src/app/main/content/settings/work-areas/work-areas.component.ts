@@ -145,7 +145,7 @@ export class SettingsWorkAreasComponent implements OnInit {
     resetworkAreaForm() {
         this.workAreaForm = this.formBuilder.group({
             aname: ['', Validators.required],
-            php_tz: [''],
+            php_tz: [null],
             work_area_cat_id: []
         });
     }
@@ -196,6 +196,7 @@ export class SettingsWorkAreasComponent implements OnInit {
     addWorkArea() {
         let params = this.workAreaForm.getRawValue();
         params = { ...params, work_area_cat_id: this.selectedCategory.id };
+        if (!params.php_tz) { delete params.php_tz; }
         this.settingsService.createWorkArea(params).subscribe(res => {
             //this.toastr.success(res.message);
             this.workAreas.push(res.data);
@@ -231,11 +232,13 @@ export class SettingsWorkAreasComponent implements OnInit {
             });
     }
 
-    private displayError(err) {
-        const errors = err.error.errors;
-        Object.keys(errors).forEach(v => {
-            this.toastr.error(errors[v]);
-        });
+    private displayError(e) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        } else {
+            this.toastr.error(e.error.message || e.message);
+        }
     }
 
 }
