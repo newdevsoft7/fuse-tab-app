@@ -160,6 +160,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(this.tokenStorage.getUser().lvl));
             this.addMenuByUserLevel();
             this.addPayRollMenu();
+            this.hideMenus();
         });
         if (!this.tokenStorage.isExistSecondaryUser()) {
             this.loadFCMservices();
@@ -476,6 +477,23 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             ]
         };
         navModel.splice(4, 0, payroll);
+    }
+
+    private hideMenus() {
+        const settings = this.tokenStorage.getSettings();
+        const navModel = this.fuseNavigationService.getNavigationModel();
+        if (settings.client_enable != 1) {
+            const index = navModel.findIndex(v => v.id === 'clients');
+            if (index > -1) { navModel.splice(index, 1); }
+        }
+        if (settings.outsource_enable != 1) {
+            const index = navModel.findIndex(v => v.id === 'outsource_companies');
+            if (index > -1) { navModel.splice(index, 1); }
+        }
+        if (settings.tracking_enable != 1) {
+            const index = navModel.findIndex(v => v.id === 'tracking');
+            if (index > -1) { navModel.splice(index, 1); }
+        }
     }
 
     onMessage(event: any) {
