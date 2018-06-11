@@ -3,5 +3,6 @@ export const environment = {
     hmr       : false,
     apiUrl: '',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com',
-    clientId: 2
+    clientId: 2,
+    formconnectUrl: 'https://formconnect.net'
 };

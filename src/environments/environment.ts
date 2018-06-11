@@ -8,7 +8,8 @@ export const environment = {
     hmr       : false,
     apiUrl: '',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com',
-    clientId: 2
+    clientId: 2,
+    formconnectUrl: 'http://formsi.test:4000'
     // socketServerUrl: 'wss://67.225.138.133:8080'
     // apiUrl:   'http://localhost:8000/api',
     // socketServerUrl: 'ws://localhost:8080'
