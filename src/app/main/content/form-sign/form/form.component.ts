@@ -32,7 +32,7 @@ export class FormComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.spinner.show();
+        // this.spinner.show();
 
         this.connectorSubscription = this.connectorService.formconnectUpdated$.subscribe((res: boolean) => {
             if (res) {
@@ -75,7 +75,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
     onMessage(event: any) {
         if (event.data && event.data.func && event.data.message === 'contentLoaded' && event.data.id === this.data.other_id) {
-            this.spinner.hide();
+            // this.spinner.hide();
         }
     }
 }
