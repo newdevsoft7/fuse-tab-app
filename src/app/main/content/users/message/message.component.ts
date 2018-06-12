@@ -132,8 +132,6 @@ export class MessageComponent implements OnInit, AfterViewInit {
       this.count = res.count;
       if (this.count < 2) {
         this.message.thread = 0;
-      } else {
-        this.message.thread = 1;
       }
     } catch (e) {
       this.handleError(e.error);
