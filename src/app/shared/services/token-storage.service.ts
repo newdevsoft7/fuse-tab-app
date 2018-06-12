@@ -58,6 +58,22 @@ export class TokenStorage {
     }
 
     /**
+    * Set formconnect data
+    * @returns {void}
+    */
+    public setFormconnectData(data: any): void {
+        localStorage.setItem('formconnect', JSON.stringify(data));
+    }
+
+    /**
+     * Get formconnect data
+     * @returns {any}
+     */
+    public getFormconnectData(): any {
+        return JSON.parse(localStorage.getItem('formconnect'));
+    }
+
+    /**
     * Set steps for registrant
     * @returns {void}
     */
@@ -176,5 +192,6 @@ export class TokenStorage {
         localStorage.removeItem('formRequired');
         localStorage.removeItem('permissions');
         localStorage.removeItem('steps');
+        localStorage.removeItem('formconnect');
     }
 }

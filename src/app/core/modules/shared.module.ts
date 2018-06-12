@@ -41,6 +41,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import { DebounceDirective } from '../directives/debounce/debounce.directive';
 import { EditableTextComponent } from '../components/editable-text/editable-text.component';
 import { RegistrationGuardService } from '../../shared/guards/registration-guard.service';
+import { ConnectorService } from '../../shared/services/connector.service';
 
 @NgModule({
     declarations   : [
@@ -115,6 +116,7 @@ import { RegistrationGuardService } from '../../shared/guards/registration-guard
         ActionService,
         AuthenticationService,
         TokenStorage,
+        ConnectorService,
         // guards
         AuthGuardService,
         UnauthGuardService,

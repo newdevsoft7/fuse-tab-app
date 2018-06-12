@@ -212,4 +212,10 @@ export class AuthenticationService {
     }
   }
 
+  saveConnectData({ formconnect }): void {
+    if (formconnect) {
+      this.tokenStorage.setFormconnectData(formconnect);
+    }
+  }
+
 }

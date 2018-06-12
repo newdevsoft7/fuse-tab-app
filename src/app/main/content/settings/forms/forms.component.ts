@@ -239,7 +239,7 @@ export class SettingsFormsComponent implements OnInit {
     }
 
     onMessage(event: any) {
-        if (event.data && event.data.func && this.tabService.currentTab.url.indexOf('settings/form') > -1) {
+        if (event.data && event.data.func && event.data.message === 'success' && this.tabService.currentTab.url.indexOf('settings/form') > -1) {
             this.tabService.closeTab(this.tabService.currentTab.url);
         }
     }

@@ -83,7 +83,7 @@ export class TimelineComponent implements OnInit, OnDestroy
     }
 
     onMessage(event: any) {
-        if (event.data && event.data.func) {
+        if (event.data && event.data.func && event.data.message === 'success') {
             const id = this.tabService.currentTab.data.other_id;
             if (this.tabService.currentTab.url === `home/report/${id}`) {
                 this.loadNotifications();

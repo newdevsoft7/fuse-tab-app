@@ -37,6 +37,7 @@ import { AdminExportAsPdfDialogComponent } from '../schedule/shifts-export/admin
 import { UserService } from '../users/user.service';
 import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { ConnectorService } from '../../../shared/services/connector.service';
 
 @Component({
     selector: 'fuse-home',
@@ -112,6 +113,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     userSwitcherSubscription: Subscription;
 
     formData: any;
+    formconnectTokenRefreshed: boolean = false;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
@@ -123,7 +125,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         private authService: AuthenticationService,
         private dialog: MatDialog,
         private userService: UserService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private connectorService: ConnectorService,
     ) {
 
         this.socketService = injector.get(SocketService);
@@ -498,14 +501,25 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         }
     }
 
-    onMessage(event: any) {
-        if (event.data && event.data.func && this.formData) {
+    async onMessage(event: any) {
+        if (event.data && event.data.func && event.data.message === 'success' && this.formData) {
             const index = this.formData.findIndex(data => data.id === this.tabService.currentTab.data.id);
             this.formData.splice(index, 1);
             if (this.formData.length > 0) {
                 this.tokenStorage.setFormData(this.formData);
             } else {
                 this.tokenStorage.removeFormData();
+            }
+        }
+        if (event.data && event.data.func && event.data.message === 'tokenError' && !this.formconnectTokenRefreshed) {
+            try {
+                this.formconnectTokenRefreshed = true;
+                const formconnect = await this.connectorService.fetchFormconnectData();
+                this.authService.saveConnectData({ formconnect });
+                this.connectorService.formconnectUpdated$.next(true);
+                this.formconnectTokenRefreshed = false;
+            } catch (e) {
+                this.toastr.error(e.error.message);
             }
         }
     }

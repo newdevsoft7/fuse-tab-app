@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../../../shared/services/authenticatio
 import { Router } from '@angular/router';
 import { SocketService } from '../../../../shared/services/socket.service';
 import { AppSettingService } from '../../../../shared/services/app-setting.service';
+import { ConnectorService } from '../../../../shared/services/connector.service';
 
 @Component({
     selector   : 'fuse-login',
@@ -35,7 +36,8 @@ export class FuseLoginComponent implements OnInit
         private authService: AuthenticationService,
         private router: Router,
         private injector: Injector,
-        private appSettingService: AppSettingService
+        private appSettingService: AppSettingService,
+        private connectorService: ConnectorService
     )
     {
         this.socketService = injector.get(SocketService);
@@ -103,6 +105,10 @@ export class FuseLoginComponent implements OnInit
 
         try {
             await this.authService.login(username, password).toPromise();
+
+            const formconnect = await this.connectorService.fetchFormconnectData();
+            this.authService.saveConnectData({ formconnect });
+            this.connectorService.formconnectUpdated$.next(true);
 
             this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
         } catch (err) {
