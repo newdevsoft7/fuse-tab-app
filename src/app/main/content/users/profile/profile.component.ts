@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
-import { MatDialog, MatDialogRef } from "@angular/material";
+import { MatDialog, MatDialogRef, MatTabGroup, MatTab } from "@angular/material";
 import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 import { UserService } from '../user.service';
 
@@ -14,6 +14,7 @@ import { UserService } from '../user.service';
 export class UsersProfileComponent implements OnInit {
 
 	@Input('data') user;
+	@ViewChild('tabGroup') tabGroup: MatTabGroup;
 
 	currentUser: any;
 	userInfo: any;
@@ -26,6 +27,7 @@ export class UsersProfileComponent implements OnInit {
 	isSkillsShow = false;
 	isWorkAreasShow = false;
 	timezones: any[] = [];
+	selectedIndex: number = 0;
 
 	linkedUsers: any = [];
 
@@ -156,6 +158,13 @@ export class UsersProfileComponent implements OnInit {
 			});
 		} catch (e) {
 			this.displayError(e);
+		}
+	}
+
+	openPhotoTab() {
+		const index = this.tabGroup._tabs.toArray().findIndex(tab => tab.textLabel == 'Photos');
+		if (index > -1) {
+			this.selectedIndex = index;
 		}
 	}
 

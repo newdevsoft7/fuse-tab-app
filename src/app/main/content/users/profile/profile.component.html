@@ -4,7 +4,7 @@
     <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
 
         <div class="user-info" [ngClass.sm]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start end">
-            <img class="profile-image avatar huge w-md-156 h-md-156" [src]="getAvatar(userInfo)">
+            <img class="profile-image avatar huge w-md-156 h-md-156" [src]="getAvatar(userInfo)" (click)="openPhotoTab()">
             <div class="user-info" fxLayout="column">
                 <div class="name">
                     {{userInfo.fname}} {{userInfo.lname}}
@@ -49,7 +49,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <mat-tab-group dynamicHeight="true">
+        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedIndex" #tabGroup>
 
             <mat-tab label="About">
                 <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings" [settings]="settings"></app-users-profile-about>
