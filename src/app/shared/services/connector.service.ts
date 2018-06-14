@@ -10,11 +10,12 @@ const BASE_URL = `${environment.apiUrl}`;
 export class ConnectorService {
 
     formconnectUpdated$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    quizconnectUpdated$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
     constructor(private http: HttpClient) {}
 
-    fetchFormconnectData(): Promise<any> {
-        const url = `${BASE_URL}/token/formconnect`;
+    fetchConnectorData(type: string): Promise<any> {
+        const url = `${BASE_URL}/token/${type}`;
         return this.http.get(url).toPromise();
     }
 }
