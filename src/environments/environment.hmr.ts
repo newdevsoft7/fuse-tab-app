@@ -3,5 +3,7 @@ export const environment = {
     hmr       : true,
     apiUrl: '',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com',
-    clientId: 2
+    clientId: 2,
+    formconnectUrl: 'https://formconnect.net',
+    quizconnectUrl: 'https://quizconnect.net'
 };

@@ -514,7 +514,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         if (event.data && event.data.func && event.data.message === 'tokenError' && !this.formconnectTokenRefreshed) {
             try {
                 this.formconnectTokenRefreshed = true;
-                const formconnect = await this.connectorService.fetchFormconnectData();
+                const formconnect = await this.connectorService.fetchConnectorData('formconnect');
                 this.authService.saveConnectData({ formconnect });
                 this.connectorService.formconnectUpdated$.next(true);
                 this.formconnectTokenRefreshed = false;

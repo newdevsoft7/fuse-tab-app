@@ -4,5 +4,6 @@ export const environment = {
     apiUrl: '',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com',
     clientId: 2,
-    formconnectUrl: 'https://formconnect.net'
+    formconnectUrl: 'https://formconnect.net',
+    quizconnectUrl: 'https://quizconnect.net'
 };

@@ -9,8 +9,10 @@ export const environment = {
     apiUrl: '',
     socketServerUrl: 'wss://staffconnect-app.herokuapp.com',
     clientId: 2,
-    formconnectUrl: 'http://formsi.test:4000'
+    formconnectUrl: 'http://formsi.test:4000',
     // socketServerUrl: 'wss://67.225.138.133:8080'
     // apiUrl:   'http://localhost:8000/api',
     // socketServerUrl: 'ws://localhost:8080'
+    quizconnectUrl: 'http://localhost:4300'
+    //quizconnectUrl: 'https://quizconnect.net'
 };

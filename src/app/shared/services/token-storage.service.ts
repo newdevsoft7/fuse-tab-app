@@ -74,6 +74,22 @@ export class TokenStorage {
     }
 
     /**
+     * Set quizconnect data
+     * @returns {void}
+     */
+    public setQuizconnectData(data: any): void {
+        localStorage.setItem('quizconnect', JSON.stringify(data));
+    }
+
+    /**
+     * Get quizconnect data
+     * @returns {any}
+     */
+    public getQuizconnectData(): any {
+        return JSON.parse(localStorage.getItem('quizconnect'));
+    }
+
+    /**
     * Set steps for registrant
     * @returns {void}
     */
@@ -193,5 +209,6 @@ export class TokenStorage {
         localStorage.removeItem('permissions');
         localStorage.removeItem('steps');
         localStorage.removeItem('formconnect');
+        localStorage.removeItem('quizconnect');
     }
 }
