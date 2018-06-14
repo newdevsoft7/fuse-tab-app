@@ -96,13 +96,14 @@ export class StaffShiftComponent implements OnInit {
                 if (index > -1) {
                     this.shift.forms_apply.splice(index, 1);
                 }
+                this.tabService.closeTab(this.tabService.currentTab.url);
             } else if (this.tabService.currentTab.url === `form_confirm/${this.shift.id}/${id}`) {
                 const index = this.shift.forms_confirm.findIndex(form => form.id === this.tabService.currentTab.data.id);
                 if (index > -1) {
                     this.shift.forms_confirm.splice(index, 1);
                 }
+                this.tabService.closeTab(this.tabService.currentTab.url);
             }
-            this.tabService.closeTab(this.tabService.currentTab.url);
         }
     }
 }

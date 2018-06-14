@@ -63,8 +63,8 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
             const id = this.tabService.currentTab.data.id;
             if (this.tabService.currentTab.url === `profile/${this.user.id}/document/${id}`) {
                 this.getDocuments();
+				this.tabService.closeTab(this.tabService.currentTab.url);
             }
-            this.tabService.closeTab(this.tabService.currentTab.url);
         }
     }
 

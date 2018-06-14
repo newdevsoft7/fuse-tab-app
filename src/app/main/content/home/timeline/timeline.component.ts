@@ -87,8 +87,8 @@ export class TimelineComponent implements OnInit, OnDestroy
             const id = this.tabService.currentTab.data.other_id;
             if (this.tabService.currentTab.url === `home/report/${id}`) {
                 this.loadNotifications();
+                this.tabService.closeTab(this.tabService.currentTab.url);
             }
-            this.tabService.closeTab(this.tabService.currentTab.url);
         }
     }
 

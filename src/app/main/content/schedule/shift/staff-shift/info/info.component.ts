@@ -92,6 +92,7 @@ export class StaffShiftInfoComponent implements OnInit {
                     const action = this.tabService.currentTab.data.action;
                     this.doAction(action, role);
                 }
+                this.tabService.closeTab(this.tabService.currentTab.url);
             } else if (this.tabService.currentTab.url === `staff-shift/quiz/${id}`) {
                 const role = this.tabService.currentTab.data.role;
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
@@ -103,8 +104,8 @@ export class StaffShiftInfoComponent implements OnInit {
                         quiz.required = score >= quiz.required_score ? 0 : 1;
                     }
                 }
+                this.tabService.closeTab(this.tabService.currentTab.url);
             }
-            this.tabService.closeTab(this.tabService.currentTab.url);
         }
     }
 
