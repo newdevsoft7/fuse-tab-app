@@ -130,6 +130,13 @@ export const ADMIN_MODEL = [
                 'translate': 'NAV.ADMIN.QUIZS',
                 'type': 'item',
                 'tab': TAB.QUIZS_TAB
+            },
+            {
+                'id': 'surveys',
+                'title': 'Surveys',
+                'translate': 'NAV.ADMIN.SURVEYS',
+                'type': 'item',
+                'tab': TAB.SURVEYS_TAB
             }
         ]
     },

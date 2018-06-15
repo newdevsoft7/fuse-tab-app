@@ -8,6 +8,7 @@ import { ReportsUploadsDetailsSidenavComponent } from './sidenavs/details/detail
 import { ReportsUploadsMainSidenavComponent } from './sidenavs/main/main.component';
 import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
 import { QuizsComponent } from './quizs/quizs.component';
+import { SurveysComponent } from './surveys/surveys.component';
 
 @NgModule({
   imports: [
@@ -20,14 +21,16 @@ import { QuizsComponent } from './quizs/quizs.component';
     ReportsUploadsDetailsSidenavComponent,
     ReportsUploadsMainSidenavComponent,
     ReportsSelectShiftDialogComponent,
-    QuizsComponent
+    QuizsComponent,
+    SurveysComponent
   ],
   providers: [
     ReportsUploadsService
   ],
   exports: [
     ReportsUploadsComponent,
-    QuizsComponent
+    QuizsComponent,
+    SurveysComponent
   ],
   entryComponents: [
     ReportsSelectShiftDialogComponent

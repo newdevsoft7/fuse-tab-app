@@ -46,9 +46,11 @@ import { SettingsService } from '../settings/settings.service';
     styleUrls: ['./home.component.scss']
 })
 export class FuseHomeComponent implements OnInit, OnDestroy {
+
     tabSubscription: Subscription;
     closeTabSubscription: Subscription;
     quizsEnableSubscription: Subscription;
+    surveysEnableSubscription: Subscription;
 
     // Admin view templates
     @ViewChild(TabsComponent) tabsComponent;
@@ -88,6 +90,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('quizTpl') quizTpl; // Form Template for adding new quizzes
 
     @ViewChild('quizsTpl') quizsTpl; // Quizs tab
+    @ViewChild('surveysTpl') surveysTpl; // Surveys tab
 
     // Payroll
     @ViewChild('payrollTpl') payrollTpl;
@@ -149,6 +152,13 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.quizsEnableSubscription = this.settingsService.quizsEnableChanged.subscribe(value => {
             const settings = this.tokenStorage.getSettings();
             settings.quiz_enable = value;
+            this.tokenStorage.setSettings(settings);
+            this.refreshMenu();
+        });
+
+        this.surveysEnableSubscription = this.settingsService.surveysEnableChanged.subscribe(value => {
+            const settings = this.tokenStorage.getSettings();
+            settings.survey_enable = value;
             this.tokenStorage.setSettings(settings);
             this.refreshMenu();
         });
@@ -277,6 +287,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.closeTabSubscription.unsubscribe();
         this.userSwitcherSubscription.unsubscribe();
         this.quizsEnableSubscription.unsubscribe();
+        this.surveysEnableSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {
@@ -515,6 +526,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
 
         const reportsNavItem = navModel.find(v => v.id === 'reports_and_uploads');
         if (reportsNavItem) {
+            // quiz menu
             if (settings.quiz_enable == 1) {
                 const index = reportsNavItem.children.findIndex(v => v.id === 'quizs');
                 if (index < 0) {
@@ -532,11 +544,24 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 const index = reportsNavItem.children.findIndex(v => v.id === 'quizs');
                 if (index > -1) { reportsNavItem.children.splice(index, 1); }
             }
-            if (settings.survey_enable != 1) {
+
+            // surveys menu
+            if (settings.survey_enable == 1) {
+                const index = reportsNavItem.children.findIndex(v => v.id === 'surveys');
+                if (index < 0) {
+                    reportsNavItem.children.push(
+                        {
+                            'id': 'surveys',
+                            'title': 'Surveys',
+                            'translate': 'NAV.ADMIN.SURVEYS',
+                            'type': 'item',
+                            'tab': TAB.SURVEYS_TAB
+                        }
+                    );
+                }
+            } else {
                 const index = reportsNavItem.children.findIndex(v => v.id === 'surveys');
                 if (index > -1) { reportsNavItem.children.splice(index, 1); }
-            } else {
-
             }
             reportsNavItem.type = reportsNavItem.children.length > 0 ? 'collapse' : 'item';
         }
