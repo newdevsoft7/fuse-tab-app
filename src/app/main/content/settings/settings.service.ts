@@ -19,6 +19,9 @@ export class SettingsService {
     onSideNavChanged: Subject<any> = new Subject();
     sidenavs: any[];
 
+    quizsEnableChanged: Subject<any> = new Subject();
+    surveysEnableChanged: Subject<any> = new Subject();
+
     constructor(
         private http: HttpClient) {
             this.sidenavs = new SettingsSideNavModel().model;

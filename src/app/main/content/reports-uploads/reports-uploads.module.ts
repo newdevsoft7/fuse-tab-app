@@ -7,6 +7,7 @@ import { ReportsUploadsFileListComponent } from './file-list/file-list.component
 import { ReportsUploadsDetailsSidenavComponent } from './sidenavs/details/details.component';
 import { ReportsUploadsMainSidenavComponent } from './sidenavs/main/main.component';
 import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
+import { QuizsComponent } from './quizs/quizs.component';
 
 @NgModule({
   imports: [
@@ -18,13 +19,15 @@ import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-
     ReportsUploadsFileListComponent,
     ReportsUploadsDetailsSidenavComponent,
     ReportsUploadsMainSidenavComponent,
-    ReportsSelectShiftDialogComponent
+    ReportsSelectShiftDialogComponent,
+    QuizsComponent
   ],
   providers: [
     ReportsUploadsService
   ],
   exports: [
-    ReportsUploadsComponent
+    ReportsUploadsComponent,
+    QuizsComponent
   ],
   entryComponents: [
     ReportsSelectShiftDialogComponent

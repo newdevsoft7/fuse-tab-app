@@ -38,6 +38,8 @@ export const locale = {
                 'REPORTS_AND_UPLOADS': 'Reports & Uploads',
                 'REPORTS_AND_UPLOADS_REPORT_DESIGNER': 'Report Designer',
                 'REPORTS_AND_UPLOADS_SHARED_FILES': 'Shared Files',
+                'QUIZS': 'Quizs',
+                'SURVEYS': 'Surveys',
 
                 'ACCOUNTING': 'Accounting',
                 'ACCOUNTING_STAFF_INVOICES': 'Staff Invoices',

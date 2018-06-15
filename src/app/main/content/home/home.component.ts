@@ -38,6 +38,7 @@ import { UserService } from '../users/user.service';
 import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { ConnectorService } from '../../../shared/services/connector.service';
+import { SettingsService } from '../settings/settings.service';
 
 @Component({
     selector: 'fuse-home',
@@ -47,6 +48,7 @@ import { ConnectorService } from '../../../shared/services/connector.service';
 export class FuseHomeComponent implements OnInit, OnDestroy {
     tabSubscription: Subscription;
     closeTabSubscription: Subscription;
+    quizsEnableSubscription: Subscription;
 
     // Admin view templates
     @ViewChild(TabsComponent) tabsComponent;
@@ -84,6 +86,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     // Form
     @ViewChild('formTpl') formTpl; // Form Template for signing
     @ViewChild('quizTpl') quizTpl; // Form Template for adding new quizzes
+
+    @ViewChild('quizsTpl') quizsTpl; // Quizs tab
 
     // Payroll
     @ViewChild('payrollTpl') payrollTpl;
@@ -127,6 +131,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private toastr: ToastrService,
         private connectorService: ConnectorService,
+        private settingsService: SettingsService
     ) {
 
         this.socketService = injector.get(SocketService);
@@ -139,6 +144,13 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
 
         this.closeTabSubscription = this.tabService.tabClosed.subscribe(url => {
             this.closeTab(url);
+        });
+
+        this.quizsEnableSubscription = this.settingsService.quizsEnableChanged.subscribe(value => {
+            const settings = this.tokenStorage.getSettings();
+            settings.quiz_enable = value;
+            this.tokenStorage.setSettings(settings);
+            this.refreshMenu();
         });
 
         this.formData = this.tokenStorage.getFormData();
@@ -163,7 +175,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             this.fuseNavigationService.setNavigationModel(new FuseNavigationModel(this.tokenStorage.getUser().lvl));
             this.addMenuByUserLevel();
             this.addPayRollMenu();
-            this.hideMenus();
+            this.refreshMenu();
         });
         if (!this.tokenStorage.isExistSecondaryUser()) {
             this.loadFCMservices();
@@ -264,6 +276,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.tabSubscription.unsubscribe();
         this.closeTabSubscription.unsubscribe();
         this.userSwitcherSubscription.unsubscribe();
+        this.quizsEnableSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {
@@ -482,7 +495,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         navModel.splice(4, 0, payroll);
     }
 
-    private hideMenus() {
+    private refreshMenu() {
         const settings = this.tokenStorage.getSettings();
         const navModel = this.fuseNavigationService.getNavigationModel();
         if (settings.client_enable != 1) {
@@ -498,6 +511,34 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         if (settings.tracking_enable != 1) {
             const index = navModel.findIndex(v => v.id === 'tracking');
             if (index > -1) { navModel.splice(index, 1); }
+        }
+
+        const reportsNavItem = navModel.find(v => v.id === 'reports_and_uploads');
+        if (reportsNavItem) {
+            if (settings.quiz_enable == 1) {
+                const index = reportsNavItem.children.findIndex(v => v.id === 'quizs');
+                if (index < 0) {
+                    reportsNavItem.children.unshift(
+                        {
+                            'id': 'quizs',
+                            'title': 'Quizs',
+                            'translate': 'NAV.ADMIN.QUIZS',
+                            'type': 'item',
+                            'tab': TAB.QUIZS_TAB
+                        }
+                    );
+                }
+            } else {
+                const index = reportsNavItem.children.findIndex(v => v.id === 'quizs');
+                if (index > -1) { reportsNavItem.children.splice(index, 1); }
+            }
+            if (settings.survey_enable != 1) {
+                const index = reportsNavItem.children.findIndex(v => v.id === 'surveys');
+                if (index > -1) { reportsNavItem.children.splice(index, 1); }
+            } else {
+
+            }
+            reportsNavItem.type = reportsNavItem.children.length > 0 ? 'collapse' : 'item';
         }
     }
 

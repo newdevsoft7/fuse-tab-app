@@ -120,9 +120,18 @@ export const ADMIN_MODEL = [
         'id': 'reports_and_uploads',
         'title': 'Reports & Uploads',
         'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS',
-        'type': 'item',
+        'type': 'collapse',
         'icon': 'cloud_upload',
         'tab': TAB.REPORTS_AND_UPLOADS_TAB,
+        'children': [
+            {
+                'id': 'quizs',
+                'title': 'Quizs',
+                'translate': 'NAV.ADMIN.QUIZS',
+                'type': 'item',
+                'tab': TAB.QUIZS_TAB
+            }
+        ]
     },
     {
         'id': 'accounting',

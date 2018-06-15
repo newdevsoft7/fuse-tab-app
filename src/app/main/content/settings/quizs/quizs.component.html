@@ -8,60 +8,6 @@
         Enable the quiz module to create and assign scored quizs to staff as requirements for shift applications
       </div>
     </div>
-
-
-    <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
-
-
-      <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
-        <button class="btn-add-form" mat-mini-fab color="accent" (click)="addQuiz()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <div class="pt-16 nav" fuseperfectscrollbar>
-          <div class="nav-item" *ngFor="let quiz of quizes">
-            <div matRipple
-                 (click)="selectQuiz(quiz)"
-                 [class.active]="quiz.id === selectedQuiz.id"
-                 class="nav-link" fxLayout="row" fxLayoutAlign="space-between center">
-                            <span class="name">
-                               {{ quiz.rname }}
-                            </span>
-
-              <div fxFlex="0 1 auto" fxLayout="row">
-                <button mat-icon-button (click)="fillQuiz(quiz, $event)" fxFlex="0 1 auto" matTooltip="View">
-                  <mat-icon>remove_red_eye</mat-icon>
-                </button>
-                <button mat-icon-button (click)="editQuiz(quiz, $event)" fxFlex="0 1 auto" matTooltip="Edit">
-                  <mat-icon class="s-20">edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="deleteQuiz(quiz.id, $event)" fxFlex="0 1 auto" matTooltip="Delete">
-                  <mat-icon class="s-20">delete</mat-icon>
-                </button>
-              </div>
-            </div>
-
-            <mat-divider></mat-divider>
-          </div>
-        </div>
-      </mat-drawer>
-      <div class="form-container" *ngIf="selectedQuiz">
-        <div class="box info-box">
-          <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
-            <div class="title">Quiz instructions</div>
-          </header>
-          <div class="content" fxLayout="column">
-            <textarea name="quizInstructions" [(ngModel)]="selectedQuiz.instructions" placeholder="Enter instructions">
-            </textarea>
-            <div class="mt-8">
-              <button mat-raised-button color="accent" (click)="editQuiz(selectedQuiz, $event)">
-                <mat-icon class="s-20 white-fg">save</mat-icon> Save
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </mat-drawer-container>
   </div>
   <!-- / QUIZ MODULE -->
 
