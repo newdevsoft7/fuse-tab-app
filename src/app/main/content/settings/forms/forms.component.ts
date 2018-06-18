@@ -239,10 +239,13 @@ export class SettingsFormsComponent implements OnInit {
     }
 
     onMessage(event: any) {
-        if (event.data && event.data.func && event.data.message === 'success' && this.tabService.currentTab.url.indexOf('settings/form') > -1) {
-            this.tabService.closeTab(this.tabService.currentTab.url);
-            if (this.tabService.currentTab.url === 'settings/form/new') {
-                this.getForms();
+        if (event.data && event.data.type === 'formconnect') {
+            switch (event.data.message) {
+                case 'create':
+                case 'edit':
+                    this.tabService.closeTab(this.tabService.currentTab.url);
+                    this.getForms();
+                    break;
             }
         }
     }

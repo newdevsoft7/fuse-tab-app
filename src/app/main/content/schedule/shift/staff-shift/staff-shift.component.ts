@@ -89,7 +89,7 @@ export class StaffShiftComponent implements OnInit {
     }
 
     onMessage(event: any) {
-        if (event.data && event.data.func && event.data.message === 'success') {
+        if (event.data && event.data && event.data.type === 'formconnect' && event.data.message === 'signup') {
             const id = this.tabService.currentTab.data.id;
             if (this.tabService.currentTab.url === `form_apply/${this.shift.id}/${id}`) {
                 const index = this.shift.forms_apply.findIndex(form => form.id === this.tabService.currentTab.data.id);

@@ -59,7 +59,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 	}
 
 	onMessage(event: any) {
-        if (event.data && event.data.func) {
+        if (event.data && event.data.type === 'formconnect' && event.data.message === 'signup') {
             const id = this.tabService.currentTab.data.id;
             if (this.tabService.currentTab.url === `profile/${this.user.id}/document/${id}`) {
                 this.getDocuments();
