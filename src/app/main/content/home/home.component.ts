@@ -51,6 +51,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     closeTabSubscription: Subscription;
     quizsEnableSubscription: Subscription;
     surveysEnableSubscription: Subscription;
+    schedulingEnableSubscription: Subscription;
 
     // Admin view templates
     @ViewChild(TabsComponent) tabsComponent;
@@ -159,6 +160,13 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.surveysEnableSubscription = this.settingsService.surveysEnableChanged.subscribe(value => {
             const settings = this.tokenStorage.getSettings();
             settings.survey_enable = value;
+            this.tokenStorage.setSettings(settings);
+            this.refreshMenu();
+        });
+
+        this.schedulingEnableSubscription = this.settingsService.schedulingEnableChanged.subscribe(value => {
+            const settings = this.tokenStorage.getSettings();
+            settings.shift_enable = value;
             this.tokenStorage.setSettings(settings);
             this.refreshMenu();
         });
@@ -288,6 +296,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.userSwitcherSubscription.unsubscribe();
         this.quizsEnableSubscription.unsubscribe();
         this.surveysEnableSubscription.unsubscribe();
+        this.schedulingEnableSubscription.unsubscribe();
     }
 
     openTab(tab: Tab) {
@@ -565,6 +574,25 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             }
             reportsNavItem.type = reportsNavItem.children.length > 0 ? 'collapse' : 'item';
         }
+
+        const scheduleMenuItem = navModel.find(v => v.id === 'schedule');
+        const accountMenuItem = navModel.find(v => v.id === 'accounting');
+        if (settings.shift_enable == 1) {
+            if (accountMenuItem && !accountMenuItem.visible) {
+                accountMenuItem.visible = true;
+            }
+            if (scheduleMenuItem && !scheduleMenuItem.visible) {
+                scheduleMenuItem.visible = true;
+            }
+        } else {
+            if (accountMenuItem && (_.isUndefined(accountMenuItem.visible) || accountMenuItem.visible)) {
+                accountMenuItem.visible = false;
+            }
+            if (scheduleMenuItem && (_.isUndefined(scheduleMenuItem.visible) || scheduleMenuItem.visible)) {
+                scheduleMenuItem.visible = false;
+            }
+        }
+        this.fuseNavigationService.setNavigationModel({ model: navModel });
     }
 
     async onMessage(event: any) {

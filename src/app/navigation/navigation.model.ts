@@ -161,14 +161,8 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.SETTINGS',
         'type': 'collapse',
         'icon': 'settings',
+        'tab': TAB.SETTINGS_TAB,
         'children': [
-            {
-                'id': 'system',
-                'title': 'System',
-                'translate': 'NAV.ADMIN.SETTINGS',
-                'type': 'item',
-                'tab': TAB.SETTINGS_TAB
-            },
             {
                 'id': 'templates',
                 'title': 'Templates',

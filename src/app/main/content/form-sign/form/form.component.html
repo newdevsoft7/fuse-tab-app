@@ -1,4 +1,4 @@
 <div class="page-layout simple">
-    <p class="ml-12">{{data.instructions}}</p>
+    <p class="ml-12" *ngIf="data.instructions">{{data.instructions}}</p>
     <iframe *ngIf="iframeUrl" [src]="iframeUrl | safe" class="form-sign" frameBorder="0"></iframe>
 </div>

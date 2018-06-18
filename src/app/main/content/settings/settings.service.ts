@@ -21,6 +21,7 @@ export class SettingsService {
 
     quizsEnableChanged: Subject<any> = new Subject();
     surveysEnableChanged: Subject<any> = new Subject();
+    schedulingEnableChanged: Subject<any> = new Subject();
 
     constructor(
         private http: HttpClient) {

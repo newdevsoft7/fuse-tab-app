@@ -4,7 +4,7 @@
     <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Scheduling Module</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items[Setting.shift_enable]"
+            <mat-slide-toggle color="accent" [(ngModel)]="items[Setting.shift_enable]"
                 (change)="onChange(Setting.shift_enable, $event)" fxFlex="20"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="80">
                 Enable for scheduling
@@ -14,7 +14,7 @@
     <!-- / SCHEDULING MODULE -->
 
     <!-- DEFAULT TIMES LOCKED -->
-    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+    <div [hidden]="!items[Setting.shift_enable]" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Default times locked</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="items[Setting.shift_default_times_locked]"
@@ -27,7 +27,7 @@
     <!-- / DEFAULT TIMES LOCKED -->
 
     <!-- DISPLAY TIMEZONE -->
-    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+    <div [hidden]="!items[Setting.shift_enable]" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Display Timezone</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="items[Setting.shift_timezone_display]"
@@ -40,7 +40,7 @@
     <!-- / DISPLAY TIMEZONE -->
 
     <!-- STANDBY STAFF UNAVAILABLE -->
-    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+    <div [hidden]="!items[Setting.shift_enable]" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Standby Staff Unavailable</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="items[Setting.shift_standby_unavailable]"
@@ -53,7 +53,7 @@
     <!-- / STANDBY STAFF UNAVAILABLE -->
 
     <!-- APPLICATION REASON REQUIRED -->
-    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+    <div [hidden]="!items[Setting.shift_enable]" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Application Reason Required</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="items[Setting.shift_application_reason]"
@@ -66,7 +66,7 @@
     <!-- / APPLICATION REASON REQUIRED -->
 
     <!-- CONFIRMATION REQUIRED -->
-    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+    <div [hidden]="!items[Setting.shift_enable]" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
         <div class="name" fxFlex="20">Confirmation Required</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-slide-toggle color="accent" [checked]="items[Setting.shift_staff_confirm]"
@@ -79,7 +79,7 @@
     <!-- / CONFIRMATION REQUIRED -->
 
     <!-- APPLICATION MESSAGE -->
-    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+    <div [hidden]="!items[Setting.shift_enable]" [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Application Message</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
@@ -92,7 +92,7 @@
     <!-- / APPLICATION MESSAGE -->
 
     <!-- CONFIRMATION MESSAGE -->
-    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+    <div [hidden]="!items[Setting.shift_enable]" [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Confirmation Message</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
@@ -105,7 +105,7 @@
     <!-- / CONFIRMATION MESSAGE -->
 
     <!-- COMPLETION MESSAGE -->
-    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+    <div [hidden]="!items[Setting.shift_enable]" [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Completion Message</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <mat-form-field floatPlaceholder="never" fxFill>
@@ -118,7 +118,7 @@
     <!-- / COMPLETION MESSAGE -->
 
     <!-- CALENDAR VIEW -->
-    <div class="box info-box">
+    <div class="box info-box" [hidden]="!items[Setting.shift_enable]">
         <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">Calendar View</div>
         </header>
@@ -143,7 +143,7 @@
     <!-- CALENDAR VIEW -->
 
     <!-- REPLACEMENT REQUESTS -->
-    <div class="box info-box">
+    <div class="box info-box" [hidden]="!items[Setting.shift_enable]">
         <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">Replacement Requests</div>
         </header>
@@ -222,7 +222,7 @@
     </div>
     <!-- REPLACEMENT REQUESTS -->
 
-    <div class="box info-box">
+    <div class="box info-box" [hidden]="!items[Setting.shift_enable]">
         <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">Shift Statuses</div>
         </header>
@@ -250,7 +250,7 @@
     </div>
 
 
-    <div class="box info-box">
+    <div class="box info-box" [hidden]="!items[Setting.shift_enable]">
         <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="title">Staff Statuses</div>
         </header>

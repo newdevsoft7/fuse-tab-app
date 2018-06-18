@@ -6,6 +6,7 @@ import { TrackingService } from '../../../main/content/tracking/tracking.service
 import { TrackingCategory } from '../../../main/content/tracking/tracking.models';
 import { Tab } from '../../../main/tab/tab';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
+import * as _ from 'lodash';
 
 @Component({
     selector     : 'fuse-navigation',
@@ -36,7 +37,7 @@ export class FuseNavigationComponent implements OnDestroy
             this.fuseNavigationService.onNavigationModelChange
                 .subscribe((navigationModel) => {
                     if (navigationModel) {
-                        this.navigationModel = navigationModel;
+                        this.navigationModel = navigationModel.filter(f => _.isUndefined(f.visible) || f.visible);
                         this.getTrackingCategories();
                     }
                 });

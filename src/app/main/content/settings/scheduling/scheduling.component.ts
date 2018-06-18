@@ -130,7 +130,9 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
             .distinctUntilChanged()
             .takeUntil(this.componentDestroyed)
             .subscribe(value => {
-                this.onChange(Setting.shift_replacement_request_deadline, value);
+                if (value != '') {
+                    this.onChange(Setting.shift_replacement_request_deadline, value);
+                }
             });
 
         this.fetchShiftStatues();
@@ -196,7 +198,9 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            //this.toastr.success(res.message);
+            if (id === Setting.shift_enable) {
+                this.settingsService.schedulingEnableChanged.next(value);
+            }
         });
     }
 
