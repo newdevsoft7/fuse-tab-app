@@ -54,29 +54,23 @@ export class QuizComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.connectorSubscription = this.connectorService.quizconnectUpdated$.subscribe((res: boolean) => {
-      if (res) {
-          this.iframeUrl = '';
-          setTimeout(() => {
-              this.refreshIframe();
-          });
+    if (this.connectorService.quizconnectTokenRefreshing$.value) {
+      this.iframeUrl = '';
+    } else {
+      this.refreshIframe();
+    }
+    this.connectorSubscription = this.connectorService.quizconnectTokenRefreshing$.subscribe((res: boolean) => {
+      if (!res) {
+        this.iframeUrl = '';
+        setTimeout(() => {
+          this.refreshIframe();
+        });
       }
     });
-
-    if (window.addEventListener) {
-      window.addEventListener('message', this.onMessage.bind(this), false);
-    } else if ((<any>window).attachEvent) {
-      (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-    }
   }
 
   ngOnDestroy() {
     this.connectorSubscription.unsubscribe();
   }
 
-  onMessage(event: any) {
-    if (event.data && event.data.func && event.data.message === 'contentLoaded' && event.data.id === this.data.other_id) {
-      // this.spinner.hide();
-    }
-  }
 }

@@ -622,6 +622,19 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 }
                 break;
             case 'quizconnect':
+                if (event.data.message === 'tokenError') {
+                    try {
+                        this.connectorService.quizconnectTokenRefreshing$.next(true);
+                        const quizconnect = await this.connectorService.fetchConnectorData('quizconnect');
+                        this.authService.saveConnectData({ quizconnect });
+                    } catch (e) {
+                        this.toastr.error(e.error.message);
+                    } finally {
+                        this.connectorService.quizconnectTokenRefreshing$.next(false);
+                    }
+                } else {
+                    this.connectorService.currentQuizTab$.next(this.tabService.currentTab);
+                }
                 break;
         }
     }
