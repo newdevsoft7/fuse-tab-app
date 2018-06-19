@@ -1,6 +1,6 @@
 import {
     Component, OnInit, Input, ViewEncapsulation, ViewChild,
-    Output, EventEmitter
+    Output, EventEmitter, OnDestroy
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDrawer, MatDialog, MatDialogRef } from '@angular/material';
@@ -12,6 +12,9 @@ import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-
 import { TrackingService } from '../../tracking/tracking.service';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
+import { Subscription } from 'rxjs/Subscription';
+import { ConnectorService } from '../../../../shared/services/connector.service';
+import { TabComponent } from '../../../tab/tab/tab.component';
 
 @Component({
     selector: 'app-settings-forms',
@@ -19,7 +22,7 @@ import { TabService } from '../../../tab/tab.service';
     styleUrls: ['./forms.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SettingsFormsComponent implements OnInit {
+export class SettingsFormsComponent implements OnInit, OnDestroy {
 
     @ViewChild('drawer') drawer: MatDrawer;
 
@@ -54,6 +57,8 @@ export class SettingsFormsComponent implements OnInit {
 
     getTrackingOptionName;
 
+    formEventSubscription: Subscription;
+
     readonly levels = [
         { label: 'Owner', value: 'owner' },
         { label: 'Admin', value: 'admin' },
@@ -69,7 +74,8 @@ export class SettingsFormsComponent implements OnInit {
         private toastr: ToastrService,
         private dialog: MatDialog,
         private tabService: TabService,
-        private toastrService: ToastrService
+        private toastrService: ToastrService,
+        private connectorService: ConnectorService
     ) { }
 
     ngOnInit() {
@@ -91,11 +97,23 @@ export class SettingsFormsComponent implements OnInit {
                 });
             });
 
-        if (window.addEventListener) {
-            window.addEventListener('message', this.onMessage.bind(this), false);
-        } else if ((<any>window).attachEvent) {
-            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-        }
+        this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
+            if (tab) {
+                const id = tab.data.id;
+                switch (tab.url) {
+                    case 'settings/form/new':
+                        this.tabService.closeTab(tab.url);
+                    case `settings/form/${id}/edit`:
+                        this.tabService.closeTab(tab.url);
+                        this.getForms();
+                        break;
+                }
+            }
+        })
+    }
+
+    ngOnDestroy() {
+        this.formEventSubscription.unsubscribe();
     }
 
     getForms() {
@@ -217,7 +235,7 @@ export class SettingsFormsComponent implements OnInit {
             const tab = new Tab(
                 form.fname,
                 'formTpl',
-                `settings/form/${form.id}`,
+                `settings/form/${form.id}/edit`,
                 res
             );
             this.tabService.openTab(tab);
@@ -236,18 +254,6 @@ export class SettingsFormsComponent implements OnInit {
             }
         );
         this.tabService.openTab(tab);
-    }
-
-    onMessage(event: any) {
-        if (event.data && event.data.type === 'formconnect') {
-            switch (event.data.message) {
-                case 'create':
-                case 'edit':
-                    this.tabService.closeTab(this.tabService.currentTab.url);
-                    this.getForms();
-                    break;
-            }
-        }
     }
 
     handleError(e): void {

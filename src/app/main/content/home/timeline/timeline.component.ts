@@ -21,6 +21,8 @@ import { TAB } from '../../../../constants/tab';
 import { Tab } from '../../../tab/tab';
 import { ScheduleService } from '../../schedule/schedule.service';
 import { Subscription } from 'rxjs/Subscription';
+import { ConnectorService } from '../../../../shared/services/connector.service';
+import { TabComponent } from '../../../tab/tab/tab.component';
 
 enum PostType {
     Main    = 'main',
@@ -50,6 +52,7 @@ export class TimelineComponent implements OnInit, OnDestroy
     user: any;
     dialogRef;
     userSwitcherSubscription: Subscription;
+    quizEventSubscription: Subscription;
 
     @Input() lvl: string;
     @Input() otherId: number;
@@ -62,7 +65,8 @@ export class TimelineComponent implements OnInit, OnDestroy
         private homeService: HomeService,
         private userService: UserService,
         private tabService: TabService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private connectorService: ConnectorService
     ) {
         this.user = this.tokenStorage.getUser();
     }
@@ -75,21 +79,12 @@ export class TimelineComponent implements OnInit, OnDestroy
             }
         });
 
-        if (window.addEventListener) {
-            window.addEventListener('message', this.onMessage.bind(this), false);
-        } else if ((<any>window).attachEvent) {
-            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-        }
-    }
-
-    onMessage(event: any) {
-        if (event.data && event.data.func && event.data.message === 'success') {
-            const id = this.tabService.currentTab.data.other_id;
-            if (this.tabService.currentTab.url === `home/report/${id}`) {
+        this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
+            if (tab && tab.url === `home/report/${tab.data.other_id}`) {
                 this.loadNotifications();
-                this.tabService.closeTab(this.tabService.currentTab.url);
+                this.tabService.closeTab(tab.url);
             }
-        }
+        });
     }
 
     private fetchData() {
@@ -107,6 +102,7 @@ export class TimelineComponent implements OnInit, OnDestroy
     ngOnDestroy() {
         this.tokenStorage.userSwitchListener.next(false);
         this.userSwitcherSubscription.unsubscribe();
+        this.quizEventSubscription.unsubscribe();
     }
 
     async loadNotifications() {

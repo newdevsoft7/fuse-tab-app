@@ -121,7 +121,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     userSwitcherSubscription: Subscription;
 
     formData: any;
-    formconnectTokenRefreshed: boolean = false;
 
     constructor(
         private translationLoader: FuseTranslationLoaderService,
@@ -596,25 +595,34 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     }
 
     async onMessage(event: any) {
-        if (event.data && event.data.func && event.data.message === 'success' && this.formData) {
-            const index = this.formData.findIndex(data => data.id === this.tabService.currentTab.data.id);
-            this.formData.splice(index, 1);
-            if (this.formData.length > 0) {
-                this.tokenStorage.setFormData(this.formData);
-            } else {
-                this.tokenStorage.removeFormData();
-            }
-        }
-        if (event.data && event.data.func && event.data.message === 'tokenError' && !this.formconnectTokenRefreshed) {
-            try {
-                this.formconnectTokenRefreshed = true;
-                const formconnect = await this.connectorService.fetchConnectorData('formconnect');
-                this.authService.saveConnectData({ formconnect });
-                this.connectorService.formconnectUpdated$.next(true);
-                this.formconnectTokenRefreshed = false;
-            } catch (e) {
-                this.toastr.error(e.error.message);
-            }
+        if (!event.data) return;
+        switch (event.data.type) {
+            case 'formconnect':
+                if (event.data.message === 'tokenError') {
+                    try {
+                        this.connectorService.formconnectTokenRefreshing$.next(true);
+                        const formconnect = await this.connectorService.fetchConnectorData('formconnect');
+                        this.authService.saveConnectData({ formconnect });
+                    } catch (e) {
+                        this.toastr.error(e.error.message);
+                    } finally {
+                        this.connectorService.formconnectTokenRefreshing$.next(false);
+                    }
+                } else {
+                    if (this.formData) {
+                        const index = this.formData.findIndex(data => data.id === this.tabService.currentTab.data.id);
+                        this.formData.splice(index, 1);
+                        if (this.formData.length > 0) {
+                            this.tokenStorage.setFormData(this.formData);
+                        } else {
+                            this.tokenStorage.removeFormData();
+                        }
+                    }
+                    this.connectorService.currentFormTab$.next(this.tabService.currentTab);
+                }
+                break;
+            case 'quizconnect':
+                break;
         }
     }
 

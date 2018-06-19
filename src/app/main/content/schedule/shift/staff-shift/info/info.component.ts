@@ -2,7 +2,8 @@ import {
     Component, OnInit,
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
-    ViewChild
+    ViewChild,
+    OnDestroy
 } from '@angular/core';
 
 import {
@@ -29,6 +30,9 @@ import { StaffShiftCheckInOutDialogComponent } from './dialogs/check-in-out-dial
 import { StaffShiftCompleteDialogComponent } from './dialogs/complete-dialog/complete-dialog.component';
 import { TabService } from '../../../../../tab/tab.service';
 import { StaffShiftQuizDialogComponent } from './dialogs/quiz-dialog/quiz-dialog.component';
+import { Subscription } from 'rxjs/Subscription';
+import { ConnectorService } from '../../../../../../shared/services/connector.service';
+import { TabComponent } from '../../../../../tab/tab/tab.component';
 
 enum Action {
     apply = 'apply',
@@ -55,7 +59,7 @@ enum Action {
     styleUrls: ['./info.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class StaffShiftInfoComponent implements OnInit {
+export class StaffShiftInfoComponent implements OnInit, OnDestroy {
 
     @Input() shift;
 
@@ -64,49 +68,46 @@ export class StaffShiftInfoComponent implements OnInit {
     readonly Action = Action;
     settings: any = {};
 
+    quizEventSubscription: Subscription;
+
 	constructor(
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
-        private tabService: TabService
+        private tabService: TabService,
+        private connectorService: ConnectorService
     ) { }
 
 	ngOnInit() {
         this.settings = this.tokenStorage.getSettings();
-
-        if (window.addEventListener) {
-            window.addEventListener('message', this.onMessage.bind(this), false);
-        } else if ((<any>window).attachEvent) {
-            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-        }
-    }
-
-    onMessage(event: any) {
-        if (event.data && event.data.func) {
-            const id = this.tabService.currentTab.data.id;
-            if (this.tabService.currentTab.url === `staff-shift/reports/${id}`) {
-                const role = this.tabService.currentTab.data.role;
+        this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
+            if (tab && tab.url === `staff-shift/reports/${tab.data.id}`) {
+                const role = tab.data.role;
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
                 if (index > -1) {
-                    const action = this.tabService.currentTab.data.action;
+                    const action = tab.data.action;
                     this.doAction(action, role);
                 }
-                this.tabService.closeTab(this.tabService.currentTab.url);
-            } else if (this.tabService.currentTab.url === `staff-shift/quiz/${id}`) {
-                const role = this.tabService.currentTab.data.role;
+                this.tabService.closeTab(tab.url);
+            } else if (tab && tab.url === `staff-shift/quiz/${tab.data.id}`) {
+                const role = tab.data.role;
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
                 if (index > -1) {
-                    const score = event.data.score; // assume that quizconnect returns score
-                    const quiz = this.shift.shift_roles[index].quizs.find(v => v.id === id);
+                    const score = tab.data.score; // assume that quizconnect returns score
+                    const quiz = this.shift.shift_roles[index].quizs.find(v => v.id === tab.data.id);
                     if (quiz) {
                         quiz.completed_score = score;
                         quiz.required = score >= quiz.required_score ? 0 : 1;
                     }
                 }
-                this.tabService.closeTab(this.tabService.currentTab.url);
+                this.tabService.closeTab(tab.url);
             }
-        }
+        });
+    }
+
+    ngOnDestroy() {
+        this.quizEventSubscription.unsubscribe();
     }
 
     openPayItemDialog(payItems) {
