@@ -217,6 +217,8 @@ export class TabsComponent implements AfterContentInit {
 				// let viewContainerRef = this.dynamicTabPlaceholder;
 				viewContainerRef.remove(i);
 
+				this.tabService.openTabs.splice(i, 1);
+
 				// set tab index to 1st one
 				if (i > 0) {
 					this.selectTab(this.dynamicTabs[i - 1]);
@@ -238,6 +240,8 @@ export class TabsComponent implements AfterContentInit {
 				let viewContainerRef = this.dynamicTabPlaceholder.viewContainer;
 				// let viewContainerRef = this.dynamicTabPlaceholder;
 				viewContainerRef.remove(i);
+
+				this.tabService.openTabs.splice(i, 1);
 
 				// set tab index to 1st one
 				if (i > 0) {

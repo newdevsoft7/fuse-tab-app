@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { MatTab, MatTabChangeEvent } from '@angular/material';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { ScheduleService } from '../../schedule.service';
@@ -8,6 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import { StaffShiftMapComponent } from './map/map.component';
 import { TabService } from '../../../../tab/tab.service';
+import { Subscription } from 'rxjs/Subscription';
+import { ConnectorService } from '../../../../../shared/services/connector.service';
+import { TabComponent } from '../../../../tab/tab/tab.component';
 
 enum TAB {
     Info = 'Info',
@@ -21,7 +24,7 @@ enum TAB {
     templateUrl: './staff-shift.component.html',
     styleUrls: ['./staff-shift.component.scss']
 })
-export class StaffShiftComponent implements OnInit {
+export class StaffShiftComponent implements OnInit, OnDestroy {
 
     @Input() data;
     shift: any;
@@ -31,6 +34,8 @@ export class StaffShiftComponent implements OnInit {
     managers = '';
     settings: any;
 
+    formEventSubscription: Subscription;
+
     @ViewChild('mapTab') mapTab: StaffShiftMapComponent;
 
     constructor(
@@ -38,7 +43,8 @@ export class StaffShiftComponent implements OnInit {
         private toastr: ToastrService,
         private userService: UserService,
         private scheduleService: ScheduleService,
-        private tabService: TabService
+        private tabService: TabService,
+        private connectorService: ConnectorService
     ) {
         this.settings = this.tokenStorage.getSettings();
     }
@@ -54,11 +60,25 @@ export class StaffShiftComponent implements OnInit {
                 this.timezones = res;
             });
 
-        if (window.addEventListener) {
-            window.addEventListener('message', this.onMessage.bind(this), false);
-        } else if ((<any>window).attachEvent) {
-            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-        }
+        this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
+            if (tab && tab.url === `form_apply/${this.shift.id}/${tab.data.id}`) {
+                const index = this.shift.forms_apply.findIndex(form => form.id === tab.data.id);
+                if (index > -1) {
+                    this.shift.forms_apply.splice(index, 1);
+                }
+                this.tabService.closeTab(tab.url);
+            } else if (tab && tab.url === `form_confirm/${this.shift.id}/${tab.data.id}`) {
+                const index = this.shift.forms_confirm.findIndex(form => form.id === tab.data.id);
+                if (index > -1) {
+                    this.shift.forms_confirm.splice(index, 1);
+                }
+                this.tabService.closeTab(tab.url);
+            }
+        })
+    }
+
+    ngOnDestroy() {
+        this.formEventSubscription.unsubscribe();
     }
 
     // Get a shift
@@ -70,8 +90,6 @@ export class StaffShiftComponent implements OnInit {
             this.toastr.error(e.message || 'Something is wrong while fetching events.');
         }
     }
-
-    
 
     toggleMoreBtn() {
         this.showMoreBtn = !this.showMoreBtn;
@@ -85,25 +103,6 @@ export class StaffShiftComponent implements OnInit {
 
             default:
                 break;
-        }
-    }
-
-    onMessage(event: any) {
-        if (event.data && event.data && event.data.type === 'formconnect' && event.data.message === 'signup') {
-            const id = this.tabService.currentTab.data.id;
-            if (this.tabService.currentTab.url === `form_apply/${this.shift.id}/${id}`) {
-                const index = this.shift.forms_apply.findIndex(form => form.id === this.tabService.currentTab.data.id);
-                if (index > -1) {
-                    this.shift.forms_apply.splice(index, 1);
-                }
-                this.tabService.closeTab(this.tabService.currentTab.url);
-            } else if (this.tabService.currentTab.url === `form_confirm/${this.shift.id}/${id}`) {
-                const index = this.shift.forms_confirm.findIndex(form => form.id === this.tabService.currentTab.data.id);
-                if (index > -1) {
-                    this.shift.forms_confirm.splice(index, 1);
-                }
-                this.tabService.closeTab(this.tabService.currentTab.url);
-            }
         }
     }
 }

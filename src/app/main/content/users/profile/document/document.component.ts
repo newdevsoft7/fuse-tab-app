@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation, DoCheck, IterableDiffers, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, DoCheck, IterableDiffers, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
@@ -6,6 +6,9 @@ import { UserService } from '../../user.service';
 import * as _ from 'lodash';
 import { DocumentFormsDialogComponent } from './forms-dialog/forms-dialog.component';
 import { TabService } from '../../../../tab/tab.service';
+import { Subscription } from 'rxjs/Subscription';
+import { ConnectorService } from '../../../../../shared/services/connector.service';
+import { TabComponent } from '../../../../tab/tab/tab.component';
 
 const PROFILE_DOCUMENT = 'profile_document';
 
@@ -15,7 +18,7 @@ const PROFILE_DOCUMENT = 'profile_document';
 	styleUrls: ['./document.component.scss'],
 	encapsulation: ViewEncapsulation.None
 })
-export class UsersProfileDocumentComponent implements OnInit, DoCheck {
+export class UsersProfileDocumentComponent implements OnInit, DoCheck, OnDestroy {
 
 	@Input('userInfo') user;
 	@Input() currentUser;
@@ -27,6 +30,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 	differ: any;
 
 	dialogRef: any;
+	formEventSubscription: Subscription;
 
 	constructor(
 		private spinner: CustomLoadingService,
@@ -34,20 +38,24 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 		private userService: UserService,
 		private toastr: ToastrService,
 		private tabService: TabService,
+		private connectorService: ConnectorService,
 		differs: IterableDiffers
 	) {
 		this.differ = differs.find([]).create(null);
 	}
 
 	ngOnInit() {
-
-		if (window.addEventListener) {
-            window.addEventListener('message', this.onMessage.bind(this), false);
-        } else if ((<any>window).attachEvent) {
-            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-		}
-		
+		this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
+            if (tab && tab.url === `profile/${this.user.id}/document/${tab.data.id}`) {
+                this.getDocuments();
+				this.tabService.closeTab(tab.url);
+            }
+		})
 		this.getDocuments();
+	}
+
+	ngOnDestroy() {
+		this.formEventSubscription.unsubscribe();
 	}
 
 	ngDoCheck() {
@@ -57,16 +65,6 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck {
 			this.adminDocuments = this.documents.filter(photo => photo.admin_only == 1);
 		}
 	}
-
-	onMessage(event: any) {
-        if (event.data && event.data.type === 'formconnect' && event.data.message === 'signup') {
-            const id = this.tabService.currentTab.data.id;
-            if (this.tabService.currentTab.url === `profile/${this.user.id}/document/${id}`) {
-                this.getDocuments();
-				this.tabService.closeTab(this.tabService.currentTab.url);
-            }
-        }
-    }
 
 	private getDocuments() {
 		this.userService.getProfileDocuments(this.user.id)

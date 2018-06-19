@@ -32,22 +32,19 @@ export class FormComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        // this.spinner.show();
-
-        this.connectorSubscription = this.connectorService.formconnectUpdated$.subscribe((res: boolean) => {
-            if (res) {
+        if (this.connectorService.formconnectTokenRefreshing$.value) {
+            this.iframeUrl = '';
+        } else {
+            this.refreshIframe();
+        }
+        this.connectorSubscription = this.connectorService.formconnectTokenRefreshing$.subscribe((res: boolean) => {
+            if (!res) {
                 this.iframeUrl = '';
                 setTimeout(() => {
                     this.refreshIframe();
                 });
             }
         });
-
-        if (window.addEventListener) {
-            window.addEventListener('message', this.onMessage.bind(this), false);
-        } else if ((<any>window).attachEvent) {
-            (<any>window).attachEvent('onmessage', this.onMessage.bind(this), false);
-        }
     }
 
     ngOnDestroy() {
@@ -71,11 +68,5 @@ export class FormComponent implements OnInit, OnDestroy {
             count++;
         }
         this.iframeUrl = iframeUrl;
-    }
-
-    onMessage(event: any) {
-        if (event.data && event.data.func && event.data.message === 'contentLoaded' && event.data.id === this.data.other_id) {
-            // this.spinner.hide();
-        }
     }
 }
