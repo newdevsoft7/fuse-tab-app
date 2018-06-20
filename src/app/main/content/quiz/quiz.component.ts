@@ -33,22 +33,21 @@ export class QuizComponent implements OnInit {
 
     if (this.data && this.data.other_id && !this.data.isEdit) {
       iframeUrl = `${environment.quizconnectUrl}/main/surveys/view/${this.data.other_id}`;
-      // if (this.data.shift_id) {
-      //   iframeUrl += '&shift' + this.data.shift_id;
-      // }
     } else if (this.data && this.data.other_id && this.data.isEdit) {
       iframeUrl = `${environment.quizconnectUrl}/main/surveys/edit/${this.data.other_id}`;
     } else if (this.data && !this.data.other_id) {
-      if (this.data.type === 'survey') {
-        iframeUrl = `${environment.quizconnectUrl}/main/surveys/create?&kind=survey`;
-      } else {
-        iframeUrl = `${environment.quizconnectUrl}/main/surveys/create?&kind=quiz`;
-      }
+      iframeUrl = `${environment.quizconnectUrl}/main/surveys/create`;
     }
     let count = 0;
     for (let key in this.quizconnectData) {
         iframeUrl += `${ count === 0 ? '?' : '&' }${key}=${this.quizconnectData[key]}`;
         count++;
+    }
+    if (this.data.type) {
+      iframeUrl += `&kind=${this.data.type}`;
+    }
+    if (this.data.shift_id) {
+      iframeUrl += `&shift=${this.data.shift_id}`;
     }
     this.iframeUrl = iframeUrl;
   }
