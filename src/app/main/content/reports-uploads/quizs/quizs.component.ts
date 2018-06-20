@@ -1,17 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDialogRef, MatDrawer, MatDialog } from '@angular/material';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { Tab } from '../../../tab/tab';
 import { ToastrService } from 'ngx-toastr';
 import { TabService } from '../../../tab/tab.service';
 import { SettingsService } from '../../settings/settings.service';
+import { ConnectorService } from '../../../../shared/services/connector.service';
+import { Subscription } from 'rxjs';
+import { TabComponent } from '../../../tab/tab/tab.component';
 
 @Component({
     selector: 'app-quizs',
     templateUrl: './quizs.component.html',
     styleUrls: ['./quizs.component.scss']
 })
-export class QuizsComponent implements OnInit {
+export class QuizsComponent implements OnInit, OnDestroy {
 
     @ViewChild('drawer') drawer: MatDrawer;
     dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -19,16 +22,37 @@ export class QuizsComponent implements OnInit {
     quizes: any[] = [];
     quiz: any = null;
     selectedQuiz: any = null;
+    quizEventSubscription: Subscription; 
 
     constructor(
         private toastr: ToastrService,
         private tabService: TabService,
         private dialog: MatDialog,
-        private settingsService: SettingsService
+        private settingsService: SettingsService,
+        private connectorService: ConnectorService
     ) { }
 
     ngOnInit() {
         this.getQuizes();
+        this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
+            if (tab) {
+                const id = tab.data.id;
+                switch (tab.url) {
+                    case 'settings/quiz/new':
+                    case `settings/quiz/${id}/edit`:
+                        this.tabService.closeTab(tab.url);
+                        this.getQuizes();
+                        break;
+                    case `settings/quiz/${id}`:
+                        this.tabService.closeTab(tab.url);
+                        break;
+                }
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.quizEventSubscription.unsubscribe();
     }
 
     addQuiz(): void {
@@ -56,25 +80,28 @@ export class QuizsComponent implements OnInit {
     }
     
     
-    async editQuiz(quiz, event: MouseEvent) {
+    editQuiz(quiz, event: MouseEvent) {
         event.stopPropagation();
+        quiz.isEdit = true;
+        const tab = new Tab(
+            quiz.rname,
+            'quizTpl',
+            `settings/quiz/${quiz.id}/edit`,
+            quiz
+        );
+        this.tabService.openTab(tab);
+    }
+
+    async saveQuiz(quiz) {
         try {
-            //const res = await this.settingsService.getQuiz(quiz.id).toPromise();
-            quiz.isEdit = true;
-            const tab = new Tab(
-                quiz.rname,
-                'quizTpl',
-                `settings/quiz/${quiz.id}`,
-                quiz
-            );
-            this.tabService.openTab(tab);
+            await this.settingsService.saveReport(quiz.id, quiz);
         } catch (e) {
-            this.handleError(e.error);
+            this.handleError(e);
         }
     }
     
     getQuizes() {
-        this.settingsService.getQuizes().subscribe(quizes => {
+        this.settingsService.getReports('quiz').subscribe(quizes => {
             this.quizes = quizes;
             if (quizes.length > 0) {
                 this.selectQuiz(this.quizes[0]);
@@ -97,9 +124,15 @@ export class QuizsComponent implements OnInit {
             disableClose: false
         });
         this.dialogRef.componentInstance.confirmMessage = 'Are you sure?';
-        this.dialogRef.afterClosed().subscribe(result => {
+        this.dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
-                // TODO - Delete Form
+                try {
+                    await this.settingsService.deleteReport(id);
+                    const index = this.quizes.findIndex(v => v.id === id);
+                    if (index > -1) { this.quizes.splice(index, 1); }
+                } catch (e) {
+                    this.handleError(e);
+                }
             }
         });
         event.stopPropagation();

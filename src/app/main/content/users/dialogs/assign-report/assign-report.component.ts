@@ -89,8 +89,7 @@ export class AssignReportDialogComponent implements OnInit {
     }
 
     getQuizes() {
-        this.settingsService.getSurveysAndReports().subscribe(quizes => {
-            console.log(quizes);
+        this.settingsService.getReports().subscribe(quizes => {
             this.quizes = quizes;
         });
     }

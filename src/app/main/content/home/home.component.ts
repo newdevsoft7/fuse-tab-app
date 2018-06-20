@@ -633,6 +633,9 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         this.connectorService.quizconnectTokenRefreshing$.next(false);
                     }
                 } else {
+                    if (event.data.score) {
+                        this.tabService.currentTab.data.score = event.data.score;
+                    }
                     this.connectorService.currentQuizTab$.next(this.tabService.currentTab);
                 }
                 break;

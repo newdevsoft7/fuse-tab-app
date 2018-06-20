@@ -219,28 +219,21 @@ export class SettingsService {
         return this.http.delete(url).toPromise();
     }
 
-    getQuizes(): Observable<any> {
-        const url = `${BASE_URL}/reports/quiz`;
-        return this.http.get(url)
+    getReports(type?: 'quiz' | 'survey'): Observable<any> {
+        const param = type || '';
+        const url = `${BASE_URL}/reports/${param}`;
+        return this.http.get(url.replace(/\/+$/, ''))
           .catch(this.handleError);
     }
 
-    saveQuiz(id: number, params): Observable<any> {
+    saveReport(id: number, params): Promise<any> {
         const url = `${BASE_URL}/report/${id}`;
-        return this.http.put(url, params)
-          .catch(this.handleError);
+        return this.http.put(url, params).toPromise();
     }
 
-    getSurveys(): Observable<any> {
-        const url = `${BASE_URL}/reports/survey`;
-        return this.http.get(url)
-          .catch(this.handleError);
-    }
-
-    getSurveysAndReports(): Observable<any> {
-        const url = `${BASE_URL}/reports`;
-        return this.http.get(url)
-          .catch(this.handleError);
+    deleteReport(id: number | string): Promise<any> {
+        const url = `${BASE_URL}/report/${id}`;
+        return this.http.delete(url).toPromise();
     }
 
     getForm(id: number | string): Observable<any> {

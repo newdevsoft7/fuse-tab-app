@@ -36,9 +36,9 @@
                 </header>
                 <div class="content" fxLayout="column">
                     <textarea name="quizInstructions" [(ngModel)]="selectedQuiz.instructions" placeholder="Enter instructions">
-              </textarea>
+                    </textarea>
                     <div class="mt-8">
-                        <button mat-raised-button color="accent" (click)="editQuiz(selectedQuiz, $event)">
+                        <button mat-raised-button color="accent" (click)="saveQuiz(selectedQuiz)">
                             <mat-icon class="s-20 white-fg">save</mat-icon> Save
                         </button>
                     </div>

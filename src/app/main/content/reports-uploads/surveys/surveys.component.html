@@ -33,12 +33,13 @@
                     <div class="title">Quiz instructions</div>
                 </header>
                 <div class="content" fxLayout="column">
-        <textarea name="quizInstructions" [(ngModel)]="selectedSurvey.instructions" placeholder="Enter instructions">
-
-        </textarea>
-                    <button mat-icon-button (click)="editSurvey(selectedSurvey, $event)" fxFlex="0 1 auto">
-                        <mat-icon class="s-20">save</mat-icon> Save
-                    </button>
+                    <textarea name="quizInstructions" [(ngModel)]="selectedSurvey.instructions" placeholder="Enter instructions">
+                    </textarea>
+                    <div class="mt-8">
+                        <button mat-raised-button color="accent" (click)="saveSurvey(selectedSurvey)">
+                            <mat-icon class="s-20 white-fg">save</mat-icon> Save
+                        </button>
+                    </div>
                 </div>
             </div>
 
