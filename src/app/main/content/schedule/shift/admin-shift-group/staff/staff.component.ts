@@ -68,6 +68,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
     currentUser: any;
     confirmDialogRef: MatDialogRef<FuseConfirmDialogComponent>;
     usersToRoleSubscription: Subscription;
+    deleteRoleSubscrpition: Subscription;
 
     constructor(
         private dialog: MatDialog,
@@ -101,6 +102,12 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                         });
                 }
             });
+        
+        this.deleteRoleSubscrpition = this.actionService.deleteRole$.subscribe((roleIds: any[]) => {
+            this.shifts.forEach((shift, idx) => {
+                this.shifts[idx].shift_roles = shift.shift_roles.filter(r => roleIds.indexOf(r.id) < 0);
+            });
+        });
     }
 
     ngOnInit() {
@@ -221,6 +228,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.usersToRoleSubscription.unsubscribe();
+        this.deleteRoleSubscrpition.unsubscribe();
     }
 
     onPostAdminNote() {

@@ -11,6 +11,9 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { TabService } from '../../../../../tab/tab.service';
 import { Tab } from '../../../../../tab/tab';
+import { MatDialog } from '@angular/material';
+import { ActionService } from '../../../../../../shared/services/action.service';
+import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 class ShiftTime {
     time;
@@ -78,7 +81,9 @@ export class EditShiftRoleDetailComponent implements OnInit {
     constructor(
         private scheduleService: ScheduleService,
         private tabService: TabService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private actionService: ActionService,
+        private dialog: MatDialog
     ) { }
 
     ngOnInit() {
@@ -161,6 +166,22 @@ export class EditShiftRoleDetailComponent implements OnInit {
     }
 
     deleteRole() {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result) {
+                try {
+                    // const res = await this.scheduleService.deleteShiftRoles({
+                    //     rname: this.role,
+                    //     shift_ids: this.shifts.map(v => +v.id)
+                    // });
+                    this.roles = this.roles.filter(v => v !== this.role);
+                    // TODO - call actionService.deleteRole$.next(res.ids)
+                } catch (e) {}
+            }
+        });
     }
 
     private openRoleTab(shifts) {

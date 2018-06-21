@@ -30,6 +30,8 @@ import { Tab } from '../../../../tab/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { NullTemplateVisitor } from '@angular/compiler';
+import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { ActionService } from '../../../../../shared/services/action.service';
 
 class TimeRange {
     from;
@@ -117,7 +119,8 @@ export class ShiftRoleEditComponent implements OnInit {
         public dialog: MatDialog,
         private tabService: TabService,
         private scheduleService: ScheduleService,
-        private tokenStroage: TokenStorage
+        private tokenStroage: TokenStorage,
+        private actionService: ActionService
     ) {
         this.formErrors = {
             rname: {}
@@ -323,6 +326,24 @@ export class ShiftRoleEditComponent implements OnInit {
                     this.displayError(err);
                 });
         }
+    }
+
+    onDelete() {
+        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+            disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result) {
+                try {
+                    await this.scheduleService.deleteShiftRole(this.role.id);
+                    this.tabService.closeTab(this.tabService.currentTab.url);
+                    this.actionService.deleteRole$.next([this.role.id]);
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
     }
 
     private openShiftTab(id, title) {

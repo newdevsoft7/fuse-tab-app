@@ -92,6 +92,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     ];
 
     usersToRoleSubscription: Subscription;
+    deleteRoleSubscrpition: Subscription;
 
     constructor(
         private dialog: MatDialog,
@@ -127,6 +128,9 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                         });
                 }
             });
+        this.deleteRoleSubscrpition = this.actionService.deleteRole$.subscribe((roleIds: any[]) => {
+            this.roles = this.roles.filter(r => roleIds.indexOf(r.id) < 0);
+        });
     }
 
     ngOnInit() {
@@ -168,6 +172,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.usersToRoleSubscription.unsubscribe();
+        this.deleteRoleSubscrpition.unsubscribe();
     }
 
     async onEditRole(role) {

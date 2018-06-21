@@ -19,7 +19,7 @@
             <div fxLayout="row" fxLayoutAlign="start center">
                 <button mat-raised-button color="accent" class="mr-20" (click)="addNewRole()"
                     [disabled]="shifts.length === 0">Add a New Role</button>
-                <button mat-raised-button color="accent" (click)="deleteRole()"
+                <button mat-raised-button color="warn" (click)="deleteRole()"
                     [disabled]="shifts.length === 0">Delete Role</button>
             </div>
             <!-- / ADD & DELETE BUTTONS -->
