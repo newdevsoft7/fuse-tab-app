@@ -26,7 +26,7 @@ class ShiftDate {
     from;
     to;
     constructor(date = null, from = null, to = null) {
-        this.date = date || moment(new Date(), 'YYYY-MM-DD');;
+        this.date = date || moment(new Date(), 'YYYY-MM-DD');
         this.from = from || { hour: 8, minute: 0, meriden: 'AM', format: 12 };
         this.to = to || { hour: 5, minute: 0, meriden: 'PM', format: 12 };
     }
@@ -313,7 +313,8 @@ export class NewShiftComponent implements OnInit {
     }
 
     addNewDate() {
-        const newDate = new ShiftDate();
+        const newDate = <ShiftDate>_.cloneDeep(this.dates[0]);
+        newDate.date = moment(this.dates[this.dates.length - 1].date).add(1, 'days').format('YYYY-MM-DD');
         this.dates.push(newDate);
     }
 
