@@ -36,7 +36,8 @@
             <mat-form-field class="date-picker" fxFlex="30" class="deadline-picker">
               <input type="hidden" formControlName="deadline">
 
-              <input [formControl]="reportControl" matInput [matDatepicker]="datePicker" name="deadline" [(ngModel)]="selectedReport.deadline" placeholder="Deadline">
+              <input matInput [matDatepicker]="datePicker" name="deadline" [(ngModel)]="selectedReport.deadline"
+                [ngModelOptions]="{standalone: true}" placeholder="Deadline">
               <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
               <mat-datepicker #datePicker></mat-datepicker>
             </mat-form-field>
@@ -44,24 +45,18 @@
           <div fxFlex="40" fxLayout="column">
             <mat-form-field>
               <input type="hidden" formControlName="completitions">
-              <input [formControl]="reportControl" [(ngModel)]="selectedReport.completitions" name="completitions" type="number" matInput placeholder="Number of completitions">
+              <input [(ngModel)]="selectedReport.completitions" name="completitions" type="number" matInput
+                [ngModelOptions]="{standalone: true}" placeholder="Number of completitions">
             </mat-form-field>
           </div>
         </div>
       </form>
-      <div *ngFor="let quiz of quizes" class="info" fxLayout.gt-xs="row wrap" fxLayout="column">
-        <div fxLayout="column" fxFlex="40" fxLayoutAlign="start center">
-          <mat-checkbox [(ngModel)]="quiz.assign" (change)="onUpdateAttribute($event)">{{quiz.rname}}</mat-checkbox>
-        </div>
-
-
-      </div>
     </div>
   </div>
 
   <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
 
-    <button mat-raised-button (click)="onSave()" class="save-button mat-accent" aria-label="SAVE">
+    <button mat-raised-button (click)="onSave()" [disabled]="!selectedReport" class="save-button mat-accent" aria-label="SAVE">
       Assign selected reports
     </button>
 

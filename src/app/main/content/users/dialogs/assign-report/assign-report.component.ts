@@ -80,12 +80,6 @@ export class AssignReportDialogComponent implements OnInit {
     selectReport(event: MatAutocompleteSelectedEvent) {
         this.selectedReport = event.option.value;
         console.log(this.selectedReport);
-        // const value = event.option.value.cname;
-    }
-
-    onUpdateAttribute(attribute) {
-        console.log(attribute);
-        console.log(this.quizes);
     }
 
     getQuizes() {
