@@ -170,7 +170,7 @@ export class EditShiftDetailComponent implements OnInit {
         }
 
         this.scheduleService.updateMultipleShifts(params).subscribe(res => {
-            //this.toastr.success(res.message);
+            this.toastr.success(res.message);
         }, err => {
             this.toastr.error(err.error.message);
         })

@@ -154,7 +154,7 @@ export class EditShiftRoleDetailComponent implements OnInit {
             }
         });
         this.scheduleService.updateMultipleRoles(params).subscribe(res => {
-            //this.toastr.success(res.message);
+            this.toastr.success(res.message);
         }, err => {
             this.toastr.error(err.error.message);
         })
