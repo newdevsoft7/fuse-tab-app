@@ -146,9 +146,13 @@ export class AdminShiftEditPeriodComponent implements OnInit {
     }
 
     private validatePeriod() {
+        return true;
+        // jeremy - below is NOT needed as some shifts may be eg 11pm - 3am. backend handles date time corrections
+        /*
         const start = moment(this.start.toString(), 'YYYY-MM-DD HH:mm:ss');
         const end = moment(this.end.toString(), 'YYYY-MM-DD HH:mm:ss');
         return start.isBefore(end) ? true : false;
+        */
     }
 
 }
