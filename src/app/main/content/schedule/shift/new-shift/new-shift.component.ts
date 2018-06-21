@@ -32,6 +32,8 @@ class ShiftDate {
     }
 
     isValid() {
+        return true;
+        // Jeremy - the following is not needed because some shifts are eg 10pm - 3am next day
         const date = moment(this.date, 'YYYY-MM-DD');
         const year = date.year();
         const month = date.month();
