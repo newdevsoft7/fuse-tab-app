@@ -174,7 +174,7 @@ export class ScheduleService {
 
   deleteShiftRoles(params: { shift_ids: string[], rname: string }): Promise<any> {
     const url = `${BASE_URL}/shift/roles/delete`;
-    return this.http.delete(url, { params }).toPromise();
+    return this.http.post(url, params).toPromise();
   }
 
   updateShiftRole(roleId, role): Observable<any> {

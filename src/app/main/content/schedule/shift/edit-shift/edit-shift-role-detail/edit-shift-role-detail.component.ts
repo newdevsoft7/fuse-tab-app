@@ -173,12 +173,12 @@ export class EditShiftRoleDetailComponent implements OnInit {
         dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
                 try {
-                    // const res = await this.scheduleService.deleteShiftRoles({
-                    //     rname: this.role,
-                    //     shift_ids: this.shifts.map(v => +v.id)
-                    // });
+                    const res = await this.scheduleService.deleteShiftRoles({
+                        rname: this.role,
+                        shift_ids: this.shifts.map(v => +v.id)
+                    });
                     this.roles = this.roles.filter(v => v !== this.role);
-                    // TODO - call actionService.deleteRole$.next(res.ids)
+                    this.actionService.deleteRole$.next(res.deleted_ids);
                 } catch (e) {}
             }
         });
