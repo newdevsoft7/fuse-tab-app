@@ -54,7 +54,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     schedulingEnableSubscription: Subscription;
 
     // Admin view templates
-    @ViewChild(TabsComponent) tabsComponent;
+    @ViewChild(TabsComponent) tabsComponent: TabsComponent;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
@@ -617,6 +617,11 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         } else {
                             this.tokenStorage.removeFormData();
                         }
+                        setTimeout(() => {
+                            if (this.tabsComponent.tabs.length > 0) {
+                                this.tabsComponent.selectTab(this.tabsComponent.tabs.first);
+                            }
+                        });
                     }
                     this.connectorService.currentFormTab$.next(this.tabService.currentTab);
                 }
