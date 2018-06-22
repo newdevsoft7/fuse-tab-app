@@ -39,6 +39,9 @@ export class QuizsComponent implements OnInit, OnDestroy {
                 const id = tab.data.id;
                 switch (tab.url) {
                     case 'settings/quiz/new':
+                        this.tabService.closeTab(tab.url);
+                        this.getQuizes();
+                        break;
                     case `settings/quiz/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getQuizes();
@@ -68,7 +71,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
         this.tabService.openTab(tab);
     }
     
-    async fillQuiz(quiz, event) {
+    fillQuiz(quiz, event) {
         quiz.isEdit = false;
         const tab = new Tab(
             quiz.rname,
@@ -78,8 +81,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
         );
         this.tabService.openTab(tab);
     }
-    
-    
+
     editQuiz(quiz, event: MouseEvent) {
         event.stopPropagation();
         quiz.isEdit = true;

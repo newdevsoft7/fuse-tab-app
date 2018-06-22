@@ -102,6 +102,9 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
                 const id = tab.data.id;
                 switch (tab.url) {
                     case 'settings/form/new':
+                        this.tabService.closeTab(tab.url);
+                        this.getForms();
+                        break;
                     case `settings/form/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getForms();
