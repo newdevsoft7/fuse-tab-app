@@ -6,7 +6,7 @@
 
             <!-- NAV ITEM -->
             <ng-container *ngFor="let category of categories">
-                <div class="nav-item">
+                <div class="nav-item" *ngIf="!category.disabled">
                     <a class="nav-link" matRipple (click)="select(category)" [class.active]="category.id === selectedCategory?.id">
                         <span>{{category.title}}</span>
                     </a>

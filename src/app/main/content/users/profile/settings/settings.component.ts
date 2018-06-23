@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-users-profile-settings',
@@ -84,7 +85,8 @@ export class UsersProfileSettingsComponent implements OnInit {
             'id': 'link-other-account',
             'title': 'Link to other StaffConnect accounts',
             'lvls': ['owner', 'admin', 'staff', 'client', 'ext'],
-            'vis': ['owner', 'admin', 'staff', 'client', 'ext']
+            'vis': ['owner', 'admin', 'staff', 'client', 'ext'],
+            'disabled': this.tokenStorage.isExistSecondaryUser()
         }
     ];
 
@@ -93,7 +95,8 @@ export class UsersProfileSettingsComponent implements OnInit {
     constructor(
         private userService: UserService,
         private toastr: ToastrService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private tokenStorage: TokenStorage
     ) { }
 
     ngOnInit() {
@@ -336,5 +339,9 @@ export class UsersProfileSettingsComponent implements OnInit {
         } else {
             this.toastr.error(e.message);
         }
+    }
+
+    get isOwnUser(): boolean {
+        return !this.tokenStorage.isExistSecondaryUser();
     }
 }
