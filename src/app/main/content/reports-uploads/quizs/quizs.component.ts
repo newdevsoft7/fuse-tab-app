@@ -36,12 +36,8 @@ export class QuizsComponent implements OnInit, OnDestroy {
         this.getQuizes();
         this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
             if (tab) {
-                const id = tab.data.id;
+                const id = tab.data.other_id;
                 switch (tab.url) {
-                    case 'settings/quiz/new':
-                        this.tabService.closeTab(tab.url);
-                        this.getQuizes();
-                        break;
                     case `settings/quiz/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getQuizes();
@@ -76,7 +72,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
         const tab = new Tab(
             quiz.rname,
             'quizTpl',
-            `settings/quiz/${quiz.id}`,
+            `settings/quiz/${quiz.other_id}`,
             quiz
         );
         this.tabService.openTab(tab);
@@ -88,7 +84,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
         const tab = new Tab(
             quiz.rname,
             'quizTpl',
-            `settings/quiz/${quiz.id}/edit`,
+            `settings/quiz/${quiz.other_id}/edit`,
             quiz
         );
         this.tabService.openTab(tab);

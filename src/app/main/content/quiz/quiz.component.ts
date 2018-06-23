@@ -17,10 +17,31 @@ export class QuizComponent implements OnInit {
   quizconnectData: any;
   connectorSubscription: Subscription;
 
-  @Input('data') set updateData(data: any) {
-    this.data = data;
-    this.refreshIframe();
+  private _loading: boolean = false;
+
+  get loading(): boolean {
+    return this._loading;
   }
+
+  set loading(value: boolean) {
+    if (value !== null) {
+      this._loading = value;
+    }
+  }
+
+  @Input('data')
+  set updateData(data: any) {
+    if (data) {
+      this.data = data;
+      if (this.connectorService.quizconnectTokenRefreshing$.value) {
+        this.iframeUrl = '';
+      } else {
+        this.updateIframe();
+      }
+    }
+  }
+
+  @Input() url: string;
 
   constructor(
     private tokenStorage: TokenStorage,
@@ -28,6 +49,8 @@ export class QuizComponent implements OnInit {
   ) {}
 
   refreshIframe() {
+    this.loading = true;
+
     let iframeUrl;
     this.quizconnectData = this.tokenStorage.getQuizconnectData();
 
@@ -49,22 +72,22 @@ export class QuizComponent implements OnInit {
     if (this.data.shift_id) {
       iframeUrl += `&shift=${this.data.shift_id}`;
     }
+    iframeUrl += `&tab_url=${this.url}`;
     this.iframeUrl = iframeUrl;
   }
 
   ngOnInit() {
-    if (this.connectorService.quizconnectTokenRefreshing$.value) {
-      this.iframeUrl = '';
-    } else {
-      this.refreshIframe();
-    }
     this.connectorSubscription = this.connectorService.quizconnectTokenRefreshing$.subscribe((res: boolean) => {
-      if (!res) {
-        this.iframeUrl = '';
-        setTimeout(() => {
-          this.refreshIframe();
-        });
+      if (!res && res !== null) {
+        this.updateIframe();
       }
+    });
+  }
+
+  private updateIframe() {
+    this.iframeUrl = '';
+    setTimeout(() => {
+      this.refreshIframe();
     });
   }
 

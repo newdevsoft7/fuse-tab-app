@@ -39,6 +39,7 @@ import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-u
 import { ToastrService } from 'ngx-toastr';
 import { ConnectorService } from '../../../shared/services/connector.service';
 import { SettingsService } from '../settings/settings.service';
+import { QuizComponent } from '../quiz/quiz.component';
 
 @Component({
     selector: 'fuse-home',
@@ -247,8 +248,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     console.log("message from SW: " + messageFromSW);
                 });
             });*/
-            setTimeout(function () {
-                navigator.serviceWorker.addEventListener('message', function (event) {
+            setTimeout(() => {
+                navigator.serviceWorker.addEventListener('message', (event) => {
                     var messageFromSW = event.data;
                     console.log("message from SW: " + messageFromSW);
                 });
@@ -627,6 +628,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 }
                 break;
             case 'quizconnect':
+                const currentTab = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
                 if (event.data.message === 'tokenError') {
                     try {
                         this.connectorService.quizconnectTokenRefreshing$.next(true);
@@ -637,11 +639,18 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     } finally {
                         this.connectorService.quizconnectTokenRefreshing$.next(false);
                     }
+                } else if (event.data.message === 'loaded') {
+                    const quizComponent: QuizComponent = currentTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
+                    quizComponent.loading = false;
+                } else if (event.data.message === 'create') {
+                    currentTab.title = event.data.payload.name;
+                    currentTab.url = currentTab.url.replace('new', `${event.data.payload.id}/edit`);
+                    currentTab.data = { ...currentTab.data, other_id: event.data.payload.id, isEdit: true };
                 } else {
                     if (event.data.score) {
-                        this.tabService.currentTab.data.score = event.data.score;
+                        currentTab.data = { ...currentTab.data, score: event.data.score };
                     }
-                    this.connectorService.currentQuizTab$.next(this.tabService.currentTab);
+                    this.connectorService.currentQuizTab$.next(currentTab);
                 }
                 break;
         }

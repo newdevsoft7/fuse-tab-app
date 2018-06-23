@@ -10,8 +10,8 @@ const BASE_URL = `${environment.apiUrl}`;
 @Injectable()
 export class ConnectorService {
 
-    formconnectTokenRefreshing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-    quizconnectTokenRefreshing$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    formconnectTokenRefreshing$: BehaviorSubject<boolean> = new BehaviorSubject(null);
+    quizconnectTokenRefreshing$: BehaviorSubject<boolean> = new BehaviorSubject(null);
 
     currentFormTab$: BehaviorSubject<TabComponent> = new BehaviorSubject(null);
     currentQuizTab$: BehaviorSubject<TabComponent> = new BehaviorSubject(null);
