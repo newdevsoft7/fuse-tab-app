@@ -15,12 +15,17 @@
                         {{ survey.rname }}
                         </span>
 
-                        <button mat-icon-button (click)="editSurvey(survey, $event)" fxFlex="0 1 auto">
-                            <mat-icon class="s-20">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="deleteSurvey(survey.id, $event)" fxFlex="0 1 auto">
-                            <mat-icon class="s-20">delete</mat-icon>
-                        </button>
+                        <div fxFlex="0 1 auto" fxLayout="row">
+                            <button mat-icon-button (click)="viewSurvey(survey, $event)" fxFlex="0 1 auto" matTooltip="View">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="editSurvey(survey, $event)" fxFlex="0 1 auto">
+                                <mat-icon class="s-20">edit</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="deleteSurvey(survey.id, $event)" fxFlex="0 1 auto">
+                                <mat-icon class="s-20">delete</mat-icon>
+                            </button>
+                        </div>
                     </div>
 
                     <mat-divider></mat-divider>

@@ -37,14 +37,14 @@ export class SurveysComponent implements OnInit {
         this.getSurveys();
         this.surveyEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
             if (tab) {
-                const id = tab.data.id;
+                const id = tab.data.other_id;
                 switch (tab.url) {
                     case 'settings/survey/new':
                     case `settings/survey/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getSurveys();
                         break;
-                    case `settings/quiz/${id}`:
+                    case `settings/survey/${id}`:
                         this.tabService.closeTab(tab.url);
                         break;
                 }
@@ -89,6 +89,18 @@ export class SurveysComponent implements OnInit {
 
     selectSurvey(survey) {
         this.selectedSurvey = survey;
+    }
+
+    viewSurvey(survey, event) {
+        survey.isEdit = false;
+        survey.isView = true;
+        const tab = new Tab(
+            survey.rname,
+            'quizTpl',
+            `settings/survey/${survey.other_id}`,
+            survey
+        );
+        this.tabService.openTab(tab);
     }
 
     editSurvey(survey) {

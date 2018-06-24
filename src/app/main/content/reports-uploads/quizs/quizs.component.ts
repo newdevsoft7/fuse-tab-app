@@ -67,8 +67,9 @@ export class QuizsComponent implements OnInit, OnDestroy {
         this.tabService.openTab(tab);
     }
     
-    fillQuiz(quiz, event) {
+    viewQuiz(quiz, event) {
         quiz.isEdit = false;
+        quiz.isView = true;
         const tab = new Tab(
             quiz.rname,
             'quizTpl',

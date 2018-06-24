@@ -54,11 +54,11 @@ export class QuizComponent implements OnInit {
     let iframeUrl;
     this.quizconnectData = this.tokenStorage.getQuizconnectData();
 
-    if (this.data && this.data.other_id && !this.data.isEdit) {
+    if (this.data && this.data.other_id && !this.data.isEdit) { // Run / View survey / quiz
       iframeUrl = `${environment.quizconnectUrl}/main/surveys/view/${this.data.other_id}`;
-    } else if (this.data && this.data.other_id && this.data.isEdit) {
+    } else if (this.data && this.data.other_id && this.data.isEdit) { // Edit survey / quiz
       iframeUrl = `${environment.quizconnectUrl}/main/surveys/edit/${this.data.other_id}`;
-    } else if (this.data && !this.data.other_id) {
+    } else if (this.data && !this.data.other_id) { // Create Survey / quiz
       iframeUrl = `${environment.quizconnectUrl}/main/surveys/create`;
     }
     let count = 0;
@@ -71,6 +71,9 @@ export class QuizComponent implements OnInit {
     }
     if (this.data.shift_id) {
       iframeUrl += `&shift=${this.data.shift_id}`;
+    }
+    if (this.data.isView) { // View survey / quiz
+      iframeUrl += `&view=true`;
     }
     iframeUrl += `&tab_url=${this.url}`;
     this.iframeUrl = iframeUrl;
