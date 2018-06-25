@@ -69,7 +69,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
     
     viewQuiz(quiz, event) {
         quiz.isEdit = false;
-        quiz.isView = true;
+        quiz.view = 'view';
         const tab = new Tab(
             quiz.rname,
             'quizTpl',

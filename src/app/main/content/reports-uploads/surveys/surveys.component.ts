@@ -93,7 +93,7 @@ export class SurveysComponent implements OnInit {
 
     viewSurvey(survey, event) {
         survey.isEdit = false;
-        survey.isView = true;
+        survey.view = 'view';
         const tab = new Tab(
             survey.rname,
             'quizTpl',
