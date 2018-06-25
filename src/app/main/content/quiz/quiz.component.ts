@@ -72,8 +72,11 @@ export class QuizComponent implements OnInit {
     if (this.data.shift_id) {
       iframeUrl += `&shift=${this.data.shift_id}`;
     }
-    if (this.data.isView) { // View survey / quiz
-      iframeUrl += `&view=true`;
+    if (this.data.view) { // View survey / quiz
+      iframeUrl += `&view=${this.data.view}`;
+      if (this.data.view == 'contentedit') {
+        iframeUrl += `&approved=${this.data.approved}`;
+      }
     }
     iframeUrl += `&tab_url=${this.url}`;
     this.iframeUrl = iframeUrl;

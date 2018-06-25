@@ -24,7 +24,7 @@
     <div fxFlex="64px" class="pl-24">
         <mat-icon class="type-icon" [ngClass]="file.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
     </div>
-    <div fxFlex>{{file.name}}</div>
+    <div fxFlex (click)="openFile(file)">{{file.name}}</div>
     <div fxFlex fxHide fxShow.gt-md>{{file.type}}</div>
     <div fxFlex fxHide.xs>{{file.uploader ? file.uploader : '-'}}</div>
     <div fxFlex fxHide.xs>{{file.size ? file.size : '-'}}</div>

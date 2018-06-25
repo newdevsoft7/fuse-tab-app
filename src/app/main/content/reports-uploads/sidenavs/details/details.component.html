@@ -3,6 +3,11 @@
 
     <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
 
+        <button mat-icon-button class="mat-icon-button" matTooltip="Edit" (click)="edit()"
+            *ngIf="selected.edit && ['survey', 'quiz'].indexOf(selected.type) > -1">
+            <mat-icon>edit</mat-icon>
+        </button>
+
         <button mat-icon-button class="mat-icon-button" matTooltip="Delete"
             *ngIf="selected.delete" (click)="delete()">
             <mat-icon>delete</mat-icon>
@@ -30,11 +35,16 @@
          *fuseIfOnDom [@animate]="{value:'*',params:{delay:'200ms'}}">
 
         <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon *ngIf="!selected.thumbnail" class="type-icon s-48"
-              [ngClass]="selected.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
-            <a [href]="selected.path" *ngIf="selected.thumbnail && selected.type !== 'Folder'" target="blank">
-              <img [src]="selected.thumbnail" class="file-detail-thumbnail">
-            </a>
+            <ng-container *ngIf="['survey', 'quiz'].indexOf(selected.type) > -1; else default">
+                <span *ngIf="selected.score != null">{{selected.score}}</span>
+            </ng-container>
+            <ng-template #default>
+                <mat-icon *ngIf="!selected.thumbnail" class="type-icon s-48"
+                [ngClass]="selected.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
+                <a [href]="selected.path" *ngIf="selected.thumbnail && selected.type !== 'Folder'" target="blank">
+                <img [src]="selected.thumbnail" class="file-detail-thumbnail">
+                </a>
+            </ng-template>
         </div>
 
         <div class="offline-switch"

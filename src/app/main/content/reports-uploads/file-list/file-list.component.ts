@@ -4,6 +4,11 @@ import { ReportsUploadsService } from '../reports-uploads.service';
 
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+import { Tab } from '../../../tab/tab';
+import { TabService } from '../../../tab/tab.service';
+import { Subscription } from 'rxjs';
+import { ConnectorService } from '../../../../shared/services/connector.service';
+import { TabComponent } from '../../../tab/tab/tab.component';
 
 @Component({
   selector: 'app-reports-uploads-file-list',
@@ -22,7 +27,9 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
 
   constructor(
     private reportsUploadsService: ReportsUploadsService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private tabService: TabService,
+    private connectorService: ConnectorService
   ) { }
 
   ngOnInit() {
@@ -38,6 +45,24 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
         .subscribe(selected => {
           this.selected = selected;
         });
+
+    this.connectorService.currentQuizTab$
+        .takeWhile(() => this.alive)
+        .subscribe((tab: TabComponent) => {
+          if (tab) {
+              const id = tab.data.other_id;
+              switch (tab.url) {
+                  case `report/${id}/view`:
+                      this.tabService.closeTab(tab.url);
+                      break;
+                  case `report/${id}/edit`:
+                      this.tabService.closeTab(tab.url);
+                      const index = this.files.findIndex(v => v.id.split(':')[1] == id);
+                      if (index > -1) { this.files[index].score = Math.round(+tab.data.score * 100) / 100; }
+                      break;
+              }
+          }
+      });
   }
 
   async onSelect(selected) {
@@ -54,6 +79,22 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
       this.toastr.error(e.message);
       this.clicked = false;
     }
+  }
+
+  openFile(selected) {
+    if (['quiz', 'survey'].indexOf(selected.type) < 0) { return; }
+    const quiz: any = {
+      view: 'contentview',
+      name: selected.report,
+      other_id: selected.id.split(':')[1]
+    };
+    const tab = new Tab(
+        quiz.name,
+        'quizTpl',
+        `report/${quiz.other_id}/view`,
+        quiz
+    );
+    this.tabService.openTab(tab);
   }
 
   async goToParent() {
@@ -81,7 +122,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
       if (temp[0] === 'f') {
         res = await this.reportsUploadsService.deleteFile(temp[1]);
       } else {
-        res = await this.reportsUploadsService.deleteCompletedReport(temp[1]);
+        res = await this.reportsUploadsService.deleteCompletedReport(temp[0]);
       }
       //this.toastr.success(res.message);
     } catch (e) {

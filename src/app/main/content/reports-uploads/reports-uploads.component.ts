@@ -8,6 +8,7 @@ import { CustomLoadingService } from '../../../shared/services/custom-loading.se
 import { ToastrService } from 'ngx-toastr';
 import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
 import { ReportsUploadsFileListComponent } from './file-list/file-list.component';
+import { FusePerfectScrollbarDirective } from '../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 
 @Component({
   selector: 'app-reports-uploads',
@@ -21,6 +22,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
   @ViewChild('detailSideNav') private sidenav: MatSidenav;
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('fileList') fileList: ReportsUploadsFileListComponent;
+  @ViewChild('scrollbar') scrollbar: FusePerfectScrollbarDirective;
 
   private alive = true;
   folders: any[] = [];
@@ -36,6 +38,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
         .takeWhile(() => this.alive)
         .subscribe(files => {
           this.folders = _.clone(this.reportsUploadsService.folders);
+          setTimeout(() =>this.scrollbar.scrollToTop());
         });
   }
 

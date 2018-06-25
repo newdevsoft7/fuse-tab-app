@@ -82,12 +82,27 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     try {
       const temp = this.selected.id.split(':'); // e.g id is 'f:23'
       const type = temp[0] === 'f' ? 'upload' : 'report';
-      const res = await this.reportsUploadsService.reportsUploadsApprove(type, temp[1], value);
-      //this.toastr.success(res.message);
+      await this.reportsUploadsService.reportsUploadsApprove(type, temp[1], value);
     } catch (e) {
       this.toastr.error(e.message);
       this.selected.approved = value ? 0 : 1;
     }
+  }
+
+  edit() {
+    const quiz: any = {
+      view: 'contentedit',
+      name: this.selected.report,
+      other_id: this.selected.id.split(':')[1],
+      approved: this.selected.approved
+    };
+    const tab = new Tab(
+        quiz.name,
+        'quizTpl',
+        `report/${quiz.other_id}/edit`,
+        quiz
+    );
+    this.tabService.openTab(tab);
   }
 
 }
