@@ -10,7 +10,7 @@
         </p>
 
         <fieldset *ngIf="reports.length > 0">
-            <legend>Reports</legend>
+            <legend>Surveys</legend>
             <div>
                 <div *ngFor="let report of reports; last as last" [class.mb-8]="!last" fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon [ngClass]="report.completed === 0 ? 'red-fg' : 'green-fg'">
