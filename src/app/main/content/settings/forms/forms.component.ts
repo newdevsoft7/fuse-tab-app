@@ -71,7 +71,6 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
     constructor(
         private settingsService: SettingsService,
         private trackingService: TrackingService,
-        private toastr: ToastrService,
         private dialog: MatDialog,
         private tabService: TabService,
         private toastrService: ToastrService,
@@ -99,12 +98,8 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
 
         this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
             if (tab) {
-                const id = tab.data.id;
+                const id = tab.data.other_id;
                 switch (tab.url) {
-                    case 'settings/form/new':
-                        this.tabService.closeTab(tab.url);
-                        this.getForms();
-                        break;
                     case `settings/form/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getForms();
@@ -237,7 +232,7 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
             const tab = new Tab(
                 form.fname,
                 'formTpl',
-                `settings/form/${form.id}/edit`,
+                `settings/form/${form.other_id}/edit`,
                 res
             );
             this.tabService.openTab(tab);

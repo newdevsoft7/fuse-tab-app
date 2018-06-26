@@ -37,7 +37,7 @@ export class StaffShiftQuizDialogComponent implements OnInit {
         const tab = new Tab(
             quiz.rname,
             'quizTpl',
-            `staff-shift/quiz/${quiz.id}`,
+            `staff-shift/quiz/${quiz.other_id}`,
             {
                 role: this.data.role,
                 ...quiz

@@ -38,7 +38,7 @@ export class DocumentFormsDialogComponent implements OnInit {
         const tab = new Tab(
             form.fname,
             'formTpl',
-            `profile/${this.userId}/document/${form.id}`,
+            `profile/${this.userId}/document/${form.other_id}`,
             form
         );
         this.tabService.openTab(tab);

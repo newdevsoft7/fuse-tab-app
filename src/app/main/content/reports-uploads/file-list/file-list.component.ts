@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { ConnectorService } from '../../../../shared/services/connector.service';
 import { TabComponent } from '../../../tab/tab/tab.component';
 
@@ -20,10 +20,13 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
 
   selected: any;
   files: any[] = [];
-  private alive = true;
   clicked = false;
 
   folders: any[] = [];
+
+  private fileChangedSubscription: Subscription;
+  private fileSelectedSubscription: Subscription;
+  private currentQuizSubscription: Subscription;
 
   constructor(
     private reportsUploadsService: ReportsUploadsService,
@@ -33,24 +36,21 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.reportsUploadsService.onFilesChanged
-        .takeWhile(() => this.alive)
+    this.fileChangedSubscription = this.reportsUploadsService.onFilesChanged
         .subscribe(files => {
           this.files = files;
           this.folders = _.clone(this.reportsUploadsService.folders);
         });
 
-    this.reportsUploadsService.onFileSelected
-        .takeWhile(() => this.alive)
+    this.fileSelectedSubscription = this.reportsUploadsService.onFileSelected
         .subscribe(selected => {
           this.selected = selected;
         });
 
-    this.connectorService.currentQuizTab$
-        .takeWhile(() => this.alive)
+    this.currentQuizSubscription = this.connectorService.currentQuizTab$
         .subscribe((tab: TabComponent) => {
           if (tab) {
-              const id = tab.data.other_id;
+              const id = tab.data.id;
               switch (tab.url) {
                   case `report/${id}/view`:
                       this.tabService.closeTab(tab.url);
@@ -91,7 +91,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
     const tab = new Tab(
         quiz.name,
         'quizTpl',
-        `report/${quiz.other_id}/view`,
+        `report/${quiz.id}/view`,
         quiz
     );
     this.tabService.openTab(tab);
@@ -131,7 +131,9 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.alive = false;
+    this.fileChangedSubscription.unsubscribe();
+    this.fileSelectedSubscription.unsubscribe();
+    this.currentQuizSubscription.unsubscribe();
   }
 
 }

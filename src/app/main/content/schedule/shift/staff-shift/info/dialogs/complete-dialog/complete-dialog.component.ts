@@ -54,7 +54,7 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
         const tab = new Tab(
             report.rname,
             'quizTpl',
-            `staff-shift/reports/${report.id}`,
+            `staff-shift/reports/${report.other_id}`,
             {
                 action: this.data.action,
                 role: this.data.role,

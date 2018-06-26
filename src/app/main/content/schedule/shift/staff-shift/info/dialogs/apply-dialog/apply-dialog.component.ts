@@ -51,7 +51,7 @@ export class StaffShiftApplyDialogComponent implements OnInit {
         const tab = new Tab(
             form.fname,
             'formTpl',
-            `form_apply/${this.shiftId}/${form.id}`,
+            `form_apply/${this.shiftId}/${form.other_id}`,
             form
         );
         this.tabService.openTab(tab);

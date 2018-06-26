@@ -82,7 +82,8 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
 	ngOnInit() {
         this.settings = this.tokenStorage.getSettings();
         this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
-            if (tab && tab.url === `staff-shift/reports/${tab.data.id}`) {
+            const id = tab.data.other_id;
+            if (tab && tab.url === `staff-shift/reports/${id}`) {
                 const role = tab.data.role;
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
                 if (index > -1) {
@@ -90,12 +91,12 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                     this.doAction(action, role);
                 }
                 this.tabService.closeTab(tab.url);
-            } else if (tab && tab.url === `staff-shift/quiz/${tab.data.id}`) {
+            } else if (tab && tab.url === `staff-shift/quiz/${id}`) {
                 const role = tab.data.role;
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
                 if (index > -1) {
                     const score = tab.data.score; // assume that quizconnect returns score
-                    const quiz = this.shift.shift_roles[index].quizs.find(v => v.id === tab.data.id);
+                    const quiz = this.shift.shift_roles[index].quizs.find(v => v.other_id === id);
                     if (quiz) {
                         quiz.completed_score = score;
                         quiz.required = score >= quiz.required_score ? 0 : 1;

@@ -39,7 +39,6 @@ export class SurveysComponent implements OnInit {
             if (tab) {
                 const id = tab.data.other_id;
                 switch (tab.url) {
-                    case 'settings/survey/new':
                     case `settings/survey/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getSurveys();
@@ -109,7 +108,7 @@ export class SurveysComponent implements OnInit {
         const tab = new Tab(
             survey.rname,
             'quizTpl',
-            `settings/survey/${survey.id}/edit`,
+            `settings/survey/${survey.other_id}/edit`,
             survey
         );
         this.tabService.openTab(tab);
