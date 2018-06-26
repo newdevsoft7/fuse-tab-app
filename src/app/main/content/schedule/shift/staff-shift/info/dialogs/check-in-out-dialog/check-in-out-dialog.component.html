@@ -25,7 +25,7 @@
     </div>
     
     <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center">
-        <button mat-raised-button color="accent" cdkFocusInitial (click)="save()" [disabled]="invalid()">
+        <button mat-raised-button color="accent" cdkFocusInitial (click)="save()">
             {{data.mode === 'checkin' ? 'Check In' : 'Check Out'}}
         </button>
         <button mat-button  [mat-dialog-close]="false" class="mat-primary-50-bg">

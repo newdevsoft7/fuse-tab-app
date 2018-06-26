@@ -300,7 +300,6 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         const roleStaffId = role.role_staff_id;
                         try {
                             const res = await this.scheduleService.checkInShiftRole(roleStaffId, result);
-                            //this.toastr.success(res.message);
                             role.message = res.role_message;
                             role.actions = [...res.actions]
                         } catch (e) {
@@ -324,7 +323,6 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         const roleStaffId = role.role_staff_id;
                         try {
                             const res = await this.scheduleService.checkOutShiftRole(roleStaffId, result);
-                            //this.toastr.success(res.message);
                             role.message = res.role_message;
                             role.actions = [...res.actions]
                         } catch (e) {

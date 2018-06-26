@@ -113,14 +113,8 @@ export class StaffShiftCheckInOutDialogComponent implements OnInit {
 
     ngOnInit() { }
 
-
     save() {
-        if (this.invalid()) { return; }
         this.dialogRef.close(this.formData);
-    }
-
-    invalid() {
-        return this.data.photoRequired && !this.formData.has('photo')
     }
 
     change(event) {
