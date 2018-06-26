@@ -33,7 +33,7 @@ export class StaffShiftConfirmDialogComponent implements OnInit {
         const tab = new Tab(
             form.fname,
             'formTpl',
-            `form_confirm/${this.shiftId}/${form.id}`,
+            `form_confirm/${this.shiftId}/${form.other_id}`,
             form
         );
         this.tabService.openTab(tab);

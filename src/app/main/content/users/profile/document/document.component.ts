@@ -46,7 +46,7 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck, OnDestroy
 
 	ngOnInit() {
 		this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
-            if (tab && tab.url === `profile/${this.user.id}/document/${tab.data.id}`) {
+            if (tab && tab.url === `profile/${this.user.id}/document/${tab.data.other_id}`) {
                 this.getDocuments();
 				this.tabService.closeTab(tab.url);
             }

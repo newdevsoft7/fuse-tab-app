@@ -113,8 +113,8 @@
     </ng-template>
     <!--  / CLIENT VIEW TEMPLATES-->
 
-    <ng-template #formTpl let-data="data">
-        <app-form [data]="data"></app-form>
+    <ng-template #formTpl let-data="data" let-url="url">
+        <app-form [data]="data" [url]="url"></app-form>
     </ng-template>
 
     <ng-template #quizTpl let-data="data" let-url="url">

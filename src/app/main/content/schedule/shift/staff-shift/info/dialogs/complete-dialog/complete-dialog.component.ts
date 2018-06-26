@@ -56,7 +56,7 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
             tab = new Tab(
                 survey.rname,
                 'quizTpl',
-                `staff-shift/reports/${survey.id}`,
+                `staff-shift/reports/${survey.other_id}`,
                 {
                     // action: this.data.action,
                     role: this.data.role,
@@ -69,7 +69,7 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
             tab = new Tab(
                 survey.rname,
                 'quizTpl',
-                `staff-shift/reports/${survey.id}`,
+                `staff-shift/reports/${survey.completed_id}`,
                 {
                     // action: this.data.action,
                     role: this.data.role,

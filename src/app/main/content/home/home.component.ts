@@ -40,6 +40,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ConnectorService } from '../../../shared/services/connector.service';
 import { SettingsService } from '../settings/settings.service';
 import { QuizComponent } from '../quiz/quiz.component';
+import { FormComponent } from '../form-sign/form/form.component';
 
 @Component({
     selector: 'fuse-home',
@@ -599,6 +600,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         if (!event.data) return;
         switch (event.data.type) {
             case 'formconnect':
+                const currentFormTab = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
                 if (event.data.message === 'tokenError') {
                     try {
                         this.connectorService.formconnectTokenRefreshing$.next(true);
@@ -609,6 +611,13 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     } finally {
                         this.connectorService.formconnectTokenRefreshing$.next(false);
                     }
+                } else if (event.data.message === 'loaded') {
+                    const formComponent: FormComponent = currentFormTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
+                    formComponent.loading = false;
+                } else if (event.data.message === 'create') {
+                    currentFormTab.title = event.data.payload.name;
+                    currentFormTab.url = currentFormTab.url.replace('new', `${event.data.payload.id}/edit`);
+                    currentFormTab.data = { ...currentFormTab.data, other_id: event.data.payload.id, isEdit: true };
                 } else {
                     if (this.formData) {
                         const index = this.formData.findIndex(data => data.id === this.tabService.currentTab.data.id);
@@ -624,11 +633,11 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                             }
                         });
                     }
-                    this.connectorService.currentFormTab$.next(this.tabService.currentTab);
+                    this.connectorService.currentFormTab$.next(currentFormTab);
                 }
                 break;
             case 'quizconnect':
-                const currentTab = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
+                const currentQuizTab = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
                 if (event.data.message === 'tokenError') {
                     try {
                         this.connectorService.quizconnectTokenRefreshing$.next(true);
@@ -640,17 +649,17 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         this.connectorService.quizconnectTokenRefreshing$.next(false);
                     }
                 } else if (event.data.message === 'loaded') {
-                    const quizComponent: QuizComponent = currentTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
+                    const quizComponent: QuizComponent = currentQuizTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
                     quizComponent.loading = false;
                 } else if (event.data.message === 'create') {
-                    currentTab.title = event.data.payload.name;
-                    currentTab.url = currentTab.url.replace('new', `${event.data.payload.id}/edit`);
-                    currentTab.data = { ...currentTab.data, other_id: event.data.payload.id, isEdit: true };
+                    currentQuizTab.title = event.data.payload.name;
+                    currentQuizTab.url = currentQuizTab.url.replace('new', `${event.data.payload.id}/edit`);
+                    currentQuizTab.data = { ...currentQuizTab.data, other_id: event.data.payload.id, isEdit: true };
                 } else {
                     if (event.data.score) {
-                        currentTab.data = { ...currentTab.data, score: event.data.score };
+                        currentQuizTab.data = { ...currentQuizTab.data, score: event.data.score };
                     }
-                    this.connectorService.currentQuizTab$.next(currentTab);
+                    this.connectorService.currentQuizTab$.next(currentQuizTab);
                 }
                 break;
         }
