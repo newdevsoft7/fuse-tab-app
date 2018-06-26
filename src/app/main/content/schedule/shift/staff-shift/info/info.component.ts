@@ -3,7 +3,9 @@ import {
     ViewEncapsulation, Input,
     DoCheck, IterableDiffers,
     ViewChild,
-    OnDestroy
+    OnDestroy,
+    EventEmitter,
+    Output
 } from '@angular/core';
 
 import {
@@ -64,6 +66,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
     @Input() shift;
 
     dialogRef: any;
+    @Output() shiftChanged = new EventEmitter;
 
     readonly Action = Action;
     settings: any = {};
@@ -83,13 +86,14 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
         this.settings = this.tokenStorage.getSettings();
         this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
             if (tab && tab.url === `staff-shift/reports/${tab.data.id}`) {
-                const role = tab.data.role;
-                const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
-                if (index > -1) {
-                    const action = tab.data.action;
-                    this.doAction(action, role);
-                }
+                // const role = tab.data.role;
+                // const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
+                // if (index > -1) {
+                //     const action = tab.data.action;
+                //     this.doAction(action, role);
+                // }
                 this.tabService.closeTab(tab.url);
+                this.shiftChanged.next(true);
             } else if (tab && tab.url === `staff-shift/quiz/${tab.data.id}`) {
                 const role = tab.data.role;
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
@@ -223,6 +227,8 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                             title: 'Really confirm this role?',
                             heading: this.settings.shift_msg_confirmation,
                             forms: this.shift.forms_confirm,
+                            surveys: role.surveys,
+                            showSurveys: role.show_surveys,
                             shift_id: this.shift.id
                         }
                     });
@@ -333,7 +339,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                     panelClass: 'staff-shift-complete-dialog',
                     data: {
                         roleStaffId: role.role_staff_id,
-                        action,
+                        // action,
                         role
                     }
                 });

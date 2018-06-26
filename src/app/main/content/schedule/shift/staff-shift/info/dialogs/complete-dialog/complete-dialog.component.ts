@@ -15,9 +15,9 @@ import { Tab } from '../../../../../../../tab/tab';
 export class StaffShiftCompleteDialogComponent implements OnInit {
 
     settings: any;
-    reports: any[] = [];
     uploads_required: number;
     num_uploaded: number;
+    role: any;
 
     constructor(
         public dialogRef: MatDialogRef<StaffShiftCompleteDialogComponent>,
@@ -28,7 +28,7 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
         private tabService: TabService
     ) {
         this.settings = this.tokenStorage.getSettings();
-        
+        this.role = data.role;
     }
 
     ngOnInit() {
@@ -38,7 +38,6 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
     async completeCheck() {
         try {
             const { reports, uploads_required, num_uploaded } = await this.scheduleService.completeCheck(this.data.roleStaffId);
-            this.reports = reports;
             this.uploads_required = uploads_required;
             this.num_uploaded = num_uploaded;
         } catch (e) {
@@ -50,17 +49,36 @@ export class StaffShiftCompleteDialogComponent implements OnInit {
         this.dialogRef.close(true);
     }
 
-    openReport(report) {
-        const tab = new Tab(
-            report.rname,
-            'quizTpl',
-            `staff-shift/reports/${report.id}`,
-            {
-                action: this.data.action,
-                role: this.data.role,
-                ...report
-            }
-        );
+    openSurvey(survey) {
+        let tab: any;
+        if (survey.completed_id == null) {
+            survey.view = 'customdata';
+            tab = new Tab(
+                survey.rname,
+                'quizTpl',
+                `staff-shift/reports/${survey.id}`,
+                {
+                    // action: this.data.action,
+                    role: this.data.role,
+                    ...survey
+                }
+            );
+
+        } else {
+            survey.view = 'contentedit';
+            tab = new Tab(
+                survey.rname,
+                'quizTpl',
+                `staff-shift/reports/${survey.id}`,
+                {
+                    // action: this.data.action,
+                    role: this.data.role,
+                    ...survey,
+                    other_id: survey.completed_id
+                }
+            );
+        }
+        
         this.tabService.openTab(tab);
         this.dialogRef.close();
     }

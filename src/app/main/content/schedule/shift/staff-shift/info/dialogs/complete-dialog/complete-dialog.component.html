@@ -9,14 +9,14 @@
             Uploads: <span [ngStyle]="{'color': num_uploaded < uploads_required ? 'red' : 'green'}">{{num_uploaded}}</span> / <span>{{uploads_required}}</span>
         </p>
 
-        <fieldset *ngIf="reports.length > 0">
+        <fieldset *ngIf="role.show_surveys == 1 && role.surveys.length > 0">
             <legend>Surveys</legend>
             <div>
-                <div *ngFor="let report of reports; last as last" [class.mb-8]="!last" fxLayout="row" fxLayoutAlign="start center">
-                    <mat-icon [ngClass]="report.completed === 0 ? 'red-fg' : 'green-fg'">
-                        {{report.completed === 0 ? 'flash_on' : 'done'}}
+                <div *ngFor="let survey of role.surveys; last as last" [class.mb-8]="!last" fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon [ngClass]="survey.completed_id == null ? 'red-fg' : 'green-fg'">
+                        {{survey.completed_id == null ? 'flash_on' : 'done'}}
                     </mat-icon>
-                    <a href="javascript:void(0)" (click)="openReport(report)">{{report.rname}}</a>
+                    <a href="javascript:void(0)" (click)="openSurvey(survey)">{{survey.rname}}</a>
                 </div>
             </div>
         </fieldset>

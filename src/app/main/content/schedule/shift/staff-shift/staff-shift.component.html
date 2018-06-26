@@ -74,7 +74,7 @@
         <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
 
             <mat-tab label="Info">
-                <app-staff-shift-info [shift]="shift"></app-staff-shift-info>
+                <app-staff-shift-info [shift]="shift" (shiftChanged)="fetch()"></app-staff-shift-info>
             </mat-tab>
 
             <mat-tab label="Map" *ngIf="shift.lat && shift.lon">

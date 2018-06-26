@@ -12,6 +12,8 @@ export class StaffShiftConfirmDialogComponent implements OnInit {
 
     forms: any = [];
     shiftId: number;
+    surveys: any[];
+    showSurveys: boolean;
 
     constructor(
         private tabService: TabService,
@@ -20,6 +22,8 @@ export class StaffShiftConfirmDialogComponent implements OnInit {
     ) { 
         this.forms = data.forms;
         this.shiftId = data.shift_id;
+        this.surveys = data.surveys || [];
+        this.showSurveys = data.showSurveys ? true : false;
     }
 
     ngOnInit() {
@@ -31,6 +35,18 @@ export class StaffShiftConfirmDialogComponent implements OnInit {
             'formTpl',
             `form_confirm/${this.shiftId}/${form.id}`,
             form
+        );
+        this.tabService.openTab(tab);
+        this.dialogRef.close();
+    }
+
+    openSurvey(survey) {
+        survey.view = 'view';
+        const tab = new Tab(
+            survey.rname,
+            'quizTpl',
+            `survey_confirm/${this.shiftId}/${survey.id}`,
+            survey
         );
         this.tabService.openTab(tab);
         this.dialogRef.close();

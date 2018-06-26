@@ -77,6 +77,9 @@ export class QuizComponent implements OnInit {
       if (this.data.view == 'contentedit') {
         iframeUrl += `&approved=${this.data.approved}`;
       }
+      if (this.data.view == 'customdata' && this.data.pass_data) {
+        iframeUrl += `&pass_data=${encodeURI(this.data.pass_data)}`;
+      }
     }
     iframeUrl += `&tab_url=${this.url}`;
     this.iframeUrl = iframeUrl;
