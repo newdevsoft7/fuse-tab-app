@@ -85,6 +85,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
 	ngOnInit() {
         this.settings = this.tokenStorage.getSettings();
         this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
+            if (!tab) { return; }
             const id = tab.data.other_id;
             if (tab && tab.url === `staff-shift/reports/${id}`) {
                 // const role = tab.data.role;

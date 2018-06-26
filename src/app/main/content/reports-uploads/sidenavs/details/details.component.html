@@ -2,16 +2,21 @@
 <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between">
 
     <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
-
-        <button mat-icon-button class="mat-icon-button" matTooltip="Edit" (click)="edit()"
-            *ngIf="selected.edit && ['survey', 'quiz'].indexOf(selected.type) > -1">
-            <mat-icon>edit</mat-icon>
-        </button>
-
-        <button mat-icon-button class="mat-icon-button" matTooltip="Delete"
-            *ngIf="selected.delete" (click)="delete()">
-            <mat-icon>delete</mat-icon>
-        </button>
+        <ng-container *ngIf="selected">
+            <button mat-icon-button class="mat-icon-button" matTooltip="Edit" (click)="edit()"
+                *ngIf="selected.edit && ['survey', 'quiz'].indexOf(selected.type) > -1">
+                <mat-icon>edit</mat-icon>
+            </button>
+    
+            <button mat-icon-button class="mat-icon-button" matTooltip="Delete"
+                *ngIf="selected.delete" (click)="delete()">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </ng-container>
+        
+        <ng-container *ngIf="!selected">
+            <!-- todo - multiple files selected -->
+        </ng-container>
 
         <button mat-icon-button class="" aria-label="Download" matTooltip="Download">
             <mat-icon>file_download</mat-icon>
@@ -23,7 +28,7 @@
     </div>
 
     <div>
-        <div class="title mb-8">{{selected.name}}</div>
+        <div class="title mb-8" *ngIf="selected">{{selected.name}}</div>
     </div>
 </div>
 <!-- / SIDENAV HEADER -->
@@ -34,58 +39,69 @@
     <div class="file-details"
          *fuseIfOnDom [@animate]="{value:'*',params:{delay:'200ms'}}">
 
-        <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
-            <ng-container *ngIf="['survey', 'quiz'].indexOf(selected.type) > -1; else default">
-                <span *ngIf="selected.score != null">{{selected.score}}</span>
-            </ng-container>
-            <ng-template #default>
-                <mat-icon *ngIf="!selected.thumbnail" class="type-icon s-48"
-                [ngClass]="selected.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
-                <a [href]="selected.path" *ngIf="selected.thumbnail && selected.type !== 'Folder'" target="blank">
-                <img [src]="selected.thumbnail" class="file-detail-thumbnail">
-                </a>
-            </ng-template>
-        </div>
+        <ng-container *ngIf="selected">
+            <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+                <ng-container *ngIf="['survey', 'quiz'].indexOf(selected.type) > -1; else default">
+                    <span *ngIf="selected.score != null">{{selected.score}}</span>
+                </ng-container>
+                <ng-template #default>
+                    <mat-icon *ngIf="!selected.thumbnail" class="type-icon s-48"
+                    [ngClass]="selected.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
+                    <a [href]="selected.path" *ngIf="selected.thumbnail && selected.type !== 'Folder'" target="blank">
+                    <img [src]="selected.thumbnail" class="file-detail-thumbnail">
+                    </a>
+                </ng-template>
+            </div>
 
-        <div class="offline-switch"
-            *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder && selected.approve">
-            <mat-slide-toggle [checked]="selected.approved ? true : false" (change)="approve($event)"
-                labelPosition="before">Approved for client</mat-slide-toggle>
-        </div>
+            <div class="offline-switch"
+                *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder && selected.approve">
+                <mat-slide-toggle [checked]="selected.approved ? true : false" (change)="approve($event)"
+                    labelPosition="before">Approved for client</mat-slide-toggle>
+            </div>
+        </ng-container>
 
-        <div class="title">Info</div>
+        <ng-container *ngIf="!selected">
+            <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+                {{selectedItems.length}} items selected
+            </div>
+        </ng-container>
 
-        <table>
-            <tr class="type">
-                <th>Type</th>
-                <td>{{selected.type}}</td>
-            </tr>
+        <ng-container *ngIf="selected">
+            <div class="title">Info</div>
 
-            <tr class="size">
-                <th>Size</th>
-                <td>{{selected.size === '' ? '-' : selected.size}}</td>
-            </tr>
+            <table>
+                <tr class="type">
+                    <th>Type</th>
+                    <td>{{selected.type}}</td>
+                </tr>
 
-            <tr class="location">
-                <th>Location</th>
-                <td>{{selected.location}}</td>
-            </tr>
+                <tr class="size">
+                    <th>Size</th>
+                    <td>{{selected.size === '' ? '-' : selected.size}}</td>
+                </tr>
 
-            <tr class="owner">
-                <th>Uploader</th>
-                <td>{{selected.uploader}}</td>
-            </tr>
+                <tr class="location">
+                    <th>Location</th>
+                    <td>{{selected.location}}</td>
+                </tr>
 
-            <tr class="created">
-                <th>Created</th>
-                <td>{{selected.created_at}}</td>
-            </tr>
+                <tr class="owner">
+                    <th>Uploader</th>
+                    <td>{{selected.uploader}}</td>
+                </tr>
 
-            <tr class="shift" *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder">
-                <th>Shift</th>
-                <td (click)="openShift()">{{selected.shift_title}}</td>
-            </tr>
-        </table>
+                <tr class="created">
+                    <th>Created</th>
+                    <td>{{selected.created_at}}</td>
+                </tr>
+
+                <tr class="shift" *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder">
+                    <th>Shift</th>
+                    <td (click)="openShift()">{{selected.shift_title}}</td>
+                </tr>
+            </table>
+        </ng-container>
+        
     </div>
 
 </div>

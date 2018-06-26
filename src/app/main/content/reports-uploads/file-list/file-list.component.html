@@ -20,11 +20,11 @@
   </div>
 
   <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let file of files" class="file-list-item"
-    (click)="onSelect(file)" [ngClass]="{'mat-light-blue-50-bg':file == selected}">
+    (click)="onSelect(file, $event)" [ngClass]="{'mat-light-blue-50-bg':isSelected(file)}">
     <div fxFlex="64px" class="pl-24">
         <mat-icon class="type-icon" [ngClass]="file.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
     </div>
-    <div fxFlex (click)="openFile(file)">{{file.name}}</div>
+    <div fxFlex (click)="openFile(file, $event)">{{file.name}}</div>
     <div fxFlex fxHide fxShow.gt-md>{{file.type}}</div>
     <div fxFlex fxHide.xs>{{file.uploader ? file.uploader : '-'}}</div>
     <div fxFlex fxHide.xs>{{file.size ? file.size : '-'}}</div>

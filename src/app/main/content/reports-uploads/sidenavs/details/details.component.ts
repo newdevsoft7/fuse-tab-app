@@ -18,6 +18,7 @@ import { FuseConfirmDialogComponent } from '../../../../../core/components/confi
 export class ReportsUploadsDetailsSidenavComponent implements OnInit {
 
   selected: any;
+  selectedItems: any[];
   private alive = true;
   selectedFolder: any = {};
   currentUser: any;
@@ -38,7 +39,13 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     this.reportsUploadsService.onFileSelected
         .takeWhile(() => this.alive)
         .subscribe(selected => {
-          this.selected = selected;
+          if (selected.length > 1) { // multiple items selected
+            this.selectedItems = selected;
+            this.selected = null;
+          } else {
+            this.selected = selected.length === 1 ? selected[0] : {};
+            this.selectedItems = []; // multiple items not selected
+          }
           const folders = _.clone(this.reportsUploadsService.folders);
           this.selectedFolder = _.last(folders); 
         });

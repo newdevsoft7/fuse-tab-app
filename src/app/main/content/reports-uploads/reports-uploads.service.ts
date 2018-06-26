@@ -12,7 +12,7 @@ const BASE_URL = `${environment.apiUrl}`;
 export class ReportsUploadsService {
 
   onFilesChanged: BehaviorSubject<any> = new BehaviorSubject([]);
-  onFileSelected: BehaviorSubject<any> = new BehaviorSubject({});
+  onFileSelected: BehaviorSubject<any> = new BehaviorSubject([]);
   folders: any[] = []; // Save folder tree in top-down order
 
   constructor(
@@ -30,7 +30,7 @@ export class ReportsUploadsService {
     const id = _.isNil(file.id) ? '' : file.id;
     const url = `${BASE_URL}/reportsUploads/fileManager/${folder}/${id}`;
     return new Promise((resolve, reject) => {
-      this.onFileSelected.next(file);
+      this.onFileSelected.next([file]);
       this.http.get(url.replace(/\/+$/, ''))
           .subscribe((response: any) => {
             resolve(response);

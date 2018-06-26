@@ -61,6 +61,7 @@ export class StaffShiftComponent implements OnInit, OnDestroy {
             });
 
         this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
+            if (!tab) { return; }
             const id = tab.data.other_id;
             if (tab && tab.url === `form_apply/${this.shift.id}/${id}`) {
                 const index = this.shift.forms_apply.findIndex(form => form.other_id === id);

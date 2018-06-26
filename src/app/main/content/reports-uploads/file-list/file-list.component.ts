@@ -23,9 +23,9 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
   clicked = false;
 
   folders: any[] = [];
+  selectedItems: any[] = [];
 
   private fileChangedSubscription: Subscription;
-  private fileSelectedSubscription: Subscription;
   private currentQuizSubscription: Subscription;
 
   constructor(
@@ -40,11 +40,6 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
         .subscribe(files => {
           this.files = files;
           this.folders = _.clone(this.reportsUploadsService.folders);
-        });
-
-    this.fileSelectedSubscription = this.reportsUploadsService.onFileSelected
-        .subscribe(selected => {
-          this.selected = selected;
         });
 
     this.currentQuizSubscription = this.connectorService.currentQuizTab$
@@ -65,23 +60,42 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
       });
   }
 
-  async onSelect(selected) {
+  async onSelect(selected, event: MouseEvent) {
     if (this.clicked) { return; }
-    this.reportsUploadsService.onFileSelected.next(selected);
+    
+  
     if (selected.type !== 'Folder') {
-      return;
-    }
-    try {
-      this.clicked = true;
-      await this.reportsUploadsService.getFiles(selected);
-      this.clicked = false;
-    } catch (e) {
-      this.toastr.error(e.message);
-      this.clicked = false;
+      if (this.selectedItems.length > 0) {
+        if (event.ctrlKey) {
+          const index = this.selectedItems.findIndex(v => v.id === selected.id);
+          if (index < 0) {
+            this.selectedItems.push(selected);
+          } else {
+            this.selectedItems.splice(index, 1);
+          }
+        } else {
+          this.selectedItems = [];
+          this.selectedItems.push(selected);
+        }
+      } else {
+        this.selectedItems.push(selected);
+      }
+      this.reportsUploadsService.onFileSelected.next(this.selectedItems);
+    } else {
+      this.selectedItems = [];
+      try { // get contents of folders
+        this.clicked = true;
+        await this.reportsUploadsService.getFiles(selected);
+        this.clicked = false;
+      } catch (e) {
+        this.toastr.error(e.message);
+        this.clicked = false;
+      }
     }
   }
 
-  openFile(selected) {
+  openFile(selected, event: MouseEvent) {
+    if (event.ctrlKey) { return; }
     if (['quiz', 'survey'].indexOf(selected.type) < 0) { return; }
     const quiz: any = {
       view: 'contentview',
@@ -130,9 +144,12 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
     }
   }
 
+  isSelected(file): boolean {
+    return this.selectedItems.findIndex(v => v.id === file.id) > -1;
+  }
+
   ngOnDestroy() {
     this.fileChangedSubscription.unsubscribe();
-    this.fileSelectedSubscription.unsubscribe();
     this.currentQuizSubscription.unsubscribe();
   }
 

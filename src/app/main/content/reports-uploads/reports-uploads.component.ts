@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
 import { ReportsUploadsFileListComponent } from './file-list/file-list.component';
 import { FusePerfectScrollbarDirective } from '../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reports-uploads',
@@ -24,9 +25,9 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
   @ViewChild('fileList') fileList: ReportsUploadsFileListComponent;
   @ViewChild('scrollbar') scrollbar: FusePerfectScrollbarDirective;
 
-  private alive = true;
   folders: any[] = [];
   shiftId: any; // For uploading inside tracking_options
+  fileChangedSubscription: Subscription;
 
   constructor(
     private reportsUploadsService: ReportsUploadsService,
@@ -34,8 +35,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private dialog: MatDialog
   ) {
-    this.reportsUploadsService.onFilesChanged
-        .takeWhile(() => this.alive)
+    this.fileChangedSubscription = this.reportsUploadsService.onFilesChanged
         .subscribe(files => {
           this.folders = _.clone(this.reportsUploadsService.folders);
           setTimeout(() =>this.scrollbar.scrollToTop());
@@ -57,7 +57,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.alive = false;
+    this.fileChangedSubscription.unsubscribe();
     this.reportsUploadsService.folders = [];
   }
 
