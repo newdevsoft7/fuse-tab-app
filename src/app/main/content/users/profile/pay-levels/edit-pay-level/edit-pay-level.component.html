@@ -1,0 +1,25 @@
+<div id="profile-edit-pay-level-container" *ngIf="!formActive" (click)="openForm()">
+  <span class="mr-8">Level:</span>
+  <span class="border-bottom" [class.red-fg]="!display">{{display ? display : 'Empty'}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="edit-pay-level-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+    <span class="level mr-8">Level:</span>
+	<mat-form-field fxFlex="0 1 auto" floatPlaceholder="never">
+		<mat-select formControlName="set" #select>
+			<mat-option [value]="'unassigned'">
+				-- Unassigned --
+			</mat-option>
+			<mat-option *ngFor="let level of levels" [value]="level.id">
+				{{level.pname}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

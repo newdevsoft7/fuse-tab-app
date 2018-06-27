@@ -1,0 +1,20 @@
+:host {
+    #profile-edit-pay-level-container {
+        .border-bottom {
+            border-bottom: 1px dashed #d0d0d0;
+            & :hover {
+                cursor: text;
+            }
+        }
+    }
+
+    .edit-pay-level-form {
+        .level {
+            line-height: 48px;
+        }
+    }
+
+    /deep/ .mat-form-field-infix {
+        padding: unset !important;
+    }
+}

@@ -358,6 +358,16 @@ export class UserService {
         return this.http.put(url, {}).toPromise();
     }
 
+    getUserPayLevels(userId: number | string): Promise<any[]> {
+        const url = `${BASE_URL}/user/${userId}/payLevels`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    setUserPayLevel(userId: number | string, payLevelId: number | string, set = 1): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/payLevel/${payLevelId}/${set}`;
+        return this.http.put(url, {}).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

@@ -85,6 +85,10 @@
                 </app-users-profile-unavailability>
             </mat-tab>
 
+            <mat-tab label="Pay Levels" *ngIf="userInfo.lvl === 'staff' && ['owner', 'admin'].indexOf(currentUser.lvl) > -1 && settings.paylvl_enable == 1">
+                <app-users-profile-pay-levels [userInfo]="userInfo"></app-users-profile-pay-levels>
+            </mat-tab>
+
             <mat-tab label="Settings" *ngIf="isSettingsShow">
                 <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers" [settings]="settings"
                     [timezones]="timezones"></app-users-profile-settings>

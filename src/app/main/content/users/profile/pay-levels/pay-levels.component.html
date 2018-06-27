@@ -1,0 +1,6 @@
+<div id="profile-paylevels-container" [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'">
+    <fieldset *ngFor="let category of payLevels" class="mb-24">
+        <legend>{{category.cname}}</legend>
+        <app-users-profile-edit-pay-level [levels]="category.pay_levels" [user]="user" #tag></app-users-profile-edit-pay-level>
+    </fieldset>
+</div>

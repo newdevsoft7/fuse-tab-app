@@ -53,6 +53,8 @@ import { UsersSettingsStaffOutsourceComponent } from './profile/settings/staff-o
 import { DocumentFormsDialogComponent } from './profile/document/forms-dialog/forms-dialog.component';
 import { UserPasswordDialogComponent } from './dialogs/password/password.component';
 import { UsersSettingsLinkOtherAccountsComponent } from './profile/settings/link-other-accounts/link-other-accounts.component';
+import { UsersProfilePayLevelsComponent } from './profile/pay-levels/pay-levels.component';
+import { UsersProfileEditPayLevelComponent } from './profile/pay-levels/edit-pay-level/edit-pay-level.component';
 
 @NgModule({
     imports: [
@@ -110,7 +112,9 @@ import { UsersSettingsLinkOtherAccountsComponent } from './profile/settings/link
         EditUserStatusComponent,
         AssignReportDialogComponent,
         DocumentFormsDialogComponent,
-        UserPasswordDialogComponent
+        UserPasswordDialogComponent,
+        UsersProfilePayLevelsComponent,
+        UsersProfileEditPayLevelComponent
     ],
     exports: [
         UsersComponent,
