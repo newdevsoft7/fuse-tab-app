@@ -96,12 +96,16 @@
 
     .ngx-datatable.material.multi-click-selection {
         .datatable-body-row {
-            &.active,
-            &:hover {
+            &.active {
                 .datatable-row-group {
                     background-color: #e1f5fe !important;
                     color: rgba(0, 0, 0, 0.87) !important;
-                }  
+                }
+                
+                &:hover .datatable-row-group {
+                    background-color: #a1dffc !important;
+                    color: rgba(0, 0, 0, 0.87) !important;
+                }
             }
         } 
     }
