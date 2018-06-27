@@ -537,7 +537,7 @@ export class ScheduleService {
   exportAsCSV(body: any = {}) {
     const url = `${BASE_URL}/shifts/export/csv`;
     return this.http.post(url, body, { observe: 'response', responseType: 'blob'}).toPromise()
-      .then(res => this.downloadFile(res['body']))
+      .then(res => this.downloadFile(res['body'], 'shift exports.csv'))
       .catch(e => this.displayError(e));
   }
 
@@ -557,7 +557,7 @@ export class ScheduleService {
     return Observable.throw(error);
   }
 
-  downloadFile(data){
+  downloadFile(data, filename){
     let dwldLink = document.createElement("a");
     let url = URL.createObjectURL(data);
     let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
@@ -565,7 +565,7 @@ export class ScheduleService {
         dwldLink.setAttribute("target", "_blank");
     }
     dwldLink.setAttribute("href", url);
-    dwldLink.setAttribute("download", "Shifts export.csv");
+    dwldLink.setAttribute("download", filename);
     dwldLink.style.visibility = "hidden";
     document.body.appendChild(dwldLink);
     dwldLink.click();

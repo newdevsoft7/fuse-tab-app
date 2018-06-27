@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 
 import { environment } from '../../../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 const BASE_URL = `${environment.apiUrl}`;
 
@@ -16,7 +17,8 @@ export class ReportsUploadsService {
   folders: any[] = []; // Save folder tree in top-down order
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService
   ) { }
 
   getFiles(file: any | 'up' = {}): Promise<any> {
@@ -62,6 +64,38 @@ export class ReportsUploadsService {
   deleteFile(fileId: number, fileType = 'file'): Promise<any> {
     const url = `${BASE_URL}/file/${fileType}/${fileId}`;
     return this.http.delete(url).toPromise();
+  }
+
+  downloadReports(ids, type = 'csv') {
+    const url = `${BASE_URL}/reportsUploads/reports/${ids.join(',')}/${type}`;
+    return this.http.get(url, { observe: 'response', responseType: 'blob'}).toPromise()
+      .then(res => this.downloadFile(res['body'], 'reports.csv'))
+      .catch(e => this.displayError(e));
+  }
+
+  downloadFile(data, filename){
+    let dwldLink = document.createElement("a");
+    let url = URL.createObjectURL(data);
+    let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
+    if (isSafariBrowser) {  //if Safari open in new window to save file with random filename.
+        dwldLink.setAttribute("target", "_blank");
+    }
+    dwldLink.setAttribute("href", url);
+    dwldLink.setAttribute("download", filename);
+    dwldLink.style.visibility = "hidden";
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+  private displayError(e: any) {
+    const errors = e.error.errors;
+    if (errors) {
+      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+    }
+    else {
+      this.toastr.error(e.message);
+    }
   }
 
 }

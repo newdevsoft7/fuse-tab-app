@@ -112,4 +112,9 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     this.tabService.openTab(tab);
   }
 
+  downloadReports() {
+    const ids = this.selectedItems.map(v => v.id.split(':')[0]);
+    this.reportsUploadsService.downloadReports(ids);
+  }
+
 }

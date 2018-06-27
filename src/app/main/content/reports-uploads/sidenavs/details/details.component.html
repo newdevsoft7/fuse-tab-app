@@ -12,15 +12,19 @@
                 *ngIf="selected.delete" (click)="delete()">
                 <mat-icon>delete</mat-icon>
             </button>
+
+            <button mat-icon-button class="" aria-label="Download" matTooltip="Download">
+                <mat-icon>file_download</mat-icon>
+            </button>
         </ng-container>
         
         <ng-container *ngIf="!selected">
-            <!-- todo - multiple files selected -->
+            <ng-container *ngIf="['quiz', 'survey'].indexOf(selectedItems[0].type) > -1">
+                <button mat-icon-button aria-label="Download" matTooltip="Download csv" (click)="downloadReports()">
+                    <mat-icon>file_download</mat-icon>
+                </button>
+            </ng-container>
         </ng-container>
-
-        <button mat-icon-button class="" aria-label="Download" matTooltip="Download">
-            <mat-icon>file_download</mat-icon>
-        </button>
 
         <button mat-icon-button class="mat-icon-button" aria-label="More" matTooltip="More">
             <mat-icon>more_vert</mat-icon>
