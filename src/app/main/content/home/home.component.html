@@ -6,7 +6,7 @@
         </app-tab>
         <ng-template #formBlock>
             <app-tab [tabTitle]="form.fname" [data]="form" *ngFor="let form of formData">
-                <app-form [data]="form"></app-form>
+                <app-form #homeForm [data]="form" [url]="'home/form/' + form.id"></app-form>
             </app-tab>
         </ng-template>
     </app-tabs>
