@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, Injector } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Injector, ViewChildren, QueryList } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -111,6 +111,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('clientInvoiceGenerateTpl') clientInvoiceGenerateTpl;
 
     @ViewChild('reportsUploadsTpl') reportsUploadsTpl;
+
+    @ViewChildren('homeForm') homeForms: QueryList<FormComponent>;
 
     socketService: SocketService;
     fcmService: FCMService;
@@ -603,7 +605,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         if (!event.data) return;
         switch (event.data.type) {
             case 'formconnect':
-                const currentFormTab = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
+                const currentFormTab: TabComponent = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
                 if (event.data.message === 'tokenError') {
                     try {
                         this.connectorService.formconnectTokenRefreshing$.next(true);
@@ -615,7 +617,12 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         this.connectorService.formconnectTokenRefreshing$.next(false);
                     }
                 } else if (event.data.message === 'loaded') {
-                    const formComponent: FormComponent = currentFormTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
+                    let formComponent: FormComponent;
+                    if (event.data.tabUrl.startsWith('home/form/')) {
+                        formComponent = this.homeForms.find((form: FormComponent) => form.url === event.data.tabUrl);
+                    } else {
+                        formComponent = currentFormTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
+                    }
                     formComponent.loading = false;
                 } else if (event.data.message === 'create') {
                     currentFormTab.title = event.data.payload.name;
@@ -635,8 +642,9 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                                 this.tabsComponent.selectTab(this.tabsComponent.tabs.first);
                             }
                         });
+                    } else {
+                        this.connectorService.currentFormTab$.next(currentFormTab);
                     }
-                    this.connectorService.currentFormTab$.next(currentFormTab);
                 }
                 break;
             case 'quizconnect':
