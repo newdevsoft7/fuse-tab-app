@@ -86,7 +86,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             'title': 'Link to other StaffConnect accounts',
             'lvls': ['owner', 'admin', 'staff', 'client', 'ext'],
             'vis': ['owner', 'admin', 'staff', 'client', 'ext'],
-            'disabled': this.tokenStorage.isExistSecondaryUser()
+            'disabled': false
         }
     ];
 
@@ -100,6 +100,10 @@ export class UsersProfileSettingsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        const link = this.categories.find(v => v.id === 'link-other-account');
+        if (link) {
+            link.disabled = !(this.currentUser.id == this.user.id && !this.tokenStorage.isExistSecondaryUser());
+        }
         this.getUserOptions();
         if (this.user.lvl != 'owner' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
             this.getUserPermissions();
