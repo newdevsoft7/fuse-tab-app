@@ -139,8 +139,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         private settingsService: SettingsService
     ) {
 
-        this.socketService = injector.get(SocketService);
-        this.fcmService = injector.get(FCMService);
+        this.socketService = this.injector.get(SocketService);
+        this.fcmService = this.injector.get(FCMService);
 
         this.translationLoader.loadTranslations(english, turkish);
         this.tabSubscription = this.tabService.tab$.subscribe(tab => {
@@ -221,8 +221,11 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.switchUser();
         this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
             if (isSwitch) {
-                this.tabService.openTabs.forEach((tab: TabComponent) => {
-                    this.closeTab(tab.url);
+                this.tabsComponent.dynamicTabs = [];
+                setTimeout(() => {
+                    if (this.tabsComponent.tabs.length > 0) {
+                        this.tabsComponent.selectTab(this.tabsComponent.tabs.first);
+                    }
                 });
                 this.switchUser();
             }
