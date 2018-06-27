@@ -38,7 +38,7 @@ export class UsersProfileSettingsComponent implements OnInit {
     linkStatus: string;
 
     // Left Side Navs
-    categories = [
+    categories: any[] = [
         {
             'id': 'admin-options',
             'title': 'Options',
