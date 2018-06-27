@@ -212,6 +212,20 @@ export class UsersComponent implements OnInit {
         }
     }
 
+    toggleSelect() {
+        const selectedIds = this.selectedUsers.map(v => v.id);
+        this.selectedUsers.splice(0, this.selectedUsers.length);
+        const selected = this.users.filter(v => selectedIds.indexOf(v.id) < 0);
+        this.selectedUsers.push(...selected);
+        this.table.bodyComponent.recalcLayout();
+    }
+
+    selectAll() {
+        this.selectedUsers.splice(0, this.selectedUsers.length);
+        this.selectedUsers.push(...this.users);
+        this.table.bodyComponent.recalcLayout();
+    }
+
     deleteUser(user) {
         const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
             disableClose: false

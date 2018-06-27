@@ -115,7 +115,7 @@
                 [footerHeight]="56"
                 [rowHeight]="'auto'"
                 [scrollbarH]="true"
-                [selectionType]="'checkbox'"
+                [selectionType]="'multiClick'"
                 [selectAllRowsOnPage]="true"
                 [selected]="selectedUsers"
                 [reorderable]="reorderable"
@@ -129,31 +129,7 @@
                 (select)="onSelect($event)"
                 (activate)="onActivate($event)">
 
-                <ngx-datatable-column
-                    [width]="48"
-                    [sortable]="false"
-                    [canAutoResize]="false"
-                    [draggable]="false"
-                    [resizeable]="false"
-                    [headerCheckboxable]="true">
-
-                    <ng-template ngx-datatable-header-template
-                                 let-value="value"
-                                 let-allRowsSelected="allRowsSelected"
-                                 let-selectFn="selectFn">
-                        <mat-checkbox [style.margin-left.px]="'-10'" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
-                    </ng-template>
-
-                    <ng-template ngx-datatable-cell-template
-                                 let-value="value"
-                                 let-isSelected="isSelected"
-                                 let-onCheckboxChangeFn="onCheckboxChangeFn">
-                        <mat-checkbox [style.margin-left.px]="'-10'" [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
-                    </ng-template>
-                </ngx-datatable-column>
-
                 <ng-container *ngFor="let column of columns">
-
                     <ngx-datatable-column
                         *ngIf="!['id', 'ppic_a', 'fav'].includes(column.key_name)"
                         [name]="column.display_name"
@@ -169,7 +145,15 @@
                         [width]="80"
                         [sortable]="false"
                         [canAutoResize]="false">
-                        <ng-template *ngIf="column.key_name == 'ppic_a'" let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <ng-template ngx-datatable-header-template>
+                            <button [style.margin-left.px]="'-24'" mat-icon-button matTooltip="Select All Users" (click)="selectAll()">
+                                <mat-icon class="s-20">done_all</mat-icon>
+                            </button>
+                            <button [style.margin-left.px]="'-10'" mat-icon-button matTooltip="Toggle Selection" (click)="toggleSelect()">
+                                <mat-icon class="s-20">done</mat-icon>
+                            </button>
+                        </ng-template> 
+                        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                             <div class="savatar" [style.margin-left.px]="'-10'">
                                 <img [src]="getAvatar(value)" (click)="openUserTab(row, $event)" />
                                 <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
