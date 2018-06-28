@@ -7,6 +7,11 @@ import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { Tab } from '../../../../../tab/tab';
+import { TabService } from '../../../../../tab/tab.service';
+import { ConnectorService } from '../../../../../../shared/services/connector.service';
+import { Subscription } from 'rxjs';
+import { TabComponent } from '../../../../../tab/tab/tab.component';
 
 
 @Component({
@@ -18,16 +23,28 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 
     @Input() shift;
     data: any = {};
+    currentQuizSubscription: Subscription;
 
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private tabService: TabService,
+        private connectorService: ConnectorService
     ) {
     }
 
     ngOnInit() {
+        this.currentQuizSubscription = this.connectorService.currentQuizTab$
+            .subscribe((tab: TabComponent) => {
+                if (tab) {
+                    const id = tab.data.other_id;
+                    if (tab.url === `admin-shift/reports-uploads/${id}/edit`) {
+                        this.tabService.closeTab(tab.url);
+                    }
+                }
+            });
         this.fetch();
     }
 
@@ -119,6 +136,37 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
             this.displayError(e);
             file.approved = value ? 0 : 1;
         }
+    }
+
+    openSurvey(survey) {
+        const body: any = {
+            view: 'contentview',
+            name: survey.rname,
+            other_id: survey.other_id
+        };
+        const tab = new Tab(
+            body.name,
+            'quizTpl',
+            `admin-shift/reports-uploads/${body.other_id}/view`,
+            body
+        );
+        this.tabService.openTab(tab);
+    }
+
+    editSurvey(survey) {
+        const body: any = {
+            view: 'contentedit',
+            name: survey.rname,
+            other_id: survey.other_id,
+            approved: survey.approved
+        };
+        const tab = new Tab(
+            body.name,
+            'quizTpl',
+            `admin-shift/reports-uploads/${body.other_id}/edit`,
+            body
+        );
+        this.tabService.openTab(tab);
     }
 
     private displayError(e: any) {
