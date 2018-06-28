@@ -43,20 +43,16 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
         });
 
     this.currentQuizSubscription = this.connectorService.currentQuizTab$
-        .subscribe((tab: TabComponent) => {
-          if (tab) {
-              const id = tab.data.id;
-              switch (tab.url) {
-                  case `report/${id}/view`:
-                      this.tabService.closeTab(tab.url);
-                      break;
-                  case `report/${id}/edit`:
-                      this.tabService.closeTab(tab.url);
-                      const index = this.files.findIndex(v => v.id.split(':')[1] == id);
-                      if (index > -1) { this.files[index].score = Math.round(+tab.data.score * 100) / 100; }
-                      break;
-              }
+      .subscribe((tab: TabComponent) => {
+        if (tab) {
+          const id = tab.data.other_id;
+          if (tab.url === `report/${id}/edit`) {
+            this.tabService.closeTab(tab.url);
+            const index = this.files.findIndex(v => v.id.split(':')[1] == id);
+            if (index > -1 && tab.data.hasOwnProperty('score')) { 
+              this.files[index].score = Math.round(+tab.data.score * 100) / 100; }
           }
+        }
       });
   }
 
@@ -105,7 +101,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
     const tab = new Tab(
         quiz.name,
         'quizTpl',
-        `report/${quiz.id}/view`,
+        `report/${quiz.other_id}/view`,
         quiz
     );
     this.tabService.openTab(tab);
