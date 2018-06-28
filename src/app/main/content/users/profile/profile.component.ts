@@ -139,7 +139,8 @@ export class UsersProfileComponent implements OnInit {
 			}
 
 			this.ratings = await this.userService.getUserRatings(this.user.id);
-			if (this.userInfo.linked === 1) {
+			if (this.userInfo.linked === 1 && this.userInfo.id === this.currentUser.id
+					&& !this.tokenStorage.isExistSecondaryUser()) {
 				this.linkedUsers = await this.userService.getLinkedAccounts(this.user.id);
 			}
 		} catch (e) {
