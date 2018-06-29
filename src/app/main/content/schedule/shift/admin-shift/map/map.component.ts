@@ -121,8 +121,10 @@ export class AdminShiftMapComponent implements OnInit {
 
     ngOnInit() {
         if (!this.shift.lat) {
-            this.shift.lat = 52.357971;
-            this.shift.lon = -6.516758;
+            setTimeout(() => {
+                this.shift.lat = 52.357971;
+                this.shift.lon = -6.516758;
+            });
         }
     }
     

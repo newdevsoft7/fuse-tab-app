@@ -8,7 +8,8 @@
                 <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones" [disableTimezone]="settings.shift_timezone_display === '0'"
                     (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
                 <app-admin-shift-edit-title [shift]="shift" (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
-
+                <app-admin-shift-edit-location *ngIf="settings.locations_enable === '1'" [shift]="shift" (onLocationChanged)="onLocationChanged($event)"></app-admin-shift-edit-location>
+            
                 <ng-container *ngIf="!showMoreBtn">
                     <app-admin-shift-edit-generic-title [shift]="shift" (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
                     <app-admin-shift-edit-generic-location *ngIf="settings.locations_enable === '1'" [shift]="shift" (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>

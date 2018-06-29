@@ -1,0 +1,14 @@
+:host() {
+
+    #admin-shift-edit-location {
+        
+        .info {
+            // border-bottom: dashed 1px #d0d0d0;
+            font-size: 16px;
+
+            &:hover {
+                cursor: text;
+            }
+        }
+    }
+}

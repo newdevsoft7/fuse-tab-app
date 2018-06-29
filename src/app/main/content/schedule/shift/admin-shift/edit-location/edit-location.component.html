@@ -1,0 +1,36 @@
+<div id="admin-shift-edit-location">
+    <div *ngIf="!formActive"  (click)="openForm()" class="text-field" [class.disabled]="shift.editable !== 1">
+        <div class="info" matTooltip="Location" fxLayoutAlign="start center">
+            <mat-icon class="mr-8">location_city</mat-icon>
+            {{display()}}
+        </div>
+    </div>
+
+    <form [formGroup]="form" fxLayout="row" *ngIf="formActive" fxLayoutAlign="start center">
+        <mat-icon class="mr-8">location_city</mat-icon>
+        <mat-form-field class="full-width">
+            <input type="hidden" formControlName="location_id">
+            <input matInput #input
+                formControlName="location"
+                [matAutocomplete]="auto"
+                [formControl]="locationControl">
+
+            <mat-autocomplete #auto="matAutocomplete"
+                            [displayWith]="locationDisplayFn"
+                            (optionSelected)="selectLocation($event)">
+                <mat-option *ngFor="let option of filteredLocations" [value]="option">
+                    {{option.lname}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="saveForm()">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </form>
+
+</div>

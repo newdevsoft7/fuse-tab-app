@@ -32,6 +32,7 @@ import { AdminShiftEditPayitemsComponent } from './shift/admin-shift/staff/selec
 import { AdminShiftEditBillitemsComponent } from './shift/admin-shift/staff/selected/edit-billitems/edit-billitems.component';
 import { AdminShiftEditGenericTitleComponent } from './shift/admin-shift/edit-generic-title/edit-generic-title.component';
 import { AdminShiftEditGenericLocationComponent } from './shift/admin-shift/edit-generic-location/edit-generic-location.component';
+import { AdminShiftEditLocationComponent } from './shift/admin-shift/edit-location/edit-location.component';
 import { AdminShiftEditAddressComponent } from './shift/admin-shift/edit-address/edit-address.component';
 import { AdminShiftEditContactComponent } from './shift/admin-shift/edit-contact/edit-contact.component';
 import { AdminShiftEditTitleComponent } from './shift/admin-shift/edit-title/edit-title.component';
@@ -142,6 +143,7 @@ import { StaffShiftQuizDialogComponent } from './shift/staff-shift/info/dialogs/
         AdminShiftEditBreakComponent,
         AdminShiftEditPayitemsComponent,
         AdminShiftEditBillitemsComponent,
+        AdminShiftEditLocationComponent,
         AdminShiftEditGenericTitleComponent,
         AdminShiftEditGenericLocationComponent,
         AdminShiftEditAddressComponent,

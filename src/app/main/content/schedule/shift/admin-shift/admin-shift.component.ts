@@ -217,6 +217,16 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         this.shift.generic_title = genericTitle;
     }
 
+    onLocationChanged(location: any) {
+        if (location) {
+            this.shift.location_id = location.id;
+            this.shift.location = location.lname;
+        } else {
+            this.shift.location_id = null;
+            this.shift.location = null;
+        }
+    }
+
     onTitleChanged(title) {
         this.shift.title = title;
     }
