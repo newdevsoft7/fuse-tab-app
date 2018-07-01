@@ -117,4 +117,11 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     this.reportsUploadsService.downloadReports(ids);
   }
 
+  download() {
+    if (['survey', 'quiz'].indexOf(this.selected.type) > -1) {
+      const id = this.selected.id.split(':')[0];
+      this.reportsUploadsService.downloadReports([id]);
+    }
+  }
+
 }
