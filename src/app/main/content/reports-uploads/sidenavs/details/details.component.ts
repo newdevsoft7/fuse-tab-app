@@ -89,7 +89,7 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     try {
       const temp = this.selected.id.split(':'); // e.g id is 'f:23'
       const type = temp[0] === 'f' ? 'upload' : 'report';
-      await this.reportsUploadsService.reportsUploadsApprove(type, temp[1], value);
+      await this.reportsUploadsService.reportsUploadsApprove(type, type === 'upload' ? temp[1] : temp[0], value);
     } catch (e) {
       this.toastr.error(e.message);
       this.selected.approved = value ? 0 : 1;

@@ -58,7 +58,7 @@
             </div>
 
             <div class="offline-switch"
-                *ngIf="selectedFolder.folder === 'tracking_option' && selected !== selectedFolder && selected.approve">
+                *ngIf="selected !== selectedFolder && selected.approve">
                 <mat-slide-toggle [checked]="selected.approved ? true : false" (change)="approve($event)"
                     labelPosition="before">Approved for client</mat-slide-toggle>
             </div>
