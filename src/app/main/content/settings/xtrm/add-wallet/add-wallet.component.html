@@ -1,0 +1,26 @@
+<button *ngIf="!formActive" mat-mini-fab color="warn" (click)="openForm()" matTooltip="Add Wallet">
+	<mat-icon class="white-fg">add</mat-icon>
+</button>
+
+<div class="new-wallet px-8 mat-elevation-z1">
+    <form *ngIf="formActive" [formGroup]="form" (submit)="onFormSubmit()"
+        fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+		<div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center" fxFlex>
+			<mat-form-field floatPlaceholder="never">
+				<input matInput formControlName="wname" #nameInput placeholder="Write a Wallet Name">
+			</mat-form-field>
+	
+			<mat-form-field floatPlaceholder="never">
+				<input matInput formControlName="currency" placeholder="Currency Code (3 letters)" minlength="3" maxlength="3">
+			</mat-form-field>
+		</div>
+		
+
+		<button mat-icon-button fxFlex="0 1 auto">
+			<mat-icon>check</mat-icon>
+		</button>
+		<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()">
+			<mat-icon>close</mat-icon>
+		</button>
+	</form>
+</div>

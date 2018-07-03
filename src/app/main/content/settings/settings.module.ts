@@ -47,6 +47,10 @@ import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { ProfileExperienceModule } from '../profile/experience/experience.module';
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';
 import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module';
+import { SettingsXtrmComponent } from './xtrm/xtrm.component';
+import { SettingsXtrmAddWalletComponent } from './xtrm/add-wallet/add-wallet.component';
+import { FundWalletByCreditCardDialogComponent } from './xtrm/dialogs/fund-wallet-by-credit-card-dialog/fund-wallet-by-credit-card-dialog.component';
+import { FundWalletByOtherDialogComponent } from './xtrm/dialogs/fund-wallet-by-other-dialog/fund-wallet-by-other-dialog.component';
 
 @NgModule({
     imports: [
@@ -97,14 +101,20 @@ import { ProfileRatingsModule } from '../profile/ratings/profile-ratings.module'
         ItemComponent,
         SettingsUserStatusesComponent,
         UserStatusItemComponent,
-        CategoryDialogComponent
+        CategoryDialogComponent,
+        SettingsXtrmComponent,
+        SettingsXtrmAddWalletComponent,
+        FundWalletByCreditCardDialogComponent,
+        FundWalletByOtherDialogComponent
     ],
 
     providers: [
         SettingsService
     ],
     entryComponents: [
-        CategoryDialogComponent
+        CategoryDialogComponent,
+        FundWalletByCreditCardDialogComponent,
+        FundWalletByOtherDialogComponent
     ],
     exports: [
         SettingsComponent

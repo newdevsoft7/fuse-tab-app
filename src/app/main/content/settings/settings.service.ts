@@ -335,6 +335,55 @@ export class SettingsService {
         return this.http.put(url, body).toPromise();
     }
 
+    getXtrmSetup(): Promise<any> {
+        const url = `${BASE_URL}/xtrm/setup`;
+        return this.http.get(url).toPromise();
+    }
+
+    saveXtrmSetup(body: {
+        cname: string,
+        web: string,
+        email: string,
+        fname: string,
+        lname: string,
+        mob: string
+    }): Promise<any> {
+        const url = `${BASE_URL}/xtrm/setup`;
+        return this.http.post(url, body).toPromise();
+    }
+
+    updateXtrmSetup(body: {
+        cname: string,
+        web: string,
+        email: string,
+        fname: string,
+        lname: string,
+        mob: string,
+        city: string,
+        state: string,
+        country: string,
+        region: string,
+        postcode: string
+    }): Promise<any> {
+        const url = `${BASE_URL}/xtrm/setup`;
+        return this.http.put(url, body).toPromise();
+    }
+
+    getCompanyWallets(): Promise<any[]> {
+        const url = `${BASE_URL}/xtrm/company/wallets`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    createCompanyWallet(wallet: { wname: string, currency: string }): Promise<any> {
+        const url = `${BASE_URL}/xtrm/company/wallet`;
+        return this.http.post(url, wallet).toPromise();
+    }
+
+    fundCompanyWallet(type, body): Promise<any> {
+        const url = `${BASE_URL}/xtrm/company/wallet/fund/${type}`;
+        return this.http.post(url, body).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

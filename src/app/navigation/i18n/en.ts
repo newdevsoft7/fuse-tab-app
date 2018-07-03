@@ -114,6 +114,7 @@ export const locale = {
                 'WORK_AREAS': 'Work Areas',
                 'WORK_MARKET': 'Work Market',
                 'XERO': 'Xero',
+                'XTRM': 'XTRM',
                 'USER_STATUSES': 'User Statuses',
                 'PROFILE_INFO': 'Profile Structure',
                 'PROFILE_ATTRIBUTES': 'Attributes',

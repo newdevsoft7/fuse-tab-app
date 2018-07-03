@@ -1,0 +1,133 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Fund wallet by credit card</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="form" fxLayout="column" fxLayoutAlign="start">
+
+            <mat-form-field>
+                <mat-select placeholder="Card Type" formControlName="card_type" required>
+                    <mat-option *ngFor="let option of cardTypes" [value]="option.value">{{option.label}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px">
+                <mat-form-field fxFlex.gt-xs="50%">
+                    <input matInput formControlName="fname" placeholder="First Name" required minlength="2">
+                    <mat-error *ngIf="formErrors.fname.required">
+                        First Name is required!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.gt-xs="50%">
+                    <input matInput formControlName="lname" placeholder="Last Name" required minlength="2">
+                    <mat-error *ngIf="formErrors.lname.required">
+                        Last Name is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="8px">
+                <mat-form-field fxFlex.gt-xs="32%">
+                    <input matInput formControlName="card_number" type="number" placeholder="Card Number" required minlength="13" maxlength="16">
+                    <mat-error *ngIf="formErrors.card_number.required">
+                        Card number is required!
+                    </mat-error>
+                    <mat-error *ngIf="formErrors.card_number.minlength">
+                        Please enter 13-16 digits!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.gt-xs="32%">
+                    <input matInput formControlName="card_cvv" type="number" placeholder="CVV" required minlength="3" maxlength="4">
+                    <mat-error *ngIf="formErrors.card_cvv.required">
+                        CVV is required!
+                    </mat-error>
+                    <mat-error *ngIf="formErrors.card_cvv.minlength">
+                        Please enter 3-4 digits!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.gt-xs="32%">
+                    <mat-label>Expiration Date</mat-label>
+                    <input matInput formControlName="expiry_date" pattern="(0[1-9]|10|11|12)/20[0-9]{2}"
+                        [textMask]="{mask: expiryDateMask, pipe: expiryDatePipe}" required placeholder="05/2018">
+                    <mat-error *ngIf="formErrors.expiry_date.required">
+                        Expiration date is required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field fxFlex>
+                <input matInput formControlName="address" placeholder="Address" minlength="5" required>
+                <mat-error *ngIf="formErrors.address.required">
+                    Address is required!
+                </mat-error>
+                <mat-error *ngIf="formErrors.address.minlength">
+                    Please enter at least 5 letters!
+                </mat-error>
+            </mat-form-field>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="8px">
+                <mat-form-field fxFlex.gt-xs="32%">
+                    <input matInput formControlName="city" placeholder="City" required minlength="1">
+                    <mat-error *ngIf="formErrors.city.required">
+                        City is required!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.gt-xs="32%">
+                    <input matInput formControlName="state" placeholder="State" required minlength="1">
+                    <mat-error *ngIf="formErrors.state.required">
+                        State is required!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.gt-xs="32%">
+                    <input matInput formControlName="postcode" placeholder="Zip/Postal Code" required minlength="1">
+                    <mat-error *ngIf="formErrors.postcode.required">
+                        Zip/Postal code is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px">
+                <mat-form-field fxFlex.gt-xs="50%">
+                    <mat-select formControlName="country_code" required placeholder="Country">
+                        <mat-option *ngFor="let country of countries" [value]="country.iso2">
+                            {{country.display}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="formErrors.country_code.required">
+                        Please select country!
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex.gt-xs="50%">
+                    <input matInput formControlName="amount" placeholder="Amount" required type="number" min="1" max="999999999">
+                    <mat-error *ngIf="formErrors.amount.required">
+                        Amount is required!
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button (click)="onFormSubmit()" mat-raised-button color="accent" [disabled]="form.invalid || submitting">
+            <ng-container *ngIf="submitting">Saving...</ng-container>
+            <ng-container *ngIf="!submitting">Save</ng-container>
+        </button>
+        
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">
+            Cancel
+        </button>
+    </div>
+</div>

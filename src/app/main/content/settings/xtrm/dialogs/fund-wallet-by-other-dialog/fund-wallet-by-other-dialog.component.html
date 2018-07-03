@@ -1,0 +1,48 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Fund wallet by {{data.type | uppercase}}</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="form" fxLayout="column" fxLayoutAlign="start">
+
+            <mat-form-field>
+                <input matInput formControlName="fname" placeholder="First Name" required minlength="2">
+                <mat-error *ngIf="formErrors.fname.required">
+                    First Name is required!
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="lname" placeholder="Last Name" required minlength="2">
+                <mat-error *ngIf="formErrors.lname.required">
+                    Last Name is required!
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput formControlName="amount" placeholder="Amount" required type="number" min="1" max="999999999">
+                <mat-error *ngIf="formErrors.amount.required">
+                    Amount is required!
+                </mat-error>
+            </mat-form-field>
+
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button (click)="onFormSubmit()" mat-raised-button color="accent" [disabled]="form.invalid || submitting">
+            <ng-container *ngIf="submitting">Saving...</ng-container>
+            <ng-container *ngIf="!submitting">Save</ng-container>
+        </button>
+        
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">
+            Cancel
+        </button>
+    </div>
+</div>

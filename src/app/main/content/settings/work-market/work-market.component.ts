@@ -30,7 +30,7 @@ export class SettingsWorkMarketComponent implements OnInit {
     readonly Setting = Setting;
 
      // Slide Togglable Items
-     checkableItems = [
+    checkableItems = [
         Setting.work_market_enable
     ];
 

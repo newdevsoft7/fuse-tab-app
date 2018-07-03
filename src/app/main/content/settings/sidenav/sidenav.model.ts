@@ -227,6 +227,13 @@ export class SettingsSideNavModel {
                 'icon': 'toc',
                 'url': '/xero'
             },
+            {
+                'id': 'xtrm',
+                'title': 'XTRM',
+                'translate': 'SETTINGS.SIDE_NAV.XTRM',
+                'icon': 'toc',
+                'url': '/xtrm'
+            },
         ];
     }
 }

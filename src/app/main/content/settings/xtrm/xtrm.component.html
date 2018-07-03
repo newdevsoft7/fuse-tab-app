@@ -1,0 +1,118 @@
+<div fxLayout="column">
+
+    <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="info">
+        <div class="name" fxFlex="20">XTRM Module</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-slide-toggle color="accent" [(ngModel)]="items[Setting.xtrm_enable]"
+                (change)="onChange(Setting.xtrm_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <div class="desc secondary-text" fxFlex="85">Enable the XTRM Module to pay users directly</div>            
+        </div>
+    </div>
+
+    <!-- XTRM form -->
+    <div [hidden]="!items[Setting.xtrm_enable] || !loaded">
+        <ng-container *ngIf="!xtrm.xtrm_set_up; else detail">
+            <form [formGroup]="xtrmForm">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                    <span class="w-120">Company Name</span>
+                    <mat-form-field>
+                        <input matInput formControlName="cname">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                    <span class="w-120">Website</span>
+                    <mat-form-field>
+                        <input matInput formControlName="web">
+                    </mat-form-field>
+                </div>
+                <fieldset>
+                    <legend>Contact Person</legend>
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                        <span class="w-100">First Name</span>
+                        <mat-form-field>
+                            <input matInput formControlName="fname">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                        <span class="w-100">Last Name</span>
+                        <mat-form-field>
+                            <input matInput formControlName="lname">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                        <span class="w-100">Email</span>
+                        <mat-form-field>
+                            <input matInput formControlName="email" type="email">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                        <span class="w-100">Mobile</span>
+                        <mat-form-field>
+                            <input matInput formControlName="mob">
+                        </mat-form-field>
+                    </div>
+                </fieldset>
+                <button class="mt-12" mat-raised-button color="accent" [disabled]="xtrmForm.invalid || submitting" (click)="saveXtrmSetup()">
+                    <ng-container *ngIf="!submitting">Save</ng-container>
+                    <ng-container *ngIf="submitting">Saving</ng-container>
+                </button>
+            </form>
+        </ng-container>
+        <!-- / XTRM form  -->
+
+        <!-- XTRM detail -->
+        <ng-template #detail>
+            <div>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start">
+                    <span class="w-120">Company Name:</span>
+                    <div>{{xtrm.cname}}</div>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" class="mt-8">
+                    <span class="w-120">Account ID:</span>
+                    <div>{{xtrm.xtrm_account_id}}</div>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" class="mt-8">
+                    <span class="w-120">Contact Person:</span>
+                    <div>{{xtrm.fname}} {{xtrm.lname}} ({{xtrm.email}})</div>
+                </div>
+            </div>
+        </ng-template>
+        <!-- / XTRM detail -->
+
+        <div id="wallets" *ngIf="xtrm.xtrm_set_up" class="mt-12">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <app-settings-xtrm-add-wallet (onWalletAdded)="onWalletAdded($event)">
+                </app-settings-xtrm-add-wallet>
+            </div>
+            <table class="w-100-p mt-12" cellspacing="0">
+                <tr *ngFor="let wallet of xtrm.wallets; odd as odd; even as even" [ngClass]="{'odd': odd, 'even': even}">
+                    <td class="pl-8" matTooltip="Wallet Name">{{wallet.wname}}</td>
+                    <td matTooltip="Currency">{{wallet.currency}}</td>
+                    <td matTooltip="Balance">{{wallet.balance}}</td>
+                    <td class="w-40">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" (click)="$event.stopPropagation()">
+                            <mat-icon class="material-icons">more_vert</mat-icon>
+                        </button>
+
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="openFundModal('ach', wallet)">
+                                <span>ACH</span>
+                            </button>
+
+                            <button mat-menu-item (click)="openFundModal('credit_card', wallet)">
+                                <span>Credit Card</span>
+                            </button>
+
+                            <button mat-menu-item (click)="openFundModal('wire', wallet)">
+                                <span>Wire</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
