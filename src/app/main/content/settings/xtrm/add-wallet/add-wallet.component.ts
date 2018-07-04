@@ -10,6 +10,7 @@ export class SettingsXtrmAddWalletComponent implements OnInit {
 
     formActive = false;
     form: FormGroup;
+    currencies = ['AUD', 'EUR', 'GBP', 'NZD', 'PLN', 'USD'];
     @Output() onWalletAdded = new EventEmitter();
     @ViewChild('nameInput') nameInputField;
 

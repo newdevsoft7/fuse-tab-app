@@ -9,9 +9,13 @@
 			<mat-form-field floatPlaceholder="never">
 				<input matInput formControlName="wname" #nameInput placeholder="Write a Wallet Name">
 			</mat-form-field>
-	
-			<mat-form-field floatPlaceholder="never">
-				<input matInput formControlName="currency" placeholder="Currency Code (3 letters)" minlength="3" maxlength="3">
+
+			<mat-form-field>
+				<mat-select formControlName="currency" placeholder="currency">
+					<mat-option *ngFor="let currency of currencies" [value]="currency">
+						{{currency}}
+					</mat-option>
+				</mat-select>
 			</mat-form-field>
 		</div>
 		
