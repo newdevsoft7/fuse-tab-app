@@ -223,12 +223,9 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         this.switchUser();
         this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
             if (isSwitch) {
-                this.tabsComponent.dynamicTabs = [];
-                setTimeout(() => {
-                    if (this.tabsComponent.tabs.length > 0) {
-                        this.tabsComponent.selectTab(this.tabsComponent.tabs.first);
-                    }
-                });
+                for (let i = this.tabService.openTabs.length - 1; i >= 0; i--) {
+                    this.closeTab(this.tabService.openTabs[i].url);
+                }
                 this.switchUser();
             }
         });
