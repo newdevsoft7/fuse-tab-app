@@ -29,7 +29,7 @@ export class UsersProfileEditCountryComponent implements OnInit {
     }
 
     openForm() {
-        const country = this.options.find(v => v.option == this.element[this.field].value);
+        const country = this.options.find(v => v.option == this.element[this.field]);
         this.form = this.formBuilder.group({
             country_id: [country ? country.id : null]
         });
@@ -42,7 +42,7 @@ export class UsersProfileEditCountryComponent implements OnInit {
     }
 
     display() {
-        const value = this.element[this.field].value;
+        const value = this.element[this.field];
         return value ? value : 'Empty';
     }
 
@@ -54,17 +54,17 @@ export class UsersProfileEditCountryComponent implements OnInit {
     saveForm() {
         if (this.form.valid) {
             const country_id = this.form.getRawValue().country_id;
-            if (country_id != this.element[this.field].value) {
-                this.element[this.field].value = country_id;
-                this.userService.updateProfile(this.element.id, PROFILE_ELEMENT_COUNTRY_ID, country_id)
-                    .subscribe(res => {
-                        //this.toastr.success(res.message);
-                    }, err => {
-                        const errors = err.error.errors.data;
-                        errors.forEach(v => {
-                            this.toastr.error(v);
-                        });
+            const country = this.options.find(v => v.id == country_id);
+            if (country.option != this.element[this.field]) {
+                this.element[this.field] = country.option;
+                try {
+                    this.userService.updateUser(this.element.id, { country_id });
+                } catch (e) {
+                    const errors = e.error.errors.data;
+                    errors.forEach(v => {
+                        this.toastr.error(v);
                     });
+                }
             }
         }
     }

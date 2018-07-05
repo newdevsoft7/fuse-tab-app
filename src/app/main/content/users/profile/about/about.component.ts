@@ -19,7 +19,7 @@ export class UsersProfileAboutComponent implements OnInit, AfterViewChecked {
     @ViewChild('adminNoteInput') adminNoteInput;
     @ViewChildren('tag') tags: QueryList<any>;
     prevOpenedField: any;
-
+    countries: any[] = [];
     canSavePost = false;
 
     adminNotes = [];
@@ -55,6 +55,8 @@ export class UsersProfileAboutComponent implements OnInit, AfterViewChecked {
                 this.adminNotes = res;
             });
         }
+
+        this.userService.getCountries().then(countries => this.countries = countries);
 
 
         this.adminNoteForm.valueChanges.subscribe(() => {
