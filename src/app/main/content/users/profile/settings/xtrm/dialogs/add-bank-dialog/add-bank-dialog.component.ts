@@ -89,7 +89,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
             if (control && control.dirty && !control.valid) {
                 this.formErrors[field] = control.errors;
             }
-        }
+		}
     }
 
 	async search() {
@@ -141,6 +141,9 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 	}
 
 	populate(bank) {
+		this.makeControldirtyTouched('bank_name');
+		this.makeControldirtyTouched('bank_swift');
+		this.makeControldirtyTouched('bank_branch');
 		this.form.patchValue({
 			bank_name: bank.bname,
 			bank_swift: bank.swift,
@@ -152,6 +155,11 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		this.form.patchValue({
 			country_code: countryCode
 		});
+	}
+
+	private makeControldirtyTouched(control: string) {
+		this.form.controls[control].markAsDirty();
+		this.form.controls[control].markAsTouched();
 	}
 
 	private displayError(e: any) {

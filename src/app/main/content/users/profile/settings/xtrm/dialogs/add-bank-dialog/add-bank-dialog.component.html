@@ -83,7 +83,7 @@
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <span class="w-100">Bank Name</span>
                         <mat-form-field fxFlex>
-                            <input matInput formControlName="bank_name" minlength="5" maxlength="30">
+                            <input matInput formControlName="bank_name" minlength="5" maxlength="50">
                             <mat-error *ngIf="formErrors.bank_name.required">
                                 Bank Name is required!
                             </mat-error>
@@ -95,7 +95,7 @@
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <span class="w-100">Bank Branch</span>
                         <mat-form-field fxFlex>
-                            <input matInput formControlName="bank_branch" minlength="1" maxlength="15">
+                            <input matInput formControlName="bank_branch" minlength="1" maxlength="100">
                             <mat-error *ngIf="formErrors.bank_branch.required">
                                 Bank Branch is required!
                             </mat-error>
@@ -107,7 +107,7 @@
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <span class="w-100">SWIFT Code</span>
                         <mat-form-field fxFlex>
-                            <input matInput formControlName="bank_swift" minlength="6" maxlength="10">
+                            <input matInput formControlName="bank_swift" minlength="6" maxlength="11">
                             <mat-error *ngIf="formErrors.bank_swift.required">
                                 SWIFT Code is required!
                             </mat-error>
@@ -175,7 +175,7 @@
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field>
-                        <input matInput formControlName="bank_name" minlength="5" maxlength="30" placeholder="Bank Name">
+                        <input matInput formControlName="bank_name" minlength="5" maxlength="50" placeholder="Bank Name">
                         <mat-error *ngIf="formErrors.bank_name.required">
                             Bank Name is required!
                         </mat-error>
@@ -184,7 +184,7 @@
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field>
-                        <input matInput formControlName="bank_branch" minlength="1" maxlength="15" placeholder="Bank Branch">
+                        <input matInput formControlName="bank_branch" minlength="1" maxlength="100" placeholder="Bank Branch">
                         <mat-error *ngIf="formErrors.bank_branch.required">
                             Bank Branch is required!
                         </mat-error>
@@ -193,7 +193,7 @@
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field>
-                        <input matInput formControlName="bank_swift" minlength="6" maxlength="10" placeholder="SWIFT Code">
+                        <input matInput formControlName="bank_swift" minlength="6" maxlength="11" placeholder="SWIFT Code">
                         <mat-error *ngIf="formErrors.bank_swift.required">
                             SWIFT Code is required!
                         </mat-error>
