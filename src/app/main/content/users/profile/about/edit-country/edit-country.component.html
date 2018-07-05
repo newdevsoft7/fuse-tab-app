@@ -1,0 +1,21 @@
+<div fxFlex="1 0 auto" *ngIf="!formActive" class="country-element" (click)="openForm()">
+	<span class="country-value">{{display()}}</span>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="country-element-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">
+
+	<mat-form-field fxFlex="1 0 auto" floatPlaceholder="never">
+		<mat-select formControlName="country_id" #select (selectionChange)="saveForm()">
+			<mat-option *ngFor="let option of options" [value]="option.id">
+				{{option.option}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+
+	<button mat-icon-button fxFlex="0 1 auto">
+		<mat-icon>check</mat-icon>
+	</button>
+	<button mat-icon-button fxFlex="0 1 auto" (click)="closeForm()" type="button">
+		<mat-icon>close</mat-icon>
+	</button>
+</form>

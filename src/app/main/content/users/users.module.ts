@@ -14,6 +14,7 @@ import { UsersProfileEditBasicTextValueComponent } from './profile/about/edit-ba
 import { UsersProfileEditSexComponent } from './profile/about/edit-sex/edit-sex.component';
 import { UsersProfileEditListmValueComponent } from './profile/about/edit-listm-value/edit-listm-value.component';
 import { UsersProfileEditDateComponent } from './profile/about/edit-date/edit-date.component';
+import { UsersProfileEditCountryComponent } from './profile/about/edit-country/edit-country.component';
 import { UsersProfilePhotoGalleryDialogComponent } from './profile/photo/photo-gallery-dialog/photo-gallery-dialog.component';
 import { UsersProfileVideoComponent } from './profile/video/video.component';
 import { UsersProfileVideoGalleryDialogComponent } from './profile/video/video-gallery-dialog/video-gallery-dialog.component';
@@ -80,6 +81,7 @@ import { UserSettingsXtrmAddBankDialogComponent } from './profile/settings/xtrm/
         UsersProfileEditBasicTextValueComponent,
         UsersProfileEditSexComponent,
         UsersProfileEditDateComponent,
+        UsersProfileEditCountryComponent,
         UsersProfilePhotoGalleryDialogComponent,
         UsersProfileVideoComponent,
         UsersProfileVideoGalleryDialogComponent,

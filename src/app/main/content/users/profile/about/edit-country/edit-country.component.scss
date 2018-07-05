@@ -1,0 +1,29 @@
+:host {
+    .country-element {
+        &.disabled {
+            pointer-events: none;
+            border-bottom: none;
+        }
+        
+        .country-value {
+            border-bottom: dashed 1px #d0d0d0;
+            & :hover {
+                cursor: text;
+            }
+        }
+    }
+    
+    .country-element-form {
+        /deep/ .mat-form-field-wrapper {
+            padding: 0;
+        }
+    
+        /deep/ .mat-form-field-infix {
+            padding: 0;
+        }
+    
+        /deep/ .mat-form-field-underline {
+            bottom: -5px;
+        }
+    }
+}
