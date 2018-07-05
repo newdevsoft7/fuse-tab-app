@@ -55,6 +55,8 @@ import { UserPasswordDialogComponent } from './dialogs/password/password.compone
 import { UsersSettingsLinkOtherAccountsComponent } from './profile/settings/link-other-accounts/link-other-accounts.component';
 import { UsersProfilePayLevelsComponent } from './profile/pay-levels/pay-levels.component';
 import { UsersProfileEditPayLevelComponent } from './profile/pay-levels/edit-pay-level/edit-pay-level.component';
+import { UsersSettingsXtrmComponent } from './profile/settings/xtrm/xtrm.component';
+import { UserSettingsXtrmAddBankDialogComponent } from './profile/settings/xtrm/dialogs/add-bank-dialog/add-bank-dialog.component';
 
 @NgModule({
     imports: [
@@ -114,7 +116,9 @@ import { UsersProfileEditPayLevelComponent } from './profile/pay-levels/edit-pay
         DocumentFormsDialogComponent,
         UserPasswordDialogComponent,
         UsersProfilePayLevelsComponent,
-        UsersProfileEditPayLevelComponent
+        UsersProfileEditPayLevelComponent,
+        UsersSettingsXtrmComponent,
+        UserSettingsXtrmAddBankDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -147,7 +151,8 @@ import { UsersProfileEditPayLevelComponent } from './profile/pay-levels/edit-pay
         AddUnavailabilityDialogComponent,
         AssignReportDialogComponent,
         DocumentFormsDialogComponent,
-        UserPasswordDialogComponent
+        UserPasswordDialogComponent,
+        UserSettingsXtrmAddBankDialogComponent
     ]
 })
 export class UsersModule { }

@@ -67,6 +67,9 @@
                 (approveCompany)="approveCompany($event)"
                 *ngSwitchCase="'link-other-account'">
             </app-users-settings-link-other-accounts>
+            <ng-container *ngIf="settings.xtrm_enable">
+                <app-users-settings-xtrm *ngSwitchCase="'xtrm'"></app-users-settings-xtrm>
+            </ng-container>
         </ng-container>
     </div>
     <!-- / CONTENT -->

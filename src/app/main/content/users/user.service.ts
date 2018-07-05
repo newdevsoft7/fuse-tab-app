@@ -368,6 +368,57 @@ export class UserService {
         return this.http.put(url, {}).toPromise();
     }
 
+    getXtrmSetup(userId: number | string): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/xtrm/setup`;
+        return this.http.get(url).toPromise();
+    }
+
+    setXtrmSetup(userId: number | string): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/xtrm/setup`;
+        return this.http.post(url, {}).toPromise();
+    }
+
+    authorizeXtrmSetup(userId: number | string, code: string): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/xtrm/setup/authorise`;
+        return this.http.post(url, { otp: code }).toPromise();
+    }
+
+    searchBanks(param: {
+        bankName: string,
+        countryCode: string,
+        page: number,
+        city?: string
+    }): Promise<any> {
+        const city = param.city ? param.city : '';
+        const url = `${BASE_URL}/xtrm/banks/search/${param.bankName}/${param.countryCode}/${param.page}/${city}`;
+        return this.http.get(url.replace(/\/+$/, '')).toPromise();
+    }
+
+    addUserBank(userId: number | string, bank: {
+        contact_name: string,
+        currency: string,
+        wtype: string,
+        country_code: string,
+        bank_name: string,
+        bank_swift: string,
+        bank_account: string,
+        bank_routing: string,
+        bank_branch: string
+    }): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/xtrm/bank`;
+        return this.http.post(url, bank).toPromise();
+    }
+
+    getCurrencies(): Promise<any[]> {
+        const url = `${BASE_URL}/helpers/currencies`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
+    getCountries(): Promise<any[]> {
+        const url = `${BASE_URL}/helpers/countries`;
+        return this.http.get<any[]>(url).toPromise<any[]>();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

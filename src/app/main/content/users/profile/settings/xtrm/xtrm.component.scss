@@ -1,0 +1,55 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+    .setup-btn-area {
+        text-align: center;
+    }
+
+    @include media-breakpoint-up('xs') {
+        .authorize-btn {
+            margin-top: -10px;
+        }
+    }
+    
+    fieldset {
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        margin-bottom: 16px;
+
+        legend {
+            padding: 0 4px;
+        }
+
+        &#banks {
+            min-height: 80px;
+            min-width: 300px;
+            position: relative;
+
+            button {
+                position: absolute;
+                top: -12px;
+                right: -22px;
+            }
+        }
+    }
+
+    table {
+        tr {
+            &.odd {
+                background-color: #ffffff;
+            }
+            
+            &.even {
+                background-color: #eeeeee;
+            }
+
+            td {
+                padding: 4px 8px;
+
+                @include media-breakpoint-up('xs') {
+                    padding: 8px 16px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,253 @@
+<div class="dialog-content-wrapper">
+        <mat-toolbar matDialogTitle class="mat-accent m-0">
+            <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title">Link Bank Account</span>
+                <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    
+        <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+            <div class="search-form">
+                <div fxHide.xs>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Bank Name</span>
+                        <mat-form-field>
+                            <input matInput [(ngModel)]="bankName">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <span class="w-100">Country</span>
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="countryCode" (ngModelChange)="onCountryChange($event)">
+                                    <mat-option *ngFor="let option of countries" [value]="option.iso2">{{option.option}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <span class="w-40">City</span>
+                            <mat-form-field>
+                                <input matInput [(ngModel)]="city">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start" fxHide.gt-xs>
+                    <mat-form-field>
+                        <input matInput placeholder="Bank Name" [(ngModel)]="bankName">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="countryCode" placeholder="Country" (ngModelChange)="onCountryChange($event)">
+                            <mat-option *ngFor="let option of countries" [value]="option.iso2">{{option.option}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="City" [(ngModel)]="city">
+                    </mat-form-field>
+                </div>
+                <button mat-raised-button color="accent" (click)="search()" [disabled]="searchDisabled">Search</button>
+            </div>
+
+            <div id="results">
+                <table *ngIf="banks.length > 0" class="w-100-p mt-20" cellspacing="0">
+                    <tr *ngFor="let bank of banks; even as even; odd as odd" [ngClass]="{'odd': odd, 'even': even}">
+                        <td>{{bank.bname}}</td>
+                        <td>{{bank.address}}</td>
+                        <td><button mat-raised-button color="accent" (click)="populate(bank)">Select</button></td>
+                    </tr>
+                </table>
+                <div class="show-more-btn-area">
+                    <button mat-raised-button color="accent" *ngIf="showMore" (click)="getMoreBanks()" [disabled]="fetchingBanks">
+                        Show more
+                    </button>
+                </div>
+            </div>
+            
+            <form [formGroup]="form" fxLayout="column" fxLayoutAlign="start">
+                <div fxHide.xs>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Account Name</span>
+                        <mat-form-field fxFlex>
+                            <input matInput formControlName="contact_name" minlength="2" maxlength="50">
+                            <mat-error *ngIf="formErrors.contact_name.required">
+                                Account Name is required!
+                            </mat-error>
+                            <mat-error *ngIf="formErrors.contact_name.minlength || formErrors.contact_name.maxlength">
+                                Please enter 2-50 letters!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Bank Name</span>
+                        <mat-form-field fxFlex>
+                            <input matInput formControlName="bank_name" minlength="5" maxlength="30">
+                            <mat-error *ngIf="formErrors.bank_name.required">
+                                Bank Name is required!
+                            </mat-error>
+                            <mat-error *ngIf="formErrors.bank_name.minlength || formErrors.bank_name.maxlength">
+                                Please enter 5-30 letters!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Bank Branch</span>
+                        <mat-form-field fxFlex>
+                            <input matInput formControlName="bank_branch" minlength="1" maxlength="15">
+                            <mat-error *ngIf="formErrors.bank_branch.required">
+                                Bank Branch is required!
+                            </mat-error>
+                            <mat-error *ngIf="formErrors.bank_branch.minlength || formErrors.bank_branch.maxlength">
+                                Please enter 1-15 letters!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">SWIFT Code</span>
+                        <mat-form-field fxFlex>
+                            <input matInput formControlName="bank_swift" minlength="6" maxlength="10">
+                            <mat-error *ngIf="formErrors.bank_swift.required">
+                                SWIFT Code is required!
+                            </mat-error>
+                            <mat-error *ngIf="formErrors.bank_swift.minlength || formErrors.bank_swift.maxlength">
+                                Please enter 6-10 letters!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Routing No.</span>
+                        <mat-form-field fxFlex>
+                            <input matInput formControlName="bank_routing" minlength="2" maxlength="15">
+                            <mat-error *ngIf="formErrors.bank_routing.required">
+                                Routing No. is required!
+                            </mat-error>
+                            <mat-error *ngIf="formErrors.bank_routing.minlength || formErrors.bank_routing.maxlength">
+                                Please enter 2-15 digits!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Account No.</span>
+                        <mat-form-field fxFlex>
+                            <input matInput formControlName="bank_account" minlength="6" maxlength="20">
+                            <mat-error *ngIf="formErrors.bank_account.required">
+                                Account No. is required!
+                            </mat-error>
+                            <mat-error *ngIf="formErrors.bank_account.minlength || formErrors.bank_account.maxlength">
+                                Please enter 6-20 digits!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Currency</span>
+                        <mat-form-field>
+                            <mat-select formControlName="currency">
+                                <mat-option *ngFor="let option of currencies" [value]="option.currency_code">{{option.currency_code}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="formErrors.currency.required">
+                                Please select currency!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Type</span>
+                        <mat-form-field>
+                            <mat-select formControlName="wtype">
+                                <mat-option *ngFor="let option of wtypes" [value]="option">{{option}}</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="formErrors.wtype.required">
+                                Please select type!
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div fxHide.gt-xs fxLayout="column" fxLayoutAlign="start">
+                    <mat-form-field>
+                        <input matInput formControlName="contact_name" minlength="2" maxlength="50" placeholder="Account Name">
+                        <mat-error *ngIf="formErrors.contact_name.required">
+                            Account Name is required!
+                        </mat-error>
+                        <mat-error *ngIf="formErrors.contact_name.minlength || formErrors.contact_name.maxlength">
+                            Please enter 2-50 letters!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="bank_name" minlength="5" maxlength="30" placeholder="Bank Name">
+                        <mat-error *ngIf="formErrors.bank_name.required">
+                            Bank Name is required!
+                        </mat-error>
+                        <mat-error *ngIf="formErrors.bank_name.minlength || formErrors.bank_name.maxlength">
+                            Please enter 5-30 letters!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="bank_branch" minlength="1" maxlength="15" placeholder="Bank Branch">
+                        <mat-error *ngIf="formErrors.bank_branch.required">
+                            Bank Branch is required!
+                        </mat-error>
+                        <mat-error *ngIf="formErrors.bank_branch.minlength || formErrors.bank_branch.maxlength">
+                            Please enter 1-15 letters!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="bank_swift" minlength="6" maxlength="10" placeholder="SWIFT Code">
+                        <mat-error *ngIf="formErrors.bank_swift.required">
+                            SWIFT Code is required!
+                        </mat-error>
+                        <mat-error *ngIf="formErrors.bank_swift.minlength || formErrors.bank_swift.maxlength">
+                            Please enter 6-10 letters!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="bank_routing" minlength="2" maxlength="15" placeholder="Routing No.">
+                        <mat-error *ngIf="formErrors.bank_routing.required">
+                            Routing No. is required!
+                        </mat-error>
+                        <mat-error *ngIf="formErrors.bank_routing.minlength || formErrors.bank_routing.maxlength">
+                            Please enter 2-15 digits!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="bank_account" minlength="6" maxlength="20" placeholder="Account No.">
+                        <mat-error *ngIf="formErrors.bank_account.required">
+                            Account No. is required!
+                        </mat-error>
+                        <mat-error *ngIf="formErrors.bank_account.minlength || formErrors.bank_account.maxlength">
+                            Please enter 6-20 digits!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select formControlName="currency" placeholder="Currency">
+                            <mat-option *ngFor="let option of currencies" [value]="option.currency_code">{{option.currency_code}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formErrors.currency.required">
+                            Please select currency!
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select formControlName="wtype" placeholder="Type">
+                            <mat-option *ngFor="let option of wtypes" [value]="option">{{option}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formErrors.wtype.required">
+                            Please select type!
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </form>
+        </div>
+    
+        <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+            <button (click)="onFormSubmit()" mat-raised-button color="accent" [disabled]="form.invalid || submitting">
+                <ng-container *ngIf="submitting">Saving...</ng-container>
+                <ng-container *ngIf="!submitting">Save</ng-container>
+            </button>
+            
+            <button mat-raised-button color="warn" [mat-dialog-close]="false">
+                Cancel
+            </button>
+        </div>
+    </div>
+    

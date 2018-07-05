@@ -82,6 +82,13 @@ export class UsersProfileSettingsComponent implements OnInit {
             'vis': ['owner', 'admin', 'staff', 'client', 'ext']
         },
         {
+            'id': 'xtrm',
+            'title': 'XTRM',
+            'lvls': ['owner', 'admin', 'staff'],
+            'vis': ['owner', 'admin', 'staff'],
+            'disabled': false
+        },
+        {
             'id': 'link-other-account',
             'title': 'Link to other StaffConnect accounts',
             'lvls': ['owner', 'admin', 'staff', 'client', 'ext'],
@@ -100,10 +107,6 @@ export class UsersProfileSettingsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        const link = this.categories.find(v => v.id === 'link-other-account');
-        if (link) {
-            link.disabled = !(this.currentUser.id == this.user.id && !this.tokenStorage.isExistSecondaryUser());
-        }
         this.getUserOptions();
         if (this.user.lvl != 'owner' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
             this.getUserPermissions();
@@ -126,6 +129,10 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     getCategoryListByUser() {
         this.categories = _.filter(this.categories, (c) => c.lvls.includes(this.user.lvl) && c.vis.includes(this.currentUser.lvl));
+        
+        this.categories.filter(c => ['link-other-account', 'xtrm'].indexOf(c.id) > -1)
+            .forEach(c => c.disabled = !(this.currentUser.id == this.user.id && !this.tokenStorage.isExistSecondaryUser()));
+
         if (!_.isEmpty(this.categories)) {
             this.select(this.categories[0]);
         }
@@ -348,4 +355,5 @@ export class UsersProfileSettingsComponent implements OnInit {
     get isOwnUser(): boolean {
         return !this.tokenStorage.isExistSecondaryUser();
     }
+
 }
