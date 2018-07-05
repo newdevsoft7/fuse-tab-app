@@ -21,8 +21,8 @@
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <span class="w-100">Country</span>
                             <mat-form-field>
-                                <mat-select [(ngModel)]="countryCode" (ngModelChange)="onCountryChange($event)">
-                                    <mat-option *ngFor="let option of countries" [value]="option.iso2">{{option.option}}</mat-option>
+                                <mat-select [(ngModel)]="country" (ngModelChange)="onCountryChange($event)">
+                                    <mat-option *ngFor="let option of countries" [value]="option">{{option.option}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -40,8 +40,8 @@
                         <input matInput placeholder="Bank Name" [(ngModel)]="bankName">
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-select [(ngModel)]="countryCode" placeholder="Country" (ngModelChange)="onCountryChange($event)">
-                            <mat-option *ngFor="let option of countries" [value]="option.iso2">{{option.option}}</mat-option>
+                        <mat-select [(ngModel)]="country" placeholder="Country" (ngModelChange)="onCountryChange($event)">
+                            <mat-option *ngFor="let option of countries" [value]="option">{{option.option}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
@@ -116,15 +116,16 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="w-100">Routing No.</span>
+                    <div fxLayout="row" fxLayoutAlign="start center" *ngIf="bankRouting">
+                        <span class="w-100">{{bankRouting.bank_routing_label}}</span>
                         <mat-form-field fxFlex>
-                            <input matInput formControlName="bank_routing" minlength="2" maxlength="15">
+                            <input matInput formControlName="bank_routing" [minlength]="bankRouting.bank_routing_min" [maxlength]="bankRouting.
+                            bank_routing_max">
                             <mat-error *ngIf="formErrors.bank_routing.required">
-                                Routing No. is required!
+                                {{bankRouting.bank_routing_label}} is required!
                             </mat-error>
                             <mat-error *ngIf="formErrors.bank_routing.minlength || formErrors.bank_routing.maxlength">
-                                Please enter 2-15 digits!
+                                Please enter {{bankRouting.bank_routing_min}}-{{bankRouting.bank_routing_max}} digits!
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -151,8 +152,8 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <span class="w-100">Type</span>
+                    <div fxLayout="row" fxLayoutAlign="start center" *ngIf="wtypes.length > 1">
+                        <span class="w-100">Withdraw Type</span>
                         <mat-form-field>
                             <mat-select formControlName="wtype">
                                 <mat-option *ngFor="let option of wtypes" [value]="option">{{option}}</mat-option>
@@ -201,13 +202,13 @@
                             Please enter 6-10 letters!
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
-                        <input matInput formControlName="bank_routing" minlength="2" maxlength="15" placeholder="Routing No.">
+                    <mat-form-field *ngIf="bankRouting">
+                        <input matInput formControlName="bank_routing" [minlength]="bankRouting.bank_routing_min" [maxlength]="bankRouting.bank_routing_max" [placeholder]="bankRouting.bank_routing_label">
                         <mat-error *ngIf="formErrors.bank_routing.required">
-                            Routing No. is required!
+                            {{bankRouting.bank_routing_label}} is required!
                         </mat-error>
                         <mat-error *ngIf="formErrors.bank_routing.minlength || formErrors.bank_routing.maxlength">
-                            Please enter 2-15 digits!
+                            Please enter {{bankRouting.bank_routing_min}}-{{bankRouting.bank_routing_max}} digits!
                         </mat-error>
                     </mat-form-field>
                     <mat-form-field>
@@ -227,8 +228,8 @@
                             Please select currency!
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-select formControlName="wtype" placeholder="Type">
+                    <mat-form-field *ngIf="wtypes.length > 1">
+                        <mat-select formControlName="wtype" placeholder="Withdraw Type">
                             <mat-option *ngFor="let option of wtypes" [value]="option">{{option}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="formErrors.wtype.required">
@@ -236,6 +237,7 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
+                <input type="hidden" formControlName="wtype" *ngIf="wtypes.length === 1">
             </form>
         </div>
     

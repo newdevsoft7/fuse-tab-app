@@ -60,7 +60,7 @@
                     <button mat-mini-fab color="accent" (click)="openAddBankDialog()">
                         <mat-icon class="white-fg">add</mat-icon>
                     </button>
-                    <table cellspacing="0">
+                    <table cellspacing="0" class="w-100-p">
                         <tr *ngFor="let bank of xtrm.banks; even as even; odd as odd" [ngClass]="{'odd': odd, 'even': even}">
                             <td matTooltip="Bank Name">{{bank.bname}}</td>
                             <td matTooltip="Currency">{{bank.currency}}</td>

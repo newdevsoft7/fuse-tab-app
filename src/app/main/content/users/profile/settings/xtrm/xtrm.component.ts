@@ -73,11 +73,12 @@ export class UsersSettingsXtrmComponent implements OnInit {
 
     async getCountries() {
         try {
-            this.countries = await this.userService.getCountries();
+            this.countries = await this.userService.getCountriesForBank();
         } catch (e) {
             this.displayError(e);
         }
     }
+
 
     async getCurrencies() {
         try {

@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy {
 
 	submitting = false;
-	countryCode;
+	country: any;
 	countries: any[];
 	currencies: any[];
 	bankName = '';
@@ -28,6 +28,11 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
     formChangeSubscription: Subscription;
 	wtypes = ['ACH', 'WIRE'];
 	user: any;
+	bankRouting: any = {
+		bank_routing_label: 'Routing No',
+		bank_routing_min: 2,
+		bank_routing_max: 15
+	};
 
 	constructor(
 		public dialogRef: MatDialogRef<UserSettingsXtrmAddBankDialogComponent>,
@@ -54,15 +59,15 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 
 	ngOnInit() {
 		this.form = this.formBuilder.group({
-			contact_name: ['', Validators.required], // No
+			contact_name: ['', Validators.required],
 			currency: ['', Validators.required],
-			wtype: ['', Validators.required], // No
+			wtype: ['', Validators.required],
 			country_code: ['', Validators.required],
 			bank_name: ['', Validators.required],
 			bank_swift: ['', Validators.required],
 			bank_account: ['', Validators.required],
 			bank_routing: ['', Validators.required],
-			bank_branch: ['', Validators.required],
+			bank_branch: ['', Validators.required]
 		});
 
 		this.formChangeSubscription = this.form.valueChanges.subscribe(() => {
@@ -97,7 +102,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		try {
 			const res = await this.userService.searchBanks({
 				bankName: this.bankName.trim(),
-				countryCode: this.countryCode,
+				countryCode: this.country.iso2,
 				page: this.page,
 				city: this.city.trim()
 			});
@@ -113,7 +118,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 			this.fetchingBanks = true;
 			const res = await this.userService.searchBanks({
 				bankName: this.bankName.trim(),
-				countryCode: this.countryCode,
+				countryCode: this.country.iso2,
 				page: ++this.page,
 				city: this.city.trim()
 			});
@@ -137,7 +142,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 	}
 
 	get searchDisabled() {
-		return !this.countryCode || this.bankName.trim() === '';
+		return !this.country || this.bankName.trim() === '';
 	}
 
 	populate(bank) {
@@ -151,10 +156,63 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		});
 	}
 
-	onCountryChange(countryCode) {
-		this.form.patchValue({
-			country_code: countryCode
-		});
+	onCountryChange(country) {
+		// xtrm_bank_withdraw_types
+		this.wtypes = country.xtrm_bank_withdraw_types.split(',');
+		const wtype = this.wtypes.length > 1 ? '' : this.wtypes[0];
+		
+		if (country.bank_routing_label) {
+			this.form = this.formBuilder.group({
+				contact_name: ['', Validators.required],
+				currency: ['', Validators.required],
+				wtype: [wtype, Validators.required],
+				country_code: [country.iso2, Validators.required],
+				bank_name: ['', Validators.required],
+				bank_swift: ['', Validators.required],
+				bank_account: ['', Validators.required],
+				bank_routing: ['', Validators.required],
+				bank_branch: ['', Validators.required]
+			});
+			this.formErrors = {
+				contact_name: {},
+				currency: {},
+				wtype: {},
+				country_code: {},
+				bank_name: {},
+				bank_swift: {},
+				bank_account: {},
+				bank_routing: {},
+				bank_branch: {}
+			};
+			this.bankRouting = {
+				bank_routing_label: country.bank_routing_label,
+				bank_routing_min: country.bank_routing_min,
+				bank_routing_max: country.bank_routing_max
+			};
+		} else {
+			this.form = this.formBuilder.group({
+				contact_name: ['', Validators.required],
+				currency: ['', Validators.required],
+				wtype: [wtype, Validators.required],
+				country_code: [country.iso2, Validators.required],
+				bank_name: ['', Validators.required],
+				bank_swift: ['', Validators.required],
+				bank_account: ['', Validators.required],
+				bank_branch: ['', Validators.required]
+			});
+			this.formErrors = {
+				contact_name: {},
+				currency: {},
+				wtype: {},
+				country_code: {},
+				bank_name: {},
+				bank_swift: {},
+				bank_account: {},
+				bank_branch: {}
+			};
+			this.bankRouting = null;
+		}
+		
 	}
 
 	private makeControldirtyTouched(control: string) {

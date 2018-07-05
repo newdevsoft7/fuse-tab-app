@@ -402,7 +402,7 @@ export class UserService {
         bank_name: string,
         bank_swift: string,
         bank_account: string,
-        bank_routing: string,
+        bank_routing?: string,
         bank_branch: string
     }): Promise<any> {
         const url = `${BASE_URL}/user/${userId}/xtrm/bank`;
@@ -411,12 +411,17 @@ export class UserService {
 
     getCurrencies(): Promise<any[]> {
         const url = `${BASE_URL}/helpers/currencies`;
-        return this.http.get<any[]>(url).toPromise<any[]>();
+        return this.http.get<any[]>(url).toPromise();
     }
 
     getCountries(): Promise<any[]> {
         const url = `${BASE_URL}/helpers/countries`;
-        return this.http.get<any[]>(url).toPromise<any[]>();
+        return this.http.get<any[]>(url).toPromise();
+    }
+
+    getCountriesForBank(): Promise<any[]> {
+        const url = `${BASE_URL}/helpers/bank/countries`;
+        return this.http.get<any[]>(url).toPromise();
     }
 
     private handleError(error: Response | any) {
