@@ -70,7 +70,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	filterPhotosBySelectedTags(photos: any[]) {
 		if (this.selectedTags.length > 0) {
-			return photos.filter(p => this.selectedTags.every(tag => p.tagged.indexOf(tag) > -1));
+			return photos.filter(p => p.tagged.some(tag => this.selectedTags.indexOf(tag) > -1));
 		} else {
 			return photos;
 		}

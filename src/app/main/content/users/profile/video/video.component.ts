@@ -70,7 +70,7 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     
     filterVideosBySelectedTags(videos: any[]) {
 		if (this.selectedTags.length > 0) {
-			return videos.filter(v => this.selectedTags.every(tag => v.tagged.indexOf(tag) > -1));
+			return videos.filter(v => v.tagged.some(tag => this.selectedTags.indexOf(tag) > -1));
 		} else {
 			return videos;
 		}
