@@ -1,6 +1,6 @@
 <div id="photos" [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'">
 
-    <div class="mb-24" *ngIf="settings.profile_photo_msg">
+    <div class="mb-24" *ngIf="settings.profile_photo_msg && !(isOwner || isAdmin)">
         <h3>
             {{settings.profile_photo_msg}}
             <span class="secondary-text ml-4" *ngIf="settings.profile_photo_required > 0">
@@ -9,6 +9,17 @@
             </span>
         </h3>
     </div>
+
+    <!-- Tag buttons -->
+    <div class="mb-24" *ngIf="isAdmin || isOwner">
+        <mat-chip-list [multiple]="true" [selectable]="true">
+            <mat-chip color="accent" [selectable]="selectedTags.indexOf(tag) > -1"
+                *ngFor="let tag of tags" (click)="toggleSelect(tag)"
+                [selected]="selectedTags.indexOf(tag) > -1">{{tag}}</mat-chip>
+        </mat-chip-list>
+
+    </div>
+    <!-- / Tag buttons -->
 
     <!-- BASIC SECTION -->
     <div class="group">
@@ -26,7 +37,7 @@
             <!-- / ADD FILE BUTTON -->
 
             <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicPhotos" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of basicPhotos" [model]="photo">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of filterPhotosBySelectedTags(basicPhotos)" [model]="photo">
                     <ng-container [ngTemplateOutlet]="photoTpl" [ngTemplateOutletContext]="{photo: photo}">
                     </ng-container>
                 </div>
@@ -57,7 +68,7 @@
             <!-- / ADD FILE BUTTON -->
 
             <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminPhotos" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of adminPhotos" [model]="photo">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let photo of filterPhotosBySelectedTags(adminPhotos)" [model]="photo">
                     <ng-container [ngTemplateOutlet]="photoTpl" [ngTemplateOutletContext]="{photo: photo}">
                     </ng-container>
                 </div>
@@ -97,6 +108,10 @@
             <button mat-icon-button (click)="onLockedChanged(photo)">
                 <mat-icon *ngIf="photo.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
                 <mat-icon *ngIf="!photo.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="openTagModal(photo)" *ngIf="isOwner || isAdmin">
+                <mat-icon fontSet="fa" fontIcon="fa-tags" [matTooltip]="photo.tagged.length > 0 ? photo.tagged.join(', ') : 'No tags'"></mat-icon>
             </button>
 
             <button mat-icon-button (click)="deleteProfilePhoto(photo)">

@@ -8,6 +8,7 @@ import { UserService } from '../../user.service';
 import * as _ from 'lodash';
 
 import { UsersProfileVideoGalleryDialogComponent } from './video-gallery-dialog/video-gallery-dialog.component';
+import { TagsDialogComponent } from '../dialogs/tags-dialog/tags-dialog.component';
 
 const PROFILE_VIDEO = 'profile_video';
 
@@ -29,6 +30,8 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     adminVideos: any[];
 
     differ: any;
+	tags: string[];
+	selectedTags: string[] = [];
 
     dialogRef: any;
 
@@ -44,7 +47,34 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
 
     ngOnInit() {
         this.getVideos();
+        this.getTags();
     }
+
+    async getTags() {
+		try {
+			this.tags = await this.userService.getTags('photo');
+			if (this.selectedTags.length > 0) {
+				this.selectedTags = this.selectedTags.filter(tag => this.tags.indexOf(tag) > -1);
+			}
+		} catch (e) { }
+    }
+    
+    toggleSelect(tag) {
+		const index = this.selectedTags.findIndex(s => s.toLowerCase() == tag.toLowerCase());
+		if (index < 0) {
+			this.selectedTags.push(tag);
+		} else {
+			this.selectedTags.splice(index, 1);
+		}
+    }
+    
+    filterVideosBySelectedTags(videos: any[]) {
+		if (this.selectedTags.length > 0) {
+			return videos.filter(v => this.selectedTags.every(tag => v.tagged.indexOf(tag) > -1));
+		} else {
+			return videos;
+		}
+	}
 
     ngDoCheck() {
         const change = this.differ.diff(this.videos);
@@ -91,6 +121,7 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
             .subscribe(res => {
                 const index = this.videos.findIndex(v => v.id == video.id);
                 this.videos.splice(index, 1);
+                this.getTags();
             }, err => {
                 console.log(err);
             });
@@ -154,5 +185,22 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
         return this.currentUser.lvl == 'admin';
     }
 
-
+    openTagModal(video) {
+		const dialogRef = this.dialog.open(TagsDialogComponent, {
+			disableClose: false,
+			panelClass: 'user-profile-tags-dialog',
+			data: {
+				tags: video.tagged,
+				source: this.tags
+			}
+		});
+		dialogRef.afterClosed().subscribe(async(tags) => {
+			if (tags) {
+				try {
+					video.tagged = await this.userService.retags('video', video.id, tags);
+					this.getTags();
+				} catch (e) {}
+			}
+		});
+	}
 }

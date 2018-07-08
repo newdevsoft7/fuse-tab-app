@@ -1,0 +1,39 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Tags</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 m-0">
+        <mat-form-field class="w-100-p">
+            <mat-chip-list #chipList>
+                <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+                    {{tag}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="New tag..." [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="false"
+                    [matAutocomplete]="auto" (matChipInputTokenEnd)="add($event)" #tagInput [formControl]="tagControl">
+            </mat-chip-list>
+
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let tag of filteredTags" [value]="tag">
+                    {{tag}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button (click)="save()" mat-raised-button color="accent">Save</button>
+
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">
+            Cancel
+        </button>
+    </div>
+</div>

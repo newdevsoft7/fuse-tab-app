@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, ViewEncapsulation, DoCheck, IterableDiffers, Output, EventEmitter } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Input, ViewEncapsulation, DoCheck, IterableDiffers, Output, EventEmitter, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatButtonToggleGroup } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { UserService } from '../../user.service';
@@ -7,6 +7,7 @@ import { UserService } from '../../user.service';
 import * as _ from 'lodash';
 
 import { UsersProfilePhotoGalleryDialogComponent } from './photo-gallery-dialog/photo-gallery-dialog.component';
+import { TagsDialogComponent } from '../dialogs/tags-dialog/tags-dialog.component';
 
 const PROFILE_PHOTO = 'profile_photo';
 
@@ -23,11 +24,14 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	@Input() settings: any = {};
 
 	@Output() onAvatarChanged = new EventEmitter();
+	@ViewChild('group') group: MatButtonToggleGroup;
 
 	photos: any[];
 	basicPhotos: any[];
 	adminPhotos: any[];
 	differ: any;
+	tags: string[];
+	selectedTags: string[] = [];
 
 	dialogRef: any;
 
@@ -43,6 +47,33 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	ngOnInit() {
 		this.getPhotos();
+		this.getTags();
+	}
+
+	async getTags() {
+		try {
+			this.tags = await this.userService.getTags('photo');
+			if (this.selectedTags.length > 0) {
+				this.selectedTags = this.selectedTags.filter(tag => this.tags.indexOf(tag) > -1);
+			}
+		} catch (e) { }
+	}
+
+	toggleSelect(tag) {
+		const index = this.selectedTags.findIndex(s => s.toLowerCase() == tag.toLowerCase());
+		if (index < 0) {
+			this.selectedTags.push(tag);
+		} else {
+			this.selectedTags.splice(index, 1);
+		}
+	}
+
+	filterPhotosBySelectedTags(photos: any[]) {
+		if (this.selectedTags.length > 0) {
+			return photos.filter(p => this.selectedTags.every(tag => p.tagged.indexOf(tag) > -1));
+		} else {
+			return photos;
+		}
 	}
 
 	ngDoCheck() {
@@ -165,6 +196,7 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 			.subscribe(res => {
 				const index = this.photos.findIndex(v => v.id == photo.id);
 				this.photos.splice(index, 1);
+				this.getTags();
 			}, err => {
 				console.log(err);
 			});
@@ -192,6 +224,25 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	get isAdmin() {
 		return this.currentUser.lvl == 'admin';
+	}
+
+	openTagModal(photo) {
+		const dialogRef = this.dialog.open(TagsDialogComponent, {
+			disableClose: false,
+			panelClass: 'user-profile-tags-dialog',
+			data: {
+				tags: photo.tagged,
+				source: this.tags
+			}
+		});
+		dialogRef.afterClosed().subscribe(async(tags) => {
+			if (tags) {
+				try {
+					photo.tagged = await this.userService.retags('photo', photo.id, tags);
+					this.getTags();
+				} catch (e) {}
+			}
+		});
 	}
 
 }

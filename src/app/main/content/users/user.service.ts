@@ -4,6 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import * as _ from 'lodash';
 
 const BASE_URL = `${environment.apiUrl}`;
 const USERS_URL = `${BASE_URL}/users`;
@@ -422,6 +424,30 @@ export class UserService {
     getCountriesForBank(): Promise<any[]> {
         const url = `${BASE_URL}/helpers/bank/countries`;
         return this.http.get<any[]>(url).toPromise();
+    }
+
+    addTag(kind: 'photo' | 'video', id: number, tag: string): Observable<string[]> {
+        const newKind = kind === 'photo' ? 'profilePhoto' : 'profileVideo';
+        const url = `${BASE_URL}/${newKind}/${id}/tag`;
+        return this.http.put<string[]>(url, { tag });
+    }
+
+    removeTag(kind: 'photo' | 'video', id: number, tag: string): Observable<string[]> {
+        const newKind = kind === 'photo' ? 'profilePhoto' : 'profileVideo';
+        const url = `${BASE_URL}/${newKind}/${id}/untag`;
+        return this.http.put<string[]>(url, { tag });
+    }
+
+    retags(kind: 'photo' | 'video', id: number, tags: string[]): Promise<string[]> {
+        const newKind = kind === 'photo' ? 'profilePhoto' : 'profileVideo';
+        const url = `${BASE_URL}/${newKind}/${id}/retag`;
+        return this.http.put<string[]>(url, { tags }).toPromise();
+    }
+
+    getTags(kind: 'photo' | 'video'): Promise<string[]> {
+        const newKind = kind === 'photo' ? 'profilePhoto' : 'profileVideo';
+        const url = `${BASE_URL}/settings/tag/${newKind}`;
+        return this.http.get<string[]>(url).toPromise();    
     }
 
     private handleError(error: Response | any) {

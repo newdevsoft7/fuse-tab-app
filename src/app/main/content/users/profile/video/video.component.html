@@ -1,6 +1,6 @@
 <div id="videos" [ngClass.gt-xs]="'p-24'">
 
-    <div class="mb-24" *ngIf="settings.profile_video_msg">
+    <div class="mb-24" *ngIf="settings.profile_video_msg && !(isOwner || isAdmin)">
         <h3>
             {{settings.profile_video_msg}}
             <span class="secondary-text ml-4" *ngIf="settings.profile_video_required > 0">
@@ -8,6 +8,17 @@
             </span>
         </h3>
     </div>
+
+    <!-- Tag buttons -->
+    <div class="mb-24" *ngIf="isAdmin || isOwner">
+        <mat-chip-list [multiple]="true" [selectable]="true">
+            <mat-chip color="accent" [selectable]="selectedTags.indexOf(tag) > -1"
+                *ngFor="let tag of tags" (click)="toggleSelect(tag)"
+                [selected]="selectedTags.indexOf(tag) > -1">{{tag}}</mat-chip>
+        </mat-chip-list>
+
+    </div>
+    <!-- / Tag buttons -->
 
     <!-- BASIC SECTION -->
     <div class="group">
@@ -25,7 +36,7 @@
             <!-- / ADD FILE BUTTON -->
 
             <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicVideos" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of basicVideos" [model]="video">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of filterVideosBySelectedTags(basicVideos)" [model]="video">
                     <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
                     </ng-container>
                 </div>
@@ -56,7 +67,7 @@
             <!-- / ADD FILE BUTTON -->
 
             <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminVideos" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of adminVideos" [model]="video">
+                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let video of filterVideosBySelectedTags(adminVideos)" [model]="video">
                     <ng-container [ngTemplateOutlet]="videoTpl" [ngTemplateOutletContext]="{video: video}">
                     </ng-container>
                 </div>
@@ -78,6 +89,10 @@
         <button mat-icon-button (click)="onLockedChanged(video)">
             <mat-icon *ngIf="video.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
             <mat-icon *ngIf="!video.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="openTagModal(video)" *ngIf="isOwner || isAdmin">
+            <mat-icon fontSet="fa" fontIcon="fa-tags" [matTooltip]="video.tagged.length > 0 ? video.tagged.join(', ') : 'No tags'"></mat-icon>
         </button>
 
         <button mat-icon-button (click)="deleteProfileVideo(video)">

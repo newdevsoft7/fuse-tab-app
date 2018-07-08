@@ -58,6 +58,7 @@ import { UsersProfilePayLevelsComponent } from './profile/pay-levels/pay-levels.
 import { UsersProfileEditPayLevelComponent } from './profile/pay-levels/edit-pay-level/edit-pay-level.component';
 import { UsersSettingsXtrmComponent } from './profile/settings/xtrm/xtrm.component';
 import { UserSettingsXtrmAddBankDialogComponent } from './profile/settings/xtrm/dialogs/add-bank-dialog/add-bank-dialog.component';
+import { TagsDialogComponent } from './profile/dialogs/tags-dialog/tags-dialog.component';
 
 @NgModule({
     imports: [
@@ -120,7 +121,8 @@ import { UserSettingsXtrmAddBankDialogComponent } from './profile/settings/xtrm/
         UsersProfilePayLevelsComponent,
         UsersProfileEditPayLevelComponent,
         UsersSettingsXtrmComponent,
-        UserSettingsXtrmAddBankDialogComponent
+        UserSettingsXtrmAddBankDialogComponent,
+        TagsDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -154,7 +156,8 @@ import { UserSettingsXtrmAddBankDialogComponent } from './profile/settings/xtrm/
         AssignReportDialogComponent,
         DocumentFormsDialogComponent,
         UserPasswordDialogComponent,
-        UserSettingsXtrmAddBankDialogComponent
+        UserSettingsXtrmAddBankDialogComponent,
+        TagsDialogComponent
     ]
 })
 export class UsersModule { }

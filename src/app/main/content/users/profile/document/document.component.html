@@ -1,6 +1,6 @@
 <div id="documents" [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'">
 
-    <div class="mb-24" *ngIf="settings.profile_doc_message">
+    <div class="mb-24" *ngIf="settings.profile_doc_message && !(isOwner || isAdmin)">
         <h3>
             {{settings.profile_doc_message}}
             <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
