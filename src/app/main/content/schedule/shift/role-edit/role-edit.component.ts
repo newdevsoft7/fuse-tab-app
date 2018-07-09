@@ -148,7 +148,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.roleForm = this.formBuilder.group({
                 num_required: [this.role.num_required],
                 rname: [this.role.rname, Validators.required],
-                application_deadline: [this.role.application_deadline ? moment(this.role.application_deadline) : null],
+                application_deadline: [this.role.application_deadline ? moment(this.role.application_deadline).toDate() : null],
                 notes: [this.role.notes ? this.role.notes : ''],
                 bill_rate: [this.role.bill_rate],
                 pay_rate: [this.role.pay_rate],
