@@ -222,11 +222,21 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.runSockets();
         this.switchUser();
-        this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe((isSwitch: boolean) => {
+        this.userSwitcherSubscription = this.tokenStorage.userSwitchListener.subscribe(async (isSwitch: boolean) => {
             if (isSwitch) {
                 for (let i = this.tabService.openTabs.length - 1; i >= 0; i--) {
                     this.closeTab(this.tabService.openTabs[i].url);
                 }
+                try {
+                    const formconnect = await this.connectorService.fetchConnectorData('formconnect');
+                    this.authService.saveConnectData({ formconnect });
+                } catch (e) {}
+
+                try {
+                    const quizconnect = await this.connectorService.fetchConnectorData('quizconnect');
+                    this.authService.saveConnectData({ quizconnect });
+                } catch (e) {}
+
                 this.switchUser();
             }
         });

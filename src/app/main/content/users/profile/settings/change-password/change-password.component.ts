@@ -22,10 +22,10 @@ export class UsersSettingsChangePasswordComponent {
     try {
       this.spinner.show();
       await this.userService.changePassword(this.tokenStorage.getUser().id, this.data.password).toPromise();
-      //this.toastr.success('Password changed');
+      this.toastr.success('Password changed');
       this.data = {};
     } catch (e) {
-      this.toastr.error(e.error.message);
+      this.toastr.error(e.error.errors.password || e.error.message);
     } finally {
       this.spinner.hide();
     }

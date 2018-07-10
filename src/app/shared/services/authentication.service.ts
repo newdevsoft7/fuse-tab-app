@@ -120,12 +120,12 @@ export class AuthenticationService {
 
   public loginAs(user_id: number): Promise<any> {
     const url = `${AUTH_URL}/loginAs`;
-    return this.http.post(`${AUTH_URL}/loginAs`, {user_id}).toPromise();
+    return this.http.post(url, {user_id}).toPromise();
   }
 
   public logoutAs(): Promise<any> {
     const url = `${AUTH_URL}/logoutAs`;
-    return this.http.post(`${AUTH_URL}/logoutAs`, {}).toPromise();
+    return this.http.post(url, {}).toPromise();
   }
 
   public async logout() {
