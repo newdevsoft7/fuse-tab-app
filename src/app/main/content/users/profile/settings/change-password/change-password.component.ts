@@ -25,7 +25,7 @@ export class UsersSettingsChangePasswordComponent {
       this.toastr.success('Password changed');
       this.data = {};
     } catch (e) {
-      this.toastr.error(e.error.message);
+      this.toastr.error(e.error.errors.password || e.error.message);
     } finally {
       this.spinner.hide();
     }
