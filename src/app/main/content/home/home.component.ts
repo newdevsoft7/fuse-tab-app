@@ -58,6 +58,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     // Admin view templates
     @ViewChild(TabsComponent) tabsComponent: TabsComponent;
     @ViewChild('usersTpl') usersTpl;
+    @ViewChild('cardsTpl') cardsTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
     @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
@@ -536,6 +537,30 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             if (index > -1) { navModel.splice(index, 1); }
         }
 
+        // Users -> Cards 
+        const usersNavItem = navModel.find(v => v.id === 'users');
+        if (usersNavItem) {
+            const index = usersNavItem.children.findIndex(v => v.id === 'cards');
+            if (settings.showcase_module != 1) {
+                if (index  > -1) {
+                    usersNavItem.children.splice(index, 1);
+                }
+            } else {
+                if (index < 0) {
+                    usersNavItem.children.push(
+                        {
+                            'id': 'cards',
+                            'title': 'Cards',
+                            'translate': 'NAV.ADMIN.USERS_CARDS',
+                            'type': 'item',
+                            'tab': TAB.USERS_CARDS
+                        }
+                    );
+                }
+            }
+        }
+
+        // Reports & Uploads
         const reportsNavItem = navModel.find(v => v.id === 'reports_and_uploads');
         if (reportsNavItem) {
             // quiz menu

@@ -1,0 +1,56 @@
+<div id="cards-container">
+    <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
+
+        <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
+            <button mat-mini-fab color="accent" (click)="addCard()">
+                <mat-icon class="white-fg">add</mat-icon>
+            </button>
+            <div class="pt-16 nav" fuseperfectscrollbar>
+                <div class="nav-item" *ngFor="let card of cards">
+                    <div matRipple (click)="selectCard(card)" [class.active]="card.id === selectedCard?.id" class="nav-link">
+                        <span class="name">
+                            {{card.name}}
+                        </span>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+        </mat-drawer>
+        <div class="form-container" *ngIf="cardData">
+            <fieldset class="mb-16">
+                <legend>Photo tags</legend>
+                <app-users-card-select-tag [tags]="cardData.profile_photo_tags" [source]="cardData.available_profile_photo_tags" (onTag)="tag(cardData.card.id, 'photo', $event)"
+                    (onUntag)="untag(cardData.card.id, 'photo', $event)"></app-users-card-select-tag>
+            </fieldset>
+
+            <fieldset class="mb-16">
+                <legend>Video tags</legend>
+                <app-users-card-select-tag [tags]="cardData.profile_video_tags" [source]="cardData.available_profile_video_tags" (onTag)="tag(cardData.card.id, 'video', $event)"
+                    (onUntag)="untag(cardData.card.id, 'video', $event)"></app-users-card-select-tag>
+            </fieldset>
+
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px" class="mb-16">
+                <mat-form-field fxFlex="1 0 auto" *ngIf="cardData.showcase_templates.length > 0">
+                    <mat-select placeholder="Showcase Template" (selectionChange)="onShowcaseChange($event)" 
+                        [value]="cardData.card.showcase_template_id">
+                        <mat-option *ngFor="let option of cardData.showcase_templates" [value]="option.id">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button fxFlex="0 1 auto" color="accent" matTooltip="Edit">
+                    Edit
+                </button>
+            </div>
+
+            <fieldset class="mb-16" class="preview">
+                <legend>Preview</legend>
+            </fieldset>
+
+            <button mat-raised-button color="warn" (click)="deleteCard(cardData.card.id)" matTooltip="Delete">
+                Delete
+            </button>
+        </div>
+    </mat-drawer-container>
+</div>

@@ -1,0 +1,36 @@
+@import "src/app/core/scss/fuse";
+
+:host {
+
+    #cards-container {
+
+        height: 100%;
+        
+        .form-container {
+            padding: 16px;
+        }
+        
+        .draw-container {
+            min-height: 100px !important;
+    
+            .draw-sidenav {
+                min-width: 160px;
+            }
+        }
+
+        fieldset {
+            border: 1px solid #dcdcdc;
+            border-radius: 2px;
+            margin-bottom: 16px;
+    
+            legend {
+                padding: 0 4px;
+            }
+
+            &.preview {
+                min-height: 120px;
+            }
+        }
+    
+    }
+}

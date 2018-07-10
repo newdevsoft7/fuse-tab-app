@@ -18,6 +18,14 @@ export const ADMIN_MODEL = [
                 'type': 'item',
                 'tab': TAB.USERS_NEW_MESSAGE_TAB
 
+            },
+            {
+                'id': 'cards',
+                'title': 'Cards',
+                'translate': 'NAV.ADMIN.USERS_CARDS',
+                'type': 'item',
+                'tab': TAB.USERS_CARDS
+
             }
         ]
     },

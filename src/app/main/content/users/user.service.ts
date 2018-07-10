@@ -450,6 +450,41 @@ export class UserService {
         return this.http.get<string[]>(url).toPromise();    
     }
 
+    getCards(): Promise<any[]> {
+        const url = `${BASE_URL}/cards`;
+        return this.http.get<any[]>(url).toPromise();
+    }
+
+    getCard(id: number | string): Promise<any> {
+        const url = `${BASE_URL}/card/${id}`;
+        return this.http.get(url).toPromise();
+    }
+
+    createCard(name: string): Promise<any> {
+        const url = `${BASE_URL}/card`;
+        return this.http.post(url, { name }).toPromise();
+    }
+
+    tagCard(cardId, type: 'photo' | 'video', tag): Promise<any> {
+        const url = `${BASE_URL}/card/${cardId}/${type}/tag`;
+        return this.http.put(url, { tag }).toPromise();
+    }
+
+    untagCard(cardId, type: 'photo' | 'video', tag): Promise<any> {
+        const url = `${BASE_URL}/card/${cardId}/${type}/untag`;
+        return this.http.put(url, { tag }).toPromise();
+    }
+
+    deleteCard(id: number | string): Promise<any> {
+        const url = `${BASE_URL}/card/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+
+    getShowcaseTemplates(): Promise<any[]> {
+        const url = `${BASE_URL}/showcase/templates/card`;
+        return this.http.get<any[]>(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

@@ -9,6 +9,7 @@ export const TAB = {
     'USERS_NEW_USER_TAB': new Tab('New User', '', 'users/new-user', {}),
     'USERS_RECENT_ACTIVITY_TAB': new Tab('Recent Activity', '', 'users/recent-activity', {}),
     'USERS_NEW_MESSAGE_TAB': new Tab('New Message', 'newMessageTpl', 'users/new-message', {}, true),
+    'USERS_CARDS': new Tab('Cards', 'cardsTpl', 'users/cards', {}, true),
     'USERS_CHAT_TAB': new Tab('Chat', 'usersChatTpl', 'users/chat', {}),
 
     'CLIENTS_TAB': new Tab('Clients', 'clientsTpl', 'clients', {}),

@@ -59,6 +59,9 @@ import { UsersProfileEditPayLevelComponent } from './profile/pay-levels/edit-pay
 import { UsersSettingsXtrmComponent } from './profile/settings/xtrm/xtrm.component';
 import { UserSettingsXtrmAddBankDialogComponent } from './profile/settings/xtrm/dialogs/add-bank-dialog/add-bank-dialog.component';
 import { TagsDialogComponent } from './profile/dialogs/tags-dialog/tags-dialog.component';
+import { UsersCardsComponent } from './cards/cards.component';
+import { UsersAddCardDialogComponent } from './cards/dialogs/add-card-dialog/add-card-dialog.component';
+import { UsersCardSelectTagComponent } from './cards/select-tag/select-tag.component';
 
 @NgModule({
     imports: [
@@ -122,7 +125,10 @@ import { TagsDialogComponent } from './profile/dialogs/tags-dialog/tags-dialog.c
         UsersProfileEditPayLevelComponent,
         UsersSettingsXtrmComponent,
         UserSettingsXtrmAddBankDialogComponent,
-        TagsDialogComponent
+        TagsDialogComponent,
+        UsersCardsComponent,
+        UsersAddCardDialogComponent,
+        UsersCardSelectTagComponent
     ],
     exports: [
         UsersComponent,
@@ -136,7 +142,8 @@ import { TagsDialogComponent } from './profile/dialogs/tags-dialog/tags-dialog.c
         NewThreadFormDialogComponent,
         AddUserFormDialogComponent,
         RenameThreadFormDialogComponent,
-        MessageComponent
+        MessageComponent,
+        UsersCardsComponent
     ],
     providers: [
         UserService,
@@ -157,7 +164,8 @@ import { TagsDialogComponent } from './profile/dialogs/tags-dialog/tags-dialog.c
         DocumentFormsDialogComponent,
         UserPasswordDialogComponent,
         UserSettingsXtrmAddBankDialogComponent,
-        TagsDialogComponent
+        TagsDialogComponent,
+        UsersAddCardDialogComponent
     ]
 })
 export class UsersModule { }
