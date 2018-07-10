@@ -106,9 +106,15 @@ export class FuseLoginComponent implements OnInit
         try {
             await this.authService.login(username, password).toPromise();
 
-            const formconnect = await this.connectorService.fetchConnectorData('formconnect');
-            const quizconnect = await this.connectorService.fetchConnectorData('quizconnect');
-            this.authService.saveConnectData({ formconnect, quizconnect });
+            try {
+                const formconnect = await this.connectorService.fetchConnectorData('formconnect');
+                this.authService.saveConnectData({ formconnect });
+            } catch (e) {}
+
+            try {
+                const quizconnect = await this.connectorService.fetchConnectorData('quizconnect');
+                this.authService.saveConnectData({ quizconnect });
+            } catch (e) {}
 
             this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
         } catch (err) {
