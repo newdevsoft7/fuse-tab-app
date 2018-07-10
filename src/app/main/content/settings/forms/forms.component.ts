@@ -142,7 +142,11 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
             if (result) {
                 try {
                     const index = this.forms.findIndex(v => v.id === id);
-                    if (index > -1) { this.forms.splice(index, 1); }
+                    if (index > -1) {
+                        this.forms.splice(index, 1);
+                        this.form = null;
+                        this.selectedForm = null;
+                    }
                     await this.settingsService.deleteForm(id);
                 } catch (e) {
                     this.handleError(e);

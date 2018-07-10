@@ -124,7 +124,10 @@ export class SurveysComponent implements OnInit {
                 try {
                     await this.settingsService.deleteReport(id);
                     const index = this.surveys.findIndex(v => v.id === id);
-                    if (index > -1) { this.surveys.splice(index, 1); }
+                    if (index > -1) {
+                        this.surveys.splice(index, 1);
+                        this.selectedSurvey = null;
+                    }
                 } catch (e) {
                     this.handleError(e);
                 }

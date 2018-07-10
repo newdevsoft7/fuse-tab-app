@@ -128,7 +128,10 @@ export class QuizsComponent implements OnInit, OnDestroy {
                 try {
                     await this.settingsService.deleteReport(id);
                     const index = this.quizes.findIndex(v => v.id === id);
-                    if (index > -1) { this.quizes.splice(index, 1); }
+                    if (index > -1) {
+                        this.quizes.splice(index, 1);
+                        this.selectedQuiz = null;
+                    }
                 } catch (e) {
                     this.handleError(e);
                 }

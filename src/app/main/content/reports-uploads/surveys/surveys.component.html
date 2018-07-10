@@ -9,23 +9,11 @@
                 <div class="nav-item" *ngFor="let survey of surveys">
                     <div matRipple
                         (click)="selectSurvey(survey)"
-                        [class.active]="survey.id === selectedSurvey.id"
+                        [class.active]="survey.id === selectedSurvey?.id"
                         class="nav-link" fxLayout="row" fxLayoutAlign="space-between center">
                         <span class="name">
                         {{ survey.rname }}
                         </span>
-
-                        <div fxFlex="0 1 auto" fxLayout="row">
-                            <button mat-icon-button (click)="viewSurvey(survey, $event)" fxFlex="0 1 auto" matTooltip="View">
-                                <mat-icon>remove_red_eye</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="editSurvey(survey, $event)" fxFlex="0 1 auto">
-                                <mat-icon class="s-20">edit</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="deleteSurvey(survey.id, $event)" fxFlex="0 1 auto">
-                                <mat-icon class="s-20">delete</mat-icon>
-                            </button>
-                        </div>
                     </div>
 
                     <mat-divider></mat-divider>
@@ -33,6 +21,15 @@
             </div>
         </mat-drawer>
         <div class="form-container" *ngIf="selectedSurvey">
+            <div fxLayout="row" fxLayoutAlign="start" fxLayoutGap="8px" class="mb-16">
+                <button mat-raised-button color="accent" (click)="editSurvey(selectedSurvey, $event)" matTooltip="Edit">
+                    Edit
+                </button>
+
+                <button mat-icon-button (click)="viewSurvey(selectedSurvey, $event)" matTooltip="View">
+                    <mat-icon>remove_red_eye</mat-icon>
+                </button>
+            </div>
             <div class="box info-box">
                 <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
                     <div class="title">Quiz instructions</div>
@@ -47,7 +44,9 @@
                     </div>
                 </div>
             </div>
-
+            <button mat-raised-button color="warn" (click)="deleteSurvey(selectedSurvey.id, $event)" matTooltip="Delete">
+                Delete
+            </button>
         </div>
     </mat-drawer-container>
 </div>
