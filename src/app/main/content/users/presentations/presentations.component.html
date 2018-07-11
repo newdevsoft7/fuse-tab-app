@@ -1,0 +1,66 @@
+<div id="presentations-container">
+    <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
+
+        <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
+            <button mat-mini-fab color="accent" (click)="addPresentation()" matTooltip="Add Presentation">
+                <mat-icon class="white-fg">add</mat-icon>
+            </button>
+            <div class="pt-16 nav" fuseperfectscrollbar>
+                <div class="nav-item" *ngFor="let presentation of presentations">
+                    <div matRipple (click)="selectPresentation(presentation.id)" [class.active]="presentation.id === selectedPresentation?.id" class="nav-link">
+                        <span class="name">
+                            {{presentation.name}}
+                        </span>
+                    </div>
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+        </mat-drawer>
+        <div class="form-container" *ngIf="presentationData">
+            <app-editable-text class="title" [value]="presentationData.presentation.name" (saveChange)="updateName($event)"></app-editable-text>
+            <fieldset class="mt-16">
+                <legend>Staffs</legend>
+                <div *ngIf="presentationData.users.length === 0">No staffs</div>
+                <div class="ngx-dnd-container" *ngIf="presentationData.users.length > 0" ngxDroppable [model]="presentationData.users" (drop)="onDrop($event)">
+                    <div class="ngx-dnd-item mb-4" ngxDraggable *ngFor="let user of presentationData.users; index as i; even as even; odd as odd"
+                        [model]="user" fxLayout="row" fxLayoutAlign="space-between center"
+                        [ngClass]="{'odd': odd, 'even': even}">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+                            <div class="savatar">
+                                <img [src]="user.thumb"/>
+                            </div>
+                            <div>{{user.name}}</div>
+                        </div>
+                        
+                        <button mat-icon-button (click)="onRemoveUser(user, i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px" class="mb-16">
+                <mat-form-field fxFlex="1 0 auto" *ngIf="presentationData.showcase_templates.length > 0">
+                    <mat-select placeholder="Showcase Template" (selectionChange)="onShowcaseChange($event)" 
+                        [value]="presentationData.presentation.showcase_template_id">
+                        <mat-option *ngFor="let option of presentationData.showcase_templates" [value]="option.id">
+                            {{option.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button fxFlex="0 1 auto" color="accent" matTooltip="Edit">
+                    Edit
+                </button>
+            </div>
+
+            <fieldset class="mb-16" class="preview">
+                <legend>Preview</legend>
+            </fieldset>
+        
+            <button mat-raised-button color="warn" (click)="deletePresentation(presentationData.presentation.id)" matTooltip="Delete">
+                Delete
+            </button>
+        </div>
+    </mat-drawer-container>
+</div>

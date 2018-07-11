@@ -59,8 +59,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild(TabsComponent) tabsComponent: TabsComponent;
     @ViewChild('usersTpl') usersTpl;
     @ViewChild('cardsTpl') cardsTpl;
+    @ViewChild('presentationsTpl') presentationsTpl;
     @ViewChild('usersExportsTpl') usersExportsTpl;
-    @ViewChild('usersPresentationsTpl') usersPresentationsTpl;
     @ViewChild('usersProfileTpl') usersProfileTpl;
     @ViewChild('scheduleTpl') scheduleTpl;
     @ViewChild('scheduleCalendarTpl') scheduleCalendarTpl;
@@ -550,6 +550,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         // Users -> Cards 
         const usersNavItem = navModel.find(v => v.id === 'users');
         if (usersNavItem) {
+            // Cards
             const index = usersNavItem.children.findIndex(v => v.id === 'cards');
             if (settings.showcase_module != 1) {
                 if (index  > -1) {
@@ -564,6 +565,26 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                             'translate': 'NAV.ADMIN.USERS_CARDS',
                             'type': 'item',
                             'tab': TAB.USERS_CARDS
+                        }
+                    );
+                }
+            }
+            // Presentations
+            const presentationIdx = usersNavItem.children.findIndex(v => v.id === 'presentations');
+            if (settings.showcase_module != 1) {
+                if (presentationIdx  > -1) {
+                    usersNavItem.children.splice(presentationIdx, 1);
+                }
+            } else {
+                if (presentationIdx < 0) {
+                    usersNavItem.children.push(
+                        {
+                            'id': 'presentations',
+                            'title': 'Presentations',
+                            'translate': 'NAV.ADMIN.USERS_PRESENTATIONS',
+                            'type': 'item',
+                            'tab': TAB.USERS_PRESENTATIONS_TAB
+            
                         }
                     );
                 }

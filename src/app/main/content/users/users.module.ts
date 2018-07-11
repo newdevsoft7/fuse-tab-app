@@ -62,6 +62,9 @@ import { TagsDialogComponent } from './profile/dialogs/tags-dialog/tags-dialog.c
 import { UsersCardsComponent } from './cards/cards.component';
 import { UsersAddCardDialogComponent } from './cards/dialogs/add-card-dialog/add-card-dialog.component';
 import { UsersCardSelectTagComponent } from './cards/select-tag/select-tag.component';
+import { UsersPresentationsComponent } from './presentations/presentations.component';
+import { UsersAddPresentationDialogComponent } from './presentations/dialogs/add-presentation-dialog/add-presentation-dialog.component';
+import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-dialog/add-to-presenation-dialog.component';
 
 @NgModule({
     imports: [
@@ -128,7 +131,10 @@ import { UsersCardSelectTagComponent } from './cards/select-tag/select-tag.compo
         TagsDialogComponent,
         UsersCardsComponent,
         UsersAddCardDialogComponent,
-        UsersCardSelectTagComponent
+        UsersCardSelectTagComponent,
+        UsersPresentationsComponent,
+        UsersAddPresentationDialogComponent,
+        AddToPresenationDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -143,7 +149,8 @@ import { UsersCardSelectTagComponent } from './cards/select-tag/select-tag.compo
         AddUserFormDialogComponent,
         RenameThreadFormDialogComponent,
         MessageComponent,
-        UsersCardsComponent
+        UsersCardsComponent,
+        UsersPresentationsComponent
     ],
     providers: [
         UserService,
@@ -165,7 +172,9 @@ import { UsersCardSelectTagComponent } from './cards/select-tag/select-tag.compo
         UserPasswordDialogComponent,
         UserSettingsXtrmAddBankDialogComponent,
         TagsDialogComponent,
-        UsersAddCardDialogComponent
+        UsersAddCardDialogComponent,
+        UsersAddPresentationDialogComponent,
+        AddToPresenationDialogComponent
     ]
 })
 export class UsersModule { }

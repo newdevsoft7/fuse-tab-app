@@ -485,6 +485,55 @@ export class UserService {
         return this.http.get<any[]>(url).toPromise();
     }
 
+    getPresentations(): Promise<any[]> {
+        const url = `${BASE_URL}/presentations`;
+        return this.http.get<any[]>(url).toPromise();
+    }
+
+    getPresentation(id: number | string): Promise<any> {
+        const url = `${BASE_URL}/presentation/${id}`;
+        return this.http.get(url).toPromise();
+    }
+
+    createPresentation(body: { 
+        name: string,
+        users?: number[]
+    }): Promise<any> {
+        const url = `${BASE_URL}/presentation`;
+        return this.http.post(url, body).toPromise();
+    }
+
+    savePresentation(id: number | string, body: {
+        name?: string,
+        card_id?: number,
+        showcase_template_id?: number,
+        users?: number[]
+    }): Promise<any> {
+        const url = `${BASE_URL}/presentation/${id}`;
+        return this.http.put(url, body).toPromise();
+    }
+
+    deletePresentation(id: number | string): Promise<any> {
+        const url = `${BASE_URL}/presentation/${id}`;
+        return this.http.delete(url).toPromise();
+    }
+
+    addUserToPresentation(presentationId: number | string, userId: string | number): Promise<any> {
+        const url = `${BASE_URL}/presentation/${presentationId}/addUser/${userId}`;
+        return this.http.put(url, {}).toPromise();
+    }
+
+    addUsersToPresentation(presentationId: number | string, userIds: number[]): Promise<any[]> {
+        return Observable.forkJoin(
+            userIds.map(user => this.addUserToPresentation(presentationId, user))
+        ).toPromise();
+    }
+
+    removeUserFromPresentation(presentationId: number | string, userId: string | number): Promise<any> {
+        const url = `${BASE_URL}/presentation/${presentationId}/removeUser/${userId}`;
+        return this.http.put(url, {}).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

@@ -26,6 +26,14 @@ export const ADMIN_MODEL = [
                 'type': 'item',
                 'tab': TAB.USERS_CARDS
 
+            },
+            {
+                'id': 'presentations',
+                'title': 'Presentations',
+                'translate': 'NAV.ADMIN.USERS_PRESENTATIONS',
+                'type': 'item',
+                'tab': TAB.USERS_PRESENTATIONS_TAB
+
             }
         ]
     },

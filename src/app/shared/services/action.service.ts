@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ActionService {
@@ -10,6 +11,10 @@ export class ActionService {
   private _usersToInvite = new Subject();
   private _usersToSelect = new Subject();
   deleteRole$ = new Subject();
+  
+  // Presentation
+  selectedPresentationId$: BehaviorSubject<number> = new BehaviorSubject(null);
+  selectedPresentationId: number = null;
 
   // Shift Edit
   private _shiftsToEdit = new Subject();

@@ -25,6 +25,7 @@ import { AssignReportDialogComponent} from './dialogs/assign-report/assign-repor
 import { TAB } from '../../../constants/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { UserPasswordDialogComponent } from './dialogs/password/password.component';
+import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-dialog/add-to-presenation-dialog.component';
 
 
 
@@ -486,6 +487,19 @@ export class UsersComponent implements OnInit {
                     this.displayError(e);
                 }
             }
+        });
+    }
+
+    openAddToPresentationDialog() {
+        const dialogRef = this.dialog.open(AddToPresenationDialogComponent, {
+            disableClose: false,
+            panelClass: 'add-to-presentation-dialog',
+            data: {
+                users: this.selectedUsers.map(v => v.id)
+            }
+        });
+        dialogRef.afterClosed().subscribe(async(result) => {
+
         });
     }
 

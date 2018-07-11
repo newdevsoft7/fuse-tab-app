@@ -12,6 +12,8 @@ import {
 	AfterViewChecked,
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
+	OnDestroy,
+	OnInit,
 } from '@angular/core';
 
 import { TabComponent } from '../tab/tab.component';
@@ -19,6 +21,7 @@ import { DynamicTabsDirective } from '../dynamic-tabs.directive';
 import { Tab } from '../tab';
 import { TabInkBar } from './ink-bar';
 import { TabService } from '../tab.service';
+import { Subscription } from 'rxjs';
 
 export type ScrollDirection = 'after' | 'before';
 const EXAGGERATED_OVERSCROLL = 60;
@@ -30,7 +33,7 @@ const EXAGGERATED_OVERSCROLL = 60;
 	encapsulation: ViewEncapsulation.None
 })
 
-export class TabsComponent implements AfterContentInit {
+export class TabsComponent implements AfterContentInit, OnInit, OnDestroy {
 	dynamicTabs: TabComponent[] = [];
 
 	@ContentChildren(TabComponent)
@@ -42,6 +45,8 @@ export class TabsComponent implements AfterContentInit {
 	@ViewChild('tabListContainer') _tabListContainer: ElementRef;
 	@ViewChild('tabList') _tabList: ElementRef;
 	@ViewChild(TabInkBar) _inkBar: TabInkBar;
+
+	focusTabSubscription: Subscription;
 
 	/** The distance in pixels that the tab labels should be translated to the left. */
 	private _scrollDistance = 0;
@@ -319,6 +324,18 @@ export class TabsComponent implements AfterContentInit {
 		const lengthOfTabList = this._tabList.nativeElement.scrollWidth;
 		const viewLength = this._tabListContainer.nativeElement.offsetWidth;
 		return (lengthOfTabList - viewLength) || 0;
+	}
+
+	ngOnInit() {
+		this.focusTabSubscription = this.tabService.tabToActivate$.subscribe((tab: TabComponent) => {
+			if (tab) {
+				this.selectTab(tab);
+			}
+		})
+	}
+
+	ngOnDestroy() {
+		this.focusTabSubscription.unsubscribe();
 	}
 
 	/** Tells the ink-bar to align itself to the current label wrapper */
