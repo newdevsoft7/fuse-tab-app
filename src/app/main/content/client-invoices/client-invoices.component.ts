@@ -46,7 +46,7 @@ export class ClientInvoicesComponent implements OnInit {
     private toastr: ToastrService,
     private tabService: TabService,
     private clientInvoicesService: ClientInvoicesService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.fetchInvoices();
@@ -65,15 +65,15 @@ export class ClientInvoicesComponent implements OnInit {
 
       this.filters = [];
       if (this.from) {
-          this.from = moment(this.from).format('YYYY-MM-DD');
-          this.filters.push(`from:${this.from}`);
+        this.from = moment(this.from).format('YYYY-MM-DD');
+        this.filters.push(`from:${this.from}`);
       }
       if (this.to) {
-          this.to = moment(this.to).format('YYYY-MM-DD');
-          this.filters.push(`to:${this.to}`);
+        this.to = moment(this.to).format('YYYY-MM-DD');
+        this.filters.push(`to:${this.to}`);
       }
-      if (this.clients && this.clients.length > 0) {  
-          this.filters.push(`client:${JSON.stringify(this.clients.map(v => v.id))}`);
+      if (this.clients && this.clients.length > 0) {
+        this.filters.push(`client:${JSON.stringify(this.clients.map(v => v.id))}`);
       }
 
       this.isLoading = true;
@@ -111,31 +111,31 @@ export class ClientInvoicesComponent implements OnInit {
   async doAction(item, action) {
     switch (action) {
       case ACTIONS.SEND:
-          try {
-            await this.clientInvoicesService.sendInvoice(item.id);
-            this.fetchInvoices();
-          } catch (e) {
-            this.handleError(e);
-          }
-          break;
+        try {
+          await this.clientInvoicesService.sendInvoice(item.id);
+          this.fetchInvoices();
+        } catch (e) {
+          this.handleError(e);
+        }
+        break;
       case ACTIONS.PAY:
-          try {
-            await this.clientInvoicesService.paidInvoice(item.id);
-            this.fetchInvoices();
-          } catch (e) {
-            this.handleError(e);
-          }
-          break;
+        try {
+          await this.clientInvoicesService.paidInvoice(item.id);
+          this.fetchInvoices();
+        } catch (e) {
+          this.handleError(e);
+        }
+        break;
       case ACTIONS.CANCEL:
-          try {
-            await this.clientInvoicesService.deleteInvoice(item.id);
-            this.fetchInvoices();
-          } catch (e) {
-            this.handleError(e);
-          }
-          break;
+        try {
+          await this.clientInvoicesService.deleteInvoice(item.id);
+          this.fetchInvoices();
+        } catch (e) {
+          this.handleError(e);
+        }
+        break;
       default:
-          break;
+        break;
     }
   }
 
@@ -158,6 +158,12 @@ export class ClientInvoicesComponent implements OnInit {
   }
 
   private handleError(e) {
-    this.toastr.error(e.error.message);
+    const errors = e.error.errors;
+    if (errors) {
+      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+    }
+    else {
+      this.toastr.error(e.error.message);
+    }
   }
 }

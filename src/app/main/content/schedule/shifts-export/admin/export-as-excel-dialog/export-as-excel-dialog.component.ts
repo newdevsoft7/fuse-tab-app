@@ -205,12 +205,12 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
 
     private displayError(e: any) {
 		const errors = e.error.errors;
-		if (errors) {
-			Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-		}
-		else {
-			this.toastr.error(e.message);
-		}
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
     }
 
 }

@@ -52,7 +52,7 @@ export class UsersSettingsStaffOptionsComponent implements OnInit, OnChanges {
             Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
         }
         else {
-            this.toastr.error(e.message);
+            this.toastr.error(e.error.message);
         }
     }
 }

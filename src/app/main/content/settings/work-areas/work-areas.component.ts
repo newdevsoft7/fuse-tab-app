@@ -236,8 +236,9 @@ export class SettingsWorkAreasComponent implements OnInit {
         const errors = e.error.errors;
         if (errors) {
             Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        } else {
-            this.toastr.error(e.error.message || e.message);
+        }
+        else {
+            this.toastr.error(e.error.message);
         }
     }
 

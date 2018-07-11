@@ -598,11 +598,14 @@ export class TimelineComponent implements OnInit, OnDestroy
         }
     }
 
-    private displayError(error) {
-        const errors = error.error.errors;
-        Object.keys(errors).forEach(e => {
-            this.toastr.error(errors[e]);
-        });
+    private displayError(e) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
     }
 
 }

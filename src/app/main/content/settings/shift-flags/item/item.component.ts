@@ -70,11 +70,14 @@ export class ItemComponent implements OnInit {
         this.formActive = false;
     }
 
-    private displayError(err) {
-        const errors = err.error.errors;
-        Object.keys(errors).forEach(v => {
-            this.toastr.error(errors[v]);
-        });
+    private displayError(e) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
     }
 
 }

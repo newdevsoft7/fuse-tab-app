@@ -126,6 +126,12 @@ export class SettingsTrackingComponent implements OnInit {
     }
 
     private handleError(e: any) {
-        this.toastr.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
     }
 }
