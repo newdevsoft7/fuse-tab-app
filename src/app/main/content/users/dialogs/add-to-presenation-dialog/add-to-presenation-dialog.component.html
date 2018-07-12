@@ -8,27 +8,26 @@
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <div matmat-dialog-content class="p-16 m-0">
-        <mat-form-field class="w-100-p" *ngIf="presentations.length > 0">
-            <mat-select placeholder="Presentation" [(ngModel)]="presentationId">
-                <mat-option *ngFor="let presentation of presentations" [value]="presentation.id">
-                    {{presentation.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+    <div mat-dialog-content class="p-16 m-0">
+        <ng-container *ngIf="loaded">
+            <mat-form-field class="w-100-p" *ngIf="presentations.length > 0 && !isCreatePresentation">
+                <mat-select placeholder="Presentation" [(ngModel)]="presentationId">
+                    <mat-option *ngFor="let presentation of presentations" [value]="presentation.id">
+                        {{presentation.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
 
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-            <mat-form-field fxFlex="1 0 auto">
+            <a href="javascript:void(0)" (click)="isCreatePresentation = true" *ngIf="!isCreatePresentation">Create new presentation</a>
+
+            <mat-form-field class="w-100-p" *ngIf="presentations.length  === 0 || isCreatePresentation">
                 <input matInput [(ngModel)]="name" placeholder="Presentation Name">
             </mat-form-field>
-            <button mat-mini-fab color="accent" class="add-button" (click)="createPresentation()" [disabled]="!name">
-                <mat-icon class="white-fg">add</mat-icon>
-            </button>
-        </div>
+        </ng-container>
     </div>
 
     <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
-        <button (click)="save()" mat-raised-button color="accent" [disabled]="!presentation && !presentationId">Save</button>
+        <button (click)="save()" mat-raised-button color="accent" [disabled]="(isCreatePresentation && !name) || (!isCreatePresentation && !presentationId)">Save</button>
 
         <button mat-raised-button color="warn" [mat-dialog-close]="false">
             Cancel

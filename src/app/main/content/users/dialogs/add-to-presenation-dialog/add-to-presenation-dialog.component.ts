@@ -18,9 +18,10 @@ export class AddToPresenationDialogComponent implements OnInit {
 
     presentations: any[] = [];
     presentationId: any;
+    isCreatePresentation = false;
     users: number[];
     name: string;
-    presentation: any;
+    loaded = false;
 
     constructor(
         public dialogRef: MatDialogRef<AddToPresenationDialogComponent>,
@@ -39,46 +40,36 @@ export class AddToPresenationDialogComponent implements OnInit {
             this.presentationId = this.actionService.selectedPresentationId;
         } catch (e) {
             this.displayError(e);
-        }
-    }
-
-    async createPresentation() {
-        try {
-            this.presentation = await this.userService.createPresentation({
-                name: this.name,
-                users: this.users
-            });
-        } catch (e) {
-            this.displayError(e);
+        } finally {
+            this.loaded = true;
         }
     }
 
     async save() {
-        if (this.presentation) { // if presentation is created
+        try {
+            let presentationId;
+            if (this.isCreatePresentation) {
+                const presentation = await this.userService.createPresentation({
+                    name: this.name,
+                    users: this.users
+                });
+                presentationId = presentation.id;
+            } else {
+                await this.userService.addUsersToPresentation(this.presentationId, this.users);
+                presentationId = this.presentationId;
+            }
             this.dialogRef.close(false);
-            this.actionService.selectedPresentationId$.next(this.presentation.id);
+            this.actionService.selectedPresentationId$.next(presentationId);
             const index = this.tabService.openTabs.findIndex((tab: TabComponent) => tab.url.indexOf('users/presentations') > -1);
             if (index < 0) {
                 this.tabService.openTab(TAB.USERS_PRESENTATIONS_TAB);
             } else {
                 this.tabService.selectTab(this.tabService.openTabs[index]);
             }
-        } else {
-            if (!this.presentationId) { return; }
-            try {
-                await this.userService.addUsersToPresentation(this.presentationId, this.users);
-                this.dialogRef.close(false);
-                this.actionService.selectedPresentationId$.next(this.presentationId);
-                const index = this.tabService.openTabs.findIndex((tab: TabComponent) => tab.url.indexOf('users/presentations') > -1);
-                if (index < 0) {
-                    this.tabService.openTab(TAB.USERS_PRESENTATIONS_TAB);
-                } else {
-                    this.tabService.selectTab(this.tabService.openTabs[index]);
-                }
-            } catch (e) {
-                this.displayError(e);
-            }
+        } catch (e) {
+            this.displayError(e);
         }
+        
     }
 
     private displayError(e: any) {
