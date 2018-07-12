@@ -13,12 +13,12 @@
         </div>
         <!-- / ADD FILE BUTTON -->
         
-        <div *ngIf="result">
-            <fieldset *ngIf="result.warnings?.length > 0" class="warnings mb-24">
-                <legend><h3>Warnings</h3></legend>
-                <div *ngFor="let msg of result.warnings" class="message">{{msg}}</div>
-            </fieldset>
+        <fieldset *ngIf="warnings?.length > 0" class="warnings mb-24">
+            <legend><h3>Warnings</h3></legend>
+            <div *ngFor="let msg of warnings" class="message">{{msg}}</div>
+        </fieldset>
 
+        <div *ngIf="result">
             <ngx-datatable class="material striped" [rows]="result.data" [columnMode]="'force'"
                 [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true">
 

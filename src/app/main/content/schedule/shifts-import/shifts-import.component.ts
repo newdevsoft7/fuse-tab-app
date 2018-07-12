@@ -23,6 +23,7 @@ export class ShiftsImportComponent implements OnInit {
     result: any;
     columns: string[] = [];
     live = true;
+    warnings: string[] = [];
 
     dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
 
@@ -62,6 +63,7 @@ export class ShiftsImportComponent implements OnInit {
         try {
             this.spinner.show();
             this.result = await this.scheduleService.importShift(file);
+            this.warnings = this.result.warnings;
             this.spinner.hide();
             if (this.result.data.length > 0) {
                 this.columns = Object.keys(this.result.data[0]).filter(v => v !== 'id');
@@ -69,6 +71,7 @@ export class ShiftsImportComponent implements OnInit {
         } catch (e) {
             this.spinner.hide();
             this.displayError(e);
+            this.warnings = e.error.warnings;
         }
 
     }
