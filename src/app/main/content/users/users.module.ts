@@ -65,6 +65,7 @@ import { UsersCardSelectTagComponent } from './cards/select-tag/select-tag.compo
 import { UsersPresentationsComponent } from './presentations/presentations.component';
 import { UsersAddPresentationDialogComponent } from './presentations/dialogs/add-presentation-dialog/add-presentation-dialog.component';
 import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-dialog/add-to-presenation-dialog.component';
+import { UserWithdrawDialogComponent } from './profile/settings/xtrm/dialogs/withdraw-dialog/withdraw-dialog.component';
 
 @NgModule({
     imports: [
@@ -134,7 +135,8 @@ import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-di
         UsersCardSelectTagComponent,
         UsersPresentationsComponent,
         UsersAddPresentationDialogComponent,
-        AddToPresenationDialogComponent
+        AddToPresenationDialogComponent,
+        UserWithdrawDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -174,7 +176,8 @@ import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-di
         TagsDialogComponent,
         UsersAddCardDialogComponent,
         UsersAddPresentationDialogComponent,
-        AddToPresenationDialogComponent
+        AddToPresenationDialogComponent,
+        UserWithdrawDialogComponent
     ]
 })
 export class UsersModule { }

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import { UserSettingsXtrmAddBankDialogComponent } from './dialogs/add-bank-dialog/add-bank-dialog.component';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
+import { UserWithdrawDialogComponent } from './dialogs/withdraw-dialog/withdraw-dialog.component';
 
 @Component({
     selector: 'app-users-settings-xtrm',
@@ -15,7 +16,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
     user: any;
     xtrm: any = {};
     loaded = false;
-    otpSent = false;
+    otpSent: boolean;
     setup = false;
     sentSetXtrmRequest = false;
     verficationCode: string;
@@ -88,8 +89,65 @@ export class UsersSettingsXtrmComponent implements OnInit {
         }
     }
 
-    withdraw(type, wallet) {
+    withdraw(method, wallet) {
+        switch (method.id) {
+            case 'bank':
+                if (method.options.length > 0) {
+                    this.openWithdrawDialog(method, wallet);
+                } else {
+                    const dialogRef = this.dialog.open(UserSettingsXtrmAddBankDialogComponent, {
+                        disableClose: false,
+                        panelClass: 'user-settings-xtrm-add-bank-dialog',
+                        data: {
+                            countries: this.countries,
+                            currencies: this.currencies,
+                            user: this.user
+                        }
+                    });
+                    dialogRef.afterClosed().subscribe(bank => {
+                        if (bank) {
+                            this.xtrm.banks.push(bank);
+                            method.options.push({
+                                id: bank.id,
+                                bname: bank.bname
+                            });
+                            this.openWithdrawDialog(method, wallet);
+                        }
+                    });
+                }
+                break;
 
+            case 'paypal':
+            case 'prepaid':
+                this.openWithdrawDialog(method, wallet);
+                break;
+        }
+    }
+
+    openWithdrawDialog(method, wallet) {
+        let data: any = {
+            wallet,
+            type: method.id,
+            user: this.user,
+            value: method.value
+        };
+        if (method.id === 'bank') {
+            data.banks = method.options;
+        }
+        const dialogRef = this.dialog.open(UserWithdrawDialogComponent, {
+            disableClose: false,
+            panelClass: 'user-withdraw-dialog',
+            data: data
+        });
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result) {
+                try {
+                    this.xtrm.wallets = await this.userService.getUserWallets(this.user.id);
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
     }
 
     openAddBankDialog() {

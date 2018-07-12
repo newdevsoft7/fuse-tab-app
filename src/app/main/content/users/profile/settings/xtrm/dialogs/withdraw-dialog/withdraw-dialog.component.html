@@ -1,0 +1,108 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Withdraw</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <ng-container *ngIf="!otpSent">
+            <form [formGroup]="bankForm" *ngIf="type == 'bank'">
+                <div fxHide.xs>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Bank</span>
+                        <mat-form-field fxFlex="1 0 auto">
+                            <mat-select formControlName="bank_id">
+                                <mat-option *ngFor="let bank of banks" [value]="bank.id">
+                                    {{bank.bname}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Amount</span>
+                        <mat-form-field fxFlex="1 0 auto">
+                            <input matInput formControlName="amount" type="number">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div fxHide.gt-xs fxLayout="column" fxLayoutAlign="start">
+                    <mat-form-field>
+                        <mat-select formControlName="bank_id" placeholder="Bank">
+                            <mat-option *ngFor="let bank of banks" [value]="bank.id">
+                                {{bank.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="amount" type="number" placeholder="Amount">
+                    </mat-form-field>
+                </div>
+            </form>
+
+            <form [formGroup]="paypalForm" *ngIf="type != 'bank'">
+                <div fxHide.xs>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Email</span>
+                        <mat-form-field fxFlex="1 0 auto">
+                            <input matInput formControlName="email" type="email">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="w-100">Amount</span>
+                        <mat-form-field fxFlex="1 0 auto">
+                            <input matInput formControlName="amount" type="number">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div fxHide.gt-xs fxLayout="column" fxLayoutAlign="start">
+                    <mat-form-field>
+                        <input matInput formControlName="email" type="email" placeholder="Email">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput formControlName="amount" type="number" placeholder="Amount">
+                    </mat-form-field>
+                </div>
+
+            </form>
+        </ng-container>
+
+        <ng-container *ngIf="otpSent == true">
+            <p>{{message}}</p>
+            <div fxHide.xs fxLayout="row" fxLayoutAlign="start center">
+                <span class="w-120">Verification Code</span>
+                <mat-form-field fxFlex="1 0 auto">
+                    <input matInput [(ngModel)]="otp">
+                </mat-form-field>
+            </div>
+            <mat-form-field fxHide.gt-xs>
+                <input matInput [(ngModel)]="otp" placeholder="Verification Code">
+            </mat-form-field>
+        </ng-container>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <ng-container *ngIf="!otpSent">
+            <button mat-raised-button color="accent" (click)="save()" *ngIf="type == 'bank'" [disabled]="bankForm.invalid">
+                Save
+            </button>
+            <button mat-raised-button color="accent" (click)="save()" *ngIf="type != 'bank'" [disabled]="paypalForm.invalid">
+                Save
+            </button>
+            <button mat-raised-button color="warn" [mat-dialog-close]="false">
+                Cancel
+            </button>
+        </ng-container>
+
+        <ng-container *ngIf="otpSent == true">
+            <button mat-raised-button color="accent" (click)="confirm()" [disabled]="!otp">
+                Confirm
+            </button>
+        </ng-container>
+    </div>
+</div>

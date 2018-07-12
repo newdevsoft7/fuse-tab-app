@@ -426,6 +426,22 @@ export class UserService {
         return this.http.get<any[]>(url).toPromise();
     }
 
+    userWithdraw(userId, walletId, body: {
+        method: string,
+        amount: number,
+        bank_id?: number,
+        email?: string,
+        otp?: string
+    }): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/xtrm/wallet/${walletId}/withdraw`;
+        return this.http.put(url, body).toPromise();
+    }
+
+    getUserWallets(userId): Promise<any[]> {
+        const url = `${BASE_URL}/user/${userId}/xtrm/wallets`;
+        return this.http.get<any[]>(url).toPromise();
+    }
+
     addTag(kind: 'photo' | 'video', id: number, tag: string): Observable<string[]> {
         const newKind = kind === 'photo' ? 'profilePhoto' : 'profileVideo';
         const url = `${BASE_URL}/${newKind}/${id}/tag`;
