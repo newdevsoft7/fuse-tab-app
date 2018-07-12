@@ -16,7 +16,6 @@ enum Setting {
     tracking_enable = 94
 }
 
-
 @Component({
     selector: 'app-settings-tracking',
     templateUrl: './tracking.component.html',

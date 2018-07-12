@@ -192,7 +192,7 @@ export class EmailTemplatesComponent implements OnInit {
         this.toastr.error(errors[key]);
       });
     } else {
-      this.toastr.error(e.message || 'Something is wrong!');
+      this.toastr.error(e.error.message || 'Something is wrong!');
     }
   }
 

@@ -116,7 +116,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
       const res = await this.templatesService.uploadFile(file);
       this.file = { id: res.data.id, text: res.data.oname };
     } catch (e) {
-      this.handleError(e.error);
+      this.handleError(e);
     }
   }
 
@@ -136,11 +136,11 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
           this.submitted = true;
           this.onTemplateAdded.next(res.data);
         } catch (e) {
-          this.handleError(e.error);
+          this.handleError(e);
         }
         this.submitting = false;
       } else {
-        this.handleError({ message: 'Please complete the form' });
+        this.handleError({ error: { message: 'Please complete the form' } });
       }
     } else {
       if (this.templateForm.valid) {
@@ -159,11 +159,11 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
           this.submitted = true;
           this.onTemplateUpdated.next(res.data);
         } catch (e) {
-          this.handleError(e.error);
+          this.handleError(e);
         }
         this.submitting = false;
       } else {
-        this.handleError({ message: 'Please complete the form' });
+        this.handleError({ error: { message: 'Please complete the form' }});
       }
     }
   }
@@ -207,7 +207,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
         this.toastr.error(errors[key]);
       });
     } else {
-      this.toastr.error(e.message || 'Something is wrong!');
+      this.toastr.error(e.error.message || 'Something is wrong!');
     }
   }
 }

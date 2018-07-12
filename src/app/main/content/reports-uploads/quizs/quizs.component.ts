@@ -141,7 +141,13 @@ export class QuizsComponent implements OnInit, OnDestroy {
       }
     
     handleError(e): void {
-        this.toastr.error(e.message || 'Something is wrong');
+        const errors = e.error.errors;
+        if (errors) {
+        Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+        this.toastr.error(e.error.message);
+        }
     }
 
 }

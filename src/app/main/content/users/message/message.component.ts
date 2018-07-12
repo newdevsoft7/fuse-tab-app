@@ -47,7 +47,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
 
   constructor(
     private tokenStorage: TokenStorage,
-    private toastrService: ToastrService,
+    private toastr: ToastrService,
     private tabService: TabService,
     private messageService: MessageService) {
   }
@@ -114,7 +114,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
         this.file = { id: res.attachments[i].id, text: res.attachments[i].oname };
       }
     } catch (e) {
-      this.handleError(e.error);
+      this.handleError(e);
     }
   }
 
@@ -134,7 +134,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
         this.message.thread = 0;
       }
     } catch (e) {
-      this.handleError(e.error);
+      this.handleError(e);
     }
   }
 
@@ -146,7 +146,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
     try {
       this.templates = await this.messageService.searchTemplates(searchText);
     } catch (e) {
-      this.handleError(e.error);
+      this.handleError(e);
     }
   }
 
@@ -159,7 +159,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
       const res = await this.messageService.uploadFile(file);
       this.file = { id: res.data.id, text: res.data.oname };
     } catch (e) {
-      this.handleError(e.error);
+      this.handleError(e);
     }
   }
 
@@ -184,11 +184,11 @@ export class MessageComponent implements OnInit, AfterViewInit {
           this.tabService.closeTab(`${TAB.USERS_NEW_MESSAGE_TAB.url}/${this.props.index}`);
         }
       } catch (e) {
-        this.handleError(e.error);
+        this.handleError(e);
       }
       this.sending = false;
     } else {
-      this.handleError({ message: 'Please complete the form' });
+      this.handleError({ error: { message: 'Please complete the form' }});
     }
   }
 
@@ -213,11 +213,17 @@ export class MessageComponent implements OnInit, AfterViewInit {
       this.message.subject = template.subject;
       this.message.from = template.from;
     } catch (e) {
-      this.handleError(e.error);
+      this.handleError(e);
     }
   }
 
   handleError(e): void {
-    this.toastrService.error(e.message || 'Something is wrong');
+    const errors = e.error.errors;
+    if (errors) {
+      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+    }
+    else {
+      this.toastr.error(e.error.message);
+    }
   }
 }

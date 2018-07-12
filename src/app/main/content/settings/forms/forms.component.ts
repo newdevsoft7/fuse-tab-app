@@ -73,7 +73,7 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
         private trackingService: TrackingService,
         private dialog: MatDialog,
         private tabService: TabService,
-        private toastrService: ToastrService,
+        private toastr: ToastrService,
         private connectorService: ConnectorService
     ) { }
 
@@ -241,7 +241,7 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
             );
             this.tabService.openTab(tab);
         } catch (e) {
-            this.handleError(e.error);
+            this.handleError(e);
         }
     }
 
@@ -258,6 +258,12 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
     }
 
     handleError(e): void {
-        this.toastrService.error(e.message || 'Something is wrong');
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
     }
 }

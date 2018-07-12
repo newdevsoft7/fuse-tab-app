@@ -57,7 +57,7 @@ export class ShiftListEmailDialogComponent implements OnInit {
         try {
           this.templates = await this.messageService.searchTemplates(searchText);
         } catch (e) {
-          this.handleError(e.error);
+          this.handleError(e);
         }
       }
 
@@ -69,7 +69,7 @@ export class ShiftListEmailDialogComponent implements OnInit {
         try {
             this.selectedTemplate = event.option.value;
         } catch (e) {
-            this.handleError(e.error);
+            this.handleError(e);
         }
     }
 
