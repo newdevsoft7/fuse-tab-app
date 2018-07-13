@@ -116,12 +116,16 @@
                         </mat-form-field>
 
                         <div fxLayout="row" fxLayoutAlign="start center">
-                            <span class="mr-18">Pay</span>
+                            <span class="mr-12">Pay</span>
+                            <mat-form-field class="mr-4">
+                                <mat-select formControlName="pay_currency">
+                                    <mat-option *ngFor="let currency of currencies" [value]="currency.currency_code">
+                                        {{currency.currency_code}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-form-field class="w-100">
                                 <input matInput type="number" formControlName="pay_rate" min="0">
-                                <button mat-icon-button matPrefix>
-                                    <mat-icon>attach_money</mat-icon>
-                                </button>
                             </mat-form-field>
                         </div>
 
@@ -133,12 +137,16 @@
                         </mat-button-toggle-group>
 
                         <div fxLayout="row" fxLayoutAlign="start center">
-                            <span class="mr-18">Bill</span>
+                            <span class="mr-12">Bill</span>
+                            <mat-form-field class="mr-4">
+                                <mat-select formControlName="bill_currency">
+                                    <mat-option *ngFor="let currency of currencies" [value]="currency.currency_code">
+                                        {{currency.currency_code}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                             <mat-form-field class="w-100">
                                 <input matInput type="number" formControlName="bill_rate" min="0">
-                                <button mat-icon-button matPrefix>
-                                    <mat-icon>attach_money</mat-icon>
-                                </button>
                             </mat-form-field>
                         </div>
                         

@@ -32,6 +32,7 @@ import { TokenStorage } from '../../../../../shared/services/token-storage.servi
 import { NullTemplateVisitor } from '@angular/compiler';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { ActionService } from '../../../../../shared/services/action.service';
+import { UserService } from '../../../users/user.service';
 
 class TimeRange {
     from;
@@ -101,6 +102,7 @@ export class ShiftRoleEditComponent implements OnInit {
 
     settings: any;
     reports$;
+    currencies: any[] = [];
 
     readonly types: string[] = [
         'bonus',
@@ -112,13 +114,13 @@ export class ShiftRoleEditComponent implements OnInit {
 
     confirmDialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
 
-
     constructor(
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
         public dialog: MatDialog,
         private tabService: TabService,
         private scheduleService: ScheduleService,
+        private userService: UserService,
         private tokenStroage: TokenStorage,
         private actionService: ActionService
     ) {
@@ -133,6 +135,8 @@ export class ShiftRoleEditComponent implements OnInit {
         this.reports$ = (text: string): Observable<any> => {
             return this.scheduleService.getReports(text);
         };
+
+        this.userService.getCurrencies().then(currencies => this.currencies = currencies);
 
         // FOR ROLE CREATE FROM NEW SHIFT TAB
         this.shifts = this.data.shifts;
@@ -151,7 +155,9 @@ export class ShiftRoleEditComponent implements OnInit {
                 application_deadline: [this.role.application_deadline ? moment(this.role.application_deadline).toDate() : null],
                 notes: [this.role.notes ? this.role.notes : ''],
                 bill_rate: [this.role.bill_rate],
+                bill_currency: [this.role.bill_currency],
                 pay_rate: [this.role.pay_rate],
+                pay_currency: [this.role.pay_currency],
                 pay_category_id: [this.role.pay_category_id ? this.role.pay_category_id : 'none'],
                 expense_limit: [this.role.expense_limit],
                 completion_notes: [this.role.completion_notes ? this.role.completion_notes : ''] ,
@@ -184,7 +190,9 @@ export class ShiftRoleEditComponent implements OnInit {
                 application_deadline: [null],
                 notes: [''],
                 bill_rate: [0],
+                bill_currency: [this.settings.currency],
                 pay_rate: [0],
+                pay_currency: [this.settings.currency],
                 pay_category_id: ['none'],
                 expense_limit: [0],
                 completion_notes: [''],
