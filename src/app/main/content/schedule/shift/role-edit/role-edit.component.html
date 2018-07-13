@@ -180,12 +180,17 @@
                             </mat-form-field>
 
                             <mat-form-field fxFlex>
+                                <mat-select [(ngModel)]="item.currency" placeholder="Currency" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let currency of currencies" [value]="currency.currency_code">
+                                        {{currency.currency_code}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex>
                                 <input matInput type="number" [(ngModel)]="item.unit_rate" placeholder="Amount" min="0"
                                     [ngModelOptions]="{standalone: true}"
                                     debounce (onValueChange)="onPayItemChanged($event, item, 'bill_unit_rate')">
-                                <button mat-icon-button matPrefix>
-                                    <mat-icon>attach_money</mat-icon>
-                                </button>
                             </mat-form-field>
                             
                             <mat-form-field fxFlex>
@@ -195,11 +200,16 @@
                             </mat-form-field>
 
                             <mat-form-field fxFlex>
+                                <mat-select [(ngModel)]="item.bill_currency" placeholder="Bill Currency" [ngModelOptions]="{standalone: true}">
+                                    <mat-option *ngFor="let currency of currencies" [value]="currency.currency_code">
+                                        {{currency.currency_code}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex>
                                 <input matInput type="number" [(ngModel)]="item.bill_unit_rate" placeholder="Bill Amount" min="0"
                                     [ngModelOptions]="{standalone: true}">
-                                <button mat-icon-button matPrefix>
-                                    <mat-icon>attach_money</mat-icon>
-                                </button>
                             </mat-form-field>
                             
                             <mat-form-field fxFlex>

@@ -49,10 +49,12 @@ class PayItem {
     item_type: string;
     unit_rate: number;
     units: number;
+    currency: string;
     bill_unit_rate: number;
     bill_units: number;
+    bill_currency: string;
 
-    constructor() {
+    constructor(currency: string) {
         this.id = 0;
         this.item_name = null;
         this.item_type = null;
@@ -60,6 +62,8 @@ class PayItem {
         this.units = null;
         this.bill_unit_rate = null;
         this.bill_units = null;
+        this.currency = currency;
+        this.bill_currency = currency;
     }
 }
 
@@ -283,8 +287,10 @@ export class ShiftRoleEditComponent implements OnInit {
                 item.id,
                 item.item_type,
                 item.item_name,
+                item.currency,
                 item.unit_rate,
                 item.units,
+                item.bill_currency,
                 item.bill_unit_rate,
                 item.bill_units
             ].join('|');
@@ -386,7 +392,7 @@ export class ShiftRoleEditComponent implements OnInit {
     }
 
     addPayItem() {
-        const item = new PayItem();
+        const item = new PayItem(this.settings.currency);
         this.role_pay_items.unshift(item);
     }
 
