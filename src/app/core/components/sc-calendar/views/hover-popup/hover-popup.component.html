@@ -5,13 +5,13 @@
       <h2 class="mt-0 mb-8" *ngIf="event.date">{{event?.date}}</h2>
       <p class="m-0" *ngIf="event.date">{{event?.location}}</p>
       <p class="m-0">{{event.duration ? event.duration : event.start + ' - ' + event.end}}</p>
+      <ul *ngIf="event.selected?.length > 0" class="staffs">
+        <li fxLayout="row" fxLayoutAlign="start center" *ngFor="let staff of event.selected">
+          <span class="dot" [style.backgroundColor]="staff?.staff_status[0]?.bg_color" [matTooltip]="staff?.staff_status[0]?.status"></span>
+          {{staff.name}}
+        </li>
+      </ul>
       <mat-divider *ngIf="!last" class="my-8"></mat-divider>
     </ng-container>
-    <ul *ngIf="data[0].selected" class="staffs">
-      <li fxLayout="row" fxLayoutAlign="start center" *ngFor="let staff of data[0].selected">
-        <span class="dot" [style.backgroundColor]="staff?.staff_status[0]?.bg_color" [matTooltip]="staff?.staff_status[0]?.status"></span>
-        {{staff.name}}
-      </li>
-    </ul>
   </mat-card-content>
 </mat-card>
