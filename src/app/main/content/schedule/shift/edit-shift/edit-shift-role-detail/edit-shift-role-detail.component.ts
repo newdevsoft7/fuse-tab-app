@@ -14,6 +14,7 @@ import { Tab } from '../../../../../tab/tab';
 import { MatDialog } from '@angular/material';
 import { ActionService } from '../../../../../../shared/services/action.service';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { UserService } from '../../../../users/user.service';
 
 class ShiftTime {
     time;
@@ -52,6 +53,7 @@ export class EditShiftRoleDetailComponent implements OnInit {
 
     payCategories: any[] = [];
     reports$;
+    currencies: any[] = [];
 
     list = {
         num_required: { checked: false, value: 1 },
@@ -75,13 +77,16 @@ export class EditShiftRoleDetailComponent implements OnInit {
         pay_travel_group: { checked: false, value: { travel_rate: '', travel_type: 'flat', travel_value: ''} },
         uploads_required: { checked: false, value: '' },
         requirements: { checked: false, value: [] },
-        reports: { checked: false, value: [] }
+        reports: { checked: false, value: [] },
+        bill_currency: { checked: false, value: ''},
+        pay_currency: { checked: false, value: ''}
     };
 
     constructor(
         private scheduleService: ScheduleService,
         private tabService: TabService,
         private toastr: ToastrService,
+        private userService: UserService,
         private actionService: ActionService,
         private dialog: MatDialog
     ) { }
@@ -93,6 +98,9 @@ export class EditShiftRoleDetailComponent implements OnInit {
             this.roles = res;
             this.role = this.roles[0];
         });
+
+        // Get currencies
+        this.userService.getCurrencies().then(currencies => this.currencies = currencies);
 
         // Get Pay Categories
         this.scheduleService.getPayLevelCategory().subscribe(res => this.payCategories = res);

@@ -126,6 +126,29 @@
         </div>
     </div>
     <!-- / REQUIREMENTS -->
+    
+    <!-- BILL CURRENCY -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.bill_currency.checked">
+                    Bill Currency:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="list.bill_currency.value" [disabled]="!list.bill_currency.checked">
+                        <mat-option *ngFor="let currency of currencies" [value]="currency.currency_code">
+                            {{currency.currency_code}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / BILL CURRENCY -->
 
     <!-- BILL RATE & TRAVEL -->
     <div class="info-line">
@@ -182,6 +205,29 @@
         </div>
     </div>
     <!-- / BILL RATE & TRAVEL -->
+
+    <!-- PAY CURRENCY -->
+    <div class="info-line">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxFlex="0 1 auto">
+                <mat-checkbox [(ngModel)]="list.pay_currency.checked">
+                    Bill Currency:
+                </mat-checkbox>
+            </div>
+    
+            <div fxFlex="1 0 auto">
+                <mat-form-field>
+                    <mat-select [(ngModel)]="list.pay_currency.value" [disabled]="!list.pay_currency.checked">
+                        <mat-option *ngFor="let currency of currencies" [value]="currency.currency_code">
+                            {{currency.currency_code}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+        </div>
+    </div>
+    <!-- / PAY CURRENCY -->
     
     <!-- PAY CATEGORY -->
     <div class="info-line">
