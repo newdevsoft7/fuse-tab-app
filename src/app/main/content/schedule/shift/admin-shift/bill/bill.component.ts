@@ -17,6 +17,7 @@ import { AddPayItemDialogComponent } from '../staff/selected/add-pay-item-dialog
 export class AdminShiftBillComponent implements OnInit {
 
     @Input() shift;
+    @Input() currencies;
 
     readonly types: string[] = [
         'bonus',
@@ -42,7 +43,8 @@ export class AdminShiftBillComponent implements OnInit {
             disableClose: false,
             panelClass: 'add-pay-item-dialog',
             data: {
-                from: 'bill'
+                from: 'bill',
+                currencies: this.currencies
             }
         });
 

@@ -69,6 +69,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     @Input() shift;
     @Output() onAddRole = new EventEmitter();
+    @Input() currencies;
 
     @ViewChild('adminNoteInput') adminNoteInput;
 

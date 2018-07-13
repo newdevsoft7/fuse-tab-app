@@ -55,6 +55,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     @Input() editable;
     @Input() shift;
     @Input() roleId;
+    @Input() currencies;
 
     private currentComponentWidth;
 
@@ -146,7 +147,8 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
                 disableClose: false,
                 panelClass: 'add-pay-item-dialog',
                 data: {
-                    show_bill: this.showBillInfo
+                    show_bill: this.showBillInfo,
+                    currencies: this.currencies
                 }
             });
 

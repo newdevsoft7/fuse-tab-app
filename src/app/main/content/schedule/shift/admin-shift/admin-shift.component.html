@@ -82,11 +82,11 @@
         <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedTabIndex">
 
             <mat-tab label="Staff">
-                <app-admin-shift-staff [shift]="shift" #staffTab (onAddRole)="addRole()"></app-admin-shift-staff>
+                <app-admin-shift-staff [shift]="shift" #staffTab (onAddRole)="addRole()" [currencies]="currencies"></app-admin-shift-staff>
             </mat-tab>
 
             <mat-tab label="Bill" *ngIf="shift.bill_info === 1">
-                <app-admin-shift-bill [shift]="shift"></app-admin-shift-bill>
+                <app-admin-shift-bill [shift]="shift" [currencies]="currencies"></app-admin-shift-bill>
             </mat-tab>
 
             <mat-tab label="Reports & Uploads">

@@ -43,6 +43,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     selectedTabIndex: number = 0; // Set staff tab as initial tab
 
     shiftData: any; // For edit tracking & work areas
+    currencies: any[] = [];
 
     get id() {
         return this.data.id;
@@ -98,6 +99,8 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
                     this.timezones.push({ value: key, label: res[key] });
                 });
             });
+
+        this.userService.getCurrencies().then(currencies => this.currencies = currencies);
 
         // Get Tracking Categories & Options
         this.scheduleService.getShiftsData().subscribe(res => {
