@@ -12,6 +12,7 @@
                         [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                         [matTooltip]="staff.staff_status.status" />
                     <span>{{staff.name}}</span>
+                    <span *ngIf="staff.company" class="ml-4">{{staff.company}}</span>
                     <div *ngIf="staff.user_status!=null" class="status" [style.background]="staff.user_status.color"
                         [matTooltip]="staff.user_status.sname"></div>
                 </div>
@@ -74,6 +75,11 @@
                             <span>Change Status</span>
                         </button>
                     
+                        <button mat-menu-item *ngIf="settings.outsource_enable == 1" (click)="openChangeCompanyDialog(staff)">
+                            <mat-icon>open_in_new</mat-icon>
+                            <span>Change Company</span>
+                        </button>
+
                         <button mat-menu-item (click)="toggleTeamLeader(staff)">
                             <mat-icon>person</mat-icon>
                             <span>Toggle Leader</span>

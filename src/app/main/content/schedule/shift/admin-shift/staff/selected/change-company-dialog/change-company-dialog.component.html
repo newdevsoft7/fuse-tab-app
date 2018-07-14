@@ -1,0 +1,35 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Change Company</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <ng-container *ngIf="loaded">
+            <p *ngIf="outsourceCompanies.length == 0">
+                No outsource companies assigned. Assign outsource companies from the settings tab of the user's profile.
+            </p>
+
+            <ng-container *ngIf="outsourceCompanies.length > 0">
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-4"
+                    fxLayout.xs="column" fxLayoutAlign.xs="start" *ngIf="worksHere == 1">
+                    <span fxFlex="1 0 auto">This Company</span>
+                    <button fxFlex="0 1 auto" mat-raised-button color="accent" (click)="select(null)">Select</button>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-4"
+                    fxLayout.xs="column" fxLayoutAlign.xs="start"
+                    *ngFor="let company of outsourceCompanies">
+                    <span fxFlex="1 0 auto">{{company.cname}}</span>
+                    <button fxFlex="0 1 auto" mat-raised-button color="accent" (click)="select(company)">Select</button>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-8" fxLayout="row" fxLayoutAlign="center center">
+    </div>
+</div>

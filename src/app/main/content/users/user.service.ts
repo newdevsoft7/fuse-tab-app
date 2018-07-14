@@ -550,6 +550,11 @@ export class UserService {
         return this.http.put(url, {}).toPromise();
     }
 
+    getUserOutsourceCompanies(userId: string | number): Promise<any> {
+        const url = `${BASE_URL}/profile/${userId}/outsourceCompanies`;
+        return this.http.get(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

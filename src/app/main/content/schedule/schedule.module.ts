@@ -106,6 +106,7 @@ import { StaffShiftCompleteDialogComponent } from './shift/staff-shift/info/dial
 import { StaffShiftExpensesComponent } from './shift/staff-shift/expenses/expenses.component';
 import { StaffShiftExpeneseDialogComponent } from './shift/staff-shift/expenses/expenese-dialog/expenese-dialog.component';
 import { StaffShiftQuizDialogComponent } from './shift/staff-shift/info/dialogs/quiz-dialog/quiz-dialog.component';
+import { AdminShiftChangeCompanyDialogComponent } from './shift/admin-shift/staff/selected/change-company-dialog/change-company-dialog.component';
 
 
 @NgModule({
@@ -218,7 +219,8 @@ import { StaffShiftQuizDialogComponent } from './shift/staff-shift/info/dialogs/
         StaffShiftCompleteDialogComponent,
         StaffShiftExpensesComponent,
         StaffShiftExpeneseDialogComponent,
-        StaffShiftQuizDialogComponent
+        StaffShiftQuizDialogComponent,
+        AdminShiftChangeCompanyDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -247,7 +249,8 @@ import { StaffShiftQuizDialogComponent } from './shift/staff-shift/info/dialogs/
         GroupSelectShiftDialogComponent,
         AdminExportAsExcelDialogComponent,
         AdminExportAsPdfDialogComponent,
-        ShiftListEmailDialogComponent
+        ShiftListEmailDialogComponent,
+        AdminShiftChangeCompanyDialogComponent
     ],
     exports: [
         ScheduleComponent,

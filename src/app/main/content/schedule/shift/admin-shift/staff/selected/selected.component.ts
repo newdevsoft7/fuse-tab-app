@@ -34,6 +34,8 @@ import { TokenStorage } from '../../../../../../../shared/services/token-storage
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
 import { TAB } from '../../../../../../../constants/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
+import { AdminShiftChangeCompanyDialogComponent } from './change-company-dialog/change-company-dialog.component';
+import { async } from 'q';
 
 enum Query {
     Counts = 'counts',
@@ -78,6 +80,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
 
     @ViewChild('payItemUploader') payItemUploader: ElementRef;
     selectedPayItem: any;
+    settings: any;
 
     constructor(
         private spinner: CustomLoadingService,
@@ -89,7 +92,9 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         private tokenStorage: TokenStorage,
         private authService: AuthenticationService,
         private router: Router
-    ) { }
+    ) {
+        this.settings = tokenStorage.getSettings();
+    }
 
     ngOnInit() {
         this.staffs.map(s => {
@@ -374,6 +379,21 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
                 staff.team_leader = team_leader;
                 //this.toastr.success(res.message);
             });
+    }
+
+    openChangeCompanyDialog(staff) {
+        const dialogRef = this.dialog.open(AdminShiftChangeCompanyDialogComponent, {
+            disableClose: false,
+            panelClass: 'admin-shift-change-company-dialog',
+            data: {
+                staff
+            }
+        });
+        dialogRef.afterClosed().subscribe(async(result) => {
+            if (result !== false) {
+                staff.company = result;
+            }
+        });
     }
 
     async changeRate(event: OnRatingChangeEven, staff) {
