@@ -62,6 +62,8 @@ export class GeneratePayrollComponent implements OnInit {
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
+        this.from = moment().subtract(2, 'week').toDate();
+        this.to = moment().toDate();
 
         this.getTrackingOptions();
 
