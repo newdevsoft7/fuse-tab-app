@@ -60,6 +60,10 @@
                     <app-editable-text class="ml-12" [value]="clientInfo.address" (saveChange)="updateData($event, 'address')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
+                    <span class="w-120">Unit:</span>
+                    <app-editable-text class="ml-12" [value]="clientInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
                     <span class="w-120">City:</span>
                     <app-editable-text class="ml-12" [value]="clientInfo.city" (saveChange)="updateData($event, 'city')"></app-editable-text>
                   </div>
@@ -68,12 +72,8 @@
                     <app-editable-text class="ml-12" [value]="clientInfo.state" (saveChange)="updateData($event, 'state')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    <span class="w-120">PostCode:</span>
+                    <span class="w-120">Postcode:</span>
                     <app-editable-text class="ml-12" [value]="clientInfo.postcode" (saveChange)="updateData($event, 'postcode')"></app-editable-text>
-                  </div>
-                  <div fxLayout="row" fxLayoutAlign="start center">
-                    <span class="w-120">Unit:</span>
-                    <app-editable-text class="ml-12" [value]="clientInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
                   </div>
                   <button mat-raised-button color="warn" class="mt-8" (click)="deleteSelectedClient()">DELETE</button>
                 </form>
