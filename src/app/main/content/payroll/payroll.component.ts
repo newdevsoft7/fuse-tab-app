@@ -137,9 +137,15 @@ export class PayrollComponent implements OnInit {
 
     onActivate(event) {
         if (event.type === 'click' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
-            const id = event.row.id;
-            const tab = new Tab(event.row.display, 'payrollDetailTpl', `payroll/${id}`, { id });
-            this.tabService.openTab(tab);
+            if (event.cellIndex === 2) {
+                const id = event.row.id;
+                const tab = new Tab(event.row.display, 'payrollDetailTpl', `payroll/${id}`, { id });
+                this.tabService.openTab(tab);
+            } else if (event.cellIndex === 3) {
+                const user = { id: event.row.user_id };
+                const tab = new Tab(`${event.row.name}`, 'usersProfileTpl', `users/user/${user.id}`, user);
+                this.tabService.openTab(tab);
+            } else { }
         }
     }
 }
