@@ -83,7 +83,7 @@ export class OutsourceCompaniesComponent {
         this.spinner.show();
         this.companyInfo = await this.outsourceCompaniesService.getCompany(this.selectedCompany.id);
         this.adminNotes = await this.outsourceCompaniesService.getAdminNotes(this.selectedCompany.id);
-        this.adminNoteForm.reset({ note: ''});
+        this.adminNoteForm.reset({ note: '' });
       } catch (e) {
         this.handleError(e);
       } finally {
@@ -135,14 +135,16 @@ export class OutsourceCompaniesComponent {
     });
     dialogRef.componentInstance.confirmMessage = `Really delete ${this.selectedCompany.cname}?`;
     dialogRef.afterClosed().subscribe(async (result) => {
-      const id = this.selectedCompany.id;
-      try {
-        const index = this.companies.findIndex(company => company.id === id);
-        this.companies.splice(index, 1);
-        this.selectedCompany = null;
-        await this.outsourceCompaniesService.deleteCompany(id);
-      } catch (e) {
-        this.handleError(e);
+      if (result) {
+        const id = this.selectedCompany.id;
+        try {
+          const index = this.companies.findIndex(company => company.id === id);
+          this.companies.splice(index, 1);
+          this.selectedCompany = null;
+          await this.outsourceCompaniesService.deleteCompany(id);
+        } catch (e) {
+          this.handleError(e);
+        }
       }
     });
   }
