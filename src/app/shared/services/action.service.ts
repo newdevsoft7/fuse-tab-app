@@ -16,6 +16,9 @@ export class ActionService {
   selectedPresentationId$: BehaviorSubject<number> = new BehaviorSubject(null);
   selectedPresentationId: number = null;
 
+  // Payrolls changed by generating payrolls
+  payrollsChanged$: Subject<boolean> = new Subject();
+
   // Shift Edit
   private _shiftsToEdit = new Subject();
 

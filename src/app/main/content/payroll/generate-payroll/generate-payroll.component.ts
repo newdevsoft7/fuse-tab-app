@@ -11,6 +11,7 @@ import { TokenStorage } from '../../../../shared/services/token-storage.service'
 import { TrackingService } from '../../tracking/tracking.service';
 import { TabService } from '../../../tab/tab.service';
 import { Tab } from '../../../tab/tab';
+import { ActionService } from '../../../../shared/services/action.service';
 
 @Component({
     selector: 'app-generate-payroll',
@@ -26,7 +27,8 @@ export class GeneratePayrollComponent implements OnInit {
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
         private tabService: TabService,
-        private tokenStorage: TokenStorage
+        private tokenStorage: TokenStorage,
+        private actionService: ActionService
     ) { }
 
     readonly types = [
@@ -196,6 +198,7 @@ export class GeneratePayrollComponent implements OnInit {
         this.payrollService.savePayroll(formData).subscribe(res => {
             this.toastr.success(res.message);
             this.payrolls = [];
+            this.actionService.payrollsChanged$.next(true);
         });
     }
 

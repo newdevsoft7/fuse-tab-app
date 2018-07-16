@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
@@ -10,6 +10,9 @@ import { PayrollService } from './payroll.service';
 import { TabService } from '../../tab/tab.service';
 import { Tab } from '../../tab/tab';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
+import { ActionService } from '../../../shared/services/action.service';
+import { Subscription } from 'rxjs';
+import { TabComponent } from '../../tab/tab/tab.component';
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -19,7 +22,7 @@ const DEFAULT_PAGE_SIZE = 5;
     styleUrls: ['./payroll.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class PayrollComponent implements OnInit {
+export class PayrollComponent implements OnInit, OnDestroy {
 
     // Search parameters
     status = 'all';
@@ -40,15 +43,19 @@ export class PayrollComponent implements OnInit {
     pageLengths = [5, 10, 20, 50, 100];
     sorts: any[] = [];
     filters: any[] = [];
+    changed = false;
 
     currentUser: any;
+    payrollsChangedSubscription: Subscription;
+    tabActivedSubscription: Subscription;
 
     constructor(
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
         private tabService: TabService,
         private payrollService: PayrollService,
-        private tokenStorage: TokenStorage
+        private tokenStorage: TokenStorage,
+        private actionService: ActionService
     ) { }
 
     ngOnInit() {
@@ -59,6 +66,21 @@ export class PayrollComponent implements OnInit {
         };
 
         this.getPayrolls();
+
+        this.payrollsChangedSubscription = this.actionService.payrollsChanged$.subscribe(changed => {
+            this.changed = changed;
+        });
+
+        this.tabActivedSubscription = this.tabService.tabActived.subscribe((tab: TabComponent) => {
+            if (tab && tab.url == 'payroll' && this.changed) {
+                setTimeout(() => this.getPayrolls());
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.payrollsChangedSubscription.unsubscribe();
+        this.tabActivedSubscription.unsubscribe();
     }
 
     onSearchChange(evt: any[]) {
@@ -109,7 +131,7 @@ export class PayrollComponent implements OnInit {
         this.payrollService.getPayrolls(this.pageSize, this.pageNumber, this.status, this.filters, this.sorts).subscribe(
             res => {
                 this.isLoading = false;
-                this.payrolls = res.data;
+                this.payrolls = [...res.data];
                 this.pageSize = res.page_size;
                 this.pageNumber = res.page_number;
                 this.total = res.total_counts;
