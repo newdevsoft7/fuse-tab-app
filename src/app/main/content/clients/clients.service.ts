@@ -33,4 +33,24 @@ export class ClientsService {
     const url = `${CLIENT_URL}/${id}`;
     return this.http.get(url).toPromise();
   }
+
+  getAdminNotes(clientId: number): Promise<any[]> {
+    const url = `${CLIENT_URL}/${clientId}/adminNotes`;
+    return this.http.get<any[]>(url).toPromise();
+  }
+
+  createAdminNote(clientId: number, data): Promise<any> {
+    const url = `${CLIENT_URL}/${clientId}/adminNote`;
+    return this.http.post(url, data).toPromise();
+  }
+
+  updateAdminNote(noteId: number, note: string): Promise<any> {
+    const url = `${CLIENT_URL}/adminNote/${noteId}`;
+    return this.http.put(url, { note }).toPromise();
+  }
+
+  deleteAdminNote(noteId: number): Promise<any> {
+    const url = `${CLIENT_URL}/adminNote/${noteId}`;
+    return this.http.delete(url).toPromise();
+  }
 }

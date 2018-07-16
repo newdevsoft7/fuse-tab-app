@@ -8,6 +8,7 @@ import { ClientFormDialogComponent } from "./dialogs/client-form/client-form.com
 import * as _ from 'lodash';
 import { UserService } from "../users/user.service";
 import { TokenStorage } from "../../../shared/services/token-storage.service";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-clients',
@@ -22,19 +23,39 @@ export class ClientsComponent implements OnInit, AfterViewInit {
   clientInfo: any = {};
 
   post: any = {};
+  adminNotes: any[] = [];
+  noteTemp: any;
+  adminNoteForm: FormGroup;
+  canSavePost = false;
 
   @ViewChild('sidenav') private sidenav: MatSidenav;
-
+  @ViewChild('adminNoteInput') adminNoteInput;
+  
   constructor(
     private dialog: MatDialog,
     private spinner: CustomLoadingService,
     private toastr: ToastrService,
     private userService: UserService,
     private tokenStorage: TokenStorage,
-    private clientsService: ClientsService) {}
+    private clientsService: ClientsService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.init();
+
+    this.adminNoteForm = this.formBuilder.group({
+      note: ['', Validators.required]
+    });
+
+    this.adminNoteForm.valueChanges.subscribe(() => {
+      const note = this.adminNoteForm.getRawValue().note;
+      if (note.length > 0) {
+        this.canSavePost = true;
+      } else {
+        this.canSavePost = false;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -61,6 +82,8 @@ export class ClientsComponent implements OnInit, AfterViewInit {
       try {
         this.spinner.show();
         this.clientInfo = await this.clientsService.getClient(this.selectedClient.id);
+        this.adminNotes = await this.clientsService.getAdminNotes(this.selectedClient.id);
+        this.adminNoteForm.reset({ note: ''});
       } catch (e) {
         this.handleError(e);
       } finally {
@@ -120,12 +143,43 @@ export class ClientsComponent implements OnInit, AfterViewInit {
 
   async onPostAdminNote() {
     try {
-      this.spinner.show();
-      await this.userService.createAdminNote(this.tokenStorage.getUser().id, this.post).toPromise();
+      const res = await this.clientsService.createAdminNote(this.selectedClient.id, this.adminNoteForm.getRawValue());
+      this.adminNotes.unshift(res.data);
+      this.adminNoteInput.nativeElement.value = '';
+      this.adminNoteInput.nativeElement.focus();
+      this.canSavePost = false;
     } catch (e) {
       this.handleError(e);
-    } finally {
-      this.spinner.hide();
+    }
+  }
+
+  async onDeleteAdminNote(note) {
+    try {
+      await this.clientsService.deleteAdminNote(note.id);
+      const index = this.adminNotes.findIndex(v => v.id === note.id);
+      this.adminNotes.splice(index, 1);
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  onEditAdminNote(note) {
+    note.editMode = true;
+    this.noteTemp = _.cloneDeep(note);
+  }
+
+  onCancelEditAdminNote(note) {
+    note.editMode = false;
+  }
+
+  async onUpdateAdminNote(note) {
+    try {
+      const { data } = await this.clientsService.updateAdminNote(note.id, this.noteTemp.note);
+      note.note = this.noteTemp.note;
+      note.updated_at = data.updated_at;
+      note.editMode = false;
+    } catch (e) {
+      this.handleError(e);
     }
   }
 
