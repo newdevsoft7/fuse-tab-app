@@ -82,6 +82,7 @@ export class OutsourceCompaniesComponent {
         this.spinner.show();
         this.companyInfo = await this.outsourceCompaniesService.getCompany(this.selectedCompany.id);
         this.adminNotes = await this.outsourceCompaniesService.getAdminNotes(this.selectedCompany.id);
+        this.adminNoteForm.reset({ note: ''});
       } catch (e) {
         this.handleError(e);
       } finally {
