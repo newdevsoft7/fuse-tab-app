@@ -157,6 +157,14 @@ export class PayrollComponent implements OnInit, OnDestroy {
 
     }
 
+    open() {
+        // Todo - open new browser tab for multiple invoice print
+    }
+
+    download() {
+        // Todo - download multiple invoices
+    }
+
     onActivate(event) {
         if (event.type === 'click' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
             if (event.cellIndex === 2) {

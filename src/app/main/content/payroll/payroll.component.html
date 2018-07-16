@@ -74,8 +74,9 @@
                 </button>
             </mat-menu>
         </div>
-        <div>
-            <button mat-raised-button>Download</button>
+        <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="selectedPayrolls?.length > 0">
+            <button mat-raised-button (click)="open()" class="mr-8">Open</button>
+            <button mat-raised-button (click)="download()">Download</button>
         </div>
     </div>
     <!-- / BATCH ACTION BUTTONS -->
