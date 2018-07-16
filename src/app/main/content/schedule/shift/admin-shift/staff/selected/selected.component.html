@@ -11,8 +11,12 @@
                     <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)"
                         [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                         [matTooltip]="staff.staff_status.status" />
-                    <span>{{staff.name}}</span>
-                    <span *ngIf="staff.company" class="ml-4">{{staff.company}}</span>
+                    <span>
+                        {{staff.name}}
+                        <ng-container *ngIf="staff.company">
+                            <br><span class="company" matTooltip="Company">{{staff.company}}</span>
+                        </ng-container>
+                    </span>
                     <div *ngIf="staff.user_status!=null" class="status" [style.background]="staff.user_status.color"
                         [matTooltip]="staff.user_status.sname"></div>
                 </div>
