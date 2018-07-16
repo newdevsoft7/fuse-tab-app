@@ -44,31 +44,31 @@
                 <div class="bordered-box">
                   <app-editable-text class="title" [value]="companyInfo.cname" (saveChange)="updateData($event, 'cname')"></app-editable-text>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    Website:
+                    <span class="w-120">Website:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.web" (saveChange)="updateData($event, 'web')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    Phone:
+                    <span class="w-120">Phone:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.phone" (saveChange)="updateData($event, 'phone')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    Address:
+                    <span class="w-120">Address:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.address" (saveChange)="updateData($event, 'address')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    City:
+                    <span class="w-120">City:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.city" (saveChange)="updateData($event, 'city')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    State:
+                    <span class="w-120">State:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.state" (saveChange)="updateData($event, 'state')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    PostCode:
+                    <span class="w-120">PostCode:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.postcode" (saveChange)="updateData($event, 'postcode')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    Unit:
+                    <span class="w-120">Unit:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
                   </div>
                   <button mat-raised-button color="warn" class="mt-8" (click)="deleteSelectedCompany()">DELETE</button>
