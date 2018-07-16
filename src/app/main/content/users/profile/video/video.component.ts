@@ -26,8 +26,8 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     @Input() settings: any = {};
 
     videos: any[];
-    basicVideos: any[];
-    adminVideos: any[];
+    basicVideos: any[] = [];
+    adminVideos: any[] = [];
 
     differ: any;
 	tags: string[];

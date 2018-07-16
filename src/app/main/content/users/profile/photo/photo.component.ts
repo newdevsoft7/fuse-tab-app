@@ -27,8 +27,8 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	@ViewChild('group') group: MatButtonToggleGroup;
 
 	photos: any[];
-	basicPhotos: any[];
-	adminPhotos: any[];
+	basicPhotos: any[] = [];
+	adminPhotos: any[] = [];
 	differ: any;
 	tags: string[];
 	selectedTags: string[] = [];
