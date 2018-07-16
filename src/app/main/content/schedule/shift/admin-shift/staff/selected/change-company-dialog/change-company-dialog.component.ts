@@ -44,7 +44,7 @@ export class AdminShiftChangeCompanyDialogComponent implements OnInit {
 
     async select(company) {
         try {
-            await this.scheduleService.updateRoleStaff(this.staff.id, { outsource_company_id: company ? company.id : null });
+            await this.scheduleService.updateRoleStaff(this.staff.id, { outsource_company_id: company ? company.id : null }).toPromise();
             this.dialogRef.close(company ? company.cname : null);
         } catch (e) {
             this.displayError(e);
