@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { UserService } from "../users/user.service";
 import { TokenStorage } from "../../../shared/services/token-storage.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FuseConfirmDialogComponent } from "../../../core/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-clients',
@@ -130,15 +131,23 @@ export class ClientsComponent implements OnInit, AfterViewInit {
   }
 
   async deleteSelectedClient() {
-    const id = this.selectedClient.id;
-    try {
-      const index = this.clients.findIndex(client => client.id === id);
-      this.clients.splice(index, 1);
-      this.selectedClient = null;
-      await this.clientsService.deleteClient(id);
-    } catch (e) {
-      this.handleError(e);
-    }
+    const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = `Really delete ${this.selectedClient.cname}?`;
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        const id = this.selectedClient.id;
+        try {
+          const index = this.clients.findIndex(client => client.id === id);
+          this.clients.splice(index, 1);
+          this.selectedClient = null;
+          await this.clientsService.deleteClient(id);
+        } catch (e) {
+          this.handleError(e);
+        }
+      }
+    });
   }
 
   async onPostAdminNote() {

@@ -9,6 +9,7 @@ import { OutsourceCompanyFormComponent } from "./dialogs/outsource-company-form/
 
 import * as _ from 'lodash';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FuseConfirmDialogComponent } from "../../../core/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-outsource-companies',
@@ -129,15 +130,21 @@ export class OutsourceCompaniesComponent {
   }
 
   async deleteSelectedCompany() {
-    const id = this.selectedCompany.id;
-    try {
-      const index = this.companies.findIndex(company => company.id === id);
-      this.companies.splice(index, 1);
-      this.selectedCompany = null;
-      await this.outsourceCompaniesService.deleteCompany(id);
-    } catch (e) {
-      this.handleError(e);
-    }
+    const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = `Really delete ${this.selectedCompany.cname}?`;
+    dialogRef.afterClosed().subscribe(async (result) => {
+      const id = this.selectedCompany.id;
+      try {
+        const index = this.companies.findIndex(company => company.id === id);
+        this.companies.splice(index, 1);
+        this.selectedCompany = null;
+        await this.outsourceCompaniesService.deleteCompany(id);
+      } catch (e) {
+        this.handleError(e);
+      }
+    });
   }
 
   async onPostAdminNote() {
