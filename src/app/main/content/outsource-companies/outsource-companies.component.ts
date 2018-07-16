@@ -8,6 +8,7 @@ import { OutsourceCompaniesService } from "./outsource-companies.service";
 import { OutsourceCompanyFormComponent } from "./dialogs/outsource-company-form/outsource-company-form.component";
 
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-outsource-companies',
@@ -21,8 +22,13 @@ export class OutsourceCompaniesComponent {
   companyInfo: any = {};
 
   post: any = {};
+  adminNotes: any[] = [];
+  noteTemp: any;
+  adminNoteForm: FormGroup;
+  canSavePost = false;
 
   @ViewChild('sidenav') private sidenav: MatSidenav;
+  @ViewChild('adminNoteInput') adminNoteInput;
 
   constructor(
     private dialog: MatDialog,
@@ -30,22 +36,37 @@ export class OutsourceCompaniesComponent {
     private toastr: ToastrService,
     private userService: UserService,
     private tokenStorage: TokenStorage,
-    private outsourceCompaniesService: OutsourceCompaniesService) {}
+    private outsourceCompaniesService: OutsourceCompaniesService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.init();
+
+    this.adminNoteForm = this.formBuilder.group({
+      note: ['', Validators.required]
+    });
+
+    this.adminNoteForm.valueChanges.subscribe(() => {
+      const note = this.adminNoteForm.getRawValue().note;
+      if (note.length > 0) {
+        this.canSavePost = true;
+      } else {
+        this.canSavePost = false;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-        this.sidenav.open();
+      this.sidenav.open();
     }, 200);
   }
 
   async init() {
     try {
       this.spinner.show();
-      this.companies = await this.outsourceCompaniesService.getAll(); 
+      this.companies = await this.outsourceCompaniesService.getAll();
     } catch (e) {
       this.handleError(e);
     } finally {
@@ -60,6 +81,7 @@ export class OutsourceCompaniesComponent {
       try {
         this.spinner.show();
         this.companyInfo = await this.outsourceCompaniesService.getCompany(this.selectedCompany.id);
+        this.adminNotes = await this.outsourceCompaniesService.getAdminNotes(this.selectedCompany.id);
       } catch (e) {
         this.handleError(e);
       } finally {
@@ -74,21 +96,21 @@ export class OutsourceCompaniesComponent {
     });
 
     this.dialogRef.afterClosed()
-        .subscribe(async (company) => {
-            if (!company) {
-                return;
-            }
-            try {
-              this.spinner.show();
-              const res = await this.outsourceCompaniesService.createCompany(company);
-              //this.toastr.success('Outsource Company has been created successfully!');
-              this.companies.push(res.data);
-            } catch (e) {
-              this.handleError(e);
-            } finally {
-              this.spinner.hide();
-            }
-        });
+      .subscribe(async (company) => {
+        if (!company) {
+          return;
+        }
+        try {
+          this.spinner.show();
+          const res = await this.outsourceCompaniesService.createCompany(company);
+          //this.toastr.success('Outsource Company has been created successfully!');
+          this.companies.push(res.data);
+        } catch (e) {
+          this.handleError(e);
+        } finally {
+          this.spinner.hide();
+        }
+      });
   }
 
   async updateData(value, key) {
@@ -119,12 +141,43 @@ export class OutsourceCompaniesComponent {
 
   async onPostAdminNote() {
     try {
-      this.spinner.show();
-      await this.userService.createAdminNote(this.tokenStorage.getUser().id, this.post).toPromise();
+      const res = await this.outsourceCompaniesService.createAdminNote(this.selectedCompany.id, this.adminNoteForm.getRawValue());
+      this.adminNotes.unshift(res.data);
+      this.adminNoteInput.nativeElement.value = '';
+      this.adminNoteInput.nativeElement.focus();
+      this.canSavePost = false;
     } catch (e) {
       this.handleError(e);
-    } finally {
-      this.spinner.hide();
+    }
+  }
+
+  async onDeleteAdminNote(note) {
+    try {
+      await this.outsourceCompaniesService.deleteAdminNote(note.id);
+      const index = this.adminNotes.findIndex(v => v.id === note.id);
+      this.adminNotes.splice(index, 1);
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
+
+  onEditAdminNote(note) {
+    note.editMode = true;
+    this.noteTemp = _.cloneDeep(note);
+  }
+
+  onCancelEditAdminNote(note) {
+    note.editMode = false;
+  }
+
+  async onUpdateAdminNote(note) {
+    try {
+      const { data } = await this.outsourceCompaniesService.updateAdminNote(note.id, this.noteTemp.note);
+      note.note = this.noteTemp.note;
+      note.updated_at = data.updated_at;
+      note.editMode = false;
+    } catch (e) {
+      this.handleError(e);
     }
   }
 

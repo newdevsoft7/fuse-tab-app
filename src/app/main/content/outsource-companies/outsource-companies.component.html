@@ -1,90 +1,154 @@
 <div class="page-layout simple left-sidenav inner-sidenav" fusePerfectScrollbar>
 
   <button mat-button class="mat-accent new-outsource-company-form-button" mat-fab (click)="openForm()">
-      <mat-icon>add</mat-icon>
+    <mat-icon>add</mat-icon>
   </button>
 
   <mat-sidenav-container>
 
-      <!-- SIDENAV -->
-      <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3" mat-is-locked-open="gt-md"
-          #sidenav>
+    <!-- SIDENAV -->
+    <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3" mat-is-locked-open="gt-md"
+      #sidenav>
 
-          <div class="sidenav-content nav pt-16" fusePerfectScrollbar>
-              <div class="nav-item" *ngFor="let company of companies">
+      <div class="sidenav-content nav pt-16" fusePerfectScrollbar>
+        <div class="nav-item" *ngFor="let company of companies">
 
-                  <div class="nav-link" matRipple (click)="changeCompany(company)" [ngClass]="{'active': selectedCompany && company.id === selectedCompany.id }"
-                      fxLayout="row" fxLayoutAlign="space-between center">
-                      <span>{{company.cname}}</span>
-                  </div>
-
-                  <mat-divider></mat-divider>
-              </div>
-
+          <div class="nav-link" matRipple (click)="changeCompany(company)" [ngClass]="{'active': selectedCompany && company.id === selectedCompany.id }"
+            fxLayout="row" fxLayoutAlign="space-between center">
+            <span>{{company.cname}}</span>
           </div>
 
-      </mat-sidenav>
-      <!-- / SIDENAV -->
-
-      <!-- CENTER -->
-      <div class="center p-16" fusePerfectScrollbar>
-
-          <!-- CONTENT -->
-          <div class="content mat-elevation-z4 mat-white-bg">
-              <mat-tab-group *ngIf="selectedCompany" class="w-100-p">
-                  <mat-tab label="Home Screen">
-                    <app-timeline [lvl]="'ext'" [otherId]="selectedCompany.id"></app-timeline>
-                  </mat-tab>
-                  <mat-tab label="Info">
-                    <div fxLayout="row" fxLayoutWrap class="p-16">
-                      <div fxFlex.lt-lg="100" class="ml-4 mt-4">
-                        <header class="mat-accent-bg p-16">
-                            <div class="title font-size-16">Basic Information</div>
-                        </header>
-                        <div class="bordered-box">
-                          <app-editable-text class="title" [value]="companyInfo.cname" (saveChange)="updateData($event, 'cname')"></app-editable-text>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            Website: <app-editable-text class="ml-12" [value]="companyInfo.web" (saveChange)="updateData($event, 'web')"></app-editable-text>
-                          </div>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            Phone: <app-editable-text class="ml-12" [value]="companyInfo.phone" (saveChange)="updateData($event, 'phone')"></app-editable-text>
-                          </div>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            Address: <app-editable-text class="ml-12" [value]="companyInfo.address" (saveChange)="updateData($event, 'address')"></app-editable-text>
-                          </div>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            City: <app-editable-text class="ml-12" [value]="companyInfo.city" (saveChange)="updateData($event, 'city')"></app-editable-text>
-                          </div>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            State: <app-editable-text class="ml-12" [value]="companyInfo.state" (saveChange)="updateData($event, 'state')"></app-editable-text>
-                          </div>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            PostCode: <app-editable-text class="ml-12" [value]="companyInfo.postcode" (saveChange)="updateData($event, 'postcode')"></app-editable-text>
-                          </div>
-                          <div fxLayout="row" fxLayoutAlign="start center">
-                            Unit: <app-editable-text class="ml-12" [value]="companyInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
-                          </div>
-                          <button mat-raised-button color="warn" class="mt-8" (click)="deleteSelectedCompany()">DELETE</button>
-                        </div>
-                      </div>
-                      <div fxFlex="30" fxFlex.lt-lg="100" class="mr-4 mt-4 ml-16">
-                        <form class="bordered-box" #adminNoteForm="ngForm" novalidate fxLayout="column">
-                            <mat-form-field class="mb-4" floatPlaceholder="never">
-                                <textarea matInput placeholder="Write an admin note..." #adminNoteInput="ngModel" name="note" [(ngModel)]="post.note" required></textarea>
-                            </mat-form-field>
-                            <button mat-raised-button (click)="onPostAdminNote()" class="save-button mat-accent" [disabled]="adminNoteForm.invalid" aria-label="POST">
-                                POST
-                            </button>
-                        </form>
-                      </div>
-                    </div>
-                  </mat-tab>
-              </mat-tab-group>
-          </div>
-          <!-- / CONTENT -->
+          <mat-divider></mat-divider>
+        </div>
 
       </div>
-      <!-- / CENTER -->
+
+    </mat-sidenav>
+    <!-- / SIDENAV -->
+
+    <!-- CENTER -->
+    <div class="center p-16" fusePerfectScrollbar>
+
+      <!-- CONTENT -->
+      <div class="content mat-elevation-z4 mat-white-bg">
+        <mat-tab-group *ngIf="selectedCompany" class="w-100-p">
+          <mat-tab label="Home Screen">
+            <app-timeline [lvl]="'ext'" [otherId]="selectedCompany.id"></app-timeline>
+          </mat-tab>
+          <mat-tab label="Info">
+            <div fxLayout="row" fxLayoutWrap class="p-16">
+              <div fxFlex.lt-lg="100" class="ml-4 mt-4">
+                <header class="mat-accent-bg p-16">
+                  <div class="title font-size-16">Basic Information</div>
+                </header>
+                <div class="bordered-box">
+                  <app-editable-text class="title" [value]="companyInfo.cname" (saveChange)="updateData($event, 'cname')"></app-editable-text>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    Website:
+                    <app-editable-text class="ml-12" [value]="companyInfo.web" (saveChange)="updateData($event, 'web')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    Phone:
+                    <app-editable-text class="ml-12" [value]="companyInfo.phone" (saveChange)="updateData($event, 'phone')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    Address:
+                    <app-editable-text class="ml-12" [value]="companyInfo.address" (saveChange)="updateData($event, 'address')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    City:
+                    <app-editable-text class="ml-12" [value]="companyInfo.city" (saveChange)="updateData($event, 'city')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    State:
+                    <app-editable-text class="ml-12" [value]="companyInfo.state" (saveChange)="updateData($event, 'state')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    PostCode:
+                    <app-editable-text class="ml-12" [value]="companyInfo.postcode" (saveChange)="updateData($event, 'postcode')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    Unit:
+                    <app-editable-text class="ml-12" [value]="companyInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
+                  </div>
+                  <button mat-raised-button color="warn" class="mt-8" (click)="deleteSelectedCompany()">DELETE</button>
+                </div>
+              </div>
+
+              <div fxFlex="30" fxFlex.lt-lg="100" class="mr-4 mt-4" [ngClass.lt-lg]="'ml-0 mt-12'" [ngClass.lg]="'ml-16'">
+                <div class="admin-notes">
+                  <div class="contents">
+                    <form [formGroup]="adminNoteForm" novalidate fxLayout="column">
+                      <mat-form-field class="mb-4" floatPlaceholder="never">
+                        <textarea matInput placeholder="Write an admin note..." #adminNoteInput formControlName="note" required></textarea>
+                      </mat-form-field>
+                      <div fxLayout="row" fxLayoutAlign="start" *ngIf="canSavePost">
+                        <button mat-raised-button (click)="onPostAdminNote()" class="save-button mat-accent" [disabled]="adminNoteForm.invalid" aria-label="POST">
+                          POST
+                        </button>
+                      </div>
+                    </form>
+
+                    <!-- ADMIN NOTES LIST -->
+                    <div class="notes" fxLayout="column">
+                      <div class="note" fxLayout="row" fxLayoutAlign="start center" *ngFor="let note of adminNotes">
+                        <img [src]="note.thumb" class="avatar ml-8" alt="{{note.name}}" [matTooltip]="note.name" />
+
+                        <div class="w-100-p">
+                          <div *ngIf="note.editMode">
+                            <mat-form-field class="w-100-p">
+                              <textarea matInput [(ngModel)]="noteTemp.note"></textarea>
+                            </mat-form-field>
+
+                            <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="12px">
+                              <button mat-raised-button color="accent" (click)="onUpdateAdminNote(note)" [disabled]="!noteTemp.note">Update</button>
+                              <button mat-raised-button color="accent" (click)="onCancelEditAdminNote(note)">Cancel</button>
+                            </div>
+
+                          </div>
+
+                          <div *ngIf="!note.editMode" fxLayout="row">
+                            <div fxFlex="1 0 auto">
+                              <span class="message"> {{note.note}}</span>
+                              <div>
+                                <span class="time secondary-text mr-8">{{note.updated_at | date: 'medium'}}</span>
+                              </div>
+                            </div>
+
+                            <button fxFlex="0 1 auto" mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+                              <mat-icon class="material-icons">more_vert</mat-icon>
+                            </button>
+
+                            <mat-menu #menu="matMenu">
+                              <button mat-menu-item (click)="onEditAdminNote(note)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                              </button>
+
+                              <button mat-menu-item (click)="onDeleteAdminNote(note)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                              </button>
+
+                            </mat-menu>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    <!-- / ADMIN NOTES LIST -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
   </mat-sidenav-container>
 
 </div>

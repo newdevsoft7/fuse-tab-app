@@ -31,4 +31,24 @@ export class OutsourceCompaniesService {
     const url = `${OUTSOURCE_COMPANIES_URL}/${id}`;
     return this.http.get(url).toPromise();
   }
+
+  getAdminNotes(outsourceCompanyId: number): Promise<any[]> {
+    const url = `${OUTSOURCE_COMPANIES_URL}/${outsourceCompanyId}/adminNotes`;
+    return this.http.get<any[]>(url).toPromise();
+  }
+
+  createAdminNote(outsourceCompanyId: number, data): Promise<any> {
+    const url = `${OUTSOURCE_COMPANIES_URL}/${outsourceCompanyId}/adminNote`;
+    return this.http.post(url, data).toPromise();
+  }
+
+  updateAdminNote(noteId: number, note: string): Promise<any> {
+    const url = `${OUTSOURCE_COMPANIES_URL}/adminNote/${noteId}`;
+    return this.http.put(url, { note }).toPromise();
+  }
+
+  deleteAdminNote(noteId: number): Promise<any> {
+    const url = `${OUTSOURCE_COMPANIES_URL}/adminNote/${noteId}`;
+    return this.http.delete(url).toPromise();
+  }
 }
