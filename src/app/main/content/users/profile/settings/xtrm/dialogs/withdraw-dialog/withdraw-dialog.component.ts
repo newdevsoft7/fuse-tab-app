@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../../user.service';
+import { UserSettingsXtrmAddBankDialogComponent } from '../add-bank-dialog/add-bank-dialog.component';
 
 @Component({
     selector: 'app-user-withdraw-dialog',
@@ -23,19 +24,26 @@ export class UserWithdrawDialogComponent implements OnInit {
     otpSent: boolean;
     message: string;
     otp: string;
+    currencies: any[];
+    countries: any[];
+    xtrm: any;
 
     constructor(
         public dialogRef: MatDialogRef<UserWithdrawDialogComponent>,
         private formBuilder: FormBuilder,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private toastr: ToastrService,
-        private userService: UserService
+        private userService: UserService,
+        private dialog: MatDialog
     ) {
         this.type = data.type;
         this.banks = data.banks;
         this.wallet = data.wallet;
         this.user = data.user;
         this.value = data.value;
+        this.currencies = data.currencies;
+        this.countries = data.countries;
+        this.xtrm = data.xtrm;
     }
 
     ngOnInit() {
@@ -82,6 +90,28 @@ export class UserWithdrawDialogComponent implements OnInit {
         } catch (e) {
             this.displayError(e);
         }
+    }
+
+    openAddBankAccountModal() {
+        const dialogRef = this.dialog.open(UserSettingsXtrmAddBankDialogComponent, {
+            disableClose: false,
+            panelClass: 'user-settings-xtrm-add-bank-dialog',
+            data: {
+                countries: this.countries,
+                currencies: this.currencies,
+                user: this.user
+            }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const bank = {
+                    id: result.id,
+                    bname: result.bname
+                };
+                this.banks.push(bank);
+                this.xtrm.banks.push(bank);
+            }
+        });
     }
 
     private displayError(e: any) {

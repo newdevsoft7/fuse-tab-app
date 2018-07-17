@@ -43,7 +43,7 @@
                                 </span>
                             </button>
                             <mat-menu #walletMenu="matMenu">
-                                <button mat-menu-item *ngFor="let method of wallet.withdraw_methods" (click)="withdraw(method, wallet)">
+                                <button mat-menu-item *ngFor="let method of wallet.withdraw_methods" (click)="openWithdrawDialog(method, wallet)">
                                     {{method.label}}
                                 </button>
                             </mat-menu>

@@ -9,10 +9,13 @@
     </mat-toolbar>
 
     <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <a href="javascript:void(0)" (click)="openAddBankAccountModal()" *ngIf="type == 'bank'">
+            Add a new bank account
+        </a>
         <ng-container *ngIf="!otpSent">
             <form [formGroup]="bankForm" *ngIf="type == 'bank'">
                 <div fxHide.xs>
-                    <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="row" fxLayoutAlign="start center" *ngIf="banks.length > 0">
                         <span class="w-100">Bank</span>
                         <mat-form-field fxFlex="1 0 auto">
                             <mat-select formControlName="bank_id">
@@ -31,7 +34,7 @@
                 </div>
 
                 <div fxHide.gt-xs fxLayout="column" fxLayoutAlign="start">
-                    <mat-form-field>
+                    <mat-form-field *ngIf="banks.length > 0">
                         <mat-select formControlName="bank_id" placeholder="Bank">
                             <mat-option *ngFor="let bank of banks" [value]="bank.id">
                                 {{bank.name}}

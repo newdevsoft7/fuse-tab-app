@@ -89,47 +89,15 @@ export class UsersSettingsXtrmComponent implements OnInit {
         }
     }
 
-    withdraw(method, wallet) {
-        switch (method.id) {
-            case 'bank':
-                if (method.options.length > 0) {
-                    this.openWithdrawDialog(method, wallet);
-                } else {
-                    const dialogRef = this.dialog.open(UserSettingsXtrmAddBankDialogComponent, {
-                        disableClose: false,
-                        panelClass: 'user-settings-xtrm-add-bank-dialog',
-                        data: {
-                            countries: this.countries,
-                            currencies: this.currencies,
-                            user: this.user
-                        }
-                    });
-                    dialogRef.afterClosed().subscribe(bank => {
-                        if (bank) {
-                            this.xtrm.banks.push(bank);
-                            method.options.push({
-                                id: bank.id,
-                                bname: bank.bname
-                            });
-                            this.openWithdrawDialog(method, wallet);
-                        }
-                    });
-                }
-                break;
-
-            case 'paypal':
-            case 'prepaid':
-                this.openWithdrawDialog(method, wallet);
-                break;
-        }
-    }
-
     openWithdrawDialog(method, wallet) {
         let data: any = {
             wallet,
             type: method.id,
             user: this.user,
-            value: method.value
+            value: method.value,
+            countries: this.countries,
+            currencies: this.currencies,
+            xtrm: this.xtrm
         };
         if (method.id === 'bank') {
             data.banks = method.options;
