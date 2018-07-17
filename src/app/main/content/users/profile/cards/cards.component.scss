@@ -28,5 +28,9 @@
         height: 140px;
         margin: 8px;
         display: block;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 }

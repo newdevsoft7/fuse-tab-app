@@ -21,7 +21,7 @@ export class ProfileCardsPhotoGalleryDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) private data: any
     ) { }
-
+        
     ngOnInit() {
         this.photo = this.data.photo;
         this.photos = this.data.photos;

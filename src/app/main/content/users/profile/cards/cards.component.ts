@@ -61,6 +61,7 @@ export class UsersProfileCardsComponent implements OnInit {
     showVideo(video) {
         const dialogRef = this.dialog.open(ProfileCardsVideoGalleryDialogComponent, {
             panelClass: 'profile-cards-video-gallery-dialog',
+            disableClose: false,
             data: {
                 videos: this.cardData.videos,
                 video
@@ -72,7 +73,8 @@ export class UsersProfileCardsComponent implements OnInit {
 
     showPhoto(photo) {
         const dialogRef = this.dialog.open(ProfileCardsPhotoGalleryDialogComponent, {
-            panelClass: 'profile-cards-photo-gallery-dialog ',
+            panelClass: 'profile-cards-photo-gallery-dialog',
+            disableClose: false,
             data: {
                 photos: this.cardData.photos,
                 photo
