@@ -60,4 +60,8 @@ export class PayrollDetailComponent implements OnInit {
       this.spinner.hide();
     }
   }
+
+  async doAction(action) {
+    
+  }
 }

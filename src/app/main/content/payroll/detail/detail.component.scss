@@ -210,6 +210,10 @@
                 .invoice-container {
                     padding: 0;
 
+                    .action-buttons {
+                        display: none !important;
+                    }
+
                     .card {
                         width: 100%;
                         min-width: 0;
