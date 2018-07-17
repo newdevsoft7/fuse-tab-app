@@ -31,25 +31,29 @@
                 .name {
                     text-transform: capitalize;
                 }
+            }
 
-                .category-table {
-                    width: 100%;
-                    border-collapse: collapse;
+            .category-table {
+                width: 100%;
+                border-collapse: collapse;
 
-                    .line {
-                        border: 1px solid #ccc;
-                    }
+                .line {
+                    border: 1px solid #ccc;
+                }
 
-                    .title {
-                        padding-left: 20px;
-                    }
+                .total-line {
+                    background-color: grey;
+                }
+
+                .total {
+                    padding: 15px 4px;
+                }
+
+                .title {
+                    padding-left: 20px;
                 }
             }
 
-            .total {
-                text-align: right;
-                margin-top: 24px;
-            }
         }
     }
 
@@ -61,6 +65,7 @@
 
         td.amount,
         td.quantity,
+        td.total,
         td.line-amount {
             width: 14%;
         }

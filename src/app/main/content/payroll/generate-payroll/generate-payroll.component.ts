@@ -202,10 +202,6 @@ export class GeneratePayrollComponent implements OnInit {
         });
     }
 
-    getTotal(payroll) {
-        return _.reduce(this.categories, (s, category) => s + _.reduce(payroll[category], (sum, line) => sum + line.l_amt, 0), 0);
-    }
-
     isEmpty(payroll) {
         return _.every(this.categories, category => payroll[category].length === 0);
     }

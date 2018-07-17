@@ -95,7 +95,14 @@
                             </div>
                         </ng-container>
 
-                        <div class="total">Total: {{getTotal(payroll)}}</div>
+                        <table class="category-table mt-20">
+                            <tr class="line total-line">
+                                <td colspan="2"></td>
+                                <td class="quantity">{{payroll.currency}}</td>
+                                <td class="total" matTooltip="Total">{{payroll.total}}</td>
+                                <td class="line-menu"></td>
+                            </tr>
+                        </table>
                     </div>
 
                     <div fxFlex="0 1 auto">
