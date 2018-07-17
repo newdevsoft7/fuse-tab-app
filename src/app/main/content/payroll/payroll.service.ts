@@ -59,6 +59,11 @@ export class PayrollService {
         return this.http.get(url).toPromise();
     }
 
+    payPayrollWithXtrm(payrollId: number): Promise<any> {
+        const url = `${BASE_URL}/payroll/${payrollId}/xtrm/pay`;
+        return this.http.post(url, {}).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

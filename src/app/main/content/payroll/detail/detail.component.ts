@@ -3,6 +3,8 @@ import { PayrollService } from "../payroll.service";
 import { CustomLoadingService } from "../../../../shared/services/custom-loading.service";
 import { ToastrService } from "ngx-toastr";
 import { AppSettingService } from "../../../../shared/services/app-setting.service";
+import { MatDialog } from "@angular/material";
+import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-payroll-detail',
@@ -34,10 +36,12 @@ export class PayrollDetailComponent implements OnInit {
   ];
 
   constructor(
-    private toastrService: ToastrService,
+    private toastr: ToastrService,
     private spinner: CustomLoadingService,
     private appSettingService: AppSettingService,
-    private payrollService: PayrollService) {}
+    private payrollService: PayrollService,
+    private dialog: MatDialog
+  ) { }
 
   async ngOnInit() {
     this.logoUrl = this.appSettingService.baseData.logo;
@@ -55,13 +59,38 @@ export class PayrollDetailComponent implements OnInit {
       }
       this.payrollItems = payrollItems;
     } catch (e) {
-      this.toastrService.error(e.error.message);
+      this.displayError(e);
     } finally {
       this.spinner.hide();
     }
   }
 
   async doAction(action) {
-    
+    if (action.action == 'pay_xtrm') {
+      const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+        disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = `Really pay ${this.payroll.total}?`;
+      dialogRef.afterClosed().subscribe(async (result) => {
+        if (result) {
+          try {
+            await this.payrollService.payPayrollWithXtrm(this.payroll.id);
+          } catch (e) {
+            this.displayError(e);
+          }
+        }
+      });
+    }
+  }
+
+
+  private displayError(e) {
+    const errors = e.error.errors;
+    if (errors) {
+      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+    }
+    else {
+      this.toastr.error(e.error.message);
+    }
   }
 }

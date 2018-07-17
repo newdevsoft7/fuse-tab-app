@@ -126,7 +126,7 @@
                     </button>
                     <mat-menu #actionMenu="matMenu">
                         <button mat-menu-item *ngFor="let action of value" (click)="doAction(row, action)">
-                            {{ action | capitalize }}
+                            {{action.label}}
                         </button>
                     </mat-menu>
                 </ng-template>

@@ -3,7 +3,7 @@
     <div class="invoice-container" [ngClass.gt-xs]="'px-64 pb-64 pt-20'">
         <div fxLayout="row wrap" fxLayoutAlign="start center" class="action-buttons">
             <button mat-raised-button *ngFor="let action of payroll.actions" color="accent" (click)="doAction(action)" class="mr-4 mb-12">
-                {{action}}
+                {{action.label}}
             </button>
         </div>
         <!-- INVOICE -->

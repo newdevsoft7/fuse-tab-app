@@ -13,6 +13,8 @@ import { TokenStorage } from '../../../shared/services/token-storage.service';
 import { ActionService } from '../../../shared/services/action.service';
 import { Subscription } from 'rxjs';
 import { TabComponent } from '../../tab/tab/tab.component';
+import { MatDialog } from '@angular/material';
+import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -55,7 +57,8 @@ export class PayrollComponent implements OnInit, OnDestroy {
         private tabService: TabService,
         private payrollService: PayrollService,
         private tokenStorage: TokenStorage,
-        private actionService: ActionService
+        private actionService: ActionService,
+        private dialog: MatDialog
     ) { }
 
     ngOnInit() {
@@ -154,7 +157,21 @@ export class PayrollComponent implements OnInit, OnDestroy {
 
     // Do action against item
     doAction(item, action) {
-
+        if (action.action == 'pay_xtrm') {
+            const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+                disableClose: false
+            });
+            dialogRef.componentInstance.confirmMessage = `Really pay ${item.total}?`;
+            dialogRef.afterClosed().subscribe(async(result) => {
+                if (result) {
+                    try {
+                        await this.payrollService.payPayrollWithXtrm(item.id);
+                    } catch (e) {
+                        this.displayError(e);
+                    }
+                }
+            });
+        }
     }
 
     open() {
@@ -176,6 +193,16 @@ export class PayrollComponent implements OnInit, OnDestroy {
                 const tab = new Tab(`${event.row.name}`, 'usersProfileTpl', `users/user/${user.id}`, user);
                 this.tabService.openTab(tab);
             } else { }
+        }
+    }
+
+    private displayError(e) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
         }
     }
 }
