@@ -476,6 +476,11 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    getUserCard(userId: number, cardId: number): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/card/${cardId}`;
+        return this.http.get(url).toPromise();
+    }
+
     createCard(name: string): Promise<any> {
         const url = `${BASE_URL}/card`;
         return this.http.post(url, { name }).toPromise();

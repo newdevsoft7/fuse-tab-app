@@ -66,6 +66,9 @@ import { UsersPresentationsComponent } from './presentations/presentations.compo
 import { UsersAddPresentationDialogComponent } from './presentations/dialogs/add-presentation-dialog/add-presentation-dialog.component';
 import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-dialog/add-to-presenation-dialog.component';
 import { UserWithdrawDialogComponent } from './profile/settings/xtrm/dialogs/withdraw-dialog/withdraw-dialog.component';
+import { UsersProfileCardsComponent } from './profile/cards/cards.component';
+import { ProfileCardsPhotoGalleryDialogComponent } from './profile/cards/dialogs/photo-gallery-dialog/photo-gallery-dialog.component';
+import { ProfileCardsVideoGalleryDialogComponent } from './profile/cards/dialogs/video-gallery-dialog/video-gallery-dialog.component';
 
 @NgModule({
     imports: [
@@ -136,7 +139,10 @@ import { UserWithdrawDialogComponent } from './profile/settings/xtrm/dialogs/wit
         UsersPresentationsComponent,
         UsersAddPresentationDialogComponent,
         AddToPresenationDialogComponent,
-        UserWithdrawDialogComponent
+        UserWithdrawDialogComponent,
+        UsersProfileCardsComponent,
+        ProfileCardsPhotoGalleryDialogComponent,
+        ProfileCardsVideoGalleryDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -177,7 +183,9 @@ import { UserWithdrawDialogComponent } from './profile/settings/xtrm/dialogs/wit
         UsersAddCardDialogComponent,
         UsersAddPresentationDialogComponent,
         AddToPresenationDialogComponent,
-        UserWithdrawDialogComponent
+        UserWithdrawDialogComponent,
+        ProfileCardsPhotoGalleryDialogComponent,
+        ProfileCardsVideoGalleryDialogComponent
     ]
 })
 export class UsersModule { }

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
-import { MatDialog, MatDialogRef, MatTabGroup, MatTab } from "@angular/material";
+import { MatDialog, MatDialogRef, MatTabGroup, MatTab, MatTabChangeEvent } from "@angular/material";
 import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 import { UserService } from '../user.service';
+import { UsersProfileCardsComponent } from './cards/cards.component';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class UsersProfileComponent implements OnInit {
 
 	@Input('data') user;
 	@ViewChild('tabGroup') tabGroup: MatTabGroup;
+	@ViewChild('cardsTab') cardsTab: UsersProfileCardsComponent;
 
 	currentUser: any;
 	userInfo: any;
@@ -25,6 +27,7 @@ export class UsersProfileComponent implements OnInit {
 	isFavStatusShow = false;
 	isSettingsShow = false;
 	isSkillsShow = false;
+	isCardsShow = false;
 	isWorkAreasShow = false;
 	timezones: any[] = [];
 	selectedIndex: number = 0;
@@ -132,6 +135,8 @@ export class UsersProfileComponent implements OnInit {
 				['registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
 			this.isSettingsShow =
 				['owner', 'admin', 'staff', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1) && (this.currentUser.id == this.user.id || this.currentUser.lvl == 'owner' || (this.currentUser.lvl == 'admin' && this.userInfo.lvl != 'admin' && this.userInfo.lvl != 'owner'));
+			this.isCardsShow = 
+				['owner', 'admin', 'staff'].indexOf(this.userInfo.lvl) > -1 && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1 && this.settings.showcase_module == 1;
 			if (['owner', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1)) {
 				this.isWorkAreasShow = false;
 			} else {
@@ -166,6 +171,12 @@ export class UsersProfileComponent implements OnInit {
 		const index = this.tabGroup._tabs.toArray().findIndex(tab => tab.textLabel == 'Photos');
 		if (index > -1) {
 			this.selectedIndex = index;
+		}
+	}
+
+	onSelectedTabChange(event: MatTabChangeEvent) {
+		if (event.tab.textLabel === 'Cards') {
+			setTimeout(() => this.cardsTab.drawer.open(), 100);
 		}
 	}
 

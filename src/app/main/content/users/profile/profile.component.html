@@ -49,7 +49,7 @@
     <!-- CONTENT -->
     <div class="content">
 
-        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedIndex" #tabGroup>
+        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedIndex" #tabGroup (selectedTabChange)="onSelectedTabChange($event)">
 
             <mat-tab label="About">
                 <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings" [settings]="settings"></app-users-profile-about>
@@ -74,6 +74,10 @@
 
             <mat-tab label="Documents">
                 <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-document>
+            </mat-tab>
+
+            <mat-tab label="Cards" *ngIf="isCardsShow">
+                <app-users-profile-cards #cardsTab [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-cards>
             </mat-tab>
 
             <mat-tab label="Work Areas" *ngIf="isWorkAreasShow">

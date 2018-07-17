@@ -1,0 +1,32 @@
+#profile-cards-container {
+        
+    .form-container {
+        padding: 16px;
+    }
+    
+    .draw-container {
+        min-height: 200px !important;
+
+        .draw-sidenav {
+            min-width: 160px;
+        }
+    }
+
+    fieldset {
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        margin-bottom: 16px;
+
+        legend {
+            padding: 0 4px;
+        }
+
+    }
+
+    .preview {
+        width: 140px;
+        height: 140px;
+        margin: 8px;
+        display: block;
+    }
+}
