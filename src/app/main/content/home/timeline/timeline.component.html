@@ -59,7 +59,7 @@
                         <div class="title">
                             <span class="username">{{post.name}}</span>
                         </div>
-                        <div class="time">{{post.created_at | date: 'medium'}}</div>
+                        <div class="time">{{post.created_at | date: 'MMM d, y, h:mm a'}}</div>
                     </div>
                 </div>
 
@@ -146,7 +146,7 @@
                     <div fxLayout="column" fxFlex>
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <span class="username">{{comment.name}}</span>
-                            <span class="time">{{comment.created_at | date: 'medium'}}</span>
+                            <span class="time">{{comment.created_at | date: 'MMM d, y, h:mm a'}}</span>
                         </div>
                         <div class="message">
                             {{comment.content}}
