@@ -51,6 +51,7 @@ import { SettingsXtrmComponent } from './xtrm/xtrm.component';
 import { SettingsXtrmAddWalletComponent } from './xtrm/add-wallet/add-wallet.component';
 import { FundWalletByCreditCardDialogComponent } from './xtrm/dialogs/fund-wallet-by-credit-card-dialog/fund-wallet-by-credit-card-dialog.component';
 import { FundWalletByOtherDialogComponent } from './xtrm/dialogs/fund-wallet-by-other-dialog/fund-wallet-by-other-dialog.component';
+import { SettingsXeroAddKeySecretDialogComponent } from './xero/add-key-secret-dialog/add-key-secret-dialog.component';
 
 @NgModule({
     imports: [
@@ -105,7 +106,8 @@ import { FundWalletByOtherDialogComponent } from './xtrm/dialogs/fund-wallet-by-
         SettingsXtrmComponent,
         SettingsXtrmAddWalletComponent,
         FundWalletByCreditCardDialogComponent,
-        FundWalletByOtherDialogComponent
+        FundWalletByOtherDialogComponent,
+        SettingsXeroAddKeySecretDialogComponent
     ],
 
     providers: [
@@ -114,7 +116,8 @@ import { FundWalletByOtherDialogComponent } from './xtrm/dialogs/fund-wallet-by-
     entryComponents: [
         CategoryDialogComponent,
         FundWalletByCreditCardDialogComponent,
-        FundWalletByOtherDialogComponent
+        FundWalletByOtherDialogComponent,
+        SettingsXeroAddKeySecretDialogComponent
     ],
     exports: [
         SettingsComponent

@@ -4,8 +4,7 @@
     <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
         <div class="name" fxFlex="20">Xero Integration</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_enable]"
-                (change)="onChange(Setting.xero_enable, $event)" fxFlex="15"></mat-slide-toggle>
+            <mat-slide-toggle color="accent" [(ngModel)]="items[Setting.xero_enable]" (change)="onChangeXeroEnable($event)" fxFlex="15"></mat-slide-toggle>
             <div class="desc secondary-text" fxFlex="85">
                 Enable the Xero Module to sync accouting data with Xero
             </div>
@@ -13,85 +12,286 @@
     </div>
     <!-- / XERO ENABLE -->
 
-    <!-- XERO CLIENT INVOICE -->
-    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20"></div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_client_invoice]"
-                (change)="onChange(Setting.xero_client_invoice, $event)" fxFlex="15"></mat-slide-toggle>
-            <div class="desc secondary-text" fxFlex="85">
-                Enable to transfer client invoices to Xero
+    <ng-container *ngIf="items[Setting.xero_enable] && !isModalOpen">
+
+        <div class="box info-box mt-16">
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Xero Payroll</div>
+            </header>
+            <div class="content" fxLayout="column">
+                <!-- XERO PAYROLL -->
+                <div class="info">
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                        <mat-slide-toggle color="accent" [(ngModel)]="items[Setting.xero_payroll]" (change)="onChange(Setting.xero_payroll, $event)"
+                            fxFlex="30"></mat-slide-toggle>
+                        <div class="desc secondary-text" fxFlex="70">
+                            Enable to transfer timesheets to Xero
+                        </div>
+                    </div>
+                </div>
+                <!-- / XERO PAYROLL -->
+
+                <ng-container *ngIf="items[Setting.xero_payroll]">
+
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [(ngModel)]="items[Setting.xero_payroll_country]" (selectionChange)="onChange(Setting.xero_payroll_country, $event)">
+                                    <mat-option *ngFor="let option of countries" [value]="option.iso2">
+                                        {{option.option}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the country version to use
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- XERO PAYROLL CALENDAR -->
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <input matInput [matDatepicker]="picker" [value]="items[Setting.xero_payroll_calendar]" (dateChange)="changeDate($event)">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the Xero payroll calendar to use
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / XERO PAYROLL CALENDAR -->
+                    
+                    <div [ngClass.xs]="'info'" [hidden]="items[Setting.xero_payroll_country] != 'AU'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_super_expense_account_code]" (selectionChange)="onChange(Setting.xero_super_expense_account_code, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_super_expense_account_code]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the superannuation expense account
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass.xs]="'info'" [hidden]="items[Setting.xero_payroll_country] != 'AU'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_super_liability_account_code]" (selectionChange)="onChange(Setting.xero_super_liability_account_code, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_super_liability_account_code]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the superannuation liability account
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_payroll_ordinary_earnings_rate_id]" (selectionChange)="onChange(Setting.xero_payroll_ordinary_earnings_rate_id, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_payroll_ordinary_earnings_rate_id]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the default ordinary earnings rate pay item
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_payroll_deduction_type_id]" (selectionChange)="onChange(Setting.xero_payroll_deduction_type_id, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_payroll_deduction_type_id]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the default deduction type pay item
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_payroll_travel_type_id]" (selectionChange)="onChange(Setting.xero_payroll_travel_type_id, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_payroll_travel_type_id]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the default travel reimbursement type pay item
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_payroll_expense_type_id]" (selectionChange)="onChange(Setting.xero_payroll_expense_type_id, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_payroll_expense_type_id]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the default expense reimbursement type pay item
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass.xs]="'info'">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_payroll_other_type_id]" (selectionChange)="onChange(Setting.xero_payroll_other_type_id, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_payroll_other_type_id]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the default other reimbursement type pay item
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
         </div>
-    </div>
-    <!-- / XERO CLIENT INVOICE -->
 
-    <!-- XERO STAFF INVOICE -->
-    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20"></div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_staff_invoice]"
-                (change)="onChange(Setting.xero_staff_invoice, $event)" fxFlex="15"></mat-slide-toggle>
-            <div class="desc secondary-text" fxFlex="85">
-                Enable to transfer staff invoices to Xero
+        <div class="box info-box mt-16">
+            <header class="mat-accent-bg" fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="title">Xero Invoicing</div>
+            </header>
+            <div class="content" fxLayout="column">
+                <!-- XERO CLIENT INVOICE -->
+                <div class="info">
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                        <mat-slide-toggle color="accent" [(ngModel)]="items[Setting.xero_client_invoice]" (change)="onChange(Setting.xero_client_invoice, $event)"
+                            fxFlex="30"></mat-slide-toggle>
+                        <div class="desc secondary-text" fxFlex="70">
+                            Enable to transfer client invoices to Xero
+                        </div>
+                    </div>
+                </div>
+                <!-- / XERO CLIENT INVOICE -->
+
+                <!-- XERO STAFF INVOICE -->
+                <div class="info">
+                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                        <mat-slide-toggle color="accent" [(ngModel)]="items[Setting.xero_staff_invoice]" (change)="onChange(Setting.xero_staff_invoice, $event)"
+                            fxFlex="30"></mat-slide-toggle>
+                        <div class="desc secondary-text" fxFlex="70">
+                            Enable to transfer staff invoices to Xero
+                        </div>
+                    </div>
+                </div>
+                <!-- / XERO STAFF INVOICE -->
+                <div [hidden]="!items[Setting.xero_staff_invoice] && !items[Setting.xero_client_invoice]">
+                    <div class="info">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_sinvoice_account_code_shift]" (selectionChange)="onChange(Setting.xero_sinvoice_account_code_shift, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_sinvoice_account_code_shift]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the account code for shift invoice lines
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_sinvoice_account_code_travel]" (selectionChange)="onChange(Setting.xero_sinvoice_account_code_travel, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_sinvoice_account_code_travel]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the account code for travel invoice lines
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_sinvoice_account_code_expense]" (selectionChange)="onChange(Setting.xero_sinvoice_account_code_expense, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_sinvoice_account_code_expense]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the account code for expense invoice lines
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_sinvoice_account_code_bonus]" (selectionChange)="onChange(Setting.xero_sinvoice_account_code_bonus, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_sinvoice_account_code_bonus]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the account code for bonus invoice lines
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_sinvoice_account_code_deduction]" (selectionChange)="onChange(Setting.xero_sinvoice_account_code_deduction, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_sinvoice_account_code_deduction]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the account code for deduction invoice lines
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                            <mat-form-field fxFlex="28">
+                                <mat-select [value]="items[Setting.xero_sinvoice_account_code_other]" (selectionChange)="onChange(Setting.xero_sinvoice_account_code_other, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_sinvoice_account_code_other]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="desc secondary-text" fxFlex="70">
+                                Select the account code for other invoice lines
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- / XERO STAFF INVOICE -->
 
-    <!-- XERO PAYROLL -->
-    <div class="info" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20"></div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-slide-toggle color="accent" [checked]="items[Setting.xero_payroll]"
-                (change)="onChange(Setting.xero_payroll, $event)" fxFlex="15"></mat-slide-toggle>
-            <div class="desc secondary-text" fxFlex="85">
-                Enable to transfer timesheets to Xero
-            </div>
-        </div>
-    </div>
-    <!-- / XERO PAYROLL -->
-
-    <!-- XERO PAYROLL CALENDAR -->
-    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20"></div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <div fxFlex="20">
-                <mat-form-field class="w-120">
-                    <input matInput [matDatepicker]="picker" [value]="items[Setting.xero_payroll_calendar]" (dateChange)="changeDate($event)">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <div class="desc secondary-text" fxFlex="80">
-                Select the Xero payroll calendar to use
-            </div>
-        </div>
-    </div>
-    <!-- / XERO PAYROLL CALENDAR -->
-
-    <!-- XERO KEY -->
-    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20"></div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items[Setting.xero_key]" [delay]="1000" (onValueChange)="onChange(Setting.xero_key, $event)"
-                    placeholder="Xero integration API consumer key" />
-            </mat-form-field>
-        </div>
-    </div>
-    <!-- / XERO KEY -->
-
-    <!-- XERO SECRET -->
-    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20"></div>
-        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
-            <mat-form-field floatPlaceholder="never" fxFill>
-                <input debounce matInput [(ngModel)]="items[Setting.xero_secret]" [delay]="1000" (onValueChange)="onChange(Setting.xero_secret, $event)"
-                    placeholder="Xero integration API consumer secret" />
-            </mat-form-field>
-        </div>
-    </div>
-    <!-- / XERO SECRET -->
-
+    </ng-container>
 </div>
