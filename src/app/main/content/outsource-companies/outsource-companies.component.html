@@ -56,6 +56,10 @@
                     <app-editable-text class="ml-12" [value]="companyInfo.address" (saveChange)="updateData($event, 'address')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
+                    <span class="w-120">Unit:</span>
+                    <app-editable-text class="ml-12" [value]="companyInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
                     <span class="w-120">City:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.city" (saveChange)="updateData($event, 'city')"></app-editable-text>
                   </div>
@@ -64,12 +68,8 @@
                     <app-editable-text class="ml-12" [value]="companyInfo.state" (saveChange)="updateData($event, 'state')"></app-editable-text>
                   </div>
                   <div fxLayout="row" fxLayoutAlign="start center">
-                    <span class="w-120">PostCode:</span>
+                    <span class="w-120">Postcode:</span>
                     <app-editable-text class="ml-12" [value]="companyInfo.postcode" (saveChange)="updateData($event, 'postcode')"></app-editable-text>
-                  </div>
-                  <div fxLayout="row" fxLayoutAlign="start center">
-                    <span class="w-120">Unit:</span>
-                    <app-editable-text class="ml-12" [value]="companyInfo.unit" (saveChange)="updateData($event, 'unit')"></app-editable-text>
                   </div>
                   <button mat-raised-button color="warn" class="mt-8" (click)="deleteSelectedCompany()">DELETE</button>
                 </div>
