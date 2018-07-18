@@ -14,7 +14,7 @@
                     <div fxLayout="row" fxLayoutAlign="start center">
                         <span class="w-100">Bank Name</span>
                         <mat-form-field>
-                            <input matInput [(ngModel)]="bankName">
+                            <input matInput [(ngModel)]="bankName" (ngModelChange)="searchShow = true">
                         </mat-form-field>
                     </div>
                     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
@@ -29,7 +29,7 @@
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <span class="w-40">City</span>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="city">
+                                <input matInput [(ngModel)]="city" (ngModelChange)="searchShow = true">
                             </mat-form-field>
                         </div>
                     </div>
@@ -48,10 +48,10 @@
                         <input matInput placeholder="City" [(ngModel)]="city">
                     </mat-form-field>
                 </div>
-                <button mat-raised-button color="accent" (click)="search()" [disabled]="searchDisabled">Search</button>
+                <button mat-raised-button color="accent" *ngIf="searchShow" (click)="search()" [disabled]="searchDisabled">Search</button>
             </div>
 
-            <div id="results">
+            <div id="results" *ngIf="resultShow">
                 <table *ngIf="banks.length > 0" class="w-100-p mt-20" cellspacing="0">
                     <tr *ngFor="let bank of banks; even as even; odd as odd" [ngClass]="{'odd': odd, 'even': even}">
                         <td>{{bank.bname}}</td>

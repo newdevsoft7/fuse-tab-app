@@ -33,6 +33,8 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		bank_routing_min: 2,
 		bank_routing_max: 15
 	};
+	searchShow = true;
+	resultShow = false;
 
 	constructor(
 		public dialogRef: MatDialogRef<UserSettingsXtrmAddBankDialogComponent>,
@@ -108,6 +110,8 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 			});
 			this.showMore = res.show_more;
 			this.banks = res.banks;
+			this.resultShow = true;
+			this.searchShow = this.banks.length > 0 ? false : true;
 		} catch (e) {
 			this.displayError(e);
 		}
@@ -154,17 +158,18 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 			bank_swift: bank.swift,
 			bank_branch: bank.branch
 		});
+		this.resultShow = false;
 	}
 
 	onCountryChange(country) {
 		// xtrm_bank_withdraw_types
 		this.wtypes = country.xtrm_bank_withdraw_types.split(',');
 		const wtype = this.wtypes.length > 1 ? '' : this.wtypes[0];
-		
+		this.searchShow = true;
 		if (country.bank_routing_label) {
 			this.form = this.formBuilder.group({
 				contact_name: ['', Validators.required],
-				currency: ['', Validators.required],
+				currency: [country.currency_code, Validators.required],
 				wtype: [wtype, Validators.required],
 				country_code: [country.iso2, Validators.required],
 				bank_name: ['', Validators.required],
@@ -192,7 +197,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		} else {
 			this.form = this.formBuilder.group({
 				contact_name: ['', Validators.required],
-				currency: ['', Validators.required],
+				currency: [country.currency_code, Validators.required],
 				wtype: [wtype, Validators.required],
 				country_code: [country.iso2, Validators.required],
 				bank_name: ['', Validators.required],
