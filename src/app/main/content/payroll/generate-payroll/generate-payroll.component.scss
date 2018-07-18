@@ -42,7 +42,11 @@
                 }
 
                 .total-line {
-                    background-color: grey;
+                    background-color: #ECEFF1;
+
+                    td {
+                        font-weight: bold;
+                    }
                 }
 
                 .total {
