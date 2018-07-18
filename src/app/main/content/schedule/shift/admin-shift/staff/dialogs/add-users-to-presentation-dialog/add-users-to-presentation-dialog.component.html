@@ -1,0 +1,41 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Add To Presentation</span>
+            <button mat-button class="mat-icon-button" (click)="dialogRef.close(false)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 m-0">
+        <ng-container *ngIf="loaded">
+            <ng-container *ngIf="role">
+                <mat-form-field class="w-100-p">
+                    <mat-select placeholder="Users" [(ngModel)]="userType">
+                        <mat-option *ngFor="let type of userTypes" [value]="type.value">
+                            {{type.label}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+
+            <mat-form-field class="w-100-p" *ngIf="presentations.length > 0">
+                <mat-select placeholder="Presentation" [(ngModel)]="presentationId">
+                    <mat-option *ngFor="let presentation of presentations" [value]="presentation.id">
+                        {{presentation.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </ng-container>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="start center">
+        <button (click)="save()" mat-raised-button color="accent" [disabled]="disabled()">Save</button>
+
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">
+            Cancel
+        </button>
+    </div>
+</div>

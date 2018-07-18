@@ -29,6 +29,11 @@
                             <span>Select staff</span>
                         </button>
 
+                        <button mat-menu-item (click)="openAddUserToPresentationDialog(role)">
+                            <mat-icon>add</mat-icon>
+                            <span>Add to presentation</span>
+                        </button>
+
                         <!-- DOTS BUTTON CONTENT -->
                         <ng-container [ngSwitch]="role.section">
 

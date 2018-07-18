@@ -36,6 +36,7 @@ import { TAB } from '../../../../../../../constants/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { AdminShiftChangeCompanyDialogComponent } from './change-company-dialog/change-company-dialog.component';
 import { async } from 'q';
+import { ShiftAddUsersToPresentationDialogComponent } from '../dialogs/add-users-to-presentation-dialog/add-users-to-presentation-dialog.component';
 
 enum Query {
     Counts = 'counts',
@@ -427,6 +428,17 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
         tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
         this.tabService.openTab(tab);
+    }
+
+    openAddUserToPresentationDialog(staff) {
+        const dialogRef = this.dialog.open(ShiftAddUsersToPresentationDialogComponent, {
+            disableClose: false,
+            panelClass: 'shift-add-users-to-presentation-dialog',
+            data: {
+                user: staff
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
     }
 
     private displayError(e: any) {

@@ -36,6 +36,7 @@ import {
     STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW, STAFF_STATUS_INVITED
 } from '../../../../../../constants/staff-status';
+import { ShiftAddUsersToPresentationDialogComponent } from './dialogs/add-users-to-presentation-dialog/add-users-to-presentation-dialog.component';
 
 export enum Section {
     Selected = 0,
@@ -584,6 +585,17 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     addRole() {
         this.onAddRole.next(true);
+    }
+
+    openAddUserToPresentationDialog(role) {
+        const dialogRef = this.dialog.open(ShiftAddUsersToPresentationDialogComponent, {
+            disableClose: false,
+            panelClass: 'shift-add-users-to-presentation-dialog',
+            data: {
+                role: role
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
     }
 
     private displayError(e) {
