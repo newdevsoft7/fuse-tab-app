@@ -313,7 +313,7 @@ export class NewShiftComponent implements OnInit {
     }
 
     addNewDate() {
-        const newDate = <ShiftDate>_.cloneDeep(this.dates[0]);
+        const newDate = <ShiftDate>_.cloneDeep(this.dates[this.dates.length - 1]);
         newDate.date = moment(this.dates[this.dates.length - 1].date).add(1, 'days').format('YYYY-MM-DD');
         this.dates.push(newDate);
     }
