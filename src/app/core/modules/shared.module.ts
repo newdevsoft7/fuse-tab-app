@@ -42,6 +42,7 @@ import { DebounceDirective } from '../directives/debounce/debounce.directive';
 import { EditableTextComponent } from '../components/editable-text/editable-text.component';
 import { RegistrationGuardService } from '../../shared/guards/registration-guard.service';
 import { ConnectorService } from '../../shared/services/connector.service';
+import { FuseInfoDialogComponent } from '../components/info-dialog/info-dialog.component';
 
 @NgModule({
     declarations   : [
@@ -49,6 +50,7 @@ import { ConnectorService } from '../../shared/services/connector.service';
         FuseMatSidenavTogglerDirective,
         FuseConfirmDialogComponent,
         FuseConfirmYesNoDialogComponent,
+        FuseInfoDialogComponent,
         FuseCountdownComponent,
         FuseHljsComponent,
         FuseIfOnDomDirective,
@@ -101,7 +103,8 @@ import { ConnectorService } from '../../shared/services/connector.service';
     ],
     entryComponents: [
         FuseConfirmDialogComponent,
-        FuseConfirmYesNoDialogComponent
+        FuseConfirmYesNoDialogComponent,
+        FuseInfoDialogComponent
     ],
     providers      : [
         CookieService,

@@ -1,0 +1,13 @@
+@import "src/app/core/scss/fuse";
+
+.fuse-info-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up('xs') {
+        min-width: 450px;
+    }
+
+}

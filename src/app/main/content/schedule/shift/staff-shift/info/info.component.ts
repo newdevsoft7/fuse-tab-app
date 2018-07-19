@@ -35,6 +35,7 @@ import { StaffShiftQuizDialogComponent } from './dialogs/quiz-dialog/quiz-dialog
 import { Subscription } from 'rxjs/Subscription';
 import { ConnectorService } from '../../../../../../shared/services/connector.service';
 import { TabComponent } from '../../../../../tab/tab/tab.component';
+import { FuseInfoDialogComponent } from '../../../../../../core/components/info-dialog/info-dialog.component';
 
 enum Action {
     apply = 'apply',
@@ -101,6 +102,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                 const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
                 if (index > -1) {
                     const score = tab.data.score; // assume that quizconnect returns score
+                    this.openScoreDialog(score);
                     const quiz = this.shift.shift_roles[index].quizs.find(v => v.other_id === id);
                     if (quiz) {
                         quiz.completed_score = score;
@@ -114,6 +116,20 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                 this.tabService.closeTab(tab.url);
             }
         });
+    }
+
+    openScoreDialog(score) {
+        if (_.isNil(score)) {
+            return;
+        } else {
+            const dialogRef = this.dialog.open(FuseInfoDialogComponent, {
+                disableClose: false,
+                panelClass: 'fuse-info-dialog'
+            });
+            dialogRef.componentInstance.title = 'QuizConnect';
+            dialogRef.componentInstance.message = `Your score: ${Math.round(score)}%`;
+            dialogRef.afterClosed().subscribe(res => {});
+        }
     }
 
     ngOnDestroy() {
