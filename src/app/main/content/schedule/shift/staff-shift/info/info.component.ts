@@ -104,7 +104,11 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                     const quiz = this.shift.shift_roles[index].quizs.find(v => v.other_id === id);
                     if (quiz) {
                         quiz.completed_score = score;
-                        quiz.required = score >= quiz.required_score ? 0 : 1;
+                        if (quiz.required_score > 0) {
+                            quiz.required = score >= quiz.required_score ? 0 : 1;
+                        } else {
+                            quiz.required = 0;
+                        }
                     }
                 }
                 this.tabService.closeTab(tab.url);

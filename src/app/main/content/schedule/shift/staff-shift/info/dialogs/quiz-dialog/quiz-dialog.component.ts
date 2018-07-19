@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from '../../../../../schedule.service';
 import { TabService } from '../../../../../../../tab/tab.service';
 import { Tab } from '../../../../../../../tab/tab';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-staff-shift-quiz-dialog',
@@ -45,6 +46,10 @@ export class StaffShiftQuizDialogComponent implements OnInit {
         );
         this.tabService.openTab(tab);
         this.dialogRef.close();
+    }
+
+    showScore(quiz) {
+        return quiz.required_score == 0 || _.isNil(quiz.completed_score) ? '' : `, your score: ${Math.round(quiz.completed_score)}%`
     }
 
 }

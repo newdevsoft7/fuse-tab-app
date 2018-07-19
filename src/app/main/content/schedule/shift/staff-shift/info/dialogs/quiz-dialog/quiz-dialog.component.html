@@ -11,7 +11,7 @@
                     <a href="javascript:void(0)" (click)="openQuiz(quiz)" class="mr-4">
                         {{quiz.rname}}. 
                     </a>
-                    Required score: {{quiz.required_score}}% {{ quiz.completed_score === null ? '' : (', your score: ' + quiz.completed_score + '%') }}
+                    Required score: {{quiz.required_score}}% {{showScore(quiz)}}
                 </div>
             </div>
         </fieldset>
