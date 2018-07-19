@@ -1,5 +1,10 @@
 <div class="page-layout simple">
   <p class="ml-12" *ngIf="data.instructions">{{data.instructions}}</p>
   <iframe *ngIf="iframeUrl" [src]="iframeUrl | safe" class="quiz-iframe" frameBorder="0"></iframe>
-  <div class="mask" *ngIf="loading">Loading...</div>
+  <div class="mask" *ngIf="loading">
+    <div fxLayout="column" fxLayoutAlign="start center">
+        <img src="/assets/images/logos/logo_quiz.png" width="180">
+        <div>Loading...</div>
+    </div>
+  </div>
 </div>
