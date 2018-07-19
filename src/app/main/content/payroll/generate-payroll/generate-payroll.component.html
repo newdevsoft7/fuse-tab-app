@@ -4,19 +4,27 @@
     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
             <mat-form-field class="mr-48" *ngIf="currentUser?.lvl !== 'staff'">
-                <mat-select [(ngModel)]="type" placeholder="Type" >
+                <mat-select [(ngModel)]="type" placeholder="Type" (ngModelChange)="onTypeChange()">
                     <mat-option *ngFor="let option of types" [value]="option.value">{{option.label}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field class="date-picker mr-48">
+            <mat-form-field *ngIf="type == 'xero_payslip' && !generateDisabled">
+                <mat-select *ngIf="xeroDates.periods.length > 0" [placeholder]="xeroDates.calendar" [value]="xeroDates.periods[0]" (selectionChange)="onXeroCalendarChange($event)">
+                    <mat-option *ngFor="let period of xeroDates.periods" [value]="period">
+                        {{period.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="date-picker mr-48" [hidden]="datePickerHidden">
                 <mat-label>From</mat-label>
                 <input matInput [matDatepicker]="fromPicker" [(ngModel)]="from">
                 <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
                 <mat-datepicker #fromPicker></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field class="date-picker">
+            <mat-form-field class="date-picker" [hidden]="datePickerHidden">
                 <mat-label>To</mat-label>
                 <input matInput [matDatepicker]="toPicker" [(ngModel)]="to">
                 <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
@@ -25,7 +33,7 @@
         </div>
         <button mat-raised-button color="accent" (click)="generateStaffInvoice()" *ngIf="currentUser?.lvl === 'staff'; else adminBlock">GENERATE</button>
         <ng-template #adminBlock>
-            <button mat-raised-button color="accent" (click)="generate()">GENERATE</button>
+            <button mat-raised-button color="accent" (click)="generate()" [disabled]="generateDisabled">GENERATE</button>
         </ng-template>
     </div>
     <!-- / MAIN FILTER -->
@@ -106,7 +114,11 @@
                     </div>
 
                     <div fxFlex="0 1 auto">
-                        <button mat-icon-button [matMenuTriggerFor]="payrollMenu">
+                        <button mat-raised-button color="accent" *ngIf="type == 'xero_payslip' || type == 'wm_assignment'" (click)="processPayroll(payroll)">
+                            Process
+                        </button>
+
+                        <button mat-icon-button *ngIf="type != 'xero_payslip' && type != 'wm_assignment'" [matMenuTriggerFor]="payrollMenu">
                             <mat-icon>more_vert</mat-icon>
                         </button>
 
@@ -124,7 +136,7 @@
         </ng-container>
         <!-- / PAYROLL -->
 
-        <button mat-raised-button (click)="savePayrolls()" color="accent" *ngIf="payrolls.length > 0"
+        <button mat-raised-button (click)="savePayrolls()" color="accent" *ngIf="isSaveButtonShow()"
             class="mt-24">
             SAVE
         </button>

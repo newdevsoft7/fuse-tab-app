@@ -64,6 +64,11 @@ export class PayrollService {
         return this.http.post(url, {}).toPromise();
     }
 
+    getPayrollDates(date: string = ''): Promise<any> {
+        const url = `${BASE_URL}/xero/payroll/dates/${date}`;
+        return this.http.get(url.replace(/\/+$/, '')).toPromise(); 
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

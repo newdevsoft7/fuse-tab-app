@@ -18,6 +18,7 @@ export class ActionService {
 
   // Payrolls changed by generating payrolls
   payrollsChanged$: Subject<boolean> = new Subject();
+  selectedPayrollType: string = null;
 
   // Shift Edit
   private _shiftsToEdit = new Subject();

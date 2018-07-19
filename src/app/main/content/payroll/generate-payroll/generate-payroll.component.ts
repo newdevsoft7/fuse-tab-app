@@ -12,6 +12,7 @@ import { TrackingService } from '../../tracking/tracking.service';
 import { TabService } from '../../../tab/tab.service';
 import { Tab } from '../../../tab/tab';
 import { ActionService } from '../../../../shared/services/action.service';
+import { MatSelectChange } from '@angular/material';
 
 @Component({
     selector: 'app-generate-payroll',
@@ -44,6 +45,8 @@ export class GeneratePayrollComponent implements OnInit {
     additional = false; // Visibility of additional options
     completedOnly = true;
     trackingOptionId;
+    generateDisabled = false;
+    datePickerHidden = false;
 
     trackingOptions: any[] = [];
     filteredOptions: any[] = [];
@@ -61,6 +64,8 @@ export class GeneratePayrollComponent implements OnInit {
     ];
 
     currentUser: any;
+
+    xeroDates: any;
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
@@ -83,6 +88,44 @@ export class GeneratePayrollComponent implements OnInit {
                     }
                 });
             });
+        
+        this.type = this.actionService.selectedPayrollType || 'invoice';
+        this.onTypeChange();
+    }
+
+    async onTypeChange() {
+        if (this.type === 'xero_payslip') {
+            try {
+                this.generateDisabled = true;
+                this.datePickerHidden = true;
+                this.xeroDates = await this.payrollService.getPayrollDates();
+                this.generateDisabled = false;
+                if (this.xeroDates.periods.length > 0) {
+                    this.from = moment(this.xeroDates.periods[0].from).toDate();
+                    this.to = moment(this.xeroDates.periods[0].to).toDate();
+                }
+            } catch (e) {
+                this.displayError(e);
+            }
+        } else {
+            this.generateDisabled = false;
+            this.datePickerHidden = false;
+        }
+        this.actionService.selectedPayrollType = this.type;
+    }
+
+    onXeroCalendarChange(event: MatSelectChange) {
+        const period = event.value;
+        this.from = moment(period.from).toDate();
+        this.to = moment(period.to).toDate();
+    }
+
+    isSaveButtonShow() {
+        if (this.type === 'xero_payslip' || this.type === 'wm_assignment') {
+            return false;
+        } else {
+            return this.payrolls.length > 0 ? true : false;
+        }
     }
 
     async generate(): Promise<any> {
@@ -106,6 +149,7 @@ export class GeneratePayrollComponent implements OnInit {
                 this.payrolls = res.payrolls;
                 _.forEach(this.payrolls, (payroll, index) => payroll.id = index);
             } else {
+                this.payrolls = res.payrolls;
                 this.toastr.error('No Payrolls!');
             }
         } catch (e) {
@@ -202,11 +246,25 @@ export class GeneratePayrollComponent implements OnInit {
         });
     }
 
+    processPayroll(payroll) {
+        // Todo
+    }
+
     isEmpty(payroll) {
         return _.every(this.categories, category => payroll[category].length === 0);
     }
 
     displayFn(value: any): string {
         return value && typeof value === 'object' ? value.oname : value;
+    }
+
+    private displayError(e) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
     }
 }
