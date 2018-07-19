@@ -32,7 +32,7 @@ export const TAB = {
     'REPORTS_AND_UPLOADS_TAB': new Tab('Reports & Uploads', 'reportsUploadsTpl', 'reports-and-uploads', {}),
     'REPORTS_AND_UPLOADS_REPORT_DESIGNER_TAB': new Tab('Report Designer', '', 'reports-and-uploads/report-designer', {}),
     'REPORTS_AND_UPLOADS_SHARED_FILES_TAB': new Tab('Shared Files', '', 'reports-and-uploads/shared-file', {}),
-    'QUIZS_TAB': new Tab('Quizs', 'quizsTpl', 'quizs', {}),
+    'QUIZS_TAB': new Tab('Quizzes', 'quizsTpl', 'quizs', {}),
     'SURVEYS_TAB': new Tab('Surveys', 'surveysTpl', 'surveys', {}),
 
     'ACCOUNTING_TAB': new Tab('Accounting', '', 'accounting', {}),
