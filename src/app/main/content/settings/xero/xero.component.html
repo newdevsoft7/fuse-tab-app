@@ -52,9 +52,11 @@
                     <div [ngClass.xs]="'info'">
                         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                             <mat-form-field fxFlex="28">
-                                <input matInput [matDatepicker]="picker" [value]="items[Setting.xero_payroll_calendar]" (dateChange)="changeDate($event)">
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-select [value]="items[Setting.xero_payroll_calendar]" (selectionChange)="onChange(Setting.xero_payroll_calendar, $event)">
+                                    <mat-option *ngFor="let option of newOptions[Setting.xero_payroll_calendar]" [value]="option.value">
+                                        {{option.label}}
+                                    </mat-option>
+                                </mat-select>
                             </mat-form-field>
                             <div class="desc secondary-text" fxFlex="70">
                                 Select the Xero payroll calendar to use

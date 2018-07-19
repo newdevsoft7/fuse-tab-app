@@ -98,7 +98,8 @@ export class SettingsXeroComponent implements OnInit, OnChanges {
         Setting.xero_payroll_deduction_type_id,
         Setting.xero_payroll_travel_type_id,
         Setting.xero_payroll_expense_type_id,
-        Setting.xero_payroll_other_type_id
+        Setting.xero_payroll_other_type_id,
+        Setting.xero_payroll_calendar
     ];
     newOptions: any = {};
 
