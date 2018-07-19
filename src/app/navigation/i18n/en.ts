@@ -39,7 +39,7 @@ export const locale = {
                 'REPORTS_AND_UPLOADS': 'Reports & Uploads',
                 'REPORTS_AND_UPLOADS_REPORT_DESIGNER': 'Report Designer',
                 'REPORTS_AND_UPLOADS_SHARED_FILES': 'Shared Files',
-                'QUIZS': 'Quizs',
+                'QUIZS': 'Quizzes',
                 'SURVEYS': 'Surveys',
 
                 'ACCOUNTING': 'Accounting',
@@ -100,7 +100,7 @@ export const locale = {
                 'PROFILE_DOCUMENTS': 'Profile Documents',
                 'PROFILE_PHOTOS': 'Profile Photos',
                 'PROFILE_VIDEOS': 'Proifle Videos',
-                'QUIZS': 'Quizs',
+                'QUIZS': 'Quizzes',
                 'REGISTRATION': 'Registration',
                 'SCHEDULING': 'Scheduling',
                 'SHIFT_FLAGS': 'Shift Flags',

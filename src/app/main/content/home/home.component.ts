@@ -601,7 +601,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     reportsNavItem.children.unshift(
                         {
                             'id': 'quizs',
-                            'title': 'Quizs',
+                            'title': 'Quizzes',
                             'translate': 'NAV.ADMIN.QUIZS',
                             'type': 'item',
                             'tab': TAB.QUIZS_TAB

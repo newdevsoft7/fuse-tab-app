@@ -142,7 +142,7 @@ export const ADMIN_MODEL = [
         'children': [
             {
                 'id': 'quizs',
-                'title': 'Quizs',
+                'title': 'Quizzes',
                 'translate': 'NAV.ADMIN.QUIZS',
                 'type': 'item',
                 'tab': TAB.QUIZS_TAB
