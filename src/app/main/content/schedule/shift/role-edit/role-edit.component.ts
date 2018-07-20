@@ -152,6 +152,9 @@ export class ShiftRoleEditComponent implements OnInit {
         // FOR ROLE CREATING FROM ADMIN SHIFT TAB
         this.shift = this.data.shift;
 
+        const payCurrency = localStorage.getItem('pay_currency');
+        const billCurrency = localStorage.getItem('bill_currency');
+
         if (this.role) { // ROLE EDIT
             this.roleForm = this.formBuilder.group({
                 num_required: [this.role.num_required],
@@ -194,9 +197,9 @@ export class ShiftRoleEditComponent implements OnInit {
                 application_deadline: [null],
                 notes: [''],
                 bill_rate: [0],
-                bill_currency: [this.settings.currency],
+                bill_currency: [billCurrency ? billCurrency : this.settings.currency],
                 pay_rate: [0],
-                pay_currency: [this.settings.currency],
+                pay_currency: [payCurrency ? payCurrency : this.settings.currency],
                 pay_category_id: ['none'],
                 expense_limit: [0],
                 completion_notes: [''],
@@ -302,7 +305,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.scheduleService.createShiftsRoles(this.shifts, role)
                 .subscribe(res => {
                     //this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles' : 'Role'} created.`);
-
+                    this.saveCurrencyToLocalStorage();
                     // Confirm Dialog to ask whether to add another role or not
                     this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
                         disableClose: false
@@ -325,6 +328,7 @@ export class ShiftRoleEditComponent implements OnInit {
             this.scheduleService.createShiftRole(this.shift.id, role)
                 .subscribe(res => {
                     //this.toastr.success(res.message);
+                    this.saveCurrencyToLocalStorage();
                     this.tabService.closeTab(this.url);
                     this.openShiftTab(this.shift.id, this.shift.title);
                 }, err => {
@@ -340,6 +344,11 @@ export class ShiftRoleEditComponent implements OnInit {
                     this.displayError(err);
                 });
         }
+    }
+
+    saveCurrencyToLocalStorage() {
+        localStorage.setItem('pay_currency', this.roleForm.value.pay_currency);
+        localStorage.setItem('bill_currency', this.roleForm.value.bill_currency);
     }
 
     onDelete() {
