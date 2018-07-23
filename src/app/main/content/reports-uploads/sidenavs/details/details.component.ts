@@ -84,6 +84,21 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     });
   }
 
+  openMultiple() {
+    const otherIds = this.selectedItems.map(v => v.id.split(':')[1]);
+    const quizzes = {
+      other_ids: otherIds,
+      name: 'Summary'
+    };
+    const tab = new Tab(
+      'Summary',
+      'quizTpl',
+      `surveys/${otherIds.join('-')}`,
+      quizzes
+    );
+    this.tabService.openTab(tab);
+  }
+
   async approve(event: MatSlideToggleChange) {
     const value = event.checked ? 1 : 0;
     try {
