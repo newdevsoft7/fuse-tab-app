@@ -496,6 +496,11 @@ export class UserService {
         return this.http.put(url, { tag }).toPromise();
     }
 
+    updateCard(cardId: number, data: any): Promise<any> {
+        const url = `${BASE_URL}/card/${cardId}`;
+        return this.http.put(url, data).toPromise();
+    }
+
     deleteCard(id: number | string): Promise<any> {
         const url = `${BASE_URL}/card/${id}`;
         return this.http.delete(url).toPromise();

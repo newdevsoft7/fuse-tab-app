@@ -39,8 +39,8 @@
                     </mat-select>
                 </mat-form-field>
 
-                <button mat-raised-button fxFlex="0 1 auto" color="accent" matTooltip="Edit">
-                    Edit
+                <button mat-raised-button fxFlex="0 1 auto" color="accent" matTooltip="Edit" (click)="openShowcaseTab()">
+                    {{ cardData.card.showcase_template_id ? 'Edit Template' : 'New Template' }}
                 </button>
             </div>
 

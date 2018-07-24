@@ -13,13 +13,8 @@ import { FuseHomeComponent } from './home.component';
 import { SettingsModule } from '../settings/settings.module';
 import { TrackingModule } from '../tracking/tracking.module';
 import { AccountingModule } from '../accounting/accounting.module';
-import { TimelineComponent } from './timeline/timeline.component';
 import { HomeService } from './home.service';
 import { UserService } from '../users/user.service';
-import { EditPostDialogComponent } from './timeline/edit-post-dialog/edit-post-dialog.component';
-import { EditCommentDialogComponent } from './timeline/edit-comment-dialog/edit-comment-dialog.component';
-import { PinPostDialogComponent } from './timeline/pin-post-dialog/pin-post-dialog.component';
-import { PostDialogComponent } from './timeline/post-dialog/post-dialog.component';
 import { PayrollModule } from '../payroll/payroll.module';
 import { TemplatesModule } from '../templates/templates.module';
 import { ClientsModule } from '../clients/clients.module';
@@ -28,6 +23,7 @@ import { OutsourceCompaniesModule } from '../outsource-companies/outsource-compa
 import { ClientInvoicesModule } from '../client-invoices/client-invoices.module';
 import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
 import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
+import { ShowcaseModule } from '../showcase/showcase.module';
 
 @NgModule({
     declarations: [
@@ -51,7 +47,8 @@ import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-u
         ClientInvoicesModule,
         OutsourceCompaniesModule,
         TimelineModule,
-        ReportsUploadsModule
+        ReportsUploadsModule,
+        ShowcaseModule
     ],
     exports     : [
         FuseHomeComponent

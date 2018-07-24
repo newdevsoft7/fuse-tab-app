@@ -41,6 +41,8 @@ import { ConnectorService } from '../../../shared/services/connector.service';
 import { SettingsService } from '../settings/settings.service';
 import { QuizComponent } from '../quiz/quiz.component';
 import { FormComponent } from '../form-sign/form/form.component';
+import { ShowcaseComponent } from '../showcase/showcase.component';
+import { ShowcaseService } from '../showcase/showcase.service';
 
 @Component({
     selector: 'fuse-home',
@@ -92,6 +94,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     // Form
     @ViewChild('formTpl') formTpl; // Form Template for signing
     @ViewChild('quizTpl') quizTpl; // Form Template for adding new quizzes
+    @ViewChild('showcaseTpl') showcaseTpl;
 
     @ViewChild('quizsTpl') quizsTpl; // Quizs tab
     @ViewChild('surveysTpl') surveysTpl; // Surveys tab
@@ -139,7 +142,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private toastr: ToastrService,
         private connectorService: ConnectorService,
-        private settingsService: SettingsService
+        private settingsService: SettingsService,
+        private showcaseService: ShowcaseService
     ) {
 
         this.socketService = this.injector.get(SocketService);
@@ -724,6 +728,39 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         currentQuizTab.data = { ...currentQuizTab.data, score: event.data.score };
                     }
                     this.connectorService.currentQuizTab$.next(currentQuizTab);
+                }
+                break;
+            case 'showcaseconnect':
+                const currentShowcaseTab = this.tabService.openTabs.find(tab => tab.url === event.data.tabUrl);
+                if (event.data.message === 'tokenError') {
+                    try {
+                        this.connectorService.showcaseconnectTokenRefresing$.next(true);
+                        const showcaseconnect = await this.connectorService.fetchConnectorData('showcaseconnect');
+                        this.authService.saveConnectData({ showcaseconnect });
+                    } catch (e) {
+                        this.toastr.error(e.error.message);
+                    } finally {
+                        this.connectorService.showcaseconnectTokenRefresing$.next(false);
+                    }
+                } else if (event.data.message === 'loaded') {
+                    const showcaseComponent: ShowcaseComponent = currentShowcaseTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
+                    showcaseComponent.loading = false;
+                } else if (event.data.message === 'create') {
+                    const cardsTab = this.tabService.openTabs.find(tab => tab.url === 'users/cards');
+                    if (cardsTab) {
+                        currentShowcaseTab.data.template = event.data.template;
+                        this.connectorService.currentShowcaseTab$.next(currentShowcaseTab);
+                    } else {
+                        this.tabService.closeTab(event.data.tabUrl);
+                        try {
+                            const res = await this.showcaseService.saveTemplate(event.data.template);
+                            const showcase_template_id = res.data.id;
+                            await this.userService.updateCard(event.data.payload.id, { ...event.data.payload, showcase_template_id });
+                        } catch (e) {
+                            this.toastr.error(e.error.message);
+                        }
+                        this.connectorService.currentShowcaseTab$.next(null);
+                    }
                 }
                 break;
         }

@@ -121,6 +121,10 @@
         <app-quiz [data]="data" [url]="url"></app-quiz>
     </ng-template>
 
+    <ng-template #showcaseTpl let-data="data" let-url="url">
+        <app-showcase [data]="data" [url]="url"></app-showcase>
+    </ng-template>
+
     <ng-template #payrollTpl>
         <app-payroll></app-payroll>
     </ng-template>

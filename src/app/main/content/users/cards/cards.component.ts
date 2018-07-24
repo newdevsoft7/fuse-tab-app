@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatDrawer, MatDialogRef, MatDialog, MatSelectChange } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
@@ -6,13 +6,18 @@ import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-
 import { TabService } from '../../../tab/tab.service';
 import { UsersAddCardDialogComponent } from './dialogs/add-card-dialog/add-card-dialog.component';
 import { UserService } from '../user.service';
+import { Subscription } from 'rxjs/Subscription';
+import { ConnectorService } from '../../../../shared/services/connector.service';
+import { TabComponent } from '../../../tab/tab/tab.component';
+import { Tab } from '../../../tab/tab';
+import { ShowcaseService } from '../../showcase/showcase.service';
 
 @Component({
     selector: 'app-users-cards',
     templateUrl: './cards.component.html',
     styleUrls: ['./cards.component.scss']
 })
-export class UsersCardsComponent implements OnInit {
+export class UsersCardsComponent implements OnInit, OnDestroy {
 
     @ViewChild('drawer') drawer: MatDrawer;
     dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
@@ -21,16 +26,42 @@ export class UsersCardsComponent implements OnInit {
     cardData: any = null;
     selectedCard: any = null;
     showcaseTemplates: any[] = [];
+
+    cardSubscription: Subscription;
     
     constructor(
         private toastr: ToastrService,
         private tabService: TabService,
         private dialog: MatDialog,
-        private userService: UserService
+        private userService: UserService,
+        private connectorService: ConnectorService,
+        private showcaseService: ShowcaseService
     ) { }
 
     ngOnInit() {
         this.getCards();
+
+        this.cardSubscription = this.connectorService.currentShowcaseTab$.subscribe(async (tab: TabComponent) => {
+            if (!tab) return;
+            if (/showcase\/card\/([0-9]+)\/template\/new/.test(tab.url)) {
+                this.tabService.closeTab(tab.url);
+                const card = tab.data.payload.card;
+                try {
+                    const res = await this.showcaseService.saveTemplate(tab.data.template);
+                    card.showcase_template_id = res.data.id;
+                    const { message } = await this.userService.updateCard(card.id, card);
+                    this.cardData.showcase_templates.push({ id: res.data.id, name: res.data.name })
+                    this.toastr.success(message);
+                } catch (e) {
+                    this.toastr.error(e.error.message);
+                }
+                this.connectorService.currentShowcaseTab$.next(null);
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.cardSubscription.unsubscribe();
     }
 
     addCard() {
@@ -120,6 +151,29 @@ export class UsersCardsComponent implements OnInit {
     onShowcaseChange(event: MatSelectChange) {
         const showcaseTemplateId = event.value;
         // Todo - get showcase template
+    }
+
+    openShowcaseTab() {
+        if (!this.cardData.card.showcase_template_id) {
+            this.addShowcase();
+        }
+    }
+
+    private addShowcase(): void {
+        const tab = new Tab(
+            'New Showcase',
+            'showcaseTpl',
+            `showcase/card/${this.cardData.card.id}/template/new`,
+            {
+                name: 'New Showcase Template',
+                payload: this.cardData
+            }
+        );
+        this.tabService.openTab(tab);
+    }
+
+    private editShowcase(): void {
+        // todo
     }
 
     private displayError(e: any) {

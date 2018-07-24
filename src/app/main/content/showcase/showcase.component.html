@@ -1,0 +1,8 @@
+<div class="page-layout simple">
+  <iframe #showcaseContent *ngIf="iframeUrl" [src]="iframeUrl | safe" class="showcase-iframe" frameBorder="0"></iframe>
+  <div class="mask" *ngIf="loading">
+    <div fxLayout="column" fxLayoutAlign="start center">
+      <div>Loading...</div>
+    </div>
+  </div>
+</div>

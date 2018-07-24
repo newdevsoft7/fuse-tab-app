@@ -90,6 +90,22 @@ export class TokenStorage {
     }
 
     /**
+     * Set showcaseconnect data
+     * @returns {void}
+     */
+    public setShowcaseconnectData(data: any): void {
+        localStorage.setItem('showcaseconnect', JSON.stringify(data));
+    }
+
+    /**
+     * Get showcaseconnect data
+     * @returns {any}
+     */
+    public getShowcaseconnectData(): any {
+        return JSON.parse(localStorage.getItem('showcaseconnect'));
+    }
+
+    /**
     * Set steps for registrant
     * @returns {void}
     */

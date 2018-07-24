@@ -40,7 +40,7 @@ export class FuseLoginComponent implements OnInit
         private connectorService: ConnectorService
     )
     {
-        this.socketService = injector.get(SocketService);
+        this.socketService = this.injector.get(SocketService);
 
         this.fuseConfig.setSettings({
             layout: {
@@ -114,6 +114,11 @@ export class FuseLoginComponent implements OnInit
             try {
                 const quizconnect = await this.connectorService.fetchConnectorData('quizconnect');
                 this.authService.saveConnectData({ quizconnect });
+            } catch (e) {}
+
+            try {
+                const showcaseconnect = await this.connectorService.fetchConnectorData('showcaseconnect');
+                this.authService.saveConnectData({ showcaseconnect });
             } catch (e) {}
 
             this.router.navigate(['/home'], { queryParamsHandling: 'merge' });
