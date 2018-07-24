@@ -148,14 +148,23 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         }
     }
 
-    onShowcaseChange(event: MatSelectChange) {
-        const showcaseTemplateId = event.value;
-        // Todo - get showcase template
+    async onShowcaseChange(event: MatSelectChange) {
+        const data = {
+            showcase_template_id: event.value
+        };
+        try {
+            await this.userService.updateCard(this.cardData.card.id, data);
+            this.cardData.card.showcase_template_id = event.value;
+        } catch (e) {
+            this.displayError(e);
+        }
     }
 
     openShowcaseTab() {
         if (!this.cardData.card.showcase_template_id) {
             this.addShowcase();
+        } else {
+            this.editShowcase();
         }
     }
 
@@ -173,7 +182,17 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
     }
 
     private editShowcase(): void {
-        // todo
+        const name = this.cardData.showcase_templates.find(v => v.id === this.cardData.card.showcase_template_id).name;
+        const tab = new Tab(
+            name,
+            'showcaseTpl',
+            `showcase/card/${this.cardData.card.id}/templates/${this.cardData.card.showcase_template_id}/edit`,
+            {
+                ...this.cardData.card,
+                isEdit: true
+            }
+        );
+        this.tabService.openTab(tab);
     }
 
     private displayError(e: any) {

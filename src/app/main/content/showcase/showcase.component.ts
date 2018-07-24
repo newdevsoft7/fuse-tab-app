@@ -58,7 +58,11 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
     let iframeUrl;
     this.showcaseconnectData = this.tokenStorage.getShowcaseconnectData();
 
-    iframeUrl = `${environment.showcaseconnectUrl}/main/templates/create`;
+    if (this.data && this.data.showcase_template_id && this.data.isEdit) {
+      iframeUrl = `${environment.showcaseconnectUrl}/main/templates/edit/${this.data.showcase_template_id}`;
+    } else {
+      iframeUrl = `${environment.showcaseconnectUrl}/main/templates/create`;
+    }
 
     let count = 0;
     for (let key in this.showcaseconnectData) {
