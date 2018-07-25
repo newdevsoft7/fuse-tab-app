@@ -162,7 +162,7 @@
                         <mat-icon class="white-fg">add</mat-icon>
                     </button>
 
-                    <fieldset *ngFor="let item of role_pay_items; let index = index" class="fieldset">
+                    <fieldset *ngFor="let item of role_pay_items; let index = index; last as last" [class.mb-32]="last" class="fieldset" >
                         <legend>
                             <mat-form-field>
                                 <mat-select [(ngModel)]="item.item_type" [ngModelOptions]="{standalone: true}" placeholder="Item Type">
