@@ -11,7 +11,7 @@ import {
 import {
     MatAutocompleteSelectedEvent, MatInput,
     MatDatepickerInputEvent, MatRadioChange,
-    MatDialogRef, MatDialog
+    MatDialogRef, MatDialog, MatSelectChange
 } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
@@ -117,7 +117,8 @@ export class ShiftRoleEditComponent implements OnInit {
     ];
 
     confirmDialogRef: MatDialogRef<FuseConfirmYesNoDialogComponent>;
-
+    expenseLimitCurrencySymbol: string;
+    
     constructor(
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
@@ -136,11 +137,17 @@ export class ShiftRoleEditComponent implements OnInit {
 
     ngOnInit() {
 
+        const payCurrency = localStorage.getItem('pay_currency');
+        const billCurrency = localStorage.getItem('bill_currency');
+
         this.reports$ = (text: string): Observable<any> => {
             return this.scheduleService.getReports(text);
         };
 
-        this.userService.getCurrencies().then(currencies => this.currencies = currencies);
+        this.userService.getCurrencies().then(currencies => {
+            this.currencies = currencies;
+            this.refreshExpenseLimitCurrencySymbol(this.role ? this.role.pay_currency : (payCurrency ? payCurrency : this.settings.currency));
+        });
 
         // FOR ROLE CREATE FROM NEW SHIFT TAB
         this.shifts = this.data.shifts;
@@ -151,9 +158,6 @@ export class ShiftRoleEditComponent implements OnInit {
 
         // FOR ROLE CREATING FROM ADMIN SHIFT TAB
         this.shift = this.data.shift;
-
-        const payCurrency = localStorage.getItem('pay_currency');
-        const billCurrency = localStorage.getItem('bill_currency');
 
         if (this.role) { // ROLE EDIT
             this.roleForm = this.formBuilder.group({
@@ -220,6 +224,21 @@ export class ShiftRoleEditComponent implements OnInit {
         this.roleForm.valueChanges.subscribe(() => {
             this.onRoleFormValuesChanged();
         });
+    }
+
+    onPayCurrencyChange(event: MatSelectChange) {
+        const value = event.value;
+        this.refreshExpenseLimitCurrencySymbol(value);
+    }
+
+    private refreshExpenseLimitCurrencySymbol(value: any) {
+        if (value) {
+            const idx = this.currencies.findIndex(c => c.currency_code === value);
+            this.expenseLimitCurrencySymbol = idx > -1 ? this.currencies[idx].currency_symbol : '';
+        }
+        else {
+            this.expenseLimitCurrencySymbol = '';
+        }
     }
 
     onRoleFormValuesChanged() {
