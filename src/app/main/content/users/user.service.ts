@@ -158,10 +158,9 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    getUserRatings(userId: number): Observable<any> {
+    getUserRatings(userId: number): Promise<any> {
         const url = `${BASE_URL}/user/${userId}/rating`;
-        return this.http.get(url)
-            .catch(this.handleError);
+        return this.http.get(url).toPromise();
     }
 
     setUserRatings(userId, ratingId, score): Observable<any> {
