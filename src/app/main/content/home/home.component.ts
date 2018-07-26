@@ -753,12 +753,21 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     } else {
                         this.tabService.closeTab(event.data.tabUrl);
                         try {
-                            const res = await this.showcaseService.saveTemplate(event.data.template);
+                            const res = await this.showcaseService.getTemplateByOtherId(event.data.template.id);
                             const showcase_template_id = res.data.id;
                             await this.userService.updateCard(event.data.payload.id, { ...event.data.payload, showcase_template_id });
                         } catch (e) {
                             this.toastr.error(e.error.message);
                         }
+                        this.connectorService.currentShowcaseTab$.next(null);
+                    }
+                } else if (event.data.message === 'edit') {
+                    const cardsTab = this.tabService.openTabs.find(tab => tab.url === 'users/cards');
+                    if (cardsTab) {
+                        currentShowcaseTab.data.template = event.data.template;
+                        this.connectorService.currentShowcaseTab$.next(currentShowcaseTab);
+                    } else {
+                        this.tabService.closeTab(event.data.tabUrl);
                         this.connectorService.currentShowcaseTab$.next(null);
                     }
                 }

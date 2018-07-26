@@ -28,7 +28,10 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
     if (value !== null) {
       this._loading = value;
       if (!value) {
-        this.showcaseContent.nativeElement.contentWindow.postMessage(this.data.payload, "*");
+        this.showcaseContent.nativeElement.contentWindow.postMessage({
+          ...this.data.payload,
+          type: this.data.type
+        }, "*");
       }
     }
   }
@@ -58,8 +61,8 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
     let iframeUrl;
     this.showcaseconnectData = this.tokenStorage.getShowcaseconnectData();
 
-    if (this.data && this.data.showcase_template_id && this.data.isEdit) {
-      iframeUrl = `${environment.showcaseconnectUrl}/main/templates/edit/${this.data.showcase_template_id}`;
+    if (this.data && this.data.template_id) {
+      iframeUrl = `${environment.showcaseconnectUrl}/main/templates/edit/${this.data.template_id}`;
     } else {
       iframeUrl = `${environment.showcaseconnectUrl}/main/templates/create`;
     }
