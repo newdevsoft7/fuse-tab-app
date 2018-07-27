@@ -64,19 +64,25 @@ export class ProfileInfoComponent implements OnInit {
         this.profileInfoService.setDisplayOrder(this.orders).subscribe(res => {
             //this.toastr.success(res.message);
         }, err => {
-            console.log(err);
+            this.displayError(err);
         });
 
+        const param = {
+            id: element.id,
+            profile_cat_id: element.profile_cat_id
+        };
+
         if (node.cname) {
-            delete element.cname;
-            this.profileInfoService.updateCategory(element)
+            this.profileInfoService.updateCategory(param)
                 .subscribe(_ => {
                 }, error => {
+                    this.displayError(error);
                 });
         } else {
-            this.profileInfoService.updateElement(node)
+            this.profileInfoService.updateElement(param)
                 .subscribe(_ => {
                 }, error => {
+                    this.displayError(error);
                 });
         }
 
@@ -218,6 +224,15 @@ export class ProfileInfoComponent implements OnInit {
         parent.splice(index, 1);
     }
 
+    private displayError(e) {
+        const errors = e.error.errors;
+        if (errors) {
+            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+        }
+        else {
+            this.toastr.error(e.error.message);
+        }
+    }
 
     private findParent(element, searched) {
         if (searched instanceof Array) {

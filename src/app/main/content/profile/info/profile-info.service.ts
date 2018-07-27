@@ -27,13 +27,13 @@ export class ProfileInfoService {
             .catch(this.handleError);
     }
 
-    createCategory(category: ProfileField): Observable<any> {
+    createCategory(category: any): Observable<any> {
         const url = `${PROFILE_STRUCTURE_URL}/category`;
         return this.http.post(url, category)
             .catch(this.handleError);
     }
 
-    updateCategory(category: ProfileField): Observable<any> {
+    updateCategory(category: any): Observable<any> {
         const url = `${PROFILE_STRUCTURE_URL}/category/${category.id}`;
         return this.http.put(url, category)
             .catch(this.handleError);
@@ -63,7 +63,7 @@ export class ProfileInfoService {
             .catch(this.handleError);
     }
 
-    updateElement(element: ProfileField): Observable<any> {
+    updateElement(element: any): Observable<any> {
         const url = `${PROFILE_STRUCTURE_URL}/element/${element.id}`;
         return this.http.put(url, element)
             .catch(this.handleError);
