@@ -15,7 +15,7 @@
 			</li>
 			<!-- dynamic tabs -->
 			<li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" class="tab" [class.active]="tab.active">
-				<a href="javascript:void(0)" matRipple>{{tab.title}}
+				<a href="javascript:void(0)" matRipple>{{tab.title | titlecase }}
 					<mat-icon (click)="closeTab(tab)">cancel</mat-icon>
 				</a>
 			</li>
