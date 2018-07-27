@@ -47,13 +47,20 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 this.tabService.closeTab(tab.url);
                 const card = tab.data.payload.card;
                 try {
-                    const res = await this.showcaseService.saveTemplate(tab.data.template);
+                    const res = await this.showcaseService.getTemplateByOtherId(tab.data.template.id);
                     card.showcase_template_id = res.data.id;
                     const { message } = await this.userService.updateCard(card.id, card);
-                    this.cardData.showcase_templates.push({ id: res.data.id, name: res.data.name })
+                    this.cardData.showcase_templates.push({ id: res.data.id, name: res.data.name, other_id: res.data.other_id })
                     this.toastr.success(message);
                 } catch (e) {
                     this.toastr.error(e.error.message);
+                }
+                this.connectorService.currentShowcaseTab$.next(null);
+            } else if (/showcase\/card\/([0-9]+)\/templates\/([0-9]+)\/edit/.test(tab.url)) {
+                this.tabService.closeTab(tab.url);
+                const template = this.cardData.showcase_templates.find(tpl => tpl.other_id === tab.data.template.id);
+                if (template) {
+                    template.name = tab.data.template.name;
                 }
                 this.connectorService.currentShowcaseTab$.next(null);
             }
@@ -175,21 +182,25 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
             `showcase/card/${this.cardData.card.id}/template/new`,
             {
                 name: 'New Showcase Template',
-                payload: this.cardData
+                payload: this.cardData,
+                type: 'card'
             }
         );
         this.tabService.openTab(tab);
     }
 
     private editShowcase(): void {
-        const name = this.cardData.showcase_templates.find(v => v.id === this.cardData.card.showcase_template_id).name;
+        const template = this.cardData.showcase_templates.find(v => v.id === this.cardData.card.showcase_template_id);
+        if (!template) return;
         const tab = new Tab(
-            name,
+            template.name,
             'showcaseTpl',
             `showcase/card/${this.cardData.card.id}/templates/${this.cardData.card.showcase_template_id}/edit`,
             {
-                ...this.cardData.card,
-                isEdit: true
+                name: template.name,
+                payload: this.cardData,
+                type: 'card',
+                template_id: template.other_id
             }
         );
         this.tabService.openTab(tab);
