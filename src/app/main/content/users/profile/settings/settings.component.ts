@@ -162,26 +162,26 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     async toggleOption(data) {
         try {
-            this.spinner.show();
+            // this.spinner.show();
             const res = await this.userService.updateUserOption(this.user.id, data);
             //this.toastr.success(res.message);
         } catch (e) {
             this.handleError(e);
         } finally {
-            this.spinner.hide();
+            // this.spinner.hide();
         }
     }
 
     async togglePermission(data) {
         try {
-            this.spinner.show();
+            // this.spinner.show();
             const res = await this.userService.updateUserPermission(this.user.id, data);
             this.updateSublist(data);
             //this.toastr.success(res.message);
         } catch (e) {
             this.handleError(e);
         } finally {
-            this.spinner.hide();
+            // this.spinner.hide();
         }
     }
 
@@ -222,7 +222,7 @@ export class UsersProfileSettingsComponent implements OnInit {
 
     async addItem(event) {
         try {
-            this.spinner.show();
+            // this.spinner.show();
             switch (event.type) {
                 case 'workArea':
                     await this.userService.updatePermissionWorkArea(this.user.id, {
@@ -242,13 +242,13 @@ export class UsersProfileSettingsComponent implements OnInit {
         } catch (e) {
             this.handleError(e);
         } finally {
-            this.spinner.hide();
+            // this.spinner.hide();
         }
     }
 
     async removeItem(event) {
         try {
-            this.spinner.show();
+            // this.spinner.show();
             let index;
             switch (event.type) {
                 case 'workArea':
@@ -271,7 +271,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         } catch (e) {
             this.handleError(e);
         } finally {
-            this.spinner.hide();
+            // this.spinner.hide();
         }
     }
 
