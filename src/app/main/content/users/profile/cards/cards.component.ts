@@ -61,22 +61,6 @@ export class UsersProfileCardsComponent implements OnInit {
         this.drawer.toggle();
     }
 
-    view () {
-        if (!this.template) return;
-        const tab = new Tab(
-            this.template.name,
-            'showcaseTpl',
-            `showcase/card/${this.selectedCard.id}/templates/${this.template.other_id}/view`,
-            {
-                name: this.template.name,
-                payload: this.cardData,
-                type: 'card',
-                template_id: this.template.other_id
-            }
-        );
-        this.tabService.openTab(tab);
-    }
-
     showVideo(video) {
         const dialogRef = this.dialog.open(ProfileCardsVideoGalleryDialogComponent, {
             panelClass: 'profile-cards-video-gallery-dialog',
