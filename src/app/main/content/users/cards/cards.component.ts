@@ -200,7 +200,8 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 name: template.name,
                 payload: this.cardData,
                 type: 'card',
-                template_id: template.other_id
+                template_id: template.other_id,
+                edit: true
             }
         );
         this.tabService.openTab(tab);

@@ -41,6 +41,10 @@ const appRoutes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
+        path: 'showcase',
+        loadChildren: './main/content/showcase-view/showcase-view.module#ShowcaseViewModule'
+    },
+    {
         path: '**',
         redirectTo: 'home'
     }

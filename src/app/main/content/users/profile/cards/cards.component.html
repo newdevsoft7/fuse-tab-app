@@ -32,9 +32,9 @@
                 </div>
             </fieldset>
 
-            <button mat-raised-button color="accent" (click)="view()" matTooltip="Delete">
+            <a mat-raised-button color="accent" [href]="'/showcase?user_id=' + user.id + '&type=card&cap_id=' + selectedCard.id" target="_blank" matTooltip="View">
                 View
-            </button>
+            </a>
         </div>
     </mat-drawer-container>
 </div>

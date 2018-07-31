@@ -5,6 +5,8 @@ import { TabService } from '../../../../tab/tab.service';
 import { UserService } from '../../user.service';
 import { ProfileCardsVideoGalleryDialogComponent } from './dialogs/video-gallery-dialog/video-gallery-dialog.component';
 import { ProfileCardsPhotoGalleryDialogComponent } from './dialogs/photo-gallery-dialog/photo-gallery-dialog.component';
+import { ShowcaseService } from '../../../showcase/showcase.service';
+import { Tab } from '../../../../tab/tab';
 
 @Component({
     selector: 'app-users-profile-cards',
@@ -22,11 +24,13 @@ export class UsersProfileCardsComponent implements OnInit {
     cards: any[] = [];
     cardData: any = null;
     selectedCard: any = null;
+    template: any;
 
     constructor(
         private toastr: ToastrService,
         private tabService: TabService,
         private userService: UserService,
+        private showcaseService: ShowcaseService,
         private dialog: MatDialog
     ) { }
 
@@ -46,6 +50,8 @@ export class UsersProfileCardsComponent implements OnInit {
         this.selectedCard = card;
         try {
             this.cardData = await this.userService.getUserCard(this.user.id, card.id);
+            const res = await this.showcaseService.getTemplateByOtherId(this.cardData.other_id);
+            this.template = res.data;
         } catch (e) {
             this.displayError(e);
         }
@@ -55,7 +61,20 @@ export class UsersProfileCardsComponent implements OnInit {
         this.drawer.toggle();
     }
 
-    view() {
+    view () {
+        if (!this.template) return;
+        const tab = new Tab(
+            this.template.name,
+            'showcaseTpl',
+            `showcase/card/${this.selectedCard.id}/templates/${this.template.other_id}/view`,
+            {
+                name: this.template.name,
+                payload: this.cardData,
+                type: 'card',
+                template_id: this.template.other_id
+            }
+        );
+        this.tabService.openTab(tab);
     }
 
     showVideo(video) {

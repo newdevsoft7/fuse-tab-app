@@ -20,6 +20,10 @@ export class SCHttpInterceptor implements HttpInterceptor {
     'auth/resetPassword'
   ];
 
+  unauthRegexes: RegExp[] = [
+    /\/user\/([0-9]+)\/card\/([0-9]+)/
+  ]
+
   constructor(
     private injector: Injector) {}
 
@@ -57,6 +61,14 @@ export class SCHttpInterceptor implements HttpInterceptor {
       if (url.indexOf(endpoint) > -1) {
         isAuth = false;
         break;
+      }
+    }
+    if (isAuth) {
+      for (let regex of this.unauthRegexes) {
+        if (regex.test(url)) {
+          isAuth = false;
+          break;
+        }
       }
     }
     return isAuth;

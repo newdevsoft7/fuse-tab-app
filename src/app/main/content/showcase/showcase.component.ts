@@ -62,7 +62,7 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
     this.showcaseconnectData = this.tokenStorage.getShowcaseconnectData();
 
     if (this.data && this.data.template_id) {
-      iframeUrl = `${environment.showcaseconnectUrl}/main/templates/edit/${this.data.template_id}`;
+      iframeUrl = `${environment.showcaseconnectUrl}/main/templates/${this.data.edit ? 'edit' : 'view'}/${this.data.template_id}`;
     } else {
       iframeUrl = `${environment.showcaseconnectUrl}/main/templates/create`;
     }
@@ -73,7 +73,14 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
         count++;
     }
 
-    iframeUrl += `&tab_url=${this.url}`;
+    if (this.url) {
+      iframeUrl += `&tab_url=${this.url}`;
+    }
+
+    if (this.data.public && !this.showcaseconnectData) {
+      iframeUrl += `?public=${this.data.public}`;
+    }
+
     this.iframeUrl = iframeUrl;
   }
 
