@@ -45,6 +45,7 @@ export class AdminShiftStaffStandbyComponent implements OnInit {
 
     @Input() editable;
     @Input() roleId;
+    @Output() onChat = new EventEmitter();
 
     _staffs;
     @Input()
@@ -199,6 +200,10 @@ export class AdminShiftStaffStandbyComponent implements OnInit {
 
     private updateStaffCount() {
         this.onStaffCountChanged.next(true);
+    }
+
+    chatMessage(staff) {
+        this.onChat.next(staff);
     }
 
     sendMessage(staff) {

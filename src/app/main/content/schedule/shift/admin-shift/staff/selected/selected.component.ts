@@ -59,6 +59,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     @Input() shift;
     @Input() roleId;
     @Input() currencies;
+    @Output() onChat = new EventEmitter();
 
     private currentComponentWidth;
 
@@ -439,6 +440,10 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             }
         });
         dialogRef.afterClosed().subscribe(res => {});
+    }
+
+    chatMessage(staff) {
+        this.onChat.next(staff);
     }
 
     private displayError(e: any) {

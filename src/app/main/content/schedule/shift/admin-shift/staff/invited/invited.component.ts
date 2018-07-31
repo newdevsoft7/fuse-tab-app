@@ -46,6 +46,7 @@ export class AdminShiftStaffInvitedComponent implements OnInit {
 
     @Input() editable;
     @Input() roleId;
+    @Output() onChat = new EventEmitter();
 
     _staffs;
     @Input()
@@ -205,5 +206,9 @@ export class AdminShiftStaffInvitedComponent implements OnInit {
         const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
         tab.data.recipients = [{ id: staff.user_id, text: staff.name }];
         this.tabService.openTab(tab);
+    }
+
+    chatMessage(staff) {
+        this.onChat.next(staff);
     }
 }

@@ -37,6 +37,9 @@ import {
     STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW, STAFF_STATUS_INVITED
 } from '../../../../../../constants/staff-status';
 import { ShiftAddUsersToPresentationDialogComponent } from './dialogs/add-users-to-presentation-dialog/add-users-to-presentation-dialog.component';
+import { ChatMessageDialogComponent } from './dialogs/chat-message-dialog/chat-message-dialog.component';
+import { async } from 'q';
+import { UsersChatService } from '../../../../users/chat/chat.service';
 
 export enum Section {
     Selected = 0,
@@ -105,6 +108,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         private actionService: ActionService,
         private tabService: TabService,
         private spinner: CustomLoadingService,
+        private chatService: UsersChatService,
         differs: IterableDiffers
     ) {
         this.currentUser = this.tokenStorage.getUser();
@@ -581,6 +585,26 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         });
         note.editMode = false;
 
+    }
+
+    onChat(staff) {
+        const dialogRef = this.dialog.open(ChatMessageDialogComponent, {
+            disableClose: false,
+            panelClass: 'chat-message-dialog'
+        });
+        dialogRef.afterClosed().subscribe(async(content) => {
+            if (content) {
+                try {
+                    await this.chatService.sendMessage({
+                        content,
+                        recipient_id: staff.user_id,
+                        shift_id: this.shift.id
+                    });
+                } catch (e) {
+                    this.displayError(e);
+                }
+            }
+        });
     }
 
     addRole() {
