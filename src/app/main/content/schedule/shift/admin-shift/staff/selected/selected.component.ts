@@ -62,6 +62,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     @Output() onChat = new EventEmitter();
 
     private currentComponentWidth;
+    currentUser: any;
 
     _staffs;
     @Input()
@@ -96,6 +97,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         private router: Router
     ) {
         this.settings = tokenStorage.getSettings();
+        this.currentUser = tokenStorage.getUser();
     }
 
     ngOnInit() {
@@ -112,7 +114,12 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         }
     }
 
+    get isClient() {
+        return this.currentUser.lvl === 'client';
+    }
+
     openUser(staff, event: Event) {
+        if (this.isClient) { return; }
         event.stopPropagation();
         this.userService.getUser(staff.user_id)
             .subscribe(res => {

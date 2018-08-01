@@ -139,6 +139,10 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         });
     }
 
+    get isClient() {
+        return this.currentUser.lvl === 'client';
+    }
+
     ngOnInit() {
         this.adminNoteTypes = this.settings.admin_note_types || [];
         const type_id = this.adminNoteTypes.length > 0 ? this.adminNoteTypes[0].id : '';
@@ -153,11 +157,13 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             this.onAdminNoteFormValuesChanged();
         });
 
-        // Get shift admin notes
-        this.scheduleService.getShiftAdminNotes(this.shift.id)
-            .subscribe(res => {
-                this.adminNotes = res;
-            });
+        if (!this.isClient) {
+            // Get shift admin notes
+            this.scheduleService.getShiftAdminNotes(this.shift.id)
+                .subscribe(res => {
+                    this.adminNotes = res;
+                });
+        }
 
 
         this.roles = this.shift.shift_roles.map((role, index) => {

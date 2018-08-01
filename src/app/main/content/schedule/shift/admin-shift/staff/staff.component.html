@@ -166,7 +166,7 @@
                             (onStaffCountChanged)="updateStaffsCount(role.id)" (onChat)="onChat($event)"></app-admin-shift-staff-applicants>
                     </mat-tab>
 
-                    <mat-tab label="Invited">
+                    <mat-tab label="Invited" *ngIf="!isClient">
                         <ng-template mat-tab-label>
                             Invited&nbsp;
                             <strong *ngIf="role.num_invited > 0">{{role.num_invited}}</strong>
@@ -175,7 +175,7 @@
                             [editable]="shift.editable" (onStaffCountChanged)="updateStaffsCount(role.id)" (onChat)="onChat($event)"></app-admin-shift-staff-invited>
                     </mat-tab>
 
-                    <mat-tab label="NA">
+                    <mat-tab label="NA" *ngIf="!isClient">
                         <ng-template mat-tab-label>
                             NA&nbsp;
                             <strong *ngIf="role.num_na > 0">{{role.num_na}}</strong>

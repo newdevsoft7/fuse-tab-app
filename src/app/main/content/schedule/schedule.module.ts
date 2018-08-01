@@ -57,9 +57,6 @@ import { EditShiftRoleDetailComponent } from './shift/edit-shift/edit-shift-role
 import { ClientShiftListComponent } from './shift-list/client-shift-list/client-shift-list.component';
 import { ShiftsImportComponent } from './shifts-import/shifts-import.component';
 import { ClientNewBookingComponent } from './new-booking/client-new-booking/client-new-booking.component';
-import { ClientShiftComponent } from './shift/client-shift/client-shift.component';
-import { ClientShiftMapComponent } from './shift/client-shift/map/map.component';
-import { ClientShiftInfoComponent } from './shift/client-shift/info/info.component';
 import { ShiftsExportAsExcelDialogComponent } from './shifts-export/client/shifts-export-as-excel-dialog/shifts-export-as-excel-dialog.component';
 import { ShiftsExportAsPdfDialogComponent } from './shifts-export/client/shifts-export-as-pdf-dialog/shifts-export-as-pdf-dialog.component';
 import { AdminShiftStaffInvitedComponent } from './shift/admin-shift/staff/invited/invited.component';
@@ -174,9 +171,6 @@ import { ChatMessageDialogComponent } from './shift/admin-shift/staff/dialogs/ch
         // Client view
         ClientShiftListComponent,
         ClientNewBookingComponent,
-        ClientShiftComponent,
-        ClientShiftMapComponent,
-        ClientShiftInfoComponent,
 
         ShiftsExportAsExcelDialogComponent,
         ShiftsExportAsPdfDialogComponent,
@@ -270,7 +264,6 @@ import { ChatMessageDialogComponent } from './shift/admin-shift/staff/dialogs/ch
         AdminShiftListComponent,
         ClientShiftListComponent,
         ClientNewBookingComponent,
-        ClientShiftComponent,
         ShiftsImportComponent,
         ShiftsExportAsPdfComponent,
         ColumnMappingComponent,

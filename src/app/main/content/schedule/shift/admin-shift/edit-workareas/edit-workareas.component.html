@@ -7,6 +7,6 @@
     </div>
 
     <div *ngIf="workareas.length === 0">
-        <span>No Work Areas</span>
+        <span *ngIf="!isClient">No Work Areas</span>
     </div>
 </div>

@@ -42,13 +42,13 @@
                         </app-admin-shift-edit-break>
                     </div>
 
-                    <div class="pay-rate px-12" fxFlex>
+                    <div class="pay-rate px-12" fxFlex *ngIf="!isClient">
                         <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable"
                             (onPayItemsChanged)="onPayItemsChanged($event, staff)">
                         </app-admin-shift-edit-payitems>
                     </div>
 
-                    <div class="total px-12" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
+                    <div class="total px-12" *ngIf="!isClient" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
                         {{staff.pay_items_total !== null ? (staff.pay_items_total | currency) : '-'}}
                     </div>
                 </ng-template>

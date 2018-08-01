@@ -89,7 +89,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     // Client view templates clientShiftListTpl
     @ViewChild('clientShiftListTpl') clientShiftListTpl;
     @ViewChild('clientNewBookingTpl') clientNewBookingTpl;
-    @ViewChild('clientShiftTpl') clientShiftTpl;
 
     // Form
     @ViewChild('formTpl') formTpl; // Form Template for signing

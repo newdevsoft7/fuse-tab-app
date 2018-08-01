@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/cor
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { EditTrackingDialogComponent } from './edit-tracking-dialog/edit-tracking-dialog.component';
 import { ScheduleService } from '../../../schedule.service';
+import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-edit-tracking',
@@ -13,6 +14,7 @@ export class EditTrackingComponent implements OnInit, OnChanges {
     @Input() category;
     @Input() shift;
     @Input() data;
+    currentUser: any;
 
     options;
 
@@ -20,8 +22,15 @@ export class EditTrackingComponent implements OnInit, OnChanges {
 
     constructor(
         private dialog: MatDialog,
-        private scheduleService: ScheduleService
-    ) { }
+        private scheduleService: ScheduleService,
+        private tokenStorage: TokenStorage
+    ) {
+        this.currentUser = tokenStorage.getUser();
+    }
+
+    get isClient() {
+        return this.currentUser.lvl === 'client';
+    }
 
     ngOnInit() {
     }
@@ -36,6 +45,7 @@ export class EditTrackingComponent implements OnInit, OnChanges {
     }
 
     openDialog() {
+        if (this.isClient) { return; }
         this.dialogRef = this.dialog.open(EditTrackingDialogComponent, {
             data: {
                 options: this.options,

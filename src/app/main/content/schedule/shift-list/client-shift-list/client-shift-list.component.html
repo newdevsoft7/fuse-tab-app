@@ -78,6 +78,10 @@
                         </ng-template>
                         <!-- / DATE COLUMN -->
 
+                        <ng-template *ngIf="column.key_name === 'title'" ngx-datatable-cell-template let-value="value" let-row="row">
+                            <span class="shift-title" (click)="openShift(row)">{{value}}</span>
+                        </ng-template>
+
                         <!-- TODO - ON CLICK TO GO SHIFT -->
                         <!-- / TODO - ON CLICK TO GO SHIFT -->
 

@@ -35,7 +35,7 @@ export class ClientShiftListComponent implements OnInit {
     shifts: any[];
     selectedShifts: any[] = [];
     columns: any[];
-    filters = ["manager:=:1"];
+    filters = [];
     sorts: any[];
 
     hiddenColumns = ['id', 'status', 'border_color', 'bg_color', 'font_color'];
@@ -93,8 +93,6 @@ export class ClientShiftListComponent implements OnInit {
                 this.loadingIndicator = false;
                 this.shifts = res.data;
                 this.columns = res.columns;
-                console.log(this.columns);
-                console.log("Abbas..........");
                 this.pageSize = res.page_size;
                 this.pageNumber = res.page_number;
                 this.total = res.total_counts;
@@ -143,6 +141,13 @@ export class ClientShiftListComponent implements OnInit {
     changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
         this.period[selector] = event.value;
         this.getShifts();
+    }
+
+    openShift(shift) {
+        const id = shift.id;
+        const url = `admin/shift/${id}`;
+        const tab = new Tab(shift.title, 'adminShiftTpl', url, { id, url });
+        this.tabService.openTab(tab);
     }
 
 }

@@ -309,12 +309,20 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
       }
     } else {
       const id = event.id;
-      let template = 'staffShiftTpl';
-      let url = `staff/shift/${id}`;
+      let template: string;
+      let url: string;
   
-      if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-        template = 'adminShiftTpl';
-        url = `admin/shift/${id}`;
+      switch (this.currentUser.lvl) {
+        case 'owner':
+        case 'admin':
+        case 'client':
+          template = 'adminShiftTpl';
+          url = `admin/shift/${id}`;
+          break;
+        case 'staff':
+          template = 'staffShiftTpl';
+          url = `staff/shift/${id}`;
+          break;
       }
       const tab = new Tab(event.title, template, url, { id, url });
       this.tabService.openTab(tab);

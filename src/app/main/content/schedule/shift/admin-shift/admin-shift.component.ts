@@ -42,7 +42,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     usersToSelectSubscription: Subscription;
     selectedTabIndex: number = 0; // Set staff tab as initial tab
 
-    shiftData: any; // For edit tracking & work areas
+    shiftData: any = {}; // For edit tracking & work areas
     currencies: any[] = [];
 
     get id() {
@@ -102,15 +102,20 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
         this.userService.getCurrencies().then(currencies => this.currencies = currencies);
 
-        // Get Tracking Categories & Options
-        this.scheduleService.getShiftsData().subscribe(res => {
-            this.shiftData = res;
-        });
+        
+        if (!this.isClient) {
+            // Get Clients
+            this.scheduleService.getClients('').subscribe(res => {
+                this.clients = res;
+            });
 
-        // Get Clients
-        this.scheduleService.getClients('').subscribe(res => {
-            this.clients = res;
-        })
+            // Get Tracking Categories & Options
+            this.scheduleService.getShiftsData().subscribe(res => {
+                this.shiftData = res;
+            });
+
+        }
+        
 
     }
 
@@ -266,6 +271,10 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             }
         });
         dialogRef.afterClosed().subscribe(res => {});
+    }
+
+    get isClient() {
+        return this.currentUser.lvl === 'client';
     }
 
     private async fetch() {

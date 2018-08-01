@@ -8,9 +8,15 @@
                 <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones" [disableTimezone]="settings.shift_timezone_display === '0'"
                     (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
                 <app-admin-shift-edit-title [shift]="shift" (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
-                <app-admin-shift-edit-location *ngIf="settings.locations_enable === '1'" [shift]="shift" (onLocationChanged)="onLocationChanged($event)"></app-admin-shift-edit-location>
-            
-                <ng-container *ngIf="!showMoreBtn">
+                <app-admin-shift-edit-location *ngIf="settings.locations_enable === '1' && !isClient" [shift]="shift" (onLocationChanged)="onLocationChanged($event)"></app-admin-shift-edit-location>
+                
+                <ng-container *ngIf="isClient">
+                    <app-admin-shift-edit-address *ngIf="settings.location_address === '1'" [shift]="shift" (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
+                    <app-admin-shift-edit-contact *ngIf="settings.contact_enable === '1'" [shift]="shift" (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
+                    <app-admin-shift-edit-managers [shift]="shift" class="w-100-p" (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
+                </ng-container>
+
+                <ng-container *ngIf="!showMoreBtn && !isClient">
                     <app-admin-shift-edit-generic-title [shift]="shift" (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
                     <app-admin-shift-edit-generic-location *ngIf="settings.locations_enable === '1'" [shift]="shift" (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>
                     <app-admin-shift-edit-address *ngIf="settings.location_address === '1'" [shift]="shift" (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
@@ -21,7 +27,7 @@
 
             <!-- HEADER BUTTONS -->
             <div fxLayout="column" fxLayoutAlign="start end">
-                <div fxLayout="row">
+                <div fxLayout="row" *ngIf="!isClient">
                     <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
                         <mat-icon *ngIf="shift.locked === 1" matTooltip="Locked">lock_outline</mat-icon>
                         <mat-icon *ngIf="shift.locked !== 1" class="black-fg" matTooltip="Unlocked">lock_open</mat-icon>
@@ -56,7 +62,7 @@
                 </div>
 
                 <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column" fxLayoutAlign="start end">
-                    <app-admin-shift-edit-client *ngIf="settings.client_enable === '1'" [clients]="clients" [shift]="shift"></app-admin-shift-edit-client>
+                    <app-admin-shift-edit-client *ngIf="settings.client_enable === '1' && !isClient" [clients]="clients" [shift]="shift"></app-admin-shift-edit-client>
 
                     <ng-container *ngIf="settings.tracking_enable === '1'">
                         <app-edit-tracking *ngFor="let category of shift.tracking_categories" [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>
@@ -69,7 +75,7 @@
 
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!isClient">
             <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
             <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
         </div>
@@ -93,7 +99,7 @@
                 <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
             </mat-tab>
 
-            <mat-tab label="Attachments">
+            <mat-tab [label]="currentUser.lvl == 'client' ? 'Available' : 'Attachments'">
                 <app-admin-shift-attachments [shift]="shift"></app-admin-shift-attachments>
             </mat-tab>
 

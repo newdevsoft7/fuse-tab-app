@@ -7,6 +7,6 @@
     </div>
 
     <div *ngIf="category.options.length === 0">
-        <span>No {{category.cname}}</span>
+        <span *ngIf="!isClient">No {{category.cname}}</span>
     </div>
 </div>

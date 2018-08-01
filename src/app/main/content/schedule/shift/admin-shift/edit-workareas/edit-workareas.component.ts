@@ -2,6 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/cor
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { EditWorkareasDialogComponent } from './edit-workareas-dialog/edit-workareas-dialog.component';
 import { ScheduleService } from '../../../schedule.service';
+import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-edit-workareas',
@@ -12,6 +13,7 @@ export class EditWorkareasComponent implements OnInit, OnChanges {
 
     @Input() shift;
     @Input() data;
+    currentUser: any;
 
     options;
     workareas = [];
@@ -20,10 +22,17 @@ export class EditWorkareasComponent implements OnInit, OnChanges {
 
     constructor(
         private dialog: MatDialog,
-        private scheduleService: ScheduleService
-    ) { }
+        private scheduleService: ScheduleService,
+        private tokenStorage: TokenStorage
+    ) {
+        this.currentUser = tokenStorage.getUser();
+    }
 
     ngOnInit() {
+    }
+
+    get isClient() {
+        return this.currentUser.lvl === 'client';
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -37,6 +46,7 @@ export class EditWorkareasComponent implements OnInit, OnChanges {
     }
 
     openDialog() {
+        if (this.isClient) { return; }
         this.dialogRef = this.dialog.open(EditWorkareasDialogComponent, {
             data: {
                 workareas: this.workareas,
