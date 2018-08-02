@@ -99,7 +99,7 @@
                 <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
             </mat-tab>
 
-            <mat-tab [label]="currentUser.lvl == 'client' ? 'Available' : 'Attachments'">
+            <mat-tab label="Attachments" *ngIf="!isClient">
                 <app-admin-shift-attachments [shift]="shift"></app-admin-shift-attachments>
             </mat-tab>
 

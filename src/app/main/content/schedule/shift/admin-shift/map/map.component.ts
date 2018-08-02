@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { ScheduleService } from '../../../schedule.service';
+import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 
 
 @Component({
@@ -112,12 +113,16 @@ export class AdminShiftMapComponent implements OnInit {
     coords: any = {};    // For shift marker cancellation
 
     markers = [];
+    currentUser: any;
 
     constructor(
         private scheduleService: ScheduleService,
         private toastr: ToastrService,
+        private tokenStorage: TokenStorage,
         public dialog: MatDialog
-    ) { }
+    ) {
+        this.currentUser = tokenStorage.getUser();
+    }
 
     ngOnInit() {
         if (!this.shift.lat) {
@@ -133,6 +138,10 @@ export class AdminShiftMapComponent implements OnInit {
             this.markers = res;
             this.agmMap.triggerResize();
         })
+    }
+
+    get isClient() {
+        return this.currentUser.lvl === 'client';
     }
 
     changePosition(event) {

@@ -7,7 +7,7 @@
             [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
             [scaleControl]="false" [streetViewControl]="false" [scrollwheel]="false" [styles]="styles">
 
-            <agm-marker [latitude]="shift.lat" [longitude]="shift.lon" [markerDraggable]="true"
+            <agm-marker [latitude]="shift.lat" [longitude]="shift.lon" [markerDraggable]="!isClient"
                  (dragEnd)="changePosition($event)">
             
             </agm-marker>

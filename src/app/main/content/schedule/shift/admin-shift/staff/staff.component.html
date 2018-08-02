@@ -158,7 +158,7 @@
 
                     <mat-tab label="Applicants">
                         <ng-template mat-tab-label>
-                            Applicants&nbsp;
+                            {{isClient ? 'Available' : 'Applicants'}}&nbsp;
                             <strong *ngIf="role.num_applicants > 0">{{role.num_applicants}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-applicants [(staffs)]="role.applicants"
