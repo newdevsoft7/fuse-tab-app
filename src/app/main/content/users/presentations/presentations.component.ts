@@ -6,6 +6,8 @@ import { ActionService } from '../../../../shared/services/action.service';
 import { MatDialog, MatDrawer, MatSelectChange } from '@angular/material';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { UsersAddPresentationDialogComponent } from './dialogs/add-presentation-dialog/add-presentation-dialog.component';
+import { Tab } from '../../../tab/tab';
+import { TabService } from '../../../tab/tab.service';
 
 @Component({
     selector: 'app-users-presentations',
@@ -26,6 +28,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private userService: UserService,
         private actionService: ActionService,
+        private tabService: TabService,
         private dialog: MatDialog
     ) { }
 
@@ -151,6 +154,46 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
 
     onDrop(event) {
 
+    }
+
+    openShowcaseTab() {
+        if (!this.presentationData.presentation.showcase_template_id) {
+            this.addShowcase();
+        } else {
+            this.editShowcase();
+        }
+    }
+
+    private addShowcase(): void {
+        const tab = new Tab(
+            'New Showcase',
+            'showcaseTpl',
+            `showcase/presentation/${this.presentationData.presentation.id}/template/new`,
+            {
+                name: 'New Showcase Template',
+                payload: this.presentationData,
+                type: 'presentation'
+            }
+        );
+        this.tabService.openTab(tab);
+    }
+
+    private editShowcase(): void {
+        const template = this.presentationData.showcase_templates.find(v => v.id === this.presentationData.presentation.showcase_template_id);
+        if (!template) return;
+        const tab = new Tab(
+            template.name,
+            'showcaseTpl',
+            `showcase/presentation/${this.presentationData.presentation.id}/templates/${this.presentationData.presentation.showcase_template_id}/edit`,
+            {
+                name: template.name,
+                payload: this.presentationData,
+                type: 'presentation',
+                template_id: template.other_id,
+                edit: true
+            }
+        );
+        this.tabService.openTab(tab);
     }
 
     private displayError(e: any) {
