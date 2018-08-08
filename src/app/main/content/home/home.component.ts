@@ -745,8 +745,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     const showcaseComponent: ShowcaseComponent = currentShowcaseTab.template._projectedViews.find(view => view.context.url === event.data.tabUrl).nodes[2].instance;
                     showcaseComponent.loading = false;
                 } else if (event.data.message === 'create') {
-                    const cardsTab = this.tabService.openTabs.find(tab => tab.url === 'users/cards');
-                    if (cardsTab) {
+                    const manipulateTab = this.tabService.openTabs.find(tab => tab.url === (event.data.template.type === 'card' ? 'users/cards' : 'users/presentations'));
+                    if (manipulateTab) {
                         currentShowcaseTab.data.template = event.data.template;
                         this.connectorService.currentShowcaseTab$.next(currentShowcaseTab);
                     } else {
@@ -754,15 +754,19 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         try {
                             const res = await this.showcaseService.getTemplateByOtherId(event.data.template.id);
                             const showcase_template_id = res.data.id;
-                            await this.userService.updateCard(event.data.payload.id, { ...event.data.payload, showcase_template_id });
+                            if (event.data.template.type === 'card') {
+                                await this.userService.updateCard(event.data.payload.id, { ...event.data.payload, showcase_template_id });
+                            } else {
+                                await this.userService.savePresentation(event.data.payload.id, { ...event.data.payload, showcase_template_id });
+                            }
                         } catch (e) {
                             this.toastr.error(e.error.message);
                         }
                         this.connectorService.currentShowcaseTab$.next(null);
                     }
                 } else if (event.data.message === 'edit') {
-                    const cardsTab = this.tabService.openTabs.find(tab => tab.url === 'users/cards');
-                    if (cardsTab) {
+                    const manipulateTab = this.tabService.openTabs.find(tab => tab.url === (event.data.template.type === 'card' ? 'users/cards' : 'users/presentations'));
+                    if (manipulateTab) {
                         currentShowcaseTab.data.template = event.data.template;
                         this.connectorService.currentShowcaseTab$.next(currentShowcaseTab);
                     } else {

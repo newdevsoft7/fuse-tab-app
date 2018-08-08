@@ -8,6 +8,9 @@ import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-
 import { UsersAddPresentationDialogComponent } from './dialogs/add-presentation-dialog/add-presentation-dialog.component';
 import { Tab } from '../../../tab/tab';
 import { TabService } from '../../../tab/tab.service';
+import { ConnectorService } from '../../../../shared/services/connector.service';
+import { TabComponent } from '../../../tab/tab/tab.component';
+import { ShowcaseService } from '../../showcase/showcase.service';
 
 @Component({
     selector: 'app-users-presentations',
@@ -23,13 +26,16 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
     selectedPresentation: any;
     presentationData: any;
     selectedPresentationIdSubscription: Subscription;
+    presentationSubscription: Subscription;
 
     constructor(
         private toastr: ToastrService,
         private userService: UserService,
         private actionService: ActionService,
         private tabService: TabService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private connectorService: ConnectorService,
+        private showcaseService: ShowcaseService
     ) { }
 
     ngOnInit() {
@@ -51,10 +57,36 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             }
             this.drawer.open(); 
         });
+
+        this.presentationSubscription = this.connectorService.currentShowcaseTab$.subscribe(async (tab: TabComponent) => {
+            if (!tab) return;
+            if (/showcase\/presentation\/([0-9]+)\/template\/new/.test(tab.url)) {
+                this.tabService.closeTab(tab.url);
+                const card = tab.data.payload.card;
+                try {
+                    const res = await this.showcaseService.getTemplateByOtherId(tab.data.template.id);
+                    card.showcase_template_id = res.data.id;
+                    const { message } = await this.userService.updateCard(card.id, card);
+                    this.presentationData.showcase_templates.push({ id: res.data.id, name: res.data.name, other_id: res.data.other_id })
+                    this.toastr.success(message);
+                } catch (e) {
+                    this.toastr.error(e.error.message);
+                }
+                this.connectorService.currentShowcaseTab$.next(null);
+            } else if (/showcase\/presentation\/([0-9]+)\/templates\/([0-9]+)\/edit/.test(tab.url)) {
+                this.tabService.closeTab(tab.url);
+                const template = this.presentationData.showcase_templates.find(tpl => tpl.other_id === tab.data.template.id);
+                if (template) {
+                    template.name = tab.data.template.name;
+                }
+                this.connectorService.currentShowcaseTab$.next(null);
+            }
+        });
     }
 
     ngOnDestroy() {
         this.selectedPresentationIdSubscription.unsubscribe();
+        this.presentationSubscription.unsubscribe();
         this.actionService.selectedPresentationId$.next(null);
         this.actionService.selectedPresentationId = null;
     }
