@@ -57,8 +57,8 @@ enum Action {
 }
 
 @Component({
-	selector: 'app-staff-shift-info',
-	templateUrl: './info.component.html',
+    selector: 'app-staff-shift-info',
+    templateUrl: './info.component.html',
     styleUrls: ['./info.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
@@ -74,7 +74,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
 
     quizEventSubscription: Subscription;
 
-	constructor(
+    constructor(
         private scheduleService: ScheduleService,
         private dialog: MatDialog,
         private toastr: ToastrService,
@@ -83,7 +83,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
         private connectorService: ConnectorService
     ) { }
 
-	ngOnInit() {
+    ngOnInit() {
         this.settings = this.tokenStorage.getSettings();
         this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
             if (!tab) { return; }
@@ -128,7 +128,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
             });
             dialogRef.componentInstance.title = 'QuizConnect';
             dialogRef.componentInstance.message = `Your score: ${Math.round(score)}%`;
-            dialogRef.afterClosed().subscribe(res => {});
+            dialogRef.afterClosed().subscribe(res => { });
         }
     }
 
@@ -140,7 +140,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
         this.dialogRef = this.dialog.open(StaffShiftPayItemDialogComponent, {
             data: { payItems }
         });
-        this.dialogRef.afterClosed().subscribe(_ => {});
+        this.dialogRef.afterClosed().subscribe(_ => { });
     }
 
     sum(payItems: any[]) {
@@ -149,7 +149,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
 
     getStyle(action) {
         let style;
-        switch(action) {
+        switch (action) {
             case Action.confirm:
             case Action.apply:
                 style = 'mat-accent-bg'
@@ -178,7 +178,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                 quizs
             }
         });
-        dialogRef.afterClosed().subscribe(_ => {});
+        dialogRef.afterClosed().subscribe(_ => { });
     }
 
     doAction(action, role) {
@@ -198,15 +198,13 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         }
                     });
                     this.dialogRef.afterClosed().subscribe(reason => {
-                        if (reason) {
-                            this.scheduleService.applyShiftRole(role.id, reason)
-                                .subscribe(res => {
-                                    //this.toastr.success(res.message);
-                                    role.message = res.role_message;
-                                    role.actions = [...res.actions];
-                                    role.role_staff_id = res.id;
-                                }, err => this.displayError(err));
-                        }
+                        this.scheduleService.applyShiftRole(role.id, reason)
+                            .subscribe(res => {
+                                //this.toastr.success(res.message);
+                                role.message = res.role_message;
+                                role.actions = [...res.actions];
+                                role.role_staff_id = res.id;
+                            }, err => this.displayError(err));
                     });
                 }
                 break;
@@ -316,7 +314,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         photoRequired: this.shift.check_in_photo
                     }
                 });
-                dialogRef.afterClosed().subscribe(async(result) => {
+                dialogRef.afterClosed().subscribe(async (result) => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         try {
@@ -339,7 +337,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         photoRequired: this.shift.check_out_photo
                     }
                 });
-                dialogRef.afterClosed().subscribe(async(result) => {
+                dialogRef.afterClosed().subscribe(async (result) => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         try {
@@ -363,7 +361,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         role
                     }
                 });
-                dialogRef.afterClosed().subscribe(async(result) => {
+                dialogRef.afterClosed().subscribe(async (result) => {
                     if (result) {
                         const roleStaffId = role.role_staff_id;
                         try {
