@@ -97,27 +97,27 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
 
         switch (statusId) {
             case STAFF_STATUS_SELECTED:
-                message = 'Really select this user?';
+                message = 'Really change status to selected?';
                 break;
 
             case STAFF_STATUS_APPLIED:
-                message = 'Really put this user on applied?';
+                message = 'Really change status to applied?';
                 break;
 
             case STAFF_STATUS_STANDBY:
-                message = 'Really put this user on standby?';
+                message = 'Really change status to standby?';
                 break;
 
             case STAFF_STATUS_HIDDEN_REJECTED:
-                message = 'Really hidden reject this user?';
+                message = 'Really change status to hidden rejected?';
                 break;
 
             case STAFF_STATUS_REJECTED:
-                message = 'Really reject this user?';
+                message = 'Really change status to rejected?';
                 break;
 
             default:
-                message = 'Really update this user?';
+                message = 'Really change status?';
                 break;
         }
 
@@ -136,7 +136,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
                             .subscribe(res => {
                                 this.staffs = res;
                             })
-                            this.updateStaffCount();
+                        this.updateStaffCount();
                     });
             }
         });
