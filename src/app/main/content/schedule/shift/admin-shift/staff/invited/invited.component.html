@@ -20,7 +20,7 @@
             </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="Select" [sortable]="false" [canAutoResize]="false" [width]="100">
+        <ngx-datatable-column name="Select" [sortable]="false" [canAutoResize]="false" [width]="60">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')" matTooltip="Select"
                     [disabled]="editable !== 1">
@@ -29,7 +29,7 @@
             </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="Standby" [sortable]="false" [canAutoResize]="false" [width]="100">
+        <ngx-datatable-column name="Standby" [sortable]="false" [canAutoResize]="false" [width]="60">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')" matTooltip="Standby" [disabled]="editable !== 1">
                     <mat-icon>flag</mat-icon>
@@ -37,25 +37,7 @@
             </ng-template>
         </ngx-datatable-column>
 
-        <!-- <ngx-datatable-column name="Hidden Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_HIDDEN_REJECTED')" matTooltip="Hidden Reject"
-                    [disabled]="editable !== 1">
-                    <mat-icon>block</mat-icon>
-                </button>
-            </ng-template>
-        </ngx-datatable-column>
-
-        <ngx-datatable-column name="Reject" [sortable]="false" [canAutoResize]="false" [width]="100">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_REJECTED')" matTooltip="Reject"
-                    [disabled]="editable !== 1">
-                    <mat-icon>clear</mat-icon>
-                </button>
-            </ng-template>
-        </ngx-datatable-column> -->
-
-        <ngx-datatable-column name="Action" [width]="100" [sortable]="false" [resizeable]="false"
+        <ngx-datatable-column name="Action" [width]="60" [sortable]="false" [resizeable]="false"
             [draggable]="false" [canAutoResize]="false">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" [disabled]="editable !== 1">
@@ -77,11 +59,6 @@
                         <mat-icon>vpn_key</mat-icon>
                         <span>Login as user</span>
                     </button>
-
-                    <!-- <button mat-menu-item (click)="remove(row)">
-                        <mat-icon>clear</mat-icon>
-                        <span>Remove</span>
-                    </button> -->
                 </mat-menu>
 
                 <!-- CHANGE STATUS SUBMENU -->
