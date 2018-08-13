@@ -27,6 +27,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
     presentationData: any;
     selectedPresentationIdSubscription: Subscription;
     presentationSubscription: Subscription;
+    cards: any = [];
 
     constructor(
         private toastr: ToastrService,
@@ -62,11 +63,11 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             if (!tab) return;
             if (/showcase\/presentation\/([0-9]+)\/template\/new/.test(tab.url)) {
                 this.tabService.closeTab(tab.url);
-                const card = tab.data.payload.card;
+                const presentation = tab.data.payload.presentation;
                 try {
                     const res = await this.showcaseService.getTemplateByOtherId(tab.data.template.id);
-                    card.showcase_template_id = res.data.id;
-                    const { message } = await this.userService.updateCard(card.id, card);
+                    presentation.showcase_template_id = res.data.id;
+                    const { message } = await this.userService.savePresentation(presentation.id, presentation);
                     this.presentationData.showcase_templates.push({ id: res.data.id, name: res.data.name, other_id: res.data.other_id })
                     this.toastr.success(message);
                 } catch (e) {
@@ -82,6 +83,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                 this.connectorService.currentShowcaseTab$.next(null);
             }
         });
+
+        this.fetchCards();
     }
 
     ngOnDestroy() {
@@ -107,6 +110,14 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
     async getPresentations() {
         try {
             this.presentations = await this.userService.getPresentations();
+        } catch (e) {
+            this.displayError(e);
+        }
+    }
+
+    async fetchCards() {
+        try {
+            this.cards = await this.userService.getCards();
         } catch (e) {
             this.displayError(e);
         }
@@ -186,6 +197,17 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
 
     onDrop(event) {
 
+    }
+
+    async onCardChange(event) {
+        try {
+            await this.userService.savePresentation(this.selectedPresentation.id, {
+                card_id: event.value
+            });
+            this.presentationData.presentation.card_id = event.value;
+        } catch (e) {
+            this.displayError(e);
+        }
     }
 
     openShowcaseTab() {

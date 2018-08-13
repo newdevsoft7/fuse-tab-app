@@ -534,6 +534,9 @@ export class UserService {
         showcase_template_id?: number,
         users?: number[]
     }): Promise<any> {
+        if (!body.card_id) {
+            delete body.card_id;
+        }
         const url = `${BASE_URL}/presentation/${id}`;
         return this.http.put(url, body).toPromise();
     }

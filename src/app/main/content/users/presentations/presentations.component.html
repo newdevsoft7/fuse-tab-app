@@ -38,6 +38,15 @@
                     </div>
                 </div>
             </fieldset>
+
+            <mat-form-field>
+                <mat-select placeholder="Card" (selectionChange)="onCardChange($event)" 
+                    [value]="presentationData.presentation.card_id">
+                    <mat-option *ngFor="let card of cards" [value]="card.id">
+                        {{card.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
             
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px" class="mb-16">
                 <mat-form-field fxFlex="1 0 auto" *ngIf="presentationData.showcase_templates.length > 0">
