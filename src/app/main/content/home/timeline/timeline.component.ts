@@ -578,6 +578,7 @@ export class TimelineComponent implements OnInit, OnDestroy
     }
 
     openReport(report) {
+        report.view = 'customdata';
         const tab = new Tab(
             report.rname,
             'quizTpl',
