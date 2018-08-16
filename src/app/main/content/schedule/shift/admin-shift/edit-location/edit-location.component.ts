@@ -68,15 +68,14 @@ export class AdminShiftEditLocationComponent implements OnInit {
 	}
 
 	saveForm() {
-		const locationId = this.form.getRawValue().location_id;
-		if (locationId !== this.shift.location_id) {
+		let locationId = this.form.getRawValue().location_id;
+		if (locationId !== this.shift.location_id || !locationId) {
 			let param: any = {
 				location_id: locationId
 			};
 			if (locationId === null) {
 				param = {
-					...param,
-					location: null
+					location: this.input.nativeElement.value
 				};
 			} else {
 				const location = this.filteredLocations.find(v => v.id === locationId);
@@ -86,6 +85,7 @@ export class AdminShiftEditLocationComponent implements OnInit {
 					address: location ? location.address : null
 				};
 			}
+			this.onLocationChanged.next({ lname: param.location });
 			this.scheduleService.updateShift(this.shift.id, param).subscribe(res => {
 				let location: any;
 				if (locationId !== null) {
@@ -94,7 +94,6 @@ export class AdminShiftEditLocationComponent implements OnInit {
 				} else {
 					location = null;
 				}
-				this.onLocationChanged.next(location);
 			});
 		}
 		this.formActive = false;
