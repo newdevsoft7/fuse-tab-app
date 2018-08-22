@@ -4,21 +4,19 @@
         No selected staffs
     </div>
     <div class="person" *ngFor="let staff of staffs">
-        <div class="main-info" >
+        <div class="main-info">
             <div fxLayout="row" fxLayoutAlign="start center">
-                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center"
-                    [fxFlex]="staff.staff_status.id === 11 ? '0 1 auto' : ''">
-                    <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)"
-                        [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
+                <div class="savatar pr-12" fxLayout="row" fxLayoutAlign="start center" [fxFlex]="staff.staff_status.id === 11 ? '0 1 auto' : ''">
+                    <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)" [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                         [matTooltip]="staff.staff_status.status" />
                     <span>
                         {{staff.name}}
                         <ng-container *ngIf="staff.company">
-                            <br><span class="company" matTooltip="Company">{{staff.company}}</span>
+                            <br>
+                            <span class="company" matTooltip="Company">{{staff.company}}</span>
                         </ng-container>
                     </span>
-                    <div *ngIf="staff.user_status!=null" class="status" [style.background]="staff.user_status.color"
-                        [matTooltip]="staff.user_status.sname"></div>
+                    <div *ngIf="staff.user_status!=null" class="status" [style.background]="staff.user_status.color" [matTooltip]="staff.user_status.sname"></div>
                 </div>
                 <ng-container *ngIf="staff.staff_status.id === 11; else default">
                     <div class="reason px-12" fxFlex="1 0 auto">
@@ -36,15 +34,13 @@
                     </div>
 
                     <div class="times-break px-12" fxFlex fxHide.xs>
-                        <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)"
-                            [editable]="editable"></app-admin-shift-edit-time>
+                        <app-admin-shift-edit-time [staff]="staff" (onTimeChanged)="onTimeChanged($event, staff)" [editable]="editable"></app-admin-shift-edit-time>
                         <app-admin-shift-edit-break [staff]="staff" [editable]="editable">
                         </app-admin-shift-edit-break>
                     </div>
 
                     <div class="pay-rate px-12" fxFlex *ngIf="!isClient">
-                        <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable"
-                            (onPayItemsChanged)="onPayItemsChanged($event, staff)">
+                        <app-admin-shift-edit-payitems [staff]="staff" [editable]="editable" (onPayItemsChanged)="onPayItemsChanged($event, staff)">
                         </app-admin-shift-edit-payitems>
                     </div>
 
@@ -68,7 +64,7 @@
                             <mat-icon>chat</mat-icon>
                             <span>Chat</span>
                         </button>
-                    
+
                         <button mat-menu-item (click)="loginAsUser(staff)">
                             <mat-icon>vpn_key</mat-icon>
                             <span>Login as user</span>
@@ -78,17 +74,17 @@
                             <mat-icon>add</mat-icon>
                             <span>Add to presentation</span>
                         </button>
-                    
+
                         <!-- <button mat-menu-item>
                             <mat-icon>refresh</mat-icon>
                             <span>Force re-confirmation</span>
                         </button> -->
-                    
+
                         <button mat-menu-item [matMenuTriggerFor]="statusMenu">
                             <mat-icon>edit</mat-icon>
                             <span>Change Status</span>
                         </button>
-                    
+
                         <button mat-menu-item *ngIf="settings.outsource_enable == 1" (click)="openChangeCompanyDialog(staff)">
                             <mat-icon>open_in_new</mat-icon>
                             <span>Change Company</span>
@@ -103,15 +99,15 @@
                             <mat-icon>add</mat-icon>
                             Add Pay Item
                         </button>
-                                
+
                         <button mat-menu-item (click)="remove(staff)">
                             <mat-icon>clear</mat-icon>
                             <span>Remove</span>
                         </button>
                     </mat-menu>
-                    
+
                     <mat-menu #statusMenu="matMenu">
-                    
+
                         <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_APPLIED')">Applied</button>
                         <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_STANDBY')">Standby</button>
                         <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_SELECTED')">Selected</button>
@@ -125,25 +121,24 @@
                         <button mat-menu-item (click)="changeStatus(staff, 'STAFF_STATUS_NO_SHOW')">No Show</button>
                         <button mat-menu-item>No Pay</button>
                         <button mat-menu-item>Other</button>
-                    
+
                     </mat-menu>
                 </div>
             </div>
 
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" class="pl-48" *ngIf="shift.past === 1">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="12px" class="pl-48" *ngIf="shift.past != 0">
                 <div fxLayout="row" fxLayoutAlign="start center" class="rating">
                     <button mat-icon-button (click)="resetRate(staff)">
                         <mat-icon class="s-20">do_not_disturb_on</mat-icon>
                     </button>
-                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="staff.rating !== null ? staff.rating : 0" [step]="0.5" [showHalfStars]="true"
-                        (onRatingChange)="changeRate($event, staff)">
+                    <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'" [rating]="staff.rating !== null ? staff.rating : 0"
+                        [step]="0.5" [showHalfStars]="true" (onRatingChange)="changeRate($event, staff)">
                     </star-rating-comp>
                 </div>
 
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <span class="ontime">On time</span>
-                    <mat-slide-toggle class="ml-8" [(ngModel)]="staff.late"
-                        (ngModelChange)="setLate($event, staff)">
+                    <mat-slide-toggle class="ml-8" [(ngModel)]="staff.late" (ngModelChange)="setLate($event, staff)">
                         Late
                     </mat-slide-toggle>
                 </div>
@@ -154,26 +149,20 @@
 
             <div class="additional-info" *ngIf="staff.pay_items_show">
                 <div *ngIf="staff.pay_items.length > 0; else noPayItems">
-                    <div class="item-line" *ngFor="let item of staff.pay_items"
-                        fxLayout="row" fxLayoutAlign="start center">
+                    <div class="item-line" *ngFor="let item of staff.pay_items" fxLayout="row" fxLayoutAlign="start center">
                         <div fxFlex="10%">
                             {{item.item_type | capitalize}}
                         </div>
                         <div fxFlex="20%">
-                            <app-admin-shift-edit-pay-item-name
-                                [staff]="staff" [payItem]="item" [editable]="editable">
+                            <app-admin-shift-edit-pay-item-name [staff]="staff" [payItem]="item" [editable]="editable">
                             </app-admin-shift-edit-pay-item-name>
                         </div>
                         <div fxFlex="10%">
-                            <app-admin-shift-edit-pay-item-units
-                                [staff]="staff" [payItem]="item" [editable]="editable"
-                                (onItemChanged)="recalcuatePayItemsTotal(staff)">
+                            <app-admin-shift-edit-pay-item-units [staff]="staff" [payItem]="item" [editable]="editable" (onItemChanged)="recalcuatePayItemsTotal(staff)">
                             </app-admin-shift-edit-pay-item-units>
                         </div>
                         <div fxFlex="20%">
-                            <app-admin-shift-edit-pay-item-unit-rate
-                                [staff]="staff" [payItem]="item" [editable]="editable"
-                                (onItemChanged)="recalcuatePayItemsTotal(staff)">
+                            <app-admin-shift-edit-pay-item-unit-rate [staff]="staff" [payItem]="item" [editable]="editable" (onItemChanged)="recalcuatePayItemsTotal(staff)">
                             </app-admin-shift-edit-pay-item-unit-rate>
                         </div>
                         <div fxFlex="20%">
@@ -217,7 +206,7 @@
                     </div>
                 </div>
                 <ng-template #noPayItems>
-                        No pay items.
+                    No pay items.
                     <a class="add-payitem-link" (click)="addPayItem(staff)">Add</a>
                 </ng-template>
             </div>
