@@ -79,8 +79,8 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	ngDoCheck() {
 		const change = this.differ.diff(this.photos);
 		if (change) {
-			this.basicPhotos = this.photos.filter(photo => photo.admin_only != 1);
-			this.adminPhotos = this.photos.filter(photo => photo.admin_only == 1);
+			this.basicPhotos = this.photos.filter(photo => +photo.admin_only !== 1);
+			this.adminPhotos = this.photos.filter(photo => +photo.admin_only === 1);
 		}
 	}
 
@@ -88,8 +88,8 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 		this.userService.getProfilePhotos(this.user.id)
 			.subscribe(res => {
 				this.photos = res;
-				this.basicPhotos = this.photos.filter(photo => photo.admin_only != 1);
-				this.adminPhotos = this.photos.filter(photo => photo.admin_only == 1);
+				this.basicPhotos = this.photos.filter(photo => +photo.admin_only !== 1);
+				this.adminPhotos = this.photos.filter(photo => +photo.admin_only === 1);
 			}, err => {
 				console.log(err);
 			});
@@ -116,11 +116,11 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	}
 
 	onLockedChanged(photo) {
-		const lock = photo.locked ? 0 : 1;
-		this.userService.lockProfilePhoto(photo.id, lock)
-			.subscribe(res => {
-				photo.locked = photo.locked ? 0 : 1;
-			}, err => {
+		const oldVal = photo.locked;
+		photo.locked = +oldVal ? '0' : '1';
+		this.userService.lockProfilePhoto(photo.id, +photo.locked)
+			.subscribe(res => {}, err => {
+				photo.locked = oldVal;
 				console.log(err);
 			});
 	}
@@ -174,21 +174,41 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	}
 
 	setProfilePhoto(photo) {
-		if (photo.main) {
+		if (+photo.main) {
+			this.toastr.info('This photo is already set as main.');
 			return;
 		}
 
+		const mainPhoto = this.photos.find(v => +v.main && v.id != photo.id);
+		if (mainPhoto) {
+			mainPhoto.main = '0';
+		}
+		photo.main = '1';
+		this.onAvatarChanged.next(photo.thumbnail);
 		this.userService.setProfilePhoto(this.user.id, photo.id)
-			.subscribe(res => {
-				const mainPhoto = this.photos.find(v => v.main && v.id != photo.id);
+			.subscribe(res => {}, err => {
 				if (mainPhoto) {
-					mainPhoto.main = 0;
+					mainPhoto.main = '1';
+					this.onAvatarChanged.next(mainPhoto.thumbnail);
+				} else {
+					this.onAvatarChanged.next(this.getAvatar());
 				}
-				photo.main = 1;
-				this.onAvatarChanged.next(photo.thumbnail);
-			}, err => {
+				photo.main = '0';
 				console.log(err);
 			})
+	}
+
+	private getAvatar() {
+		if (this.user.ppic_a) {
+			return this.user.ppic_a;
+		} else {
+			switch (this.user.sex) {
+				case 'male':
+					return `/assets/images/avatars/nopic_male.jpg`;
+				case 'female':
+					return `/assets/images/avatars/nopic_female.jpg`;
+			}
+		}
 	}
 
 	deleteProfilePhoto(photo) {
@@ -204,14 +224,14 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 
 	onDrop(event) {
 		const photo = event.value;
-		const isDroppedInAdmin = (this.adminPhotos.findIndex(v => v.id == photo.id) > -1) && (photo.admin_only != 1);
-		const isDroppedInBasic = (this.basicPhotos.findIndex(v => v.id == photo.id) > -1) && (photo.admin_only == 1);
+		const isDroppedInAdmin = (this.adminPhotos.findIndex(v => v.id == photo.id) > -1) && (+photo.admin_only !== 1);
+		const isDroppedInBasic = (this.basicPhotos.findIndex(v => v.id == photo.id) > -1) && (+photo.admin_only === 1);
 
 		if (isDroppedInAdmin || isDroppedInBasic) {
 			const adminOnly = isDroppedInAdmin ? 1 : 0;
 			this.userService.setProfilePhotoAsAdmin(photo.id, adminOnly)
 				.subscribe(res => {
-					photo.admin_only = adminOnly;
+					photo.admin_only = `${adminOnly}`;
 				}, err => {
 					console.log(err);
 				});

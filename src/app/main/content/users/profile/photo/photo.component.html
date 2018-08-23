@@ -102,12 +102,14 @@
         <div fxLayout="row" fxLayoutAlign="end">
 
             <button mat-icon-button>
-                <mat-icon [class.fa-rotate-90]="!photo.main" fontSet="fa" fontIcon="fa-thumb-tack" (click)="setProfilePhoto(photo)"></mat-icon>
+                <mat-icon [class.fa-rotate-90]="!(photo.main * 1)" fontSet="fa" fontIcon="fa-thumb-tack" (click)="setProfilePhoto(photo)"></mat-icon>
             </button>
 
             <button mat-icon-button (click)="onLockedChanged(photo)">
-                <mat-icon *ngIf="photo.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
-                <mat-icon *ngIf="!photo.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+                <mat-icon *ngIf="photo.locked * 1; else unlockIcon" fontSet="fa" fontIcon="fa-lock"></mat-icon>
+                <ng-template #unlockIcon>
+                    <mat-icon fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+                </ng-template>
             </button>
 
             <button mat-icon-button (click)="openTagModal(photo)" *ngIf="isOwner || isAdmin">

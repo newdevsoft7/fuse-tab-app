@@ -35,6 +35,7 @@ export class UsersProfileComponent implements OnInit {
 	linkedUsers: any = [];
 
 	dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+	avatarUrl: string;
 
 	constructor(
 		private tokenStorage: TokenStorage,
@@ -108,26 +109,27 @@ export class UsersProfileComponent implements OnInit {
 		}
 	}
 
-	getAvatar(userInfo) {
-		if (userInfo.ppic_a) {
-			return userInfo.ppic_a;
+	private setAvatar() {
+		if (this.userInfo.ppic_a) {
+			this.avatarUrl = this.userInfo.ppic_a;
 		} else {
-			switch (userInfo.sex) {
+			switch (this.userInfo.sex) {
 				case 'male':
-					return `/assets/images/avatars/nopic_male.jpg`;
+					this.avatarUrl = `/assets/images/avatars/nopic_male.jpg`;
 				case 'female':
-					return `/assets/images/avatars/nopic_female.jpg`;
+					this.avatarUrl = `/assets/images/avatars/nopic_female.jpg`;
 			}
 		}
 	}
 
 	onAvatarChanged(avatar) {
-		this.userInfo.ppic_a = avatar;
+		this.avatarUrl = avatar;
 	}
 
 	private async getUserInfo() {
 		try {
 			this.userInfo = await this.userService.getUser(this.user.id).toPromise();
+			this.setAvatar();
 			this.isFavStatusShow =
 				['admin', 'owner'].some(v => this.currentUser.lvl.indexOf(v) > -1)
 				&& ['staff', 'registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
