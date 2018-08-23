@@ -3,18 +3,18 @@
     <div class="fuse-card auto-width p-16">
 
         <agm-map class="h-640 w-100-p" [minZoom]="5" [maxZoom]="24" [zoom]="18"
-            [latitude]="shift.lat" [longitude]="shift.lon" [mapTypeControl]="true"
+            [latitude]="shift.lat * 1" [longitude]="shift.lon * 1" [mapTypeControl]="true"
             [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
             [scaleControl]="false" [streetViewControl]="false" [scrollwheel]="false" [styles]="styles">
 
-            <agm-marker [latitude]="shift.lat" [longitude]="shift.lon" [markerDraggable]="!isClient"
+            <agm-marker [latitude]="shift.lat * 1" [longitude]="shift.lon * 1" [markerDraggable]="!isClient"
                  (dragEnd)="changePosition($event)">
             
             </agm-marker>
 
             <agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'">
                 <agm-marker *ngFor="let marker of markers"
-                    [latitude]="marker.lat" [longitude]="marker.lon"
+                    [latitude]="marker.lat * 1" [longitude]="marker.lon * 1"
                     [iconUrl]="marker.ppic_a">
                     <agm-info-window>
                         <strong>{{marker.name}}</strong>
