@@ -88,7 +88,7 @@ export class GeneratePayrollComponent implements OnInit {
                     }
                 });
             });
-        
+
         this.type = this.actionService.selectedPayrollType || 'invoice';
         this.onTypeChange();
     }
@@ -137,10 +137,10 @@ export class GeneratePayrollComponent implements OnInit {
         // Cancel to generate if the following conditions
         if (!this.to || !this.from || !this.type) { return; }
         if (from > to) { return; }
-        if (this.additional && typeof(trackingOptionId) === 'string' && !_.isEmpty(trackingOptionId)) { return; }
+        if (this.additional && typeof (trackingOptionId) === 'string' && !_.isEmpty(trackingOptionId)) { return; }
 
         if (trackingOptionId) {
-            trackingOptionId = typeof(trackingOptionId) !== 'string' ? trackingOptionId.id : null;
+            trackingOptionId = typeof (trackingOptionId) !== 'string' ? trackingOptionId.id : null;
         }
 
         try {
@@ -150,7 +150,7 @@ export class GeneratePayrollComponent implements OnInit {
                 _.forEach(this.payrolls, (payroll, index) => payroll.id = index);
             } else {
                 this.payrolls = res.payrolls;
-                this.toastr.error('No Payrolls!');
+                this.toastr.error('Nothing outstanding was found between your selected dates.');
             }
         } catch (e) {
             this.toastr.error(e.error.message);
@@ -173,7 +173,7 @@ export class GeneratePayrollComponent implements OnInit {
                 this.payrolls = res.payrolls;
                 _.forEach(this.payrolls, (payroll, index) => payroll.id = index);
             } else {
-                this.toastr.error('No Invoices!');
+                this.toastr.error('Nothing outstanding was found between your selected dates.');
             }
         } catch (e) {
             this.toastr.error(e.error.message);
