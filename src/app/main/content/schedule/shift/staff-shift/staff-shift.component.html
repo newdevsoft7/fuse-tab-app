@@ -21,20 +21,14 @@
                 </div>
                 <!-- / TITLE -->
 
-                <ng-container *ngIf="!showMoreBtn">
-                    <!-- GENERIC TITLE -->
-                    <div class="info sub" matTooltip="Generic Title" fxLayoutAlign="start center" *ngIf="shift.generic_title">
-                        <mat-icon class="mr-8">visibility</mat-icon>
-                        {{shift.generic_title}}
-                    </div>
-                    <!-- GENERIC TITLE -->
+                <!-- LOCATION -->
+                <div class="info sub" matTooltip="Location" fxLayoutAlign="start center" *ngIf="shift.location">
+                    <mat-icon class="mr-8">location_city</mat-icon>
+                    {{shift.location}}
+                </div>
+                <!-- / LOCATION -->
 
-                    <!-- GENERIC LOCATION -->
-                    <div class="info sub" matTooltip="Generic Location" fxLayoutAlign="start center" *ngIf="shift.generic_location">
-                        <mat-icon class="mr-8">location_city</mat-icon>
-                        {{shift.generic_location}}
-                    </div>
-                    <!-- / GENERIC LOCATION -->
+                <ng-container *ngIf="!showMoreBtn">
 
                     <!-- ADDRESS -->
                     <div class="info sub" matTooltip="Address" fxLayoutAlign="start center" *ngIf="shift.address">
