@@ -27,7 +27,7 @@ export class AdminShiftEditClientComponent implements OnInit {
 
     openForm() {
         this.form = this.formBuilder.group({
-            client_id: [this.shift.client_id, Validators.required]
+            client_id: [+this.shift.client_id, Validators.required]
         });
         this.formActive = true;
     }
@@ -35,11 +35,11 @@ export class AdminShiftEditClientComponent implements OnInit {
     saveForm() {
         if (this.form.valid) {
             const client_id = this.form.getRawValue().client_id;
-            if (client_id !== this.shift.client_id) {
+            if (client_id !== +this.shift.client_id) {
                 this.scheduleService.updateShift(this.shift.id, { client_id })
                     .subscribe(res => {
                         //this.toastr.success(res.message);
-                        this.shift.client_id = client_id;
+                        this.shift.client_id = `${client_id}`;
                     });
             }
             this.formActive = false;
@@ -52,7 +52,7 @@ export class AdminShiftEditClientComponent implements OnInit {
 
     display() {
         if (!this.shift.client_id) { return 'No Client'; }
-        const index = this.clients.findIndex(v => v.id === this.shift.client_id);
+        const index = this.clients.findIndex(v => v.id === +this.shift.client_id);
         const result = index > -1 ? this.clients[index].cname : 'No Client';
         return result;
     }
