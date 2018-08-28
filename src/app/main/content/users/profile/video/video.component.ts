@@ -9,6 +9,8 @@ import * as _ from 'lodash';
 
 import { UsersProfileVideoGalleryDialogComponent } from './video-gallery-dialog/video-gallery-dialog.component';
 import { TagsDialogComponent } from '../dialogs/tags-dialog/tags-dialog.component';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 
 const PROFILE_VIDEO = 'profile_video';
 
@@ -34,6 +36,10 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
 	selectedTags: string[] = [];
 
     dialogRef: any;
+    fileDetails: any;
+
+    showProgress: boolean = false;
+    progress: number = 0;
 
     constructor(
         private spinner: CustomLoadingService,
@@ -128,27 +134,39 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     }
 
     onUploadVideo(event, isAdmin = 0) {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-            this.spinner.show();
+        const files = event.target.files || [];
+        const largeFiles = [], normalFiles = [];
+        for (const file of files) {
+            if (file.size > 10485760) {
+                largeFiles.push(file);
+            } else {
+                normalFiles.push(file);
+            }
+        }
+        if (normalFiles.length > 0) {
 
             let formData = new FormData();
 
-            for (let i = 0; i < files.length; i++) {
-                formData.append('video[]', files[i], files[i].name);
+            for (let i = 0; i < normalFiles.length; i++) {
+                formData.append('video[]', normalFiles[i], normalFiles[i].name);
             }
 
             if (isAdmin) {
                 formData.append('adminOnly', '1');
             }
 
+            this.showProgress = true;
+
             this.userService.uploadProfileVideo(this.user.id, formData)
-                .subscribe(res => {
-                    //this.toastr.success(res.message);
-                    this.spinner.hide();
-                    res.data.map(video => {
-                        this.videos.push(video);
-                    });
+                .subscribe(event => {
+                    if (event.type === HttpEventType.UploadProgress) {
+                        this.progress = event.loaded / event.total * 100;
+                    } else if (event.type === HttpEventType.Response) {
+                        this.showProgress = false;
+                        event.body.data.map(video => {
+                            this.videos.push(video);
+                        });
+                    }
                 }, err => {
                     this.spinner.hide();
                     _.forEach(err.error.errors, errors => {
@@ -158,6 +176,60 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
                         });
                     });
                 });
+        }
+        if (largeFiles.length > 0) {
+            this.uploadLargeFiles(largeFiles, isAdmin);
+        }
+    }
+
+    private async uploadLargeFiles(files, isAdmin) {
+        this.fileDetails = {};
+
+        for (const file of files) {
+            this.fileDetails[file.name] = {};
+            this.fileDetails[file.name].file = file;
+            this.fileDetails[file.name].endByte = 0;
+            this.fileDetails[file.name].part = 0;
+            this.fileDetails[file.name].isLastPart = false;
+
+            this.showProgress = true;
+            await this.getPartSize(file, isAdmin);
+        }
+    }
+
+    private async getPartSize(file, isAdmin) {
+        this.fileDetails[file.name].startByte = this.fileDetails[file.name].endByte;
+        this.fileDetails[file.name].endByte = this.fileDetails[file.name].endByte + 10485760;
+        this.fileDetails[file.name].part++;
+        if (this.fileDetails[file.name].endByte >= file.size) {
+            this.fileDetails[file.name].endByte = file.size;
+            this.fileDetails[file.name].isLastPart = true;
+        }
+        this.fileDetails[file.name].startOffset = this.fileDetails[file.name].startByte;
+        this.fileDetails[file.name].endOffset = this.fileDetails[file.name].endByte;
+        const chunkFile = this.fileDetails[file.name].file.slice(this.fileDetails[file.name].startByte, this.fileDetails[file.name].endByte);
+
+        let formData = new FormData();
+        formData.append('video', chunkFile);
+        if (isAdmin) {
+            formData.append('adminOnly', '1');
+        }
+        formData.append('part', this.fileDetails[file.name].part);
+        formData.append('isLastPart', this.fileDetails[file.name].isLastPart);
+        const event = await this.userService.uploadProfileVideo(this.user.id, formData, true).map(event => {
+            if (event.type === HttpEventType.UploadProgress) {
+                this.progress = this.fileDetails[file.name].startByte / file.size * 100 + (this.fileDetails[file.name].endByte - this.fileDetails[file.name].startByte) / file.size * (event.loaded / event.total) * 100;
+            }
+            return event;
+        }).toPromise();
+        const data = event.body.data;
+        if (data.processing) {
+            await this.getPartSize(file, isAdmin);
+        } else {
+            delete data.processing;
+            this.videos.push(data);
+            this.showProgress = false;
+            this.progress = 0;
         }
     }
 
@@ -202,5 +274,9 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
 				} catch (e) {}
 			}
 		});
-	}
+    }
+    
+    getFlooredNumber(num): number {
+        return Math.floor(num);
+    }
 }

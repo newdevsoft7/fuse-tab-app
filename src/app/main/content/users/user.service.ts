@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 
@@ -169,10 +169,17 @@ export class UserService {
             .catch(this.handleError);
     }
 
-    uploadProfileVideo(userId: number, data: any): Observable<any> {
-        const url = `${BASE_URL}/profile/${userId}/video`;
-        return this.http.post(url, data)
-            .catch(this.handleError);
+    uploadProfileVideo(userId: number, data: any, isChunk?: boolean): Observable<any> {
+        isChunk = isChunk || false;
+        const url = `${BASE_URL}/profile/${userId}/video${isChunk ? '/chunk' : ''}`;
+        return this.http.request(new HttpRequest(
+            'POST',
+            url,
+            data,
+            {
+              reportProgress: true
+            }
+        )).catch(this.handleError);
     }
 
     lockProfileVideo(videoId: number, setLock = 1): Observable<any> {

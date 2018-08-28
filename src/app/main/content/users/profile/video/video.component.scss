@@ -1,6 +1,24 @@
 @import "src/app/core/scss/fuse";
 #videos {
 
+    .upload-progress {
+        position: fixed;
+        top: 112px;
+        left: 256px;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        background-color: rgba(0,0,0,.3);
+        color: white;
+
+        @include media-breakpoint-down('md') {
+            left: 0;
+        }
+        @include media-breakpoint-down('xs') {
+            top: 104px;
+        }
+    }
+
     .group {
 
         .group-title {
