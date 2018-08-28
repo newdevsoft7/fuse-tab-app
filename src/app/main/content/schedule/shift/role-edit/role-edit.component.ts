@@ -285,12 +285,6 @@ export class ShiftRoleEditComponent implements OnInit {
                 ...role,
                 application_deadline: moment(role.application_deadline).format('YYYY-MM-DD HH:mm:ss'),
             };
-        } else {
-            delete role.application_deadline;
-        }
-
-        if (role.pay_category_id === 'none') {
-            delete role.pay_category_id;
         }
 
         if (!this.sameAsShift) {
