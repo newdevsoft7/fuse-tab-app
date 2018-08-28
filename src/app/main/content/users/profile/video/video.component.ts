@@ -134,9 +134,10 @@ export class UsersProfileVideoComponent implements OnInit, DoCheck {
     }
 
     onUploadVideo(event, isAdmin = 0) {
-        const files = event.target.files || [];
+        const files = (event.target.files || []) as File[];
         const largeFiles = [], normalFiles = [];
         for (const file of files) {
+            if (file.type !== 'video/mp4') continue;
             if (file.size > 10485760) {
                 largeFiles.push(file);
             } else {

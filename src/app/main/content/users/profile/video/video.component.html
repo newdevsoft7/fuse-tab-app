@@ -35,7 +35,7 @@
 
             <!-- ADD FILE BUTTON -->
             <div class="file-uploader">
-                <input hidden type="file" #fileInput (change)="onUploadVideo($event)" multiple/>
+                <input hidden type="file" #fileInput (change)="onUploadVideo($event)" accept="video/mp4"/>
                 <button mat-raised-button class="mb-24" color="accent" (click)="fileInput.click()">
                     <mat-icon>file_upload</mat-icon>
                     <span>Upload</span>
@@ -66,7 +66,7 @@
 
             <!-- ADD FILE BUTTON -->
             <div class="file-uploader">
-                <input hidden type="file" #adminFileInput (change)="onUploadVideo($event, 1)" multiple/>
+                <input hidden type="file" #adminFileInput (change)="onUploadVideo($event, 1)" accept="video/mp4"/>
                 <button mat-raised-button class="mb-24" color="accent" (click)="adminFileInput.click()">
                     <mat-icon>file_upload</mat-icon>
                     <span>Upload</span>
