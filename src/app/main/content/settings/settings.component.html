@@ -17,8 +17,8 @@
     <mat-sidenav-container>
 
         <!-- SIDENAV -->
-        <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3"
-            mat-is-locked-open="gt-md" #sidenav>
+        <mat-sidenav class="sidenav" align="start" opened="true" mode="side" fuseMatSidenavHelper="simple-left-sidenav-3" mat-is-locked-open="gt-md"
+            #sidenav>
 
             <div class="sidenav-content pt-16" fusePerfectScrollbar>
 
@@ -78,6 +78,8 @@
                     <app-settings-scheduling *ngSwitchCase="'scheduling'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-scheduling>
 
+                    <app-settings-schedule-list *ngSwitchCase="'schedule_list'" fxFill></app-settings-schedule-list>
+
                     <app-settings-shift-flags *ngSwitchCase="'shift_flags'" [options]="options" [(settings)]="settings" fxFill>
                     </app-settings-shift-flags>
 
@@ -100,8 +102,6 @@
                     </app-settings-tracking>
 
                     <app-settings-user-table *ngSwitchCase="'user_table'" fxFill></app-settings-user-table>
-
-                    <app-settings-schedule-list *ngSwitchCase="'schedule_list'" fxFill></app-settings-schedule-list>
 
                     <app-settings-work-areas *ngSwitchCase="'work_areas'" [options]="options" [settings]="(settings)" class="w-100-p">
                     </app-settings-work-areas>
