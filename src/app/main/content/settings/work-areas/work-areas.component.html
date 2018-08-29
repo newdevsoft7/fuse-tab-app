@@ -26,13 +26,13 @@
     </div>
     <!-- / Message -->
 
-    <!-- Number Required -->
+    <!-- Min Number Required -->
     <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
-        <div class="name" fxFlex="20">Number Required</div>
+        <div class="name" fxFlex="20">Minimum Required</div>
         <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
             <div  fxFlex="25">
                 <mat-form-field floatPlaceholder="never" [style.width.px]="40">
-                    <input matInput type="number" min="1" max="9" [formControl]="numberRequired"/>
+                    <input matInput type="number" min="1" max="99" [formControl]="numberRequired"/>
                 </mat-form-field>
             </div>
             <div class="desc secondary-text" fxFlex="75">
@@ -40,7 +40,23 @@
             </div>  
         </div>
     </div>
-    <!-- / Number Required -->
+    <!-- / Min Number Required -->
+
+    <!-- Max Number -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Maximum</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <div  fxFlex="25">
+                <mat-form-field floatPlaceholder="never" [style.width.px]="40">
+                    <input matInput type="number" min="0" max="99" [formControl]="numberMaximum"/>
+                </mat-form-field>
+            </div>
+            <div class="desc secondary-text" fxFlex="75">
+                Enter the maximum number of work areas staff may select.
+            </div>  
+        </div>
+    </div>
+    <!-- / Max Number -->
 
     <div class="nav" fxFlex="1 0 auto" fxLayout="column">
         <mat-drawer-container class="draw-container" autosize fxFlex="1 0 auto">

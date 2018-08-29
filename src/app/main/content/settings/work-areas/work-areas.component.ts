@@ -5,7 +5,7 @@ import {
     ViewChild, OnDestroy
 } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators, FormControl,  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, } from '@angular/forms';
 
 import { MatDrawer, MatSlideToggleChange, MatSelectChange } from '@angular/material';
 
@@ -20,7 +20,8 @@ import { SettingsService } from '../settings.service';
 enum Setting {
     work_areas_enable = 95,
     work_areas_msg = 129,
-    work_areas_required = 128
+    work_areas_required = 128,
+    work_areas_maximum = 145
 }
 
 
@@ -32,7 +33,7 @@ enum Setting {
 })
 export class SettingsWorkAreasComponent implements OnInit {
 
-    @ViewChild('drawer') drawer: MatDrawer; 
+    @ViewChild('drawer') drawer: MatDrawer;
 
     _settings = [];
 
@@ -62,7 +63,8 @@ export class SettingsWorkAreasComponent implements OnInit {
 
     // Number Items
     numberItems = [
-        Setting.work_areas_required
+        Setting.work_areas_required,
+        Setting.work_areas_maximum
     ];
 
     componentDestroyed = new Subject();
@@ -75,17 +77,18 @@ export class SettingsWorkAreasComponent implements OnInit {
     categoryForm: FormGroup;
 
     numberRequired = new FormControl();
+    numberMaximum = new FormControl();
 
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges) {
 
         if (changes.settings || changes.options) {
-            
+
             const keys = Object.keys(this.Setting).filter(v => _.isNumber(_.toNumber(v))) as string[];
 
             _.forEach(keys, (v) => {
@@ -98,7 +101,11 @@ export class SettingsWorkAreasComponent implements OnInit {
                             case Setting.work_areas_required:
                                 this.numberRequired.patchValue(item.value);
                                 break;
-                            
+
+                            case Setting.work_areas_maximum:
+                                this.numberMaximum.patchValue(item.value);
+                                break;
+
                             default:
                                 break;
                         }
@@ -121,13 +128,20 @@ export class SettingsWorkAreasComponent implements OnInit {
             this.drawer.open();
         });
 
-        // Invoice Deadline Control
         this.numberRequired.valueChanges
             .debounceTime(1000)
             .distinctUntilChanged()
             .takeUntil(this.componentDestroyed)
             .subscribe(value => {
                 this.onChange(Setting.work_areas_required, value);
+            });
+
+        this.numberMaximum.valueChanges
+            .debounceTime(1000)
+            .distinctUntilChanged()
+            .takeUntil(this.componentDestroyed)
+            .subscribe(value => {
+                this.onChange(Setting.work_areas_maximum, value);
             });
 
         this.getTimezones();
