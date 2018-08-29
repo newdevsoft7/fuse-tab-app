@@ -1,13 +1,14 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ToastrService } from 'ngx-toastr';
 import { TokenStorage } from '../../../../../../../../shared/services/token-storage.service';
 import { TabService } from '../../../../../../../tab/tab.service';
 import { Tab } from '../../../../../../../tab/tab';
 
 @Component({
-	selector: 'app-staff-shift-apply-dialog',
-	templateUrl: './apply-dialog.component.html',
+    selector: 'app-staff-shift-apply-dialog',
+    templateUrl: './apply-dialog.component.html',
     styleUrls: ['./apply-dialog.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
@@ -19,9 +20,10 @@ export class StaffShiftApplyDialogComponent implements OnInit {
     forms: any = [];
     shiftId: number;
 
-	constructor(
+    constructor(
         private tabService: TabService,
         private tokenStorage: TokenStorage,
+        private toastr: ToastrService,
         private formBuilder: FormBuilder,
         public dialogRef: MatDialogRef<StaffShiftApplyDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
@@ -31,7 +33,7 @@ export class StaffShiftApplyDialogComponent implements OnInit {
         this.shiftId = data.shift_id;
     }
 
-	ngOnInit() {
+    ngOnInit() {
         this.form = this.formBuilder.group({
             reason: ['']
         });
@@ -40,7 +42,8 @@ export class StaffShiftApplyDialogComponent implements OnInit {
 
     saveForm() {
         const reason = this.form.getRawValue().reason;
-        if (this.settings.shift_application_reason === '1' && reason === '') {
+        if (this.settings.shift_application_reason == '1' && reason.length < 2) {
+            this.toastr.error('Please enter a reason for you application.')
             return;
         } else {
             this.dialogRef.close(reason);
