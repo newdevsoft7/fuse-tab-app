@@ -190,7 +190,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
     }
 
     private editShowcase(): void {
-        const template = this.cardData.showcase_templates.find(v => v.id === this.cardData.card.showcase_template_id);
+        const template = this.cardData.showcase_templates.find(v => v.id === +this.cardData.card.showcase_template_id);
         if (!template) return;
         const tab = new Tab(
             template.name,
