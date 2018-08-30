@@ -192,7 +192,10 @@ export class SettingsWorkAreasComponent implements OnInit {
 
     getWorkAreas(categoryId) {
         this.settingsService.getWorkAreas().subscribe(res => {
-            this.workAreas = _.filter(res, ['work_area_cat_id', categoryId]);
+            //this.workAreas = _.filter(res, ['work_area_cat_id', categoryId]);
+            this.workAreas = _.filter(res, function (item) {
+                return item.work_area_cat_id == categoryId;
+            });
         });
     }
 
