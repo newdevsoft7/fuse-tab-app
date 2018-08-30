@@ -198,6 +198,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                         }
                     });
                     this.dialogRef.afterClosed().subscribe(reason => {
+                        if (!reason) return;
                         this.scheduleService.applyShiftRole(role.id, reason)
                             .subscribe(res => {
                                 //this.toastr.success(res.message);
