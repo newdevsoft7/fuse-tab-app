@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { TabComponent } from '../../tab/tab/tab.component';
 import { MatDialog } from '@angular/material';
 import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
+import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
+import { FuseConfirmTextYesNoDialogComponent } from '../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -171,6 +173,67 @@ export class PayrollComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+        } else if (action.action === 'record_processing' || action.action === 'process_xero_payroll' || action.action === 'process_workmarket') {
+            const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+              disableClose: false
+            });
+            dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+            dialogRef.afterClosed().subscribe(async (result) => {
+              if (result) {
+                try {
+                  await this.payrollService.processPayrolls([item.id]).toPromise();
+                  this.toastr.success('Success!');
+                } catch (e) {
+                  this.displayError(e);
+                }
+              }
+            });
+        } else if (action.action === 'record_payment') {
+            const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+              disableClose: false
+            });
+            dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+            dialogRef.afterClosed().subscribe(async (result) => {
+              if (result) {
+                try {
+                  await this.payrollService.recordPayment([item.id]).toPromise();
+                  this.toastr.success('Success!');
+                } catch (e) {
+                  this.displayError(e);
+                }
+              }
+            });
+        } else if (action.action === 'reject') {
+            const dialogRef = this.dialog.open(FuseConfirmTextYesNoDialogComponent, {
+                disableClose: false
+            });
+            dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+            dialogRef.componentInstance.placeholder = 'Reason';
+            dialogRef.afterClosed().subscribe(async (result) => {
+                if (result) {
+                    try {
+                        await this.payrollService.rejectPayroll(item.id, result).toPromise();
+                        this.toastr.success('Success!');
+                    } catch (e) {
+                        this.displayError(e);
+                    }
+                }
+            });
+        } else if (action.action === 'cancel') {
+            const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+              disableClose: false
+            });
+            dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+            dialogRef.afterClosed().subscribe(async (result) => {
+              if (result) {
+                try {
+                  await this.payrollService.deletePayroll(item.id).toPromise();
+                  this.toastr.success('Success!');
+                } catch (e) {
+                  this.displayError(e);
+                }
+              }
+            });
         }
     }
 
@@ -183,12 +246,12 @@ export class PayrollComponent implements OnInit, OnDestroy {
     }
 
     onActivate(event) {
-        if (event.type === 'click' && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1) {
+        if (event.type === 'click' && ['owner', 'admin', 'staff'].indexOf(this.currentUser.lvl) > -1) {
             if (event.cellIndex === 2) {
                 const id = event.row.id;
                 const tab = new Tab(event.row.display, 'payrollDetailTpl', `payroll/${id}`, { id });
                 this.tabService.openTab(tab);
-            } else if (event.cellIndex === 3) {
+            } else if (event.cellIndex === 3 && this.currentUser.lvl !== 'staff') {
                 const user = { id: event.row.user_id };
                 const tab = new Tab(`${event.row.name}`, 'usersProfileTpl', `users/user/${user.id}`, user);
                 this.tabService.openTab(tab);

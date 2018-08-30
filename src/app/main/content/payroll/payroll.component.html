@@ -116,7 +116,7 @@
             <ngx-datatable-column name="Status" prop="status" [sortable]="false" [canAutoResize]="true">
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false">
+            <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false" *ngIf="currentUser?.lvl !== 'staff'">
                 <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                     <button mat-raised-button [matMenuTriggerFor]="actionMenu" (click)="$event.stopPropagation()">
                         <span fxLayout="row" fxLayoutAlign="center center">

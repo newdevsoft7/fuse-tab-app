@@ -5,6 +5,8 @@ import { ToastrService } from "ngx-toastr";
 import { AppSettingService } from "../../../../shared/services/app-setting.service";
 import { MatDialog } from "@angular/material";
 import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
+import { FuseConfirmYesNoDialogComponent } from "../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component";
+import { FuseConfirmTextYesNoDialogComponent } from "../../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component";
 
 @Component({
   selector: 'app-payroll-detail',
@@ -75,6 +77,68 @@ export class PayrollDetailComponent implements OnInit {
         if (result) {
           try {
             await this.payrollService.payPayrollWithXtrm(this.payroll.id);
+            this.toastr.success('Success!');
+          } catch (e) {
+            this.displayError(e);
+          }
+        }
+      });
+    } else if (action.action === 'record_processing' || action.action === 'process_xero_payroll' || action.action === 'process_workmarket') {
+      const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+        disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+      dialogRef.afterClosed().subscribe(async (result) => {
+        if (result) {
+          try {
+            await this.payrollService.processPayrolls([this.payroll.id]).toPromise();
+            this.toastr.success('Success!');
+          } catch (e) {
+            this.displayError(e);
+          }
+        }
+      });
+    } else if (action.action === 'record_payment') {
+      const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+        disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+      dialogRef.afterClosed().subscribe(async (result) => {
+        if (result) {
+          try {
+            await this.payrollService.recordPayment([this.payroll.id]).toPromise();
+            this.toastr.success('Success!');
+          } catch (e) {
+            this.displayError(e);
+          }
+        }
+      });
+    } else if (action.action === 'reject') {
+      const dialogRef = this.dialog.open(FuseConfirmTextYesNoDialogComponent, {
+          disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+      dialogRef.componentInstance.placeholder = 'Reason';
+      dialogRef.afterClosed().subscribe(async (result) => {
+        if (result) {
+          try {
+            await this.payrollService.rejectPayroll(this.payroll.id, result).toPromise();
+            this.toastr.success('Success!');
+          } catch (e) {
+            this.displayError(e);
+          }
+        }
+      });
+    } else if (action.action === 'cancel') {
+      const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+        disableClose: false
+      });
+      dialogRef.componentInstance.confirmMessage = `Are you sure?`;
+      dialogRef.afterClosed().subscribe(async (result) => {
+        if (result) {
+          try {
+            await this.payrollService.deletePayroll(this.payroll.id).toPromise();
+            this.toastr.success('Success!');
           } catch (e) {
             this.displayError(e);
           }
@@ -82,7 +146,6 @@ export class PayrollDetailComponent implements OnInit {
       });
     }
   }
-
 
   private displayError(e) {
     const errors = e.error.errors;

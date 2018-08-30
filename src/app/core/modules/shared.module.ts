@@ -43,6 +43,7 @@ import { EditableTextComponent } from '../components/editable-text/editable-text
 import { RegistrationGuardService } from '../../shared/guards/registration-guard.service';
 import { ConnectorService } from '../../shared/services/connector.service';
 import { FuseInfoDialogComponent } from '../components/info-dialog/info-dialog.component';
+import { FuseConfirmTextYesNoDialogComponent } from '../components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
 
 @NgModule({
     declarations   : [
@@ -50,6 +51,7 @@ import { FuseInfoDialogComponent } from '../components/info-dialog/info-dialog.c
         FuseMatSidenavTogglerDirective,
         FuseConfirmDialogComponent,
         FuseConfirmYesNoDialogComponent,
+        FuseConfirmTextYesNoDialogComponent,
         FuseInfoDialogComponent,
         FuseCountdownComponent,
         FuseHljsComponent,
@@ -104,6 +106,7 @@ import { FuseInfoDialogComponent } from '../components/info-dialog/info-dialog.c
     entryComponents: [
         FuseConfirmDialogComponent,
         FuseConfirmYesNoDialogComponent,
+        FuseConfirmTextYesNoDialogComponent,
         FuseInfoDialogComponent
     ],
     providers      : [

@@ -29,6 +29,18 @@ export class PayrollService {
             .catch(this.handleError);
     }
 
+    deletePayroll(id: number): Observable<any> {
+        const url = `${BASE_URL}/payroll/${id}`;
+        return this.http.delete(url)
+            .catch(this.handleError);
+    }
+
+    rejectPayroll(id: number, reason: string): Observable<any> {
+        const url = `${BASE_URL}/payroll/${id}/reject`;
+        return this.http.put(url, { reason })
+            .catch(this.handleError);
+    }
+
     generatePayroll(type, from, to, completedOnly, trackingOptionId = null): Observable<any> {
         let url = `${BASE_URL}/payroll/generate/${type}/${from}/${to}/${completedOnly}`;
         if (trackingOptionId) {
@@ -62,6 +74,12 @@ export class PayrollService {
     payPayrollWithXtrm(payrollId: number): Promise<any> {
         const url = `${BASE_URL}/payroll/${payrollId}/xtrm/pay`;
         return this.http.post(url, {}).toPromise();
+    }
+
+    recordPayment(ids: any[]): Observable<any> {
+        const url = `${BASE_URL}/payrolls/recordPayment`;
+        return this.http.put(url, { ids })
+            .catch(this.handleError);
     }
 
     getPayrollDates(date: string = ''): Promise<any> {
