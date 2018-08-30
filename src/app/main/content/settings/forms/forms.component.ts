@@ -167,7 +167,7 @@ export class SettingsFormsComponent implements OnInit, OnDestroy {
             };
 
             this.trackingOptions = categories.map(c => {
-                const os = options.filter(o => o.tracking_cat_id === c.id);
+                const os = options.filter(o => +o.tracking_cat_id === c.id);
                 c.options = os;
                 return c;
             });
