@@ -165,7 +165,7 @@ export class NewShiftComponent implements OnInit {
 
                 const clientId = this.shiftForm.getRawValue().client_id;
                 if (clientId) {
-                    const index = response.clients.findIndex(v => v.id === clientId);
+                    const index = response.clients.findIndex(v => v.id == clientId);
                     if (index > -1) {
                         const clientName = response.clients[index].cname;
                         this.clientControl.patchValue(clientName);
