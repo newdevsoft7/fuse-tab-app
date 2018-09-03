@@ -2,13 +2,9 @@ import { Component, OnInit, ViewEncapsulation, Input, IterableDiffers } from '@a
 import { ToastrService } from 'ngx-toastr';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatInput, MatDatepickerInputEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDatepickerInputEvent } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
-import {
-    debounceTime, distinctUntilChanged,
-    first, map, startWith, switchMap
-} from 'rxjs/operators';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -17,7 +13,6 @@ import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { Tab } from '../../../../tab/tab';
-import { TAB } from '../../../../../constants/tab';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';
 
@@ -84,7 +79,6 @@ export class NewShiftComponent implements OnInit {
 
     // Location
     filteredLocations = [];
-    locationControl: FormControl = new FormControl();
 
     // Client
     filteredClients = [];
@@ -100,9 +94,7 @@ export class NewShiftComponent implements OnInit {
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
         private tabService: TabService,
-        private scheduleService: ScheduleService,
-        private tokenStorage: TokenStorage,
-        differs: IterableDiffers) {
+        private scheduleService: ScheduleService) {
         this.formErrors = {
             title: {}
         };
@@ -201,7 +193,7 @@ export class NewShiftComponent implements OnInit {
         };
 
         // Location Autocomplete
-        this.locationControl.valueChanges
+        this.shiftForm.controls['location'].valueChanges
             .debounceTime(300)
             .distinctUntilChanged()
             .subscribe(val => {
