@@ -6,7 +6,8 @@
         [columnMode]="'force'"
         [headerHeight]="0"
         [footerHeight]="0"
-        [rowHeight]="50">
+        [rowHeight]="50"
+        [messages]="{emptyMessage: 'no unavailability entered'}">
 
         <ngx-datatable-column prop="title">
             <ng-template let-value="value" ngx-datatable-cell-template>
