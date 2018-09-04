@@ -1,89 +1,86 @@
-<div id="shifts-export-as-pdf-container" class="page-layout simple fullwidth" fusePerfectScrollbar>
+<div id="invoice" class="compact page-layout blank" fxLayout="row">
 
-    <!-- CONTENT -->
-    <div class="content mat-white-bg" [ngClass.gt-xs]="'p-12'">
+    <div class="invoice-container" [ngClass.gt-xs]="'px-64 pb-64 pt-20'">
+        <!-- INVOICE -->
+        <div class="card">
 
-        <!-- BASIC -->
-        <div class="box info-box" fxLayout="column">
-            <header class="mat-accent-bg">
-                &nbsp;
-            </header>
-
-            <div class="content" fxLayout="column">
-
-                <!-- DATE RANGE SELECTOR -->
-                <div class="info-line" fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="8px">
-                    <mat-form-field class="date-picker">
-                        <input matInput [matDatepicker]="fromPicker" placeholder="From" [(ngModel)]="period.from">
-                        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #fromPicker></mat-datepicker>
-                    </mat-form-field>
-
-                    <mat-form-field class="date-picker">
-                        <input matInput [matDatepicker]="toPicker" placeholder="To" [(ngModel)]="period.to">
-                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                        <mat-datepicker #toPicker></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <!-- / DATE RANGE SELECTOR -->
-
-                <!-- MANAGERS -->
-                <div class="info-line">
-                    <app-custom-multi-select [autocompleteObservable]="managers$" [placeholder]="'Managers'" [labelBy]="'name'"
-                        [valueBy]="'id'" [(value)]="managers"></app-custom-multi-select>
-                </div>
-                <!-- / MANAGERS -->
-
-                <!-- WORK AREAS -->
-                <div class="info-line">
-                    <app-custom-multi-select [autocompleteObservable]="workareas$" [labelBy]="'aname'" [valueBy]="'id'"
-                        placeholder="Work areas" [(value)]="workareas"></app-custom-multi-select>
-                </div>
-                <!-- / WORK AREAS -->
-
-                <!-- TRACKING CATEGORIES -->
-                <div class="info-line" *ngFor="let category of categories">
-                    <app-static-multi-select [source]="category.tracking_options" [labelBy]="'oname'" [valueBy]="'id'"
-                        [(value)]="category.value" [placeholder]="category.cname"></app-static-multi-select>
-                </div>
-                <!-- / TRACKING CATEGORIES -->
-
-            </div>
-        </div>
-        <!-- / BASIC -->
-
-        <!-- OPTIONS -->
-        <div class="box info-box" fxLayout="column">
-            <header class="mat-accent-bg">
-                Options
-            </header>
-
-            <div class="content" fxLayout="column">
-                <div class="info-line mb-8">
+            <div class="header">
+                <div fxLayout="row" fxLayoutAlign="space-between stretch">
+                    <div class="info">
+                        <div class="overview">Shift Overview</div>
+                        <div>
+                            <div class="due-date">
+                                <span class="title">From:</span>
+                                <span class="date">Tuesday 1st Septemper 2018</span>
+                            </div>
+                            <div class="due-date">
+                                <span class="title">To:</span>
+                                <span class="date">Saturday 7th Septemper 2018</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="logo">
+                        <img src="assets/images/logos/staffconnect.svg">
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- / OPTIONS -->
-
-        <!-- EXTRA USER INFO -->
-        <div class="box info-box" fxLayout="column">
-            <header class="mat-accent-bg">
-                Extra User Info
-            </header>
 
             <div class="content">
-                <div class="info-line">
-                    <!-- TOOD -->
+                <div *ngFor="let shift of shifts" class="shift">
+                    <div class="info">
+                        <span class="date">{{shift.date | date: 'mediumDate'}}</span>,
+                        <span class="title ml-8">{{shift.title}}</span>
+                    </div>
+                    <table class="simple invoice-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Shift Time</th>
+                                <th>Time In</th>
+                                <th>Time Out</th>
+                                <th>Total</th>
+                                <th>Role</th>
+                                <th>Name</th>
+                                <th>Signature</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let staff of shift.staffs">
+                                <td>
+                                    <img [src]="staff.ppic">
+                                </td>
+                                <td>
+                                    {{staff.time}}
+                                </td>
+                                <td>
+                                    {{staff.timeIn}}
+                                </td>
+                                <td>
+                                    {{staff.timeOut}}
+                                </td>
+                                <td>
+                                    {{staff.total}} hrs
+                                </td>
+                                <td>
+                                    {{staff.role}}
+                                </td>
+                                <td>
+                                    {{staff.name}}
+                                </td>
+                                <td>
+                                    {{staff.signature}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
-        <!-- / EXTRA USER INFO -->
 
-        <div class="mt-20">
-            <button mat-raised-button color="accent" (click)="export()">Export</button>
+                <table class="simple invoice-table-footer">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
-    <!-- / CONTENT -->
-
 </div>

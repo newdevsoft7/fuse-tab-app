@@ -1,3 +1,80 @@
-<p>
-  This feature is not currently available.
-</p>
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Export shifts as PDF</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        
+        <ng-container *ngIf="shiftIds.length > 0">
+            <div class="mb-8">{{shiftIds.length}} {{shiftIds.length > 1 ? 'shifts' : 'shift'}} selected.</div>
+        </ng-container>
+
+        <ng-container *ngIf="groupIds.length > 0">
+            <div class="mb-8">{{groupIds.length}} {{groupIds.length > 1 ? 'groups' : 'group'}} selected.</div>
+        </ng-container>
+
+        <ng-container *ngIf="shiftIds.length === 0 && groupIds.length === 0">
+            <fieldset>
+                <legend>Filters</legend>
+                <div>
+                    <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutAlign="start" fxLayoutGap="8px">
+                        <mat-form-field class="date-picker" fxFlex>
+                            <input matInput [matDatepicker]="fromPicker" placeholder="From" [(ngModel)]="period.from">
+                            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromPicker></mat-datepicker>
+                        </mat-form-field>
+                    
+                        <mat-form-field class="date-picker" fxFlex>
+                            <input matInput [matDatepicker]="toPicker" placeholder="To" [(ngModel)]="period.to">
+                            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #toPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+    
+                    <app-custom-multi-select-group [autocompleteObservable]="filtersObservable"
+                        placeholder="Filters"
+                        [labelBy]="'text'" [valueBy]="'id'" [(value)]="filter"></app-custom-multi-select-group>
+
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button mat-icon-button *ngFor="let flag of flags" (click)="toggleFlagClick(flag)"
+                            (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
+                            <ng-template [ngIf]="flag.set !== 0" [ngIfElse]="showNegative">
+                            <mat-icon [ngStyle]="{'color': flag.set !== 2 ? flag.color: ''}">flag</mat-icon>
+                            </ng-template>
+                            <ng-template #showNegative>
+                            <mat-icon>highlight_off</mat-icon>
+                            </ng-template>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+            
+        </ng-container>
+
+        <fieldset>
+            <legend>Display</legend>
+            <div fxLayout="column">
+                <ng-container *ngFor="let column of columns">
+                    <div fxFlex class="mb-8" *ngIf="column.name != 'thr'">
+                        <mat-checkbox [(ngModel)]="column.checked">{{column.label}}</mat-checkbox>
+                    </div>
+                    <div fxFlex class="mb-8" *ngIf="column.name == 'thr'">
+                        <mat-checkbox [(ngModel)]="column.checked">{{column.label}}</mat-checkbox>
+                        <mat-checkbox class="ml-8" [(ngModel)]="column.populate.checked" [disabled]="!column.checked">{{column.populate.label}}</mat-checkbox>
+                    </div>
+                </ng-container>
+            </div>
+        </fieldset>
+
+        <app-custom-multi-select [autocompleteObservable]="extraUserInfo$" [placeholder]="'Extra User info'"    
+            [labelBy]="'text'" [valueBy]="'id'" [(ngModel)]="extraUserInfo"></app-custom-multi-select>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16">
+        <button mat-raised-button color="accent" (click)="export()" cdkFocusInitial>Export</button>
+    </div>
+
+</div>

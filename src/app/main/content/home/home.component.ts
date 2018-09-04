@@ -456,7 +456,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                                     'type': 'item',
                                     'function': () => {
                                         this.dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
-                                            panelClass: 'admin-shift-export-as-pdf-dialog',
+                                            panelClass: 'admin-shift-exports-as-pdf-dialog',
                                             disableClose: false,
                                             data: {}
                                         });

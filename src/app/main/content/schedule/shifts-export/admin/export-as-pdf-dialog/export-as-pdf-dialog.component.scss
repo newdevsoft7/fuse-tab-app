@@ -1,0 +1,41 @@
+@import "src/app/core/scss/fuse";
+
+.admin-shift-exports-as-pdf-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up('xs') {
+        width: 800px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+        overflow: hidden;
+
+        .mat-toolbar {
+            min-height: initial;
+        }
+
+        .toolbar-bottom {
+            height: auto;
+        }
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    fieldset {
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        margin-bottom: 16px;
+
+        legend {
+            padding: 0 4px;
+        }
+    }
+}

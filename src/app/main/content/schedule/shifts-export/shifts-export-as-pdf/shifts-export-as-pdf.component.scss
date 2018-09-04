@@ -1,70 +1,325 @@
 @import "src/app/core/scss/fuse";
 
-#shifts-export-as-pdf-container {
+:host {
 
-    .content {
+    #invoice {
 
-        .full-width {
-            width: 100%;
+        &.compact {
+            padding: 0;
+            overflow: visible;
+
+            .invoice-container {
+
+                .card {
+                    min-width: 1020px;  
+                    padding: 64px 88px;
+                    background: #FFFFFF;
+                    overflow: hidden;
+                    @include mat-elevation(7);
+
+                    .header {
+
+                        .info {
+                            .overview {
+                                font-size: 24px;
+                                color: rgba(0, 0, 0, 0.54);
+                                padding-bottom: 8px;
+                            }
+
+                            .due-date {
+                                font-size: 16px;
+                                
+                                .title {
+                                    color: rgba(0, 0, 0, 0.54);
+                                }
+
+                                .date {
+                                    padding-left: 6px;
+                                }
+                            }
+
+                        }
+
+                        .logo {
+                            width: 96px;
+                            padding: 0 8px;
+                            border-right: 1px solid rgba(255, 255, 255, 0.7);
+                        }
+                    }
+
+                    .content {
+
+                        .shift {
+                            margin-top: 64px;
+
+                            .title {
+                                font-size: 16px;
+                                font-weight: bold;
+                            }
+                        }
+
+                        .invoice-table {
+                            font-size: 15px;
+
+                            thead {
+
+                                tr {
+
+                                    th {
+
+                                        &:first-child {
+                                            padding-left: 8px;
+                                        }
+
+                                        &:last-child {
+                                            padding-right: 8px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            tbody {
+
+                                tr {
+
+                                    td {
+
+                                        &:first-child {
+                                            padding-left: 8px;
+                                        }
+
+                                        &:last-child {
+                                            padding-right: 8px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .title {
+                                font-size: 16px;
+                            }
+
+                            .detail {
+                                margin-top: 8px;
+                                font-size: 12px;
+                                color: rgba(0, 0, 0, 0.54);
+                                max-width: 360px;
+                            }
+                        }
+
+                        .invoice-table-footer {
+                            margin: 32px 0 72px 0;
+
+                            tr {
+
+                                td {
+                                    text-align: right;
+                                    font-size: 16px;
+                                    font-weight: 500;
+                                    color: rgba(0, 0, 0, 0.54);
+                                    border-bottom: none;
+                                    padding: 4px 8px;
+
+                                    &:first-child {
+                                        text-align: left;
+                                    }
+                                }
+
+                                &.discount {
+
+                                    td {
+                                        padding-bottom: 32px;
+                                    }
+                                }
+
+                                &.total {
+
+                                    td {
+                                        padding: 24px 8px;
+                                        border-top: 1px solid rgba(0, 0, 0, 0.12);
+                                        font-size: 35px;
+                                        font-weight: 300;
+                                        color: rgba(0, 0, 0, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .footer {
+
+                        .note {
+                            font-size: 15px;
+                            font-weight: 500;
+                            margin-bottom: 24px;
+                        }
+
+                        // IE10 fix
+                        .logo, .small-note {
+                            -ms-flex: 0 1 auto;
+                        }
+
+                        .logo {
+                            width: 32px;
+                            min-width: 32px;
+                            margin-right: 24px;
+                        }
+
+                        .small-note {
+                            font-size: 12px;
+                            font-weight: 500;
+                            color: rgba(0, 0, 0, 0.54);
+                            line-height: 18px;
+                        }
+                    }
+                }
+            }
         }
     }
 
-    .box {
-        margin-bottom: 16px;
-        @include mat-elevation(4);
+    /* PRINT STYLES */
+    @media print {
 
-        header {
-            padding: 16px;
+        /* Invoice Specific Styles */
+        #invoice {
 
-            .title {
-                font-size: 17px;
-            }
+            &.compact {
 
-            .more {
-                cursor: pointer;
-            }
-        }
+                .invoice-container {
+                    padding: 0;
 
-        .content {
-            padding: 16px;
-            background-color: #FFF;
+                    .card {
+                        width: 100%;
+                        min-width: 0;
+                        background: none;
+                        padding: 0;
+                        box-shadow: none;
 
-            .general {
+                        .header {
 
-                @include media-breakpoint('xs') {
-                    width: 100%;
-                }
+                        }
 
-                @include media-breakpoint-up('xs') {
-                    width: 50%;
-                }
-            }
+                        .content {
 
-        }
+                            .shift {
+                                margin-top: 24pt;
 
-        footer {
-            padding: 8px;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            background-color: rgba(0, 0, 0, 0.06);
-        }
+                                .title {
+                                    font-weight: normal;
+                                }
+                            }
 
-        &.info-box {
+                            .invoice-table {
 
-            .info-line {
-                margin-bottom: 4px;
+                                thead {
 
-                .title {
-                    font-size: 15px;
-                    font-weight: 500;
-                    padding-bottom: 4px;
-                }
+                                    tr {
 
-                .info {
+                                        th {
+                                            font-size: 10pt;
+                                            max-width: 60pt;
 
-                }
+                                            &:first-child {
+                                                padding-left: 0;
+                                            }
 
-                &:last-child {
-                    margin-bottom: 0;
+                                            &:last-child {
+                                                padding-right: 0;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                tbody {
+
+                                    tr {
+
+                                        td {
+
+                                            &:first-child {
+                                                padding-left: 0;
+                                            }
+
+                                            &:last-child {
+                                                padding-right: 0;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .title {
+                                    font-size: 10pt;
+                                }
+
+                                .detail {
+                                    margin-top: 4pt;
+                                    font-size: 9pt;
+                                    max-width: none;
+                                }
+                            }
+
+                            .invoice-table-footer {
+                                margin: 16pt 0;
+
+                                tr {
+
+                                    td {
+                                        font-size: 13pt;
+                                        padding: 4pt 4pt;
+
+                                        &:first-child {
+                                            text-align: left;
+                                            padding-left: 0;
+                                        }
+
+                                        &:last-child {
+                                            padding-right: 0;
+                                        }
+                                    }
+
+                                    &.discount {
+
+                                        td {
+                                            padding-bottom: 16pt;
+                                        }
+                                    }
+
+                                    &.total {
+
+                                        td {
+                                            padding: 16pt 4pt 0 4pt;
+                                            font-size: 16pt;
+
+                                            &:first-child {
+                                                padding-left: 0;
+                                            }
+
+                                            &:last-child {
+                                                padding-right: 0;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .footer {
+
+                            .note {
+                                font-size: 10pt;
+                                margin-bottom: 8pt;
+                            }
+
+                            .logo {
+                                margin-right: 8pt;
+                            }
+
+                            .small-note {
+                                font-size: 8pt;
+                                line-height: normal;
+                            }
+                        }
+                    }
                 }
             }
         }
