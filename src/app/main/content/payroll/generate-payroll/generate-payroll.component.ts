@@ -91,6 +91,10 @@ export class GeneratePayrollComponent implements OnInit {
 
         this.type = this.actionService.selectedPayrollType || 'invoice';
         this.onTypeChange();
+
+        if (this.currentUser.lvl === 'staff') {
+            this.categories[0] = 'shift';
+        }
     }
 
     async onTypeChange() {
@@ -218,28 +222,51 @@ export class GeneratePayrollComponent implements OnInit {
 
     savePayrolls() {
         const ids = [];
-        _.forEach(this.payrolls, payroll => {
-            _.forEach(this.categories, category => {
-                _.forEach(payroll[category], line => {
-                    if (!ids[payroll.user_id]) { ids[payroll.user_id] = []; }
-                    ids[payroll.user_id].push(line.id);
+        const formData = new FormData();
+        if (this.currentUser.lvl !== 'staff') {
+            formData.append('type', this.type);
+            formData.append('completed_only', this.completedOnly ? '1' : '0');
+            formData.append('per_shift', '1');
+
+            _.forEach(this.payrolls, payroll => {
+                _.forEach(this.categories, category => {
+                    _.forEach(payroll[category], line => {
+                        if (!ids[payroll.user_id]) { ids[payroll.user_id] = []; }
+                        ids[payroll.user_id].push(line.id);
+                    });
                 });
             });
-        });
-        const formData = new FormData();
-        formData.append('type', this.type);
+
+            // Payroll Ids
+            ids.forEach((items, index) => {
+                if (!items) { return; }
+                items.forEach(id => formData.append(`payroll[${index}][]`, id));
+            });
+        } else {
+            _.forEach(this.payrolls, payroll => {
+                _.forEach(this.categories, category => {
+                    _.forEach(payroll[category], line => {
+                        ids.push(line.id);
+                    });
+                });
+            });
+            // Payroll Ids
+            ids.forEach((id, index) => {
+                formData.append(`payroll[]`, id);
+            });
+        }
         formData.append('from', moment(this.from).format('YYYY-MM-DD'));
         formData.append('to', moment(this.to).format('YYYY-MM-DD'));
-        formData.append('completed_only', this.completedOnly ? '1' : '0');
-        formData.append('per_shift', '1');
 
-        // Payroll Ids
-        ids.forEach((items, index) => {
-            if (!items) { return; }
-            items.forEach(id => formData.append(`payroll[${index}][]`, id));
-        });
+        let savePayroll$;
 
-        this.payrollService.savePayroll(formData).subscribe(res => {
+        if (this.currentUser.lvl === 'staff') {
+            savePayroll$ = this.payrollService.saveStaffInvoice(formData);
+        } else {
+            savePayroll$ = this.payrollService.savePayroll(formData);
+        }
+
+        savePayroll$.subscribe(res => {
             this.toastr.success(res.message);
             this.payrolls = [];
             this.actionService.payrollsChanged$.next(true);
