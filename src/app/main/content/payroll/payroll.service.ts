@@ -61,6 +61,11 @@ export class PayrollService {
         return this.http.post(url, params).catch(this.handleError);
     }
 
+    saveStaffInvoice(params): Observable<any> {
+        const url = `${BASE_URL}/staffInvoice/save`;
+        return this.http.post(url, params).catch(this.handleError);
+    }
+
     getUsers(query): Observable<any> {
         const url = `${AUTOCOMPLETE_URL}/users/thiscompany/${query}`;
         return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);

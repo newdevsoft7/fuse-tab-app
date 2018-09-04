@@ -486,7 +486,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     payMenu.children = [
                         {
                             'id': 'new_invoice',
-                            'title': 'New Invoice',
+                            'title': 'Generate Invoice',
                             'translate': 'NAV.STAFF.NEW_INVOICE',
                             'type': 'item',
                             'tab': TAB.STAFF_NEW_INVOICE_TAB

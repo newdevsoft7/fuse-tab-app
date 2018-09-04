@@ -68,12 +68,8 @@
                 <mat-divider class="my-32"></mat-divider>
 
                 <div class="payroll" fxLayout="row wrap" fxLayoutAlign="start start">
-                    <div class="payroll-avatar mr-32">
-                        <img [src]="payroll.ppic_a" [matTooltip]="payroll.name"/>
-                    </div>
-
                     <div fxFlex="1 0 auto">
-                        <h2>{{payroll.name}}</h2>
+                        <h2>Invoice {{payroll.id + 1}}</h2>
                         <ng-container *ngFor="let category of categories">
                             <div *ngIf="payroll[category].length > 0" class="category">
                                 <h3 class="name">{{category}}</h3>
