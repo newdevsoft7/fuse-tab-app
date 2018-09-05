@@ -72,28 +72,27 @@ export class GeneratePayrollComponent implements OnInit {
         this.from = moment().subtract(2, 'week').toDate();
         this.to = moment().toDate();
 
-        this.getTrackingOptions();
-
-        this.trackingFilter
-            .valueChanges
-            .map(value => typeof value === 'string' ? value : value.oname)
-            .subscribe(val => {
-                this.filteredOptions = [];
-                this.trackingOptions.forEach(c => {
-                    const category = { ...c };
-                    const options = c.options.filter(o => o.oname.toLowerCase().includes(val.toLowerCase()));
-                    if (options.length > 0) {
-                        category.options = options;
-                        this.filteredOptions.push(category);
-                    }
-                });
-            });
-
         this.type = this.actionService.selectedPayrollType || 'invoice';
         this.onTypeChange();
 
         if (this.currentUser.lvl === 'staff') {
             this.categories[0] = 'shift';
+        } else {
+            this.getTrackingOptions();
+            this.trackingFilter
+                .valueChanges
+                .map(value => typeof value === 'string' ? value : value.oname)
+                .subscribe(val => {
+                    this.filteredOptions = [];
+                    this.trackingOptions.forEach(c => {
+                        const category = { ...c };
+                        const options = c.options.filter(o => o.oname.toLowerCase().includes(val.toLowerCase()));
+                        if (options.length > 0) {
+                            category.options = options;
+                            this.filteredOptions.push(category);
+                        }
+                    });
+                });
         }
     }
 
@@ -252,7 +251,7 @@ export class GeneratePayrollComponent implements OnInit {
             });
             // Payroll Ids
             ids.forEach((id, index) => {
-                formData.append(`payroll[]`, id);
+                formData.append(`payroll[${this.currentUser.id}][]`, id);
             });
         }
         formData.append('from', moment(this.from).format('YYYY-MM-DD'));
