@@ -6,9 +6,20 @@
         <div class="user-info" [ngClass.sm]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start end">
             <img class="profile-image avatar huge w-md-156 h-md-156" [src]="avatarUrl" (click)="openPhotoTab()">
             <div class="user-info" fxLayout="column">
-                <div class="name">
-                    {{userInfo.fname}} {{userInfo.lname}}
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div class="name">
+                        {{userInfo.fname}} {{userInfo.lname}}
+                    </div>
+                    <ng-container *ngIf="currentUser.lvl == 'admin' || currentUser.lvl == 'owner'">
+                        <button mat-icon-button (click)="login()" matTooltip="Login">
+                            <mat-icon class="white-fg">vpn_key</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="chat()" matTooltip="Chat">
+                            <mat-icon class="white-fg">chat</mat-icon>
+                        </button>
+                    </ng-container>
                 </div>
+                
                 <div class="ml-8 white-fg" style="text-transform:capitalize;">
                     {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ? "&sdot; "+userInfo.city
                     : ""}} {{userInfo.state ? ", "+userInfo.state : ""}}

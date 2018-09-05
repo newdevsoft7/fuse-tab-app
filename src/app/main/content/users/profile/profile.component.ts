@@ -5,6 +5,10 @@ import { MatDialog, MatDialogRef, MatTabGroup, MatTab, MatTabChangeEvent } from 
 import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-dialog/confirm-dialog.component";
 import { UserService } from '../user.service';
 import { UsersProfileCardsComponent } from './cards/cards.component';
+import { AuthenticationService } from '../../../../shared/services/authentication.service';
+import { Router } from '@angular/router';
+import { NewMessageDialogComponent } from './dialogs/new-message-dialog/new-message-dialog.component';
+import { UsersChatService } from '../chat/chat.service';
 
 
 @Component({
@@ -42,6 +46,9 @@ export class UsersProfileComponent implements OnInit {
 		private userService: UserService,
 		private toastr: ToastrService,
 		private dialog: MatDialog,
+		private authService: AuthenticationService,
+		private chatService: UsersChatService,
+		private router: Router
 	) { }
 
 	ngOnInit() {
@@ -137,7 +144,7 @@ export class UsersProfileComponent implements OnInit {
 				['registrant'].some(v => this.userInfo.lvl.indexOf(v) > -1);
 			this.isSettingsShow =
 				['owner', 'admin', 'staff', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1) && (this.currentUser.id == this.user.id || this.currentUser.lvl == 'owner' || (this.currentUser.lvl == 'admin' && this.userInfo.lvl != 'admin' && this.userInfo.lvl != 'owner'));
-			this.isCardsShow = 
+			this.isCardsShow =
 				['owner', 'admin', 'staff'].indexOf(this.userInfo.lvl) > -1 && ['owner', 'admin'].indexOf(this.currentUser.lvl) > -1 && this.settings.showcase_module == 1;
 			if (['owner', 'client', 'ext'].some(v => this.userInfo.lvl.indexOf(v) > -1)) {
 				this.isWorkAreasShow = false;
@@ -147,7 +154,7 @@ export class UsersProfileComponent implements OnInit {
 
 			this.ratings = await this.userService.getUserRatings(this.user.id);
 			if (this.userInfo.linked === 1 && this.userInfo.id === this.currentUser.id
-					&& !this.tokenStorage.isExistSecondaryUser()) {
+				&& !this.tokenStorage.isExistSecondaryUser()) {
 				this.linkedUsers = await this.userService.getLinkedAccounts(this.user.id);
 			}
 		} catch (e) {
@@ -180,6 +187,39 @@ export class UsersProfileComponent implements OnInit {
 		if (event.tab.textLabel === 'Cards') {
 			setTimeout(() => this.cardsTab.drawer.open(), 100);
 		}
+	}
+
+	async login() {
+		try {
+			const res = await this.authService.loginAs(this.user.id);
+			this.tokenStorage.setSecondaryUser(res.user);
+			this.tokenStorage.userSwitchListener.next(true);
+			if (res.user.lvl.startsWith('registrant')) {
+				const currentStep = this.authService.getCurrentStep();
+				this.router.navigate(['/register', currentStep]);
+			}
+		} catch (e) {
+			this.toastr.error((e.error ? e.error.message : e.message) || 'Something is wrong');
+		}
+	}
+
+	chat() {
+		const dialogRef = this.dialog.open(NewMessageDialogComponent, {
+			panelClass: 'new-message-dialog'
+		});
+		dialogRef.afterClosed().subscribe(async message => {
+			if (!message) {
+				return;
+			}
+			try {
+				await this.chatService.sendMessage({
+					recipient_id: this.user.id,
+					content: message
+				});
+			} catch (e) {
+				this.displayError(e);
+			}
+		});
 	}
 
 	private displayError(e: any) {

@@ -69,6 +69,7 @@ import { UserWithdrawDialogComponent } from './profile/settings/xtrm/dialogs/wit
 import { UsersProfileCardsComponent } from './profile/cards/cards.component';
 import { ProfileCardsPhotoGalleryDialogComponent } from './profile/cards/dialogs/photo-gallery-dialog/photo-gallery-dialog.component';
 import { ProfileCardsVideoGalleryDialogComponent } from './profile/cards/dialogs/video-gallery-dialog/video-gallery-dialog.component';
+import { NewMessageDialogComponent } from './profile/dialogs/new-message-dialog/new-message-dialog.component';
 
 @NgModule({
     imports: [
@@ -142,7 +143,8 @@ import { ProfileCardsVideoGalleryDialogComponent } from './profile/cards/dialogs
         UserWithdrawDialogComponent,
         UsersProfileCardsComponent,
         ProfileCardsPhotoGalleryDialogComponent,
-        ProfileCardsVideoGalleryDialogComponent
+        ProfileCardsVideoGalleryDialogComponent,
+        NewMessageDialogComponent
     ],
     exports: [
         UsersComponent,
@@ -185,7 +187,8 @@ import { ProfileCardsVideoGalleryDialogComponent } from './profile/cards/dialogs
         AddToPresenationDialogComponent,
         UserWithdrawDialogComponent,
         ProfileCardsPhotoGalleryDialogComponent,
-        ProfileCardsVideoGalleryDialogComponent
+        ProfileCardsVideoGalleryDialogComponent,
+        NewMessageDialogComponent
     ]
 })
 export class UsersModule { }
