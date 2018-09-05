@@ -11,11 +11,11 @@
                         {{userInfo.fname}} {{userInfo.lname}}
                     </div>
                     <ng-container *ngIf="currentUser.lvl == 'admin' || currentUser.lvl == 'owner'">
-                        <button mat-icon-button (click)="login()" matTooltip="Login">
-                            <mat-icon class="white-fg">vpn_key</mat-icon>
+                        <button mat-icon-button (click)="login()" matTooltip="Login as user">
+                            <mat-icon>vpn_key</mat-icon>
                         </button>
                         <button mat-icon-button (click)="chat()" matTooltip="Chat">
-                            <mat-icon class="white-fg">chat</mat-icon>
+                            <mat-icon>chat</mat-icon>
                         </button>
                     </ng-container>
                 </div>
