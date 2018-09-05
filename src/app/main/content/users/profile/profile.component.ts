@@ -192,7 +192,7 @@ export class UsersProfileComponent implements OnInit {
 	async login() {
 		try {
 			const res = await this.authService.loginAs(this.user.id);
-			this.tokenStorage.setSecondaryUser(res.user);
+			this.tokenStorage.setSecondaryUser(res.user, res.permissions);
 			this.tokenStorage.userSwitchListener.next(true);
 			if (res.user.lvl.startsWith('registrant')) {
 				const currentStep = this.authService.getCurrentStep();

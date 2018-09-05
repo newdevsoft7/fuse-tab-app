@@ -133,7 +133,8 @@ export class AuthenticationService {
       this.tokenStorage.removeSecondaryUser();
       this.favicoService.setBadge(0);
       try {
-        await this.logoutAs();
+        const res = await this.logoutAs();
+        this.tokenStorage.setPermissions(res.permissions);
       } catch (e) {}
       this.tokenStorage.userSwitchListener.next(true);
     } else {

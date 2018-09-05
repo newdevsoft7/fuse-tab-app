@@ -133,8 +133,11 @@ export class TokenStorage {
     /**
      * Set secondary user information
      */
-    public setSecondaryUser(user: any) {
+    public setSecondaryUser(user: any, permissions?: any) {
         localStorage.setItem('secondaryUser', JSON.stringify(user));
+        if (permissions) {
+            localStorage.setItem('permissions', JSON.stringify(permissions));
+        }
     }
 
     /**

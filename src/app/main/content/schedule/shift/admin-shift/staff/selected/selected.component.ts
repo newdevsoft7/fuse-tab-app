@@ -143,8 +143,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     async loginAsUser(staff: any) {
         try {
             const res = await this.authService.loginAs(staff.user_id);
-            //this.toastr.success(res.message);
-            this.tokenStorage.setSecondaryUser(res.user);
+            this.tokenStorage.setSecondaryUser(res.user, res.permissions);
             this.tokenStorage.userSwitchListener.next(true);
             if (res.user.lvl.startsWith('registrant')) {
                 const currentStep = this.authService.getCurrentStep();

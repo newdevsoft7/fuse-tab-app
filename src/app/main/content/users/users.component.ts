@@ -362,8 +362,7 @@ export class UsersComponent implements OnInit {
     async loginAsUser(user: any) {
         try {
             const res = await this.authService.loginAs(user.id);
-            //this.toastr.success(res.message);
-            this.tokenStorage.setSecondaryUser(res.user);
+            this.tokenStorage.setSecondaryUser(res.user, res.permissions);
             this.tokenStorage.userSwitchListener.next(true);
             if (res.user.lvl.startsWith('registrant')) {
                 const currentStep = this.authService.getCurrentStep();
