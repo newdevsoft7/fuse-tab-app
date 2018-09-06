@@ -66,10 +66,10 @@
                                         <img [src]="staff.user.thumb">
                                     </td>
                                     <td class="shift-time">
-                                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="4px">
-                                            <div [class.bottom-bordered]="!staff.start" fxFlex="1 0 auto">{{staff.start}}</div>
+                                        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="4px">
+                                            <div [class.bottom-bordered]="!staff.start" [fxFlex]="!staff.start ? '1 0 auto' : '0 1 auto'">{{staff.start}}</div>
                                             <div fxFlex="0 1 auto">-</div>
-                                            <div [class.bottom-bordered]="!staff.end" fxFlex="1 0 auto">{{staff.end}}</div>
+                                            <div [class.bottom-bordered]="!staff.end" [fxFlex]="!staff.end ? '1 0 auto' : '0 1 auto'">{{staff.end}}</div>
                                         </div>
                                     </td>
                                     <td *ngIf="data.columns.tio.checked">
@@ -105,47 +105,48 @@
                                         <div class="bottom-bordered"></div>
                                     </td>
                                 </tr>
-                                <tr *ngFor="let i of array(role.num_required - role.num_selected)">
-                                    <td *ngIf="data.columns.ppics.checked">
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                    <td class="shift-time">
-                                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="4px">
-                                            <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="4px">
-                                                <div [class.bottom-bordered]="!role.start" fxFlex="1 0 auto">{{role.start}}</div>
+                                
+                                <ng-container *ngIf="role.num_required > role.num_selected">
+                                    <tr *ngFor="let i of array(role.num_required - role.num_selected)">
+                                        <td *ngIf="data.columns.ppics.checked">
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                        <td class="shift-time">
+                                            <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="4px">
+                                                <div [class.bottom-bordered]="!role.start" [fxFlex]="!role.end ? '1 0 auto' : '0 1 auto'">{{role.start}}</div>
                                                 <div fxFlex="0 1 auto">-</div>
-                                                <div [class.bottom-bordered]="!role.end" fxFlex="1 0 auto">{{role.end}}</div>
+                                                <div [class.bottom-bordered]="!role.end" [fxFlex]="!role.end ? '1 0 auto' : '0 1 auto'">{{role.end}}</div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td *ngIf="data.columns.tio.checked">
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                    <td *ngIf="data.columns.tio.checked">
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                    <td *ngIf="data.columns.thr.checked">
-                                        <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p" fxLayoutGap="4px">
-                                            <div class="bottom-bordered" fxFlex="30px"></div>
-                                            <div fxFlex="20px">hrs</div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{role.rname}}
-                                    </td>
-                                    <td>
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                    <td *ngFor="let column of extraInfo">
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                    <td *ngIf="data.columns.sigs.checked">
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                    <td *ngIf="data.columns.rat.checked">
-                                        <div class="bottom-bordered"></div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td *ngIf="data.columns.tio.checked">
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                        <td *ngIf="data.columns.tio.checked">
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                        <td *ngIf="data.columns.thr.checked">
+                                            <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p" fxLayoutGap="4px">
+                                                <div class="bottom-bordered" fxFlex="30px"></div>
+                                                <div fxFlex="20px">hrs</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{role.rname}}
+                                        </td>
+                                        <td>
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                        <td *ngFor="let column of extraInfo">
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                        <td *ngIf="data.columns.sigs.checked">
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                        <td *ngIf="data.columns.rat.checked">
+                                            <div class="bottom-bordered"></div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
                             </ng-container>
                         </tbody>
                     </table>
