@@ -55,7 +55,8 @@
                                 <th>Name</th>
                                 <th *ngFor="let column of extraInfo">{{column.label}}</th>
                                 <th *ngIf="data.columns.sigs.checked">Signature</th>
-                                <th *ngIf="data.columns.rat.checked">Rating<br/>(1-10)</th>
+                                <th *ngIf="data.columns.rat.checked">Rating<br/>(1-10)
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,30 +65,85 @@
                                     <td *ngIf="data.columns.ppics.checked">
                                         <img [src]="staff.user.thumb">
                                     </td>
-                                    <td>
-                                        {{staff.start}} - {{staff.end}}
+                                    <td class="shift-time">
+                                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="4px">
+                                            <div [class.bottom-bordered]="!staff.start" fxFlex="1 0 auto">{{staff.start}}</div>
+                                            <div fxFlex="0 1 auto">-</div>
+                                            <div [class.bottom-bordered]="!staff.end" fxFlex="1 0 auto">{{staff.end}}</div>
+                                        </div>
                                     </td>
                                     <td *ngIf="data.columns.tio.checked">
-                                        {{staff.check_in ? staff.check_in : '-'}}
+                                        <div class="bottom-bordered" *ngIf="!staff.check_in"></div>
+                                        {{staff.check_in}}
                                     </td>
                                     <td *ngIf="data.columns.tio.checked">
-                                        {{staff.check_out ? staff.check_out : '-'}}
+                                        <div class="bottom-bordered" *ngIf="!staff.check_out"></div>
+                                        {{staff.check_out}}
                                     </td>
                                     <td *ngIf="data.columns.thr.checked">
-                                        {{ data.columns.thr.populate.checked ? staff.hours : '-'}} hrs
+                                        <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p" fxLayoutGap="4px">
+                                            <div class="bottom-bordered" *ngIf="!data.columns.thr.populate.checked || !staff.hours" fxFlex="30px"></div>
+                                            <div *ngIf="data.columns.thr.populate.checked && staff.hours" fxFlex="40">{{staff.hours}}</div>
+                                            <div fxFlex="20px">hrs</div>
+                                        </div>
                                     </td>
                                     <td>
                                         {{role.rname}}
                                     </td>
                                     <td>
+                                        <div class="bottom-bordered" *ngIf="!staff.user.name"></div>
                                         {{staff.user.name}}
                                     </td>
                                     <td *ngFor="let column of extraInfo">
-                                        {{staff.user.extra_info[column.id] ? staff.user.extra_info[column.id] : '-'}}
+                                        <div class="bottom-bordered" *ngIf="!staff.user.extra_info[column.id]"></div>
+                                        {{staff.user.extra_info[column.id]}}
                                     </td>
                                     <td *ngIf="data.columns.sigs.checked">
+                                        <div class="bottom-bordered"></div>
                                     </td>
                                     <td *ngIf="data.columns.rat.checked">
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let i of array(role.num_required - role.num_selected)">
+                                    <td *ngIf="data.columns.ppics.checked">
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                    <td class="shift-time">
+                                        <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="4px">
+                                            <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap="4px">
+                                                <div [class.bottom-bordered]="!role.start" fxFlex="1 0 auto">{{role.start}}</div>
+                                                <div fxFlex="0 1 auto">-</div>
+                                                <div [class.bottom-bordered]="!role.end" fxFlex="1 0 auto">{{role.end}}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="data.columns.tio.checked">
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                    <td *ngIf="data.columns.tio.checked">
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                    <td *ngIf="data.columns.thr.checked">
+                                        <div fxLayout="row" fxLayoutAlign="center center" class="w-100-p" fxLayoutGap="4px">
+                                            <div class="bottom-bordered" fxFlex="30px"></div>
+                                            <div fxFlex="20px">hrs</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{role.rname}}
+                                    </td>
+                                    <td>
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                    <td *ngFor="let column of extraInfo">
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                    <td *ngIf="data.columns.sigs.checked">
+                                        <div class="bottom-bordered"></div>
+                                    </td>
+                                    <td *ngIf="data.columns.rat.checked">
+                                        <div class="bottom-bordered"></div>
                                     </td>
                                 </tr>
                             </ng-container>
@@ -98,8 +154,18 @@
                 <table class="simple invoice-table-footer" *ngIf="data.columns.msig.checked">
                     <tbody>
                         <tr>
-                            <td>Manager Name: ________________________________________</td>
-                            <td>Signature: ___________________________________</td>
+                            <td>
+                                <div fxLayout="row" class="w-100-p" fxLayoutAlign="start end">
+                                    <div fxFlex="0 1 auto">Manager Name: </div>
+                                    <div class="bottom-bordered" fxFlex="1 0 auto"></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div fxLayout="row" class="w-100-p" fxLayoutAlign="start end">
+                                    <div fxFlex="0 1 auto">Signature: </div>
+                                    <div class="bottom-bordered" fxFlex="1 0 auto"></div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

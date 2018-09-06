@@ -48,4 +48,8 @@ export class ShiftsExportAsPdfComponent implements OnInit {
         return category ? category.label : ''; 
     }
 
+    array(n: number): any[] {
+        return Array(n);
+    }
+
 }
