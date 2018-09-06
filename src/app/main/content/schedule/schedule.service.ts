@@ -541,6 +541,11 @@ export class ScheduleService {
       .catch(e => this.displayError(e));
   }
 
+  overview(body: any = {}) {
+    const url = `${BASE_URL}/shifts/overview`;
+    return this.http.post(url, body).toPromise();
+  }
+
   getPopupContent(id: number, group?: boolean): Promise<any> {
     const url = group? `${BASE_URL}/group/${id}/popUp` : `${BASE_URL}/shift/${id}/popUp`;
     return this.http.get(url).toPromise();

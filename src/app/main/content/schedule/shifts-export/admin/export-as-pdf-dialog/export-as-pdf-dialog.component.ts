@@ -18,7 +18,6 @@ import { TabService } from '../../../../../tab/tab.service';
 export class AdminExportAsPdfDialogComponent implements OnInit {
     
     shiftIds: any[];
-    groupIds: any[];
     settings: any = {};
     flags: any[] = [];
     selectedFlags: any[] = [];
@@ -63,7 +62,6 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
         private tabService: TabService
     ) {
         this.shiftIds = data.shiftIds || [];
-        this.groupIds = data.groupIds || [];
         this.settings = this.tokenStorage.getSettings();
 
         this.flags = _.cloneDeep(this.settings.flags);
@@ -96,7 +94,7 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
             }
         });
     }
-
+    
     // Toggles Flag and Filters the Calendar Values
     toggleFlagClick(flag) {
         if (flag.set === 0 ) { return; }
@@ -120,10 +118,56 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
     }
 
 
-    export() {
-        this.dialogRef.close();
-        const tab = new Tab('Exports', 'shiftsExportAsPdfTpl', 'shifts/export', {}, true);
-        this.tabService.openTab(tab);
+    async export() {
+        let data: any = {
+            columns: this.columns.filter(v => v.name.indexOf('dtrack') < 0).reduce((a, b) => a = { ...a, [b.name]: b}, {}),
+            trackCategories: this.columns.filter(v => v.name.indexOf('dtrack') > -1 && v.checked)
+                                         .map(v => { return { label: v.label, id: +v.name.substring(6)}; })
+        };
+        let body: any = {
+            no_pay: this.columns.findIndex(v => v.name === 'np' && v.checked) > -1 ? 1 : 0
+        };
+        if (this.shiftIds.length > 0) {
+            body.shift_ids = this.shiftIds;
+        } else {
+            const from = moment(this.period.from);
+            const to = moment(this.period.to);
+            if (!from.isValid() || !to.isValid() || from.isAfter(to) ) { return; }
+            data = {
+                ...data,
+                from,
+                to
+            };
+            body = {
+                ...body,
+                from: from.format('YYYY-MM-DD'),
+                to: to.format('YYYY-MM-DD')
+            };
+            body.filter = [];
+            if (this.selectedFlags.length > 0) {
+                this.selectedFlags.forEach(v => body.filter.push(v));
+            }
+            if (this.filter.length > 0) {
+                this.filter.forEach(v => body.filter.push(v.id));
+            }
+        }
+
+        if (this.extraUserInfo.length > 0) {
+            body.extra_info = this.extraUserInfo.map(v => v.id);
+        }
+        try {
+            const shifts = await this.scheduleService.overview(body);
+            data = {
+                ...data,
+                shifts
+            };
+            const tab = new Tab('Overview', 'shiftsExportAsPdfTpl', 'shifts/overview', data, true);
+            this.tabService.openTab(tab);
+            this.dialogRef.close();
+        } catch (e) {
+            this.displayError(e);
+        }
+        
     }
 
     private displayError(e: any) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -11,50 +11,41 @@ import { ScheduleService } from '../../schedule.service';
 })
 export class ShiftsExportAsPdfComponent implements OnInit {
 
+    @Input() data: any;
+
     shifts: any[] = [];
+    extraInfo: any[] = [];
+
     constructor(
     ) {
-        _.times(15, (n) => {
-            this.shifts.push({
-                date: '2018-09-01',
-                title: 'Sample shift',
-                staffs: [
-                    {
-                        ppic: '/assets/images/avatars/female_tthumb.jpg',
-                        time: '2:00 pm - 6:00 pm',
-                        timeIn: '2:00 pm',
-                        timeOut: '6:00 pm',
-                        total: 5,
-                        role: 'Mascot',
-                        name: 'Alexander Pavlov',
-                        signature: '',
-                    },
-                    {
-                        ppic: '/assets/images/avatars/female_tthumb.jpg',
-                        time: '2:00 pm - 6:00 pm',
-                        timeIn: '2:00 pm',
-                        timeOut: '6:00 pm',
-                        total: 2,
-                        role: 'Minder',
-                        name: 'Cristiano Ronaldo',
-                        signature: '',
-                    },
-                    {
-                        ppic: '/assets/images/avatars/female_tthumb.jpg',
-                        time: '2:00 pm - 6:00 pm',
-                        timeIn: '2:00 pm',
-                        timeOut: '6:00 pm',
-                        total: 5,
-                        role: 'Mascot',
-                        name: 'Gareth Bale',
-                        signature: '',
-                    }
-                ]
-            });
-        });
     }
 
     ngOnInit() {
+
+        // Convert extra_info object to an array.
+        const extraInfo = this.data.shifts.extra_info;
+        const keys = Object.keys(extraInfo);
+        keys.forEach(key => this.extraInfo.push(
+            {
+                id: key,
+                label: extraInfo[key]
+            }
+        ));
+
+        // Filter shift tracking options by dialog options
+        this.data.shifts.data.forEach((shift, index) => {
+            this.data.shifts.data[index].tracking_options = shift.tracking_options.filter(v => this.checkOption(v));
+        });
+    }
+
+    // Check whether option display or not
+    checkOption(option) {
+        return this.data.trackCategories.findIndex(v => v.id == option.tracking_cat_id) > -1;
+    }
+
+    getTooltip(option) {
+        const category = this.data.trackCategories.find(v => v.id == option.tracking_cat_id);
+        return category ? category.label : ''; 
     }
 
 }

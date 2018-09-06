@@ -8,75 +8,99 @@
                 <div fxLayout="row" fxLayoutAlign="space-between stretch">
                     <div class="info">
                         <div class="overview">Shift Overview</div>
-                        <div>
+                        <div *ngIf="data.from">
                             <div class="due-date">
                                 <span class="title">From:</span>
-                                <span class="date">Tuesday 1st Septemper 2018</span>
+                                <span class="date">{{data.from.toDate() | date: 'EEE, MMM d, y'}}</span>
                             </div>
                             <div class="due-date">
                                 <span class="title">To:</span>
-                                <span class="date">Saturday 7th Septemper 2018</span>
+                                <span class="date">{{data.to.toDate() | date: 'EEE, MMM d, y'}}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="logo">
+                    <div class="logo" *ngIf="data.columns.logo.checked">
                         <img src="assets/images/logos/staffconnect.svg">
                     </div>
                 </div>
             </div>
 
             <div class="content">
-                <div *ngFor="let shift of shifts" class="shift">
+                <div *ngFor="let shift of data.shifts.data" class="shift">
                     <div class="info">
-                        <span class="date">{{shift.date | date: 'mediumDate'}}</span>,
-                        <span class="title ml-8">{{shift.title}}</span>
+                        <span class="date">{{shift.shift_start | date: 'EEE, MMM d, y'}}</span>,
+                        <span class="title ml-8" matTooltip="Title">{{shift.title}}</span>
+                        <span class="px-4" *ngIf="shift.location">⋅</span>
+                        <span class="secondary-text" matTooltip="Location">{{shift.location}}</span>
+                        <span class="px-4" *ngIf="data.columns.con.checked && shift.contact">⋅</span>
+                        <span class="secondary-text" matTooltip="Contact" *ngIf="data.columns.con.checked">{{shift.contact}}</span>
+                        <div class="track-options">
+                            <ng-container *ngFor="let option of shift.tracking_options; last as last">
+                                <span class="secondary-text" [matTooltip]="getTooltip(option)">
+                                    {{option.oname}}
+                                </span>
+                                <span class="px-4" *ngIf="!last">⋅</span>
+                            </ng-container>
+                        </div>
                     </div>
                     <table class="simple invoice-table">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th *ngIf="data.columns.ppics.checked"></th>
                                 <th>Shift Time</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                                <th>Total</th>
+                                <th *ngIf="data.columns.tio.checked">Time In</th>
+                                <th *ngIf="data.columns.tio.checked">Time Out</th>
+                                <th *ngIf="data.columns.thr.checked">Total</th>
                                 <th>Role</th>
                                 <th>Name</th>
-                                <th>Signature</th>
+                                <th *ngFor="let column of extraInfo">{{column.label}}</th>
+                                <th *ngIf="data.columns.sigs.checked">Signature</th>
+                                <th *ngIf="data.columns.rat.checked">Rating<br/>(1-10)</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let staff of shift.staffs">
-                                <td>
-                                    <img [src]="staff.ppic">
-                                </td>
-                                <td>
-                                    {{staff.time}}
-                                </td>
-                                <td>
-                                    {{staff.timeIn}}
-                                </td>
-                                <td>
-                                    {{staff.timeOut}}
-                                </td>
-                                <td>
-                                    {{staff.total}} hrs
-                                </td>
-                                <td>
-                                    {{staff.role}}
-                                </td>
-                                <td>
-                                    {{staff.name}}
-                                </td>
-                                <td>
-                                    {{staff.signature}}
-                                </td>
-                            </tr>
+                            <ng-container *ngFor="let role of shift.shift_roles">
+                                <tr *ngFor="let staff of role.role_staff">
+                                    <td *ngIf="data.columns.ppics.checked">
+                                        <img [src]="staff.user.thumb">
+                                    </td>
+                                    <td>
+                                        {{staff.start}} - {{staff.end}}
+                                    </td>
+                                    <td *ngIf="data.columns.tio.checked">
+                                        {{staff.check_in ? staff.check_in : '-'}}
+                                    </td>
+                                    <td *ngIf="data.columns.tio.checked">
+                                        {{staff.check_out ? staff.check_out : '-'}}
+                                    </td>
+                                    <td *ngIf="data.columns.thr.checked">
+                                        {{ data.columns.thr.populate.checked ? staff.hours : '-'}} hrs
+                                    </td>
+                                    <td>
+                                        {{role.rname}}
+                                    </td>
+                                    <td>
+                                        {{staff.user.name}}
+                                    </td>
+                                    <td *ngFor="let column of extraInfo">
+                                        {{staff.user.extra_info[column.id] ? staff.user.extra_info[column.id] : '-'}}
+                                    </td>
+                                    <td *ngIf="data.columns.sigs.checked">
+                                    </td>
+                                    <td *ngIf="data.columns.rat.checked">
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </tbody>
                     </table>
                 </div>
 
-                <table class="simple invoice-table-footer">
+                <table class="simple invoice-table-footer" *ngIf="data.columns.msig.checked">
                     <tbody>
+                        <tr>
+                            <td>Manager Name: ________________________________________</td>
+                            <td>Signature: ___________________________________</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

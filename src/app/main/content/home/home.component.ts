@@ -368,12 +368,12 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 }
 
                 // PDF
-                if (_.findIndex(exportShiftMenu.children, ['id', 'pdf_overview']) < 0) {
+                if (_.findIndex(exportShiftMenu.children, ['id', 'printable_overview']) < 0) {
                     exportShiftMenu.children.push(
                         {
-                            'id': 'pdf_overview',
-                            'title': 'PDF Overview',
-                            'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
+                            'id': 'printable_overview',
+                            'title': 'Printable Overview',
+                            'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PRINTABLE_OVERVIEW',
                             'type': 'item',
                             'function': () => {
                                 this.dialogRef = this.dialog.open(ShiftsExportAsPdfDialogComponent, {
@@ -447,12 +447,12 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         }
 
                         // PDF
-                        if (_.findIndex(exportShiftMenu.children, ['id', 'pdf_overview']) < 0) {
+                        if (_.findIndex(exportShiftMenu.children, ['id', 'printable_overview']) < 0) {
                             exportShiftMenu.children.push(
                                 {
-                                    'id': 'pdf_overview',
-                                    'title': 'PDF Overview',
-                                    'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW',
+                                    'id': 'printable_overview',
+                                    'title': 'Printable Overview',
+                                    'translate': 'NAV.ADMIN.SCHEDULE_EXPORT_SHIFTS_PRINTABLE_OVERVIEW',
                                     'type': 'item',
                                     'function': () => {
                                         this.dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {

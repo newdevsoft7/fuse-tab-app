@@ -28,7 +28,7 @@ export const locale = {
                 'SCHEDULE_IMPORT_SHIFTS_COLUMN_MAPPING': 'Column Mapping',
                 'SCHEDULE_EXPORT_SHIFTS': 'Export Shifts',
                 'SCHEDULE_EXPORT_SHIFTS_EXCEL_SPREADSHEET': 'Excel Spreadsheet',
-                'SCHEDULE_EXPORT_SHIFTS_PDF_OVERVIEW': 'PDF Overview',
+                'SCHEDULE_EXPORT_SHIFTS_PRINTABLE_OVERVIEW': 'Printable Overview',
                 'SCHEDULE_NEW_SHIFT': 'New Shift',
 
                 'FORMS': 'Forms',

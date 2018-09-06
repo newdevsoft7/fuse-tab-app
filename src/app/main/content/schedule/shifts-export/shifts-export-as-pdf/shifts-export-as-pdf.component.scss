@@ -67,7 +67,10 @@
 
                                     th {
 
+                                        text-align: center;
+
                                         &:first-child {
+                                            text-align: left;
                                             padding-left: 8px;
                                         }
 
@@ -83,8 +86,10 @@
                                 tr {
 
                                     td {
+                                        text-align: center;
 
                                         &:first-child {
+                                            text-align: left;
                                             padding-left: 8px;
                                         }
 

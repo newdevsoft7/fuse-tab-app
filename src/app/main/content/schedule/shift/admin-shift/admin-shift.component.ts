@@ -16,6 +16,8 @@ import { Tab } from '../../../../tab/tab';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
+import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
+import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 
 export enum TAB {
     Staff = 'Staff',
@@ -284,6 +286,26 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         } catch (e) {
             this.toastr.error(e.message || 'Something is wrong while fetching events.');
         }
+    }
+
+    openExportCsvDialog() {
+        const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+            panelClass: 'admin-shift-exports-as-excel-dialog',
+            disableClose: false,
+            data: { shiftIds: [this.shift.id] }
+        });
+
+        dialogRef.afterClosed().subscribe(res => { });
+    }
+
+    openOverviewDialog() {
+        const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
+            panelClass: 'admin-shift-exports-as-pdf-dialog',
+            disableClose: false,
+            data: { shiftIds: [this.shift.id] }
+        });
+
+        dialogRef.afterClosed().subscribe(res => { });
     }
 
     private displayError(e: any) {

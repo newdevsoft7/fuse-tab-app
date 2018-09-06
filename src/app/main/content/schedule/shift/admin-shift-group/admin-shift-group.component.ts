@@ -10,6 +10,8 @@ import { MatTabChangeEvent, MatDialog } from '@angular/material';
 import { GroupStaffComponent } from './staff/staff.component';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
+import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
+import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 
 export enum TAB {
     Staff = 'Staff',
@@ -140,6 +142,32 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             }
         });
         dialogRef.afterClosed().subscribe(res => {});
+    }
+
+    openExportCsvDialog() {
+        const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+            panelClass: 'admin-shift-exports-as-excel-dialog',
+            disableClose: false,
+            data: {
+                shiftIds: this.shifts.map(v => v.id),
+                isGroup: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(res => { });
+    }
+
+    openOverviewDialog() {
+        const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
+            panelClass: 'admin-shift-exports-as-pdf-dialog',
+            disableClose: false,
+            data: {
+                shiftIds: this.shifts.map(v => v.id),
+                isGroup: true
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(res => { });
     }
 
     private displayError(e: any) {

@@ -25,6 +25,7 @@ import { CustomLoadingService } from '../../../../../shared/services/custom-load
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { ShiftListEmailDialogComponent } from './email-dialog/email-dialog.component';
+import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 
 @Component({
     selector: 'app-admin-shift-list',
@@ -339,14 +340,24 @@ export class AdminShiftListComponent implements OnInit {
     }
 
     export() {
-        const shiftIds = this.selectedShifts.map(v => v.id);
-        this.dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+        const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
             panelClass: 'admin-shift-exports-as-excel-dialog',
             disableClose: false,
-            data: { shiftIds }
+            data: { shiftIds: this.selectedShifts.map(v => v.id) }
         });
 
-        this.dialogRef.afterClosed().subscribe(res => { });
+        dialogRef.afterClosed().subscribe(res => { });
+    }
+
+    overview() {
+        const shiftIds = this.selectedShifts.map(v => v.id);
+        const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
+            panelClass: 'admin-shift-exports-as-pdf-dialog',
+            disableClose: false,
+            data: { shiftIds: this.selectedShifts.map(v => v.id) }
+        });
+
+        dialogRef.afterClosed().subscribe(res => { });
     }
 
     email() {

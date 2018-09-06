@@ -2,7 +2,7 @@
 
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">Export shifts as PDF</span>
+            <span class="title dialog-title">Export shifts as printable overview</span>
         </mat-toolbar-row>
     </mat-toolbar>
 
@@ -12,11 +12,7 @@
             <div class="mb-8">{{shiftIds.length}} {{shiftIds.length > 1 ? 'shifts' : 'shift'}} selected.</div>
         </ng-container>
 
-        <ng-container *ngIf="groupIds.length > 0">
-            <div class="mb-8">{{groupIds.length}} {{groupIds.length > 1 ? 'groups' : 'group'}} selected.</div>
-        </ng-container>
-
-        <ng-container *ngIf="shiftIds.length === 0 && groupIds.length === 0">
+        <ng-container *ngIf="shiftIds.length === 0">
             <fieldset>
                 <legend>Filters</legend>
                 <div>
