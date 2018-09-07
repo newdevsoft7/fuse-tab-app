@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { ToastrService } from 'ngx-toastr';
@@ -21,6 +21,8 @@ import { MatSelectChange } from '@angular/material';
     encapsulation: ViewEncapsulation.None
 })
 export class GeneratePayrollComponent implements OnInit {
+
+    @Input() data;
 
     constructor(
         private payrollService: PayrollService,
@@ -69,7 +71,12 @@ export class GeneratePayrollComponent implements OnInit {
 
     ngOnInit() {
         this.currentUser = this.tokenStorage.getUser();
-        this.from = moment().subtract(2, 'week').toDate();
+
+        if (this.data.from) { // From staff shift invoice action
+            this.from = moment(this.data.from, 'DD/MM/YYYY').toDate();
+        } else {
+            this.from = moment().subtract(2, 'week').toDate();
+        }
         this.to = moment().toDate();
 
         this.type = this.actionService.selectedPayrollType || 'invoice';

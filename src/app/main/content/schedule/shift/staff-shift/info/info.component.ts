@@ -1,18 +1,13 @@
 import {
     Component, OnInit,
     ViewEncapsulation, Input,
-    DoCheck, IterableDiffers,
-    ViewChild,
     OnDestroy,
     EventEmitter,
     Output
 } from '@angular/core';
 
 import {
-    MatDialog, MatDialogRef,
-    MAT_DIALOG_DATA,
-    MatTabChangeEvent
-} from '@angular/material';
+    MatDialog} from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -36,6 +31,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ConnectorService } from '../../../../../../shared/services/connector.service';
 import { TabComponent } from '../../../../../tab/tab/tab.component';
 import { FuseInfoDialogComponent } from '../../../../../../core/components/info-dialog/info-dialog.component';
+import { Tab } from '../../../../../tab/tab';
 
 enum Action {
     apply = 'apply',
@@ -128,7 +124,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
             });
             dialogRef.componentInstance.title = 'QuizConnect';
             dialogRef.componentInstance.message = `Your score: ${Math.round(score)}%`;
-            dialogRef.afterClosed().subscribe(res => { });
+            dialogRef.afterClosed().subscribe(() => { });
         }
     }
 
@@ -184,6 +180,8 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
     doAction(action, role) {
         let dialogRef;
         let quizs;
+        let tab: Tab;
+
         switch (action) {
             case Action.apply:
                 quizs = role.quizs.filter(v => v.required === 1);
@@ -381,7 +379,9 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                 break;
 
             case Action.invoice:
-
+                // Open generating invoice tab
+                tab = new Tab('New Invoice', 'generatePayrollTpl', 'staff/new-invoice', { from: this.shift.date });
+                this.tabService.openTab(tab);
                 break;
 
             case Action.view_invoice:
