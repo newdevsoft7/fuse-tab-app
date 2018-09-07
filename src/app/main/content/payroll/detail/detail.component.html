@@ -71,13 +71,15 @@
                                 {{line.title}}
                             </td>
                             <td class="text-right">
-                                {{line.u_amt | currency:'USD':'symbol'}}
+                                <span [matTooltip]="payroll.currency">{{payroll.currency_symbol}}</span>
+                                {{line.u_amt}}
                             </td>
                             <td class="text-right">
                                 {{line.qty}}
                             </td>
                             <td class="text-right">
-                                {{line.l_amt | currency:'USD':'symbol'}}
+                                <span [matTooltip]="payroll.currency">{{payroll.currency_symbol}}</span>
+                                {{line.l_amt}}
                             </td>
                         </tr>
                     </tbody>
@@ -87,7 +89,10 @@
                     <tbody>
                         <tr class="total">
                             <td>TOTAL</td>
-                            <td>{{payroll?.total | currency:'USD':'symbol'}}</td>
+                            <td>
+                                <span [matTooltip]="payroll.currency">{{payroll.currency_symbol}}</span>
+                                {{payroll?.total}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>
