@@ -34,7 +34,8 @@ export class SCCalendarEventChipComponent implements OnInit {
   getTime(startTime: Moment) {
     const time = startTime.minute() === 0? startTime.format('h') : startTime.format('h:mm');
     const meridiem = startTime.format('a').replace('m', '');
-    return `${time}${meridiem}`;
+    const value = `${time}${meridiem}`;
+    return value == '3:33a' ? 'TBA' : value;
   }
 
   popupShown() {
