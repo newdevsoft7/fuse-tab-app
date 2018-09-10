@@ -32,4 +32,22 @@ export class ClientInvoicesDetailComponent {
       this.spinner.hide();
     }
   }
+
+  getBGColor(status: string) {
+    let color: string = 'yellow';
+    switch (status.toLowerCase()) {
+      case 'paid':
+        color = 'green';
+        break;
+
+      case 'rejected':
+        color = 'red';
+        break;
+
+      default:
+        color = 'orange';
+        break;
+    }
+    return color;
+  }
 }

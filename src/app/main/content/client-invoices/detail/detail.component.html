@@ -4,7 +4,7 @@
 
         <!-- INVOICE -->
         <div class="card">
-
+            <div class="invoice-status" [style.background-color]="getBGColor(invoice.status)" *ngIf="invoice.status">{{invoice.status}}</div>
             <div class="header">
                 <div class="invoice-date">{{invoice?.created_at | date: 'MMM d, y'}}</div>
 
