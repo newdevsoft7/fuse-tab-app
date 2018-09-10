@@ -110,7 +110,8 @@ export class UsersProfileExperienceComponent implements OnChanges {
   }
 
   getDisplayValue(value: string, options: any): string {
-    return options.find(option => option.id === parseInt(value)).oname;
+    const option = options.find(option => option.id === +value);
+    return option ? option.oname : value;
   }
 
   private handleError(e) {
