@@ -17,7 +17,18 @@
                     padding: 64px 88px;
                     overflow: hidden;
                     background: #FFFFFF;
+                    position: relative;
                     @include mat-elevation(7);
+
+                    .invoice-status {
+                        position: absolute;
+                        top: 0px;
+                        right: 0;
+                        width: 150px;
+                        padding: 4px 8px;
+                        color: white;
+                        font-size: 20px;
+                    }
 
                     .header {
 
@@ -209,6 +220,7 @@
 
                 .invoice-container {
                     padding: 0;
+                    width: 100%;
 
                     .action-buttons {
                         display: none !important;
@@ -220,6 +232,17 @@
                         background: none;
                         padding: 0;
                         box-shadow: none;
+
+                        .invoice-status {
+                            position: absolute;
+                            top: 0px;
+                            right: 0;
+                            width: 150px;
+                            padding: 4px 8px;
+                            color: white;
+                            font-size: 20px;
+                            -webkit-print-color-adjust: exact;
+                        }
 
                         .header {
 

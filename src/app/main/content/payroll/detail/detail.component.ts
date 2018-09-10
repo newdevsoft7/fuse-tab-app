@@ -147,6 +147,24 @@ export class PayrollDetailComponent implements OnInit {
     }
   }
 
+  getBGColor(status: string) {
+    let color: string = 'yellow';
+    switch (status.toLowerCase()) {
+      case 'paid':
+        color = 'green';
+        break;
+
+      case 'rejected':
+        color = 'red';
+        break;
+
+      default:
+        color = 'orange';
+        break;
+    }
+    return color;
+  }
+
   private displayError(e) {
     const errors = e.error.errors;
     if (errors) {

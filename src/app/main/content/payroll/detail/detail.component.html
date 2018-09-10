@@ -8,7 +8,7 @@
         </div>
         <!-- INVOICE -->
         <div class="card">
-
+            <div class="invoice-status" [style.background-color]="getBGColor(payroll.status)" *ngIf="payroll.status">{{payroll.status}}</div>
             <div class="header">
                 <div class="invoice-date">{{payroll?.created_at | date: 'MMM d, y'}}</div>
 
