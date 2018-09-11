@@ -16,6 +16,7 @@ import { TabComponent } from '../../../tab/tab/tab.component';
 import { Subscription } from 'rxjs';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -149,13 +150,18 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     ]
   };
 
+  isLegendShow = false;
+  shiftStatuses: any[] = [];
+
   constructor(
     private dialog: MatDialog,
     private toastrService: ToastrService,
     private scheduleService: ScheduleService,
     private tokenStorage: TokenStorage,
     private actionService: ActionService,
-    private tabService: TabService) { }
+    private tabService: TabService,
+    private toastr: ToastrService,
+    private settingsService: SettingsService) { }
 
 
   ngOnInit() {
@@ -377,5 +383,28 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     }
 
     this.fetchEvents(true);
+  }
+
+  async showLegend() {
+    this.isLegendShow = true;
+    try {
+      if (this.currentUser.lvl == 'admin' || this.currentUser.lvl == 'owner') {
+        this.shiftStatuses = await this.settingsService.getShiftStatuses();
+      } else {
+        // TODO - get shift status
+      }
+    } catch (e) {
+      this.displayError(e);
+    }
+  }
+
+  private displayError(e) {
+    const errors = e.error.errors;
+    if (errors) {
+        Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
+    }
+    else {
+        this.toastr.error(e.error.message);
+    }
   }
 }

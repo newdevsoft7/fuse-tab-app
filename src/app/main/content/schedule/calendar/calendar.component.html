@@ -27,4 +27,17 @@
         (valueChange)="onFiltersChanged($event)"></app-custom-multi-select-group>
     </div>
   </div>
+
+  <div calendar-footer class="my-24">
+    <a href="javascript:void(0)" (click)="showLegend()" *ngIf="!isLegendShow">Show legend</a>
+    <fieldset *ngIf="isLegendShow && shiftStatuses.length > 0" class="legend">
+      <legend>Legend</legend>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+        <div fxFlex="33" *ngFor="let status of shiftStatuses" class="status">
+          <div [style.background-color]="status.bg_color" class="bg"></div>
+          <span class="title">{{status.status}}</span>
+        </div>
+      </div>
+    </fieldset>
+  </div>
 </sc-calendar>

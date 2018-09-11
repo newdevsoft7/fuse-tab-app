@@ -55,6 +55,34 @@
 
     .content {
         min-height: 150px;
+
+        .legend {
+            border: 1px solid #dcdcdc;
+            border-radius: 2px;
+            margin-bottom: 16px;
+    
+            legend {
+                padding: 0 4px;
+            }
+    
+            .status {
+    
+                margin: 8px 0;
+        
+                .bg {
+                    display: inline-block;
+                    width: 40px;
+                    height: 30px;
+                    margin-right: 12px;
+                    vertical-align: middle;
+                }
+        
+                .title {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+        }
     }
 
     .shift-date {

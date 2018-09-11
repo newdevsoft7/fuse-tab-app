@@ -26,6 +26,7 @@ import { FuseConfirmDialogComponent } from '../../../../../core/components/confi
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { ShiftListEmailDialogComponent } from './email-dialog/email-dialog.component';
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
+import { SettingsService } from '../../../settings/settings.service';
 
 @Component({
     selector: 'app-admin-shift-list',
@@ -45,6 +46,7 @@ export class AdminShiftListComponent implements OnInit {
     tmpFilters: any;
     sorts: any[];
 
+    currentUser: any;
     currentUserFlags: any;
     isSingle: boolean = false;
     selectedFlags: any;
@@ -73,6 +75,9 @@ export class AdminShiftListComponent implements OnInit {
 
     filtersObservable; // Filters
 
+    isLegendShow = false;
+    shiftStatuses: any[] = [];
+
 	constructor(
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
@@ -80,13 +85,15 @@ export class AdminShiftListComponent implements OnInit {
         private tabService: TabService,
         private actionService: ActionService,
         private dialog: MatDialog,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private settingsService: SettingsService
     ) { 
     }
 
 	ngOnInit() {
         this.getShifts();
      
+        this.currentUser = this.tokenStorage.getUser();
         this.currentUserFlags = this.tokenStorage.getSettings();
         this.currentUserFlags.flags.map(function(flag){
             return flag.set = 2;
@@ -380,4 +387,17 @@ export class AdminShiftListComponent implements OnInit {
         }
         this.hoverPopupData = [await this.scheduleService.getPopupContent(event.id)];
     }
+
+    async showLegend() {
+        this.isLegendShow = true;
+        try {
+          if (this.currentUser.lvl == 'admin' || this.currentUser.lvl == 'owner') {
+            this.shiftStatuses = await this.settingsService.getShiftStatuses();
+          } else {
+            // TODO - get shift status
+          }
+        } catch (e) {
+          this.displayError(e);
+        }
+      }
 }
