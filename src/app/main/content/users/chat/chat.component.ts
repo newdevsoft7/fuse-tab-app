@@ -332,7 +332,7 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async searchUsers(data: {searchText: string, type: string}) {
     if (!data.searchText) return;
-    this.users = [];
+    // this.users = [];
     try {
       this.users = await this.usersChatService.searchRecipient(data.searchText, data.type);
     } catch (e) {
