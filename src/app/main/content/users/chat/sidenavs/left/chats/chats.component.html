@@ -41,7 +41,7 @@
                 Conversations
             </div>
 
-            <button mat-button class="contact" *ngFor="let thread of threads" (click)="fetchChat.next(thread.id)" [@animate]="{value:'*',params:{y:'100%'}}">
+            <button mat-button class="contact" *ngFor="let thread of threads" (click)="onThreadClick(thread)" [@animate]="{value:'*',params:{y:'100%'}}">
 
                 <div fxLayout="row" fxLayoutAlign="start center">
 

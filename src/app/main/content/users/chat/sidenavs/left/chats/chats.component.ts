@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { fuseAnimations } from '../../../../../../../core/animations';
+import { FuseMatSidenavHelperService } from '../../../../../../../core/directives/fuse-mat-sidenav-helper/fuse-mat-sidenav-helper.service';
+import { ObservableMedia } from '@angular/flex-layout';
 
 @Component({
     selector   : 'fuse-chat-chats-sidenav',
@@ -21,7 +23,10 @@ export class FuseChatChatsSidenavComponent
     searchText: string;
     threads: any = [];
 
-    constructor() {}
+    constructor(
+        private fuseMatSidenavHelperService: FuseMatSidenavHelperService,
+        public observableMedia: ObservableMedia
+    ) {}
 
     tapContact(user: any) {
         if (user.type === 'user') {
@@ -29,6 +34,18 @@ export class FuseChatChatsSidenavComponent
         } else {
             this.fetchChat.next(user.id);
             this.searchText = '';
+        }
+        this.toggleSideNav();
+    }
+
+    onThreadClick(thread) {
+        this.fetchChat.next(thread.id);
+        this.toggleSideNav();
+    }
+
+    toggleSideNav() {
+        if (!this.observableMedia.isActive('gt-md')) {
+            this.fuseMatSidenavHelperService.getSidenav('chat-left-sidenav').toggle();
         }
     }
 }
