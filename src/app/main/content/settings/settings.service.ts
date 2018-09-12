@@ -384,6 +384,14 @@ export class SettingsService {
         return this.http.post(url, body).toPromise();
     }
 
+    getBillingInvoices(body: {
+        pageSize: number,
+        pageNumber: number
+    }): Promise<any> {
+        const url = `${BASE_URL}/billing/invoices/${body.pageSize}/${body.pageNumber}`;
+        return this.http.get(url).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

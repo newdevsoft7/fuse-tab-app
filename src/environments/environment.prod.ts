@@ -6,5 +6,6 @@ export const environment = {
     clientId: 2,
     formconnectUrl: 'https://formconnect.net',
     quizconnectUrl: 'https://quizconnect.net',
-    showcaseconnectUrl: 'https://showcaseconnect.net'
+    showcaseconnectUrl: 'https://showcaseconnect.net',
+    stripeApiKey: 'pk_test_NXL5yI7iRHNN8glxD4aAQJBc' // for test
 };

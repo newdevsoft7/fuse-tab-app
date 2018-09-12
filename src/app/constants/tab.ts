@@ -45,6 +45,7 @@ export const TAB = {
 
     'SETTINGS_TAB': new Tab('Settings', 'settingsTpl', 'settings', {}),
     'SETTINGS_SYSTEM_TAB': new Tab('System', '', 'settings/system', {}),
+    'SETTINGS_BILLING_TAB': new Tab('Billing', 'billingTpl', 'billing', {}),
     'SETTINGS_TEMPLATES_TAB': new Tab('Templates', '', 'settings/templates', {}),
     'SETTINGS_TEMPLATES_EMAIL_TAB': new Tab('Email Templates', 'emailTemplatesTpl', 'settings/templates/email', {}),
     'SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS_TAB': new Tab('Email Attachments', '', 'settings/templates/email/attachments', {}),

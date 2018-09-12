@@ -24,6 +24,8 @@ import { CustomLoadingService } from './shared/services/custom-loading.service';
 import { ResetPasswordModule } from './main/content/authentication/reset-password/reset-password.module';
 import { ForgotPasswordModule } from './main/content/authentication/forgot-password/forgot-password.module';
 import { RegistrationGuardService } from './shared/guards/registration-guard.service';
+import { NgxStripeModule } from 'ngx-stripe';
+import { environment } from '../environments/environment';
 
 export function init(config: AppSettingService) {
     return () => config.load();
@@ -73,7 +75,8 @@ const appRoutes: Routes = [
         ResetPasswordModule,
         LoadingModule.forRoot({
             fullScreenBackdrop: true
-        })
+        }),
+        NgxStripeModule.forRoot(environment.stripeApiKey)
     ],
     providers   : [
         FuseSplashScreenService,

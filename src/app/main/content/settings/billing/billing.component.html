@@ -1,0 +1,66 @@
+<div id="billing-container" [ngClass.gt-xs]="'p-24'">
+    <fieldset class="card">
+        <legend>
+            Credit Card
+        </legend>
+        <form [formGroup]="form" class="p-8">
+            <mat-form-field class="w-100-p">
+                <input matInput formControlName="name" placeholder="Name">
+            </mat-form-field>
+            <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
+            <button mat-raised-button color="accent" (click)="save()" class="mt-12" [disabled]="form.invalid || cardInvalid">Save</button>
+        </form>
+    </fieldset>
+
+    <div class="invoice-datatable mt-48 mb-32" *ngIf="invoices">
+        <ngx-datatable #table class="material striped" [rows]="invoices" [loadingIndicator]="isLoading" [columnMode]="'force'"
+            [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [reorderable]="reorderable"
+            [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize" (page)="onSetPage($event)"
+            (activate)="onActivate($event)">
+
+            <ngx-datatable-column prop="id" name="Invoice No.">
+                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <a href="https://www.paypal.com/invoice/payerView/details/{{row.paypal_id}}" class="invoice-number" target="_blank">{{row.id}}</a>
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column prop="amount" name="Amount">
+                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span [matTooltip]="row.currency">{{row.currency_symbol}}</span>{{value}}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column prop="sent" name="Date Sent">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column prop="due" name="Date Due">
+            </ngx-datatable-column>
+
+            <ngx-datatable-column prop="paid" name="Date Paid">
+            </ngx-datatable-column>
+
+            <ngx-datatable-footer>
+                <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
+                    let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset">
+                    <div class="page-count h-60">
+                        Show
+                        <mat-form-field class="mx-8">
+                            <mat-select (change)="onPageSizeChange($event)" [value]="20">
+                                <mat-option *ngFor="let size of pageSizes" [value]="size">{{size}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        entries
+                        <span class="mx-48">
+                            Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of
+                            {{rowCount}} entries
+                        </span>
+                    </div>
+                    <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'"
+                        [pagerPreviousIcon]="'datatable-icon-prev'" [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage"
+                        [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)" (change)="onSetPage($event)">
+                    </datatable-pager>
+                </ng-template>
+            </ngx-datatable-footer>
+        </ngx-datatable>
+    </div>
+</div>

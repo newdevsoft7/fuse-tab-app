@@ -57,6 +57,7 @@ export const locale = {
 
                 'SETTINGS': 'Settings',
                 'SETTINGS_SYSTEM': 'System',
+                'SETTINGS_BILLING': 'Billing',
                 'SETTINGS_TEMPLATES': 'Templates',
                 'SETTINGS_TEMPLATES_EMAIL': 'Email',
                 'SETTINGS_TEMPLATES_EMAIL_ATTACHMENTS': 'Email Attachments',

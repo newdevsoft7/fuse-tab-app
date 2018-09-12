@@ -1,0 +1,32 @@
+:host {
+
+    fieldset {
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        max-width: 600px;
+        
+        legend {
+            padding: 0 4px;
+        }
+    }
+
+    /deep/ .mat-form-field-placeholder {
+        color:#CFD7E0;
+    }
+      
+    /deep/ .mat-focused .mat-form-field-placeholder {
+        color:#CFD7E0;
+    }
+
+    .invoice-datatable {
+
+        .invoice-number {
+            text-decoration: none;
+            color: inherit;
+            
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

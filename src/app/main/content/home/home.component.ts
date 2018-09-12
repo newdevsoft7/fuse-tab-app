@@ -114,6 +114,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('clientInvoiceGenerateTpl') clientInvoiceGenerateTpl;
 
     @ViewChild('reportsUploadsTpl') reportsUploadsTpl;
+    @ViewChild('billingTpl') billingTpl;
 
     @ViewChildren('homeForm') homeForms: QueryList<FormComponent>;
 
@@ -233,12 +234,12 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 try {
                     const formconnect = await this.connectorService.fetchConnectorData('formconnect');
                     this.authService.saveConnectData({ formconnect });
-                } catch (e) {}
+                } catch (e) { }
 
                 try {
                     const quizconnect = await this.connectorService.fetchConnectorData('quizconnect');
                     this.authService.saveConnectData({ quizconnect });
-                } catch (e) {}
+                } catch (e) { }
 
                 this.switchUser();
             }
@@ -277,7 +278,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     async setTimezone() {
         const user = this.tokenStorage.getUser();
         const tz = moment.tz.guess();
-        if ( user && user.php_tz !== tz) {
+        if (user && user.php_tz !== tz) {
             try {
                 const timezones = await this.userService.getTimezones();
                 setTimeout(() => {
@@ -421,7 +422,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                                 disableClose: false,
                                 data: {}
                             });
-                            this.dialogRef.afterClosed().subscribe(res => {});
+                            this.dialogRef.afterClosed().subscribe(res => { });
                         };
 
                         // Excel Spreadsheet
@@ -469,9 +470,23 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
-                
+
+                if (level == 'owner') {
+                    const settingsMenu = navModel.find(v => v.id == 'settings');
+                    if (settingsMenu && !settingsMenu.children.find(v => v.id == 'billing')) {
+                        const index = settingsMenu.children.findIndex(v => v.id == 'templates');
+                        settingsMenu.children.splice(index, 0, {
+                            'id': 'billing',
+                            'title': 'Billing',
+                            'translate': 'NAV.ADMIN.SETTINGS_BILLING',
+                            'type': 'item',
+                            'tab': TAB.SETTINGS_BILLING_TAB
+                        });
+                    }
+                }
+
                 break;
-            
+
             case 'staff':
                 const permissions = this.tokenStorage.getPermissions();
                 const payMenu: any = {
@@ -498,7 +513,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 const index = navModel.findIndex(m => m.id === 'invoices');
                 if (index < 0) {
                     navModel.splice(1, 0, payMenu);
-                } 
+                }
                 break;
 
             default:
@@ -556,7 +571,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             // Cards
             const index = usersNavItem.children.findIndex(v => v.id === 'cards');
             if (settings.showcase_module != 1) {
-                if (index  > -1) {
+                if (index > -1) {
                     usersNavItem.children.splice(index, 1);
                 }
             } else {
@@ -575,7 +590,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             // Presentations
             const presentationIdx = usersNavItem.children.findIndex(v => v.id === 'presentations');
             if (settings.showcase_module != 1) {
-                if (presentationIdx  > -1) {
+                if (presentationIdx > -1) {
                     usersNavItem.children.splice(presentationIdx, 1);
                 }
             } else {
@@ -587,7 +602,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                             'translate': 'NAV.ADMIN.USERS_PRESENTATIONS',
                             'type': 'item',
                             'tab': TAB.USERS_PRESENTATIONS_TAB
-            
+
                         }
                     );
                 }
