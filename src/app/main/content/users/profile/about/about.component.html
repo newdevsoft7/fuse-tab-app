@@ -4,7 +4,7 @@
 
         <div *ngIf="ratings.length > 0 && (userInfo.lvl === 'staff' || userInfo.lvl.indexOf('registrant') > -1) &&
                     (currentUser.lvl === 'admin' || currentUser.lvl === 'owner')"
-            fxLayout="row" fxLayoutWrap>
+            fxLayout="row wrap" fxLayoutAlign="start stretch">
             <fieldset class="rating" *ngIf="userInfo.show_performance === 1" title="Average performance of shifts worked on the system">
                 <legend>Performance</legend>
                 <star-rating-comp [starType]="'svg'" [numOfStars]="5" [size]="'medium'"

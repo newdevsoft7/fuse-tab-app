@@ -4,8 +4,14 @@
 
     &.page-layout {
         overflow: unset !important;
-        margin: -1em;
         width: inherit;
+
+        @include media-breakpoint('xs') {
+            margin: -1em 0;
+        }
+        @include media-breakpoint-up('xs') {
+            margin: -1em;
+        }
     }
 
     .header {
