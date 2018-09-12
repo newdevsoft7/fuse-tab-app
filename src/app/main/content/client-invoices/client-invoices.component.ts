@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import { TabService } from "../../tab/tab.service";
 import { Tab } from "../../tab/tab";
 
-const DEFAULT_PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 20;
 
 enum ACTIONS {
   SEND = 'send',

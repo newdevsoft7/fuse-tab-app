@@ -18,7 +18,7 @@ import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dia
 import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { FuseConfirmTextYesNoDialogComponent } from '../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
 
-const DEFAULT_PAGE_SIZE = 5;
+const DEFAULT_PAGE_SIZE = 20;
 
 @Component({
     selector: 'app-payroll',

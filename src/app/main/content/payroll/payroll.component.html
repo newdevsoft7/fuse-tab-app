@@ -144,7 +144,7 @@
                     <div class="page-count h-60">
                         Show
                         <mat-form-field class="mx-8">
-                            <mat-select (change)="onPageLengthChange($event)" [value]="5">
+                            <mat-select (change)="onPageLengthChange($event)" [value]="20">
                                 <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
                             </mat-select>
                         </mat-form-field>
