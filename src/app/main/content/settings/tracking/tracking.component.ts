@@ -11,6 +11,7 @@ import { SettingsService } from '../settings.service';
 import { TrackingService } from '../../tracking/tracking.service';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     tracking_enable = 94
@@ -38,6 +39,7 @@ export class SettingsTrackingComponent implements OnInit {
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -80,7 +82,7 @@ export class SettingsTrackingComponent implements OnInit {
                 this.trackingService.toggleCategories(this.categories);
                 //this.toastr.success(response.message);
             } catch (e) {
-                this.handleError(e);
+                this.scMessageService.error(e);
             }
         });
     }
@@ -103,11 +105,11 @@ export class SettingsTrackingComponent implements OnInit {
                     this.trackingService.toggleCategories(this.categories);
                     //this.toastr.success(response.message);
                 } catch (e) {
-                    this.handleError(e);
+                    this.scMessageService.error(e);
                 }
             });
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -120,17 +122,8 @@ export class SettingsTrackingComponent implements OnInit {
             this.trackingService.toggleCategories(this.categories);
             //this.toastr.success(response.message);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
-    private handleError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

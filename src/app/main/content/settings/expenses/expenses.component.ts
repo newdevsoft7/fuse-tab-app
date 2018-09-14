@@ -3,12 +3,13 @@ import {
     Output, EventEmitter
 } from '@angular/core';
 
-import { MatSlideToggleChange, MatSelectChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     expenses_enable = 27,
@@ -35,7 +36,8 @@ export class SettingsExpensesComponent implements OnInit {
     constructor(
         private settingsService: SettingsService,
         private toastr: ToastrService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private scMessageService: SCMessageService
     ) { }
 
     async ngOnInit() {
@@ -73,7 +75,7 @@ export class SettingsExpensesComponent implements OnInit {
             const res = await this.settingsService.saveExpenseCategory(this.form.getRawValue());
             this.categories.push(res.data);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -86,16 +88,5 @@ export class SettingsExpensesComponent implements OnInit {
             this.toastr.error(e.message || 'Something is wrong!');
         }
     }
-
-    private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-	}
-
 
 }

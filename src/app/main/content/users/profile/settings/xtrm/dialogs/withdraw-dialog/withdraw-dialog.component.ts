@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../../user.service';
 import { UserSettingsXtrmAddBankDialogComponent } from '../add-bank-dialog/add-bank-dialog.component';
+import { SCMessageService } from '../../../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-user-withdraw-dialog',
@@ -34,6 +35,7 @@ export class UserWithdrawDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any,
         private toastr: ToastrService,
         private userService: UserService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) {
         this.type = data.type;
@@ -74,7 +76,7 @@ export class UserWithdrawDialogComponent implements OnInit {
             this.otpSent = res.otp_sent;
             this.message = res.message;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -88,7 +90,7 @@ export class UserWithdrawDialogComponent implements OnInit {
             this.dialogRef.close(true);
             this.toastr.success(res.message)
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -112,16 +114,6 @@ export class UserWithdrawDialogComponent implements OnInit {
                 this.xtrm.banks.push(bank);
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

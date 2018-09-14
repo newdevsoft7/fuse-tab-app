@@ -14,7 +14,7 @@ import { ProfileInfoElementDialogComponent } from './dialogs/element/element.com
 import { ProfileInfoEditElementOptionsDialogComponent } from './dialogs/edit-element-options/edit-element-options.component';
 
 import * as _ from 'lodash';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-profile-info',
@@ -32,7 +32,7 @@ export class ProfileInfoComponent implements OnInit {
 
     constructor(
         private profileInfoService: ProfileInfoService,
-        private toastr: ToastrService,
+        private scMessageService: SCMessageService,
         public dialog: MatDialog
     ) { }
 
@@ -61,10 +61,9 @@ export class ProfileInfoComponent implements OnInit {
 
         this.orders = [];
         this.profileFields.forEach(e => this.makeOrder(e));
-        this.profileInfoService.setDisplayOrder(this.orders).subscribe(res => {
-            //this.toastr.success(res.message);
+        this.profileInfoService.setDisplayOrder(this.orders).subscribe(() => {
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
 
         const param = {
@@ -76,13 +75,13 @@ export class ProfileInfoComponent implements OnInit {
             this.profileInfoService.updateCategory(param)
                 .subscribe(_ => {
                 }, error => {
-                    this.displayError(error);
+                    this.scMessageService.error(error);
                 });
         } else {
             this.profileInfoService.updateElement(param)
                 .subscribe(_ => {
                 }, error => {
-                    this.displayError(error);
+                    this.scMessageService.error(error);
                 });
         }
 
@@ -97,7 +96,7 @@ export class ProfileInfoComponent implements OnInit {
         }
     }
 
-    click(model, evt) {
+    click(evt) {
         evt.stopPropagation();
     }
 
@@ -204,14 +203,14 @@ export class ProfileInfoComponent implements OnInit {
             if (result) {
                 if (node.cname) {
                     this.profileInfoService.deleteCategory(node.id)
-                        .subscribe(res => {
-                            this.removeNode(node);
-                        });
+                        .subscribe(() => {
+                                this.removeNode(node);
+                            });
                 } else {
                     this.profileInfoService.deleteElement(node.id)
-                        .subscribe(res => {
-                            this.removeNode(node);
-                        });
+                        .subscribe(() => {
+                                this.removeNode(node);
+                            });
                 }
             }
         });
@@ -222,16 +221,6 @@ export class ProfileInfoComponent implements OnInit {
         parent = parent == this.profileFields ? parent : parent.elements;
         const index = parent.findIndex(v => v == node);
         parent.splice(index, 1);
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
     private findParent(element, searched) {

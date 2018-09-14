@@ -4,6 +4,7 @@ import { UserService } from '../../../../../user.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { SCMessageService } from '../../../../../../../../shared/services/sc-message.service';
 
 @Component({
 	selector: 'app-user-settings-xtrm-add-bank-dialog',
@@ -41,7 +42,8 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		private userService: UserService,
 		private toastr: ToastrService,
 		private formBuilder: FormBuilder,
-		@Inject(MAT_DIALOG_DATA) private data: any
+		@Inject(MAT_DIALOG_DATA) private data: any,
+		private scMessageService: SCMessageService
 	) {
 		this.countries = data.countries || [];
 		this.currencies = data.currencies || [];
@@ -113,7 +115,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 			this.resultShow = true;
 			this.searchShow = this.banks.length > 0 ? false : true;
 		} catch (e) {
-			this.displayError(e);
+			this.scMessageService.error(e);
 		}
 	}
 
@@ -129,7 +131,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 			this.showMore = res.show_more;
 			this.banks.push(...res.banks);
 		} catch (e) {
-			this.displayError(e);
+			this.scMessageService.error(e);
 		} finally {
 			this.fetchingBanks = false;
 		}
@@ -141,7 +143,7 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 			const res = await this.userService.addUserBank(this.user.id, this.form.value);
 			this.dialogRef.close(res.data);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
 	}
 
@@ -225,13 +227,4 @@ export class UserSettingsXtrmAddBankDialogComponent implements OnInit, OnDestroy
 		this.form.controls[control].markAsTouched();
 	}
 
-	private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

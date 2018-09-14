@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe';
 import { SettingsService } from '../../../settings.service';
 import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-fund-wallet-by-credit-card-dialog',
@@ -33,7 +34,8 @@ export class FundWalletByCreditCardDialogComponent implements OnInit, OnDestroy 
         @Inject(MAT_DIALOG_DATA) public data,
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService
     ) {
         this.wallet = this.data.wallet;
         this.countries = this.data.countries || [];
@@ -116,17 +118,7 @@ export class FundWalletByCreditCardDialogComponent implements OnInit, OnDestroy 
             this.toastr.success(res.message);
             this.dialogRef.close(res.wallet);
         } catch (e) {
-            this.displayError(e);
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
+            this.scMessageService.error(e);
         }
     }
 

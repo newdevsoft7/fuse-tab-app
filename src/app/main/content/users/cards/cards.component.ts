@@ -11,6 +11,7 @@ import { ConnectorService } from '../../../../shared/services/connector.service'
 import { TabComponent } from '../../../tab/tab/tab.component';
 import { Tab } from '../../../tab/tab';
 import { ShowcaseService } from '../../showcase/showcase.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-cards',
@@ -35,7 +36,8 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         private dialog: MatDialog,
         private userService: UserService,
         private connectorService: ConnectorService,
-        private showcaseService: ShowcaseService
+        private showcaseService: ShowcaseService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -82,7 +84,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                     const res = await this.userService.createCard(result);
                     this.cards.push(res);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -95,7 +97,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 this.selectCard(this.cards[0]);
             }
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
         this.drawer.open();
     }
@@ -105,7 +107,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         try {
             this.cardData = await this.userService.getCard(card.id);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -125,7 +127,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                     }
                     await this.userService.deleteCard(id);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -135,7 +137,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         try {
             await this.userService.tagCard(cardId, type, tag);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -143,7 +145,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         try {
             await this.userService.untagCard(cardId, type, tag);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -151,7 +153,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         try {
             this.showcaseTemplates = await this.userService.getShowcaseTemplates();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -163,7 +165,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
             await this.userService.updateCard(this.cardData.card.id, data);
             this.cardData.card.showcase_template_id = event.value;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -205,16 +207,6 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
             }
         );
         this.tabService.openTab(tab);
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

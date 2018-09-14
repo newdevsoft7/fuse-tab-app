@@ -4,6 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { CustomLoadingService } from "../../../../shared/services/custom-loading.service";
 
 import * as moment from 'moment';
+import { SCMessageService } from "../../../../shared/services/sc-message.service";
 
 @Component({
   selector: 'app-client-invoice-generator',
@@ -20,7 +21,8 @@ export class ClientInvoiceGenerateComponent {
   constructor(
     private spinner: CustomLoadingService,
     private toastr: ToastrService,
-    private clientInvoicesService: ClientInvoicesService
+    private clientInvoicesService: ClientInvoicesService,
+    private scMessageService: SCMessageService
   ) {}
 
   clientDisplayFn(client?: any) {
@@ -39,7 +41,7 @@ export class ClientInvoiceGenerateComponent {
       await this.clientInvoicesService.generateInvoice(this.selectedClient.id, this.from, this.to);
       this.toastr.success('Invoice generated');
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     } finally {
       this.spinner.hide();
     }
@@ -61,17 +63,8 @@ export class ClientInvoiceGenerateComponent {
     try {
       this.clients = await this.clientInvoicesService.searchClients(query).toPromise();
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     }
   }
 
-  private handleError(e): void {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
-  }
 }

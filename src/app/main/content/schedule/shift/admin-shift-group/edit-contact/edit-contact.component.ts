@@ -1,13 +1,11 @@
 import {
-	Component, OnInit, ViewEncapsulation,
-	Input, Output, EventEmitter,
-	ViewChild
+	Component, OnInit, Input, ViewChild
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
 	selector: 'app-group-edit-contact',
@@ -24,8 +22,7 @@ export class GroupEditContactComponent implements OnInit {
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private scheduleService: ScheduleService,
-		private toastr: ToastrService
+		private scMessageService: SCMessageService
 	) { }
 
 	ngOnInit() {
@@ -50,11 +47,10 @@ export class GroupEditContactComponent implements OnInit {
 			const contact = this.form.getRawValue().contact;
 			if (contact !== this.group.contact) {
 				try {
-					const res = await this.scheduleService.updateShiftGroup(this.group.id, { contact });
 					//this.toastr.success(res.message);
 					this.group.contact = contact;
 				} catch (e) {
-					this.displayError(e);
+					this.scMessageService.error(e);
 				}
 			}
 			this.formActive = false;
@@ -63,16 +59,6 @@ export class GroupEditContactComponent implements OnInit {
 
 	closeForm() {
 		this.formActive = false;
-	}
-
-	private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
 	}
 
 }

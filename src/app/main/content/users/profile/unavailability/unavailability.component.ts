@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { AddUnavailabilityDialogComponent } from './add-unavailability-dialog/add-unavailability-dialog.component';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-profile-unavailability',
@@ -33,6 +34,7 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
         private userService: UserService,
         private toastr: ToastrService,
         private dialog: MatDialog,
+        private scMessageService: SCMessageService
     ) { }
 
     async ngOnInit() {
@@ -73,7 +75,7 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
                     ];
                     //this.toastr.success(res.message);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -85,18 +87,7 @@ export class UsersProfileUnavailabilityComponent implements OnInit {
             this.unavailabilities = this.unavailabilities.filter(v => v.id !== id);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
-        }
-    }
-
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
+            this.scMessageService.error(e);
         }
     }
 

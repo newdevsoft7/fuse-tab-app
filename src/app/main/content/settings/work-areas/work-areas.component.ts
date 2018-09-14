@@ -1,21 +1,21 @@
 import {
     Component, OnInit, Input,
     ViewEncapsulation, SimpleChanges,
-    OnChanges, Output, EventEmitter,
-    ViewChild, OnDestroy
+    Output, EventEmitter,
+    ViewChild
 } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators, FormControl, } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { MatDrawer, MatSlideToggleChange, MatSelectChange } from '@angular/material';
 
-import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     work_areas_enable = 95,
@@ -82,7 +82,8 @@ export class SettingsWorkAreasComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -177,10 +178,9 @@ export class SettingsWorkAreasComponent implements OnInit {
         } else { // Input Text
             value = event;
         }
-        this.settingsService.setSetting(id, value).subscribe(res => {
+        this.settingsService.setSetting(id, value).subscribe(() => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            //this.toastr.success(res.message);
         });
     }
 
@@ -206,7 +206,7 @@ export class SettingsWorkAreasComponent implements OnInit {
             this.categories.push(res.data);
             this.resetCategoryForm();
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
     }
 
@@ -219,7 +219,7 @@ export class SettingsWorkAreasComponent implements OnInit {
             this.workAreas.push(res.data);
             this.resetworkAreaForm();
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
     }
 
@@ -247,16 +247,6 @@ export class SettingsWorkAreasComponent implements OnInit {
                     this.toastr.error('You have no permission!');
                 }
             });
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material';
 import { StaffShiftExpeneseDialogComponent } from './expenese-dialog/expenese-dialog.component';
 import { ScheduleService } from '../../../schedule.service';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-staff-shift-expenses',
@@ -18,7 +18,7 @@ export class StaffShiftExpensesComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private scheduleService: ScheduleService,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -53,7 +53,7 @@ export class StaffShiftExpensesComponent implements OnInit {
                     };
                     this.expenses.push(res.data);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
 
             }
@@ -80,7 +80,7 @@ export class StaffShiftExpensesComponent implements OnInit {
                     res.data.unit_rate = +res.data.unit_rate;
                     this.expenses.splice(index, 1, res.data);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -94,26 +94,15 @@ export class StaffShiftExpensesComponent implements OnInit {
         dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
                 try {
-                    const res = await this.scheduleService.deletePayItem(expense.id);
                     const index = this.expenses.findIndex(v => v.id === expense.id);
                     if (index > -1) {
                         this.expenses.splice(index, 1);
                     }
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

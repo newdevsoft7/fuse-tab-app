@@ -1,13 +1,10 @@
 import {
-	Component, OnInit, ViewEncapsulation,
-	Input, Output, EventEmitter,
-	ViewChild
+	Component, OnInit, Input, ViewChild
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import * as _ from 'lodash';
-import { ScheduleService } from '../../../schedule.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
 	selector: 'app-group-edit-generic-location',
@@ -24,9 +21,8 @@ export class GroupEditGenericLocationComponent implements OnInit {
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private scheduleService: ScheduleService,
-		private toastr: ToastrService
-	) { }
+		private scMessageService: SCMessageService
+	)  { }
 
 	ngOnInit() {
 	}
@@ -50,11 +46,10 @@ export class GroupEditGenericLocationComponent implements OnInit {
 			const generic_location = this.form.getRawValue().generic_location;
 			if (generic_location !== this.group.generic_location) {
 				try {
-					const res = await this.scheduleService.updateShiftGroup(this.group.id, { generic_location })
 					//this.toastr.success(res.message);
 					this.group.generic_location = generic_location;
 				} catch (e) {
-					this.displayError(e);
+					this.scMessageService.error(e);
 				}
 			}
 			this.formActive = false;
@@ -63,16 +58,6 @@ export class GroupEditGenericLocationComponent implements OnInit {
 
 	closeForm() {
 		this.formActive = false;
-	}
-
-	private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
 	}
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions, ElementEventType } from 'ngx-stripe';
-import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { SettingsService } from '../settings.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
   selector: 'app-billing',
@@ -56,7 +56,8 @@ export class BillingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private stripeService: StripeService,
     private settingsService: SettingsService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private scMessageService: SCMessageService
   ) { }
 
   ngOnInit() {
@@ -88,7 +89,7 @@ export class BillingComponent implements OnInit {
       this.cardBrand = res.card_brand;
       this.cardLast4 = res.card_last4;
     } catch (e) {
-      this.displayError(e);
+      this.scMessageService.error(e);
     } finally {
       this.cardFetched = true;
     }
@@ -116,7 +117,7 @@ export class BillingComponent implements OnInit {
       this.pageSize = res.page_size;
       this.total = res.total_counts;
     } catch (e) {
-      this.displayError(e);
+      this.scMessageService.error(e);
     } finally {
       this.isLoading = false;
     }
@@ -134,7 +135,7 @@ export class BillingComponent implements OnInit {
             this.cardBrand = res.card_brand;
             this.cardLast4 = res.card_last4;
           } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
           }
         } else if (result.error) {
           this.toastr.error(result.error.message);
@@ -156,16 +157,6 @@ export class BillingComponent implements OnInit {
 
   min(x, y) {
     return Math.min(x, y);
-}
-
-  private displayError(e) {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
   }
 
 }

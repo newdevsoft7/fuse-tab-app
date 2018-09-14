@@ -1,13 +1,10 @@
 import {
-	Component, OnInit, ViewEncapsulation,
-	Input, Output, EventEmitter,
-	ViewChild
+	Component, OnInit, Input, ViewChild
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import * as _ from 'lodash';
-import { ScheduleService } from '../../../schedule.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
 	selector: 'app-group-edit-name',
@@ -24,8 +21,7 @@ export class GroupEditNameComponent implements OnInit {
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private scheduleService: ScheduleService,
-		private toastr: ToastrService
+		private scMessasgeService: SCMessageService
 	) { }
 
 	ngOnInit() {
@@ -50,11 +46,9 @@ export class GroupEditNameComponent implements OnInit {
 			const gname = this.form.getRawValue().gname;
 			if (gname !== this.group.gname) {
 				try {
-					const res = await this.scheduleService.updateShiftGroup(this.group.id, { gname });
-					//this.toastr.success(res.message);
 					this.group.gname = gname;
 				} catch (e) {
-					this.displayError(e);
+					this.scMessasgeService.error(e);
 				}
 			}
 			this.formActive = false;
@@ -63,16 +57,6 @@ export class GroupEditNameComponent implements OnInit {
 
 	closeForm() {
 		this.formActive = false;
-	}
-
-	private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
 	}
 
 }

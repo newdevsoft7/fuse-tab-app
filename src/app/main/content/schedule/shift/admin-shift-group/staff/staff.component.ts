@@ -14,11 +14,10 @@ import { ScheduleService } from '../../../schedule.service';
 import { ActionService } from '../../../../../../shared/services/action.service';
 import {
     STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
-    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
-    STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
-    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW, STAFF_STATUS_INVITED
+    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_INVITED
 } from '../../../../../../constants/staff-status';
 import { Tab } from '../../../../../tab/tab';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 
 enum Section {
@@ -79,6 +78,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
         private actionService: ActionService,
         private tokenStorage: TokenStorage,
         private scheduleService: ScheduleService,
+        private scMessageService: SCMessageService
     ) {
         this.currentUser = this.tokenStorage.getUser();
 
@@ -89,17 +89,16 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                     const staffStatusId = mapSectionToStaffStatus(section);
                     this.spinner.show();
                     this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
-                        .subscribe(res => {
-                            this.spinner.hide();
-                            this.refreshTabByRole(role, section);
-                            this.updateStaffsCount(role);
-                            //this.toastr.success(`${res.length > 1 ? 'Users' : 'User'} assigned`);
-                        }, err => {
-                            this.spinner.hide();
-                            this.updateStaffsCount(role);
-                            this.refreshTabByRole(role, section);
-                            this.toastr.error('Error!');
-                        });
+                        .subscribe(() => {
+                                this.spinner.hide();
+                                this.refreshTabByRole(role, section);
+                                this.updateStaffsCount(role);
+                            }, () => {
+                                this.spinner.hide();
+                                this.updateStaffsCount(role);
+                                this.refreshTabByRole(role, section);
+                                this.toastr.error('Error!');
+                            });
                 }
             });
         
@@ -155,17 +154,16 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
         const index = this.adminNotes.findIndex(v => v.id === note.id);
         this.spinner.show();
         this.scheduleService.deleteShiftAdminNote(note.id)
-            .subscribe(res => {
+            .subscribe(() => {
+                    this.spinner.hide();
+                    this.adminNotes.splice(index, 1);
+                }, err => {
                 this.spinner.hide();
-                this.adminNotes.splice(index, 1);
-            }, err => {
-                this.spinner.hide();
-                this.displayError(err);
+                this.scMessageService.error(err);
             });
     }
 
     onUpdateAdminNote(note) {
-        const index = this.adminNotes.findIndex(v => v.id === note.id);
 
         // Update note
         this.spinner.show();
@@ -191,7 +189,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
             }
         }, err => {
             this.spinner.hide();
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
         note.editMode = false;
     }
@@ -255,14 +253,14 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
                 this.adminNoteInput.nativeElement.focus();
             }, err => {
                 this.spinner.hide();
-                this.displayError(err);
+                this.scMessageService.error(err);
             });
     }
 
     moveup(shift, role) {
         const index = role.index;
         if (index === 0) { return; }
-        this.scheduleService.UpdateRoleDisplayOrder(role.id, 'up').subscribe(res => {
+        this.scheduleService.UpdateRoleDisplayOrder(role.id, 'up').subscribe(() => {
             shift.shift_roles[index].index = index - 1;
             shift.shift_roles[index - 1].index = index;
             shift.shift_roles = shift.shift_roles.sort((a, b) => a.index - b.index);
@@ -272,7 +270,7 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
     movedown(shift, role) {
         const index = role.index;
         if (index === shift.shift_roles.length - 1) { return; }
-        this.scheduleService.UpdateRoleDisplayOrder(role.id, 'down').subscribe(res => {
+        this.scheduleService.UpdateRoleDisplayOrder(role.id, 'down').subscribe(() => {
             shift.shift_roles[index].index = index + 1;
             shift.shift_roles[index + 1].index = index;
             shift.shift_roles = shift.shift_roles.sort((a, b) => a.index - b.index);
@@ -344,12 +342,12 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.scheduleService.updateRoleStaffs(staffs.map(v => v.id), { staff_status_id: statusId })
-                    .subscribe(res => {
-                        //this.toastr.success(`Status${res.length > 1 ? 'es' : ''} updated.`);
-                        this.updateStaffsBySection(role);
-                    }, err => {
-                        this.updateStaffsBySection(role);
-                    });
+                    .subscribe(() => {
+                            //this.toastr.success(`Status${res.length > 1 ? 'es' : ''} updated.`);
+                            this.updateStaffsBySection(role);
+                        }, () => {
+                            this.updateStaffsBySection(role);
+                        });
             }
         });
     }
@@ -538,14 +536,13 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
         role = { ...role, shift_id: shiftId };
         this.spinner.show();
         this.scheduleService.inviteStaffsToRole(role.id, body).subscribe(
-            res => {
+            () => {
                 this.spinner.hide();
                 this.refreshTabByRole(role, Section.Invited);
                 this.updateStaffsCount(role);
                 const roles = this.shifts.find(v => v.id === role.shift_id).shift_roles;
                 const index = roles.findIndex(v => v.id === role.id);
                 roles[index].section = Section.Invited;
-                //this.toastr.success(res.message);
             },
             err => {
                 this.spinner.hide();
@@ -559,30 +556,19 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
         role = { ...role, shift_id: shiftId };
         this.spinner.show();
         this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_SELECTED).subscribe(
-            res => {
+            () => {
                 this.spinner.hide();
                 this.refreshTabByRole(role, Section.Selected);
                 this.updateStaffsCount(role);
                 const roles = this.shifts.find(v => v.id === role.shift_id).shift_roles;
                 const index = roles.findIndex(v => v.id === role.id);
                 roles[index].section = Section.Selected;
-                //this.toastr.success(res.message);
             },
             err => {
                 this.spinner.hide();
                 this.toastr.error(err.error.message);
             });
     }
-
-    private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-	}
 
 }
 

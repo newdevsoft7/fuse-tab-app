@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
 
 import { environment } from '../../../../environments/environment';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../shared/services/sc-message.service';
 
 const BASE_URL = `${environment.apiUrl}`;
 
@@ -18,7 +17,7 @@ export class ReportsUploadsService {
 
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService
+    private scMessageService: SCMessageService
   ) { }
 
   getFiles(file: any | 'up' = {}): Promise<any> {
@@ -70,7 +69,7 @@ export class ReportsUploadsService {
     const url = `${BASE_URL}/reportsUploads/reports/${ids.join(',')}/${type}`;
     return this.http.get(url, { observe: 'response', responseType: 'blob' }).toPromise()
       .then(res => this.downloadFile(res['body'], 'reports.csv'))
-      .catch(e => this.displayError(e));
+      .catch(e => this.scMessageService.error(e));
   }
 
   downloadFile(data, filename) {
@@ -86,16 +85,6 @@ export class ReportsUploadsService {
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
-  }
-
-  private displayError(e: any) {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
   }
 
 }

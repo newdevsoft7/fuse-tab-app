@@ -1,12 +1,10 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDrawer, MatDialog } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
-import { TabService } from '../../../../tab/tab.service';
 import { UserService } from '../../user.service';
 import { ProfileCardsVideoGalleryDialogComponent } from './dialogs/video-gallery-dialog/video-gallery-dialog.component';
 import { ProfileCardsPhotoGalleryDialogComponent } from './dialogs/photo-gallery-dialog/photo-gallery-dialog.component';
 import { ShowcaseService } from '../../../showcase/showcase.service';
-import { Tab } from '../../../../tab/tab';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-profile-cards',
@@ -27,10 +25,9 @@ export class UsersProfileCardsComponent implements OnInit {
     template: any;
 
     constructor(
-        private toastr: ToastrService,
-        private tabService: TabService,
         private userService: UserService,
         private showcaseService: ShowcaseService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -42,7 +39,7 @@ export class UsersProfileCardsComponent implements OnInit {
         try {
             this.cards = await this.userService.getCards();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -53,7 +50,7 @@ export class UsersProfileCardsComponent implements OnInit {
             const res = await this.showcaseService.getTemplateByOtherId(this.cardData.other_id);
             this.template = res.data;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -71,7 +68,7 @@ export class UsersProfileCardsComponent implements OnInit {
             }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     showPhoto(photo) {
@@ -84,17 +81,7 @@ export class UsersProfileCardsComponent implements OnInit {
             }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
 }

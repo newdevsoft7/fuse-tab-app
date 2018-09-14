@@ -1,15 +1,15 @@
 import {
         Component, OnInit, Input, ViewChild,
-        ViewEncapsulation, Output, EventEmitter
+        Output, EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
 
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 import { SettingsService } from '../../settings.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-settings-pay-category-item',
@@ -31,7 +31,7 @@ export class SettingsPayCategoryItemComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -58,7 +58,7 @@ export class SettingsPayCategoryItemComponent implements OnInit {
             this.category.cname = cname;
             //this.toastr.success(res.message);
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
         this.formActive = false;
     }
@@ -80,16 +80,6 @@ export class SettingsPayCategoryItemComponent implements OnInit {
                 });
             }
         });
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

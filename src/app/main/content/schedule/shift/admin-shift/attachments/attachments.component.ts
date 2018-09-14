@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../../../schedule.service';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-admin-shift-attachments',
@@ -28,7 +29,8 @@ export class AdminShiftAttachmentsComponent implements OnInit, OnChanges {
         private dialog: MatDialog,
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -71,7 +73,7 @@ export class AdminShiftAttachmentsComponent implements OnInit, OnChanges {
             this.files.push(item);
         } catch (e) {
             this.spinner.hide();
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -102,13 +104,4 @@ export class AdminShiftAttachmentsComponent implements OnInit, OnChanges {
         });
     }
 
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

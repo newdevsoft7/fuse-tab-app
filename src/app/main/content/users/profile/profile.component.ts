@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../../../shared/services/authenticatio
 import { Router } from '@angular/router';
 import { NewMessageDialogComponent } from './dialogs/new-message-dialog/new-message-dialog.component';
 import { UsersChatService } from '../chat/chat.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class UsersProfileComponent implements OnInit {
 		private dialog: MatDialog,
 		private authService: AuthenticationService,
 		private chatService: UsersChatService,
+		private scMessageService: SCMessageService,
 		private router: Router
 	) { }
 
@@ -158,7 +160,7 @@ export class UsersProfileComponent implements OnInit {
 				this.linkedUsers = await this.userService.getLinkedAccounts(this.user.id);
 			}
 		} catch (e) {
-			this.displayError(e);
+			this.scMessageService.error(e);
 		}
 	}
 
@@ -172,7 +174,7 @@ export class UsersProfileComponent implements OnInit {
 				};
 			});
 		} catch (e) {
-			this.displayError(e);
+			this.scMessageService.error(e);
 		}
 	}
 
@@ -217,19 +219,9 @@ export class UsersProfileComponent implements OnInit {
 					content: message
 				});
 			} catch (e) {
-				this.displayError(e);
+				this.scMessageService.error(e);
 			}
 		});
-	}
-
-	private displayError(e: any) {
-		const errors = e.error.errors;
-		if (errors) {
-			Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-		}
-		else {
-			this.toastr.error(e.error.message);
-		}
 	}
 
 }

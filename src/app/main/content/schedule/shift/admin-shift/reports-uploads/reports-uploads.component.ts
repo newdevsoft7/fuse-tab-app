@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -12,6 +12,7 @@ import { TabService } from '../../../../../tab/tab.service';
 import { ConnectorService } from '../../../../../../shared/services/connector.service';
 import { Subscription } from 'rxjs';
 import { TabComponent } from '../../../../../tab/tab/tab.component';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
         private scheduleService: ScheduleService,
         private spinner: CustomLoadingService,
         private tabService: TabService,
-        private connectorService: ConnectorService
+        private connectorService: ConnectorService,
+        private scMessageService: SCMessageService
     ) {
     }
 
@@ -52,7 +54,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
         try {
             this.data = await this.scheduleService.getShiftReportsUploads(this.shift.id);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -98,7 +100,6 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
             try {
                 const index = this.data.files.findIndex(f => f.id === file.id);
                 this.data.files.splice(index, 1);
-                const res = await this.scheduleService.deleteFile(file.id);
                 //this.toastr.success(res.message);
             } catch (e) {
                 this.toastr.error(e.message);
@@ -116,7 +117,6 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
             try {
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
                 this.data.surveys.splice(index, 1);
-                const res = await this.scheduleService.deleteCompletedReport(report.id);
                 //this.toastr.success(res.message);
             } catch (e) {
                 // To be removed
@@ -130,10 +130,9 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
         const value = file.approved ? 0 : 1;
         try {
             file.approved = value;
-            const res = await this.scheduleService.reportsUploadsApprove(type, file.id, value);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
             file.approved = value ? 0 : 1;
         }
     }
@@ -167,16 +166,6 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
             body
         );
         this.tabService.openTab(tab);
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

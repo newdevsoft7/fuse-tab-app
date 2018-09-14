@@ -81,11 +81,4 @@ export class UserStatusItemComponent implements OnInit {
         this.formActive = false;
     }
 
-    private displayError(err) {
-        const errors = err.error.errors;
-        Object.keys(errors).forEach(v => {
-            this.toastr.error(errors[v]);
-        });
-    }
-
 }

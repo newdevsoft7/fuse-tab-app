@@ -4,35 +4,28 @@ import {
 } from '@angular/core';
 
 import {
-    FormBuilder, FormControl,
-    FormGroup, Validators
+    FormBuilder, FormGroup, Validators
 } from '@angular/forms';
 
 import {
-    MatAutocompleteSelectedEvent, MatInput,
-    MatDatepickerInputEvent, MatRadioChange,
+    MatRadioChange,
     MatDialogRef, MatDialog, MatSelectChange
 } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
-import {
-    debounceTime, distinctUntilChanged,
-    first, map, startWith, switchMap
-} from 'rxjs/operators';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { ToastrService } from 'ngx-toastr';
 import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { Tab } from '../../../../tab/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
-import { NullTemplateVisitor } from '@angular/compiler';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { UserService } from '../../../users/user.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 class TimeRange {
     from;
@@ -121,13 +114,13 @@ export class ShiftRoleEditComponent implements OnInit {
     
     constructor(
         private formBuilder: FormBuilder,
-        private toastr: ToastrService,
         public dialog: MatDialog,
         private tabService: TabService,
         private scheduleService: ScheduleService,
         private userService: UserService,
         private tokenStroage: TokenStorage,
-        private actionService: ActionService
+        private actionService: ActionService,
+        private scMessageService: SCMessageService
     ) {
         this.formErrors = {
             rname: {}
@@ -217,7 +210,7 @@ export class ShiftRoleEditComponent implements OnInit {
         this.scheduleService.getPayLevelCategory().subscribe(res => {
             this.payCategories = res;
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
 
         // Form Validation
@@ -316,45 +309,44 @@ export class ShiftRoleEditComponent implements OnInit {
 
         if (this.shifts) { // ROLE CREATE
             this.scheduleService.createShiftsRoles(this.shifts, role)
-                .subscribe(res => {
-                    //this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles' : 'Role'} created.`);
-                    this.saveCurrencyToLocalStorage();
-                    // Confirm Dialog to ask whether to add another role or not
-                    this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
-                        disableClose: false
-                    });
-
-                    this.confirmDialogRef.componentInstance.confirmMessage = 'Do you want to add another role?';
-                    this.confirmDialogRef.componentInstance.confirmTitle = 'Confirm';
-                    this.confirmDialogRef.afterClosed().subscribe(result => {
-                        if (result) {
-                            this.resetForm();
-                        } else {
-                            this.tabService.closeTab(this.url);
-                        }
-                    });
-
-                }, err => {
-                    this.displayError(err);
+                .subscribe(() => {
+                        //this.toastr.success(`${res.length} ${res.length > 1 ? 'Roles' : 'Role'} created.`);
+                        this.saveCurrencyToLocalStorage();
+                        // Confirm Dialog to ask whether to add another role or not
+                        this.confirmDialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+                            disableClose: false
+                        });
+                        this.confirmDialogRef.componentInstance.confirmMessage = 'Do you want to add another role?';
+                        this.confirmDialogRef.componentInstance.confirmTitle = 'Confirm';
+                        this.confirmDialogRef.afterClosed().subscribe(result => {
+                            if (result) {
+                                this.resetForm();
+                            }
+                            else {
+                                this.tabService.closeTab(this.url);
+                            }
+                        });
+                    }, err => {
+                    this.scMessageService.error(err);
                 });
         } else if (this.shift) { // ROLE CREATE FROM SHIFT TAB
             this.scheduleService.createShiftRole(this.shift.id, role)
-                .subscribe(res => {
-                    //this.toastr.success(res.message);
-                    this.saveCurrencyToLocalStorage();
-                    this.tabService.closeTab(this.url);
-                    this.openShiftTab(this.shift.id, this.shift.title);
-                }, err => {
-                    this.displayError(err);
+                .subscribe(() => {
+                        //this.toastr.success(res.message);
+                        this.saveCurrencyToLocalStorage();
+                        this.tabService.closeTab(this.url);
+                        this.openShiftTab(this.shift.id, this.shift.title);
+                    }, err => {
+                    this.scMessageService.error(err);
                 });
         } else { // ROLE UPDATE
             this.scheduleService.updateShiftRole(this.role.id, role)
-                .subscribe(res => {
-                    //this.toastr.success(res.message);
-                    this.tabService.closeTab(this.url);
-                    this.openShiftTab(this.role.shift_id, this.role.shift_title);
-                }, err => {
-                    this.displayError(err);
+                .subscribe(() => {
+                        //this.toastr.success(res.message);
+                        this.tabService.closeTab(this.url);
+                        this.openShiftTab(this.role.shift_id, this.role.shift_title);
+                    }, err => {
+                    this.scMessageService.error(err);
                 });
         }
     }
@@ -376,7 +368,7 @@ export class ShiftRoleEditComponent implements OnInit {
                     this.tabService.closeTab(this.tabService.currentTab.url);
                     this.actionService.deleteRole$.next([this.role.id]);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -428,16 +420,6 @@ export class ShiftRoleEditComponent implements OnInit {
         }
     }
 
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
-
 }
 
 function hours12to24(h, meridiem) {
@@ -451,7 +433,7 @@ function hours24to12(h) {
     };
 }
 
-function convertTime({ hour, minute, format, meriden }) {
+function convertTime({ hour, minute, meriden }) {
     return moment({
         minute,
         hour: hours12to24(hour, meriden)

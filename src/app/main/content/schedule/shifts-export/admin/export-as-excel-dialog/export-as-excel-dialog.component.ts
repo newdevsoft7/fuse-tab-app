@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -97,7 +96,6 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         private scheduleService: ScheduleService,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private tokenStorage: TokenStorage,
-        private toastr: ToastrService
     ) {
         this.shiftIds = data.shiftIds || [];
         this.settings = this.tokenStorage.getSettings();
@@ -201,16 +199,6 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         }
         this.scheduleService.exportAsCSV(body);
         this.dialogRef.close();
-    }
-
-    private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { MatTab, MatTabChangeEvent, MatDialog } from '@angular/material';
+import { MatTabChangeEvent, MatDialog } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
 
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
-import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../../schedule.service';
 import { UserService } from '../../../users/user.service';
 import { AdminShiftMapComponent } from './map/map.component';
@@ -18,6 +17,7 @@ import { FuseConfirmDialogComponent } from '../../../../../core/components/confi
 import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 export enum TAB {
     Staff = 'Staff',
@@ -69,7 +69,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         private scheduleService: ScheduleService,
         private tabService: TabService,
         private actionService: ActionService,
-        private spinner: CustomLoadingService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) {
         // Invite Users to Role
@@ -134,11 +134,10 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
                 try {
-                    const res = await this.scheduleService.deleteShift(this.shift.id);
                     //this.toastr.success(res.message);
                     this.tabService.closeTab(this.url);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -188,27 +187,25 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     toggleFlag(flag) {
         const value = flag.set === 1 ? 0 : 1;
         this.scheduleService.setShiftFlag(this.shift.id, flag.id, value)
-            .subscribe(res => {
-                flag.set = value;
-            });
+            .subscribe(() => {
+                    flag.set = value;
+                });
     }
 
     toggleLive() {
         const live = this.shift.live === 1 ? 0 : 1;
         this.scheduleService.publishShift(this.shift.id, live)
-            .subscribe(res => {
-                this.shift.live = live;
-                //this.toastr.success(res.message);
-            });
+            .subscribe(() => {
+                    this.shift.live = live;
+                });
     }
 
     toggleLock() {
         const lock = this.shift.locked === 1 ? 0 : 1;
         this.scheduleService.lockShift(this.shift.id, lock)
-            .subscribe(res => {
-                this.shift.locked = lock;
-                //this.toastr.success(res.message);
-            });
+            .subscribe(() => {
+                    this.shift.locked = lock;
+                });
     }
 
     onAddressChanged(address) {
@@ -272,7 +269,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
                 type
             }
         });
-        dialogRef.afterClosed().subscribe(res => {});
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     get isClient() {
@@ -295,7 +292,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             data: { shiftIds: [this.shift.id] }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     openOverviewDialog() {
@@ -305,17 +302,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
             data: { shiftIds: [this.shift.id] }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
 }

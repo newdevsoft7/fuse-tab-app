@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { TabService } from '../../../../../tab/tab.service';
 import { Tab } from '../../../../../tab/tab';
 import { TAB } from '../../../../../../constants/tab';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-admin-shift-list-email-dialog',
@@ -35,6 +36,7 @@ export class ShiftListEmailDialogComponent implements OnInit {
         private messageService: MessageService,
         private toastr: ToastrService,
         private tabService: TabService,
+        private scMessageService: SCMessageService,
         public dialogRef: MatDialogRef<ShiftListEmailDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) { 
@@ -45,7 +47,7 @@ export class ShiftListEmailDialogComponent implements OnInit {
         try {
             this.roles = await this.scheduleService.getRolesForShiftMessage(this.data.shiftIds);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -57,7 +59,7 @@ export class ShiftListEmailDialogComponent implements OnInit {
         try {
           this.templates = await this.messageService.searchTemplates(searchText);
         } catch (e) {
-          this.handleError(e);
+          this.scMessageService.error(e);
         }
       }
 
@@ -69,7 +71,7 @@ export class ShiftListEmailDialogComponent implements OnInit {
         try {
             this.selectedTemplate = event.option.value;
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -103,17 +105,8 @@ export class ShiftListEmailDialogComponent implements OnInit {
             tab.data.template = this.selectedTemplate;
             this.tabService.openTab(tab);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
-    private handleError(e): void {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

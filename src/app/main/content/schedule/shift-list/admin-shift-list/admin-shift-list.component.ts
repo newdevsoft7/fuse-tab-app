@@ -1,7 +1,6 @@
 import {
 	Component, OnInit,
-	ViewEncapsulation, ViewChild,
-	ElementRef, Input
+    ViewEncapsulation, ViewChild
 } from '@angular/core';
 import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 
@@ -27,6 +26,7 @@ import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/exp
 import { ShiftListEmailDialogComponent } from './email-dialog/email-dialog.component';
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { SettingsService } from '../../../settings/settings.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-admin-shift-list',
@@ -86,7 +86,8 @@ export class AdminShiftListComponent implements OnInit {
         private actionService: ActionService,
         private dialog: MatDialog,
         private spinner: CustomLoadingService,
-        private settingsService: SettingsService
+        private settingsService: SettingsService,
+        private scMessageService: SCMessageService
     ) { 
     }
 
@@ -163,7 +164,7 @@ export class AdminShiftListComponent implements OnInit {
                     });
                 } catch (e) {
                     this.spinner.hide();
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -184,7 +185,6 @@ export class AdminShiftListComponent implements OnInit {
             if (result) {
                 try {
                     this.spinner.show();
-                    const res = await this.scheduleService.ungroupGroups(groupIds, shiftIds);
                     this.spinner.hide();
                     //this.toastr.success('Saved.');
                     this.shifts.filter(v => shiftIds.includes(v.id.toString())).forEach(shift => {
@@ -288,23 +288,12 @@ export class AdminShiftListComponent implements OnInit {
             if (result) {
                 try {
                     this.shifts = this.shifts.filter(s => s.id !== shift.id);
-                    const res = await this.scheduleService.deleteShift(shift.id);
                     //this.toastr.success(res.message);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
     // Toggles Flag and Filters the Calendar Values
@@ -353,18 +342,17 @@ export class AdminShiftListComponent implements OnInit {
             data: { shiftIds: this.selectedShifts.map(v => v.id) }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     overview() {
-        const shiftIds = this.selectedShifts.map(v => v.id);
         const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
             panelClass: 'admin-shift-exports-as-pdf-dialog',
             disableClose: false,
             data: { shiftIds: this.selectedShifts.map(v => v.id) }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     email() {
@@ -374,7 +362,7 @@ export class AdminShiftListComponent implements OnInit {
             panelClass: 'admin-shift-email-dialog',
             data: { shiftIds }
         });
-        dialogRef.afterClosed().subscribe(res => {});
+        dialogRef.afterClosed().subscribe(() => { });
     }
     
     async getHoverContent(event: any): Promise<any> {
@@ -397,7 +385,7 @@ export class AdminShiftListComponent implements OnInit {
             // TODO - get shift status
           }
         } catch (e) {
-          this.displayError(e);
+          this.scMessageService.error(e);
         }
       }
 }

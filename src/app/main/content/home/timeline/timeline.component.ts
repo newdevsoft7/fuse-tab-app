@@ -23,6 +23,7 @@ import { ScheduleService } from '../../schedule/schedule.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ConnectorService } from '../../../../shared/services/connector.service';
 import { TabComponent } from '../../../tab/tab/tab.component';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum PostType {
     Main    = 'main',
@@ -66,7 +67,8 @@ export class TimelineComponent implements OnInit, OnDestroy
         private userService: UserService,
         private tabService: TabService,
         private scheduleService: ScheduleService,
-        private connectorService: ConnectorService
+        private connectorService: ConnectorService,
+        private scMessageService: SCMessageService
     ) {
         this.user = this.tokenStorage.getUser();
     }
@@ -109,7 +111,7 @@ export class TimelineComponent implements OnInit, OnDestroy
         try {
             this.activities = await this.homeService.getNotifications().toPromise();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -341,7 +343,7 @@ export class TimelineComponent implements OnInit, OnDestroy
                 this.addToPosts(post);
             }, err => {
                 this.spinner.hide();
-                this.displayError(err);
+                this.scMessageService.error(err);
             });
         } else { // If posting text
             let body: any = {
@@ -356,7 +358,7 @@ export class TimelineComponent implements OnInit, OnDestroy
                this.addToPosts(post);
             }, err => {
                 this.spinner.hide();
-                this.displayError(err);
+                this.scMessageService.error(err);
             });
         }
     }
@@ -535,7 +537,7 @@ export class TimelineComponent implements OnInit, OnDestroy
             const tab = new Tab(`${user.fname} ${user.lname}`, 'usersProfileTpl', `users/user/${user.id}`, user);
             this.tabService.openTab(tab);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         } finally {
             this.spinner.hide();
         }
@@ -571,7 +573,7 @@ export class TimelineComponent implements OnInit, OnDestroy
                 this.tabService.openTab(tab);
             }
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         } finally {
             this.spinner.hide();
         }
@@ -596,16 +598,6 @@ export class TimelineComponent implements OnInit, OnDestroy
             tab.data = { selectedTypeFilter: 'utype:=:complete' };
             this.tabService.closeTab(tab.url);
             this.tabService.openTab(tab);
-        }
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

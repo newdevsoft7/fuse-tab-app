@@ -1,26 +1,24 @@
 import {
     Component, OnInit, Input,
     ViewEncapsulation, SimpleChanges,
-    OnChanges, Output, EventEmitter,
-    ViewChild, OnDestroy
+    Output, EventEmitter,
+    ViewChild
 } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatDrawer, MatSlideToggleChange, MatSelectChange } from '@angular/material';
 
-import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     paylvl_enable = 35
 }
-
 
 @Component({
     selector: 'app-settings-pay-levels',
@@ -77,7 +75,7 @@ export class SettingsPayLevelsComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService
     ) {}
 
     ngOnChanges(changes: SimpleChanges) {
@@ -144,10 +142,9 @@ export class SettingsPayLevelsComponent implements OnInit {
         } else { // Input Text
             value = event;
         }
-        this.settingsService.setSetting(id, value).subscribe(res => {
+        this.settingsService.setSetting(id, value).subscribe(() => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            //this.toastr.success(res.message);
         });
     }
 
@@ -170,7 +167,7 @@ export class SettingsPayLevelsComponent implements OnInit {
             this.categories.push(res.data);
             this.resetCategoryForm();
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
     }
 
@@ -182,7 +179,7 @@ export class SettingsPayLevelsComponent implements OnInit {
             this.levels.push(res.data);
             this.resetLevelForm();
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
     }
 
@@ -195,16 +192,6 @@ export class SettingsPayLevelsComponent implements OnInit {
         const index = _.findIndex(this.categories, ['id', category.id]);
         this.categories.splice(index, 1);
         this.selectedCategory = null;
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

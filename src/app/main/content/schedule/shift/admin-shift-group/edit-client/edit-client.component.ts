@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ScheduleService } from '../../../schedule.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-group-edit-client',
@@ -19,7 +19,7 @@ export class GroupEditClientComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private scheduleService: ScheduleService,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -37,11 +37,10 @@ export class GroupEditClientComponent implements OnInit {
             const client_id = this.form.getRawValue().client_id;
             if (client_id !== this.group.client_id) {
                 try {
-                    const res = await this.scheduleService.updateShiftGroup(this.group.id, { client_id });
                     //this.toastr.success(res.message);
                     this.group.client_id = client_id;
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
             this.formActive = false;
@@ -59,13 +58,4 @@ export class GroupEditClientComponent implements OnInit {
         return result;
     }
 
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

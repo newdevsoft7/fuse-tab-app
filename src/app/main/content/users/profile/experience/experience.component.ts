@@ -6,6 +6,7 @@ import { UsersProfileExperienceFormDialogComponent } from "./experience-form-dia
 
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { SCMessageService } from "../../../../../shared/services/sc-message.service";
 
 @Component({
   selector: 'app-users-profile-experience',
@@ -22,7 +23,8 @@ export class UsersProfileExperienceComponent implements OnChanges {
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private experienceService: UsersProfileExperienceService
+    private experienceService: UsersProfileExperienceService,
+    private scMessageService: SCMessageService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -35,7 +37,7 @@ export class UsersProfileExperienceComponent implements OnChanges {
     try {
       this.categories = await this.experienceService.getExperiences(this.userInfo.id);
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     }
   }
 
@@ -75,7 +77,7 @@ export class UsersProfileExperienceComponent implements OnChanges {
       category.experience.splice(index, 1);
       await this.experienceService.deleteExperience(rawExp.id);
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     }
   }
 
@@ -105,7 +107,7 @@ export class UsersProfileExperienceComponent implements OnChanges {
         newExp.id = res.id;
       }
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     }
   }
 
@@ -114,13 +116,4 @@ export class UsersProfileExperienceComponent implements OnChanges {
     return option ? option.oname : value;
   }
 
-  private handleError(e) {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
-  }
 }

@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { HomeService } from '../../home.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-edit-comment-dialog',
@@ -17,8 +18,8 @@ export class EditCommentDialogComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<EditCommentDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private toastr: ToastrService,
-        private homeService: HomeService
+        private homeService: HomeService,
+        private scMessageService: SCMessageService
     ) {
         this.comment = _.cloneDeep(this.data);
     }
@@ -33,18 +34,8 @@ export class EditCommentDialogComponent implements OnInit {
             //this.toastr.success('Saved');
             this.dialogRef.close(newComment);
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

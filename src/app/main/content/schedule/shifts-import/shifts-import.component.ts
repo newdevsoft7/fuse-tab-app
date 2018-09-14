@@ -10,6 +10,7 @@ import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-
 import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../schedule.service';
 import { TabService } from '../../../tab/tab.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-shifts-import',
@@ -34,7 +35,8 @@ export class ShiftsImportComponent implements OnInit {
         private spinner: CustomLoadingService,
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
-        private tabService: TabService
+        private tabService: TabService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -70,7 +72,7 @@ export class ShiftsImportComponent implements OnInit {
             }
         } catch (e) {
             this.spinner.hide();
-            this.displayError(e);
+            this.scMessageService.error(e);
             this.warnings = e.error.warnings;
         }
 
@@ -89,7 +91,7 @@ export class ShiftsImportComponent implements OnInit {
             this.tabService.closeTab('schedule/import-shifts');
         } catch (e) {
             this.spinner.hide();
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -108,7 +110,7 @@ export class ShiftsImportComponent implements OnInit {
                     this.result = null;
                 } catch (e) {
                     this.spinner.hide();
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -134,20 +136,10 @@ export class ShiftsImportComponent implements OnInit {
                     }
                 } catch (e) {
                     this.spinner.hide();
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

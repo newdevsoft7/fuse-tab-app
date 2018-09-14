@@ -3,6 +3,7 @@ import { TokenStorage } from "../../../../../../shared/services/token-storage.se
 import { RegisterService } from "../../register.service";
 import { ToastrService } from "ngx-toastr";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
+import { SCMessageService } from "../../../../../../shared/services/sc-message.service";
 
 @Component({
   selector: 'app-register-step3',
@@ -20,7 +21,8 @@ export class RegisterStep3Component implements OnInit {
     private spinner: CustomLoadingService,
     private tokenStorage: TokenStorage,
     private registerService: RegisterService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private scMessageService: SCMessageService
   ) {}
 
   ngOnInit() {
@@ -42,19 +44,10 @@ export class RegisterStep3Component implements OnInit {
       this.tokenStorage.setSteps(res.steps);
       this.onStepSucceed.next(res.steps);
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     } finally {
       this.spinner.hide();
     }
   }
 
-  private handleError(e) {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
-  }
 }

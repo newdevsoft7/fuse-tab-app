@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
@@ -7,6 +7,7 @@ import { CustomLoadingService } from '../../../../../../shared/services/custom-l
 import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
 import { AddPayItemDialogComponent } from '../staff/selected/add-pay-item-dialog/add-pay-item-dialog.component';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 
 @Component({
@@ -28,10 +29,9 @@ export class AdminShiftBillComponent implements OnInit {
     ];
 
     constructor(
-        private spinner: CustomLoadingService,
         private dialog: MatDialog,
-        private toastr: ToastrService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private scMessageService: SCMessageService,
     ) {
     }
 
@@ -69,7 +69,7 @@ export class AdminShiftBillComponent implements OnInit {
                     this.shift.bill_items[data.item_type].push(item);
                     //this.toastr.success(res.message);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -77,14 +77,13 @@ export class AdminShiftBillComponent implements OnInit {
 
     async deleteItem(item, type) {
         try {
-            const res = await this.scheduleService.deletePayItem(item.id);
             const index = this.shift.bill_items[type].findIndex(v => v.id === item.id);
             if (index > -1) {
                 this.shift.bill_items[type].splice(index, 1);
             }
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -99,7 +98,7 @@ export class AdminShiftBillComponent implements OnInit {
                     key = field;
                     break;
             }
-            this.scheduleService.updateRoleStaff(item.id, { [key]: value }).subscribe(res => {
+            this.scheduleService.updateRoleStaff(item.id, { [key]: value }).subscribe(() => {
                 item[field] = value;
                 //this.toastr.success(res.message);
                 this.recalculateItemTotal(item, type);
@@ -126,7 +125,7 @@ export class AdminShiftBillComponent implements OnInit {
                 item.id = res.data.id;
                 this.recalculateItemTotal(item, type);
             } catch (e) {
-                this.displayError(e);
+                this.scMessageService.error(e);
             }  
         }
     }
@@ -140,16 +139,6 @@ export class AdminShiftBillComponent implements OnInit {
             }
         } else {
             item.bill_total = item.bill_unit_rate && item.bill_units ? item.bill_unit_rate * item.bill_units : null;
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

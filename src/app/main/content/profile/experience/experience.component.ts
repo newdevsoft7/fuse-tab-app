@@ -5,6 +5,7 @@ import { ProfileExperienceService } from './experience.service';
 import { MatDialog } from '@angular/material';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { ExperienceHeadingDialogComponent } from './heading-dialog/heading-dialog.component';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-profile-experience',
@@ -19,6 +20,7 @@ export class ProfileExperienceComponent implements OnInit {
     constructor(
         private experienceService: ProfileExperienceService,
         private toastr: ToastrService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -40,7 +42,7 @@ export class ProfileExperienceComponent implements OnInit {
             //this.toastr.success(res.message);
             this.categories.push(res.data);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -57,7 +59,7 @@ export class ProfileExperienceComponent implements OnInit {
                     const res = await this.experienceService.deleteCategory(category.id);
                     //this.toastr.success(res.message);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -69,7 +71,7 @@ export class ProfileExperienceComponent implements OnInit {
             const res = await this.experienceService.updateCategoriesDisplayOrder(elements);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -79,7 +81,7 @@ export class ProfileExperienceComponent implements OnInit {
             const res = await this.experienceService.updateHeadingsDisplayOrder({ elements });
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -95,7 +97,7 @@ export class ProfileExperienceComponent implements OnInit {
             category.cname = cname;
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -145,7 +147,7 @@ export class ProfileExperienceComponent implements OnInit {
                     //this.toastr.success('Saved.');
                     category.headings.push(newHeading);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -216,7 +218,7 @@ export class ProfileExperienceComponent implements OnInit {
                     }
                     //this.toastr.success('Saved.');
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -235,20 +237,10 @@ export class ProfileExperienceComponent implements OnInit {
                     const res = await this.experienceService.deleteHeading(heading.id);
                     //this.toastr.success(res.message);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

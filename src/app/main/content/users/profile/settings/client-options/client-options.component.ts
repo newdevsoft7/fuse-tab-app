@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 
-import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../user.service';
 import * as _ from 'lodash';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-settings-client-options',
@@ -19,8 +19,8 @@ export class UsersSettingsClientOptionsComponent implements OnInit, OnChanges {
     @Output() optionChanged = new EventEmitter();
 
     constructor(
-        private toastr: ToastrService,
-        private userService: UserService
+        private userService: UserService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -37,7 +37,7 @@ export class UsersSettingsClientOptionsComponent implements OnInit, OnChanges {
             await this.userService.updateUser(this.user.id, {php_tz: value });
             this.user.php_tz = value;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -46,13 +46,4 @@ export class UsersSettingsClientOptionsComponent implements OnInit, OnChanges {
         this.optionChanged.emit({ oname: option, set: event.checked ? 1 : 0 });
     }
 
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

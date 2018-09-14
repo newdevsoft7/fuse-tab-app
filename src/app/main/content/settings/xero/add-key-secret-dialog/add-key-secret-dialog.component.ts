@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { SettingsService } from '../../settings.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 enum Setting {
     xero_key = 102,
@@ -23,7 +23,7 @@ export class SettingsXeroAddKeySecretDialogComponent implements OnInit {
         private settingsService: SettingsService,
         private formBuilder: FormBuilder,
         public dialogRef: MatDialogRef<SettingsXeroAddKeySecretDialogComponent>,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService    
     ) { }
 
     ngOnInit() {
@@ -41,18 +41,8 @@ export class SettingsXeroAddKeySecretDialogComponent implements OnInit {
                 await this.settingsService.setSetting(Setting.xero_secret, secret).toPromise();
                 this.dialogRef.close(true);
             } catch (e) {
-                this.displayError(e);
+                this.scMessageService.error(e);
             }
-        }
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

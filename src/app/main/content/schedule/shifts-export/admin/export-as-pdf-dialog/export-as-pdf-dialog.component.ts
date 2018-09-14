@@ -4,10 +4,10 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { ScheduleService } from '../../../schedule.service';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
-import { ToastrService } from 'ngx-toastr';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-admin-export-as-pdf-dialog',
@@ -58,8 +58,8 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
         private scheduleService: ScheduleService,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private tokenStorage: TokenStorage,
-        private toastr: ToastrService,
-        private tabService: TabService
+        private tabService: TabService,
+        private scMessageService: SCMessageService
     ) {
         this.shiftIds = data.shiftIds || [];
         this.settings = this.tokenStorage.getSettings();
@@ -165,18 +165,9 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
             this.tabService.openTab(tab);
             this.dialogRef.close();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
         
     }
 
-    private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

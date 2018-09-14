@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     shift_table_columns = 11
@@ -22,7 +23,8 @@ export class SettingsScheduleListComponent implements OnInit {
 
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService
     ) {}
 
     async ngOnInit() {
@@ -56,18 +58,8 @@ export class SettingsScheduleListComponent implements OnInit {
         this.settingsService.setSetting(Setting.shift_table_columns, value).subscribe(res => {
             //this.toastr.success(res.message);
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

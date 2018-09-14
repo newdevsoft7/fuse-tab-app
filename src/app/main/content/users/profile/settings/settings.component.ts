@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-profile-settings',
@@ -103,6 +104,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         private userService: UserService,
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
+        private scMessageService: SCMessageService,
         private tokenStorage: TokenStorage
     ) { }
 
@@ -156,7 +158,7 @@ export class UsersProfileSettingsComponent implements OnInit {
                 this.updateSublist({ pname: 'client_shift_all', set: this.userPermissions['client_shift_all'].set });
             }
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -166,7 +168,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             const res = await this.userService.updateUserOption(this.user.id, data);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         } finally {
             // this.spinner.hide();
         }
@@ -179,7 +181,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             this.updateSublist(data);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         } finally {
             // this.spinner.hide();
         }
@@ -200,7 +202,7 @@ export class UsersProfileSettingsComponent implements OnInit {
                 }
             }
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -216,7 +218,7 @@ export class UsersProfileSettingsComponent implements OnInit {
                     break;
             }
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -240,7 +242,7 @@ export class UsersProfileSettingsComponent implements OnInit {
                     break;
             }
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         } finally {
             // this.spinner.hide();
         }
@@ -269,7 +271,7 @@ export class UsersProfileSettingsComponent implements OnInit {
                     break;
             }
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         } finally {
             // this.spinner.hide();
         }
@@ -281,7 +283,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             this.userOutsourceCompanies = res.data;
             this.isWorkHere = (res.works_here === 1);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -293,7 +295,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         try {
             this.userOutsourceCompanySource = await this.userService.fetchOutsourceCompanies(query);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -301,7 +303,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         try {
             await this.userService.updateOutsourceCompanyForUser(this.user.id, company.id, true);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -309,7 +311,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         try {
             await this.userService.updateOutsourceCompanyForUser(this.user.id, company.id, false);
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -317,7 +319,7 @@ export class UsersProfileSettingsComponent implements OnInit {
         try {
             await this.userService.updateUser(this.user.id, { works_here: isWorkHere ? 1 : 0 });
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -327,7 +329,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             const res = await this.userService.updateLink(this.user.id, linked);
             this.linkStatus = res.message;
         } catch (e) {
-            this.handleError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -337,18 +339,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             selected.approved = true;
             await this.userService.approveCompany(companyId);
         } catch (e) {
-            this.handleError(e);
-        }
-    }
-
-    private handleError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        } else if (e.error.error) {
-            this.toastr.error(e.error.error);
-        } else {
-            this.toastr.error(e.message);
+            this.scMessageService.error(e);
         }
     }
 

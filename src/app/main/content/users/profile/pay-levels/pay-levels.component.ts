@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChildren, QueryList, AfterViewChecked } from '@angular/core';
 import { UserService } from '../../user.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-profile-pay-levels',
@@ -17,7 +17,7 @@ export class UsersProfilePayLevelsComponent implements OnInit, AfterViewChecked 
     
     constructor(
         private userService: UserService,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -42,17 +42,8 @@ export class UsersProfilePayLevelsComponent implements OnInit, AfterViewChecked 
         try {
             this.payLevels = await this.userService.getUserPayLevels(this.user.id);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

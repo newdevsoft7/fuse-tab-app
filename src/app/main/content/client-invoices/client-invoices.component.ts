@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import { TabService } from "../../tab/tab.service";
 import { Tab } from "../../tab/tab";
+import { SCMessageService } from "../../../shared/services/sc-message.service";
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -45,7 +46,8 @@ export class ClientInvoicesComponent implements OnInit {
   constructor(
     private toastr: ToastrService,
     private tabService: TabService,
-    private clientInvoicesService: ClientInvoicesService
+    private clientInvoicesService: ClientInvoicesService,
+    private scMessageService: SCMessageService
   ) { }
 
   ngOnInit() {
@@ -87,7 +89,7 @@ export class ClientInvoicesComponent implements OnInit {
 
       this.isLoading = false;
     } catch (e) {
-      this.handleError(e);
+      this.scMessageService.error(e);
     }
   }
 
@@ -115,7 +117,7 @@ export class ClientInvoicesComponent implements OnInit {
           await this.clientInvoicesService.sendInvoice(item.id);
           this.fetchInvoices();
         } catch (e) {
-          this.handleError(e);
+          this.scMessageService.error(e);
         }
         break;
       case ACTIONS.PAY:
@@ -123,7 +125,7 @@ export class ClientInvoicesComponent implements OnInit {
           await this.clientInvoicesService.paidInvoice(item.id);
           this.fetchInvoices();
         } catch (e) {
-          this.handleError(e);
+          this.scMessageService.error(e);
         }
         break;
       case ACTIONS.CANCEL:
@@ -131,7 +133,7 @@ export class ClientInvoicesComponent implements OnInit {
           await this.clientInvoicesService.deleteInvoice(item.id);
           this.fetchInvoices();
         } catch (e) {
-          this.handleError(e);
+          this.scMessageService.error(e);
         }
         break;
       default:
@@ -157,13 +159,4 @@ export class ClientInvoicesComponent implements OnInit {
     this.isAdvancedSearch = true;
   }
 
-  private handleError(e) {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
-  }
 }

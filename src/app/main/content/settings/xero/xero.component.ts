@@ -1,7 +1,6 @@
 import {
     Component, OnInit, Input, SimpleChanges,
-    OnChanges, Output, EventEmitter,
-    ViewChild, OnDestroy
+    OnChanges, Output, EventEmitter
 } from '@angular/core';
 
 import {
@@ -16,6 +15,7 @@ import * as moment from 'moment';
 import { SettingsService } from '../settings.service';
 import { SettingsXeroAddKeySecretDialogComponent } from './add-key-secret-dialog/add-key-secret-dialog.component';
 import { UserService } from '../../users/user.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     xero_enable = 97,
@@ -105,9 +105,9 @@ export class SettingsXeroComponent implements OnInit, OnChanges {
 
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService,
         private dialog: MatDialog,
-        private userService: UserService
+        private userService: UserService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -168,7 +168,7 @@ export class SettingsXeroComponent implements OnInit, OnChanges {
                         this.settingsChange.next(this.settings);
                     } catch (e) {
                         this.items[Setting.xero_enable] = false;
-                        this.displayError(e);
+                        this.scMessageService.error(e);
                     } finally {
                         this.isModalOpen = false;
                     }
@@ -186,7 +186,7 @@ export class SettingsXeroComponent implements OnInit, OnChanges {
                 setting.value = 0;
                 this.settingsChange.next(this.settings);
             } catch (e) {
-                this.displayError(e);
+                this.scMessageService.error(e);
             }
         }
     }
@@ -204,10 +204,9 @@ export class SettingsXeroComponent implements OnInit, OnChanges {
         } else { // Input Text
             value = event;
         }
-        this.settingsService.setSetting(id, value).subscribe(res => {
+        this.settingsService.setSetting(id, value).subscribe(() => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            //this.toastr.success(res.message);
         });
     }
 
@@ -215,16 +214,6 @@ export class SettingsXeroComponent implements OnInit, OnChanges {
         if (!event.value) return;
         const date = moment(event.value).format('YYYY-MM-DD');
         this.onChange(Setting.xero_payroll_calendar, date);
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

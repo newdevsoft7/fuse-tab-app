@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserSettingsXtrmAddBankDialogComponent } from './dialogs/add-bank-dialog/add-bank-dialog.component';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 import { UserWithdrawDialogComponent } from './dialogs/withdraw-dialog/withdraw-dialog.component';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-settings-xtrm',
@@ -27,7 +28,8 @@ export class UsersSettingsXtrmComponent implements OnInit {
         private tokenStorage: TokenStorage,
         private userService: UserService,
         private dialog: MatDialog,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService
     ) { 
         this.user = tokenStorage.getUser();
     }
@@ -48,7 +50,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
             this.setup = this.xtrm.set_up;
             this.otpSent = this.xtrm.otp_sent;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -59,7 +61,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
             this.otpSent = res.otp_sent;
             this.sentSetXtrmRequest = true;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -68,7 +70,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
             await this.userService.authorizeXtrmSetup(this.user.id, code);
             this.getXtrmSetup();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -76,7 +78,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
         try {
             this.countries = await this.userService.getCountriesForBank();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -85,7 +87,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
         try {
             this.currencies = await this.userService.getCurrencies();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -112,7 +114,7 @@ export class UsersSettingsXtrmComponent implements OnInit {
                 try {
                     this.xtrm.wallets = await this.userService.getUserWallets(this.user.id);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -133,16 +135,6 @@ export class UsersSettingsXtrmComponent implements OnInit {
                 this.xtrm.banks.push(bank);
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

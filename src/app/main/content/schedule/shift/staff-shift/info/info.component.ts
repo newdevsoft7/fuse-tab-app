@@ -32,6 +32,7 @@ import { ConnectorService } from '../../../../../../shared/services/connector.se
 import { TabComponent } from '../../../../../tab/tab/tab.component';
 import { FuseInfoDialogComponent } from '../../../../../../core/components/info-dialog/info-dialog.component';
 import { Tab } from '../../../../../tab/tab';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 enum Action {
     apply = 'apply',
@@ -76,7 +77,8 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
         private tabService: TabService,
-        private connectorService: ConnectorService
+        private connectorService: ConnectorService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -203,7 +205,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                                 role.role_staff_id = res.id;
-                            }, err => this.displayError(err));
+                            }, err => this.scMessageService.error(err));
                     });
                 }
                 break;
@@ -222,7 +224,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
                                 delete role.role_staff_id;
-                            }, err => this.displayError(err));
+                            }, err => this.scMessageService.error(err));
                     }
                 });
                 break;
@@ -233,7 +235,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                     role.message = res.role_message;
                     role.actions = [...res.actions];
                     role.role_staff_id = res.id;
-                }, err => this.displayError(err));
+                }, err => this.scMessageService.error(err));
                 break;
 
             case Action.confirm:
@@ -259,7 +261,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                                     //this.toastr.success(res.message);
                                     role.message = res.role_message;
                                     role.actions = [...res.actions]
-                                }, err => this.displayError(err));
+                                }, err => this.scMessageService.error(err));
                         }
                     });
                 }
@@ -277,7 +279,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                                 //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions];
-                            }, err => this.displayError(err));
+                            }, err => this.scMessageService.error(err));
                     }
                 });
                 break;
@@ -295,7 +297,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                                 //this.toastr.success(res.message);
                                 role.message = res.role_message;
                                 role.actions = [...res.actions]
-                            }, err => this.displayError(err));
+                            }, err => this.scMessageService.error(err));
                     }
                 });
                 break;
@@ -321,7 +323,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                             role.message = res.role_message;
                             role.actions = [...res.actions]
                         } catch (e) {
-                            this.displayError(e);
+                            this.scMessageService.error(e);
                         }
                     }
                 });
@@ -344,7 +346,7 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
                             role.message = res.role_message;
                             role.actions = [...res.actions]
                         } catch (e) {
-                            this.displayError(e);
+                            this.scMessageService.error(e);
                         }
                     }
                 });
@@ -402,16 +404,6 @@ export class StaffShiftInfoComponent implements OnInit, OnDestroy {
 
             default:
                 break;
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

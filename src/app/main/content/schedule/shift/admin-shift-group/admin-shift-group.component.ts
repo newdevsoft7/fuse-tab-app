@@ -1,17 +1,17 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 
-import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash';
 
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../../schedule.service';
-import { MatTabChangeEvent, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { GroupStaffComponent } from './staff/staff.component';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 export enum TAB {
     Staff = 'Staff',
@@ -41,9 +41,9 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
 
     constructor(
         private spinner: CustomLoadingService,
-        private toastr: ToastrService,
         private scheduleService: ScheduleService,
         private actionService: ActionService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -95,40 +95,37 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             this.spinner.hide();
         } catch (e) {
             this.spinner.hide();
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
     async toggleLive() {
         const live = this.group.live === 1 ? 0 : 1;
         try {
-            const res = await this.scheduleService.updateShiftGroup(this.group.id, { live });
             //this.toastr.success(res.message);
             this.group.live = live;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
     async toggleFlag(flag) {
         const value = flag.set === 1 ? 0 : 1;
         try {
-            const res = await this.scheduleService.setGroupFlag(this.group.id, flag.id, value);
             //this.toastr.success(res.message);
             flag.set = value;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
     async toggleLock() {
         const locked = this.group.locked === 1 ? 0 : 1;
         try {
-            const res = await this.scheduleService.updateShiftGroup(this.group.id, { locked });
             //this.toastr.success(res.message);
             this.group.locked = locked;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -141,7 +138,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
                 type
             }
         });
-        dialogRef.afterClosed().subscribe(res => {});
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     openExportCsvDialog() {
@@ -154,7 +151,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     openOverviewDialog() {
@@ -167,17 +164,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             }
         });
 
-        dialogRef.afterClosed().subscribe(res => { });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
 }

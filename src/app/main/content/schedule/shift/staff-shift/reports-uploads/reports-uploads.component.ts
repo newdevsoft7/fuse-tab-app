@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-staff-shift-reports-uploads',
@@ -22,7 +23,8 @@ export class StaffShiftReportsUploadsComponent implements OnInit {
         private dialog: MatDialog,
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private scMessageService: SCMessageService
     ) {
     }
 
@@ -34,7 +36,7 @@ export class StaffShiftReportsUploadsComponent implements OnInit {
         try {
             this.data = await this.scheduleService.getShiftReportsUploads(this.shift.id);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -80,7 +82,6 @@ export class StaffShiftReportsUploadsComponent implements OnInit {
             try {
                 const index = this.data.files.findIndex(f => f.id === file.id);
                 this.data.files.splice(index, 1);
-                const res = await this.scheduleService.deleteFile(file.id);
                 //this.toastr.success(res.message);
             } catch (e) {
                 this.toastr.error(e.message);
@@ -98,7 +99,6 @@ export class StaffShiftReportsUploadsComponent implements OnInit {
             try {
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
                 this.data.surveys.splice(index, 1);
-                const res = await this.scheduleService.deleteCompletedReport(report.id);
                 //this.toastr.success(res.message);
             } catch (e) {
                 // To be removed
@@ -106,16 +106,6 @@ export class StaffShiftReportsUploadsComponent implements OnInit {
                 this.data.surveys.splice(index, 1);
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

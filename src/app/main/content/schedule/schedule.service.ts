@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../environments/environment';
 import { EventEntity } from '../../../core/components/sc-calendar';
 import * as _ from 'lodash';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../shared/services/sc-message.service';
 
 const BASE_URL = environment.apiUrl;
 const SHIFT_URL = `${BASE_URL}/shifts`;
@@ -16,7 +16,7 @@ const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
 export class ScheduleService {
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService
+    private scMessageService: SCMessageService
   ) {}
 
   async getEvents(fromDate: string, toDate: string): Promise<EventEntity[]> {
@@ -538,7 +538,7 @@ export class ScheduleService {
     const url = `${BASE_URL}/shifts/export/csv`;
     return this.http.post(url, body, { observe: 'response', responseType: 'blob'}).toPromise()
       .then(res => this.downloadFile(res['body'], 'shift exports.csv'))
-      .catch(e => this.displayError(e));
+      .catch(e => this.scMessageService.error(e));
   }
 
   overview(body: any = {}) {
@@ -575,16 +575,6 @@ export class ScheduleService {
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
-  }
-
-  private displayError(e: any) {
-    const errors = e.error.errors;
-    if (errors) {
-      Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-      this.toastr.error(e.error.message);
-    }
   }
 
 }

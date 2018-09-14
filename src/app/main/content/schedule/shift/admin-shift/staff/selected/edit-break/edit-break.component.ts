@@ -1,14 +1,12 @@
 import {
     Component, OnInit, ViewEncapsulation,
-    Input, Output, EventEmitter,
-    ViewChild
-} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+    Input} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { ScheduleService } from '../../../../../schedule.service';
+import { SCMessageService } from '../../../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-admin-shift-edit-break',
@@ -28,7 +26,7 @@ export class AdminShiftEditBreakComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private scheduleService: ScheduleService,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -46,28 +44,18 @@ export class AdminShiftEditBreakComponent implements OnInit {
     saveForm() {
         const body = this.form.value;
         this.scheduleService.updateRoleStaff(this.staff.id, body)
-            .subscribe(res => {
-                //this.toastr.success(res.message);
-                this.staff.unpaid_break = body.unpaid_break;
-                this.staff.paid_break = body.paid_break;
-            }, err => {
-                this.displayError(err);
+            .subscribe(() => {
+                    //this.toastr.success(res.message);
+                    this.staff.unpaid_break = body.unpaid_break;
+                    this.staff.paid_break = body.paid_break;
+                }, err => {
+                this.scMessageService.error(err);
             });
         this.formActive = false;
     }
 
     closeForm() {
         this.formActive = false;
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

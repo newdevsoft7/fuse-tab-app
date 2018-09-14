@@ -1,15 +1,12 @@
 import {
-    Component, OnInit, ViewEncapsulation,
-    Input, Output, EventEmitter,
-    ViewChild
-} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+    Component, OnInit, Input} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-group-edit-managers',
@@ -30,7 +27,7 @@ export class GroupEditManagersComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private scheduleService: ScheduleService,
-        private toastr: ToastrService
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -60,13 +57,12 @@ export class GroupEditManagersComponent implements OnInit {
         if (this.form.valid) {
             const manager_ids = this.form.getRawValue().manager_ids.map(v => v.id);
             try {
-                const res = await this.scheduleService.updateShiftGroup(this.group.id, { manager_ids });
                 //this.toastr.success(res.message);
                 this.group.managers = this.managers.filter(m => manager_ids.includes(m.id)).map(v => {
                     return { id: v.id, name: v.name }
                 });
             } catch (e) {
-                this.displayError(e);
+                this.scMessageService.error(e);
             }
             this.formActive = false;
         }
@@ -74,16 +70,6 @@ export class GroupEditManagersComponent implements OnInit {
 
     closeForm() {
         this.formActive = false;
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

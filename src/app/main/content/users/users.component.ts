@@ -26,6 +26,7 @@ import { TAB } from '../../../constants/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { UserPasswordDialogComponent } from './dialogs/password/password.component';
 import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-dialog/add-to-presenation-dialog.component';
+import { SCMessageService } from '../../../shared/services/sc-message.service';
 
 
 
@@ -105,6 +106,7 @@ export class UsersComponent implements OnInit {
         private actionService: ActionService,
         private tabService: TabService,
         private authService: AuthenticationService,
+        private scMessageService: SCMessageService,
         private router: Router) { }
 
     async ngOnInit() {
@@ -191,7 +193,7 @@ export class UsersComponent implements OnInit {
         try {
 			const res = await this.userService.updateUser(user.id, { fav: user.fav });
 		} catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
             user.fav = user.fav === 1 ? 0 : 1;
 		}
         evt.stopPropagation();
@@ -467,7 +469,7 @@ export class UsersComponent implements OnInit {
                     await this.userService.updateUser(user.id, body);
                     this.getUsers();
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -483,7 +485,7 @@ export class UsersComponent implements OnInit {
                 try {
                     await this.userService.changePassword(user.id, password).toPromise();
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -502,13 +504,4 @@ export class UsersComponent implements OnInit {
         });
     }
 
-    private displayError(e: any) {
-		const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-	}
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
 import { UserService } from '../../../user.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
 	selector: 'app-users-profile-edit-pay-level',
@@ -20,7 +20,7 @@ export class UsersProfileEditPayLevelComponent implements OnInit {
 	constructor(
 		private userService: UserService,
 		private formBuilder: FormBuilder,
-		private toastr: ToastrService
+		private scMessageService: SCMessageService
 	) { }
 
 	ngOnInit() {
@@ -58,19 +58,9 @@ export class UsersProfileEditPayLevelComponent implements OnInit {
 				this.levels.forEach(v => v.set = v.id == set);
 			}
 		} catch(e) {
-			this.displayError(e);
+			this.scMessageService.error(e);
 		}
 		this.formActive = false;
 	}
-
-	private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 
 }

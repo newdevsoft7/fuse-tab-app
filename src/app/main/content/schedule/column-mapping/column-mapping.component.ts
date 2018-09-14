@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ScheduleService } from '../schedule.service';
 import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
-import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-column-mapping',
@@ -15,8 +15,8 @@ export class ColumnMappingComponent implements OnInit {
 
     constructor(
         private spinner: CustomLoadingService,
-        private toastr: ToastrService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private scMessageService: SCMessageService
     ) { }
 
     async ngOnInit() {
@@ -27,26 +27,15 @@ export class ColumnMappingComponent implements OnInit {
             this.spinner.hide();
         } catch (e) {
             this.spinner.hide();
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
     async saveColumnMap(value, item) {
         try {
-            const res = await this.scheduleService.saveColumnMap(item.id, value);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
+            this.scMessageService.error(e);
         }
     }
 

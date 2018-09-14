@@ -1,15 +1,15 @@
 import {
         Component, OnInit, Input, ViewChild,
-        ViewEncapsulation, Output, EventEmitter
+        Output, EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
 
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 import { SettingsService } from '../../settings.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-settings-work-group-item',
@@ -31,8 +31,8 @@ export class SettingsWorkGroupItemComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -54,11 +54,10 @@ export class SettingsWorkGroupItemComponent implements OnInit {
 
     saveForm() {
         const cname = this.form.getRawValue().cname;
-        this.settingsService.updateWorkAreaCategory(this.category.id, cname).subscribe(res => {
+        this.settingsService.updateWorkAreaCategory(this.category.id, cname).subscribe(() => {
             this.category.cname = cname;
-            //this.toastr.success(res.message);
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
         this.formActive = false;
     }
@@ -67,29 +66,19 @@ export class SettingsWorkGroupItemComponent implements OnInit {
         this.formActive = false;
     }
 
-    delete(category, event) {
+    delete() {
         this.dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
             disableClose: false
         });
         this.dialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.settingsService.deleteWorkAreaCategory(this.category.id).subscribe(res => {
+                this.settingsService.deleteWorkAreaCategory(this.category.id).subscribe(() => {
                     //this.toastr.success(res.message);
                     this.onCategoryDeleted.next(this.category);
                 });
             }
         });
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

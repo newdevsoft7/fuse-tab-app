@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../../settings.service';
 import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-fund-wallet-by-other-dialog',
@@ -29,7 +30,8 @@ export class FundWalletByOtherDialogComponent implements OnInit, OnDestroy {
         @Inject(MAT_DIALOG_DATA) public data,
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService
     ) {
         this.wallet = this.data.wallet;
         this.formErrors = {
@@ -85,17 +87,7 @@ export class FundWalletByOtherDialogComponent implements OnInit, OnDestroy {
             this.toastr.success(res.message);
             this.dialogRef.close(res.wallet);
         } catch (e) {
-            this.displayError(e);
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
+            this.scMessageService.error(e);
         }
     }
 

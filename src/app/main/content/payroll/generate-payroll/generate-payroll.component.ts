@@ -6,13 +6,13 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 import { PayrollService } from '../payroll.service';
-import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { TrackingService } from '../../tracking/tracking.service';
 import { TabService } from '../../../tab/tab.service';
 import { Tab } from '../../../tab/tab';
 import { ActionService } from '../../../../shared/services/action.service';
 import { MatSelectChange } from '@angular/material';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-generate-payroll',
@@ -28,10 +28,10 @@ export class GeneratePayrollComponent implements OnInit {
         private payrollService: PayrollService,
         private trackingService: TrackingService,
         private toastr: ToastrService,
-        private spinner: CustomLoadingService,
         private tabService: TabService,
         private tokenStorage: TokenStorage,
-        private actionService: ActionService
+        private actionService: ActionService,
+        private scMessageService: SCMessageService
     ) { }
 
     readonly types = [
@@ -115,7 +115,7 @@ export class GeneratePayrollComponent implements OnInit {
                     this.to = moment(this.xeroDates.periods[0].to).toDate();
                 }
             } catch (e) {
-                this.displayError(e);
+                this.scMessageService.error(e);
             }
         } else {
             this.generateDisabled = false;
@@ -291,13 +291,4 @@ export class GeneratePayrollComponent implements OnInit {
         return value && typeof value === 'object' ? value.oname : value;
     }
 
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

@@ -11,6 +11,7 @@ import { TabService } from '../../../tab/tab.service';
 import { ConnectorService } from '../../../../shared/services/connector.service';
 import { TabComponent } from '../../../tab/tab/tab.component';
 import { ShowcaseService } from '../../showcase/showcase.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-users-presentations',
@@ -36,7 +37,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         private tabService: TabService,
         private dialog: MatDialog,
         private connectorService: ConnectorService,
-        private showcaseService: ShowcaseService
+        private showcaseService: ShowcaseService,
+        private scMessageService: SCMessageService
     ) { }
 
     ngOnInit() {
@@ -50,7 +52,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                         await this.getPresentations();
                         this.selectPresentation(id);
                     } catch (e) {
-                        this.displayError(e);
+                        this.scMessageService.error(e);
                     }
                 }
             } else {
@@ -103,7 +105,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                 this.actionService.selectedPresentationId = id;
             }
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -111,7 +113,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         try {
             this.presentations = await this.userService.getPresentations();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -119,7 +121,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         try {
             this.cards = await this.userService.getCards();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -134,7 +136,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                     const res = await this.userService.createPresentation({ name: result });
                     this.presentations.push(res);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -152,7 +154,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             this.presentationData.presentation.name = value;
             this.selectedPresentation.name = value;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -172,7 +174,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                         this.selectedPresentation = null;
                     }
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -189,7 +191,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                     await this.userService.removeUserFromPresentation(this.presentationData.presentation.id, user.id);
                     this.presentationData.users.splice(index, 1);
                 } catch (e) {
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
@@ -206,7 +208,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             });
             this.presentationData.presentation.card_id = event.value;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -248,16 +250,6 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             }
         );
         this.tabService.openTab(tab);
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

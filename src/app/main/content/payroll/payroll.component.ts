@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material';
 import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
 import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { FuseConfirmTextYesNoDialogComponent } from '../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
+import { SCMessageService } from '../../../shared/services/sc-message.service';
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -60,6 +61,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
         private payrollService: PayrollService,
         private tokenStorage: TokenStorage,
         private actionService: ActionService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -169,7 +171,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
                     try {
                         await this.payrollService.payPayrollWithXtrm(item.id);
                     } catch (e) {
-                        this.displayError(e);
+                        this.scMessageService.error(e);
                     }
                 }
             });
@@ -184,7 +186,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
                   await this.payrollService.processPayrolls([item.id]).toPromise();
                   this.toastr.success('Success!');
                 } catch (e) {
-                  this.displayError(e);
+                  this.scMessageService.error(e);
                 }
               }
             });
@@ -199,7 +201,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
                   await this.payrollService.recordPayment([item.id]).toPromise();
                   this.toastr.success('Success!');
                 } catch (e) {
-                  this.displayError(e);
+                  this.scMessageService.error(e);
                 }
               }
             });
@@ -215,7 +217,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
                         await this.payrollService.rejectPayroll(item.id, result).toPromise();
                         this.toastr.success('Success!');
                     } catch (e) {
-                        this.displayError(e);
+                        this.scMessageService.error(e);
                     }
                 }
             });
@@ -230,7 +232,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
                   await this.payrollService.deletePayroll(item.id).toPromise();
                   this.toastr.success('Success!');
                 } catch (e) {
-                  this.displayError(e);
+                  this.scMessageService.error(e);
                 }
               }
             });
@@ -259,13 +261,4 @@ export class PayrollComponent implements OnInit, OnDestroy {
         }
     }
 
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

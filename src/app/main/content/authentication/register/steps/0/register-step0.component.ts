@@ -6,6 +6,7 @@ import { RegisterService } from "../../register.service";
 import { CustomLoadingService } from "../../../../../../shared/services/custom-loading.service";
 import { AuthenticationService } from "../../../../../../shared/services/authentication.service";
 import { AppSettingService } from "../../../../../../shared/services/app-setting.service";
+import { SCMessageService } from "../../../../../../shared/services/sc-message.service";
 
 @Component({
     selector: 'app-register-step0',
@@ -29,7 +30,8 @@ export class RegisterStep0Component implements OnInit {
         private authService: AuthenticationService,
         private toastr: ToastrService,
         private spinner: CustomLoadingService,
-        private appSetting: AppSettingService
+        private appSetting: AppSettingService,
+        private scMessageService: SCMessageService
     ) {
         this.formErrors = {
             fname   : {},
@@ -86,7 +88,7 @@ export class RegisterStep0Component implements OnInit {
             this.onStepSucceed.next(res.steps);
         }, err => {
             this.spinner.hide();
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
     }
 
@@ -94,13 +96,4 @@ export class RegisterStep0Component implements OnInit {
         this.router.navigate(['/login']);
     }
 
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

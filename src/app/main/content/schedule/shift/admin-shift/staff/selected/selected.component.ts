@@ -3,11 +3,10 @@ import {
     ViewEncapsulation, Input,
     Output, EventEmitter,
     ViewChild,
-    ChangeDetectorRef,
     ElementRef
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import { OnRatingChangeEven } from 'angular-star-rating';
@@ -24,19 +23,15 @@ import { FuseConfirmDialogComponent } from '../../../../../../../core/components
 import { Tab } from '../../../../../../tab/tab';
 import {
     STAFF_STATUS_SELECTED, STAFF_STATUS_HIDDEN_REJECTED, STAFF_STATUS_REJECTED,
-    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY, STAFF_STATUS_CONFIRMED,
-    STAFF_STATUS_CHECKED_IN, STAFF_STATUS_CHECKED_OUT, STAFF_STATUS_COMPLETED,
-    STAFF_STATUS_INVOICED, STAFF_STATUS_PAID, STAFF_STATUS_NO_SHOW
-} from '../../../../../../../constants/staff-status';
-import { DatatableComponent } from '@swimlane/ngx-datatable';
+    STAFF_STATUS_APPLIED, STAFF_STATUS_STANDBY} from '../../../../../../../constants/staff-status';
 import { AddPayItemDialogComponent } from './add-pay-item-dialog/add-pay-item-dialog.component';
 import { TokenStorage } from '../../../../../../../shared/services/token-storage.service';
 import { AuthenticationService } from '../../../../../../../shared/services/authentication.service';
 import { TAB } from '../../../../../../../constants/tab';
 import { FuseConfirmYesNoDialogComponent } from '../../../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { AdminShiftChangeCompanyDialogComponent } from './change-company-dialog/change-company-dialog.component';
-import { async } from 'q';
 import { ShiftAddUsersToPresentationDialogComponent } from '../dialogs/add-users-to-presentation-dialog/add-users-to-presentation-dialog.component';
+import { SCMessageService } from '../../../../../../../shared/services/sc-message.service';
 
 enum Query {
     Counts = 'counts',
@@ -61,7 +56,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     @Input() currencies;
     @Output() onChat = new EventEmitter();
 
-    private currentComponentWidth;
     currentUser: any;
 
     _staffs;
@@ -94,6 +88,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         private toastr: ToastrService,
         private tokenStorage: TokenStorage,
         private authService: AuthenticationService,
+        private scMessageService: SCMessageService,
         private router: Router
     ) {
         this.settings = tokenStorage.getSettings();
@@ -201,7 +196,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             dialogRef.afterClosed().subscribe(async (result) => {
                 if (result) {
                     try {
-                        const res = await this.scheduleService.deletePayItem(payItem.id);
                         //this.toastr.success(res.message);
                         const index = staff.pay_items.findIndex(p => p.id === payItem.id);
                         if (index > -1) {
@@ -287,14 +281,14 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
-                    .subscribe(res => {
-                        //this.toastr.success(res.message);
-                        this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
-                            .subscribe(res => {
-                                this.staffs = res;
-                            })
-                        this.updateStaffCount();
-                    });
+                    .subscribe(() => {
+                            //this.toastr.success(res.message);
+                            this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
+                                .subscribe(res => {
+                                    this.staffs = res;
+                                });
+                            this.updateStaffCount();
+                        });
             }
         });
     }
@@ -312,9 +306,8 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         this.scheduleService.updateRoleStaff(staff.id, {
             staff_start: start.format('HH:mm'),
             staff_end: end.format('HH:mm')
-        }).subscribe(res => {
-            //this.toastr.success(res.message);
-        });
+        }).subscribe(() => {
+            });
     }
 
     recalcuatePayItemsTotal(staff) {
@@ -325,22 +318,22 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         const pay_rate = event.payRate;
         const pay_rate_type = event.payRateType;
         this.scheduleService.updateRoleStaff(staff.id, { pay_rate, pay_rate_type })
-            .subscribe(res => {
-                //this.toastr.success(res.message);
-                staff.pay_rate = pay_rate;
-                staff.pay_rate_type = pay_rate_type;
-            });
+            .subscribe(() => {
+                    //this.toastr.success(res.message);
+                    staff.pay_rate = pay_rate;
+                    staff.pay_rate_type = pay_rate_type;
+                });
     }
 
     onBillItemsChanged(event, staff) {
         const bill_rate = event.billRate;
         const bill_rate_type = event.billRateType;
         this.scheduleService.updateRoleStaff(staff.id, { bill_rate, bill_rate_type })
-            .subscribe(res => {
-                //this.toastr.success(res.message);
-                staff.bill_rate = bill_rate;
-                staff.bill_rate_type = bill_rate_type;
-            });
+            .subscribe(() => {
+                    //this.toastr.success(res.message);
+                    staff.bill_rate = bill_rate;
+                    staff.bill_rate_type = bill_rate_type;
+                });
     }
 
     private updateStaffCount() {
@@ -350,10 +343,9 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     changeTimesLock(staff) {
         const times_locked = staff.times_locked === 1 ? 0 : 1;
         this.scheduleService.updateRoleStaff(staff.id, { times_locked })
-            .subscribe(res => {
-                staff.times_locked = times_locked;
-                //this.toastr.success(res.message);
-            });
+            .subscribe(() => {
+                    staff.times_locked = times_locked;
+                });
     }
 
     remove(staff) {
@@ -368,14 +360,14 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.scheduleService.removeRoleStaff(staff.id)
-                    .subscribe(res => {
-                        //this.toastr.success(res.message);
-                        this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
-                            .subscribe(res => {
-                                this.staffs = res;
-                            })
-                        this.updateStaffCount();
-                    });
+                    .subscribe(() => {
+                            //this.toastr.success(res.message);
+                            this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
+                                .subscribe(res => {
+                                    this.staffs = res;
+                                });
+                            this.updateStaffCount();
+                        });
             }
         });
     }
@@ -383,10 +375,9 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     toggleTeamLeader(staff) {
         const team_leader = staff.team_leader === 1 ? 0 : 1;
         this.scheduleService.updateRoleStaff(staff.id, { team_leader })
-            .subscribe(res => {
-                staff.team_leader = team_leader;
-                //this.toastr.success(res.message);
-            });
+            .subscribe(() => {
+                    staff.team_leader = team_leader;
+                });
     }
 
     openChangeCompanyDialog(staff) {
@@ -407,27 +398,24 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     async changeRate(event: OnRatingChangeEven, staff) {
         const score = event.rating;
         try {
-            const res = await this.scheduleService.updateRoleStaff(staff.id, { rating: score }).toPromise();
             staff.rating = score;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
     async resetRate(staff) {
         try {
-            const res = await this.scheduleService.updateRoleStaff(staff.id, { rating: 0 }).toPromise();
             staff.rating = 0;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
     async setLate(isLate: boolean, staff) {
         try {
-            const res = await this.scheduleService.updateRoleStaff(staff.id, { late: isLate ? 1 : 0 }).toPromise();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -445,20 +433,11 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
                 user: staff
             }
         });
-        dialogRef.afterClosed().subscribe(res => {});
+        dialogRef.afterClosed().subscribe(() => { });
     }
 
     chatMessage(staff) {
         this.onChat.next(staff);
     }
 
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

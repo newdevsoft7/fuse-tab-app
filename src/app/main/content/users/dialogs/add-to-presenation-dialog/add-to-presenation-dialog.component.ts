@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TabService } from '../../../../tab/tab.service';
 import { TabComponent } from '../../../../tab/tab/tab.component';
 import { TAB } from '../../../../../constants/tab';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-add-to-presenation-dialog',
@@ -29,7 +30,8 @@ export class AddToPresenationDialogComponent implements OnInit {
         private actionService: ActionService,
         private toastr: ToastrService,
         private tabService: TabService,
-        @Inject(MAT_DIALOG_DATA) public data: any
+        @Inject(MAT_DIALOG_DATA) public data: any,
+        private scMessageService: SCMessageService
     ) {
         this.users = data.users;
     }
@@ -39,7 +41,7 @@ export class AddToPresenationDialogComponent implements OnInit {
             this.presentations = await this.userService.getPresentations();
             this.presentationId = this.actionService.selectedPresentationId;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         } finally {
             this.loaded = true;
         }
@@ -67,18 +69,9 @@ export class AddToPresenationDialogComponent implements OnInit {
                 this.tabService.selectTab(this.tabService.openTabs[index]);
             }
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
         
     }
 
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
-    }
 }

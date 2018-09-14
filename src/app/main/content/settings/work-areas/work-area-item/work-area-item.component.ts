@@ -5,12 +5,12 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 
 import { SettingsService } from '../../settings.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-settings-work-area-item',
@@ -33,7 +33,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
-        private toastr: ToastrService,
+        private scMessageService: SCMessageService,
         private dialog: MatDialog
     ) { }
 
@@ -67,7 +67,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         this.dialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.settingsService.deleteWorkArea(this.workArea.id).subscribe(res => {
+                this.settingsService.deleteWorkArea(this.workArea.id).subscribe(() => {
                     //this.toastr.success(res.message);
                     this.onWorkAreaDeleted.next(this.workArea);
                 });
@@ -79,11 +79,10 @@ export class SettingsWorkAreaItemComponent implements OnInit {
     saveForm() {
         const params = this.form.value;
         if (!params.php_tz) { delete params.php_tz; }
-        this.settingsService.updateWorkArea(this.workArea.id, params).subscribe(res => {
+        this.settingsService.updateWorkArea(this.workArea.id, params).subscribe(() => {
             this.workArea = { ...this.workArea, ...params };
-            //this.toastr.success(res.message);
         }, err => {
-            this.displayError(err);
+            this.scMessageService.error(err);
         });
         this.formActive = false;
     }
@@ -98,16 +97,6 @@ export class SettingsWorkAreaItemComponent implements OnInit {
             }
         }
 
-    }
-
-    private displayError(e) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }

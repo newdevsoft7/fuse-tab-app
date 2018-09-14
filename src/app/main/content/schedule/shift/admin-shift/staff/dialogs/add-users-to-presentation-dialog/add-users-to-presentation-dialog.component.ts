@@ -7,6 +7,7 @@ import { ScheduleService } from '../../../../../schedule.service';
 import { TabService } from '../../../../../../../tab/tab.service';
 import { TAB } from '../../../../../../../../constants/tab';
 import { TabComponent } from '../../../../../../../tab/tab/tab.component';
+import { SCMessageService } from '../../../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-shift-add-users-to-presentation-dialog',
@@ -36,6 +37,7 @@ export class ShiftAddUsersToPresentationDialogComponent implements OnInit {
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
         private tabService: TabService,
+        private scMessageService: SCMessageService,
         @Inject(MAT_DIALOG_DATA) public data: any
     ) { 
         this.user = data.user;
@@ -47,7 +49,7 @@ export class ShiftAddUsersToPresentationDialogComponent implements OnInit {
             this.presentations = await this.userService.getPresentations();
             this.presentationId = this.actionService.selectedPresentationId;
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         } finally {
             this.loaded = true;
         }
@@ -80,7 +82,7 @@ export class ShiftAddUsersToPresentationDialogComponent implements OnInit {
                 }
             }
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
         
     }
@@ -92,16 +94,6 @@ export class ShiftAddUsersToPresentationDialogComponent implements OnInit {
 
         if (this.role) {
             return !this.presentationId || !this.userType ? true : false; 
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

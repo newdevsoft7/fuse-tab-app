@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { SettingsService } from '../../settings/settings.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -160,7 +161,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     private tokenStorage: TokenStorage,
     private actionService: ActionService,
     private tabService: TabService,
-    private toastr: ToastrService,
+    private scMessageService: SCMessageService,
     private settingsService: SettingsService) { }
 
 
@@ -394,17 +395,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         // TODO - get shift status
       }
     } catch (e) {
-      this.displayError(e);
+      this.scMessageService.error(e);
     }
   }
 
-  private displayError(e) {
-    const errors = e.error.errors;
-    if (errors) {
-        Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-    }
-    else {
-        this.toastr.error(e.error.message);
-    }
-  }
 }

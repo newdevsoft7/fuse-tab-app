@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
 import { SettingsService } from '../settings.service';
 import { MatSlideToggleChange, MatSelectChange, MatDialog } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { FundWalletByCreditCardDialogComponent } from './dialogs/fund-wallet-by-credit-card-dialog/fund-wallet-by-credit-card-dialog.component';
 import { FundWalletByOtherDialogComponent } from './dialogs/fund-wallet-by-other-dialog/fund-wallet-by-other-dialog.component';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 enum Setting {
     xtrm_enable = 131
@@ -42,8 +42,8 @@ export class SettingsXtrmComponent implements OnInit, OnChanges {
     constructor(
         private settingsService: SettingsService,
         private formBuilder: FormBuilder,
-        private toastr: ToastrService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private scMessageService: SCMessageService
     ) { }
 
     async ngOnInit() {
@@ -58,7 +58,7 @@ export class SettingsXtrmComponent implements OnInit, OnChanges {
         try {
             await this.getXtrmSetup();
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         } finally {
             this.loaded = true;
         }
@@ -105,7 +105,7 @@ export class SettingsXtrmComponent implements OnInit, OnChanges {
         } else { // Input Text
             value = event;
         }
-        this.settingsService.setSetting(id, value).subscribe(res => {
+        this.settingsService.setSetting(id, value).subscribe(() => {
             setting.value = value;
             this.settingsChange.next(this.settings);
         });
@@ -128,7 +128,7 @@ export class SettingsXtrmComponent implements OnInit, OnChanges {
             this.getXtrmSetup();
         } catch (e) {
             this.submitting = false;
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -137,7 +137,7 @@ export class SettingsXtrmComponent implements OnInit, OnChanges {
             const res = await this.settingsService.createCompanyWallet(wallet);
             this.xtrm.wallets.push(res.wallet);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -171,16 +171,6 @@ export class SettingsXtrmComponent implements OnInit, OnChanges {
                     wallet.balance = result.balance;
                 }
             });
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

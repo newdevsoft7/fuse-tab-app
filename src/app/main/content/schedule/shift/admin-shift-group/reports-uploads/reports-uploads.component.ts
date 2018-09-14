@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 
@@ -8,6 +8,7 @@ import { ScheduleService } from '../../../schedule.service';
 import { CustomLoadingService } from '../../../../../../shared/services/custom-loading.service';
 import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { GroupSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
+import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-group-reports-uploads',
@@ -27,7 +28,8 @@ export class GroupReportsUploadsComponent implements OnInit {
         private dialog: MatDialog,
         private toastr: ToastrService,
         private scheduleService: ScheduleService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private scMessageService: SCMessageService
     ) {
     }
 
@@ -39,7 +41,7 @@ export class GroupReportsUploadsComponent implements OnInit {
         try {
             this.data = await this.scheduleService.getGroupReportsUploads(this.group.id);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -53,7 +55,7 @@ export class GroupReportsUploadsComponent implements OnInit {
             }
         });
         dialogRef.afterClosed().subscribe(id => {
-            if (id !== false) { 
+            if (id !== false) {
                 this.shiftId = id;
             }
         });
@@ -63,18 +65,18 @@ export class GroupReportsUploadsComponent implements OnInit {
         if (!this.shiftId) { return; }
         const files = event.target.files;
         if (files && files.length > 0) {
-			this.spinner.show();
+            this.spinner.show();
 
-			let formData = new FormData();
+            let formData = new FormData();
 
-			for (let i = 0; i < files.length; i++) {
-				formData.append('file[]', files[i], files[i].name);
-			}
+            for (let i = 0; i < files.length; i++) {
+                formData.append('file[]', files[i], files[i].name);
+            }
 
             formData.append('folder', 'shift');
             formData.append('id', this.shiftId);
 
-			try {
+            try {
                 const res = await this.scheduleService.reportsUploads(formData);
                 this.spinner.hide();
                 //this.toastr.success(res.message);
@@ -89,7 +91,7 @@ export class GroupReportsUploadsComponent implements OnInit {
                 });
 
             }
-		}
+        }
     }
 
     deleteFile(file) {
@@ -102,7 +104,6 @@ export class GroupReportsUploadsComponent implements OnInit {
             try {
                 const index = this.data.files.findIndex(f => f.id === file.id);
                 this.data.files.splice(index, 1);
-                const res = await this.scheduleService.deleteFile(file.id);
                 //this.toastr.success(res.message);
             } catch (e) {
                 this.toastr.error(e.message);
@@ -120,7 +121,6 @@ export class GroupReportsUploadsComponent implements OnInit {
             try {
                 const index = this.data.surveys.findIndex(s => s.id === report.id);
                 this.data.surveys.splice(index, 1);
-                const res = await this.scheduleService.deleteCompletedReport(report.id);
                 //this.toastr.success(res.message);
             } catch (e) {
                 // To be removed
@@ -134,21 +134,10 @@ export class GroupReportsUploadsComponent implements OnInit {
         const value = file.approved ? 0 : 1;
         try {
             file.approved = value;
-            const res = await this.scheduleService.reportsUploadsApprove(type, file.id, value);
             //this.toastr.success(res.message);
         } catch (e) {
-            this.displayError(e);
+            this.scMessageService.error(e);
             file.approved = value ? 0 : 1;
-        }
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
         }
     }
 

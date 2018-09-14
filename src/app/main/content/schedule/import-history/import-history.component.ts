@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { CustomLoadingService } from '../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../schedule.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
 
 @Component({
     selector: 'app-import-history',
@@ -21,8 +21,8 @@ export class ImportHistoryComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private scheduleService: ScheduleService,
-        private toastr: ToastrService,
-        private spinner: CustomLoadingService
+        private spinner: CustomLoadingService,
+        private scMessageService: SCMessageService
     ) { }
 
     async ngOnInit() {
@@ -32,7 +32,7 @@ export class ImportHistoryComponent implements OnInit {
             this.spinner.hide();
         } catch (e) {
             this.spinner.hide();
-            this.displayError(e);
+            this.scMessageService.error(e);
         }
     }
 
@@ -46,7 +46,6 @@ export class ImportHistoryComponent implements OnInit {
                 try {
                     // TODO - Delete import history
                     this.spinner.show();
-                    const res = await this.scheduleService.deleteImport(item.id);
                     this.spinner.hide();
                     //this.toastr.success(res.message);
                     const index = this.history.findIndex(v => v.id === item.id);
@@ -55,20 +54,10 @@ export class ImportHistoryComponent implements OnInit {
                     }
                 } catch (e) {
                     this.spinner.hide();
-                    this.displayError(e);
+                    this.scMessageService.error(e);
                 }
             }
         });
-    }
-
-    private displayError(e: any) {
-        const errors = e.error.errors;
-        if (errors) {
-            Object.keys(e.error.errors).forEach(key => this.toastr.error(errors[key]));
-        }
-        else {
-            this.toastr.error(e.error.message);
-        }
     }
 
 }
