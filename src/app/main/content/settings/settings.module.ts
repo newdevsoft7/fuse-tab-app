@@ -42,7 +42,6 @@ import { CKEditor5Module } from '../../../core/components/ckeditor/ckeditor.modu
 import { SettingsUserStatusesComponent } from './user-statuses/user-statuses.component';
 import { UserStatusItemComponent } from './user-statuses/item/item.component';
 import { CategoryDialogComponent } from './tracking/category-dialog/category-dialog.component';
-import { ProfileModule } from '../profile/profile.module';
 import { ProfileInfoModule } from '../profile/info/profile-info.module';
 import { ProfileExperienceModule } from '../profile/experience/experience.module';
 import { ProfileAttributesModule } from '../profile/attributes/profile-attributes.module';

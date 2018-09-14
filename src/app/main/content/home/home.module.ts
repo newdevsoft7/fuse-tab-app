@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 import { SharedModule } from '../../../core/modules/shared.module';
 import { TabModule } from '../../tab/tab.module';
 import { UsersModule } from '../users/users.module';
-import { ProfileModule } from '../profile/profile.module';
 import { ScheduleModule } from '../schedule/schedule.module';
 import { FormSignModule } from '../form-sign/form-sign.module';
 import { QuizModule } from '../quiz/quiz.module';
@@ -34,7 +32,6 @@ import { ShowcaseModule } from '../showcase/showcase.module';
         SharedModule,
         TabModule,
         UsersModule,
-        ProfileModule,
         ScheduleModule,
         SettingsModule,
         TrackingModule,
