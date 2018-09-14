@@ -392,6 +392,16 @@ export class SettingsService {
         return this.http.get(url).toPromise();
     }
 
+    getStripeBillCard(): Promise<any> {
+        const url = `${BASE_URL}/billing/stripe/card`;
+        return this.http.get(url).toPromise();
+    }
+
+    updateStripeBillCard(token: string): Promise<any> {
+        const url = `${BASE_URL}/billing/stripe/card`;
+        return this.http.post(url, { stripe_token: token }).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }

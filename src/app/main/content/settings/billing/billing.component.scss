@@ -8,6 +8,11 @@
         legend {
             padding: 0 4px;
         }
+
+        .title {
+            font-weight: bold;
+            margin-right: 8px;
+        }
     }
 
     /deep/ .mat-form-field-placeholder {
@@ -29,4 +34,5 @@
             }
         }
     }
+
 }

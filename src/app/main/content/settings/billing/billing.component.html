@@ -1,26 +1,51 @@
 <div id="billing-container" [ngClass.gt-xs]="'p-24'">
-    <fieldset class="card">
+    <fieldset class="card" *ngIf="cardFetched">
         <legend>
             Credit Card
         </legend>
-        <form [formGroup]="form" class="p-8">
+
+        <form [formGroup]="form" class="p-8" *ngIf="!haveCard">
+            <p>Please enter your credit or debit card details to enable automatic billing.</p>
             <mat-form-field class="w-100-p">
                 <input matInput formControlName="name" placeholder="Name">
             </mat-form-field>
             <ngx-stripe-card [options]="cardOptions" [elementsOptions]="elementsOptions"></ngx-stripe-card>
-            <button mat-raised-button color="accent" (click)="save()" class="mt-12" [disabled]="form.invalid || cardInvalid">Save</button>
+            <button mat-raised-button color="accent" (click)="saveStripeBillCard()" class="mt-12" [disabled]="form.invalid || cardInvalid">Save</button>
         </form>
+
+        <div *ngIf="haveCard">
+            <p>Automatic billing is enabled.</p>
+            <div class="mb-4">
+                <span class="title">Card Number:</span>
+                XXXX XXXX XXXX {{cardLast4}}
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="8px">
+                <div>
+                    <span class="title">Type:</span>
+                    {{cardBrand}}
+                </div>
+                <div>
+                    <span class="title">Expiry:</span>
+                    {{cardExpiry}}
+                </div>
+            </div>
+            <div class="mt-12">
+                <button mat-raised-button color="warn" (click)="delete()">Delete</button>
+                <button mat-raised-button color="accent" (click)="update()">Update</button>
+            </div>
+        </div>
     </fieldset>
 
     <div class="invoice-datatable mt-48 mb-32" *ngIf="invoices">
         <ngx-datatable #table class="material striped" [rows]="invoices" [loadingIndicator]="isLoading" [columnMode]="'force'"
             [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [reorderable]="reorderable"
             [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize" (page)="onSetPage($event)"
-            (activate)="onActivate($event)">
+            (activate)="onActivate($event)" [messages]="{emptyMessage: 'No invoices yet.'}">
 
             <ngx-datatable-column prop="id" name="Invoice No.">
                 <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    <a href="https://www.paypal.com/invoice/payerView/details/{{row.paypal_id}}" class="invoice-number" target="_blank">{{row.id}}</a>
+                    <a href="https://www.paypal.com/invoice/payerView/details/{{row.paypal_id}}" class="invoice-number"
+                        target="_blank">{{row.id}}</a>
                 </ng-template>
             </ngx-datatable-column>
 

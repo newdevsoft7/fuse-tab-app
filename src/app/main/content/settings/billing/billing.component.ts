@@ -4,6 +4,7 @@ import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions, El
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { SettingsService } from '../settings.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-billing',
@@ -43,6 +44,13 @@ export class BillingComponent implements OnInit {
   isLoading: boolean = false;
   pageSizes = [5, 10, 20, 50, 100];
   cardInvalid: boolean = true;
+
+  haveCard: boolean;
+  cardBrand: string;
+  cardLast4: any;
+  cardExpiry: string = '02/20';
+  cardSubscription: Subscription;
+  cardFetched: boolean = false;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -56,11 +64,34 @@ export class BillingComponent implements OnInit {
       name: ['', Validators.required]
     });
     this.fetchInvoices();
-    this.card.on.subscribe(e => {
-      if (e.type == 'change') {
-        this.cardInvalid = !e.event.complete;
-      }
-    });
+    this.getStripeBillCard();
+  }
+
+  ngAfterViewChecked() {
+    if (this.card && !this.cardSubscription) {
+      this.cardSubscription = this.card.on.subscribe(e => {
+        if (e.type == 'change') {
+          this.cardInvalid = !e.event.complete;
+        }
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    this.cardSubscription.unsubscribe();
+  }
+
+  async getStripeBillCard() {
+    try {
+      const res = await this.settingsService.getStripeBillCard();
+      this.haveCard = res.got_card;
+      this.cardBrand = res.card_brand;
+      this.cardLast4 = res.card_last4;
+    } catch (e) {
+      this.displayError(e);
+    } finally {
+      this.cardFetched = true;
+    }
   }
 
   onPageSizeChange(event) {
@@ -91,15 +122,20 @@ export class BillingComponent implements OnInit {
     }
   }
 
-  save() {
+  saveStripeBillCard() {
     const name = this.form.get('name').value;
     this.stripeService
       .createToken(this.card.getCard(), { name })
-      .subscribe(result => {
+      .subscribe(async result => {
         if (result.token) {
-          // Use the token to create a charge or a customer
-          // https://stripe.com/docs/charges
-          console.log(result.token.id);
+          try {
+            const res = await this.settingsService.updateStripeBillCard(result.token.id);
+            this.haveCard = res.got_card;
+            this.cardBrand = res.card_brand;
+            this.cardLast4 = res.card_last4;
+          } catch (e) {
+            this.displayError(e);
+          }
         } else if (result.error) {
           this.toastr.error(result.error.message);
         }
@@ -107,11 +143,11 @@ export class BillingComponent implements OnInit {
   }
 
   update() {
-
+    this.haveCard = false;
   }
 
   delete() {
-
+    this.haveCard = false;
   }
 
   onActivate(evt) {

@@ -17,5 +17,5 @@ export const environment = {
     // quizconnectUrl: 'http://localhost:4400'
     quizconnectUrl: 'https://quizconnect.net',
     showcaseconnectUrl: 'http://localhost:4300',
-    stripeApiKey: 'pk_test_NXL5yI7iRHNN8glxD4aAQJBc'
+    stripeApiKey: 'pk_test_y9EgKnnUW9OOeQMCltC2i4Tl'
 };
