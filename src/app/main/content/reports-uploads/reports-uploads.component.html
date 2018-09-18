@@ -44,7 +44,7 @@
               <!-- / BREADCRUMB -->
 
               <!-- ADD FILE BUTTON -->
-              <div class="file-uploader">
+              <div class="file-uploader" *ngIf="showFileUploader()">
                   <input hidden type="file" #fileInput multiple (change)="onUpload($event)" />
                   <button mat-fab
                     class="add-file-button mat-warn"

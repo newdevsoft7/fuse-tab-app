@@ -61,6 +61,16 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
     this.reportsUploadsService.folders = [];
   }
 
+  showFileUploader() {
+    if (this.folders.length < 1) { return false; }
+    const folder = this.folders[this.folders.length - 1];
+    if (folder.type === 'Folder' && ['message_attachments', 'shared_files', 'tracking_option'].indexOf(folder.folder) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async onUpload(event) {
     const selectedFolder = this.folders[this.folders.length - 1];
     const files = event.target.files;
