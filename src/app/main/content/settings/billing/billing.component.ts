@@ -147,10 +147,6 @@ export class BillingComponent implements OnInit {
     this.haveCard = false;
   }
 
-  delete() {
-    this.haveCard = false;
-  }
-
   onActivate(evt) {
 
   }
