@@ -72,6 +72,16 @@ export class ReportsUploadsService {
       .catch(e => this.scMessageService.error(e));
   }
 
+  downloadZip(params: {
+    file_ids: number[],
+    report_ids: number[]
+  }) {
+    const url = `${BASE_URL}/reportsUploads/download`;
+    return this.http.post(url, params, { observe: 'response', responseType: 'blob'}).toPromise()
+      .then(res => this.downloadFile(res['body'], 'files.zip'))
+      .catch(e => this.scMessageService.error(e));
+  }
+
   downloadFile(data, filename) {
     let dwldLink = document.createElement("a");
     let url = URL.createObjectURL(data);

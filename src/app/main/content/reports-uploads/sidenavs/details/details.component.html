@@ -23,7 +23,9 @@
                 <button mat-icon-button class="mat-icon-button" matTooltip="Open" (click)="openMultiple()">
                     <mat-icon>open_in_new</mat-icon>
                 </button>
-                <button mat-icon-button aria-label="Download" matTooltip="Download csv" (click)="downloadReports()">
+            </ng-container>
+            <ng-container *ngIf="selectedFolder.folder == 'report' || selectedFolder.folder == 'tracking_option'">
+                <button mat-icon-button aria-label="Download" matTooltip="Download Zip" (click)="downloadZip()">
                     <mat-icon>file_download</mat-icon>
                 </button>
             </ng-container>

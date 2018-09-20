@@ -132,6 +132,28 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     this.reportsUploadsService.downloadReports(ids);
   }
 
+  downloadZip() {
+    let params: any = {};
+    switch (this.selectedFolder.folder) {
+      case 'report':
+        params = {
+          report_ids: this.selectedItems.map(v => +v.id.split(':')[0])
+        };
+        break;
+
+      case 'tracking_option':
+        params = {
+          file_ids: this.selectedItems.map(v => +v.id.split(':')[1])
+        };
+        break;
+
+      default:
+        break;
+    }
+    this.reportsUploadsService.downloadZip(params);
+
+  }
+
   download() {
     if (['survey', 'quiz'].indexOf(this.selected.type) > -1) {
       const id = this.selected.id.split(':')[0];
