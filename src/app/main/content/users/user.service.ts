@@ -88,8 +88,14 @@ export class UserService {
 
     uploadProfilePhoto(userId: number, data: any): Observable<any> {
         const url = `${BASE_URL}/profile/${userId}/photo`;
-        return this.http.post(url, data)
-            .catch(this.handleError);
+        return this.http.request(new HttpRequest(
+            'POST',
+            url,
+            data,
+            {
+              reportProgress: true
+            }
+        )).catch(this.handleError);
     }
 
     getProfilePhotos(userId: number): Observable<any> {

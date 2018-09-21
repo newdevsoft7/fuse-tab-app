@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 
 import { UsersProfilePhotoGalleryDialogComponent } from './photo-gallery-dialog/photo-gallery-dialog.component';
 import { TagsDialogComponent } from '../dialogs/tags-dialog/tags-dialog.component';
+import { HttpEventType } from '@angular/common/http';
 
 const PROFILE_PHOTO = 'profile_photo';
 
@@ -34,6 +35,9 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 	selectedTags: string[] = [];
 
 	dialogRef: any;
+
+	showProgress: boolean = false;
+    progress: number = 0;
 
 	constructor(
 		private spinner: CustomLoadingService,
@@ -129,8 +133,6 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 		const files = event.target.files;
 		if (files && files.length > 0) {
 
-			this.spinner.show();
-
 			let formData = new FormData();
 
 			for (let i = 0; i < files.length; i++) {
@@ -140,16 +142,21 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 			if (isAdmin) {
 				formData.append('adminOnly', '1');
 			}
+			this.progress = 0;
+			this.showProgress = true;
 
 			this.userService.uploadProfilePhoto(this.user.id, formData)
-				.subscribe(res => {
-					this.spinner.hide();
-					//this.toastr.success(res.message);
-					res.data.map(photo => {
-						this.photos.push(photo);
-					});
+				.subscribe(event => {
+					if (event.type === HttpEventType.UploadProgress) {
+						this.progress = event.loaded / event.total * 100;
+                    } else if (event.type === HttpEventType.Response) {
+						this.showProgress = false;
+                        event.body.data.map(video => {
+                            this.photos.push(video);
+                        });
+                    }
 				}, err => {
-					this.spinner.hide();
+					this.showProgress = false;
 					_.forEach(err.error.errors, errors => {
 						_.forEach(errors, (error: string) => {
 							const message = _.replace(error, /photo\.\d+/g, 'photo');
@@ -264,5 +271,9 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 			}
 		});
 	}
+
+	getFlooredNumber(num): number {
+        return Math.floor(num);
+    }
 
 }
