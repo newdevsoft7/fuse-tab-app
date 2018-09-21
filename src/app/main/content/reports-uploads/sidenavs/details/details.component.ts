@@ -132,26 +132,13 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     this.reportsUploadsService.downloadReports(ids);
   }
 
+
   downloadZip() {
-    let params: any = {};
-    switch (this.selectedFolder.folder) {
-      case 'report':
-        params = {
-          report_ids: this.selectedItems.map(v => +v.id.split(':')[0])
-        };
-        break;
-
-      case 'tracking_option':
-        params = {
-          file_ids: this.selectedItems.map(v => +v.id.split(':')[1])
-        };
-        break;
-
-      default:
-        break;
-    }
+    const params = {
+      file_ids: this.selectedItems.filter(v => v.type != 'quiz' && v.type !='survey').map(v => +v.id.split(':')[1]),
+      report_ids: this.selectedItems.filter(v => v.type == 'quiz' || v.type == 'survey').map(v => +v.id.split(':')[0])
+    };
     this.reportsUploadsService.downloadZip(params);
-
   }
 
   download() {
@@ -159,6 +146,10 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
       const id = this.selected.id.split(':')[0];
       this.reportsUploadsService.downloadReports([id]);
     }
+  }
+
+  get isOpenMulitple() {
+    return this.selectedItems.every(item => item.type == 'quiz' || item.type == 'survey');
   }
 
 }

@@ -19,12 +19,19 @@
         </ng-container>
         
         <ng-container *ngIf="!selected">
-            <ng-container *ngIf="['quiz', 'survey'].indexOf(selectedItems[0].type) > -1">
+            <ng-container *ngIf="isOpenMultiple">
                 <button mat-icon-button class="mat-icon-button" matTooltip="Open" (click)="openMultiple()">
                     <mat-icon>open_in_new</mat-icon>
                 </button>
             </ng-container>
-            <ng-container *ngIf="selectedFolder.folder == 'report' || selectedFolder.folder == 'tracking_option'">
+
+            <ng-container *ngIf="selectedFolder.folder == 'report'">
+                <button mat-icon-button aria-label="Download" matTooltip="Download CSV" (click)="downloadReports()">
+                    <mat-icon>file_download</mat-icon>
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="selectedFolder.folder == 'tracking_option'">
                 <button mat-icon-button aria-label="Download" matTooltip="Download Zip" (click)="downloadZip()">
                     <mat-icon>file_download</mat-icon>
                 </button>
