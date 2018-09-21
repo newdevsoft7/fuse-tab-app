@@ -79,9 +79,9 @@
     <a [href]="document.path" target="blank">
         <img class="preview" [src]="document.thumbnail">
     </a>
-    <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
-        <span>{{document.oname}}</span>
-        <div>
+    <div class="action" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="title" [matTooltip]="document.oname">{{document.oname}}</div>
+        <div fxFlex="noshrink">
             <button mat-icon-button (click)="onLockedChanged(document)" *ngIf="document.lock == 1">
                 <mat-icon *ngIf="document.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
                 <mat-icon *ngIf="!document.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
