@@ -10,8 +10,8 @@
                 <div class="title">{{category.cname == '' ? 'Uncategorised' : category.cname}}</div>
             </header>
 
-            <div class="content" fxLayout="row" fxLayoutWrap>
-                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex="25">
+            <div class="content" fxLayout.gt-xs="row wrap" fxLayout.xs="column">
+                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex.gt-xs>
                     <mat-checkbox [(ngModel)]="workarea.set" (change)="onUpdateWorkArea(workarea)">{{workarea.aname}}</mat-checkbox>
                 </div>
             </div>
