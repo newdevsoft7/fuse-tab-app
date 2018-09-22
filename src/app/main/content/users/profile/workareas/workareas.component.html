@@ -11,7 +11,7 @@
             </header>
 
             <div class="content" fxLayout.gt-xs="row wrap" fxLayout.xs="column">
-                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex.gt-xs>
+                <div *ngFor="let workarea of category.work_areas" class="info" fxFlex.gt-xs="25">
                     <mat-checkbox [(ngModel)]="workarea.set" (change)="onUpdateWorkArea(workarea)">{{workarea.aname}}</mat-checkbox>
                 </div>
             </div>
