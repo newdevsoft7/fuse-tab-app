@@ -1,0 +1,117 @@
+@import "src/app/core/scss/fuse";
+
+.shift-summary-wrapper {
+
+  .page-length-selector {
+      height: 60px;
+  }
+
+  &.page-layout {
+      overflow: unset !important;
+  }
+
+  .header {
+      max-width: inherit !important;
+      @include media-breakpoint('xs') {
+          margin: -1em 0;
+      }
+      @include media-breakpoint-up('xs') {
+          margin: -1em;
+      }
+      min-height: 200px;
+      position: relative;
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+      margin-bottom: 25px;
+
+      height: auto !important;
+      max-height: inherit !important;
+  }
+
+  .group {
+
+      &:hover {
+          cursor: pointer;
+      }
+  }
+
+  .search-bar {
+
+      .date-picker {
+          width: 120px;
+      }
+  }
+
+  .datatable-checkbox input[type='checkbox'] {
+      &:after, &:before {
+          width: 16px;
+          height: 16px;
+      }
+
+      &:checked:before {
+          height: 8px;
+      }
+  }
+
+  .content {
+      min-height: 150px;
+
+      .legend {
+          border: 1px solid #dcdcdc;
+          border-radius: 2px;
+          margin-bottom: 16px;
+  
+          legend {
+              padding: 0 4px;
+          }
+  
+          .status {
+  
+              margin: 8px 0;
+      
+              .bg {
+                  display: inline-block;
+                  width: 40px;
+                  height: 30px;
+                  margin-right: 12px;
+                  vertical-align: middle;
+              }
+      
+              .title {
+                  display: inline-block;
+                  vertical-align: middle;
+              }
+          }
+      }
+
+      /deep/ {
+        .ngx-datatable.material .datatable-body .datatable-row-detail {
+          padding: 0;
+          height: auto !important;
+        }
+
+        .ngx-datatable.fixed-row .datatable-scroll .datatable-body-row {
+          height: auto !important;
+        }
+
+        .ngx-datatable .cell-center > div:first-child {
+          margin: 0 auto;
+        }
+
+        .ngx-datatable .cell-right > div:first-child {
+          margin-left: auto;
+        }
+      }
+
+  }
+
+  .shift-date {
+      border-radius: 2px;
+      padding: 2px;
+  }
+  
+  .shift-title {
+      cursor: pointer;
+  }
+
+}

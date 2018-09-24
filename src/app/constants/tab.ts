@@ -61,7 +61,10 @@ export const TAB = {
     'STAFF_INVOICES_TAB': new Tab('Pay', 'payrollTpl', 'staff/invoices', {}),
     'STAFF_NEW_INVOICE_TAB': new Tab('New Invoice', 'generatePayrollTpl', 'staff/new-invoice', {}),
 
+    // Summary
+    'SUMMARY_TAB': new Tab('Summary', 'summaryTpl', 'summary', {}),
+
     // Client tabs
     'SCHEDULE_CLIENT_LIST_TAB': new Tab('List', 'clientShiftListTpl', 'schedule/client-list', {}),
-    'CLIENT_NEW_BOOKING_TAB': new Tab('New Booking', 'clientNewBookingTpl', 'schedule/client-new-booking', {})
+    'CLIENT_NEW_BOOKING_TAB': new Tab('New Booking', 'clientNewBookingTpl', 'schedule/client-new-booking', {}),
 };

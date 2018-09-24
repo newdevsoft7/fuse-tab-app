@@ -239,6 +239,14 @@ export const ADMIN_MODEL = [
                 ]
             }
         ]
+    },
+    {
+        'id': 'summary',
+        'title': 'Summary',
+        'translate': 'NAV.ADMIN.SUMMARY',
+        'type': 'item',
+        'icon': 'note',
+        'tab': TAB.SUMMARY_TAB,
     }
 ];
 

@@ -22,6 +22,7 @@ import { ClientInvoicesModule } from '../client-invoices/client-invoices.module'
 import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module';
 import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
 import { ShowcaseModule } from '../showcase/showcase.module';
+import { SummaryModule } from '../summary';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { ShowcaseModule } from '../showcase/showcase.module';
         OutsourceCompaniesModule,
         TimelineModule,
         ReportsUploadsModule,
-        ShowcaseModule
+        ShowcaseModule,
+        SummaryModule
     ],
     exports     : [
         FuseHomeComponent

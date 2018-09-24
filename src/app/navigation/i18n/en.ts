@@ -67,7 +67,9 @@ export const locale = {
                 'SETTINGS_HELP_QUICKSTART_GUIDE': 'QuickStart Guide',
                 'SETTINGS_HELP_VIDEO_SYSTEM_SETUP': 'Video - System Setup',
                 'SETTINGS_HELP_VIDEO_SCHEDULING': 'Video Scheduling',
-                'SETTINGS_HELP_UPDATES_CHANGELOG': 'Updates & Changelog'
+                'SETTINGS_HELP_UPDATES_CHANGELOG': 'Updates & Changelog',
+
+                'SUMMARY': 'Summary'
             },
 
             'STAFF': {
