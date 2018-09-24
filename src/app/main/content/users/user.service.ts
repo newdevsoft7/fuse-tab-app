@@ -580,6 +580,16 @@ export class UserService {
         return this.http.get(url).toPromise();
     }
 
+    getUserSignature(userId: number | string): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/signature`;
+        return this.http.get(url).toPromise();
+    }
+
+    updateUserSignature(userId: number | string, signature: string): Promise<any> {
+        const url = `${BASE_URL}/user/${userId}/signature`;
+        return this.http.put(url, { signature }).toPromise();
+    }
+
     private handleError(error: Response | any) {
         return Observable.throw(error);
     }
