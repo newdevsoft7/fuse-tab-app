@@ -1,0 +1,11 @@
+<div fxLayout="column" [ngClass.gt-xs]="'p-24'">
+    <app-ckeditor-v5 placeholder="Enter any signature to be appended to outgoing emails. This may be overwritten by personal signatures entered on the settings tab of administrator profiles."
+        [(ngModel)]="signature"></app-ckeditor-v5>
+
+    <div class="mt-12">
+        <button type="submit" mat-raised-button color="accent">
+            Save
+        </button>
+    </div>
+    
+</div>

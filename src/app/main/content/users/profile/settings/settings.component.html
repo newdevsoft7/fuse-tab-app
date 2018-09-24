@@ -49,6 +49,7 @@
                 *ngSwitchCase="'client-permissions'">
             </app-users-settings-client-permissions>
             <app-users-settings-change-password [user]="user" *ngSwitchCase="'change-password'"></app-users-settings-change-password>
+            <app-users-settings-email-signature [user]="user" *ngSwitchCase="'email-signature'"></app-users-settings-email-signature>
             <app-users-settings-staff-outsource
                 [companies]="userOutsourceCompanies"
                 [isWorkHere]="isWorkHere"

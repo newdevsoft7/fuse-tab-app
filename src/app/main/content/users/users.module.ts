@@ -70,6 +70,7 @@ import { UsersProfileCardsComponent } from './profile/cards/cards.component';
 import { ProfileCardsPhotoGalleryDialogComponent } from './profile/cards/dialogs/photo-gallery-dialog/photo-gallery-dialog.component';
 import { ProfileCardsVideoGalleryDialogComponent } from './profile/cards/dialogs/video-gallery-dialog/video-gallery-dialog.component';
 import { NewMessageDialogComponent } from './profile/dialogs/new-message-dialog/new-message-dialog.component';
+import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-signature/email-signature.component';
 
 @NgModule({
     imports: [
@@ -144,7 +145,8 @@ import { NewMessageDialogComponent } from './profile/dialogs/new-message-dialog/
         UsersProfileCardsComponent,
         ProfileCardsPhotoGalleryDialogComponent,
         ProfileCardsVideoGalleryDialogComponent,
-        NewMessageDialogComponent
+        NewMessageDialogComponent,
+        UsersSettingsEmailSignatureComponent
     ],
     exports: [
         UsersComponent,

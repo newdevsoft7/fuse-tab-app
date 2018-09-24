@@ -83,6 +83,12 @@ export class UsersProfileSettingsComponent implements OnInit {
             'vis': ['owner', 'admin', 'staff', 'client', 'ext']
         },
         {
+            'id': 'email-signature',
+            'title': 'Email Signature',
+            'lvls': ['owner', 'admin'],
+            'vis': ['owner', 'admin']
+        },
+        {
             'id': 'xtrm',
             'title': 'XTRM',
             'lvls': ['owner', 'admin', 'staff'],
@@ -96,6 +102,7 @@ export class UsersProfileSettingsComponent implements OnInit {
             'vis': ['owner', 'admin', 'staff', 'client', 'ext'],
             'disabled': false
         }
+        
     ];
 
     selectedCategory;
