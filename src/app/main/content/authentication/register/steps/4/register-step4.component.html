@@ -51,8 +51,10 @@
 <!-- PHOTO TEMPLATE -->
 <ng-template #photoTpl let-photo="photo">
 
-    <img class="preview" [src]="photo.thumbnail" (click)="showFullImage(photo)">
-
+    <a [href]="photo.path" target="_blank">
+        <img class="preview" [src]="photo.thumbnail">
+    </a>
+    
     <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
 
         <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100-p">
