@@ -18,7 +18,8 @@ import { SettingsService } from '../settings.service';
 
 enum Setting {
     registration_enable = 44,
-    registration_msg_welcome = 45
+    registration_msg_welcome = 45,
+    registration_msg_complete = 126
 }
 
 @Component({

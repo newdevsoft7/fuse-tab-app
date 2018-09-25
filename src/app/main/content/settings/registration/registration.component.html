@@ -24,4 +24,17 @@
     </div>
     <!-- / WELCOME MESSAGE -->
 
+    <!-- COMPLETED MESSAGE -->
+    <div [ngClass.xs]="'info'" fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center">
+        <div class="name" fxFlex="20">Completed message</div>
+        <div fxLayout="row wrap" fxFlex="80" fxLayoutAlign="start center">
+            <mat-form-field floatPlaceholder="never" fxFill>
+                <input debounce matInput [(ngModel)]="items[Setting.registration_msg_complete]" [delay]="1000"
+                    (onValueChange)="onChange(Setting.registration_msg_complete, $event)"
+                    placeholder="Enter any text to be displayed on the final registration page upon completion." />
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- / COMPLETED MESSAGE -->
+
 </div>
