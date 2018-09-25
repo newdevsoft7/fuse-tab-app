@@ -151,8 +151,8 @@ export class UsersProfilePhotoComponent implements OnInit, DoCheck {
 						this.progress = event.loaded / event.total * 100;
                     } else if (event.type === HttpEventType.Response) {
 						this.showProgress = false;
-                        event.body.data.map(video => {
-                            this.photos.push(video);
+                        event.body.data.map(photo => {
+                            this.photos.push(photo);
                         });
                     }
 				}, err => {

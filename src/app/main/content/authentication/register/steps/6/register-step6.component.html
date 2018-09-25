@@ -1,5 +1,14 @@
 <div id="register-step6-container" class="p-0 px-4 p-sm-24">
 
+    <div class="upload-progress" *ngIf="showProgress" fxLayout="column" fxLayoutAlign="center center">
+        <mat-progress-spinner
+            color="accent"
+            mode="determinate"
+            [value]="progress">
+        </mat-progress-spinner>
+        <span class="mt-12">{{getFlooredNumber(progress)}}%</span>
+    </div>
+
     <div class="mb-24" *ngIf="settings.profile_video_msg">
         <h2>
             {{settings.profile_video_msg}}

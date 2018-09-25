@@ -2,6 +2,25 @@
 
 #register-step4-container {
 
+    .upload-progress {
+        position: fixed;
+        top: 112px;
+        left: 256px;
+        right: 0;
+        bottom: 0;
+        z-index: 100;
+        background-color: rgba(0,0,0,.3);
+        color: white;
+
+        @include media-breakpoint-down('md') {
+            left: 0;
+        }
+        @include media-breakpoint-down('xs') {
+            top: 104px;
+        }
+    }
+
+
     .group-media {
         margin-bottom: 16px;
         min-height: 272px;

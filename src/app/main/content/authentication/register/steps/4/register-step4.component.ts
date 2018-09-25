@@ -13,6 +13,7 @@ import { UserService } from "../../../../users/user.service";
 import { RegisterPhotoGalleryDialogComponent } from "./photo-gallery-dialog/photo-gallery-dialog.component";
 import { TokenStorage } from "../../../../../../shared/services/token-storage.service";
 import { RegisterService } from "../../register.service";
+import { HttpEventType } from '@angular/common/http';
 
 const PROFILE_PHOTO = 'profile_photo';
 
@@ -31,6 +32,9 @@ export class RegisterStep4Component implements OnInit, OnChanges {
     @Input() user;
     @Output() quitClicked = new EventEmitter;
     @Output() onStepSucceed = new EventEmitter;
+
+    showProgress: boolean = false;
+    progress: number = 0;
 
     constructor(
         private dialog: MatDialog,
@@ -109,30 +113,34 @@ export class RegisterStep4Component implements OnInit, OnChanges {
         const files = event.target.files;
         if (files && files.length > 0) {
 
-            this.spinner.show();
-
             let formData = new FormData();
 
             for (let i = 0; i < files.length; i++) {
                 formData.append('photo[]', files[i], files[i].name);
             }
 
-            this.userService.uploadProfilePhoto(this.user.id, formData)
-                .subscribe(res => {
-                    this.spinner.hide();
-                    //this.toastr.success(res.message);
-                    res.data.map(photo => {
-                        this.photos.push(photo);
-                    });
-                }, err => {
-                    this.spinner.hide();
-                    _.forEach(err.error.errors, errors => {
-                        _.forEach(errors, (error: string) => {
-                            const message = _.replace(error, /photo\.\d+/g, 'photo');
-                            this.toastr.error(message);
+            this.progress = 0;
+			this.showProgress = true;
+
+			this.userService.uploadProfilePhoto(this.user.id, formData)
+				.subscribe(event => {
+					if (event.type === HttpEventType.UploadProgress) {
+						this.progress = event.loaded / event.total * 100;
+                    } else if (event.type === HttpEventType.Response) {
+						this.showProgress = false;
+                        event.body.data.map(photo => {
+                            this.photos.push(photo);
                         });
-                    });
-                });
+                    }
+				}, err => {
+					this.showProgress = false;
+					_.forEach(err.error.errors, errors => {
+						_.forEach(errors, (error: string) => {
+							const message = _.replace(error, /photo\.\d+/g, 'photo');
+							this.toastr.error(message);
+						});
+					});
+				});
         }
     }
 
@@ -155,5 +163,9 @@ export class RegisterStep4Component implements OnInit, OnChanges {
                 this.spinner.hide();
                 this.toastr.error(err.error.message);
             })
+    }
+
+    getFlooredNumber(num): number {
+        return Math.floor(num);
     }
 }
