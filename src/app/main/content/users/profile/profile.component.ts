@@ -224,4 +224,8 @@ export class UsersProfileComponent implements OnInit {
 		});
 	}
 
+	get isLoginAs() {
+		return ['admin', 'owner'].indexOf(this.currentUser.lvl) > -1 && this.currentUser.id != this.user.id;
+	}
+
 }

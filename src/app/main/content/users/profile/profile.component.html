@@ -10,7 +10,7 @@
                     <div class="name">
                         {{userInfo.fname}} {{userInfo.lname}}
                     </div>
-                    <ng-container *ngIf="currentUser.lvl == 'admin' || currentUser.lvl == 'owner'">
+                    <ng-container *ngIf="isLoginAs">
                         <button mat-icon-button (click)="login()" matTooltip="Login as user">
                             <mat-icon>vpn_key</mat-icon>
                         </button>
