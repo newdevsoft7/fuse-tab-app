@@ -3,7 +3,7 @@
         [(ngModel)]="signature"></app-ckeditor-v5>
 
     <div class="mt-12">
-        <button type="submit" mat-raised-button color="accent" [disabled]="!signature">
+        <button type="submit" mat-raised-button color="accent" [disabled]="!signature || currentUser.id != user.id" (click)="saveSignature()">
             Save
         </button>
     </div>
