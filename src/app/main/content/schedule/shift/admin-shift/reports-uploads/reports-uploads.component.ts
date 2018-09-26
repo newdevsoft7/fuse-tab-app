@@ -13,6 +13,7 @@ import { ConnectorService } from '../../../../../../shared/services/connector.se
 import { Subscription } from 'rxjs';
 import { TabComponent } from '../../../../../tab/tab/tab.component';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
+import { ReportsUploadsService } from '../../../../reports-uploads/reports-uploads.service';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 
     @Input() shift;
     data: any = {};
+    canDownload: boolean = false;
     currentQuizSubscription: Subscription;
 
     constructor(
@@ -33,7 +35,8 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
         private spinner: CustomLoadingService,
         private tabService: TabService,
         private connectorService: ConnectorService,
-        private scMessageService: SCMessageService
+        private scMessageService: SCMessageService,
+        private reportsUploadsService: ReportsUploadsService
     ) {
     }
 
@@ -52,7 +55,16 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 
     async fetch() {
         try {
-            this.data = await this.scheduleService.getShiftReportsUploads(this.shift.id);
+            const data = await this.scheduleService.getShiftReportsUploads(this.shift.id);
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const group = data[key];
+                    if (Array.isArray(group)) {
+                        group.forEach(item => item.selected = false);
+                    }
+                }
+            }
+            this.data = data;
         } catch (e) {
             this.scMessageService.error(e);
         }
@@ -166,6 +178,62 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
             body
         );
         this.tabService.openTab(tab);
+    }
+
+    selectAll() {
+        let selected: number = 0;
+        for (const key in this.data) {
+            if (this.data.hasOwnProperty(key)) {
+                const group = this.data[key];
+                if (Array.isArray(group)) {
+                    group.forEach(item => {
+                        item.selected = true;
+                        if (item.selected) { selected++; }
+                    });
+                }
+            }
+        }
+        this.canDownload = selected > 1;
+    }
+
+    toggleSelect() {
+        let selected: number = 0;
+        for (const key in this.data) {
+            if (this.data.hasOwnProperty(key)) {
+                const group = this.data[key];
+                if (Array.isArray(group)) {
+                    group.forEach(item => { 
+                        item.selected = !item.selected;
+                        if (item.selected) { selected++; }
+                    });
+                }
+            }
+        }
+        this.canDownload = selected > 1;
+    }
+
+    refreshCanDownload(value, item) {
+        item.selected = value;
+        let selected: number = 0;
+        for (const key in this.data) {
+            if (this.data.hasOwnProperty(key)) {
+                const group = this.data[key];
+                if (Array.isArray(group)) {
+                    group.forEach(item => { 
+                        if (item.selected) { selected++; }
+                    });
+                }
+            }
+        }
+        this.canDownload = selected > 1;
+    }
+
+    downloadZip() {
+        const params = {
+            file_ids: this.data.files.filter(v => v.selected).map(v => +v.id),
+            report_ids: this.data.surveys.filter(v => v.selected).map(v => +v.id)
+        };
+        this.reportsUploadsService.downloadZip(params);
     }
 
 }

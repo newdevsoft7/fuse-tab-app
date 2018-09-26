@@ -1,5 +1,12 @@
 @import "src/app/core/scss/fuse";
 #reports-uploads {
+    position: relative;
+
+    .btn-area {
+        position: absolute;
+        top: 10px;
+        right: 0;
+    }
     .group {
 
         .group-title {
@@ -22,6 +29,13 @@
             .media {
                 margin: 0 16px 16px 0;
                 position: relative;
+
+                .checkbox {
+                    position: absolute;
+                    top: 2px;
+                    left: 4px;
+                    z-index: 10;
+                }
 
                 .preview {
                     width: 256px;

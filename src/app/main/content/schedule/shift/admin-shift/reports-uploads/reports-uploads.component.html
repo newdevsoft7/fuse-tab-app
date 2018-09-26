@@ -1,5 +1,15 @@
 <div id="reports-uploads" [ngClass.gt-xs]="'p-24'">
-
+    <div class="btn-area">
+        <button mat-icon-button matTooltip="Select All Users" (click)="selectAll()">
+            <mat-icon>done_all</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Toggle Selection" (click)="toggleSelect()">
+            <mat-icon>done</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="canDownload" matTooltip="Download" (click)="downloadZip()">
+            <mat-icon>file_download</mat-icon>
+        </button>
+    </div>
     <!-- Files Section -->
     <div class="group">
 
@@ -28,6 +38,7 @@
                     <a [href]="file.path" target="blank">
                         <img class="preview" [src]="file.thumbnail">
                     </a>
+                    <mat-checkbox class="checkbox" [ngModel]="file.selected" (ngModelChange)="refreshCanDownload($event, file)"></mat-checkbox>
                     <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
                         <span>{{file.oname}}</span>
                         
@@ -69,6 +80,7 @@
                     <a href="javascript:void(0)" (click)="openSurvey(survey)">
                         <img class="preview" [src]="survey.thumbnail">
                     </a>
+                    <mat-checkbox class="checkbox" [ngModel]="survey.selected" (ngModelChange)="refreshCanDownload($event, survey)"></mat-checkbox>
                     <div class="title" fxLayout="row" fxLayoutAlign="space-between center">
                         <span>{{survey.rname}}</span>
                         
