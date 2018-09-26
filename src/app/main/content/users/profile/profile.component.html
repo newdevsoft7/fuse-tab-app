@@ -10,14 +10,12 @@
                     <div class="name">
                         {{userInfo.fname}} {{userInfo.lname}}
                     </div>
-                    <ng-container *ngIf="isLoginAs">
-                        <button mat-icon-button (click)="login()" matTooltip="Login as user">
-                            <mat-icon>vpn_key</mat-icon>
-                        </button>
-                        <button mat-icon-button (click)="chat()" matTooltip="Chat">
-                            <mat-icon>chat</mat-icon>
-                        </button>
-                    </ng-container>
+                    <button *ngIf="canLoginAs" mat-icon-button (click)="login()" matTooltip="Login as user">
+                        <mat-icon>vpn_key</mat-icon>
+                    </button>
+                    <button *ngIf="canChat" mat-icon-button (click)="chat()" matTooltip="Chat">
+                        <mat-icon>chat</mat-icon>
+                    </button>
                 </div>
                 
                 <div class="ml-8 white-fg" style="text-transform:capitalize;">
