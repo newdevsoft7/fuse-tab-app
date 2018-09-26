@@ -78,11 +78,11 @@ export class ReportsUploadsService {
   }) {
     const url = `${BASE_URL}/reportsUploads/download`;
     return this.http.post(url, params, { observe: 'response', responseType: 'blob'}).toPromise()
-      .then(res => this.downloadFile(res['body'], 'files.zip'))
+      .then(res => this.downloadFile(res['body']))
       .catch(e => this.scMessageService.error(e));
   }
 
-  downloadFile(data, filename) {
+  downloadFile(data, filename = null) {
     let dwldLink = document.createElement("a");
     let url = URL.createObjectURL(data);
     let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
@@ -90,7 +90,9 @@ export class ReportsUploadsService {
       dwldLink.setAttribute("target", "_blank");
     }
     dwldLink.setAttribute("href", url);
-    dwldLink.setAttribute("download", filename);
+    if (filename) {
+      dwldLink.setAttribute("download", filename);
+    }
     dwldLink.style.visibility = "hidden";
     document.body.appendChild(dwldLink);
     dwldLink.click();
