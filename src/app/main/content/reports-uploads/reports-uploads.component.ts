@@ -28,6 +28,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
   folders: any[] = [];
   shiftId: any; // For uploading inside tracking_options
   fileChangedSubscription: Subscription;
+  selectedFolder: any = {};
 
   constructor(
     private reportsUploadsService: ReportsUploadsService,
@@ -39,6 +40,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
         .subscribe(files => {
           this.folders = _.clone(this.reportsUploadsService.folders);
           setTimeout(() =>this.scrollbar.scrollToTop());
+          this.selectedFolder = _.last(this.folders) || {};
         });
   }
 
@@ -142,6 +144,14 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
     } else {
       this.fileInput.nativeElement.click();
     }
+  }
+
+  selectAll() {
+    this.fileList.selectAll();
+  }
+
+  toggleSelection() {
+    this.fileList.toggleSelection();
   }
 
 }

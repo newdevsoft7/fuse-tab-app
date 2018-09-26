@@ -31,7 +31,7 @@
     <div fxFlex fxHide fxShow.gt-md>
       {{file.updated_at ? file.updated_at : (file.created_at ? file.created_at : '-')}}</div>
     <div fxFlex="48px" fxHide.gt-md>
-        <button mat-icon-button class="sidenav-toggle"
+        <button mat-icon-button class="sidenav-toggle" (click)="clickMore(file, $event)"
           fuseMatSidenavToggler="file-manager-right-sidenav">
           <mat-icon>info</mat-icon>
         </button>

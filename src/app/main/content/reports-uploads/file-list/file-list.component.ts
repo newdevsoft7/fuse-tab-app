@@ -144,9 +144,29 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
     return this.selectedItems.findIndex(v => v.id === file.id) > -1;
   }
 
+  selectAll() {
+    this.selectedItems = [...this.files];
+    this.reportsUploadsService.onFileSelected.next(this.selectedItems);
+  }
+
+  toggleSelection() {
+    const items = this.files.filter(v => {
+      const selectedItemIds = this.selectedItems.map(k => k.id);
+      return v.folder != 'Folder' && selectedItemIds.indexOf(v.id) < 0;
+    });
+    this.selectedItems = [...items];
+    this.reportsUploadsService.onFileSelected.next(this.selectedItems);
+  }
+
   ngOnDestroy() {
     this.fileChangedSubscription.unsubscribe();
     this.currentQuizSubscription.unsubscribe();
+  }
+
+  clickMore(file, event) {
+    if(this.selectedItems.findIndex(v => v.id == file.id) > -1) {
+      event.stopPropagation()
+    }
   }
 
 }
