@@ -562,6 +562,12 @@ export class ScheduleService {
     return Observable.throw(error);
   }
 
+  download(url, fileName): Promise<any> {
+    return this.http.get(`${BASE_URL}/${url}`, { observe: 'response', responseType: 'blob' }).toPromise()
+      .then(res => { debugger; this.downloadFile(res['body'], fileName); })
+      .catch(e => this.scMessageService.error(e));
+  }
+
   downloadFile(data, filename){
     let dwldLink = document.createElement("a");
     let url = URL.createObjectURL(data);

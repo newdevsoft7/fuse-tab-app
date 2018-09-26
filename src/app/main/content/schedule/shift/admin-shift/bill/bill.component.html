@@ -7,10 +7,13 @@
         <h3>Staff</h3>
         <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let item of shift.bill_items.staff"
             class="item">
-            <div fxFlex>
+            <div fxFlex="40">
                 <span matTooltip="Item Name">{{item.title}}</span>
+                <a mat-icon-button *ngIf="item.file?.path" (click)="download(item.file)" matTooltip="Download">
+                    <mat-icon>file_download</mat-icon>
+                </a>
             </div>
-            <div fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+            <div fxFlex="15" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
                 <app-admin-shift-edit-bill-item-unit-rate [item]="item"
                     (onChanged)="onItemChanged($event, 'staff', 'bill_unit_rate', item)">
                 </app-admin-shift-edit-bill-item-unit-rate>
@@ -18,17 +21,17 @@
                     (onChanged)="onItemChanged($event, 'staff', 'bill_rate_type', item)">
                 </app-admin-shift-edit-bill-item-rate-type>
             </div>
-            <div fxFlex>
+            <div fxFlex="15">
                 <span matTooltip="Bill Units">
                     {{item.bill_rate_type ? (item.bill_rate_type === 'phr' ? item.hours : 1) : '-' }}
                 </span>
             </div>
-            <div fxFlex>
+            <div fxFlex="15">
                 <span matTooltip="Bill Total">
                     {{item.bill_total !== null ? (item.bill_total | currency) : '-'}}
                 </span>
             </div>
-            <div fxFlex></div>
+            <div fxFlex="15"></div>
         </div>
     </div>
 
@@ -40,27 +43,30 @@
             <h3>{{type | capitalize}}</h3>
             <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let item of shift.bill_items[type]"
                 class="item">
-                <div fxFlex>
+                <div fxFlex="40" fxLayout="row wrap" fxLayoutAlign="start center">
                     <app-admin-shift-edit-bill-item-name [item]="item"
                         (onChanged)="onItemChanged($event, type, 'title', item)">
                     </app-admin-shift-edit-bill-item-name>
+                    <a mat-icon-button *ngIf="item.file?.path" (click)="download(item.file)" matTooltip="Download">
+                        <mat-icon>file_download</mat-icon>
+                    </a>
                 </div>
-                <div fxFlex>
+                <div fxFlex="15">
                     <app-admin-shift-edit-bill-item-unit-rate [item]="item"
                         (onChanged)="onItemChanged($event, type, 'bill_unit_rate', item)">
                     </app-admin-shift-edit-bill-item-unit-rate>
                 </div>
-                <div fxFlex>
+                <div fxFlex="15">
                     <app-admin-shift-edit-bill-item-units [item]="item"
                         (onChanged)="onItemChanged($event, type, 'bill_units', item)">
                     </app-admin-shift-edit-bill-item-units>
                 </div>
-                <div fxFlex>
+                <div fxFlex="15">
                     <span matTooltip="Bill Total">
                         {{item.bill_total !== null ? (item.bill_total | currency) : '-'}}
                     </span>
                 </div>
-                <div fxFlex>
+                <div fxFlex="15">
                     <button mat-icon-button (click)="deleteItem(item, type)" *ngIf="item.type === 'shift'">
                         <mat-icon>close</mat-icon>
                     </button>

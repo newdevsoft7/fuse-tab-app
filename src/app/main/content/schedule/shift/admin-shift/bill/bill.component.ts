@@ -142,4 +142,9 @@ export class AdminShiftBillComponent implements OnInit {
         }
     }
 
+    download(file: any) {
+        const index = file.path.indexOf('/api/');
+        this.scheduleService.download(file.path.substr(index + 5), `${file.oname}.${file.ext}`);
+    }
+
 }
