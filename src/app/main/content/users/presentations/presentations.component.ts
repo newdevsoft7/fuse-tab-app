@@ -101,6 +101,12 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             const index = this.presentations.findIndex(p => p.id == id);
             if (index > -1) {
                 this.presentationData = await this.userService.getPresentation(id);
+                if (this.presentationData.presentation.card_id) {
+                    this.presentationData.presentation.card_id = +this.presentationData.presentation.card_id;
+                }
+                if (this.presentationData.presentation.showcase_template_id) {
+                    this.presentationData.presentation.showcase_template_id = +this.presentationData.presentation.showcase_template_id;
+                }
                 this.selectedPresentation = this.presentations[index];
                 this.actionService.selectedPresentationId = id;
             }
