@@ -106,6 +106,9 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         this.selectedCard = card;
         try {
             this.cardData = await this.userService.getCard(card.id);
+            if (this.cardData.card.showcase_template_id) {
+                this.cardData.card.showcase_template_id = +this.cardData.card.showcase_template_id;
+            }
         } catch (e) {
             this.scMessageService.error(e);
         }

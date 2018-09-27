@@ -3,7 +3,7 @@
 $domain = $_SERVER['HTTP_HOST'];
 $user_id = $_GET['user_id'];
 $type = $_GET['type'];
-$cap_id = $_GET['cap_id'];
+$card_id = $_GET['card_id'];
 
 function callEndpoint($url) {
   $curl = curl_init($url);
@@ -19,7 +19,7 @@ $base_data = callEndpoint('https://admin.staffconnect-app.com/api/identify/' . $
 
 $api_baseurl = 'https://api.' . $base_data->name . '.staffconnect-app.com/api';
 
-$card = callEndpoint($api_baseurl . '/user/' . $user_id . '/' . $type . '/' . $cap_id);
+$card = callEndpoint($api_baseurl . '/user/' . $user_id . '/' . $type . '/' . $card_id);
 
 ?>
 <!doctype html>
@@ -38,7 +38,7 @@ $card = callEndpoint($api_baseurl . '/user/' . $user_id . '/' . $type . '/' . $c
   <meta property="og:title" content="<?php echo $card->meta->name . ' | Staffconnect4'; ?>">
   <meta property="og:description" content="StaffConnect4 showcase for <?php echo $card->meta->name; ?>">
   <meta property="og:image" content="<?php echo $card->meta->thumbnail; ?>">
-  <meta property="og:url" content="https://<?php echo $domain; ?>/showcase.php?user_id=<?php echo $user_id; ?>&type=<?php echo $type; ?>&cap_id=<?php echo $cap_id; ?>">
+  <meta property="og:url" content="https://<?php echo $domain; ?>/showcase.php?user_id=<?php echo $user_id; ?>&type=<?php echo $type; ?>&card_id=<?php echo $card_id; ?>">
   <meta property="og:type" content="website">
 
   <style>
