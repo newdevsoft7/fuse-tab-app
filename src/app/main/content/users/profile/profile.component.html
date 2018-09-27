@@ -1,31 +1,36 @@
 <div id="profile" class="page-layout simple tabbed" fusePerfectScrollbar *ngIf="userInfo">
 
     <!-- HEADER -->
-    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between start">
+    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+        fxLayoutAlign.gt-xs="space-between end">
 
-        <div class="user-info" [ngClass.sm]="'mt-48'" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start end">
-            <img class="profile-image avatar huge w-md-156 h-md-156" [src]="avatarUrl" (click)="openPhotoTab()">
-            <div class="user-info" fxLayout="column">
+        <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+            fxLayoutAlign.gt-xs="start center">
+            <img class="profile-image avatar huge w-sm-156 h-sm-156" ngClass.gt-xs="mr-24" ngClass.xs="mb-8 mr-8" [src]="avatarUrl" (click)="openPhotoTab()">
+            <div fxLayout="column" fxLayoutAlign="start">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <div class="name">
                         {{userInfo.fname}} {{userInfo.lname}}
                     </div>
-                    <button *ngIf="canLoginAs" mat-icon-button (click)="login()" matTooltip="Login as user">
-                        <mat-icon>vpn_key</mat-icon>
-                    </button>
-                    <button *ngIf="canChat" mat-icon-button (click)="chat()" matTooltip="Chat">
-                        <mat-icon>chat</mat-icon>
-                    </button>
+                    <div class="action">
+                        <button *ngIf="canLoginAs" mat-icon-button (click)="login()" matTooltip="Login as user">
+                            <mat-icon ngClass.xs="s-20">vpn_key</mat-icon>
+                        </button>
+                        <button *ngIf="canChat" mat-icon-button (click)="chat()" matTooltip="Chat">
+                            <mat-icon ngClass.xs="s-20">chat</mat-icon>
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="ml-8 white-fg" style="text-transform:capitalize;">
-                    {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ? "&sdot; "+userInfo.city
+
+                <div class="white-fg" style="text-transform:capitalize;" ngClass.gt-xs="ml-8">
+                    {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ?
+                    "&sdot; " + userInfo.city
                     : ""}} {{userInfo.state ? ", "+userInfo.state : ""}}
                 </div>
-                <div class="ml-8 light-blue-fg">
+                <div class="light-blue-fg" ngClass.gt-xs="ml-8">
                     {{userInfo.email}}
                 </div>
-                <div class="ml-8 white-fg">
+                <div class="white-fg" ngClass.gt-xs="ml-8">
                     {{userInfo.mob}}
                 </div>
             </div>
@@ -61,7 +66,8 @@
         <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedIndex" #tabGroup (selectedTabChange)="onSelectedTabChange($event)">
 
             <mat-tab label="About">
-                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings" [settings]="settings"></app-users-profile-about>
+                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings"
+                    [settings]="settings"></app-users-profile-about>
             </mat-tab>
 
             <mat-tab label="Skills & Qualifications" *ngIf="isSkillsShow">
@@ -73,7 +79,8 @@
             </mat-tab>
 
             <mat-tab label="Photos">
-                <app-users-profile-photo [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings" (onAvatarChanged)="onAvatarChanged($event)">
+                <app-users-profile-photo [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"
+                    (onAvatarChanged)="onAvatarChanged($event)">
                 </app-users-profile-photo>
             </mat-tab>
 
@@ -103,8 +110,8 @@
             </mat-tab>
 
             <mat-tab label="Settings" *ngIf="isSettingsShow">
-                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers" [settings]="settings"
-                    [timezones]="timezones"></app-users-profile-settings>
+                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers"
+                    [settings]="settings" [timezones]="timezones"></app-users-profile-settings>
             </mat-tab>
 
         </mat-tab-group>

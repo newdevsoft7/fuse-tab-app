@@ -17,16 +17,14 @@
     .header {
         height: auto !important;
         min-height: 200px !important;
-        background: url('/assets/images/backgrounds/dark-material-bg.jpg') no-repeat 0 45%;
-        background-size: 100% auto;
+        background: url(/assets/images/backgrounds/dark-material-bg.jpg) 0 45%/cover no-repeat;
+
+        @include media-breakpoint('xs') {
+            max-height: unset;
+        }
 
         .profile-image {
-            margin-right: 24px;
             cursor: pointer;
-
-            @include media-breakpoint('sm') {
-                margin: 0 0 16px 0;
-            }
         }
 
         .user-info {
@@ -37,15 +35,14 @@
                     color: white !important;
                 }
             }
+
+            .action {
+            }
         }
 
         .name {
             font-size: 34px;
             color: #FFFFFF;
-
-            @include media-breakpoint('sm') {
-                margin-bottom: 32px;
-            }
         }
 
         .actions {
