@@ -21,7 +21,7 @@ export class ShowcaseViewComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(data => {
-      if (!data.hasOwnProperty('user_id') || !data.hasOwnProperty('cap_id') || !data.hasOwnProperty('type')) {
+      if (!data.hasOwnProperty('user_id') || !data.hasOwnProperty('card_id') || !data.hasOwnProperty('type')) {
         this.toastr.error('Insufficient params!');
         return;
       }
@@ -39,7 +39,7 @@ export class ShowcaseViewComponent implements OnInit {
     try {
       const { type } = data;
       if (data.type === 'card') {
-        const payload = await this.showcaseViewService.getUserCard(data.user_id, data.cap_id);
+        const payload = await this.showcaseViewService.getUserCard(data.user_id, data.card_id);
         this.data = {
           payload,
           type,
