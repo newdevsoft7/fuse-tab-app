@@ -30,7 +30,7 @@
             </fieldset>
 
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px" class="mb-16">
-                <mat-form-field fxFlex="1 0 auto" *ngIf="cardData.showcase_templates.length > 0">
+                <mat-form-field fxFlex="1 0 auto">
                     <mat-select placeholder="Showcase Template" (selectionChange)="onShowcaseChange($event)" 
                         [value]="cardData.card.showcase_template_id">
                         <mat-option *ngFor="let option of cardData.showcase_templates" [value]="option.id">
@@ -38,10 +38,14 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-
-                <button mat-raised-button fxFlex="0 1 auto" color="accent" matTooltip="Edit" (click)="openShowcaseTab()">
-                    {{ cardData.card.showcase_template_id ? 'Edit Template' : 'New Template' }}
-                </button>
+                <div fxFlex="0 1 auto" fxLayout="row" fxlayoutAlign="start center" fxLayoutGap="8px">
+                    <button mat-mini-fab fxFlex="0 1 auto" color="accent" matTooltip="Edit template" (click)="editShowcase()">
+                        <mat-icon class="white-fg">edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab fxFlex="0 1 auto" color="accent" matTooltip="Create new template" (click)="addShowcase()">
+                        <mat-icon class="white-fg">add</mat-icon>
+                    </button>
+                </div>
             </div>
 
             <fieldset class="mb-16" class="preview">

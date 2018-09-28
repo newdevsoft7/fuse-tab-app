@@ -12,6 +12,7 @@ import { TabComponent } from '../../../tab/tab/tab.component';
 import { Tab } from '../../../tab/tab';
 import { ShowcaseService } from '../../showcase/showcase.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-users-cards',
@@ -50,9 +51,9 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 const card = tab.data.payload.card;
                 try {
                     const res = await this.showcaseService.getTemplateByOtherId(tab.data.template.id);
+                    this.cardData.showcase_templates.push({ id: res.data.id, name: res.data.name, other_id: res.data.other_id })
                     card.showcase_template_id = res.data.id;
                     const { message } = await this.userService.updateCard(card.id, card);
-                    this.cardData.showcase_templates.push({ id: res.data.id, name: res.data.name, other_id: res.data.other_id })
                     this.toastr.success(message);
                 } catch (e) {
                     this.toastr.error(e.error.message);
@@ -64,6 +65,9 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 if (template) {
                     template.name = tab.data.template.name;
                 }
+                const templates = _.clone(this.cardData.showcase_templates);
+                this.cardData.showcase_templates.splice(0, templates.length);
+                setTimeout(() => this.cardData.showcase_templates.push(...templates));
                 this.connectorService.currentShowcaseTab$.next(null);
             }
         });
