@@ -50,6 +50,7 @@
                         <input type="file" #uploadFile accept="image/jpeg, image/png, video/mp4" hidden/>
                     </div>
                 </div>
+                <a (click)="showAvailableTags()" *ngIf="!tagsShowed" style="cursor:pointer">Show available tags</a>
             </div>
 
             <div fxLayout="column">

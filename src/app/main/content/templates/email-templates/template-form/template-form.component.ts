@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { CustomMultiSelectComponent } from '../../../../../core/components/custom-multi-select/custom-multi-select.component';
 import { TemplatesService } from '../../templates.service';
+import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 
 enum Mode {
   Create = 'create',
@@ -45,7 +46,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   };
 
   file: any;
-
+  currentUser: any;
   submitting = false;
   submitted = false;
 
@@ -59,13 +60,16 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   @ViewChild('attachmentsSelector') attachmentsSelector: CustomMultiSelectComponent;
 
   dialogRef: MatDialogRef<FuseConfirmDialogComponent>;
+  tagsShowed: boolean = false;
 
   constructor(
     private dialog: MatDialog,
     private toastr: ToastrService,
-    private templatesService: TemplatesService
+    private templatesService: TemplatesService,
+    private tokenStorage: TokenStorage
   ) {
     this.init();
+    this.currentUser = tokenStorage.getUser();
   }
 
   init(): void {
@@ -90,6 +94,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   async ngOnChanges(changes: SimpleChanges) {
     if (changes['id']) {
         try {
+          this.tagsShowed = false;
           this.mode = Mode.Edit;
           const template = await this.templatesService.getTemplate(this.id);
           const attachments = template.attachments.map(v => { return { id: v.id, text: v.oname }; });
@@ -198,6 +203,15 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
       attachments: []
     };
     this.templateForm.reset(this.template);
+  }
+
+  showAvailableTags() {
+    this.tagsShowed = true;
+    let content = this.template.content;
+    content = content.replace('[fname]', this.currentUser.fname);
+    content = content.replace('[lname]', this.currentUser.lname);
+    content = content.replace('[email]', this.currentUser.email);
+    this.template.content = content;
   }
 
   handleError(e): void {
