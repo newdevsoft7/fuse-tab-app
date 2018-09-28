@@ -1,7 +1,7 @@
 <div id="presentations-container">
     <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
 
-        <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
+        <mat-drawer #drawer [mode]="drawerMode" [disableClose]="false" class="draw-sidenav">
             <button mat-mini-fab color="accent" (click)="addPresentation()" matTooltip="Add Presentation">
                 <mat-icon class="white-fg">add</mat-icon>
             </button>
@@ -17,6 +17,9 @@
             </div>
         </mat-drawer>
         <div class="form-container" *ngIf="presentationData">
+            <button mat-button class="mat-icon-button sidenav-toggle" fxHide.gt-sm (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
             <app-editable-text class="title" [value]="presentationData.presentation.name" (saveChange)="updateName($event)"></app-editable-text>
             <fieldset class="mt-16">
                 <legend>Users</legend>

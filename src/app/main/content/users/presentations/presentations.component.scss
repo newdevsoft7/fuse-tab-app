@@ -4,6 +4,10 @@
 
     height: 100%;
     
+    @include media-breakpoint-down('sm') {
+        margin: -1em 0;
+    }
+    
     .form-container {
         padding: 16px;
     }

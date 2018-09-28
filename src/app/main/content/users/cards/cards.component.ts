@@ -13,6 +13,7 @@ import { Tab } from '../../../tab/tab';
 import { ShowcaseService } from '../../showcase/showcase.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
 import * as _ from 'lodash';
+import { ObservableMedia } from '@angular/flex-layout';
 
 @Component({
     selector: 'app-users-cards',
@@ -30,6 +31,8 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
     showcaseTemplates: any[] = [];
 
     cardSubscription: Subscription;
+    mediaSubscription: Subscription;
+    drawerMode = 'side';
     
     constructor(
         private toastr: ToastrService,
@@ -38,7 +41,8 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         private userService: UserService,
         private connectorService: ConnectorService,
         private showcaseService: ShowcaseService,
-        private scMessageService: SCMessageService
+        private scMessageService: SCMessageService,
+        private observableMedia: ObservableMedia,
     ) { }
 
     ngOnInit() {
@@ -71,10 +75,21 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 this.connectorService.currentShowcaseTab$.next(null);
             }
         });
+
+        this.mediaSubscription = this.observableMedia.subscribe(() => {
+            if (this.observableMedia.isActive('gt-sm')) {
+                this.drawerMode = 'side';
+                this.drawer.toggle(true);
+            } else {
+                this.drawerMode = 'over';
+                this.drawer.toggle(false);
+            }
+        });
     }
 
     ngOnDestroy() {
         this.cardSubscription.unsubscribe();
+        this.mediaSubscription.unsubscribe();
     }
 
     addCard() {

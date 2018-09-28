@@ -1,7 +1,7 @@
 <div id="cards-container">
     <mat-drawer-container autosize fxFlex="1 0 auto" class="draw-container">
 
-        <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
+        <mat-drawer #drawer [mode]="drawerMode" [disableClose]="false" class="draw-sidenav">
             <button mat-mini-fab color="accent" (click)="addCard()">
                 <mat-icon class="white-fg">add</mat-icon>
             </button>
@@ -16,7 +16,12 @@
                 </div>
             </div>
         </mat-drawer>
+
         <div class="form-container" *ngIf="cardData">
+            <button mat-button class="mat-icon-button sidenav-toggle" fxHide.gt-sm (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+
             <fieldset class="mb-16">
                 <legend>Photo tags</legend>
                 <app-users-card-select-tag [tags]="cardData.profile_photo_tags" [source]="cardData.available_profile_photo_tags" (onTag)="tag(cardData.card.id, 'photo', $event)"

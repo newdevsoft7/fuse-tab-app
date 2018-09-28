@@ -13,6 +13,8 @@ import { TabComponent } from '../../../tab/tab/tab.component';
 import { ShowcaseService } from '../../showcase/showcase.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
 import * as _ from 'lodash';
+import { ObservableMedia } from '@angular/flex-layout';
+
 @Component({
     selector: 'app-users-presentations',
     templateUrl: './presentations.component.html',
@@ -29,6 +31,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
     selectedPresentationIdSubscription: Subscription;
     presentationSubscription: Subscription;
     cards: any = [];
+    mediaSubscription: Subscription;
+    drawerMode = 'side';
 
     constructor(
         private toastr: ToastrService,
@@ -38,7 +42,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         private dialog: MatDialog,
         private connectorService: ConnectorService,
         private showcaseService: ShowcaseService,
-        private scMessageService: SCMessageService
+        private scMessageService: SCMessageService,
+        private observableMedia: ObservableMedia
     ) { }
 
     ngOnInit() {
@@ -89,12 +94,23 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
             }
         });
 
+        this.mediaSubscription = this.observableMedia.subscribe(() => {
+            if (this.observableMedia.isActive('gt-sm')) {
+                this.drawerMode = 'side';
+                this.drawer.toggle(true);
+            } else {
+                this.drawerMode = 'over';
+                this.drawer.toggle(false);
+            }
+        });
+
         this.fetchCards();
     }
 
     ngOnDestroy() {
         this.selectedPresentationIdSubscription.unsubscribe();
         this.presentationSubscription.unsubscribe();
+        this.mediaSubscription.unsubscribe();
         this.actionService.selectedPresentationId$.next(null);
         this.actionService.selectedPresentationId = null;
     }
