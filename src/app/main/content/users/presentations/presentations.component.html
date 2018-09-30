@@ -21,6 +21,12 @@
                 <mat-icon>menu</mat-icon>
             </button>
             <app-editable-text class="title" [value]="presentationData.presentation.name" (saveChange)="updateName($event)"></app-editable-text>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <a [href]="link" target="_blank" class="mr-8">View</a>
+                <button mat-icon-button ngxClipboard matTooltip="Copy link" [cbContent]="link">
+                    <mat-icon>content_copy</mat-icon>
+                </button>
+            </div>
             <fieldset class="mt-16">
                 <legend>Users</legend>
                 <div *ngIf="presentationData.users.length === 0">No users</div>

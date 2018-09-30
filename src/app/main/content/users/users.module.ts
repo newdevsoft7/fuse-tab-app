@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersComponent } from './users.component';
 import { SharedModule } from '../../../core/modules/shared.module';
+import { ClipboardModule } from 'ngx-clipboard';
 import { UserService } from './user.service';
 import { UserFormDialogComponent } from './dialogs/user-form/user-form.component';
 import { AssignReportDialogComponent } from './dialogs/assign-report/assign-report.component';
@@ -79,7 +80,8 @@ import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-s
         CustomMultiSelectGroupModule,
         CustomMultiSelectModule,
         CKEditor5Module,
-        UsersProfileExperienceModule
+        UsersProfileExperienceModule,
+        ClipboardModule
     ],
     declarations: [
         UsersComponent,

@@ -33,6 +33,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
     cards: any = [];
     mediaSubscription: Subscription;
     drawerMode = 'side';
+    link ='hello';
 
     constructor(
         private toastr: ToastrService,
@@ -127,6 +128,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
                     this.presentationData.presentation.showcase_template_id = +this.presentationData.presentation.showcase_template_id;
                 }
                 this.selectedPresentation = this.presentations[index];
+                this.link = `${location.protocol}//${location.host}/presentation.php?id=${id}&code=blabla`;
                 this.actionService.selectedPresentationId = id;
             }
         } catch (e) {
