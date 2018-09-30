@@ -208,9 +208,7 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
   showAvailableTags() {
     this.tagsShowed = true;
     let content = this.template.content;
-    content = content.replace('[fname]', this.currentUser.fname);
-    content = content.replace('[lname]', this.currentUser.lname);
-    content = content.replace('[email]', this.currentUser.email);
+    this.template.tags.forEach(item => content = content.replace(item.tag, item.description));
     this.template.content = content;
   }
 
