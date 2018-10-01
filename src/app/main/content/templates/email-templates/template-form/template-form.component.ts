@@ -205,13 +205,6 @@ export class EmailTemplateFormComponent implements OnInit, OnChanges {
     this.templateForm.reset(this.template);
   }
 
-  showAvailableTags() {
-    this.tagsShowed = true;
-    let content = this.template.content;
-    this.template.tags.forEach(item => content = content.replace(item.tag, item.description));
-    this.template.content = content;
-  }
-
   handleError(e): void {
     if (e.error && e.error.errors) {
       const errors = e.error.errors;

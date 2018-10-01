@@ -50,7 +50,7 @@
                         <input type="file" #uploadFile accept="image/jpeg, image/png, video/mp4" hidden/>
                     </div>
                 </div>
-                <a (click)="showAvailableTags()" *ngIf="!tagsShowed" style="cursor:pointer">Show available tags</a>
+
             </div>
 
             <div fxLayout="column">
@@ -73,6 +73,18 @@
             </div>
         </div>
         <!-- / HEADER -->
+
+        <a (click)="tagsShowed = true" *ngIf="!tagsShowed" style="cursor:pointer" class="ml-12">Show available tags</a>
+        <fieldset *ngIf="tagsShowed">
+            <legend>Available tags</legend>
+            <div>
+                <div *ngFor="let tag of template.tags" class="p-4" fxLayout="row" fxLayoutAlign="start center"
+                    fxLayout.xs="column" fxLayoutAlign.xs="start start">
+                    <div fxFlex.gt-xs="25">{{tag.tag}}</div>
+                    <div fxFlex.gt-xs="75">{{tag.description}}</div>
+                </div>
+            </div>
+        </fieldset>
 
         <!-- CONTENT -->
         <div class="content px-12 pt-16">
