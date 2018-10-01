@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { StripeService, StripeCardComponent, ElementOptions, ElementsOptions, ElementEventType } from 'ngx-stripe';
 import { SettingsService } from '../settings.service';
@@ -11,7 +11,7 @@ import { SCMessageService } from '../../../../shared/services/sc-message.service
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.scss']
 })
-export class BillingComponent implements OnInit {
+export class BillingComponent implements OnInit, OnDestroy {
 
   @ViewChild(StripeCardComponent) card: StripeCardComponent;
 
@@ -46,11 +46,13 @@ export class BillingComponent implements OnInit {
   cardInvalid: boolean = true;
 
   haveCard: boolean;
+  showForm: boolean = false;
   cardBrand: string;
   cardLast4: any;
   cardExpiry: string = '02/20';
   cardSubscription: Subscription;
   cardFetched: boolean = false;
+  message: string;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -86,8 +88,10 @@ export class BillingComponent implements OnInit {
     try {
       const res = await this.settingsService.getStripeBillCard();
       this.haveCard = res.got_card;
+      this.showForm = res.show_form;
       this.cardBrand = res.card_brand;
       this.cardLast4 = res.card_last4;
+      this.message = res.message;
     } catch (e) {
       this.scMessageService.error(e);
     } finally {
@@ -134,6 +138,7 @@ export class BillingComponent implements OnInit {
             this.haveCard = res.got_card;
             this.cardBrand = res.card_brand;
             this.cardLast4 = res.card_last4;
+            this.showForm = res.show_form;
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -144,6 +149,7 @@ export class BillingComponent implements OnInit {
   }
 
   update() {
+    this.showForm = true;
     this.haveCard = false;
   }
 

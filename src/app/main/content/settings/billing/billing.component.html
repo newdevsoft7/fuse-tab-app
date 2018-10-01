@@ -4,7 +4,11 @@
             Credit Card
         </legend>
 
-        <form [formGroup]="form" class="p-8" *ngIf="!haveCard">
+        <p *ngIf="!showForm && !haveCard">
+          {{message}}
+        </p>
+
+        <form [formGroup]="form" class="p-8" *ngIf="showForm">
             <p>Please enter your credit or debit card details to enable automatic billing.</p>
             <mat-form-field class="w-100-p">
                 <input matInput formControlName="name" placeholder="Name">
