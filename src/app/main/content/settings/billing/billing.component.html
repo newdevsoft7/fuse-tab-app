@@ -55,7 +55,7 @@
 
             <ngx-datatable-column prop="total" name="Total">
                 <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    {{ total | currency: row.currency.toUpperCase() }}
+                    {{ row.total | currency: row.currency.toUpperCase() }}
                 </ng-template>
             </ngx-datatable-column>
 
