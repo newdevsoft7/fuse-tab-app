@@ -81,7 +81,9 @@ export class BillingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.cardSubscription.unsubscribe();
+    if (this.cardSubscription) {
+      this.cardSubscription.unsubscribe();
+    }
   }
 
   async getStripeBillCard() {
