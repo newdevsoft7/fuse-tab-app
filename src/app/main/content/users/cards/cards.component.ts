@@ -100,8 +100,9 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
                 try {
-                    const res = await this.userService.createCard(result);
-                    this.cards.push(res);
+                    const card = await this.userService.createCard(result);
+                    this.cards.push(card);
+                    this.selectCard(card)
                 } catch (e) {
                     this.scMessageService.error(e);
                 }

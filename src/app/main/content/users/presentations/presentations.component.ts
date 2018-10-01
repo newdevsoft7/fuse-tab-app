@@ -160,8 +160,9 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(async(result) => {
             if (result) {
                 try {
-                    const res = await this.userService.createPresentation({ name: result });
-                    this.presentations.push(res);
+                    const presentation = await this.userService.createPresentation({ name: result });
+                    this.presentations.push(presentation);
+                    this.selectPresentation(presentation.id);
                 } catch (e) {
                     this.scMessageService.error(e);
                 }
