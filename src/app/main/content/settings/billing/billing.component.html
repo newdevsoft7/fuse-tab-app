@@ -37,30 +37,45 @@
 
     <div class="invoice-datatable mt-48 mb-32" *ngIf="invoices">
         <ngx-datatable #table class="material striped" [rows]="invoices" [loadingIndicator]="isLoading" [columnMode]="'force'"
-            [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [reorderable]="reorderable"
+            [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true"
             [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize" (page)="onSetPage($event)"
             (activate)="onActivate($event)" [messages]="{emptyMessage: 'No invoices yet.'}">
 
-            <ngx-datatable-column prop="id" name="Invoice No.">
+            <ngx-datatable-column prop="date" name="Date">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                  {{ value | date: 'y-MM-dd'}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column prop="currency" name="Currency">
                 <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    <a href="https://www.paypal.com/invoice/payerView/details/{{row.paypal_id}}" class="invoice-number"
-                        target="_blank">{{row.id}}</a>
+                    {{ value | uppercase }}
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column prop="amount" name="Amount">
+            <ngx-datatable-column prop="total" name="Total">
                 <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    <span [matTooltip]="row.currency">{{row.currency_symbol}}</span>{{value}}
+                    {{ total | currency: row.currency.toUpperCase() }}
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column prop="sent" name="Date Sent">
+            <ngx-datatable-column prop="due" name="Due">
+                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    {{ value | date: 'y-MM-dd'}}
+                </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column prop="due" name="Date Due">
+            <ngx-datatable-column prop="status" name="Status">
             </ngx-datatable-column>
 
-            <ngx-datatable-column prop="paid" name="Date Paid">
+            <ngx-datatable-column>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <a [href]="row.stripe_hosted_url"
+                        target="_blank">View / Pay</a>
+                    <a [href]="row.stripe_pdf_url" mat-icon-button target="_blank">
+                      <mat-icon class="s-20">picture_as_pdf</mat-icon>
+                    </a>
+                </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-footer>
