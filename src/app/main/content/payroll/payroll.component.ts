@@ -18,6 +18,7 @@ import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dia
 import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { FuseConfirmTextYesNoDialogComponent } from '../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
+import {PayrollExportAsCsvDialogComponent} from './dialogs/export-as-csv-dialog/payroll-export-as-csv-dialog.component';
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -244,7 +245,14 @@ export class PayrollComponent implements OnInit, OnDestroy {
     }
 
     download() {
-        // Todo - download multiple invoices
+        const dialogRef = this.dialog.open(PayrollExportAsCsvDialogComponent, {
+          disableClose: false,
+          panelClass: 'payroll-export-as-csv-dialog',
+          data: {
+            payrollIds: this.selectedPayrolls.map(v => +v.id)
+          }
+        });
+        dialogRef.afterClosed().subscribe();
     }
 
     onActivate(event) {

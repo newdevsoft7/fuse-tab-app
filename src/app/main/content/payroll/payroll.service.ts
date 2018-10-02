@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 
 import { environment } from '../../../../environments/environment';
+import { SCMessageService } from '../../../shared/services/sc-message.service';
 
 const BASE_URL = environment.apiUrl;
 const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
@@ -12,7 +13,8 @@ const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
 export class PayrollService {
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private scMessageService: SCMessageService
     ) { }
 
     getPayrolls(pageSize, pageNumber, status, filters, sorts): Observable<any> {
@@ -90,6 +92,36 @@ export class PayrollService {
     getPayrollDates(date: string = ''): Promise<any> {
         const url = `${BASE_URL}/xero/payroll/dates/${date}`;
         return this.http.get(url.replace(/\/+$/, '')).toPromise(); 
+    }
+
+    downloadPayrollsAsCSV(payloads: {
+      payroll_ids: number[],
+      filter?: any[],
+      extra_info?: any[],
+      show_expenses: boolean,
+      show_line_items: boolean
+    }) {
+      const url = `${BASE_URL}/payrolls/csv`;
+      return this.http.post(url, payloads, { observe: 'response', responseType: 'blob'}).toPromise()
+        .then(res => this.downloadFile(res['body']))
+        .catch(e => this.scMessageService.error(e));
+    }
+
+    downloadFile(data, filename = null) {
+      const dwldLink = document.createElement('a');
+      const url = URL.createObjectURL(data);
+      const isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
+      if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+        dwldLink.setAttribute('target', '_blank');
+      }
+      dwldLink.setAttribute('href', url);
+      if (filename) {
+        dwldLink.setAttribute('download', filename);
+      }
+      dwldLink.style.visibility = 'hidden';
+      document.body.appendChild(dwldLink);
+      dwldLink.click();
+      document.body.removeChild(dwldLink);
     }
 
     private handleError(error: Response | any) {
