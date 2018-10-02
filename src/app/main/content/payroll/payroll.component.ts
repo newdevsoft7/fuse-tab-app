@@ -122,6 +122,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
     }
 
     getPayrolls() {
+        this.selectedPayrolls= [];
         this.isLoading = true;
         this.filters = [];
         // Merge filters
@@ -241,7 +242,16 @@ export class PayrollComponent implements OnInit, OnDestroy {
     }
 
     open() {
-        // Todo - open new browser tab for multiple invoice print
+      if (this.selectedPayrolls.length > 1) {
+        const ids = this.selectedPayrolls.map(v => +v.id)
+        const tab = new Tab('Invoices', 'payrollDetailTpl', `payrolls/${ids.join()}`, { ids });
+        this.tabService.openTab(tab);
+      } else {
+        const payroll = this.selectedPayrolls[0];
+        const id = payroll.id;
+        const tab = new Tab(payroll.display, 'payrollDetailTpl', `payroll/${id}`, { id });
+        this.tabService.openTab(tab);
+      }
     }
 
     download() {

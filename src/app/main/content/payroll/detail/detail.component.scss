@@ -238,6 +238,11 @@
                         background: none;
                         padding: 0;
                         box-shadow: none;
+                        page-break-before: always;
+
+                        &:first-child {
+                          page-break-before: unset;
+                        }
 
                         .invoice-status {
                             position: absolute;

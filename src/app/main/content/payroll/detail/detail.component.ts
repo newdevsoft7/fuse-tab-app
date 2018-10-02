@@ -8,6 +8,7 @@ import { FuseConfirmDialogComponent } from "../../../../core/components/confirm-
 import { FuseConfirmYesNoDialogComponent } from "../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component";
 import { FuseConfirmTextYesNoDialogComponent } from "../../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component";
 import { SCMessageService } from "../../../../shared/services/sc-message.service";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-payroll-detail',
@@ -17,13 +18,10 @@ import { SCMessageService } from "../../../../shared/services/sc-message.service
 export class PayrollDetailComponent implements OnInit {
   @Input() data: any;
 
-  payroll: any = {};
-  payrollItems: any = [];
+  payrolls: any[] = []; // used for multiple payrolls detail.
+  payroll: any = {}; // used for a single payroll detail.
+
   logoUrl: string;
-  receipts: any = {
-    images: [],
-    others: []
-  };
 
   readonly itemTypes = [
     { value: 'bonus', title: 'Bonus' },
@@ -55,35 +53,51 @@ export class PayrollDetailComponent implements OnInit {
     this.logoUrl = this.appSettingService.baseData.logo;
     try {
       this.spinner.show();
-      this.payroll = await this.payrollService.getPayroll(this.data.id).toPromise();
-      const payrollItems = [];
-      for (const key in this.payroll) {
-        if (this.itemTypes.find(type => type.value === key)) {
-          for (const item of this.payroll[key]) {
-            item.type = key;
-            payrollItems.push(item);
-            if (item.receipt) {
-              const type = item.receipt.substr(item.receipt.lastIndexOf('/') + 1).toLowerCase();
-              if (['png', 'jpg', 'jpeg'].indexOf(type) > -1) {
-                this.receipts.images.push({
-                  url: item.receipt,
-                  title: item.title
-                });
-              } else {
-                this.receipts.others.push({
-                  url: item.receipt,
-                  title: item.title
-                });
-              }
-            }
-          }
-        }
+      if (this.data.ids) { // Multiple payrolls detail
+        this.payrolls = await this.payrollService.getMultiPayrollsDetail(this.data.ids);
+      } else { // Single payroll detail
+        this.payroll = await this.payrollService.getSinglePayrollDetail(this.data.id);
+        this.payrolls.push(this.payroll);
       }
-      this.payrollItems = payrollItems;
+      this.flattenPayrolls();
     } catch (e) {
       this.scMessageService.error(e);
     } finally {
       this.spinner.hide();
+    }
+  }
+
+  flattenPayrolls() {
+    this.payrolls.forEach(payroll => this.flattenSinglePayroll(payroll));
+  }
+
+  flattenSinglePayroll(payroll) {
+    payroll.items = [];
+    payroll.receipts = {
+      images: [],
+      others: []
+    };
+    for (const key in payroll) {
+      if (this.itemTypes.find(type => type.value === key)) {
+        for (const item of payroll[key]) {
+          item.type = key;
+          payroll.items.push(item);
+          if (item.receipt) {
+            const type = item.receipt.substr(item.receipt.lastIndexOf('/') + 1).toLowerCase();
+            if (['png', 'jpg', 'jpeg'].indexOf(type) > -1) {
+              payroll.receipts.images.push({
+                url: item.receipt,
+                title: item.title
+              });
+            } else {
+              payroll.receipts.others.push({
+                url: item.receipt,
+                title: item.title
+              });
+            }
+          }
+        }
+      }
     }
   }
 
@@ -168,7 +182,7 @@ export class PayrollDetailComponent implements OnInit {
   }
 
   getBGColor(status: string) {
-    let color: string = 'yellow';
+    let color = 'yellow';
     switch (status.toLowerCase()) {
       case 'paid':
         color = 'green';

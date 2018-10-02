@@ -25,10 +25,14 @@ export class PayrollService {
             .catch(this.handleError);
     }
 
-    getPayroll(id: number): Observable<any> {
+    getSinglePayrollDetail(id: number): Promise<any> {
         const url = `${BASE_URL}/payroll/${id}`;
-        return this.http.get(url)
-            .catch(this.handleError);
+        return this.http.get(url).toPromise();
+    }
+
+    getMultiPayrollsDetail(ids: number[]): Promise<any> {
+        const url = `${BASE_URL}/payrolls/${ids.join()}`;
+        return this.http.get(url).toPromise();
     }
 
     deletePayroll(id: number): Observable<any> {

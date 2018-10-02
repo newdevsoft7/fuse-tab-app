@@ -1,12 +1,13 @@
 <div id="invoice" class="compact page-layout blank" fxLayout="row" fusePerfectScrollbar>
 
     <div class="invoice-container" [ngClass.gt-xs]="'px-64 pb-64 pt-20'">
-        <div fxLayout="row wrap" fxLayoutAlign="start center" class="action-buttons">
+        <div fxLayout="row wrap" fxLayoutAlign="start center" class="action-buttons" *ngIf="payroll">
             <button mat-raised-button *ngFor="let action of payroll.actions" color="accent" (click)="doAction(action)" class="mr-4 mb-12">
                 {{action.label}}
             </button>
         </div>
-        <!-- INVOICE -->
+
+        <ng-container *ngFor="let payroll of payrolls">
         <div class="card">
             <div class="invoice-status" [style.background-color]="getBGColor(payroll.status)" *ngIf="payroll.status">{{payroll.status}}</div>
             <div class="header">
@@ -50,7 +51,7 @@
             </div>
 
             <div class="content">
-                <table class="simple invoice-table" *ngIf="payrollItems">
+                <table class="simple invoice-table" *ngIf="payroll.items">
                     <thead>
                         <tr>
                             <th>TYPE</th>
@@ -61,7 +62,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let line of payrollItems">
+                        <tr *ngFor="let line of payroll.items">
                             <td>
                                 <div class="title">
                                     {{line.type}}
@@ -99,16 +100,17 @@
             </div>
         </div>
 
-        <div class="card" *ngFor="let receipt of receipts.images" style="page-break-before: always;">
+        <div class="card" *ngFor="let receipt of payroll.receipts.images">
           <span>Receipt for {{ receipt.title }}:</span><br/>
           <img [src]="receipt.url" class="receipt"/>
         </div>
 
-        <div class="card" style="page-break-before: always" *ngIf="receipts.others.length > 0">
-          <div *ngFor="let receipt of receipts.others">
+        <div class="card" *ngIf="payroll.receipts.others.length > 0">
+          <div *ngFor="let receipt of payroll.receipts.others">
             Receipt for {{ receipt.title }}: <a [href]="receipt.url" target="_blank">{{ receipt.url }}</a>
           </div>
         </div>
+        </ng-container>
 
     </div>
 </div>
