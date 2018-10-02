@@ -20,6 +20,10 @@ export class PayrollDetailComponent implements OnInit {
   payroll: any = {};
   payrollItems: any = [];
   logoUrl: string;
+  receipts: any = {
+    images: [],
+    others: []
+  };
 
   readonly itemTypes = [
     { value: 'bonus', title: 'Bonus' },
@@ -53,11 +57,25 @@ export class PayrollDetailComponent implements OnInit {
       this.spinner.show();
       this.payroll = await this.payrollService.getPayroll(this.data.id).toPromise();
       const payrollItems = [];
-      for (let key in this.payroll) {
+      for (const key in this.payroll) {
         if (this.itemTypes.find(type => type.value === key)) {
-          for (let item of this.payroll[key]) {
+          for (const item of this.payroll[key]) {
             item.type = key;
             payrollItems.push(item);
+            if (item.receipt) {
+              const type = item.receipt.substr(item.receipt.lastIndexOf('/') + 1).toLowerCase();
+              if (['png', 'jpg', 'jpeg'].indexOf(type) > -1) {
+                this.receipts.images.push({
+                  url: item.receipt,
+                  title: item.title
+                });
+              } else {
+                this.receipts.others.push({
+                  url: item.receipt,
+                  title: item.title
+                });
+              }
+            }
           }
         }
       }

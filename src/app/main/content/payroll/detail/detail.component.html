@@ -99,5 +99,16 @@
             </div>
         </div>
 
+        <div class="card" *ngFor="let receipt of receipts.images" style="page-break-before: always;">
+          <span>Receipt for {{ receipt.title }}:</span><br/>
+          <img [src]="receipt.url" class="receipt"/>
+        </div>
+
+        <div class="card" style="page-break-before: always" *ngIf="receipts.others.length > 0">
+          <div *ngFor="let receipt of receipts.others">
+            Receipt for {{ receipt.title }}: <a [href]="receipt.url" target="_blank">{{ receipt.url }}</a>
+          </div>
+        </div>
+
     </div>
 </div>

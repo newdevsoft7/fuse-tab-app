@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { CustomLoadingService } from "../../../../shared/services/custom-loading.service";
 import { AppSettingService } from "../../../../shared/services/app-setting.service";
@@ -9,11 +9,15 @@ import { ClientInvoicesService } from "../client-invoices.service";
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class ClientInvoicesDetailComponent {
+export class ClientInvoicesDetailComponent implements OnInit {
   @Input() data: any;
 
   invoice: any = {};
   logoUrl: string;
+  receipts: any = {
+    images: [],
+    others: []
+  };
 
   constructor(
     private toastrService: ToastrService,
@@ -26,6 +30,24 @@ export class ClientInvoicesDetailComponent {
     try {
       this.spinner.show();
       this.invoice = await this.clientInvoicesService.getInvoice(this.data.id);
+      if (this.invoice.lines) {
+        for (const item of this.invoice.lines) {
+          if (item.receipt) {
+            const type = item.receipt.substr(item.receipt.lastIndexOf('/') + 1).toLowerCase();
+            if (['png', 'jpg', 'jpeg'].indexOf(type) > -1) {
+              this.receipts.images.push({
+                url: item.receipt,
+                title: item.title
+              });
+            } else {
+              this.receipts.others.push({
+                url: item.receipt,
+                title: item.title
+              });
+            }
+          }
+        }
+      }
     } catch (e) {
       this.toastrService.error(e.error.message);
     } finally {
