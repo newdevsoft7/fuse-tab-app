@@ -109,7 +109,10 @@ export class UsersComponent implements OnInit {
         private tabService: TabService,
         private authService: AuthenticationService,
         private scMessageService: SCMessageService,
-        private router: Router) { }
+        private router: Router
+    ) {
+        this.currentUser = this.tokenStorage.getUser();
+    }
 
     async ngOnInit() {
 
@@ -142,7 +145,6 @@ export class UsersComponent implements OnInit {
             }
         }
 
-        this.currentUser = this.tokenStorage.getUser();
         this.init();
     }
 
@@ -193,13 +195,13 @@ export class UsersComponent implements OnInit {
     async toggleFav(user, evt: Event) {
         user.fav = user.fav === 1 ? 0 : 1;
         try {
-			const res = await this.userService.updateUser(user.id, { fav: user.fav });
-		} catch (e) {
+            const res = await this.userService.updateUser(user.id, { fav: user.fav });
+        } catch (e) {
             this.scMessageService.error(e);
             user.fav = user.fav === 1 ? 0 : 1;
-		}
-        evt.stopPropagation();
-    }
+        }
+            evt.stopPropagation();
+        }
 
     openUserTab(user, event: Event) {
         event.stopPropagation();
