@@ -27,6 +27,7 @@ import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confir
 import { UserPasswordDialogComponent } from './dialogs/password/password.component';
 import { AddToPresenationDialogComponent } from './dialogs/add-to-presenation-dialog/add-to-presenation-dialog.component';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -74,6 +75,7 @@ export class UsersComponent implements OnInit {
 
     differ: any;
     isLoginAs: boolean = true;
+    environment = environment;
 
     @ViewChild(DatatableComponent) table: DatatableComponent;
 
@@ -383,7 +385,6 @@ export class UsersComponent implements OnInit {
         const inviteAll = this.data.invite_all;
         if (!this.data.selectedRoleId) { return; }
         if ((this.data.invite_all && this.total === 0) || (!this.data.invite_all && _.isEmpty(userIds))) { return; }
-
         if (messaging) {
             this.openMessageTab();
         } else {
@@ -426,15 +427,15 @@ export class UsersComponent implements OnInit {
     }
 
     openMessageTab() {
-        if (!this.selectedUsers.length) { return; }
-        const users = this.selectedUsers.map(v => {
-            return {
-                id: v.id,
-                text: `${v.fname} ${v.lname}`
-            };
-        });
+        const users = this.data.invite_all ? this.users : this.selectedUsers;
+        if (users.length < 1) { return; }
         const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
-        tab.data.recipients = users;
+        tab.data.recipients = users.map(v => {
+          return {
+            id: v.id,
+            text: `${v.fname} ${v.lname}`
+          };
+        });
         this.tabService.openTab(tab);
     }
 
