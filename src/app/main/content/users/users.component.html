@@ -50,7 +50,7 @@
                 </mat-form-field>
             </div>
 
-            <mat-checkbox #editMessage>Edit Message</mat-checkbox>
+            <mat-checkbox #editMessage [hidden]="environment.production">Edit Message</mat-checkbox>
 
             <div>
                 <button mat-raised-button color="accent" (click)="select(editMessage.checked)">

@@ -388,7 +388,7 @@ export class UsersComponent implements OnInit {
         if (!this.data.selectedRoleId) { return; }
         if ((this.data.invite_all && this.total === 0) || (!this.data.invite_all && _.isEmpty(userIds))) { return; }
         if (messaging) {
-            this.openMessageTab();
+            this.openMessageTab(true);
         } else {
             // Invite Staffs
             this.actionService.inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll });
@@ -428,8 +428,13 @@ export class UsersComponent implements OnInit {
         this.resetFilters();
     }
 
-    openMessageTab() {
-        const users = this.data.invite_all ? this.users : this.selectedUsers;
+    openMessageTab(isInvited: boolean = false) {
+        let users: any[];
+        if (isInvited) {
+          users = this.data.invite_all ? this.users : this.selectedUsers;
+        } else {
+          users = this.selectedUsers;
+        }
         if (users.length < 1) { return; }
         const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
         tab.data.recipients = users.map(v => {
