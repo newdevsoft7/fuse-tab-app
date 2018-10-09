@@ -1,12 +1,10 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
-import * as _ from 'lodash';
 import { SettingsService } from './settings.service';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { IterableDiffer } from '@angular/core/src/change_detection/differs/iterable_differs';
 import { MatSidenav } from '@angular/material';
+import { SCMessageService } from '../../../shared/services/sc-message.service';
 
 
 @Component({
@@ -26,7 +24,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(   
         private toastr: ToastrService,
-        private settingsService: SettingsService ) {
+        private settingsService: SettingsService,
+        private scMessageService: SCMessageService
+    ) {
 
         this.onSideNavChanged = this.settingsService.getSelectedSideNav().subscribe( 
             selectedSideNav => this.selectedSideNav = selectedSideNav );
@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.settings = await this.settingsService.getSetting();
             this.options = await this.settingsService.getSettingOptions();
         } catch (error) {
-            this.toastr.error(error.message || 'Something is wrong while fetching events.');
+            this.scMessageService.error(error);
         }
     }
 

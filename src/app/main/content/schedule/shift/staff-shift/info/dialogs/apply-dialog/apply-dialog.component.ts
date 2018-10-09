@@ -43,7 +43,7 @@ export class StaffShiftApplyDialogComponent implements OnInit {
     saveForm() {
         const reason = this.form.getRawValue().reason;
         if (this.settings.shift_application_reason == '1' && reason.length < 2) {
-            this.toastr.error('Please enter a reason for you application.')
+            this.toastr.error('Please enter a reason for you application.');
             return;
         } else {
             this.dialogRef.close(reason);

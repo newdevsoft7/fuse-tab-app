@@ -15,6 +15,8 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { SCMessageService } from '../../../../shared/services/sc-message.service';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 
 enum Setting {
     shift_enable = 46,
@@ -89,7 +91,9 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
 
     constructor(
         private settingsService: SettingsService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService,
+        private tokenStorage: TokenStorage
     ) {}
 
     ngOnChanges(changes: SimpleChanges) {
@@ -143,7 +147,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
         try {
             this.shiftStatuses = await this.settingsService.getShiftStatuses();
         } catch (e) {
-            this.toastr.error(e.message || 'Something is wrong!');
+            this.scMessageService.error(e);
         }
     }
 
@@ -151,7 +155,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
         try {
             this.staffStatuses = await this.settingsService.getStaffStatuses();
         } catch (e) {
-            this.toastr.error(e.message || 'Something is wrong!');
+            this.scMessageService.error(e);
         }
     }
 
@@ -161,7 +165,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
             try {
                 await this.settingsService.saveShiftStatus(status.id, body);
             } catch (e) {
-                this.toastr.error(e.message || 'Something is wrong!');
+                this.scMessageService.error(e);
             }
         }
     }
@@ -172,7 +176,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
             try {
                 await this.settingsService.saveStaffStatus(status.id, body);
             } catch (e) {
-                this.toastr.error(e.message || 'Something is wrong!');
+                this.scMessageService.error(e);
             }
         }
     }
@@ -197,11 +201,21 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
         }
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
+            this.updateSettingsOnStorage(id, value);
             this.settingsChange.next(this.settings);
             if (id === Setting.shift_enable) {
                 this.settingsService.schedulingEnableChanged.next(value);
             }
         });
+    }
+
+    updateSettingsOnStorage(id, value) {
+      const key = this.Setting[id];
+      const settings = this.tokenStorage.getSettings();
+      if (settings.hasOwnProperty(key)) {
+        settings[key] = value;
+      }
+      this.tokenStorage.setSettings(settings);
     }
 
 }
