@@ -36,6 +36,7 @@ import { ShiftAddUsersToPresentationDialogComponent } from './dialogs/add-users-
 import { ChatMessageDialogComponent } from './dialogs/chat-message-dialog/chat-message-dialog.component';
 import { UsersChatService } from '../../../../users/chat/chat.service';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
+import { AddUserToShiftDialogComponent } from './dialogs/add-user-to-shift-dialog/add-user-to-shift-dialog.component';
 
 export enum Section {
     Selected = 0,
@@ -94,6 +95,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     usersToRoleSubscription: Subscription;
     deleteRoleSubscrpition: Subscription;
+    userToShiftScription: Subscription;
 
     constructor(
         private dialog: MatDialog,
@@ -130,6 +132,38 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             });
         this.deleteRoleSubscrpition = this.actionService.deleteRole$.subscribe((roleIds: any[]) => {
             this.roles = this.roles.filter(r => roleIds.indexOf(r.id) < 0);
+        });
+
+        this.userToShiftScription = this.actionService.userToShift.subscribe(({ shiftId, user }) => {
+          if (shiftId == this.shift.id) {
+            const dialogRef = this.dialog.open(AddUserToShiftDialogComponent, {
+              disableClose: false,
+              panelClass: 'add-user-to-shift-dialog',
+              data: {
+                shift: this.shift,
+                user
+              }
+            });
+            dialogRef.afterClosed().subscribe(async result => {
+              if (!result) {
+                return;
+              }
+              const { role, action } = result;
+              switch (action) {
+                case 'select':
+                  this.selectStaffs({userIds: [user.id], role });
+                  break;
+                case 'apply':
+                  this.applyStaffs({userIds: [user.id], role });
+                  break;
+                case 'standby':
+                  this.standByStaffs({userIds: [user.id], role });
+                  break;
+                default:
+                  break;
+              }
+            });
+          }
         });
     }
 
@@ -179,6 +213,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.usersToRoleSubscription.unsubscribe();
         this.deleteRoleSubscrpition.unsubscribe();
+        this.userToShiftScription.unsubscribe();
     }
 
     async onEditRole(role) {
@@ -248,6 +283,42 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.toastr.error(err.error.message);
             });
     }
+
+  standByStaffs({ userIds, role }) {
+    const body: any = {};
+    body.user_ids = userIds;
+    this.spinner.show();
+    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_STANDBY).subscribe(
+      () => {
+        this.spinner.hide();
+        this.refreshTabByRole(role, Section.Standby);
+        this.updateStaffsCount(role.id);
+        const index = this.roles.findIndex(v => v.id === role.id);
+        this.roles[index].section = Section.Standby;
+      },
+      err => {
+        this.spinner.hide();
+        this.toastr.error(err.error.message);
+      });
+  }
+
+  applyStaffs({ userIds, role }) {
+    const body: any = {};
+    body.user_ids = userIds;
+    this.spinner.show();
+    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_APPLIED).subscribe(
+      () => {
+        this.spinner.hide();
+        this.refreshTabByRole(role, Section.Applicants);
+        this.updateStaffsCount(role.id);
+        const index = this.roles.findIndex(v => v.id === role.id);
+        this.roles[index].section = Section.Applicants;
+      },
+      err => {
+        this.spinner.hide();
+        this.toastr.error(err.error.message);
+      });
+  }
 
     moveup(role) {
         const index = role.index;

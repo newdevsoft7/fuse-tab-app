@@ -10,6 +10,7 @@ export class ActionService {
   private _usersToRole = new Subject();
   private _usersToInvite = new Subject();
   private _usersToSelect = new Subject();
+  userToShift = new Subject();
   deleteRole$ = new Subject();
   
   // Presentation

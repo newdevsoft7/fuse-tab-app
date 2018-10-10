@@ -1,0 +1,40 @@
+<div class="dialog-content-wrapper">
+  <div mat-dialog-content>
+    <h1 mat-dialog-title>Add {{data.user.fname}} {{data.user.lname}} to {{data.shift.title}}</h1>
+    <fieldset>
+      <legend>{{data.shift.location}} {{data.shift.shift_start | date: 'y/MM/d'}}</legend>
+      <div>
+        <table class="w-100-p">
+          <thead>
+            <th>Role</th>
+            <th>Time</th>
+            <th>Required</th>
+            <th>Selected</th>
+            <th>Status</th>
+            <th>Assign</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let role of data.shift.shift_roles">
+              <td>{{role.rname}}</td>
+              <td>{{role.start ? role.start : 'TBA'}} - {{role.end ? role.end : 'TBA'}}</td>
+              <td class="text-center">{{role.num_required}}</td>
+              <td class="text-center">{{role.num_selected}}</td>
+              <td class="text-center">{{role.num_required > role.num_selected ? 'Available': 'Not available'}}</td>
+              <td class="text-center">
+                <button mat-icon-button matTooltip="Select" (click)="doAction(role, 'select')" [disabled]="role.num_required <= role.num_selected">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Standby" (click)="doAction(role, 'standby')">
+                  <mat-icon>flag</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Apply" (click)="doAction(role, 'apply')">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+</div>

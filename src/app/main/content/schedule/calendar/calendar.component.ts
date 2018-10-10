@@ -308,7 +308,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
           event.title,
           'adminShiftGroupTpl',
           `admin-shift/group/${event.id}`,
-          { id: event.id }
+          {id: event.id}
         );
         this.tabService.openTab(tab);
       } else {

@@ -1,36 +1,38 @@
 <div class="tabs-wrapper" [class.tabs-nav-control-enabled]="_showPaginationControls">
-	<div
-		class="tabs-nav tabs-nav-prev"
-		(click)="scrollHeader('before')"
-		mat-ripple
-		[matRippleDisabled]="_disableScrollBefore"
-		[class.tabs-pagination-disabled]="_disableScrollBefore"
-	>
-		<mat-icon>navigate_before</mat-icon>
-	</div>
-	<div class="tabs-viewer" #tabListContainer>
-		<ul class="tabs" #tabList>
-			<li *ngFor="let tab of tabs" class="tab" (click)="selectTab(tab)" [class.active]="tab.active">
-				<a href="javascript:void(0)" matRipple>{{tab.title}}</a>
-			</li>
-			<!-- dynamic tabs -->
-			<li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" class="tab" [class.active]="tab.active">
-				<a href="javascript:void(0)" matRipple>{{tab.title | titlecase }}
-					<mat-icon (click)="closeTab(tab)">cancel</mat-icon>
-				</a>
-			</li>
-			<tab-ink-bar></tab-ink-bar>
-		</ul>
-	</div>
-	<div
-		class="tabs-nav tabs-nav-next"
-		(click)="scrollHeader('after')"
-		mat-ripple
-		[matRippleDisabled]="_disableScrollAfter"
-		[class.tabs-pagination-disabled]="_disableScrollAfter"
-	>
-		<mat-icon>navigate_next</mat-icon>
-	</div>
+  <div
+    class="tabs-nav tabs-nav-prev"
+    (click)="scrollHeader('before')"
+    mat-ripple
+    [matRippleDisabled]="_disableScrollBefore"
+    [class.tabs-pagination-disabled]="_disableScrollBefore"
+  >
+    <mat-icon>navigate_before</mat-icon>
+  </div>
+  <div class="tabs-viewer" #tabListContainer>
+    <ul class="tabs" #tabList>
+      <li *ngFor="let tab of tabs" class="tab" (click)="selectTab(tab)" [class.active]="tab.active">
+        <a href="javascript:void(0)" matRipple>{{tab.title}}</a>
+      </li>
+      <!-- dynamic tabs -->
+      <li *ngFor="let tab of dynamicTabs" (click)="selectTab(tab)" class="tab" [class.dropping]="tab.hover" [class.active]="tab.active"
+          [ngxDroppable]="tab.dropzone" [model]="model"
+          (drop)="onDrop($event, tab)" (over)="tab.hover = true" (out)="tab.hover = false">
+        <a href="javascript:void(0)" matRipple>{{tab.title | titlecase }}
+          <mat-icon (click)="closeTab(tab)">cancel</mat-icon>
+        </a>
+      </li>
+      <tab-ink-bar></tab-ink-bar>
+    </ul>
+  </div>
+  <div
+    class="tabs-nav tabs-nav-next"
+    (click)="scrollHeader('after')"
+    mat-ripple
+    [matRippleDisabled]="_disableScrollAfter"
+    [class.tabs-pagination-disabled]="_disableScrollAfter"
+  >
+    <mat-icon>navigate_next</mat-icon>
+  </div>
 </div>
 <ng-content></ng-content>
 <ng-template dynamic-tabs></ng-template>

@@ -186,7 +186,6 @@ export class AdminShiftStaffInvitedComponent implements OnInit {
             if (result) {
                 this.scheduleService.removeRoleStaff(staff.id)
                     .subscribe(res => {
-                        //this.toastr.success(res.message);
                         this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
                             .subscribe(res => {
                                 this.staffs = res;

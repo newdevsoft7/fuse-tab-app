@@ -8,6 +8,10 @@ ul:not(.browser-default) {
     position: relative;
     flex-shrink: 0;
 
+    .ngx-dnd-item {
+      display: none !important;
+    }
+
     &.tabs-nav-control-enabled {
         .tabs-nav {
             display: flex;
@@ -95,6 +99,10 @@ ul:not(.browser-default) {
         
         &.active a {
             color: rgba(0, 0, 0, 0.87);
+        }
+
+        &.dropping {
+          background: grey;
         }
 
         a {

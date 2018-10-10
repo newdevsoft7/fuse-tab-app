@@ -106,6 +106,7 @@ import { StaffShiftQuizDialogComponent } from './shift/staff-shift/info/dialogs/
 import { AdminShiftChangeCompanyDialogComponent } from './shift/admin-shift/staff/selected/change-company-dialog/change-company-dialog.component';
 import { ShiftAddUsersToPresentationDialogComponent } from './shift/admin-shift/staff/dialogs/add-users-to-presentation-dialog/add-users-to-presentation-dialog.component';
 import { ChatMessageDialogComponent } from './shift/admin-shift/staff/dialogs/chat-message-dialog/chat-message-dialog.component';
+import { AddUserToShiftDialogComponent } from './shift/admin-shift/staff/dialogs/add-user-to-shift-dialog/add-user-to-shift-dialog.component';
 
 
 @NgModule({
@@ -218,7 +219,8 @@ import { ChatMessageDialogComponent } from './shift/admin-shift/staff/dialogs/ch
         StaffShiftQuizDialogComponent,
         AdminShiftChangeCompanyDialogComponent,
         ShiftAddUsersToPresentationDialogComponent,
-        ChatMessageDialogComponent
+        ChatMessageDialogComponent,
+        AddUserToShiftDialogComponent
     ],
     providers: [ ScheduleService ],
     entryComponents: [
@@ -250,7 +252,8 @@ import { ChatMessageDialogComponent } from './shift/admin-shift/staff/dialogs/ch
         ShiftListEmailDialogComponent,
         AdminShiftChangeCompanyDialogComponent,
         ShiftAddUsersToPresentationDialogComponent,
-        ChatMessageDialogComponent
+        ChatMessageDialogComponent,
+        AddUserToShiftDialogComponent
     ],
     exports: [
         ScheduleComponent,

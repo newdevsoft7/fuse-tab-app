@@ -282,7 +282,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             if (result) {
                 this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
                     .subscribe(() => {
-                            //this.toastr.success(res.message);
                             this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
                                 .subscribe(res => {
                                     this.staffs = res;
