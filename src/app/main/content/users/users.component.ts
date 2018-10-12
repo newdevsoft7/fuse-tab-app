@@ -4,7 +4,7 @@ import {
     ElementRef, Input
 } from '@angular/core';
 
-import { MatDialog } from '@angular/material';
+import {MatDialog, MatMenuTrigger} from '@angular/material';
 
 import { ToastrService } from 'ngx-toastr';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
@@ -511,5 +511,10 @@ export class UsersComponent implements OnInit {
 
         });
     }
+
+  openContextMenu(evt: MouseEvent, contextMenu: MatMenuTrigger) {
+      evt.preventDefault();
+      contextMenu.openMenu();
+  }
 
 }

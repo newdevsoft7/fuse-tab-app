@@ -1,91 +1,105 @@
 <div id="admin-shift-staff-standby">
 
-    <ngx-datatable class="material striped" [rows]="staffs" [rowHeight]="'auto'"
-        [columnMode]="'force'" [headerHeight]="0" [footerHeight]="0" [rowHeight]="'auto'" [limit]="10">
+  <ngx-datatable class="material striped" [rows]="staffs" [rowHeight]="'auto'"
+                 [columnMode]="'force'" [headerHeight]="0" [footerHeight]="0" [rowHeight]="'auto'" [limit]="10">
 
-        <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="100" [sortable]="false" [canAutoResize]="false">
-            <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                <div class="savatar">
-                    <img [src]="getAvatar(value)" (click)="openUser(row, $event)" [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
-                        [matTooltip]="row.staff_status.status" />
-                    <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
-                </div>
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="100" [sortable]="false" [canAutoResize]="false">
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        <div class="savatar">
+          <span
+            #menuTrigger="matMenuTrigger"
+            [matMenuTriggerFor]="menu"
+            [matMenuTriggerData]="{row: row}">
+          </span>
+          <img [src]="getAvatar(value)" (click)="openUser(row, $event)" [ngStyle]="{'border': '3px solid ' + row.staff_status.border_color}"
+               [matTooltip]="row.staff_status.status" (contextmenu)="openContextMenu($event, menuTrigger)"/>
+          <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Name" prop="name" [sortable]="true" [canAutoResize]="true">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <strong>{{row.name}}</strong><br/>
-                <strong>{{row.email}}</strong>
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="Name" prop="name" [sortable]="true" [canAutoResize]="true">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <strong>{{row.name}}</strong><br/>
+        <strong>{{row.email}}</strong>
+      </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Select" [sortable]="false" [canAutoResize]="false" [width]="60">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')" matTooltip="Select"
-                    [disabled]="editable !== 1">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </ng-template>
-        </ngx-datatable-column>
+    <ngx-datatable-column name="Select" [sortable]="false" [canAutoResize]="false" [width]="60">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <button mat-icon-button (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')" matTooltip="Select"
+                [disabled]="editable !== 1">
+          <mat-icon>add</mat-icon>
+        </button>
+      </ng-template>
+    </ngx-datatable-column>
 
-        <ngx-datatable-column name="Action" [width]="60" [sortable]="false" [resizeable]="false"
-            [draggable]="false" [canAutoResize]="false">
-            <ng-template let-row="row" ngx-datatable-cell-template>
-                <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert" [disabled]="editable !== 1">
-                    <mat-icon class="material-icons">more_vert</mat-icon>
-                </button>
+    <ngx-datatable-column name="Action" [width]="60" [sortable]="false" [resizeable]="false"
+                          [draggable]="false" [canAutoResize]="false">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          [matMenuTriggerData]="{row: row}"
+          class="more-vert"
+          [disabled]="editable !== 1">
+          <mat-icon class="material-icons">more_vert</mat-icon>
+        </button>
+      </ng-template>
+    </ngx-datatable-column>
 
-                <mat-menu #menu="matMenu">
-                    <button mat-menu-item (click)="sendMessage(row)">
-                        <mat-icon>mail_outline</mat-icon>
-                        <span>Send Message</span>
-                    </button>
+  </ngx-datatable>
 
-                    <button mat-menu-item (click)="chatMessage(row)">
-                        <mat-icon>chat</mat-icon>
-                        <span>Chat</span>
-                    </button>
+  <mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-row="row">
+      <button mat-menu-item (click)="sendMessage(row)">
+        <mat-icon>mail_outline</mat-icon>
+        <span>Send Message</span>
+      </button>
 
-                    <button mat-menu-item (click)="loginAsUser(row)">
-                        <mat-icon>vpn_key</mat-icon>
-                        <span>Login as user</span>
-                    </button>
+      <button mat-menu-item (click)="chatMessage(row)">
+        <mat-icon>chat</mat-icon>
+        <span>Chat</span>
+      </button>
 
-                    <button mat-menu-item [matMenuTriggerFor]="statusMenu">
-                        <mat-icon>edit</mat-icon>
-                        <span>Change Status</span>
-                    </button>
+      <button mat-menu-item (click)="loginAsUser(row)">
+        <mat-icon>vpn_key</mat-icon>
+        <span>Login as user</span>
+      </button>
 
-                    <button mat-menu-item (click)="remove(row)">
-                        <mat-icon>clear</mat-icon>
-                        <span>Remove</span>
-                    </button>
-                </mat-menu>
+      <button
+        mat-menu-item
+        [matMenuTriggerFor]="statusMenu"
+        [matMenuTriggerData]="{row: row}">
+        <mat-icon>edit</mat-icon>
+        <span>Change Status</span>
+      </button>
 
-                <!-- CHANGE STATUS SUBMENU -->
-                <mat-menu #statusMenu="matMenu">
+      <button mat-menu-item (click)="remove(row)">
+        <mat-icon>clear</mat-icon>
+        <span>Remove</span>
+      </button>
+    </ng-template>
+  </mat-menu>
 
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_APPLIED')">Applied</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')">Standby</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')">Selected</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVITED')">Invited</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_COMPLETED')">Completed</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVOICED')">Invoiced</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_PAID')">Paid</button>
-                    <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_NO_SHOW')">No Show</button>
-                    <button mat-menu-item>No Pay</button>
-                    <button mat-menu-item>Other</button>
-
-                </mat-menu>
-                <!-- / CHANGE STATUS SUBMENU -->
-
-            </ng-template>
-        </ngx-datatable-column>
-
-    </ngx-datatable>
+  <!-- CHANGE STATUS SUBMENU -->
+  <mat-menu #statusMenu="matMenu">
+    <ng-template matMenuContent let-row="row">
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_APPLIED')">Applied</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_STANDBY')">Standby</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_SELECTED')">Selected</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVITED')">Invited</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CONFIRMED')">Confirmed</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_IN')">Checked In</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_CHECKED_OUT')">Checked Out</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_COMPLETED')">Completed</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_INVOICED')">Invoiced</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_PAID')">Paid</button>
+      <button mat-menu-item (click)="changeStatus(row, 'STAFF_STATUS_NO_SHOW')">No Show</button>
+      <button mat-menu-item>No Pay</button>
+      <button mat-menu-item>Other</button>
+    </ng-template>
+  </mat-menu>
+  <!-- / CHANGE STATUS SUBMENU -->
 
 </div>
