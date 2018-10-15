@@ -164,7 +164,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.standByStaffs({ userIds: [user.id], role });
                 break;
               case 'invite':
-                this.inviteStaffs({ userIds: [user.id], role, inviteAll: false });
+                this.inviteStaffs({ userIds: [user.id], role, inviteAll: false, filters: null });
                 break;
               default:
                 break;
