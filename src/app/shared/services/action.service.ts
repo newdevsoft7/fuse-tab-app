@@ -11,6 +11,7 @@ export class ActionService {
   private _usersToInvite = new Subject();
   private _usersToSelect = new Subject();
   userToShift = new Subject();
+  userToGroup = new Subject();
   deleteRole$ = new Subject();
   
   // Presentation

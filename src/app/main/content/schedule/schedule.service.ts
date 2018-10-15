@@ -563,6 +563,11 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
+  getRolesForDraggingToGroup(userId: number | string, groupId: number | string): Promise<any> {
+    const url = `${BASE_URL}/user/${userId}/group/${groupId}`;
+    return this.http.get(url).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }

@@ -12,159 +12,207 @@ import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
+import {AddUserToGroupDialogComponent} from './dialogs/add-user-to-group-dialog/add-user-to-group-dialog.component';
 
 export enum TAB {
-    Staff = 'Staff',
-    Bill = 'Bill',
-    Reports = 'Reports & Uploads',
-    Attachements = 'Attachments'
+  Staff = 'Staff',
+  Bill = 'Bill',
+  Reports = 'Reports & Uploads',
+  Attachements = 'Attachments'
 }
 
 @Component({
-    selector: 'app-admin-shift-group',
-    templateUrl: './admin-shift-group.component.html',
-    styleUrls: ['./admin-shift-group.component.scss']
+  selector: 'app-admin-shift-group',
+  templateUrl: './admin-shift-group.component.html',
+  styleUrls: ['./admin-shift-group.component.scss']
 })
 export class AdminShiftGroupComponent implements OnInit, OnDestroy {
 
-    @Input() data;
-    @ViewChild('staffTab') staffTab: GroupStaffComponent;
+  @Input() data;
+  @ViewChild('staffTab') staffTab: GroupStaffComponent;
 
-    group: any;
-    shifts: any[] = [];
-    clients: any[] = [];
-    shiftData: any; // For edit tracking & work areas
-    selectedTabIndex: number = 0; // Set staff tab as initial tab
-    usersToInviteSubscription: Subscription;
-    usersToSelectSubscription: Subscription;
-    showMoreBtn = true;
+  group: any;
+  shifts: any[] = [];
+  clients: any[] = [];
+  shiftData: any; // For edit tracking & work areas
+  selectedTabIndex: number = 0; // Set staff tab as initial tab
+  usersToInviteSubscription: Subscription;
+  usersToSelectSubscription: Subscription;
+  userToGroupSubscription: Subscription;
+  showMoreBtn = true;
 
-    constructor(
-        private spinner: CustomLoadingService,
-        private scheduleService: ScheduleService,
-        private actionService: ActionService,
-        private scMessageService: SCMessageService,
-        private dialog: MatDialog
-    ) { }
+  constructor(
+    private spinner: CustomLoadingService,
+    private scheduleService: ScheduleService,
+    private actionService: ActionService,
+    private scMessageService: SCMessageService,
+    private dialog: MatDialog
+  ) { }
 
-    ngOnDestroy() {
-        this.usersToInviteSubscription.unsubscribe();
-        this.usersToSelectSubscription.unsubscribe();
-    }
-    
-    ngOnInit() {
-        this.fetchGroup();
+  ngOnDestroy() {
+    this.usersToInviteSubscription.unsubscribe();
+    this.usersToSelectSubscription.unsubscribe();
+    this.userToGroupSubscription.unsubscribe();
+  }
 
-        // Get Tracking Categories & Options
-        this.scheduleService.getShiftsData().subscribe(res => {
-            this.shiftData = res;
+  ngOnInit() {
+    this.fetchGroup();
+
+    // Get Tracking Categories & Options
+    this.scheduleService.getShiftsData().subscribe(res => {
+      this.shiftData = res;
+    });
+
+    // Get Clients
+    this.scheduleService.getClients('').subscribe(res => {
+      this.clients = res;
+    });
+
+    // Invite Users to Role
+    this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
+      ({ shiftId, userIds, filters, role, inviteAll }) => {
+        const index = this.shifts.findIndex(v => v.id === shiftId);
+        if (index > -1) {
+          this.selectedTabIndex = 0; // Set staff tab active
+          this.staffTab.inviteStaffs({ shiftId, userIds, filters, role, inviteAll });
+        }
+      });
+
+    // add Users to Role
+    this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
+      ({ shiftId, userIds, role }) => {
+        const index = this.shifts.findIndex(v => v.id === shiftId);
+        if (index > -1) {
+          this.selectedTabIndex = 0; // Set staff tab active
+          this.staffTab.selectStaffs({ shiftId, userIds, role });
+        }
+      });
+
+    // Drag a user to Role
+    this.userToGroupSubscription = this.actionService.userToGroup.subscribe(async  ({ groupId, user }) => {
+      if (groupId != this.group.id) { return; }
+      try {
+        const shifts = await this.scheduleService.getRolesForDraggingToGroup(user.id, groupId);
+        const dialogRef = this.dialog.open(AddUserToGroupDialogComponent, {
+          disableClose: false,
+          panelClass: 'add-user-to-group-dialog',
+          data: {
+            group: this.group,
+            shifts,
+            user
+          }
         });
-
-        // Get Clients
-        this.scheduleService.getClients('').subscribe(res => {
-            this.clients = res;
-        });
-
-        // Invite Users to Role
-        this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
-            ({ shiftId, userIds, filters, role, inviteAll }) => {
-                const index = this.shifts.findIndex(v => v.id === shiftId);
-                if (index > -1) {
-                    this.selectedTabIndex = 0; // Set staff tab active
-                    this.staffTab.inviteStaffs({ shiftId, userIds, filters, role, inviteAll });
-                }
-            });
-
-        // add Users to Role
-        this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
-            ({ shiftId, userIds, role }) => {
-                const index = this.shifts.findIndex(v => v.id === shiftId);
-                if (index > -1) {
-                    this.selectedTabIndex = 0; // Set staff tab active
-                    this.staffTab.selectStaffs({ shiftId, userIds, role });
-                }
-            });
-    }
-
-    async fetchGroup() {
-        try {
-            this.spinner.show();
-            const res = await this.scheduleService.getShiftGroup(this.data.id);
-            this.group = res.group;
-            this.shifts = res.shifts;
-            this.spinner.hide();
-        } catch (e) {
-            this.spinner.hide();
-            this.scMessageService.error(e);
-        }
-    }
-
-    async toggleLive() {
-        const live = this.group.live === 1 ? 0 : 1;
-        try {
-            //this.toastr.success(res.message);
-            this.group.live = live;
-        } catch (e) {
-            this.scMessageService.error(e);
-        }
-    }
-
-    async toggleFlag(flag) {
-        const value = flag.set === 1 ? 0 : 1;
-        try {
-            //this.toastr.success(res.message);
-            flag.set = value;
-        } catch (e) {
-            this.scMessageService.error(e);
-        }
-    }
-
-    async toggleLock() {
-        const locked = this.group.locked === 1 ? 0 : 1;
-        try {
-            //this.toastr.success(res.message);
-            this.group.locked = locked;
-        } catch (e) {
-            this.scMessageService.error(e);
-        }
-    }
-
-    message(type) {
-        const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
-            disableClose: false,
-            panelClass: 'admin-shift-email-dialog',
-            data: {
-                shiftIds: this.shifts.map(v => v.id),
-                type
+        dialogRef.afterClosed().subscribe(result => {
+          if (!result) { return; }
+          const { shiftId, roleName, roleId, action } = result;
+          const role = { id: roleId };
+          const userIds = [user.id];
+          if (shiftId) { // for a shift
+            switch (action) {
+              case 'select':
+                this.staffTab.selectStaffs({ shiftId, userIds, role });
+                break;
+              case 'apply':
+                this.staffTab.applyStaffs({ shiftId, userIds, role });
+                break;
+              case 'standby':
+                this.staffTab.standByStaffs({ shiftId, userIds, role});
+                break;
+              case 'invite':
+                this.staffTab.inviteStaffs({ shiftId, userIds, role, filters: null, inviteAll: false });
+                break;
+              default:
+                break;
             }
+          } else { // for all shifts
+
+          }
         });
-        dialogRef.afterClosed().subscribe(() => { });
+      } catch (e) {
+        this.scMessageService.error(e);
+      }
+    });
+  }
+
+  async fetchGroup() {
+    try {
+      this.spinner.show();
+      const res = await this.scheduleService.getShiftGroup(this.data.id);
+      this.group = res.group;
+      this.shifts = res.shifts;
+      this.spinner.hide();
+    } catch (e) {
+      this.spinner.hide();
+      this.scMessageService.error(e);
     }
+  }
 
-    openExportCsvDialog() {
-        const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
-            panelClass: 'admin-shift-exports-as-excel-dialog',
-            disableClose: false,
-            data: {
-                shiftIds: this.shifts.map(v => v.id),
-                isGroup: true
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(() => { });
+  async toggleLive() {
+    const live = this.group.live === 1 ? 0 : 1;
+    try {
+      //this.toastr.success(res.message);
+      this.group.live = live;
+    } catch (e) {
+      this.scMessageService.error(e);
     }
+  }
 
-    openOverviewDialog() {
-        const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
-            panelClass: 'admin-shift-exports-as-pdf-dialog',
-            disableClose: false,
-            data: {
-                shiftIds: this.shifts.map(v => v.id),
-                isGroup: true
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(() => { });
+  async toggleFlag(flag) {
+    const value = flag.set === 1 ? 0 : 1;
+    try {
+      //this.toastr.success(res.message);
+      flag.set = value;
+    } catch (e) {
+      this.scMessageService.error(e);
     }
+  }
+
+  async toggleLock() {
+    const locked = this.group.locked === 1 ? 0 : 1;
+    try {
+      //this.toastr.success(res.message);
+      this.group.locked = locked;
+    } catch (e) {
+      this.scMessageService.error(e);
+    }
+  }
+
+  message(type) {
+    const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
+      disableClose: false,
+      panelClass: 'admin-shift-email-dialog',
+      data: {
+        shiftIds: this.shifts.map(v => v.id),
+        type
+      }
+    });
+    dialogRef.afterClosed().subscribe(() => { });
+  }
+
+  openExportCsvDialog() {
+    const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+      panelClass: 'admin-shift-exports-as-excel-dialog',
+      disableClose: false,
+      data: {
+        shiftIds: this.shifts.map(v => v.id),
+        isGroup: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => { });
+  }
+
+  openOverviewDialog() {
+    const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
+      panelClass: 'admin-shift-exports-as-pdf-dialog',
+      disableClose: false,
+      data: {
+        shiftIds: this.shifts.map(v => v.id),
+        isGroup: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => { });
+  }
 
 }

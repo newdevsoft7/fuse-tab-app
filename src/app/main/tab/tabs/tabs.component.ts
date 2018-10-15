@@ -87,6 +87,9 @@ export class TabsComponent implements AfterContentInit, OnInit, OnDestroy {
     if (tab.url.indexOf('admin/shift/') > -1) {
       const shiftId = +tab.url.substring(tab.url.lastIndexOf('/') + 1);
       this.actionService.userToShift.next({ shiftId, user: event.value });
+    } else if (tab.url.indexOf('admin-shift/group') > -1) {
+      const groupId = +tab.url.substring(tab.url.lastIndexOf('/') + 1);
+      this.actionService.userToGroup.next({ groupId, user: event.value });
     }
   }
 
@@ -139,9 +142,10 @@ export class TabsComponent implements AfterContentInit, OnInit, OnDestroy {
           }
         }
       }
-
       if (instance.url.indexOf('admin/shift/') > -1) {
-        instance.dropzone = 'shift';
+        instance.dropzone = 'admin-shift';
+      } else if (instance.url.indexOf('admin-shift/group') > -1) {
+        instance.dropzone = 'admin-group';
       } else {
         instance.dropzone = '';
       }
