@@ -18,6 +18,7 @@ export class AddUserToShiftDialogComponent implements OnInit {
   }
 
   doAction(role, action) {
+    const role = this.data.shift.shift_roles.find(r => r.id == role.id);
     this.dialogRef.close({ role, action });
   }
 

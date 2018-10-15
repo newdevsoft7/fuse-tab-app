@@ -14,21 +14,27 @@
             <th>Assign</th>
           </thead>
           <tbody>
-            <tr *ngFor="let role of data.shift.shift_roles">
+            <tr *ngFor="let role of data.roles">
               <td>{{role.rname}}</td>
-              <td>{{role.start ? role.start : 'TBA'}} - {{role.end ? role.end : 'TBA'}}</td>
+              <td>{{role.times}}</td>
               <td class="text-center">{{role.num_required}}</td>
               <td class="text-center">{{role.num_selected}}</td>
-              <td class="text-center">{{role.num_required > role.num_selected ? 'Available': 'Not available'}}</td>
               <td class="text-center">
-                <button mat-icon-button matTooltip="Select" (click)="doAction(role, 'select')" [disabled]="role.num_required <= role.num_selected">
+                <span class="mr-4" [class]="role.available ? 'red-fg' : 'green-fg'">{{role.available ? role.available : 'Available'}}</span>
+                <span [class.black-fg]="role.warning">{{role.warning}}</span>
+              </td>
+              <td class="text-center">
+                <button class="grey-300-bg" mat-icon-button matTooltip="Invite" (click)="doAction(role, 'invite')">
+                  <mat-icon>group_add</mat-icon>
+                </button>
+                <button class="grey-300-bg" mat-icon-button matTooltip="Select" (click)="doAction(role, 'select')">
                   <mat-icon>add</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Standby" (click)="doAction(role, 'standby')">
+                <button class="grey-300-bg" mat-icon-button matTooltip="Standby" (click)="doAction(role, 'standby')">
                   <mat-icon>flag</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Apply" (click)="doAction(role, 'apply')">
-                  <mat-icon>add</mat-icon>
+                <button class="grey-300-bg" mat-icon-button matTooltip="Apply" (click)="doAction(role, 'apply')">
+                  <mat-icon>done</mat-icon>
                 </button>
               </td>
             </tr>

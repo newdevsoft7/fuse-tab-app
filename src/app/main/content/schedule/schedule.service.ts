@@ -558,6 +558,11 @@ export class ScheduleService {
       .catch(this.handleError);
   }
 
+  getRolesForDraggingToShift(userId: number | string, shiftId: number | string): Promise<any> {
+    const url = `${BASE_URL}/user/${userId}/shift/${shiftId}`;
+    return this.http.get(url).toPromise();
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error);
   }
