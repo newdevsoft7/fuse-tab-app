@@ -259,7 +259,7 @@
     <div *ngIf="item.ename && !(item.sex && item.sex !== sex)" class="info-line">
         <div class="title">
             <span *ngIf="item.visibility == 'required'" class="required">*</span>
-            {{item.ename}}
+            <span>{{item.ename}}</span>
         </div>
         <div class="info">
             <ng-container *ngIf="item.etype === 'list'">
