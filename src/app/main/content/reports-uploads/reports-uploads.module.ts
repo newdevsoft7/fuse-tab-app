@@ -5,7 +5,6 @@ import { ReportsUploadsService } from './reports-uploads.service';
 import { ReportsUploadsComponent } from './reports-uploads.component';
 import { ReportsUploadsFileListComponent } from './file-list/file-list.component';
 import { ReportsUploadsDetailsSidenavComponent } from './sidenavs/details/details.component';
-import { ReportsUploadsMainSidenavComponent } from './sidenavs/main/main.component';
 import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
 import { QuizsComponent } from './quizs/quizs.component';
 import { SurveysComponent } from './surveys/surveys.component';
@@ -19,7 +18,6 @@ import { SurveysComponent } from './surveys/surveys.component';
     ReportsUploadsComponent,
     ReportsUploadsFileListComponent,
     ReportsUploadsDetailsSidenavComponent,
-    ReportsUploadsMainSidenavComponent,
     ReportsSelectShiftDialogComponent,
     QuizsComponent,
     SurveysComponent

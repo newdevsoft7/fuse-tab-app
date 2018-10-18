@@ -2,12 +2,6 @@
 
     <mat-sidenav-container>
 
-        <!-- SIDENAV -->
-        <mat-sidenav class="sidenav left-sidenav" align="start" opened="false" mode="over" fuseMatSidenavHelper="file-manager-left-sidenav">
-            <app-reports-uploads-main-sidenav></app-reports-uploads-main-sidenav>
-        </mat-sidenav>
-        <!-- / SIDENAV -->
-
         <!-- CENTER -->
         <div class="center" fxFlex>
 
@@ -15,14 +9,7 @@
             <div class="header mat-accent-bg p-24" fxLayout="column" fxLayoutAlign="space-between start">
 
                 <!-- TOOLBAR -->
-                <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
-
-                    <div class="left-side" fxLayout="row">
-                        <button mat-icon-button class="sidenav-toggle" fuseMatSidenavToggler="file-manager-left-sidenav">
-                            <mat-icon>menu</mat-icon>
-                        </button>
-                    </div>
-
+                <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="end start">
                     <div class="right-side" fxLayout="row">
                         <button mat-button class="mat-icon-button" aria-label="Search" matTooltip="Search">
                             <mat-icon>search</mat-icon>

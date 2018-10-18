@@ -62,7 +62,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
   
     if (selected.type !== 'Folder') {
       if (this.selectedItems.length > 0) {
-        if (event.ctrlKey) {
+        if (event.ctrlKey || event.metaKey) {
           const index = this.selectedItems.findIndex(v => v.id === selected.id);
           if (index < 0) {
             this.selectedItems.push(selected);
@@ -88,6 +88,21 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
         this.clicked = false;
       }
     }
+  }
+
+  onTouchSelect(selected) {
+    if (selected.type == 'Folder') { return; }
+    if (this.selectedItems.length > 0) {
+        const index = this.selectedItems.findIndex(v => v.id === selected.id);
+        if (index < 0) {
+          this.selectedItems.push(selected);
+        } else {
+          this.selectedItems.splice(index, 1);
+        }
+    } else {
+      this.selectedItems.push(selected);
+    }
+    this.reportsUploadsService.onFileSelected.next(this.selectedItems);
   }
 
   openFile(selected, event: MouseEvent) {

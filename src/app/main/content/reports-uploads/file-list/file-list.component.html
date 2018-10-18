@@ -20,6 +20,7 @@
   </div>
 
   <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let file of files" class="file-list-item"
+       (press)="onTouchSelect(file)"
     (click)="onSelect(file, $event)" [ngClass]="{'mat-light-blue-50-bg':isSelected(file)}">
     <div fxFlex="64px" class="pl-24">
         <mat-icon class="type-icon" [ngClass]="file.type === 'Folder' ? 'folder' : 'file'"></mat-icon>
