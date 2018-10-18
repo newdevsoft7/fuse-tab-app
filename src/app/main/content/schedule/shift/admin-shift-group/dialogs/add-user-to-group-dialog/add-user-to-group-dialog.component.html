@@ -1,6 +1,6 @@
 <div class="dialog-content-wrapper">
   <div mat-dialog-content>
-    <fieldset class="mb-b" *ngIf="false">
+    <fieldset class="mb-8">
       <legend><strong>Add {{data.user.fname}} {{data.user.lname}} to all shifts</strong></legend>
       <div fxLayout="row" fxLayoutAlign="start center">
         <span class="mr-12">Role:</span>
@@ -10,16 +10,16 @@
           </mat-select>
         </mat-form-field>
         <div>
-          <button class="grey-300-bg" mat-icon-button matTooltip="Invite" (click)="doToAllShifts(role, 'invite')">
+          <button class="grey-300-bg" mat-icon-button matTooltip="Invite" (click)="doToAllShifts(selectedRole, 'invite')">
             <mat-icon>group_add</mat-icon>
           </button>
-          <button class="grey-300-bg" mat-icon-button matTooltip="Select" (click)="doToAllShifts(role, 'select')">
+          <button class="grey-300-bg" mat-icon-button matTooltip="Select" (click)="doToAllShifts(selectedRole, 'select')">
             <mat-icon>add</mat-icon>
           </button>
-          <button class="grey-300-bg" mat-icon-button matTooltip="Standby" (click)="doToAllShifts(role, 'standby')">
+          <button class="grey-300-bg" mat-icon-button matTooltip="Standby" (click)="doToAllShifts(selectedRole, 'standby')">
             <mat-icon>flag</mat-icon>
           </button>
-          <button class="grey-300-bg" mat-icon-button matTooltip="Apply" (click)="doToAllShifts(role, 'apply')">
+          <button class="grey-300-bg" mat-icon-button matTooltip="Apply" (click)="doToAllShifts(selectedRole, 'apply')">
             <mat-icon>done</mat-icon>
           </button>
         </div>

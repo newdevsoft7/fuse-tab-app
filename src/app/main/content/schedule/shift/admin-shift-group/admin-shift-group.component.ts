@@ -105,9 +105,9 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
           if (!result) { return; }
           const { shiftId, roleName, roleId, action } = result;
-          const role = { id: roleId };
           const userIds = [user.id];
           if (shiftId) { // for a shift
+            const role = { id: roleId };
             switch (action) {
               case 'select':
                 this.staffTab.selectStaffs({ shiftId, userIds, role });
@@ -125,7 +125,31 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
                 break;
             }
           } else { // for all shifts
-
+            const roles: any[] = [];
+            for (const shift of shifts) {
+              for (const role of shift.roles) {
+                if (role.rname.trim().toLowerCase() == roleName.trim().toLowerCase()) {
+                  roles.push({ ...role, shiftId: shift.id });
+                }
+              }
+            }
+            if (roles.length === 0) { return; }
+            switch (action) {
+              case 'select':
+                roles.forEach(role => this.staffTab.selectStaffs({ shiftId: role.shiftId, userIds, role }))
+                break;
+              case 'apply':
+                roles.forEach(role => this.staffTab.applyStaffs({ shiftId: role.shiftId, userIds, role }))
+                break;
+              case 'standby':
+                roles.forEach(role => this.staffTab.standByStaffs({ shiftId: role.shiftId, userIds, role }))
+                break;
+              case 'invite':
+                roles.forEach(role => this.staffTab.inviteStaffs({ shiftId: role.shiftId, userIds, role, filters: null, inviteAll: false }))
+                break;
+              default:
+                break;
+            }
           }
         });
       } catch (e) {
