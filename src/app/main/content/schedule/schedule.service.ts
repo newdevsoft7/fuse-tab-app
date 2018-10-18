@@ -439,6 +439,11 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
+  copyGroup(groupId, payload): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/copy`;
+    return this.http.post(url, payload).toPromise();
+  }
+
   deleteGroup(id: number | string): Promise<any> {
     const url = `${BASE_URL}/group/${id}/all`;
     return this.http.delete(url).toPromise();

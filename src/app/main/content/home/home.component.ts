@@ -116,6 +116,7 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     @ViewChild('reportsUploadsTpl') reportsUploadsTpl;
     @ViewChild('billingTpl') billingTpl;
     @ViewChild('summaryTpl') summaryTpl;
+    @ViewChild('groupCopyTpl') groupCopyTpl;
 
     @ViewChildren('homeForm') homeForms: QueryList<FormComponent>;
 

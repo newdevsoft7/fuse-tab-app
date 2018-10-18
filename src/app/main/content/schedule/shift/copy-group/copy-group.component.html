@@ -1,0 +1,75 @@
+<div id="copy-group" class="page-layout simple fullwidth p-12" fusePerfectScrollbar>
+  <form [formGroup]="groupForm" novalidate *ngIf="!isLoading">
+
+    <mat-form-field class="w-100-p">
+      <input matInput placeholder="Group Title" formControlName="gname" required>
+    </mat-form-field>
+
+    <div formArrayName="shifts">
+
+      <div class="shift-box info-box" *ngFor="let shift of groupForm.controls['shifts'].controls; index as i">
+        <header class="mat-accent-bg">
+          <div class="title">Shift {{i + 1}}</div>
+        </header>
+
+        <div class="content" fxLayout="column">
+          <div [formGroupName]="i">
+
+            <div class="info-line">
+              <mat-form-field class="w-100-p">
+                <input matInput placeholder="Title" formControlName="title">
+              </mat-form-field>
+            </div>
+
+            <div class="info-line">
+              <mat-form-field class="w-100-p">
+                <input matInput placeholder="Location" formControlName="location">
+              </mat-form-field>
+            </div>
+
+            <div class="info-line">
+              <mat-form-field class="w-100-p">
+                <input matInput placeholder="Venue Contact" formControlName="contact">
+              </mat-form-field>
+            </div>
+
+            <div class="info-line">
+              <mat-form-field class="w-100-p">
+                <input matInput placeholder="Address" formControlName="address">
+              </mat-form-field>
+            </div>
+
+            <div class="info-line">
+              <fieldset class="date-times">
+                <legend>Date & Times</legend>
+                <div fxLayout.gt-xs="row" fxLayoutGap="12px" fxLayout.xs="column" fxLayoutAlign.xs="start stretch">
+                  <mat-form-field fxFlexLayout="start center" fxFlex.gt-xs="160px">
+                    <input matInput
+                           [matDatepicker]="picker"
+                           placeholder="Date"
+                           fxFlex
+                           (dateInput)="changeDate(shift.controls.date, $event)"
+                           (dateChange)="changeDate(shift.controls.date, $event)"
+                           [value]="shift.controls.date.value">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  <div fxFlex.gt-xs="120px">
+                    <w-mat-timepicker color="accent" [placeholder]="'From'" [(userTime)]="shift.controls.from.value"></w-mat-timepicker>
+                  </div>
+                  <div fxFlex.gt-xs="120px">
+                    <w-mat-timepicker color="accent" [placeholder]="'To'" [(userTime)]="shift.controls.to.value"></w-mat-timepicker>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button mat-raised-button color="accent" (click)="onSave()" [disabled]="groupForm.invalid">Save</button>
+
+  </form>
+</div>
