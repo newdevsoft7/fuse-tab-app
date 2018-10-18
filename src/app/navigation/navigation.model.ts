@@ -156,14 +156,14 @@ export const ADMIN_MODEL = [
             }
         ]
     },
-    {
-        'id': 'accounting',
-        'title': 'Accounting',
-        'translate': 'NAV.ADMIN.ACCOUNTING',
-        'type': 'item',
-        'icon': 'attach_money',
-        'tab': TAB.ACCOUNTING_TAB,
-    },
+    // {
+    //     'id': 'accounting',
+    //     'title': 'Accounting',
+    //     'translate': 'NAV.ADMIN.ACCOUNTING',
+    //     'type': 'item',
+    //     'icon': 'attach_money',
+    //     'tab': TAB.ACCOUNTING_TAB,
+    // },
     {
         'id': 'tracking',
         'title': 'Tracking',
