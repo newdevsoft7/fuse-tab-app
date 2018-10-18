@@ -15,7 +15,7 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
   extraUserInfo$;
   extraUserInfo: any[] = [];
   payrollIds: number[];
-  showExpenses = false;
+  showReimbursements = false;
   showLineItems = false;
 
   constructor(
@@ -36,7 +36,7 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
   async export() {
     const payloads: any = {
       payroll_ids: this.payrollIds,
-      show_expenses: this.showExpenses,
+      show_reimbursements: this.showReimbursements,
       show_line_items: this.showLineItems,
     };
     if (this.extraUserInfo.length > 0) {
