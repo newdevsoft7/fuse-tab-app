@@ -242,7 +242,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
 
     private addShowcase(): void {
         const tab = new Tab(
-            'New Showcase',
+            'New Template',
             'showcaseTpl',
             `showcase/presentation/${this.presentationData.presentation.id}/template/new`,
             {

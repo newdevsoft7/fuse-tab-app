@@ -202,7 +202,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
 
     private addShowcase(): void {
         const tab = new Tab(
-            'New Showcase',
+            'New Template',
             'showcaseTpl',
             `showcase/card/${this.cardData.card.id}/template/new`,
             {
