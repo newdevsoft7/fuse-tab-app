@@ -1,91 +1,98 @@
 <div id="staff-shift" class="page-layout simple fullwidth" *ngIf="shift">
 
-    <!-- HEADER -->
-    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-24'" fxLayout="column" fxLayoutAlign="space-between">
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
-            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start">
+  <!-- HEADER -->
+  <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-24'" fxLayout="column" fxLayoutAlign="space-between">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start">
 
-                <!-- DATE, TIME, TIMEZONE -->
-                <div class="info">
-                    <span matTooltip="Date">{{shift.shift_start | date: 'EEEE MMMM d'}}</span>,
-                    <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a' | lowercase}}</span>
-                    &nbsp;-&nbsp;
-                    <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a' | lowercase}}</span>
-                    <span matTooltip="Timezone" class="timezone" *ngIf="timezones">{{timezones[shift.timezone]}}</span>
-                </div>
-                <!-- / DATE, TIME, TIMEZONE -->
-
-                <!-- TITLE -->
-                <div class="info" matTooltip="Shift Title" fxLayoutAlign="start center">
-                    {{shift.title}}
-                </div>
-                <!-- / TITLE -->
-
-                <!-- LOCATION -->
-                <div class="info sub" matTooltip="Location" fxLayoutAlign="start center" *ngIf="shift.location">
-                    <mat-icon class="mr-8">location_city</mat-icon>
-                    {{shift.location}}
-                </div>
-                <!-- / LOCATION -->
-
-                <ng-container *ngIf="!showMoreBtn">
-
-                    <!-- ADDRESS -->
-                    <div class="info sub" matTooltip="Address" fxLayoutAlign="start center" *ngIf="shift.address">
-                        <mat-icon class="mr-8">location_on</mat-icon>
-                        {{shift.address}}
-                    </div>
-                    <!-- / ADDRESS -->
-
-                    <!-- CONTACT -->
-                    <div class="info sub" matTooltip="Contact" fxLayoutAlign="start center" *ngIf="shift.contact">
-                        <mat-icon class="mr-8">contacts</mat-icon>
-                        {{shift.contact}}
-                    </div>
-                    <!-- / CONTACT -->
-
-                    <!-- MANAGERS -->
-                    <div class="info sub" matTooltip="Managers" fxLayoutAlign="start center" *ngIf="managers">
-                        <mat-icon class="mr-8">person</mat-icon>
-                        {{managers}}
-                    </div>
-                    <!-- / MANAGERS -->
-                </ng-container>
-
-            </div>
+        <!-- DATE, TIME, TIMEZONE -->
+        <div class="info">
+          <span matTooltip="Date">{{shift.shift_start | date: 'EEEE MMMM d'}}</span>,
+          <span matTooltip="Start Time">{{shift.shift_start | date: 'h:mm a' | lowercase}}</span>
+          &nbsp;-&nbsp;
+          <span matTooltip="End Time">{{shift.shift_end | date: 'h:mm a' | lowercase}}</span>
+          <span matTooltip="Timezone" class="timezone" *ngIf="timezones">{{timezones[shift.timezone]}}</span>
         </div>
+        <!-- / DATE, TIME, TIMEZONE -->
 
-        <div fxLayout="column" fxLayoutAlign="center center" *ngIf="managers || shift.contact ||shift.address || shift.generic_location || shift.generic_title">
-            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
-            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
+        <!-- TITLE -->
+        <div class="info" matTooltip="Shift Title" fxLayoutAlign="start center">
+          {{shift.title}}
         </div>
+        <!-- / TITLE -->
+
+        <!-- LOCATION -->
+        <div class="info sub" matTooltip="Location" fxLayoutAlign="start center" *ngIf="shift.location">
+          <mat-icon class="mr-8">location_city</mat-icon>
+          {{shift.location}}
+        </div>
+        <!-- / LOCATION -->
+
+        <ng-container *ngIf="!showMoreBtn">
+
+          <!-- ADDRESS -->
+          <div class="info sub" matTooltip="Address" fxLayoutAlign="start center" *ngIf="shift.address">
+            <mat-icon class="mr-8">location_on</mat-icon>
+            {{shift.address}}
+          </div>
+          <!-- / ADDRESS -->
+
+          <!-- CONTACT -->
+          <div class="info sub" matTooltip="Contact" fxLayoutAlign="start center" *ngIf="shift.contact">
+            <mat-icon class="mr-8">contacts</mat-icon>
+            {{shift.contact}}
+          </div>
+          <!-- / CONTACT -->
+
+          <!-- MANAGERS -->
+          <div class="info sub" matTooltip="Managers" fxLayoutAlign="start center" *ngIf="managers">
+            <mat-icon class="mr-8">person</mat-icon>
+            {{managers}}
+          </div>
+          <!-- / MANAGERS -->
+        </ng-container>
+
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="start end">
+        <button mat-icon-button (click)="openChat()" class="btn-chat">
+          <span *ngIf="shift.thread_id && shift.unread_count > 0" class="notification">{{shift.unread_count}}</span>
+          <mat-icon>chat</mat-icon>
+        </button>
+      </div>
     </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
-    <div class="content">
-
-        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
-
-            <mat-tab label="Info">
-                <app-staff-shift-info [shift]="shift" (shiftChanged)="fetch()"></app-staff-shift-info>
-            </mat-tab>
-
-            <mat-tab label="Map" *ngIf="shift.lat && shift.lon">
-                <app-staff-shift-map [shift]="shift" #mapTab></app-staff-shift-map>
-            </mat-tab>
-
-            <mat-tab label="Expenses" *ngIf="shift.show_expenses === 1">
-                <app-staff-shift-expenses [shift]="shift"></app-staff-shift-expenses>
-            </mat-tab>
-
-            <mat-tab label="Reports & Uploads" *ngIf="shift.selected > 0">
-                <app-staff-shift-reports-uploads [shift]="shift"></app-staff-shift-reports-uploads>
-            </mat-tab>
-
-        </mat-tab-group>
-
+    <div fxLayout="column" fxLayoutAlign="center center" *ngIf="managers || shift.contact ||shift.address || shift.generic_location || shift.generic_title">
+      <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
+      <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
     </div>
-    <!-- / CONTENT -->
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)">
+
+      <mat-tab label="Info">
+        <app-staff-shift-info [shift]="shift" (shiftChanged)="fetch()"></app-staff-shift-info>
+      </mat-tab>
+
+      <mat-tab label="Map" *ngIf="shift.lat && shift.lon">
+        <app-staff-shift-map [shift]="shift" #mapTab></app-staff-shift-map>
+      </mat-tab>
+
+      <mat-tab label="Expenses" *ngIf="shift.show_expenses === 1">
+        <app-staff-shift-expenses [shift]="shift"></app-staff-shift-expenses>
+      </mat-tab>
+
+      <mat-tab label="Reports & Uploads" *ngIf="shift.selected > 0">
+        <app-staff-shift-reports-uploads [shift]="shift"></app-staff-shift-reports-uploads>
+      </mat-tab>
+
+    </mat-tab-group>
+
+  </div>
+  <!-- / CONTENT -->
 
 </div>

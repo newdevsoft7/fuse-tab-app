@@ -44,8 +44,8 @@
         <app-shifts-export-as-pdf [data]="data"></app-shifts-export-as-pdf>
     </ng-template>
 
-    <ng-template #usersChatTpl>
-        <app-users-chat></app-users-chat>
+    <ng-template #usersChatTpl let-data="data">
+        <app-users-chat [data]="data"></app-users-chat>
     </ng-template>
 
     <ng-template #adminShiftTpl let-data="data">

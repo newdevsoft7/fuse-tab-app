@@ -1,117 +1,123 @@
 <div id="admin-shift" class="page-layout simple fullwidth" *ngIf="shift">
 
-    <!-- HEADER -->
-    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-12'" fxLayout="column" fxLayoutAlign="space-between">
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
-            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-70-p">
+  <!-- HEADER -->
+  <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-12'" fxLayout="column" fxLayoutAlign="space-between">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center" fxFlex="grow">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="start start" class="w-70-p">
 
-                <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones" [disableTimezone]="settings.shift_timezone_display === '0'"
-                    (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
-                <app-admin-shift-edit-title [shift]="shift" (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
-                <app-admin-shift-edit-location *ngIf="settings.locations_enable === '1' && !isClient" [shift]="shift" (onLocationChanged)="onLocationChanged($event)"></app-admin-shift-edit-location>
-                
-                <ng-container *ngIf="isClient">
-                    <app-admin-shift-edit-address *ngIf="settings.location_address === '1'" [shift]="shift" (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
-                    <app-admin-shift-edit-contact *ngIf="settings.contact_enable === '1'" [shift]="shift" (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
-                    <app-admin-shift-edit-managers [shift]="shift" class="w-100-p" (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
-                </ng-container>
+        <app-admin-shift-edit-period [shift]="shift" [timezones]="timezones" [disableTimezone]="settings.shift_timezone_display === '0'"
+                                     (onPeriodChanged)="onPeriodChanged($event)"></app-admin-shift-edit-period>
+        <app-admin-shift-edit-title [shift]="shift" (onTitleChanged)="onTitleChanged($event)"></app-admin-shift-edit-title>
+        <app-admin-shift-edit-location *ngIf="settings.locations_enable === '1' && !isClient" [shift]="shift" (onLocationChanged)="onLocationChanged($event)"></app-admin-shift-edit-location>
 
-                <ng-container *ngIf="!showMoreBtn && !isClient">
-                    <app-admin-shift-edit-generic-title [shift]="shift" (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
-                    <app-admin-shift-edit-generic-location *ngIf="settings.locations_enable === '1'" [shift]="shift" (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>
-                    <app-admin-shift-edit-address *ngIf="settings.location_address === '1'" [shift]="shift" (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
-                    <app-admin-shift-edit-contact *ngIf="settings.contact_enable === '1'" [shift]="shift" (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
-                    <app-admin-shift-edit-managers [shift]="shift" class="w-100-p" (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
-                </ng-container>
+        <ng-container *ngIf="isClient">
+          <app-admin-shift-edit-address *ngIf="settings.location_address === '1'" [shift]="shift" (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
+          <app-admin-shift-edit-contact *ngIf="settings.contact_enable === '1'" [shift]="shift" (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
+          <app-admin-shift-edit-managers [shift]="shift" class="w-100-p" (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
+        </ng-container>
+
+        <ng-container *ngIf="!showMoreBtn && !isClient">
+          <app-admin-shift-edit-generic-title [shift]="shift" (onGenericTitleChanged)="onGenericTitleChanged($event)"></app-admin-shift-edit-generic-title>
+          <app-admin-shift-edit-generic-location *ngIf="settings.locations_enable === '1'" [shift]="shift" (onGenericLocationChanged)="onGenericLocationChanged($event)"></app-admin-shift-edit-generic-location>
+          <app-admin-shift-edit-address *ngIf="settings.location_address === '1'" [shift]="shift" (onAddressChanged)="onAddressChanged($event)"></app-admin-shift-edit-address>
+          <app-admin-shift-edit-contact *ngIf="settings.contact_enable === '1'" [shift]="shift" (onContactChanged)="onContactChanged($event)"></app-admin-shift-edit-contact>
+          <app-admin-shift-edit-managers [shift]="shift" class="w-100-p" (onManagersChanged)="onManagersChanged($event)"></app-admin-shift-edit-managers>
+        </ng-container>
+      </div>
+
+      <!-- HEADER BUTTONS -->
+      <div fxLayout="column" fxLayoutAlign="start end">
+        <div fxLayout="row" >
+          <button mat-icon-button (click)="openChat()" class="btn-chat">
+            <span *ngIf="shift.thread_id && shift.unread_count > 0" class="notification">{{shift.unread_count}}</span>
+            <mat-icon>chat</mat-icon>
+          </button>
+          <ng-container *ngIf="!isClient">
+            <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
+              <mat-icon *ngIf="shift.locked != 0" matTooltip="Locked">lock_outline</mat-icon>
+              <mat-icon *ngIf="shift.locked == 0" class="black-fg" matTooltip="Unlocked">lock_open</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
+              <mat-icon *ngIf="shift.live == 1" matTooltip="Published">visibility</mat-icon>
+              <mat-icon *ngIf="shift.live != 1" class="black-fg" matTooltip="Unpublished">visibility_off</mat-icon>
+            </button>
+
+            <div>
+              <button mat-icon-button [matMenuTriggerFor]="shiftMenu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #shiftMenu="matMenu">
+                <button mat-menu-item (click)="addRole()">Add Role</button>
+                <button mat-menu-item (click)="invite()">Invite</button>
+                <button mat-menu-item>Chat</button>
+                <button mat-menu-item (click)="openExportCsvDialog()">Export CSV</button>
+                <button mat-menu-item (click)="openOverviewDialog()">Overview</button>
+                <button mat-menu-item (click)="message('selected')">Messaged Selected</button>
+                <button mat-menu-item (click)="message('applicants')">Messaged Applicants</button>
+                <button mat-menu-item (click)="message('invited')">Messaged Invited</button>
+                <button mat-menu-item (click)="deleteShift()">Delete</button>
+              </mat-menu>
             </div>
-
-            <!-- HEADER BUTTONS -->
-            <div fxLayout="column" fxLayoutAlign="start end">
-                <div fxLayout="row" *ngIf="!isClient">
-                    <button mat-icon-button (click)="toggleLock()" [disabled]="shift.editable !== 1">
-                        <mat-icon *ngIf="shift.locked != 0" matTooltip="Locked">lock_outline</mat-icon>
-                        <mat-icon *ngIf="shift.locked == 0" class="black-fg" matTooltip="Unlocked">lock_open</mat-icon>
-                    </button>
-
-                    <button mat-icon-button (click)="toggleLive()" [disabled]="shift.editable !== 1">
-                        <mat-icon *ngIf="shift.live == 1" matTooltip="Published">visibility</mat-icon>
-                        <mat-icon *ngIf="shift.live != 1" class="black-fg" matTooltip="Unpublished">visibility_off</mat-icon>
-                    </button>
-
-                    <div>
-                        <button mat-icon-button [matMenuTriggerFor]="shiftMenu">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-
-                        <mat-menu #shiftMenu="matMenu">
-                            <button mat-menu-item (click)="addRole()">Add Role</button>
-                            <button mat-menu-item (click)="invite()">Invite</button>
-                            <button mat-menu-item>Chat</button>
-                            <button mat-menu-item (click)="openExportCsvDialog()">Export CSV</button>
-                            <button mat-menu-item (click)="openOverviewDialog()">Overview</button>
-                            <button mat-menu-item (click)="message('selected')">Messaged Selected</button>
-                            <button mat-menu-item (click)="message('applicants')">Messaged Applicants</button>
-                            <button mat-menu-item (click)="message('invited')">Messaged Invited</button>
-                            <button mat-menu-item (click)="deleteShift()">Delete</button>
-                        </mat-menu>
-                    </div>
-                </div>
-
-                <div fxLayout="row" fxLayoutAlign="end" fxLayoutWrap>
-                    <button mat-icon-button *ngFor="let flag of shift.flags" (click)="toggleFlag(flag)" [matTooltip]="flag.fname">
-                        <mat-icon [ngStyle]="{'color': flag.set !== 0 ? flag.color : 'white'}">flag</mat-icon>
-                    </button>
-                </div>
-
-                <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column" fxLayoutAlign="start end">
-                    <app-admin-shift-edit-client *ngIf="settings.client_enable === '1' && !isClient" [clients]="clients" [shift]="shift"></app-admin-shift-edit-client>
-
-                    <ng-container *ngIf="settings.tracking_enable === '1'">
-                        <app-edit-tracking *ngFor="let category of shift.tracking_categories" [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>
-                    </ng-container>
-
-                    <app-edit-workareas [data]="shiftData" [shift]="shift" *ngIf="settings.work_areas_enable === '1'"></app-edit-workareas>
-                </div>
-            </div>
-            <!-- / HEADER BUTTONS -->
-
+          </ng-container>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!isClient">
-            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
-            <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
+        <div fxLayout="row" fxLayoutAlign="end" fxLayoutWrap>
+          <button mat-icon-button *ngFor="let flag of shift.flags" (click)="toggleFlag(flag)" [matTooltip]="flag.fname">
+            <mat-icon [ngStyle]="{'color': flag.set !== 0 ? flag.color : 'white'}">flag</mat-icon>
+          </button>
         </div>
-    </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
-    <div class="content">
+        <div class="tracking-workareas" [class.show]="!showMoreBtn" fxLayout="column" fxLayoutAlign="start end">
+          <app-admin-shift-edit-client *ngIf="settings.client_enable === '1' && !isClient" [clients]="clients" [shift]="shift"></app-admin-shift-edit-client>
 
-        <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedTabIndex">
+          <ng-container *ngIf="settings.tracking_enable === '1'">
+            <app-edit-tracking *ngFor="let category of shift.tracking_categories" [data]="shiftData" [category]="category" [shift]="shift"></app-edit-tracking>
+          </ng-container>
 
-            <mat-tab label="Staff">
-                <app-admin-shift-staff [shift]="shift" #staffTab (onAddRole)="addRole()" [currencies]="currencies"></app-admin-shift-staff>
-            </mat-tab>
-
-            <mat-tab label="Bill" *ngIf="shift.bill_info === 1">
-                <app-admin-shift-bill [shift]="shift" [currencies]="currencies"></app-admin-shift-bill>
-            </mat-tab>
-
-            <mat-tab label="Reports & Uploads">
-                <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
-            </mat-tab>
-
-            <mat-tab label="Attachments" *ngIf="!isClient">
-                <app-admin-shift-attachments [shift]="shift"></app-admin-shift-attachments>
-            </mat-tab>
-
-            <mat-tab label="Map" *ngIf="shift.lat || settings.check_in_out_enable === '1'">
-                <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
-            </mat-tab>
-
-        </mat-tab-group>
+          <app-edit-workareas [data]="shiftData" [shift]="shift" *ngIf="settings.work_areas_enable === '1'"></app-edit-workareas>
+        </div>
+      </div>
+      <!-- / HEADER BUTTONS -->
 
     </div>
-    <!-- / CONTENT -->
+
+    <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!isClient">
+      <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="showMoreBtn">More Details</a>
+      <a mat-button href="javascript:void(0)" (click)="toggleMoreBtn()" *ngIf="!showMoreBtn">Less Details</a>
+    </div>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <mat-tab-group dynamicHeight="true" (selectedTabChange)="selectedTabChange($event)" [(selectedIndex)]="selectedTabIndex">
+
+      <mat-tab label="Staff">
+        <app-admin-shift-staff [shift]="shift" #staffTab (onAddRole)="addRole()" [currencies]="currencies"></app-admin-shift-staff>
+      </mat-tab>
+
+      <mat-tab label="Bill" *ngIf="shift.bill_info === 1">
+        <app-admin-shift-bill [shift]="shift" [currencies]="currencies"></app-admin-shift-bill>
+      </mat-tab>
+
+      <mat-tab label="Reports & Uploads">
+        <app-admin-shift-reports-uploads [shift]="shift"></app-admin-shift-reports-uploads>
+      </mat-tab>
+
+      <mat-tab label="Attachments" *ngIf="!isClient">
+        <app-admin-shift-attachments [shift]="shift"></app-admin-shift-attachments>
+      </mat-tab>
+
+      <mat-tab label="Map" *ngIf="shift.lat || settings.check_in_out_enable === '1'">
+        <app-admin-shift-map [shift]="shift" #mapTab></app-admin-shift-map>
+      </mat-tab>
+
+    </mat-tab-group>
+
+  </div>
+  <!-- / CONTENT -->
 
 </div>

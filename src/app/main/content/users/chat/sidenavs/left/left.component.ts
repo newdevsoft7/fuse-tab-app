@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { fuseAnimations } from '../../../../../../core/animations';
+import {FuseChatChatsSidenavComponent} from './chats/chats.component';
 
 @Component({
     selector   : 'fuse-chat-left-sidenav',
@@ -14,10 +15,15 @@ export class FuseChatLeftSidenavComponent
     @Output() fetchChat: EventEmitter<number> = new EventEmitter();
     @Output() searchUsers: EventEmitter<string> = new EventEmitter();
     @Output() addContact: EventEmitter<number> = new EventEmitter();
+    @ViewChild(FuseChatChatsSidenavComponent) chatSideNav: FuseChatChatsSidenavComponent
 
     constructor()
     {
 
+    }
+
+    selectThread(threadId) {
+      this.chatSideNav.onThreadClick({ id: threadId });
     }
 
 }

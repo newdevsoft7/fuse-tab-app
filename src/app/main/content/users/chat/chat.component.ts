@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnDestroy, OnInit, Injector } from '@angular/core';
+import {Component, ViewChild, OnDestroy, OnInit, Injector, Input} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { UsersChatService } from './chat.service';
 import { UserService } from '../user.service';
@@ -15,6 +15,7 @@ import { ActivityManagerService } from '../../../../shared/services/activity-man
 import { TabService } from '../../../tab/tab.service';
 import { FCMService } from '../../../../shared/services/fcm.service';
 import { ToastrService } from 'ngx-toastr';
+import {FuseChatLeftSidenavComponent} from './sidenavs/left/left.component';
 
 @Component({
   selector: 'app-users-chat',
@@ -24,6 +25,9 @@ import { ToastrService } from 'ngx-toastr';
 export class UsersChatComponent implements OnInit, OnDestroy {
 
   @ViewChild(FuseChatViewComponent) chatView: FuseChatViewComponent;
+  @ViewChild(FuseChatLeftSidenavComponent) leftSideNav: FuseChatLeftSidenavComponent;
+  @Input() data;
+
   content: string;
   selectedChat: any;
   selectedThread: any;
@@ -68,6 +72,10 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.alive = true;
+
+    if (this.data && this.data.threadId) {
+      setTimeout(() => this.leftSideNav.selectThread(this.data.threadId));
+    }
 
     if (!this.fcmService.notificationAllowed) {
       setTimeout(() => this.toastr.warning('Notification is not allowed for this domain.'));      

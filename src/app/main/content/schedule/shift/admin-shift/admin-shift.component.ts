@@ -18,291 +18,333 @@ import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
+import {NewMessageDialogComponent} from '../../../users/profile/dialogs/new-message-dialog/new-message-dialog.component';
+import {UsersChatService} from '../../../users/chat/chat.service';
 
 export enum TAB {
-    Staff = 'Staff',
-    Bill = 'Bill',
-    Reports = 'Reports & Uploads',
-    Attachements = 'Attachments',
-    Map = 'Map'
+  Staff = 'Staff',
+  Bill = 'Bill',
+  Reports = 'Reports & Uploads',
+  Attachements = 'Attachments',
+  Map = 'Map'
 }
 
 @Component({
-    selector: 'app-admin-shift',
-    templateUrl: './admin-shift.component.html',
-    styleUrls: ['./admin-shift.component.scss']
+  selector: 'app-admin-shift',
+  templateUrl: './admin-shift.component.html',
+  styleUrls: ['./admin-shift.component.scss']
 })
 export class AdminShiftComponent implements OnInit, OnDestroy {
 
-    @Input() data;
-    @ViewChild('staffTab') staffTab: AdminShiftStaffComponent;
-    @ViewChild('mapTab') mapTab: AdminShiftMapComponent;
+  @Input() data;
+  @ViewChild('staffTab') staffTab: AdminShiftStaffComponent;
+  @ViewChild('mapTab') mapTab: AdminShiftMapComponent;
 
-    showMoreBtn = true;
+  showMoreBtn = true;
 
-    usersToInviteSubscription: Subscription;
-    usersToSelectSubscription: Subscription;
-    selectedTabIndex: number = 0; // Set staff tab as initial tab
+  usersToInviteSubscription: Subscription;
+  usersToSelectSubscription: Subscription;
+  selectedTabIndex: number = 0; // Set staff tab as initial tab
 
-    shiftData: any = {}; // For edit tracking & work areas
-    currencies: any[] = [];
+  shiftData: any = {}; // For edit tracking & work areas
+  currencies: any[] = [];
 
-    get id() {
-        return this.data.id;
-    }
+  get id() {
+    return this.data.id;
+  }
 
-    get url() {
-        return this.data.url;
-    }
+  get url() {
+    return this.data.url;
+  }
 
-    currentUser: any;
-    shift: any;
-    timezones = [];
-    notes; // For Shift notes tab
-    settings: any = {};
-    clients: any[] = [];
+  currentUser: any;
+  shift: any;
+  timezones = [];
+  notes; // For Shift notes tab
+  settings: any = {};
+  clients: any[] = [];
 
-    constructor(
-        private tokenStorage: TokenStorage,
-        private toastr: ToastrService,
-        private userService: UserService,
-        private scheduleService: ScheduleService,
-        private tabService: TabService,
-        private actionService: ActionService,
-        private scMessageService: SCMessageService,
-        private dialog: MatDialog
-    ) {
-        // Invite Users to Role
-        this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
-            ({ shiftId, userIds, filters, role, inviteAll }) => {
-                if (this.shift.id === shiftId) {
-                    this.selectedTabIndex = 0; // Set staff tab active
-                        this.staffTab.inviteStaffs({ userIds, filters, role, inviteAll });
-                }
-            });
-        // add Users to Role
-        this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
-            ({ shiftId, userIds, role }) => {
-                if (this.shift.id === shiftId) {
-                    this.selectedTabIndex = 0; // Set staff tab active
-                        this.staffTab.selectStaffs({ userIds, role });
-                }
-            });
-    }
-
-    ngOnInit() {
-        this.currentUser = this.tokenStorage.getUser();
-        this.settings = this.tokenStorage.getSettings();
-        this.fetch();
-
-        this.scheduleService.getTimezones()
-            .subscribe(res => {
-                Object.keys(res).forEach(key => {
-                    this.timezones.push({ value: key, label: res[key] });
-                });
-            });
-
-        this.userService.getCurrencies().then(currencies => this.currencies = currencies);
-
-        
-        if (!this.isClient) {
-            // Get Clients
-            this.scheduleService.getClients('').subscribe(res => {
-                this.clients = res;
-            });
-
-            // Get Tracking Categories & Options
-            this.scheduleService.getShiftsData().subscribe(res => {
-                this.shiftData = res;
-            });
-
+  constructor(
+    private tokenStorage: TokenStorage,
+    private toastr: ToastrService,
+    private userService: UserService,
+    private scheduleService: ScheduleService,
+    private tabService: TabService,
+    private actionService: ActionService,
+    private scMessageService: SCMessageService,
+    private chatService: UsersChatService,
+    private dialog: MatDialog
+  ) {
+    // Invite Users to Role
+    this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
+      ({ shiftId, userIds, filters, role, inviteAll }) => {
+        if (this.shift.id === shiftId) {
+          this.selectedTabIndex = 0; // Set staff tab active
+          this.staffTab.inviteStaffs({ userIds, filters, role, inviteAll });
         }
-        
-
-    }
-
-    ngOnDestroy() {
-        this.usersToInviteSubscription.unsubscribe();
-        this.usersToSelectSubscription.unsubscribe();
-    }
-
-    deleteShift() {
-        const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
-            disableClose: false
-        });
-        dialogRef.componentInstance.confirmMessage = 'Are you sure?';
-        dialogRef.afterClosed().subscribe(async(result) => {
-            if (result) {
-                try {
-                    //this.toastr.success(res.message);
-                    this.tabService.closeTab(this.url);
-                } catch (e) {
-                    this.scMessageService.error(e);
-                }
-            }
-        });
-    }
-
-    invite() {
-        const roles = this.shift.shift_roles.map(v => {
-            return {
-                id: v.id,
-                name: v.rname
-            };
-        });
-        if (roles.length === 0) {
-            this.toastr.error('There are no roles in the shift. Please add a role first.');
-            return;
+      });
+    // add Users to Role
+    this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
+      ({ shiftId, userIds, role }) => {
+        if (this.shift.id === shiftId) {
+          this.selectedTabIndex = 0; // Set staff tab active
+          this.staffTab.selectStaffs({ userIds, role });
         }
-        const data = {
-            roles,
-            shiftId: this.id,
-            invite: true,
-            tab: `admin/shift/${this.shift.id}`,
-            filters: [],
-            title: this.shift.title
-        };
+      });
+  }
 
-        this.tabService.closeTab('users');
-        const tab = new Tab('Users', 'usersTpl', 'users', data);
+  ngOnInit() {
+    this.currentUser = this.tokenStorage.getUser();
+    this.settings = this.tokenStorage.getSettings();
+    this.fetch();
 
-        this.tabService.openTab(tab);
-    }
-
-    toggleMoreBtn() {
-        this.showMoreBtn = !this.showMoreBtn;
-    }
-
-    selectedTabChange(event: MatTabChangeEvent) {
-        switch (event.tab.textLabel) {
-            case TAB.Map:
-                this.mapTab.refreshMap();
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    toggleFlag(flag) {
-        const value = flag.set === 1 ? 0 : 1;
-        this.scheduleService.setShiftFlag(this.shift.id, flag.id, value)
-            .subscribe(() => {
-                    flag.set = value;
-                });
-    }
-
-    toggleLive() {
-        const live = this.shift.live === 1 ? 0 : 1;
-        this.scheduleService.publishShift(this.shift.id, live)
-            .subscribe(() => {
-                    this.shift.live = live;
-                });
-    }
-
-    toggleLock() {
-        const lock = this.shift.locked === 1 ? 0 : 1;
-        this.scheduleService.lockShift(this.shift.id, lock)
-            .subscribe(() => {
-                    this.shift.locked = lock;
-                });
-    }
-
-    onAddressChanged(address) {
-        this.shift.address = address;
-    }
-
-    onContactChanged(contact) {
-        this.shift.contact = contact;
-    }
-
-    onGenericLocationChanged(genericLocation) {
-        this.shift.generic_location = genericLocation;
-    }
-
-    onGenericTitleChanged(genericTitle) {
-        this.shift.generic_title = genericTitle;
-    }
-
-    onLocationChanged(location: any) {
-        if (location) {
-            this.shift.location_id = location.id;
-            this.shift.location = location.lname;
-        } else {
-            this.shift.location_id = null;
-            this.shift.location = null;
-        }
-    }
-
-    onTitleChanged(title) {
-        this.shift.title = title;
-    }
-
-    onPeriodChanged({ start, end, timezone }) {
-        this.shift.shift_start = start;
-        this.shift.shift_end = end;
-        this.shift.timezone = timezone;
-    }
-
-    onManagersChanged(managers: any[]) {
-        this.shift.managers = managers;
-    }
-
-    addRole() {
-        const url = `shift/${this.shift.id}/role-edit`;
-        const shift = this.shift;
-        const tab = new Tab(
-            `Add Role (1 shift)`,
-            'shiftRoleEditTpl',
-            url,
-            { shift, url });
-        this.tabService.closeTab(url);
-        this.tabService.openTab(tab);
-    }
-
-    message(type) {
-        const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
-            disableClose: false,
-            panelClass: 'admin-shift-email-dialog',
-            data: {
-                shiftIds: [this.shift.id],
-                type
-            }
+    this.scheduleService.getTimezones()
+      .subscribe(res => {
+        Object.keys(res).forEach(key => {
+          this.timezones.push({ value: key, label: res[key] });
         });
-        dialogRef.afterClosed().subscribe(() => { });
+      });
+
+    this.userService.getCurrencies().then(currencies => this.currencies = currencies);
+
+
+    if (!this.isClient) {
+      // Get Clients
+      this.scheduleService.getClients('').subscribe(res => {
+        this.clients = res;
+      });
+
+      // Get Tracking Categories & Options
+      this.scheduleService.getShiftsData().subscribe(res => {
+        this.shiftData = res;
+      });
+
     }
 
-    get isClient() {
-        return this.currentUser.lvl === 'client';
-    }
 
-    private async fetch() {
+  }
+
+  ngOnDestroy() {
+    this.usersToInviteSubscription.unsubscribe();
+    this.usersToSelectSubscription.unsubscribe();
+  }
+
+  deleteShift() {
+    const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = 'Are you sure?';
+    dialogRef.afterClosed().subscribe(async(result) => {
+      if (result) {
         try {
-            this.shift = await this.scheduleService.getShift(this.id);
-            this.notes = _.clone(this.shift.notes);
+          //this.toastr.success(res.message);
+          this.tabService.closeTab(this.url);
         } catch (e) {
-            this.toastr.error(e.message || 'Something is wrong while fetching events.');
+          this.scMessageService.error(e);
         }
-    }
+      }
+    });
+  }
 
-    openExportCsvDialog() {
-        const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
-            panelClass: 'admin-shift-exports-as-excel-dialog',
-            disableClose: false,
-            data: { shiftIds: [this.shift.id] }
+  invite() {
+    const roles = this.shift.shift_roles.map(v => {
+      return {
+        id: v.id,
+        name: v.rname
+      };
+    });
+    if (roles.length === 0) {
+      this.toastr.error('There are no roles in the shift. Please add a role first.');
+      return;
+    }
+    const data = {
+      roles,
+      shiftId: this.id,
+      invite: true,
+      tab: `admin/shift/${this.shift.id}`,
+      filters: [],
+      title: this.shift.title
+    };
+
+    this.tabService.closeTab('users');
+    const tab = new Tab('Users', 'usersTpl', 'users', data);
+
+    this.tabService.openTab(tab);
+  }
+
+  toggleMoreBtn() {
+    this.showMoreBtn = !this.showMoreBtn;
+  }
+
+  selectedTabChange(event: MatTabChangeEvent) {
+    switch (event.tab.textLabel) {
+      case TAB.Map:
+        this.mapTab.refreshMap();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  toggleFlag(flag) {
+    const value = flag.set === 1 ? 0 : 1;
+    this.scheduleService.setShiftFlag(this.shift.id, flag.id, value)
+      .subscribe(() => {
+        flag.set = value;
+      });
+  }
+
+  toggleLive() {
+    const live = this.shift.live === 1 ? 0 : 1;
+    this.scheduleService.publishShift(this.shift.id, live)
+      .subscribe(() => {
+        this.shift.live = live;
+      });
+  }
+
+  toggleLock() {
+    const lock = this.shift.locked === 1 ? 0 : 1;
+    this.scheduleService.lockShift(this.shift.id, lock)
+      .subscribe(() => {
+        this.shift.locked = lock;
+      });
+  }
+
+  onAddressChanged(address) {
+    this.shift.address = address;
+  }
+
+  onContactChanged(contact) {
+    this.shift.contact = contact;
+  }
+
+  onGenericLocationChanged(genericLocation) {
+    this.shift.generic_location = genericLocation;
+  }
+
+  onGenericTitleChanged(genericTitle) {
+    this.shift.generic_title = genericTitle;
+  }
+
+  onLocationChanged(location: any) {
+    if (location) {
+      this.shift.location_id = location.id;
+      this.shift.location = location.lname;
+    } else {
+      this.shift.location_id = null;
+      this.shift.location = null;
+    }
+  }
+
+  onTitleChanged(title) {
+    this.shift.title = title;
+  }
+
+  onPeriodChanged({ start, end, timezone }) {
+    this.shift.shift_start = start;
+    this.shift.shift_end = end;
+    this.shift.timezone = timezone;
+  }
+
+  onManagersChanged(managers: any[]) {
+    this.shift.managers = managers;
+  }
+
+  addRole() {
+    const url = `shift/${this.shift.id}/role-edit`;
+    const shift = this.shift;
+    const tab = new Tab(
+      `Add Role (1 shift)`,
+      'shiftRoleEditTpl',
+      url,
+      { shift, url });
+    this.tabService.closeTab(url);
+    this.tabService.openTab(tab);
+  }
+
+  message(type) {
+    const dialogRef = this.dialog.open(ShiftListEmailDialogComponent, {
+      disableClose: false,
+      panelClass: 'admin-shift-email-dialog',
+      data: {
+        shiftIds: [this.shift.id],
+        type
+      }
+    });
+    dialogRef.afterClosed().subscribe(() => { });
+  }
+
+  get isClient() {
+    return this.currentUser.lvl === 'client';
+  }
+
+  private async fetch() {
+    try {
+      this.shift = await this.scheduleService.getShift(this.id);
+      this.notes = _.clone(this.shift.notes);
+    } catch (e) {
+      this.toastr.error(e.message || 'Something is wrong while fetching events.');
+    }
+  }
+
+  openExportCsvDialog() {
+    const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
+      panelClass: 'admin-shift-exports-as-excel-dialog',
+      disableClose: false,
+      data: { shiftIds: [this.shift.id] }
+    });
+
+    dialogRef.afterClosed().subscribe(() => { });
+  }
+
+  openOverviewDialog() {
+    const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
+      panelClass: 'admin-shift-exports-as-pdf-dialog',
+      disableClose: false,
+      data: { shiftIds: [this.shift.id] }
+    });
+
+    dialogRef.afterClosed().subscribe(() => { });
+  }
+
+  openChat() {
+    let dialogRef: any;
+
+    switch (true) {
+      case this.shift.thread_id == null:
+        this.toastr.error('Chat is not available for this shift.');
+        break;
+      case this.shift.thread_id == 0:
+        dialogRef = this.dialog.open(NewMessageDialogComponent, {
+          panelClass: 'new-message-dialog'
         });
-
-        dialogRef.afterClosed().subscribe(() => { });
-    }
-
-    openOverviewDialog() {
-        const dialogRef = this.dialog.open(AdminExportAsPdfDialogComponent, {
-            panelClass: 'admin-shift-exports-as-pdf-dialog',
-            disableClose: false,
-            data: { shiftIds: [this.shift.id] }
+        dialogRef.afterClosed().subscribe(async message => {
+          if (!message) {
+            return;
+          }
+          try {
+            const { thread_id } = await this.chatService.sendMessage({
+              shift_id: this.shift.id,
+              content: message
+            });
+            this.openChatTab(thread_id);
+          } catch (e) {
+            this.scMessageService.error(e);
+          }
         });
-
-        dialogRef.afterClosed().subscribe(() => { });
+        break;
+      case this.shift.thread_id > 0:
+        this.openChatTab(this.shift.thread_id);
+        break;
+      default:
+        break;
     }
+  }
+
+  openChatTab(threadId) {
+    const tab = new Tab('Chat', 'usersChatTpl', 'users/chat', { threadId });
+    this.tabService.openTab(tab);
+  }
 
 }

@@ -45,7 +45,7 @@ export class FuseChatChatsSidenavComponent
 
     toggleSideNav() {
         if (!this.observableMedia.isActive('gt-md')) {
-            this.fuseMatSidenavHelperService.getSidenav('chat-left-sidenav').toggle();
+            this.fuseMatSidenavHelperService.getSidenav('chat-left-sidenav').close();
         }
     }
 }
