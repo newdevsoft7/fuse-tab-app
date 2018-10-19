@@ -58,14 +58,32 @@
       <!-- TABLE -->
       <div *ngIf="columns" class="shifts-table" #tableWrapper>
         <div fxLayout="row" fxLayoutAlign="space-between center" class="text-bold mb-16">
-          <span>{{summaryData.total_selected}} staffs</span>
-          <span>{{summaryData.total_hours | number: '1.2-2'}} hours</span>
-          <span>Bill $ {{summaryData.total_bill | number: '1.2-2'}}</span>
-          <span>Pay $ {{summaryData.total_pay | number: '1.2-2'}}</span>
-          <span>Expenses $ {{summaryData.total_expenses | number: '1.2-2'}}</span>
-          <span>Payable $ {{summaryData.total_payable | number: '1.2-2'}}</span>
-          <span class="text-red">$ {{summaryData.profit | number: '1.2-2'}}</span>
-          <span class="text-red">{{summaryData.percent | number: '1.1-1'}}%</span>
+          <span [matTooltip]="summaryData.total_required + ' required'">Staff {{summaryData.total_selected}}</span>
+          <span>Hours {{summaryData.total_hours | number: '1.2-2'}}</span>
+          <div *ngIf="showBillData" fxLayout="row" fxLayoutAlign="start center">
+            Bill
+            <div fxLayout="column" class="ml-8">
+              <span [matTooltip]="item.currency" *ngFor="let item of summaryData.total_bill">
+                {{item.value | number: '1.2-2'}}
+              </span>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="center center">
+            Pay
+            <div fxLayout="column" class="ml-8">
+              <span *ngFor="let item of summaryData.total_pay" [matTooltip]="item.currency">
+                {{item.value | number: '1.2-2'}}
+              </span>
+            </div>
+          </div>
+          <div *ngIf="showBillData" class="text-red" fxLayout="row" fxLayoutAlign="center center">
+            Profit
+            <div fxLayout="column" class="ml-8">
+              <span *ngFor="let item of summaryData.profit" [matTooltip]="item.currency">
+                {{item.value | number: '1.2-2'}}
+              </span>
+            </div>
+          </div>
         </div>
         <ngx-datatable #table class="material striped" [rows]="data" [columnMode]="'flex'" [headerHeight]="48" [footerHeight]="56"
             [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true"
@@ -93,27 +111,27 @@
                           </ng-template>
                         </ngx-datatable-column>
             
-                        <ngx-datatable-column name="Bill" prop="bill" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
-                          <ng-template ngx-datatable-cell-template let-value="value">
-                            {{value | number: '1.2-2'}}
+                        <ngx-datatable-column *ngIf="showBillData" name="Bill" prop="bill" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+                          <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                            <span [matTooltip]="row.bill_currency">{{value | number: '1.2-2'}}</span>
                           </ng-template>
                         </ngx-datatable-column>
             
                         <ngx-datatable-column name="Pay" prop="pay" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
-                          <ng-template ngx-datatable-cell-template let-value="value">
-                            $ {{value | number: '1.2-2'}}
+                          <ng-template ngx-datatable-cell-template let-value="value" let-row="row">
+                            <span [matTooltip]="row.pay_currency">{{value | number: '1.2-2'}}</span>
                           </ng-template>
                         </ngx-datatable-column>
             
-                        <ngx-datatable-column name="Expenses" prop="expenses" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+                        <ngx-datatable-column name="Reimbursements" prop="pay_items" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
                           <ng-template ngx-datatable-cell-template let-value="value">
-                            $ {{value | number: '1.2-2'}}
+                            TBD
                           </ng-template>
                         </ngx-datatable-column>
             
-                        <ngx-datatable-column name="Profit" prop="profit" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+                        <ngx-datatable-column *ngIf="showBillData" name="Profit" prop="profit" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
                           <ng-template ngx-datatable-cell-template let-value="value">
-                            <span class="text-red">$ {{value | number: '1.2-2'}}</span>
+                            <span class="text-red">{{value | number: '1.2-2'}}</span>
                           </ng-template>
                         </ngx-datatable-column>
       
@@ -147,27 +165,43 @@
                     </ng-template>
                   </ngx-datatable-column>
       
-                  <ngx-datatable-column name="Bill" prop="bill" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+                  <ngx-datatable-column *ngIf="showBillData" name="Bill" prop="bill" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
                     <ng-template ngx-datatable-cell-template let-value="value">
-                      {{value | number: '1.2-2'}}
+                      <div fxLayout="column">
+                        <span [matTooltip]="item.currency" *ngFor="let item of value">
+                          {{item.value | number: '1.2-2'}}
+                        </span>
+                      </div>
                     </ng-template>
                   </ngx-datatable-column>
       
                   <ngx-datatable-column name="Pay" prop="pay" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
                     <ng-template ngx-datatable-cell-template let-value="value">
-                      $ {{value | number: '1.2-2'}}
+                      <div fxLayout="column">
+                        <span [matTooltip]="item.currency" *ngFor="let item of value">
+                          {{item.value | number: '1.2-2'}}
+                        </span>
+                      </div>
                     </ng-template>
                   </ngx-datatable-column>
       
-                  <ngx-datatable-column name="Expenses" prop="expenses" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+                  <ngx-datatable-column name="Reimbursements" prop="pay_items" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
                     <ng-template ngx-datatable-cell-template let-value="value">
-                      $ {{value | number: '1.2-2'}}
+                      <div fxLayout="column">
+                        <span [matTooltip]="item.currency" *ngFor="let item of value">
+                          {{item.value | number: '1.2-2'}}
+                        </span>
+                      </div>
                     </ng-template>
                   </ngx-datatable-column>
       
-                  <ngx-datatable-column name="Profit" prop="profit" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+                  <ngx-datatable-column *ngIf="showBillData" name="Profit" prop="profit" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
                     <ng-template ngx-datatable-cell-template let-value="value">
-                      <span class="text-red">$ {{value | number: '1.2-2'}}</span>
+                      <div fxLayout="column">
+                        <span class="text-red" [matTooltip]="item.currency" *ngFor="let item of value">
+                          {{item.value | number: '1.2-2'}}
+                        </span>
+                      </div>
                     </ng-template>
                   </ngx-datatable-column>
 
@@ -227,27 +261,43 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Bill" prop="bill" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+            <ngx-datatable-column *ngIf="showBillData" name="Bill" prop="bill" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
               <ng-template ngx-datatable-cell-template let-value="value">
-                $ {{value | number: '1.2-2'}}
+                <div fxLayout="column">
+                  <span [matTooltip]="item.currency" *ngFor="let item of value">
+                    {{item.value | number: '1.2-2'}}
+                  </span>
+                </div>
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Pay" prop="pay" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
               <ng-template ngx-datatable-cell-template let-value="value">
-                $ {{value | number: '1.2-2'}}
+                <div fxLayout="column">
+                  <span [matTooltip]="item.currency" *ngFor="let item of value">
+                    {{item.value | number: '1.2-2'}}
+                  </span>
+                </div>
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Expenses" prop="expenses" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+            <ngx-datatable-column name="Reimbursements" prop="pay_items" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
               <ng-template ngx-datatable-cell-template let-value="value">
-                $ {{value | number: '1.2-2'}}
+                <div fxLayout="column">
+                  <span [matTooltip]="item.currency" *ngFor="let item of value">
+                    {{item.value | number: '1.2-2'}}
+                  </span>
+                </div>
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Profit" prop="profit" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
+            <ngx-datatable-column *ngIf="showBillData" name="Profit" prop="profit" headerClass="cell-center" cellClass="cell-right" [flexGrow]="2" [minWidth]="150">
               <ng-template ngx-datatable-cell-template let-value="value">
-                <span class="text-red">$ {{value | number: '1.2-2'}}</span>
+                <div fxLayout="column">
+                  <span class="text-red" [matTooltip]="item.currency" *ngFor="let item of value">
+                    {{item.value | number: '1.2-2'}}
+                  </span>
+                </div>
               </ng-template>
             </ngx-datatable-column>
 

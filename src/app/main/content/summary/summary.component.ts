@@ -35,6 +35,8 @@ export class SummaryComponent implements OnInit {
   isSingle: boolean = false;
   selectedFlags: any;
 
+  showBillData: boolean = true;
+
   @ViewChild('table') table: any;
 
   constructor(
@@ -52,6 +54,10 @@ export class SummaryComponent implements OnInit {
 
     this.currentUserFlags = this.tokenStorage.getSettings();
     this.currentUserFlags.flags.map(flag => flag.set = 2);
+
+    if (this.tokenStorage.getUser().lvl === 'admin' && !this.tokenStorage.getPermissions().admin_bill) {
+      this.showBillData = false;
+    }
 
     this.getSummary();
   }
@@ -77,19 +83,35 @@ export class SummaryComponent implements OnInit {
 
     try {
       const res = await this.scheduleService.getShifts(mergedParams).toPromise();
-      this.data = res.data;
+      this.data = res.data.map(shift => {
+        for (const key in shift) {
+          if (key !== 'shift_roles' && typeof shift[key] === 'object') {
+            shift[key] = this.getPriceList(shift[key]);
+          }
+        }
+        shift.shift_roles = shift.shift_roles.map(role => {
+          for (const key in role) {
+            if (key !== 'role_staff' && typeof role[key] === 'object') {
+              role[key] = this.getPriceList(role[key]);
+            }
+          }
+          return role;
+        });
+        return shift;
+      });
       this.columns = res.columns;
       this.pageSize = res.page_size;
       this.pageNumber = res.page_number;
       this.total = res.total_counts;
       this.summaryData.total_selected = res.total_selected;
+      this.summaryData.total_required = res.total_required;
       this.summaryData.total_payable = res.total_payable;
-      this.summaryData.total_pay = res.total_pay;
+      this.summaryData.total_pay = this.getPriceList(res.total_pay);
       this.summaryData.total_hours = res.total_hours;
-      this.summaryData.total_expenses = res.total_expenses;
-      this.summaryData.total_bill = res.total_bill;
-      this.summaryData.profit = res.profit;
-      this.summaryData.percent = res.percent;
+      this.summaryData.total_pay_items = this.getPriceList(res.total_pay_items);
+      this.summaryData.total_bill = this.getPriceList(res.total_bill);
+      this.summaryData.total_bill_items = this.getPriceList(res.total_bill_items);
+      this.summaryData.profit = this.getPriceList(res.profit);
     } catch (err) {
       if (err.status && err.status === 403) {
         this.toastr.error('You have no permission!');
@@ -189,5 +211,16 @@ export class SummaryComponent implements OnInit {
 
   getChildrenTableRowClass(row): string {
     return 'mat-grey-100-bg';
+  }
+  
+  getPriceList(prices: any): {currency: string, value: number}[] {
+    const res = [];
+    for (const currency in prices) {
+      res.push({
+        currency,
+        value: prices[currency]
+      });
+    }
+    return res;
   }
 }
