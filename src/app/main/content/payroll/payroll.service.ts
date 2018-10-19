@@ -98,16 +98,17 @@ export class PayrollService {
         return this.http.get(url.replace(/\/+$/, '')).toPromise(); 
     }
 
-    downloadPayrollsAsCSV(payloads: {
+    downloadPayrollsAsXlsx(payloads: {
       payroll_ids: number[],
       filter?: any[],
       extra_info?: any[],
-      show_expenses: boolean,
+      show_reimbursements: boolean,
       show_line_items: boolean
     }) {
-      const url = `${BASE_URL}/payrolls/csv`;
+      const filename = 'invoice ' + payloads.payroll_ids.join('-') + '.xlsx';
+      const url = `${BASE_URL}/payrolls/export`;
       return this.http.post(url, payloads, { observe: 'response', responseType: 'blob'}).toPromise()
-        .then(res => this.downloadFile(res['body']))
+        .then(res => this.downloadFile(res['body'], filename))
         .catch(e => this.scMessageService.error(e));
     }
 

@@ -25,6 +25,19 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
     private scheduleService: ScheduleService
   ) {
     this.payrollIds = data.payrollIds;
+    this.getOptionsFromLocalStorage();
+  }
+
+  getOptionsFromLocalStorage() {
+    this.showReimbursements = JSON.parse(localStorage.getItem('showReimbursements')) || false;
+    this.showLineItems = JSON.parse(localStorage.getItem('showLineItems')) || false;
+    this.extraUserInfo = JSON.parse(localStorage.getItem('extraUserInfo')) || [];
+  }
+
+  setOptionsToLocalStorage() {
+    localStorage.setItem('showReimbursements', JSON.stringify(this.showReimbursements));
+    localStorage.setItem('showLineItems', JSON.stringify(this.showLineItems));
+    localStorage.setItem('extraUserInfo', JSON.stringify(this.extraUserInfo));
   }
 
   ngOnInit() {
@@ -34,6 +47,7 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
   }
 
   async export() {
+    this.setOptionsToLocalStorage();
     const payloads: any = {
       payroll_ids: this.payrollIds,
       show_reimbursements: this.showReimbursements,
@@ -42,7 +56,7 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
     if (this.extraUserInfo.length > 0) {
       payloads.extra_info = this.extraUserInfo.map(v => v.id);
     }
-    this.payrollService.downloadPayrollsAsCSV(payloads);
+    this.payrollService.downloadPayrollsAsXlsx(payloads);
     this.dialogRef.close();
   }
 
