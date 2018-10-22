@@ -139,7 +139,7 @@ export class NewShiftComponent implements OnInit {
                 if (res.date) {
                     const start = convertShiftTime(res.start);
                     const end = convertShiftTime(res.end);
-                    const date = moment(res.date, 'DD/MM/YYYY').toISOString();
+                    const date = moment(res.shift_start, 'YYYY-MM-DD').toISOString();
                     this.dates.push(new ShiftDate(date, start, end));
                 }
             } else {
