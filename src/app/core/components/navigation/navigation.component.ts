@@ -9,95 +9,113 @@ import { TokenStorage } from '../../../shared/services/token-storage.service';
 import * as _ from 'lodash';
 
 @Component({
-    selector     : 'fuse-navigation',
-    templateUrl  : './navigation.component.html',
-    styleUrls    : ['./navigation.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector     : 'fuse-navigation',
+  templateUrl  : './navigation.component.html',
+  styleUrls    : ['./navigation.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class FuseNavigationComponent implements OnDestroy
 {
-    navigationModel: any[];
-    private navigationModelChangeSubscription: Subscription;
-    private tabSubscription: Subscription;
-    private onSelectedCategoryChanged: Subscription;
-    private onCategoriesChanged: Subscription;
+  navigationModel: any[];
+  private navigationModelChangeSubscription: Subscription;
+  private tabSubscription: Subscription;
+  private onSelectedCategoryChanged: Subscription;
+  private onCategoriesChanged: Subscription;
 
-    trackingCategories: TrackingCategory[];
+  trackingCategories: TrackingCategory[];
 
-    @Input('layout') layout = 'vertical';
+  @Input('layout') layout = 'vertical';
 
-    constructor(
-        private fuseNavigationService: FuseNavigationService,
-        private tabService: TabService,
-        private trackingService: TrackingService,
-        private tokenStorage: TokenStorage
-    )
-    {
-        this.navigationModelChangeSubscription =
-            this.fuseNavigationService.onNavigationModelChange
-                .subscribe((navigationModel) => {
-                    if (navigationModel) {
-                        this.navigationModel = navigationModel.filter(f => _.isUndefined(f.visible) || f.visible);
-                        this.getTrackingCategories();
-                    }
-                });
-
-        this.tabSubscription = 
-            this.tabService.tab$.subscribe(tab => {
-                this.updateNavItemActive(this.navigationModel, tab);
-            });
-
-        this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
-            categeories => {
-                this.addTrackingCategoriesToMenu(categeories);
-            });
-
-        this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
-            category => {
-                let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
-                let tab = trackingNav.children.find ( t => t.id == category.id );
-                if (tab) this.updateNavItemActive(trackingNav.children, tab.tab);
-            });
-    }
-
-    updateNavItemActive(items, tab) {
-        const _that = this;
-        items.forEach(item => {
-            item.active = item.tab == tab ? true : false;
-            if (item.children) {
-                _that.updateNavItemActive(item.children, tab);
-            }
+  constructor(
+    private fuseNavigationService: FuseNavigationService,
+    private tabService: TabService,
+    private trackingService: TrackingService,
+    private tokenStorage: TokenStorage
+  )
+  {
+    this.navigationModelChangeSubscription =
+      this.fuseNavigationService.onNavigationModelChange
+        .subscribe((navigationModel) => {
+          if (navigationModel) {
+            this.navigationModel = navigationModel.filter(f => _.isUndefined(f.visible) || f.visible);
+            this.getTrackingCategories();
+          }
         });
-    }
 
-    ngOnDestroy()
-    {
-        this.navigationModelChangeSubscription.unsubscribe();
-        this.tabSubscription.unsubscribe();
-        this.onSelectedCategoryChanged.unsubscribe();
-        this.onCategoriesChanged.unsubscribe();
-    }
+    this.tabSubscription =
+      this.tabService.tab$.subscribe(tab => {
+        this.updateNavItemActive(this.navigationModel, tab);
+      });
 
-    getTrackingCategories() {
-        const categories = this.tokenStorage.getSettings().tracking;
-        this.trackingService.toggleCategories(categories);
-    }
+    this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
+      categeories => {
+        this.addTrackingCategoriesToMenu(categeories);
+      });
 
-    addTrackingCategoriesToMenu(trackingCategories: TrackingCategory[]) {
+    this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
+      category => {
         let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
-        if (trackingNav) {
-            trackingNav.children = [];
-            trackingCategories.forEach( category => {
-                let navigation:any = {};
-                navigation.id = category.id;
-                navigation.title = category.cname;
-                navigation.type = 'item';
-                const tab = new Tab(`Tracking`, 'trackingTpl', `tracking`, { ...category });
-                navigation.tab = tab;
-    
-                trackingNav.children.push(navigation);
-            });
+        let tab = trackingNav.children.find ( t => t.id == category.id );
+        if (tab) this.updateNavItemActive(trackingNav.children, tab.tab);
+      });
+  }
+
+  updateNavItemActive(items, tab) {
+    const _that = this;
+    items.forEach(item => {
+      item.active = item.tab == tab ? true : false;
+      if (item.children) {
+        _that.updateNavItemActive(item.children, tab);
+      }
+    });
+  }
+
+  ngOnDestroy()
+  {
+    this.navigationModelChangeSubscription.unsubscribe();
+    this.tabSubscription.unsubscribe();
+    this.onSelectedCategoryChanged.unsubscribe();
+    this.onCategoriesChanged.unsubscribe();
+  }
+
+  getTrackingCategories() {
+    const categories = this.tokenStorage.getSettings().tracking;
+    this.trackingService.toggleCategories(categories);
+  }
+
+  addTrackingCategoriesToMenu(trackingCategories: TrackingCategory[]) {
+    if (!trackingCategories || trackingCategories.length ===  0) {
+      const idx = this.navigationModel.findIndex(m => m.id === 'tracking');
+      if (idx > -1) {
+        this.navigationModel.splice(idx, 1);
+      }
+    } else {
+      let trackingNav = this.navigationModel.find(n => n.id === 'tracking');
+      if (!trackingNav) {
+        trackingNav = {
+          'id': 'tracking',
+          'title': 'Tracking',
+          'translate': 'NAV.ADMIN.TRACKING',
+          'type': 'collapse',
+          'icon': 'dashboard'
+        };
+        const reportsIndex = this.navigationModel.findIndex(n => n.id === 'reports_and_uploads');
+        if (reportsIndex > -1) {
+          this.navigationModel.splice(reportsIndex + 1, 0, trackingNav);
         }
+      }
+      trackingNav.children = [];
+      trackingCategories.forEach( category => {
+        const navigation: any = {};
+        navigation.id = category.id;
+        navigation.title = category.cname;
+        navigation.type = 'item';
+        const tab = new Tab(`Tracking`, 'trackingTpl', `tracking`, { ...category });
+        navigation.tab = tab;
+        trackingNav.children.push(navigation);
+      });
     }
+
+  }
 
 }
