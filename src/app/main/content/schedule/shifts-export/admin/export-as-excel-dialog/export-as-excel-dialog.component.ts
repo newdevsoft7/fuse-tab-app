@@ -197,7 +197,7 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         if (this.extraUserInfo.length > 0) {
             body.extra_info = this.extraUserInfo.map(v => v.id);
         }
-        this.scheduleService.exportAsCSV(body);
+        this.scheduleService.exportAsXlsx(body);
         this.dialogRef.close();
     }
 

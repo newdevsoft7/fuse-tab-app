@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { EventEntity } from '../../../core/components/sc-calendar';
 import * as _ from 'lodash';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
+import { uuid } from 'lodash-uuid';
 
 const BASE_URL = environment.apiUrl;
 const SHIFT_URL = `${BASE_URL}/shifts`;
@@ -539,10 +540,11 @@ export class ScheduleService {
     return this.http.put(url, { shift_ids: shiftIds }).toPromise();
   }
 
-  exportAsCSV(body: any = {}) {
-    const url = `${BASE_URL}/shifts/export/csv`;
+  exportAsXlsx(body: any = {}) {
+    const fileName = `${uuid()}.xlsx`;
+    const url = `${BASE_URL}/shifts/export`;
     return this.http.post(url, body, { observe: 'response', responseType: 'blob'}).toPromise()
-      .then(res => this.downloadFile(res['body'], 'shift exports.csv'))
+      .then(res => this.downloadFile(res['body'], fileName))
       .catch(e => this.scMessageService.error(e));
   }
 
