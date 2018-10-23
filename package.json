@@ -55,6 +55,7 @@
     "intl": "1.2.5",
     "js-marker-clusterer": "1.0.0",
     "lodash": "4.17.4",
+    "lodash-uuid": "0.0.3",
     "moment": "2.20.1",
     "moment-timezone": "0.5.17",
     "ngrx-store-freeze": "0.2.0",
