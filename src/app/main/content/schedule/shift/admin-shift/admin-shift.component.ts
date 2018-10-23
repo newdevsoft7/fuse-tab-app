@@ -312,9 +312,6 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     let dialogRef: any;
 
     switch (true) {
-      case this.shift.thread_id == null:
-        this.toastr.error('Chat is not available for this shift.');
-        break;
       case this.shift.thread_id == 0:
         dialogRef = this.dialog.open(NewMessageDialogComponent, {
           panelClass: 'new-message-dialog'

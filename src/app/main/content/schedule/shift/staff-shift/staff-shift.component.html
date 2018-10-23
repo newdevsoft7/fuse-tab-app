@@ -55,7 +55,7 @@
       </div>
 
       <div fxLayout="column" fxLayoutAlign="start end">
-        <button mat-icon-button (click)="openChat()" class="btn-chat">
+        <button mat-icon-button (click)="openChat()" class="btn-chat" *ngIf="shift.thread_id != null">
           <span *ngIf="shift.thread_id && shift.unread_count > 0" class="notification">{{shift.unread_count}}</span>
           <mat-icon>chat</mat-icon>
         </button>
