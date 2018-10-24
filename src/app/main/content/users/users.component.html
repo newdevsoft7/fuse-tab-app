@@ -170,6 +170,7 @@
                        (click)="openUserTab(row, $event)"
                        (contextmenu)="openContextMenu($event, menuTrigger)"/>
                   <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
+                  <div class="user-warning" *ngIf="row.warning"></div>
                 </div>
               </div>
             </ng-template>

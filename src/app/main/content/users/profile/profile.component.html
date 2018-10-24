@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign="start end">
+        <div fxLayout="column" fxLayoutAlign.gt-xs="start end" fxLayoutAlign.xs="start center">
             <div *ngIf="isFavStatusShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
                 <button mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
                     <mat-icon [ngClass]="{'white-fg': userInfo.fav === 0, 'amber-600-fg': userInfo.fav === 1}">star</mat-icon>
@@ -54,6 +54,12 @@
                 <button mat-icon-button (click)="confirmReject()" matTooltip="Reject">
                     <mat-icon class="red-fg">block</mat-icon>
                 </button>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start">
+              <div *ngFor="let warning of userInfo.warnings" fxLayout="row" fxLayoutAlign="start center" class="mb-4">
+                <mat-icon class="red-fg mr-8">warning</mat-icon>
+                <span class="white-fg">{{warning}}</span>
+              </div>
             </div>
         </div>
 

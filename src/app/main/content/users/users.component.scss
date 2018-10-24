@@ -53,6 +53,16 @@
             top: 32px;
             border: 2px solid #fff;
         }
+
+        div.user-warning {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: red;
+            top: 22px;
+            left: 56px;
+        }
     }
 
     .datatable-checkbox input[type='checkbox'] {
