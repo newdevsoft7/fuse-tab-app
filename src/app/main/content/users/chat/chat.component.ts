@@ -69,12 +69,14 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.listenIncomingMessages();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.alive = true;
 
     if (this.data && this.data.threadId) {
-      setTimeout(() => this.leftSideNav.selectThread(this.data.threadId));
-      this.fetchThreads(this.data.threadId);
+      try {
+        await this.fetchThreads(this.data.threadId);
+        this.leftSideNav.selectThread(this.data.threadId);
+      } catch (e) {}
     } else {
       this.fetchThreads();
     }
@@ -279,7 +281,8 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
   async sendMessage(message: any) {
     message.sender_id = this.tokenStorage.getUser().id;
-    message.ppic_a = this.selectedThread.participants.find(user => user.id === message.sender_id).ppic_a;
+    message.ppic_a = this.tokenStorage.getUser().ppic_a;
+    // message.ppic_a = this.selectedThread.participants.find(user => user.id === message.sender_id).ppic_a;
     this.selectedChat.push(message);
     this.chatView.replyForm.reset();
     this.chatView.readyToReply();
