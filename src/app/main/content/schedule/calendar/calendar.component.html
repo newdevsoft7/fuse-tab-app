@@ -23,6 +23,7 @@
         [autocompleteObservable]="filtersObservable"
         [labelBy]="'text'" 
         [valueBy]="'id'"
+        [value]="selectedFilters"
         placeholder="Filter shifts..."
         (valueChange)="onFiltersChanged($event)"></app-custom-multi-select-group>
     </div>

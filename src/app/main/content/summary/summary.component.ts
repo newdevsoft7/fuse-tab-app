@@ -20,8 +20,8 @@ export class SummaryComponent implements OnInit {
     from: moment().startOf('month').toDate(),
     to: moment().endOf('month').toDate()
   };
-  filters: any;
-  tmpFilters: any;
+  selectedFilters: any[] = [];
+  selectedFlags: any[] = [];
   loadingIndicator: boolean = false;
   pageNumber: number;
   pageSize = 10;
@@ -33,7 +33,6 @@ export class SummaryComponent implements OnInit {
   summaryData: any = {};
   currentUserFlags: any;
   isSingle: boolean = false;
-  selectedFlags: any;
 
   showBillData: boolean = true;
 
@@ -43,7 +42,13 @@ export class SummaryComponent implements OnInit {
     private toastr: ToastrService,
     private tabService: TabService,
     private tokenStorage: TokenStorage,
-    private scheduleService: ScheduleService) {}
+    private scheduleService: ScheduleService
+  ) {
+    if (!this.tokenStorage.isExistSecondaryUser()) {
+      this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
+      this.selectedFlags = JSON.parse(localStorage.getItem('shift_flags')) || [];
+    }
+  }
 
   ngOnInit() {
     this.filtersObservable = (text: string): Observable<any> => {
@@ -52,8 +57,7 @@ export class SummaryComponent implements OnInit {
       return this.scheduleService.getShiftFilters(from, to, text);
     };
 
-    this.currentUserFlags = this.tokenStorage.getSettings();
-    this.currentUserFlags.flags.map(flag => flag.set = 2);
+    this.setFlagsFromLocalStorage();
 
     if (this.tokenStorage.getUser().lvl === 'admin' && !this.tokenStorage.getPermissions().admin_bill) {
       this.showBillData = false;
@@ -62,14 +66,32 @@ export class SummaryComponent implements OnInit {
     this.getSummary();
   }
 
+  private setFlagsFromLocalStorage() {
+    const selectedFlags = this.selectedFlags.map(f => {
+      const [_, id, set] = f.split(':');
+      return {id, set};
+    });
+    const settings = this.tokenStorage.getSettings();
+    this.currentUserFlags = settings.flags.map(item => {
+      const flag = selectedFlags.find(s => s.id == item.id);
+      if (flag) {
+        item.set = +flag.set;
+      } else {
+        item.set = 2;
+      }
+      return item;
+    });
+  }
+
   onFiltersChanged(filters) {
-    this.tmpFilters = this.filters = filters.map(v => v.id);
+    this.selectedFilters = filters;
     this.getSummary();
+    this.saveToLocalStorage();
   }
 
   private async getSummary(params = {}) {
     const mergedParams = {
-      filters: this.filters,
+      filters: [...(this.selectedFilters.map(f => f.id)), ...this.selectedFlags],
       from: moment(this.period.from).format('YYYY-MM-DD'),
       to: moment(this.period.to).format('YYYY-MM-DD'),
       sorts: this.sorts,
@@ -151,20 +173,13 @@ export class SummaryComponent implements OnInit {
 
   updateFlagFilters() {
     this.selectedFlags = [];
-    for (let flag of this.currentUserFlags.flags) {
+    for (const flag of this.currentUserFlags) {
       if (flag.set !== 2) { 
         this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
       }
     }
-    if (this.tmpFilters) {
-      this.filters = [];
-      this.filters = this.tmpFilters;
-      this.filters = this.filters.concat(this.selectedFlags);
-    } else {
-      this.filters = this.selectedFlags;
-    }
-
     this.getSummary();
+    this.saveToLocalStorage();
   }
 
   toggleFlagDblClick(flag) {
@@ -222,5 +237,15 @@ export class SummaryComponent implements OnInit {
       });
     }
     return res;
+  }
+
+  saveToLocalStorage() {
+    if (this.tokenStorage.isExistSecondaryUser()) { return; }
+    if (this.selectedFilters) {
+      localStorage.setItem('shift_filters', JSON.stringify(this.selectedFilters));
+    }
+    if (this.selectedFlags) {
+      localStorage.setItem('shift_flags', JSON.stringify(this.selectedFlags));
+    }
   }
 }

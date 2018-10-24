@@ -31,14 +31,13 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   currentUser: any;
 
   filtersObservable: any;
-  filters: any;
-  tmpFilters: any;
+  selectedFilters: any[] = [];
+  selectedFlags: any[] = [];
   startDate: string;
   endDate: string;
   
   currentUserFlags: any;
   isSingle: boolean = false;
-  selectedFlags: any;
 
   loading: boolean = false;
 
@@ -164,7 +163,13 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     private actionService: ActionService,
     private tabService: TabService,
     private scMessageService: SCMessageService,
-    private settingsService: SettingsService) { }
+    private settingsService: SettingsService
+  ) {
+    if (!this.tokenStorage.isExistSecondaryUser()) {
+      this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
+      this.selectedFlags = JSON.parse(localStorage.getItem('shift_flags')) || [];
+    }
+  }
 
 
   ngOnInit() {
@@ -173,10 +178,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     this.hoverAsyncFn = (shiftId: number, group?: boolean) => this.scheduleService.getPopupContent(shiftId, group);
 
     if (['owner', 'admin'].includes(this.currentUser.lvl)) {
-      this.currentUserFlags = this.tokenStorage.getSettings().flags;
-      for (let flag of this.currentUserFlags) {
-        flag.set = 2;
-      }
+      this.setFlagsFromLocalStorage();
     }
     this.filtersObservable = (text: string): Observable<any> => {
       return Observable.of([]);
@@ -193,15 +195,32 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     });
   }
 
+  private setFlagsFromLocalStorage() {
+    const selectedFlags = this.selectedFlags.map(f => {
+      const [_, id, set] = f.split(':');
+      return {id, set};
+    });
+    const settings = this.tokenStorage.getSettings();
+    this.currentUserFlags = settings.flags.map(item => {
+      const flag = selectedFlags.find(s => s.id == item.id);
+      if (flag) {
+        item.set = +flag.set;
+      } else {
+        item.set = 2;
+      }
+      return item;
+    });
+  }
+
   ngOnDestroy() {
     this.tabActiveSubscription.unsubscribe();
     this.tabLoaded = false;
   }
 
-  onFiltersChanged(filters: any) {
-    this.tmpFilters = this.filters = filters.map(v => v.id); 
-    this.filters = (this.selectedFlags) ? this.filters.concat(this.selectedFlags) : this.filters ;
+  onFiltersChanged(filters) {
+    this.selectedFilters = filters;
     this.fetchEvents(true);
+    this.saveToLocalStorage();
   }
 
   updateEvents(event: { startDate: string, endDate: string }) {
@@ -215,13 +234,13 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   async fetchEvents(isLoading: boolean) {
     const query = {
-      filters: this.filters,
+      filters: [...(this.selectedFilters.map(f => f.id)), ...this.selectedFlags],
       from: this.startDate,
       to: this.endDate,
       view: 'calendar'
     };
 
-    if (isLoading) this.loading = true;
+    if (isLoading) { this.showLoading(); }
 
     try {
       this.options.events = await this.scheduleService.getShifts(query).toPromise();
@@ -229,7 +248,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
       this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong while fetching events.');
     }
 
-    this.loading = false;
+    this.hideLoading();
   }
 
   triggerEventModal(data: EventEntity): void {
@@ -242,7 +261,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         return;
       }
       if (response.type === 'delete') {
-        this.loading = true;
+        this.showLoading();
         try {
           await this.scheduleService.deleteUnavailableShift(response.id);
           let event = this.options.events.find((event) => event.id === response.id && event.type === 'u');
@@ -252,7 +271,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         } catch (e) {
           this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong while deleting shift.');
         }
-        this.loading = false;
+        this.hideLoading();
       }
     });
   }
@@ -372,20 +391,13 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   // Updates the selected flags and concats them into the main filters variable
   updateFlagFilters() {
     this.selectedFlags = [];
-    for (let flag of this.currentUserFlags) {
+    for (const flag of this.currentUserFlags) {
       if (flag.set !== 2) {
         this.selectedFlags.push(`flag:${flag.id}:${flag.set}`);
       }
     }
-    if (this.tmpFilters) {
-      this.filters = [];
-      this.filters = this.tmpFilters;
-      this.filters = this.filters.concat(this.selectedFlags);
-    } else {
-      this.filters = this.selectedFlags;
-    }
-
     this.fetchEvents(true);
+    this.saveToLocalStorage();
   }
 
   async showLegend() {
@@ -399,6 +411,24 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.scMessageService.error(e);
     }
+  }
+
+  saveToLocalStorage() {
+    if (this.tokenStorage.isExistSecondaryUser() || ['admin', 'owner'].indexOf(this.currentUser.lvl) < 0) { return; }
+    if (this.selectedFilters) {
+      localStorage.setItem('shift_filters', JSON.stringify(this.selectedFilters));
+    }
+    if (this.selectedFlags) {
+      localStorage.setItem('shift_flags', JSON.stringify(this.selectedFlags));
+    }
+  }
+
+  showLoading() {
+    setTimeout(() => this.loading = true);
+  }
+
+  hideLoading() {
+    setTimeout(() => this.loading = false);
   }
 
 }

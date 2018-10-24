@@ -46,7 +46,7 @@
 
         <!-- Flags Bar -->
         <div fxLayout="row" fxLayoutAlign="end space-evenly">
-            <button mat-icon-button *ngFor="let flag of currentUserFlags.flags" (click)="toggleFlagClick(flag)"
+            <button mat-icon-button *ngFor="let flag of currentUserFlags" (click)="toggleFlagClick(flag)"
               (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
               <ng-template [ngIf]="flag.set !==0" [ngIfElse]="showNegative">
                 <mat-icon [ngStyle]="{'color': flag.set !== 2 ? flag.color : 'white'}">flag</mat-icon>
@@ -57,6 +57,7 @@
             </button>
         </div>
         <!-- / Flags Bar -->
+
         <!-- SEARCHBAR -->
         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
 
@@ -66,7 +67,7 @@
                 <div fxFlex>
                     <app-custom-multi-select-group [autocompleteObservable]="filtersObservable"
                         [labelBy]="'text'" [valueBy]="'id'"
-                        (valueChange)="onFiltersChanged($event)"></app-custom-multi-select-group>
+                        (valueChange)="onFiltersChanged($event)" [value]="selectedFilters"></app-custom-multi-select-group>
                 </div>
             </div>
             <!-- / FILTER BAR -->
