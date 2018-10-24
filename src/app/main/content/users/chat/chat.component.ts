@@ -64,7 +64,6 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
     this.socketService = injector.get(SocketService);
     this.fcmService = injector.get(FCMService);
-    this.fetchThreads();
     this.watchActivityChange();
     this.watchTabChange();    
     this.listenIncomingMessages();
@@ -75,6 +74,9 @@ export class UsersChatComponent implements OnInit, OnDestroy {
 
     if (this.data && this.data.threadId) {
       setTimeout(() => this.leftSideNav.selectThread(this.data.threadId));
+      this.fetchThreads(this.data.threadId);
+    } else {
+      this.fetchThreads();
     }
 
     if (!this.fcmService.notificationAllowed) {
@@ -193,9 +195,9 @@ export class UsersChatComponent implements OnInit, OnDestroy {
     this.selectedChat = null;
   }
 
-  async fetchThreads() {
+  async fetchThreads(thread_id = null) {
     try {
-      this.threads = await this.usersChatService.getThreads();
+      this.threads = await this.usersChatService.getThreads(thread_id);
     } catch (e) {
       this.handleError(e);
     }

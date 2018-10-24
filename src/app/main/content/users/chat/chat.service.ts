@@ -90,8 +90,11 @@ export class UsersChatService {
     return this.http.put(url, { tname: name }).toPromise();
   }
 
-  async getThreads() {
-    const url = `${CHAT_URL}/threads`;
+  async getThreads(thread_id = null) {
+    let url = `${CHAT_URL}/threads`;
+    if (thread_id) {
+      url = `${url}/${thread_id}`;
+    }
     return this.http.get(url).toPromise();
   }
 
