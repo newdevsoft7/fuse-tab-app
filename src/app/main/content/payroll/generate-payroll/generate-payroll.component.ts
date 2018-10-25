@@ -4,6 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { PayrollService } from '../payroll.service';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
@@ -13,6 +14,7 @@ import { Tab } from '../../../tab/tab';
 import { ActionService } from '../../../../shared/services/action.service';
 import { MatSelectChange } from '@angular/material';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
+import {UserService} from '../../users/user.service';
 
 @Component({
   selector: 'app-generate-payroll',
@@ -31,7 +33,8 @@ export class GeneratePayrollComponent implements OnInit {
     private tabService: TabService,
     private tokenStorage: TokenStorage,
     private actionService: ActionService,
-    private scMessageService: SCMessageService
+    private scMessageService: SCMessageService,
+    private userService: UserService
   ) { }
 
   readonly types = [
@@ -50,9 +53,7 @@ export class GeneratePayrollComponent implements OnInit {
   generateDisabled = false;
   datePickerHidden = false;
 
-  trackingOptions: any[] = [];
-  filteredOptions: any[] = [];
-  getTrackingOptionName;
+  options: any[] = [];
   trackingFilter: FormControl = new FormControl();
 
   payrolls: any[] = [];
@@ -85,20 +86,19 @@ export class GeneratePayrollComponent implements OnInit {
     if (this.currentUser.lvl === 'staff') {
       this.categories[0] = 'shift';
     } else {
-      this.getTrackingOptions();
       this.trackingFilter
         .valueChanges
-        .map(value => typeof value === 'string' ? value : value.oname)
-        .subscribe(val => {
-          this.filteredOptions = [];
-          this.trackingOptions.forEach(c => {
-            const category = { ...c };
-            const options = c.options.filter(o => o.oname.toLowerCase().includes(val.toLowerCase()));
-            if (options.length > 0) {
-              category.options = options;
-              this.filteredOptions.push(category);
-            }
-          });
+        .pipe(
+          map(value => typeof value === 'string' ? value : value.oname),
+          debounceTime(300),
+          distinctUntilChanged(),
+        )
+        .subscribe(query => {
+          if (query.length >= 2) {
+            this.userService.searchTrackingOptions(0, query).then(options => this.options = options);
+          } else {
+            this.options = [];
+          }
         });
     }
   }
@@ -188,25 +188,6 @@ export class GeneratePayrollComponent implements OnInit {
     } catch (e) {
       this.toastr.error(e.error.message);
     }
-  }
-
-  getTrackingOptions() {
-    Promise.all([
-      this.trackingService.getTrackingCategories().toPromise(),
-      this.trackingService.getTrackingOptions().toPromise()
-    ]).then(([categories, options]) => {
-
-      this.getTrackingOptionName = (id) => {
-        return options.find(o => o.id === id).oname;
-      };
-
-      this.trackingOptions = categories.map(c => {
-        const os = options.filter(o => o.tracking_cat_id == c.id);
-        c.options = os;
-        return c;
-      });
-      this.filteredOptions = _.cloneDeep(this.trackingOptions);
-    });
   }
 
   removePayroll(payroll) {
