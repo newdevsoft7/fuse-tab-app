@@ -70,7 +70,7 @@
         <div class="payroll">
           <div fxLayout="row" fxLayoutAlign="start start">
             <div class="payroll-avatar mr-32" *ngIf="currentUser.lvl !== 'staff'">
-              <img [src]="payroll.ppic_a" [matTooltip]="payroll.name"/>
+              <img [src]="payroll.ppic_a" [matTooltip]="payroll.name" (click)="openUserTab(payroll)"/>
             </div>
 
             <div fxLayout="row" class="w-100-p" fxLayoutAlign="space-between center">

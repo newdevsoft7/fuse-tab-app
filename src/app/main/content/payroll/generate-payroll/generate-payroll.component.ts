@@ -291,4 +291,12 @@ export class GeneratePayrollComponent implements OnInit {
     return value && typeof value === 'object' ? value.oname : value;
   }
 
+  openUserTab(payroll) {
+    const user = {
+      id: payroll.user_id
+    };
+    const tab = new Tab(`${payroll.name}`, 'usersProfileTpl', `users/user/${user.id}`, user);
+    this.tabService.openTab(tab);
+  }
+
 }

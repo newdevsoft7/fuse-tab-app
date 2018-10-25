@@ -1,128 +1,128 @@
 <div id="profile" class="page-layout simple tabbed" fusePerfectScrollbar *ngIf="userInfo">
 
-    <!-- HEADER -->
-    <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
-        fxLayoutAlign.gt-xs="space-between end">
+  <!-- HEADER -->
+  <div class="header p-24" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+       fxLayoutAlign.gt-xs="space-between end">
 
-        <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
-            fxLayoutAlign.gt-xs="start center">
-            <img class="profile-image avatar huge w-sm-156 h-sm-156" ngClass.gt-xs="mr-24" ngClass.xs="mb-8 mr-8" [src]="avatarUrl" (click)="openPhotoTab()">
-            <div fxLayout="column" fxLayoutAlign="start">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <div class="name">
-                        {{userInfo.fname}} {{userInfo.lname}}
-                    </div>
-                    <div class="action">
-                        <button *ngIf="canLoginAs" mat-icon-button (click)="login()" matTooltip="Login as user">
-                            <mat-icon ngClass.xs="s-20">vpn_key</mat-icon>
-                        </button>
-                        <button *ngIf="canChat" mat-icon-button (click)="chat()" matTooltip="Chat">
-                            <mat-icon ngClass.xs="s-20">chat</mat-icon>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="white-fg" style="text-transform:capitalize;" ngClass.gt-xs="ml-8">
-                    {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ?
-                    "&sdot; " + userInfo.city
-                    : ""}} {{userInfo.state ? ", "+userInfo.state : ""}}
-                </div>
-                <div class="light-blue-fg" ngClass.gt-xs="ml-8">
-                    {{userInfo.email}}
-                </div>
-                <div class="white-fg" ngClass.gt-xs="ml-8">
-                    {{userInfo.mob}}
-                </div>
-            </div>
+    <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+         fxLayoutAlign.gt-xs="start center">
+      <img class="profile-image avatar huge w-sm-156 h-sm-156" ngClass.gt-xs="mr-24" ngClass.xs="mb-8 mr-8" [src]="avatarUrl" (click)="openPhotoTab()">
+      <div fxLayout="column" fxLayoutAlign="start">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div class="name">
+            {{userInfo.fname}} {{userInfo.lname}}
+          </div>
+          <div class="action">
+            <button *ngIf="canLoginAs" mat-icon-button (click)="login()" matTooltip="Login as user">
+              <mat-icon ngClass.xs="s-20">vpn_key</mat-icon>
+            </button>
+            <button *ngIf="canChat" mat-icon-button (click)="chat()" matTooltip="Chat">
+              <mat-icon ngClass.xs="s-20">chat</mat-icon>
+            </button>
+          </div>
         </div>
 
-        <div fxLayout="column" fxLayoutAlign.gt-xs="start end" fxLayoutAlign.xs="start center">
-            <div *ngIf="isFavStatusShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
-                <button mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
-                    <mat-icon [ngClass]="{'white-fg': userInfo.fav === 0, 'amber-600-fg': userInfo.fav === 1}">star</mat-icon>
-                </button>
-
-                <app-edit-user-status [user]="userInfo" class="ml-8 white-fg"></app-edit-user-status>
-            </div>
-            <div *ngIf="!isFavStatusShow" class="white-fg">
-                {{userInfo.lvl | capitalize}}
-            </div>
-            <div *ngIf="isApproveRejectShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
-                <button mat-icon-button (click)="confirmApprove()" matTooltip="Approve">
-                    <mat-icon class="green-fg">check</mat-icon>
-                </button>
-                <button mat-icon-button (click)="confirmReject()" matTooltip="Reject">
-                    <mat-icon class="red-fg">block</mat-icon>
-                </button>
-            </div>
-            <div fxLayout="column" fxLayoutAlign="start start">
-              <div *ngFor="let warning of userInfo.warnings" fxLayout="row" fxLayoutAlign="start center" class="mb-4">
-                <mat-icon class="red-fg mr-8">warning</mat-icon>
-                <span class="white-fg">{{warning}}</span>
-              </div>
-            </div>
+        <div class="white-fg" style="text-transform:capitalize;" ngClass.gt-xs="ml-8">
+          {{userInfo.age == "?" ? "" : userInfo.age}} {{userInfo.sex ? userInfo.sex: ""}} {{userInfo.city ?
+          "&sdot; " + userInfo.city
+          : ""}} {{userInfo.state ? ", "+userInfo.state : ""}}
         </div>
-
+        <div class="light-blue-fg" ngClass.gt-xs="ml-8">
+          {{userInfo.email}}
+        </div>
+        <div class="white-fg" ngClass.gt-xs="ml-8">
+          {{userInfo.mob}}
+        </div>
+      </div>
     </div>
-    <!-- / HEADER -->
 
-    <!-- CONTENT -->
-    <div class="content">
+    <div fxLayout="column" fxLayoutAlign.gt-xs="start end" fxLayoutAlign.xs="start center">
+      <div *ngIf="isFavStatusShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
+        <button mat-icon-button (click)="toggleFav()" matTooltip="Favourite">
+          <mat-icon [ngClass]="{'white-fg': userInfo.fav === 0, 'amber-600-fg': userInfo.fav === 1}">star</mat-icon>
+        </button>
 
-        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedIndex" #tabGroup (selectedTabChange)="onSelectedTabChange($event)">
-
-            <mat-tab label="About">
-                <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings"
-                    [settings]="settings"></app-users-profile-about>
-            </mat-tab>
-
-            <mat-tab label="Skills & Qualifications" *ngIf="isSkillsShow">
-                <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-attributes>
-            </mat-tab>
-
-            <mat-tab label="Experience" *ngIf="userInfo.lvl === 'admin' || userInfo.lvl === 'staff' || userInfo.lvl.indexOf('registrant') > -1">
-                <app-users-profile-experience [userInfo]="userInfo" [settings]="settings"></app-users-profile-experience>
-            </mat-tab>
-
-            <mat-tab label="Photos">
-                <app-users-profile-photo [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"
-                    (onAvatarChanged)="onAvatarChanged($event)">
-                </app-users-profile-photo>
-            </mat-tab>
-
-            <mat-tab label="Videos" *ngIf="settings.profile_video_enable === '1'">
-                <app-users-profile-video [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-video>
-            </mat-tab>
-
-            <mat-tab label="Documents">
-                <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-document>
-            </mat-tab>
-
-            <mat-tab label="Cards" *ngIf="isCardsShow">
-                <app-users-profile-cards #cardsTab [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-cards>
-            </mat-tab>
-
-            <mat-tab label="Work Areas" *ngIf="isWorkAreasShow">
-                <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-workareas>
-            </mat-tab>
-
-            <mat-tab label="Unavailability" *ngIf="userInfo.lvl === 'staff'">
-                <app-users-profile-unavailability [userInfo]="userInfo" [currentUser]="currentUser">
-                </app-users-profile-unavailability>
-            </mat-tab>
-
-            <mat-tab label="Pay Levels" *ngIf="userInfo.lvl === 'staff' && ['owner', 'admin'].indexOf(currentUser.lvl) > -1 && settings.paylvl_enable == 1">
-                <app-users-profile-pay-levels [userInfo]="userInfo"></app-users-profile-pay-levels>
-            </mat-tab>
-
-            <mat-tab label="Settings" *ngIf="isSettingsShow">
-                <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers"
-                    [settings]="settings" [timezones]="timezones"></app-users-profile-settings>
-            </mat-tab>
-
-        </mat-tab-group>
-
+        <app-edit-user-status [user]="userInfo" class="ml-8 white-fg"></app-edit-user-status>
+      </div>
+      <div *ngIf="!isFavStatusShow" class="white-fg">
+        {{userInfo.lvl | capitalize}}
+      </div>
+      <div *ngIf="isApproveRejectShow" fxLayout="row" fxLayoutAlign="start center" [ngClass.gt-xs]="'mt-24'">
+        <button mat-icon-button (click)="confirmApprove()" matTooltip="Approve">
+          <mat-icon class="green-fg">check</mat-icon>
+        </button>
+        <button mat-icon-button (click)="confirmReject()" matTooltip="Reject">
+          <mat-icon class="red-fg">block</mat-icon>
+        </button>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start start">
+        <div *ngFor="let warning of userInfo.warnings" fxLayout="row" fxLayoutAlign="start center" class="mb-4">
+          <mat-icon class="red-fg mr-8">warning</mat-icon>
+          <span class="white-fg">{{warning}}</span>
+        </div>
+      </div>
     </div>
-    <!-- / CONTENT -->
+
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedIndex" #tabGroup (selectedTabChange)="onSelectedTabChange($event)">
+
+      <mat-tab label="About">
+        <app-users-profile-about [userInfo]="userInfo" [currentUser]="currentUser" [ratings]="ratings"
+                                 [settings]="settings"></app-users-profile-about>
+      </mat-tab>
+
+      <mat-tab label="Skills & Qualifications" *ngIf="isSkillsShow">
+        <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-attributes>
+      </mat-tab>
+
+      <mat-tab label="Experience" *ngIf="userInfo.lvl === 'admin' || userInfo.lvl === 'staff' || userInfo.lvl.indexOf('registrant') > -1">
+        <app-users-profile-experience [userInfo]="userInfo" [settings]="settings"></app-users-profile-experience>
+      </mat-tab>
+
+      <mat-tab label="Photos">
+        <app-users-profile-photo [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"
+                                 (onAvatarChanged)="onAvatarChanged($event)">
+        </app-users-profile-photo>
+      </mat-tab>
+
+      <mat-tab label="Videos" *ngIf="settings.profile_video_enable === '1'">
+        <app-users-profile-video [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-video>
+      </mat-tab>
+
+      <mat-tab label="Documents">
+        <app-users-profile-document [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-document>
+      </mat-tab>
+
+      <mat-tab label="Cards" *ngIf="isCardsShow">
+        <app-users-profile-cards #cardsTab [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-cards>
+      </mat-tab>
+
+      <mat-tab label="Work Areas" *ngIf="isWorkAreasShow">
+        <app-users-profile-workareas [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-workareas>
+      </mat-tab>
+
+      <mat-tab label="Unavailability" *ngIf="userInfo.lvl === 'staff'">
+        <app-users-profile-unavailability [userInfo]="userInfo" [currentUser]="currentUser">
+        </app-users-profile-unavailability>
+      </mat-tab>
+
+      <mat-tab label="Pay Levels" *ngIf="userInfo.lvl === 'staff' && ['owner', 'admin'].indexOf(currentUser.lvl) > -1 && settings.paylvl_enable == 1">
+        <app-users-profile-pay-levels [userInfo]="userInfo"></app-users-profile-pay-levels>
+      </mat-tab>
+
+      <mat-tab label="Settings" *ngIf="isSettingsShow">
+        <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers"
+                                    [settings]="settings" [timezones]="timezones"></app-users-profile-settings>
+      </mat-tab>
+
+    </mat-tab-group>
+
+  </div>
+  <!-- / CONTENT -->
 
 </div>
