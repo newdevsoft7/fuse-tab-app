@@ -67,13 +67,39 @@
       <ng-container *ngIf="!isEmpty(payroll)">
         <mat-divider class="my-32"></mat-divider>
 
-        <div class="payroll" fxLayout="row wrap" fxLayoutAlign="start start">
-          <div class="payroll-avatar mr-32" *ngIf="currentUser.lvl !== 'staff'">
-            <img [src]="payroll.ppic_a" [matTooltip]="payroll.name"/>
+        <div class="payroll">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="payroll-avatar mr-32" *ngIf="currentUser.lvl !== 'staff'">
+              <img [src]="payroll.ppic_a" [matTooltip]="payroll.name"/>
+            </div>
+
+            <div fxLayout="row" class="w-100-p" fxLayoutAlign="space-between center">
+              <div fxFlex="nogrow">
+                <h2>{{currentUser.lvl !== 'staff' ? payroll.name : 'Invoice ' + (payroll.id + 1)}}</h2>
+              </div>
+              <div fxFlex="nogrow">
+                <button mat-raised-button color="accent" *ngIf="type == 'xero_payslip' || type == 'wm_assignment'" (click)="processPayroll(payroll)">
+                  Process
+                </button>
+
+                <button mat-icon-button *ngIf="type != 'xero_payslip' && type != 'wm_assignment'" [matMenuTriggerFor]="payrollMenu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <mat-menu #payrollMenu="matMenu">
+
+                  <button mat-menu-item (click)="removePayroll(payroll)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Remove</span>
+                  </button>
+
+                </mat-menu>
+              </div>
+            </div>
           </div>
 
-          <div fxFlex="1 0 auto">
-            <h2>{{currentUser.lvl !== 'staff' ? payroll.name : 'Invoice ' + (payroll.id + 1)}}</h2>
+          <div [ngClass]="{'ml-92': currentUser.lvl !== 'staff'}" [ngClass.xs]="{'ml-92': false}">
+
             <ng-container *ngFor="let category of categories">
               <div *ngIf="payroll[category].length > 0" class="category">
                 <h3 class="name">{{category}}</h3>
@@ -113,31 +139,12 @@
             </table>
           </div>
 
-          <div fxFlex="0 1 auto">
-            <button mat-raised-button color="accent" *ngIf="type == 'xero_payslip' || type == 'wm_assignment'" (click)="processPayroll(payroll)">
-              Process
-            </button>
-
-            <button mat-icon-button *ngIf="type != 'xero_payslip' && type != 'wm_assignment'" [matMenuTriggerFor]="payrollMenu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-
-            <mat-menu #payrollMenu="matMenu">
-
-              <button mat-menu-item (click)="removePayroll(payroll)">
-                <mat-icon>delete</mat-icon>
-                <span>Remove</span>
-              </button>
-
-            </mat-menu>
-          </div>
         </div>
       </ng-container>
     </ng-container>
     <!-- / PAYROLL -->
 
-    <button mat-raised-button (click)="savePayrolls()" color="accent" *ngIf="isSaveButtonShow()"
-            class="mt-24">
+    <button mat-raised-button (click)="savePayrolls()" color="accent" *ngIf="isSaveButtonShow()" class="mt-24">
       SAVE
     </button>
   </div>
