@@ -140,6 +140,51 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
     });
   }
 
+  assignStatus(staff, statusId) {
+    let message = '';
+
+    switch (statusId) {
+      case STAFF_STATUS_SELECTED:
+        message = 'Really change status to selected?';
+        break;
+
+      case STAFF_STATUS_STANDBY:
+        message = 'Really change status to standby?';
+        break;
+
+      case STAFF_STATUS_HIDDEN_REJECTED:
+        message = 'Really change status to hidden rejected?';
+        break;
+
+      case STAFF_STATUS_REJECTED:
+        message = 'Really change status to rejected?';
+        break;
+
+      default:
+        message = 'Really change status?';
+        break;
+    }
+
+    this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+
+    this.confirmDialogRef.componentInstance.confirmMessage = message;
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.scheduleService.assignStaffsToRole([staff.user_id], this.roleId, statusId)
+          .subscribe(_ => {
+            this.scheduleService.getRoleStaffs(this.roleId, Query.Applicants)
+              .subscribe(res => {
+                this.staffs = res;
+              })
+            this.updateStaffCount();
+          });
+      }
+    });
+  }
+
   private updateStaffCount() {
     this.onStaffCountChanged.next(true);
   }

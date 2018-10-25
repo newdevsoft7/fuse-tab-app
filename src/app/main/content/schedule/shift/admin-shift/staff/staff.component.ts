@@ -535,7 +535,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
       if (result) {
         this.scheduleService.updateRoleStaffs(staffs.map(v => v.id), { staff_status_id: statusId })
           .subscribe(() => {
-            //this.toastr.success(`Status${res.length > 1 ? 'es' : ''} updated.`);
             this.updateStaffsBySection(role);
           }, () => {
             this.updateStaffsBySection(role);

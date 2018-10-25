@@ -142,6 +142,39 @@ export class AdminShiftStaffStandbyComponent implements OnInit {
     });
   }
 
+  assignStatus(staff, statusId) {
+    let message = '';
+
+    switch (statusId) {
+      case STAFF_STATUS_SELECTED:
+        message = 'Really select this user?';
+        break;
+
+      default:
+        message = 'Really update this user?';
+        break;
+    }
+
+    this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+
+    this.confirmDialogRef.componentInstance.confirmMessage = message;
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.scheduleService.assignStaffsToRole([staff.user_id], this.roleId, statusId)
+          .subscribe(_ => {
+            this.scheduleService.getRoleStaffs(this.roleId, Query.Standby)
+              .subscribe(res => {
+                this.staffs = res;
+              });
+            this.updateStaffCount();
+          });
+      }
+    });
+  }
+
   getAvatar(value) {
     switch (value) {
       case 'male_tthumb.jpg':

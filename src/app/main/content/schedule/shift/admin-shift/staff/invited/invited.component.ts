@@ -131,7 +131,6 @@ export class AdminShiftStaffInvitedComponent implements OnInit {
       if (result) {
         this.scheduleService.updateRoleStaff(staff.id, { staff_status_id: statusId })
           .subscribe(res => {
-            //this.toastr.success(res.message);
             this.scheduleService.getRoleStaffs(this.roleId, Query.Invited)
               .subscribe(res => {
                 this.staffs = res;
@@ -139,6 +138,42 @@ export class AdminShiftStaffInvitedComponent implements OnInit {
             this.updateStaffCount();
           });
       }
+    });
+  }
+
+  assignStatus(staff, statusId) {
+    let message = '';
+
+    switch (statusId) {
+      case STAFF_STATUS_SELECTED:
+        message = 'Really select this user?';
+        break;
+
+      case STAFF_STATUS_STANDBY:
+        message = 'Really put this user on standby?';
+        break;
+
+      default:
+        message = 'Really update this user?';
+        break;
+    }
+
+    this.confirmDialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+
+    this.confirmDialogRef.componentInstance.confirmMessage = message;
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.scheduleService.assignStaffsToRole([staff.user_id], this.roleId, statusId)
+          .subscribe(_ => {
+            this.scheduleService.getRoleStaffs(this.roleId, Query.Invited)
+              .subscribe(res => {
+                this.staffs = res;
+              });
+            this.updateStaffCount();
+          });      }
     });
   }
 
