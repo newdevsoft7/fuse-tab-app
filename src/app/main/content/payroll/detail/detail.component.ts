@@ -111,6 +111,7 @@ export class PayrollDetailComponent implements OnInit {
         if (result) {
           try {
             await this.payrollService.payPayrollWithXtrm(this.payroll.id);
+            this.refreshActionsStatus();
             this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
@@ -126,6 +127,7 @@ export class PayrollDetailComponent implements OnInit {
         if (result) {
           try {
             await this.payrollService.processPayrolls([this.payroll.id]).toPromise();
+            this.refreshActionsStatus();
             this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
@@ -141,6 +143,7 @@ export class PayrollDetailComponent implements OnInit {
         if (result) {
           try {
             await this.payrollService.recordPayment([this.payroll.id]).toPromise();
+            this.refreshActionsStatus();
             this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
@@ -157,6 +160,7 @@ export class PayrollDetailComponent implements OnInit {
         if (result) {
           try {
             await this.payrollService.rejectPayroll(this.payroll.id, result).toPromise();
+            this.refreshActionsStatus();
             this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
@@ -172,6 +176,7 @@ export class PayrollDetailComponent implements OnInit {
         if (result) {
           try {
             await this.payrollService.deletePayroll(this.payroll.id).toPromise();
+            this.refreshActionsStatus();
             this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
@@ -197,6 +202,18 @@ export class PayrollDetailComponent implements OnInit {
         break;
     }
     return color;
+  }
+
+  async refreshActionsStatus() {
+    try {
+      const payroll = await this.payrollService.getSinglePayrollDetail(this.data.id);
+      this.payroll.actions = payroll.actions;
+      this.payroll.status = payroll.status;
+      this.payrolls[0].actions = payroll.actions;
+      this.payrolls[0].status = payroll.status;
+    } catch (e) {
+      this.scMessageService.error(e);
+    }
   }
 
 }
