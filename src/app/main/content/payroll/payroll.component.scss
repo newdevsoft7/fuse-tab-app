@@ -1,17 +1,17 @@
-@import "src/app/core/scss/fuse";
+@import '~app/core/scss/fuse';
 
 #payrolls-container {
 
-    .date-picker {
-        width: 120px;
-    }
+  .date-picker {
+    width: 120px;
+  }
 
-    .link {
-        cursor: pointer;
-        text-decoration: none;
-    }
+  .link {
+    cursor: pointer;
+    text-decoration: none;
+  }
 
-    mat-button-toggle {
-        text-align: center;
-    }
+  mat-button-toggle {
+    text-align: center;
+  }
 }

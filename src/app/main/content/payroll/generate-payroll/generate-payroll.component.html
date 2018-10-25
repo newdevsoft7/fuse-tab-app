@@ -1,145 +1,145 @@
 <div id="generate-payroll-container" [ngClass.gt-xs]="'p-16'">
 
-    <!-- MAIN FILTER -->
-    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-        <div fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-form-field class="mr-48" *ngIf="currentUser?.lvl !== 'staff'">
-                <mat-select [(ngModel)]="type" placeholder="Type" (ngModelChange)="onTypeChange()">
-                    <mat-option *ngFor="let option of types" [value]="option.value">{{option.label}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+  <!-- MAIN FILTER -->
+  <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <div fxLayout="row wrap" fxLayoutAlign="start center">
+      <mat-form-field class="mr-48" *ngIf="currentUser?.lvl !== 'staff'">
+        <mat-select [(ngModel)]="type" placeholder="Type" (ngModelChange)="onTypeChange()">
+          <mat-option *ngFor="let option of types" [value]="option.value">{{option.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field *ngIf="type == 'xero_payslip' && !generateDisabled">
-                <mat-select *ngIf="xeroDates.periods.length > 0" [placeholder]="xeroDates.calendar" [value]="xeroDates.periods[0]" (selectionChange)="onXeroCalendarChange($event)">
-                    <mat-option *ngFor="let period of xeroDates.periods" [value]="period">
-                        {{period.label}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+      <mat-form-field *ngIf="type == 'xero_payslip' && !generateDisabled">
+        <mat-select *ngIf="xeroDates.periods.length > 0" [placeholder]="xeroDates.calendar" [value]="xeroDates.periods[0]" (selectionChange)="onXeroCalendarChange($event)">
+          <mat-option *ngFor="let period of xeroDates.periods" [value]="period">
+            {{period.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-            <mat-form-field class="date-picker mr-48" [hidden]="datePickerHidden">
-                <mat-label>From</mat-label>
-                <input matInput [matDatepicker]="fromPicker" [(ngModel)]="from">
-                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                <mat-datepicker #fromPicker></mat-datepicker>
-            </mat-form-field>
+      <mat-form-field class="date-picker mr-48" [hidden]="datePickerHidden">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="fromPicker" [(ngModel)]="from">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
 
-            <mat-form-field class="date-picker" [hidden]="datePickerHidden">
-                <mat-label>To</mat-label>
-                <input matInput [matDatepicker]="toPicker" [(ngModel)]="to">
-                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                <mat-datepicker #toPicker></mat-datepicker>
-            </mat-form-field>
-        </div>
-        <button mat-raised-button color="accent" (click)="generateStaffInvoice()" *ngIf="currentUser?.lvl === 'staff'; else adminBlock">GENERATE</button>
-        <ng-template #adminBlock>
-            <button mat-raised-button color="accent" (click)="generate()" [disabled]="generateDisabled">GENERATE</button>
-        </ng-template>
+      <mat-form-field class="date-picker" [hidden]="datePickerHidden">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="toPicker" [(ngModel)]="to">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
     </div>
-    <!-- / MAIN FILTER -->
+    <button mat-raised-button color="accent" (click)="generateStaffInvoice()" *ngIf="currentUser?.lvl === 'staff'; else adminBlock">GENERATE</button>
+    <ng-template #adminBlock>
+      <button mat-raised-button color="accent" (click)="generate()" [disabled]="generateDisabled">GENERATE</button>
+    </ng-template>
+  </div>
+  <!-- / MAIN FILTER -->
 
-    <ng-container *ngIf="currentUser?.lvl !== 'staff'">
-        <a class="link" (click)="additional = true;" *ngIf="!additional">additional options</a>
+  <ng-container *ngIf="currentUser?.lvl !== 'staff'">
+    <a class="link" (click)="additional = true;" *ngIf="!additional">additional options</a>
 
-        <!-- ADDITIONAL OPTIONS -->
-        <div *ngIf="additional" fxLayout="row wrap" fxLayoutAlign="start center">
-            <mat-checkbox [(ngModel)]="completedOnly">Completed Only</mat-checkbox>
+    <!-- ADDITIONAL OPTIONS -->
+    <div *ngIf="additional" fxLayout="row wrap" fxLayoutAlign="start center">
+      <mat-checkbox [(ngModel)]="completedOnly">Completed Only</mat-checkbox>
 
-            <mat-form-field class="ml-48">
-                <input type="text" placeholder="Tracking Option" matInput [matAutocomplete]="auto" [formControl]="trackingFilter">
-                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-optgroup *ngFor="let category of filteredOptions" [label]="category.cname">
-                        <mat-option *ngFor="let option of category.options" [value]="option">
-                            {{option.oname}}
-                        </mat-option>
-                    </mat-optgroup>
-                </mat-autocomplete>
-            </mat-form-field>
-        </div>
-        <!-- / ADDITIONAL OPTIONS -->
-    </ng-container>
+      <mat-form-field class="ml-48">
+        <input type="text" placeholder="Tracking Option" matInput [matAutocomplete]="auto" [formControl]="trackingFilter">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-optgroup *ngFor="let category of filteredOptions" [label]="category.cname">
+            <mat-option *ngFor="let option of category.options" [value]="option">
+              {{option.oname}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <!-- / ADDITIONAL OPTIONS -->
+  </ng-container>
 
-    <!-- PAYROLLS -->
-    <div class="payrolls">
+  <!-- PAYROLLS -->
+  <div class="payrolls">
 
-        <!-- PAYROLL -->
-        <ng-container *ngFor="let payroll of payrolls">
-            <ng-container *ngIf="!isEmpty(payroll)">
-                <mat-divider class="my-32"></mat-divider>
+    <!-- PAYROLL -->
+    <ng-container *ngFor="let payroll of payrolls">
+      <ng-container *ngIf="!isEmpty(payroll)">
+        <mat-divider class="my-32"></mat-divider>
 
-                <div class="payroll" fxLayout="row wrap" fxLayoutAlign="start start">
-                    <div class="payroll-avatar mr-32" *ngIf="currentUser.lvl !== 'staff'">
-                        <img [src]="payroll.ppic_a" [matTooltip]="payroll.name"/>
-                    </div>
+        <div class="payroll" fxLayout="row wrap" fxLayoutAlign="start start">
+          <div class="payroll-avatar mr-32" *ngIf="currentUser.lvl !== 'staff'">
+            <img [src]="payroll.ppic_a" [matTooltip]="payroll.name"/>
+          </div>
 
-                    <div fxFlex="1 0 auto">
-                        <h2>{{currentUser.lvl !== 'staff' ? payroll.name : 'Invoice ' + (payroll.id + 1)}}</h2>
-                        <ng-container *ngFor="let category of categories">
-                            <div *ngIf="payroll[category].length > 0" class="category">
-                                <h3 class="name">{{category}}</h3>
-                                <table class="category-table" cellpadding="4">
-                                    <tr *ngFor="let item of payroll[category]" class="line">
-                                        <td class="title">{{item.title}}</td>
-                                        <td matTooltip="Unit Amount" class="amount">{{item.u_amt}}</td>
-                                        <td matTooltip="Quantity" class="quantity">{{item.qty}}</td>
-                                        <td matTooltip="Line Amount"  class="line-amount">{{item.l_amt}}</td>
-                                        <td class="line-menu">
-                                            <button mat-icon-button [matMenuTriggerFor]="lineMenu">
-                                                <mat-icon>more_vert</mat-icon>
-                                            </button>
+          <div fxFlex="1 0 auto">
+            <h2>{{currentUser.lvl !== 'staff' ? payroll.name : 'Invoice ' + (payroll.id + 1)}}</h2>
+            <ng-container *ngFor="let category of categories">
+              <div *ngIf="payroll[category].length > 0" class="category">
+                <h3 class="name">{{category}}</h3>
+                <table class="category-table" cellpadding="4">
+                  <tr *ngFor="let item of payroll[category]" class="line">
+                    <td class="title">{{item.title}}</td>
+                    <td matTooltip="Unit Amount" class="amount">{{item.u_amt}}</td>
+                    <td matTooltip="Quantity" class="quantity">{{item.qty}}</td>
+                    <td matTooltip="Line Amount"  class="line-amount">{{item.l_amt}}</td>
+                    <td class="line-menu">
+                      <button mat-icon-button [matMenuTriggerFor]="lineMenu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
 
-                                            <mat-menu #lineMenu="matMenu">
-                                                <button mat-menu-item (click)="viewShift(item)">
-                                                    VIEW SHIFT
-                                                </button>
-
-                                                <button mat-menu-item (click)="removeLine(payroll, category, item)">
-                                                    REMOVE LINE
-                                                </button>
-                                            </mat-menu>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </ng-container>
-
-                        <table class="category-table mt-20">
-                            <tr class="line total-line">
-                                <td colspan="2" class="pl-8">Total</td>
-                                <td class="quantity">{{payroll.currency}}</td>
-                                <td class="total" matTooltip="Total">{{payroll.total}}</td>
-                                <td class="line-menu"></td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div fxFlex="0 1 auto">
-                        <button mat-raised-button color="accent" *ngIf="type == 'xero_payslip' || type == 'wm_assignment'" (click)="processPayroll(payroll)">
-                            Process
+                      <mat-menu #lineMenu="matMenu">
+                        <button mat-menu-item (click)="viewShift(item)">
+                          VIEW SHIFT
                         </button>
 
-                        <button mat-icon-button *ngIf="type != 'xero_payslip' && type != 'wm_assignment'" [matMenuTriggerFor]="payrollMenu">
-                            <mat-icon>more_vert</mat-icon>
+                        <button mat-menu-item (click)="removeLine(payroll, category, item)">
+                          REMOVE LINE
                         </button>
-
-                        <mat-menu #payrollMenu="matMenu">
-
-                            <button mat-menu-item (click)="removePayroll(payroll)">
-                                <mat-icon>delete</mat-icon>
-                                <span>Remove</span>
-                            </button>
-
-                        </mat-menu>
-                    </div>
-                </div>
+                      </mat-menu>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </ng-container>
-        </ng-container>
-        <!-- / PAYROLL -->
 
-        <button mat-raised-button (click)="savePayrolls()" color="accent" *ngIf="isSaveButtonShow()"
+            <table class="category-table mt-20">
+              <tr class="line total-line">
+                <td colspan="2" class="pl-8">Total</td>
+                <td class="quantity">{{payroll.currency}}</td>
+                <td class="total" matTooltip="Total">{{payroll.total}}</td>
+                <td class="line-menu"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div fxFlex="0 1 auto">
+            <button mat-raised-button color="accent" *ngIf="type == 'xero_payslip' || type == 'wm_assignment'" (click)="processPayroll(payroll)">
+              Process
+            </button>
+
+            <button mat-icon-button *ngIf="type != 'xero_payslip' && type != 'wm_assignment'" [matMenuTriggerFor]="payrollMenu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #payrollMenu="matMenu">
+
+              <button mat-menu-item (click)="removePayroll(payroll)">
+                <mat-icon>delete</mat-icon>
+                <span>Remove</span>
+              </button>
+
+            </mat-menu>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <!-- / PAYROLL -->
+
+    <button mat-raised-button (click)="savePayrolls()" color="accent" *ngIf="isSaveButtonShow()"
             class="mt-24">
-            SAVE
-        </button>
-    </div>
-    <!-- / PAYROLLS -->
+      SAVE
+    </button>
+  </div>
+  <!-- / PAYROLLS -->
 </div>

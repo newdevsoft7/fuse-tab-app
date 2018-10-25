@@ -1,86 +1,86 @@
 #generate-payroll-container {
 
-    .date-picker {
-        width: 120px;
-    }
+  .date-picker {
+    width: 120px;
+  }
 
-    .link {
-        cursor: pointer;
-        text-decoration: none;
-    }
+  .link {
+    cursor: pointer;
+    text-decoration: none;
+  }
 
-    .payrolls {
+  .payrolls {
 
-        .payroll {
+    .payroll {
 
-            .payroll-avatar img {
-                width: 50px;
-                min-width: 50px;
-                height: 50px;
-                line-height: 50px;
-                margin: 5px;
-                border-radius: 50%;
+      .payroll-avatar img {
+        width: 50px;
+        min-width: 50px;
+        height: 50px;
+        line-height: 50px;
+        margin: 5px;
+        border-radius: 50%;
 
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-
-            .category {
-
-                .name {
-                    text-transform: capitalize;
-                }
-            }
-
-            .category-table {
-                width: 100%;
-                border-collapse: collapse;
-
-                .line {
-                    border: 1px solid #ccc;
-                }
-
-                .total-line {
-                    background-color: #ECEFF1;
-
-                    td {
-                        font-weight: bold;
-                    }
-                }
-
-                .total {
-                    padding: 15px 4px;
-                }
-
-                .title {
-                    padding-left: 20px;
-                }
-            }
-
+        &:hover {
+          cursor: pointer;
         }
-    }
+      }
 
-    table.category-table {
+      .category {
 
-        td.title {
-            width: 50%;
+        .name {
+          text-transform: capitalize;
+        }
+      }
+
+      .category-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        .line {
+          border: 1px solid #ccc;
         }
 
-        td.amount,
-        td.quantity,
-        td.total,
-        td.line-amount {
-            width: 14%;
+        .total-line {
+          background-color: #ECEFF1;
+
+          td {
+            font-weight: bold;
+          }
         }
 
-        td.line-menu {
-            width: 8%;
-            text-align: right;
+        .total {
+          padding: 15px 4px;
         }
+
+        .title {
+          padding-left: 20px;
+        }
+      }
+
+    }
+  }
+
+  table.category-table {
+
+    td.title {
+      width: 50%;
     }
 
-    [hidden] {
-        display: none !important;
+    td.amount,
+    td.quantity,
+    td.total,
+    td.line-amount {
+      width: 14%;
     }
+
+    td.line-menu {
+      width: 8%;
+      text-align: right;
+    }
+  }
+
+  [hidden] {
+    display: none !important;
+  }
 }

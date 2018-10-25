@@ -1,165 +1,165 @@
 <div id="payrolls-container" [ngClass.gt-xs]="'p-24'">
 
-    <!-- STATUS TOGGLE BUTTONS -->
-    <mat-button-toggle-group [(ngModel)]="status" fxLayout="row" (ngModelChange)="getPayrolls()">
-        <mat-button-toggle fxFlex="1 0 auto" value="all">
-            All
-        </mat-button-toggle>
-        <mat-button-toggle fxFlex="1 0 auto" value="processing" *ngIf="currentUser?.lvl !== 'staff'">
-            Draft
-        </mat-button-toggle>
-        <mat-button-toggle fxFlex="1 0 auto" value="paid">
-            Paid
-        </mat-button-toggle>
-        <mat-button-toggle fxFlex="1 0 auto" value="unpaid">
-            Unpaid
-        </mat-button-toggle>
-        <mat-button-toggle fxFlex="1 0 auto" value="rejected">
-            Rejected
-        </mat-button-toggle>
-    </mat-button-toggle-group>
-    <!-- / STATUS TOGGLE BUTTONS -->
+  <!-- STATUS TOGGLE BUTTONS -->
+  <mat-button-toggle-group [(ngModel)]="status" fxLayout="row" (ngModelChange)="getPayrolls()">
+    <mat-button-toggle fxFlex="1 0 auto" value="all">
+      All
+    </mat-button-toggle>
+    <mat-button-toggle fxFlex="1 0 auto" value="processing" *ngIf="currentUser?.lvl !== 'staff'">
+      Draft
+    </mat-button-toggle>
+    <mat-button-toggle fxFlex="1 0 auto" value="paid">
+      Paid
+    </mat-button-toggle>
+    <mat-button-toggle fxFlex="1 0 auto" value="unpaid">
+      Unpaid
+    </mat-button-toggle>
+    <mat-button-toggle fxFlex="1 0 auto" value="rejected">
+      Rejected
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+  <!-- / STATUS TOGGLE BUTTONS -->
 
-    <div *ngIf="!isAdvancedSearch" class="my-16">
-        <a (click)="isAdvancedSearch = true;" class="link">Advanced Search</a>
+  <div *ngIf="!isAdvancedSearch" class="my-16">
+    <a (click)="isAdvancedSearch = true;" class="link">Advanced Search</a>
+  </div>
+
+  <!-- ADVANCED SEARCH -->
+  <div *ngIf="isAdvancedSearch" class="mt-16">
+    <div fxLayout="row wrap" fxLayoutAlign="start end">
+      <div fxFlex="1 0 auto" *ngIf="currentUser?.lvl !== 'staff'">
+        <app-payroll-search-bar labelBy="name" valueBy="id" avatar="ppic_a" placeholder="Users"
+                                [autocompleteObservable]="usersObservable"
+                                (valueChange)="onSearchChange($event)"></app-payroll-search-bar>
+      </div>
+
+      <mat-form-field class="date-picker mx-12">
+        <mat-label>From</mat-label>
+        <input matInput [matDatepicker]="fromPicker" [(ngModel)]="from" (dateChange)="getPayrolls()">
+        <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="date-picker">
+        <mat-label>To</mat-label>
+        <input matInput [matDatepicker]="toPicker" [(ngModel)]="to" (dateChange)="getPayrolls()">
+        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+        <mat-datepicker #toPicker></mat-datepicker>
+      </mat-form-field>
     </div>
+  </div>
+  <!-- / ADVANCED SEARCH -->
 
-    <!-- ADVANCED SEARCH -->
-    <div *ngIf="isAdvancedSearch" class="mt-16">
-        <div fxLayout="row wrap" fxLayoutAlign="start end">
-            <div fxFlex="1 0 auto" *ngIf="currentUser?.lvl !== 'staff'">
-                <app-payroll-search-bar labelBy="name" valueBy="id" avatar="ppic_a" placeholder="Users"
-                    [autocompleteObservable]="usersObservable"
-                    (valueChange)="onSearchChange($event)"></app-payroll-search-bar>
-            </div>
-
-            <mat-form-field class="date-picker mx-12">
-                <mat-label>From</mat-label>
-                <input matInput [matDatepicker]="fromPicker" [(ngModel)]="from" (dateChange)="getPayrolls()">
-                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                <mat-datepicker #fromPicker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field class="date-picker">
-                <mat-label>To</mat-label>
-                <input matInput [matDatepicker]="toPicker" [(ngModel)]="to" (dateChange)="getPayrolls()">
-                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                <mat-datepicker #toPicker></mat-datepicker>
-            </mat-form-field>
-        </div>
-    </div>
-    <!-- / ADVANCED SEARCH -->
-
-    <!-- BATCH ACTION BUTTONS -->
-    <div class="batch-actions" fxLayout="row wrap" fxLayoutAlign="space-between center">
-        <div>
-            <button mat-raised-button [matMenuTriggerFor]="batchActionsMenu">
+  <!-- BATCH ACTION BUTTONS -->
+  <div class="batch-actions" fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <div>
+      <button mat-raised-button [matMenuTriggerFor]="batchActionsMenu">
                 <span fxLayout="row" fxLayoutAlign="center center">
                     <span>Batch Actions</span>
                     <mat-icon class="s-20">arrow_drop_down</mat-icon>
                 </span>
-            </button>
-            <mat-menu #batchActionsMenu="matMenu">
-                <button mat-menu-item (click)="process()">
-                    Process
-                </button>
-                <button mat-menu-item>
-                    Approve
-                </button>
-                <button mat-menu-item>
-                    Complete
-                </button>
-                <button mat-menu-item>
-                    Reject
-                </button>
-            </mat-menu>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="selectedPayrolls?.length > 0">
-            <button mat-raised-button (click)="open()" class="mr-8">Open</button>
-            <button mat-raised-button (click)="download()">Download</button>
-        </div>
+      </button>
+      <mat-menu #batchActionsMenu="matMenu">
+        <button mat-menu-item (click)="process()">
+          Process
+        </button>
+        <button mat-menu-item>
+          Approve
+        </button>
+        <button mat-menu-item>
+          Complete
+        </button>
+        <button mat-menu-item>
+          Reject
+        </button>
+      </mat-menu>
     </div>
-    <!-- / BATCH ACTION BUTTONS -->
+    <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="selectedPayrolls?.length > 0">
+      <button mat-raised-button (click)="open()" class="mr-8">Open</button>
+      <button mat-raised-button (click)="download()">Download</button>
+    </div>
+  </div>
+  <!-- / BATCH ACTION BUTTONS -->
 
-    <div class="content mt-24">
-        <ngx-datatable class="material striped" [rows]="payrolls" [loadingIndicator]="isLoading" [columnMode]="'force'"
-            [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true" [selected]="selectedPayrolls" [externalPaging]="true" [count]="total"
-            [offset]="pageNumber" [limit]="pageSize" [sortType]="'multi'" (page)="setPage($event)"
-            (sort)="onSort($event)" (select)="onSelect($event)" (activate)="onActivate($event)">
+  <div class="content mt-24">
+    <ngx-datatable class="material striped" [rows]="payrolls" [loadingIndicator]="isLoading" [columnMode]="'force'"
+                   [headerHeight]="48" [footerHeight]="56" [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true" [selected]="selectedPayrolls" [externalPaging]="true" [count]="total"
+                   [offset]="pageNumber" [limit]="pageSize" [sortType]="'multi'" (page)="setPage($event)"
+                   (sort)="onSort($event)" (select)="onSelect($event)" (activate)="onActivate($event)">
 
-            <!-- CHECKBOX -->
-            <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
-                [resizeable]="false" [headerCheckboxable]="true">
+      <!-- CHECKBOX -->
+      <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                            [resizeable]="false" [headerCheckboxable]="true">
 
-                <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
-                    <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
-                </ng-template>
+        <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+          <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+        </ng-template>
 
-                <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
-                    <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
-                </ng-template>
-            </ngx-datatable-column>
-            <!-- / CHECKBOX -->
+        <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+          <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+        </ng-template>
+      </ngx-datatable-column>
+      <!-- / CHECKBOX -->
 
-            <ngx-datatable-column name="Date" prop="created_at" [sortable]="true" [canAutoResize]="true">
-                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    {{value | date: 'mediumDate'}}
-                </ng-template>
-            </ngx-datatable-column>
+      <ngx-datatable-column name="Date" prop="created_at" [sortable]="true" [canAutoResize]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          {{value | date: 'mediumDate'}}
+        </ng-template>
+      </ngx-datatable-column>
 
-            <ngx-datatable-column name="Id" prop="display" [sortable]="false" [canAutoResize]="true">
-            </ngx-datatable-column>
+      <ngx-datatable-column name="Id" prop="display" [sortable]="false" [canAutoResize]="true">
+      </ngx-datatable-column>
 
-            <ngx-datatable-column name="Staff" prop="name" [sortable]="false" [canAutoResize]="true" *ngIf="currentUser?.lvl !== 'staff'">
-            </ngx-datatable-column>
+      <ngx-datatable-column name="Staff" prop="name" [sortable]="false" [canAutoResize]="true" *ngIf="currentUser?.lvl !== 'staff'">
+      </ngx-datatable-column>
 
-            <ngx-datatable-column name="Status" prop="status" [sortable]="false" [canAutoResize]="true">
-            </ngx-datatable-column>
+      <ngx-datatable-column name="Status" prop="status" [sortable]="false" [canAutoResize]="true">
+      </ngx-datatable-column>
 
-            <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false" *ngIf="currentUser?.lvl !== 'staff'">
-                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    <button mat-raised-button [matMenuTriggerFor]="actionMenu" (click)="$event.stopPropagation()">
+      <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false" *ngIf="currentUser?.lvl !== 'staff'">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <button mat-raised-button [matMenuTriggerFor]="actionMenu" (click)="$event.stopPropagation()">
                         <span fxLayout="row" fxLayoutAlign="center center">
                             <span>Actions</span>
                             <mat-icon class="s-20">arrow_drop_down</mat-icon>
                         </span>
-                    </button>
-                    <mat-menu #actionMenu="matMenu">
-                        <button mat-menu-item *ngFor="let action of value" (click)="doAction(row, action)">
-                            {{action.label}}
-                        </button>
-                    </mat-menu>
-                </ng-template>
-            </ngx-datatable-column>
+          </button>
+          <mat-menu #actionMenu="matMenu">
+            <button mat-menu-item *ngFor="let action of value" (click)="doAction(row, action)">
+              {{action.label}}
+            </button>
+          </mat-menu>
+        </ng-template>
+      </ngx-datatable-column>
 
-            <ngx-datatable-column name="Amount" prop="total" [sortable]="true" [canAutoResize]="true">
-                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                    <span [matTooltip]="row.currency">{{row.currency_symbol}}</span>{{value}}
-                </ng-template>
-            </ngx-datatable-column>
+      <ngx-datatable-column name="Amount" prop="total" [sortable]="true" [canAutoResize]="true">
+        <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+          <span [matTooltip]="row.currency">{{row.currency_symbol}}</span>{{value}}
+        </ng-template>
+      </ngx-datatable-column>
 
-            <ngx-datatable-footer>
-                <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
-                    let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset">
-                    <div class="page-count h-60">
-                        Show
-                        <mat-form-field class="mx-8">
-                            <mat-select (change)="onPageLengthChange($event)" [value]="20">
-                                <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        entries
-                        <span class="mx-48">
+      <ngx-datatable-footer>
+        <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize"
+                     let-selectedCount="selectedCount" let-curPage="curPage" let-offset="offset">
+          <div class="page-count h-60">
+            Show
+            <mat-form-field class="mx-8">
+              <mat-select (change)="onPageLengthChange($event)" [value]="20">
+                <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            entries
+            <span class="mx-48">
                             Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of {{rowCount}} entries
                         </span>
-                    </div>
-                    <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'"
-                        [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
-                        [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
-                        (change)="setPage($event)">
-                    </datatable-pager>
-                </ng-template>
-            </ngx-datatable-footer>
-        </ngx-datatable>
-    </div>
+          </div>
+          <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'"
+                           [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+                           [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
+                           (change)="setPage($event)">
+          </datatable-pager>
+        </ng-template>
+      </ngx-datatable-footer>
+    </ngx-datatable>
+  </div>
 </div>
