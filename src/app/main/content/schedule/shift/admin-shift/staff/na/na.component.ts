@@ -196,7 +196,11 @@ export class AdminShiftStaffNAComponent implements OnInit {
 
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.scheduleService.assignStaffsToRole([staff.user_id], this.roleId, statusId)
+        const params = {
+          user_ids: [staff.user_id],
+          staff_status_id: statusId
+        };
+        this.scheduleService.assignStaffsToRole(this.roleId, params)
           .subscribe(_ => {
             this.scheduleService.getRoleStaffs(this.roleId, Query.Na)
               .subscribe(res => {

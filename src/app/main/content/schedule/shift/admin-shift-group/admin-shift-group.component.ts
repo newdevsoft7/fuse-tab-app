@@ -80,11 +80,11 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
 
     // add Users to Role
     this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
-      ({ shiftId, userIds, role }) => {
+      ({ shiftId, userIds, filters, role, selectAll }) => {
         const index = this.shifts.findIndex(v => v.id === shiftId);
         if (index > -1) {
           this.selectedTabIndex = 0; // Set staff tab active
-          this.staffTab.selectStaffs({ shiftId, userIds, role });
+          this.staffTab.selectStaffs({ shiftId, userIds, filters, role, selectAll });
         }
       });
 
@@ -110,7 +110,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             const role = { id: roleId };
             switch (action) {
               case 'select':
-                this.staffTab.selectStaffs({ shiftId, userIds, role });
+                this.staffTab.selectStaffs({ shiftId, userIds, role, filters: null, selectAll: false });
                 break;
               case 'apply':
                 this.staffTab.applyStaffs({ shiftId, userIds, role });
@@ -136,7 +136,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             if (roles.length === 0) { return; }
             switch (action) {
               case 'select':
-                roles.forEach(role => this.staffTab.selectStaffs({ shiftId: role.shiftId, userIds, role }))
+                roles.forEach(role => this.staffTab.selectStaffs({ shiftId: role.shiftId, userIds, role, filters: null, selectAll: false }))
                 break;
               case 'apply':
                 roles.forEach(role => this.staffTab.applyStaffs({ shiftId: role.shiftId, userIds, role }))

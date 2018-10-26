@@ -205,12 +205,18 @@ export class ScheduleService {
     return this.http.put(url, {}).catch(this.handleError);
   }
 
-  assignStaffsToRole(userIds, roleId, staffStatusId): Observable<any> {
-    const url = `${BASE_URL}/role/${roleId}/assign`;
-    return this.http.post(url, {
-      user_ids: userIds,
-      staff_status_id: staffStatusId
-    }).catch(this.handleError);
+  assignStaffsToRole(
+    role_id: number | string,
+    params: {
+      user_ids?: number[],
+      staff_status_id: string,
+      outsource_company_id?: number,
+      filters?: string[],
+      edit_message?: boolean
+    }
+  ): Observable<any> {
+    const url = `${BASE_URL}/role/${role_id}/assign`;
+    return this.http.post(url, params).catch(this.handleError);
   }
 
   inviteStaffsToRole(roleId, body: { user_ids?, filters? }): Observable<any> {

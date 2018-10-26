@@ -93,7 +93,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     { value: 1, label: 'Admin & Client' }
   ];
 
-  usersToRoleSubscription: Subscription;
   deleteRoleSubscrpition: Subscription;
   userToShiftScription: Subscription;
 
@@ -111,25 +110,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     this.currentUser = this.tokenStorage.getUser();
     this.settings = this.tokenStorage.getSettings();
 
-    // Add Users to Role
-    this.usersToRoleSubscription = this.actionService.usersToRole.subscribe(
-      ({ userIds, role, section }) => {
-        if (this.shift.id === role.shift_id) {
-          const staffStatusId = mapSectionToStaffStatus(section);
-          this.spinner.show();
-          this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
-            .subscribe(() => {
-              this.spinner.hide();
-              this.refreshTabByRole(role, section);
-              this.updateStaffsCount(role.id);
-            }, () => {
-              this.spinner.hide();
-              this.updateStaffsCount(role.id);
-              this.refreshTabByRole(role, section);
-              this.toastr.error('Error!');
-            });
-        }
-      });
     this.deleteRoleSubscrpition = this.actionService.deleteRole$.subscribe((roleIds: any[]) => {
       this.roles = this.roles.filter(r => roleIds.indexOf(r.id) < 0);
     });
@@ -155,7 +135,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             const { role, action } = result;
             switch (action) {
               case 'select':
-                this.selectStaffs({ userIds: [user.id], role });
+                this.selectStaffs({ userIds: [user.id], role, selectAll: false, filters: null });
                 break;
               case 'apply':
                 this.applyStaffs({ userIds: [user.id], role });
@@ -221,7 +201,6 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.usersToRoleSubscription.unsubscribe();
     this.deleteRoleSubscrpition.unsubscribe();
     this.userToShiftScription.unsubscribe();
   }
@@ -255,14 +234,16 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   inviteStaffs({ userIds, filters, role, inviteAll }) {
-    const body: any = {};
+    const params: any = {
+      staff_status_id: STAFF_STATUS_INVITED
+    };
     if (inviteAll) {
-      body.filters = filters;
+      params.filters = filters;
     } else {
-      body.user_ids = userIds;
+      params.user_ids = userIds;
     }
     this.spinner.show();
-    this.scheduleService.inviteStaffsToRole(role.id, body).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Invited);
@@ -276,11 +257,17 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
       });
   }
 
-  selectStaffs({ userIds, role }) {
-    const body: any = {};
-    body.user_ids = userIds;
+  selectStaffs({ userIds, filters, role, selectAll }) {
+    const params: any = {
+      staff_status_id: STAFF_STATUS_SELECTED
+    };
+    if (selectAll) {
+      params.filters = filters;
+    } else {
+      params.user_ids = userIds;
+    }
     this.spinner.show();
-    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_SELECTED).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Selected);
@@ -295,10 +282,12 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   standByStaffs({ userIds, role }) {
-    const body: any = {};
-    body.user_ids = userIds;
+    const params = {
+      staff_status_id: STAFF_STATUS_STANDBY,
+      user_ids: userIds
+    };
     this.spinner.show();
-    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_STANDBY).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Standby);
@@ -313,10 +302,12 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   applyStaffs({ userIds, role }) {
-    const body: any = {};
-    body.user_ids = userIds;
+    const params = {
+      staff_status_id: STAFF_STATUS_APPLIED,
+      user_ids: userIds
+    };
     this.spinner.show();
-    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_APPLIED).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Applicants);

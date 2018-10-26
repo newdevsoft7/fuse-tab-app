@@ -16,7 +16,7 @@
         </mat-form-field>
       </div>
 
-      <mat-checkbox #editMessage [hidden]="environment.production">Edit Message</mat-checkbox>
+      <mat-checkbox #editMessage>Edit Message</mat-checkbox>
 
       <div>
         <button mat-raised-button color="accent" (click)="invite(editMessage.checked)">
@@ -50,12 +50,19 @@
         </mat-form-field>
       </div>
 
-      <mat-checkbox #editMessage [hidden]="environment.production">Edit Message</mat-checkbox>
+      <mat-checkbox #editMessage>Edit Message</mat-checkbox>
 
       <div>
         <button mat-raised-button color="accent" (click)="select(editMessage.checked)">
-          <ng-container>Select</ng-container>
+          <ng-container>{{data.select_all ? 'All' : 'Selected'}}</ng-container>
         </button>
+        <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" class="btn-menu px-4">
+          <mat-icon class="white-fg">expand_more</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="data.select_all = true">All</button>
+          <button mat-menu-item (click)="data.select_all = false">Selected</button>
+        </mat-menu>
       </div>
 
       <button mat-icon-button fxFlex="0 1 auto" (click)="removeSelectBar()">
@@ -69,7 +76,7 @@
       [filters]="filters"
       (filterChange)="onFiltersChange($event)"
       [selectedTypeFilter]="selectedTypeFilter"
-      [disableTypeFilter]="data.invite"
+      [disableTypeFilter]="data.invite || data.select"
       (typeFilterChange)="onTypeFilterChange($event)">
     </app-users-search-bar>
     <!-- / SEARCHBAR -->

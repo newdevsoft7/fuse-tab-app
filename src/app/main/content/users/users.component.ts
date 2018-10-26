@@ -302,17 +302,6 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  addUsersToRole() {
-    if (!this.selectedUsers.length) { return false; }
-    // TODO
-    const userIds = this.selectedUsers.map(user => user.id);
-    const section = this.data.role.section;
-    const role = this.data.role;
-
-    this.actionService.addUsersToRole({ userIds, section, role });
-    this.tabService.closeTab(USERS_TAB);
-  }
-
   onActivate(evt) {
   }
 
@@ -387,29 +376,44 @@ export class UsersComponent implements OnInit {
     const inviteAll = this.data.invite_all;
     if (!this.data.selectedRoleId) { return; }
     if ((this.data.invite_all && this.total === 0) || (!this.data.invite_all && _.isEmpty(userIds))) { return; }
-    if (messaging) {
-      this.openMessageTab(true);
-    } else {
-      // Invite Staffs
-      this.actionService.inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll });
-    }
-    this.removeInvitationBar();
+    const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = `Really invite ${inviteAll ? this.total : userIds.length} users?`;
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (!result) { return; }
+      if (messaging) {
+        this.openMessageTab(true);
+      } else {
+        // Invite Staffs
+        this.actionService.inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll });
+      }
+      this.removeInvitationBar();
+    });
   }
 
   select(messaging: boolean) {
     const shiftId = this.data.shiftId;
+    const filters = this.filters.map(v => v.id);
     const role = { id: this.data.selectedRoleId };
     const userIds = this.selectedUsers.map(v => v.id);
+    const selectAll = this.data.select_all;
     if (!this.data.selectedRoleId) { return; }
-    if (this.total === 0 || _.isEmpty(userIds)) { return; }
-
-    if (messaging) {
-      this.openMessageTab();
-    } else {
-      // select Staffs
-      this.actionService.selectUsersToRole({ shiftId, userIds, role });
-    }
-    this.removeSelectBar();
+    if ((this.data.select_all && this.total === 0) || (!this.data.select_all && _.isEmpty(userIds))) { return; }
+    const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = `Really select ${selectAll ? this.total : userIds.length} users?`;
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (!result) { return; }
+      if (messaging) {
+        this.openMessageTab();
+      } else {
+        // select Staffs
+        this.actionService.selectUsersToRole({ shiftId, userIds, filters, role, selectAll });
+      }
+      this.removeSelectBar();
+    });
   }
 
   async onRoleChange() {

@@ -6,8 +6,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class ActionService {
 
-  private _usersToShift = new Subject();
-  private _usersToRole = new Subject();
   private _usersToInvite = new Subject();
   private _usersToSelect = new Subject();
   userToShift = new Subject();
@@ -27,14 +25,6 @@ export class ActionService {
 
   constructor() { }
 
-  addUsersToRole({ userIds, role, section }) {
-    this._usersToRole.next({ userIds, role, section });
-  }
-
-  get usersToRole() {
-    return this._usersToRole.asObservable();
-  }
-
   inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll }) {
     this._usersToInvite.next({ shiftId, userIds, filters, role, inviteAll });
   }
@@ -43,22 +33,13 @@ export class ActionService {
     return this._usersToInvite.asObservable();
   }
 
-  selectUsersToRole({ shiftId, userIds, role }) {
-    this._usersToSelect.next({ shiftId, userIds, role });
+  selectUsersToRole({ shiftId, userIds, filters, role, selectAll }) {
+    this._usersToSelect.next({ shiftId, userIds, filters, role, selectAll });
   }
 
   get usersToSelect() {
     return this._usersToSelect.asObservable();
   }
-
-  addUsersToShift({ userIds, shift }) {
-    this._usersToShift.next({ userIds, shift });
-  }
-
-  get usersToShift() {
-    return this._usersToShift.asObservable();
-  }
-
 
   addShiftsToEdit(shifts) {
     this._shiftsToEdit.next(shifts);

@@ -82,26 +82,6 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
   ) {
     this.currentUser = this.tokenStorage.getUser();
 
-    this.usersToRoleSubscription = this.actionService.usersToRole.subscribe(
-      ({ userIds, role, section }) => {
-        const index = this.shifts.findIndex(v => v.id === role.shift_id);
-        if (index > -1) {
-          const staffStatusId = mapSectionToStaffStatus(section);
-          this.spinner.show();
-          this.scheduleService.assignStaffsToRole(userIds, role.id, staffStatusId)
-            .subscribe(() => {
-              this.spinner.hide();
-              this.refreshTabByRole(role, section);
-              this.updateStaffsCount(role);
-            }, () => {
-              this.spinner.hide();
-              this.updateStaffsCount(role);
-              this.refreshTabByRole(role, section);
-              this.toastr.error('Error!');
-            });
-        }
-      });
-
     this.deleteRoleSubscrpition = this.actionService.deleteRole$.subscribe((roleIds: any[]) => {
       this.shifts.forEach((shift, idx) => {
         this.shifts[idx].shift_roles = shift.shift_roles.filter(r => roleIds.indexOf(r.id) < 0);
@@ -225,7 +205,6 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.usersToRoleSubscription.unsubscribe();
     this.deleteRoleSubscrpition.unsubscribe();
   }
 
@@ -527,15 +506,17 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
   }
 
   inviteStaffs({ shiftId, userIds, filters, role, inviteAll }) {
-    const body: any = {};
+    const params: any = {
+      staff_status_id: STAFF_STATUS_INVITED
+    };
     if (inviteAll) {
-      body.filters = filters;
+      params.filters = filters;
     } else {
-      body.user_ids = userIds;
+      params.user_ids = userIds;
     }
     role = { ...role, shift_id: shiftId };
     this.spinner.show();
-    this.scheduleService.inviteStaffsToRole(role.id, body).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Invited);
@@ -550,12 +531,18 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
       });
   }
 
-  selectStaffs({ shiftId, userIds, role }) {
-    const body: any = {};
-    body.user_ids = userIds;
+  selectStaffs({ shiftId, userIds, filters, role, selectAll }) {
+    const params: any = {
+      staff_status_id: STAFF_STATUS_SELECTED
+    };
+    if (selectAll) {
+      params.filters = filters;
+    } else {
+      params.user_ids = userIds;
+    }
     role = { ...role, shift_id: shiftId };
     this.spinner.show();
-    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_SELECTED).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Selected);
@@ -571,11 +558,13 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
   }
 
   standByStaffs({ shiftId, userIds, role }) {
-    const body: any = {};
-    body.user_ids = userIds;
+    const params = {
+      user_ids: userIds,
+      staff_status_id: STAFF_STATUS_STANDBY
+    };
     role = { ...role, shift_id: shiftId };
     this.spinner.show();
-    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_STANDBY).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Standby);
@@ -591,11 +580,13 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
   }
 
   applyStaffs({ shiftId, userIds, role }) {
-    const body: any = {};
-    body.user_ids = userIds;
+    const params = {
+      user_ids: userIds,
+      staff_status_id: STAFF_STATUS_APPLIED
+    };
     role = { ...role, shift_id: shiftId };
     this.spinner.show();
-    this.scheduleService.assignStaffsToRole(userIds, role.id, STAFF_STATUS_APPLIED).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
       () => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Applicants);

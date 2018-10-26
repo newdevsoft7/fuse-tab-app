@@ -85,10 +85,10 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
       });
     // add Users to Role
     this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
-      ({ shiftId, userIds, role }) => {
+      ({ shiftId, userIds, filters, role, selectAll }) => {
         if (this.shift.id === shiftId) {
           this.selectedTabIndex = 0; // Set staff tab active
-          this.staffTab.selectStaffs({ userIds, role });
+          this.staffTab.selectStaffs({ userIds, filters, role, selectAll });
         }
       });
   }
