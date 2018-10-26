@@ -77,18 +77,18 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
   ) {
     // Invite Users to Role
     this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
-      ({ shiftId, userIds, filters, role, inviteAll }) => {
+      ({ shiftId, userIds, filters, role, inviteAll , messaging }) => {
         if (this.shift.id === shiftId) {
           this.selectedTabIndex = 0; // Set staff tab active
-          this.staffTab.inviteStaffs({ userIds, filters, role, inviteAll });
+          this.staffTab.inviteStaffs({ userIds, filters, role, inviteAll, messaging });
         }
       });
     // add Users to Role
     this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
-      ({ shiftId, userIds, filters, role, selectAll }) => {
+      ({ shiftId, userIds, filters, role, selectAll, messaging }) => {
         if (this.shift.id === shiftId) {
           this.selectedTabIndex = 0; // Set staff tab active
-          this.staffTab.selectStaffs({ userIds, filters, role, selectAll });
+          this.staffTab.selectStaffs({ userIds, filters, role, selectAll, messaging });
         }
       });
   }

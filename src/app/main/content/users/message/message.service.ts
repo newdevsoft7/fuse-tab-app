@@ -36,8 +36,16 @@ export class MessageService {
     return this.http.post(url, formData).toPromise();
   }
 
-  getTemplate(templateId: number): Promise<any> {
-    const url = `${environment.apiUrl}/message/template/${templateId}`;
+  getTemplate(
+    templateId: number,
+    options?: {
+      shiftRoleId: number,
+    }
+  ): Promise<any> {
+    let url = `${environment.apiUrl}/message/template/${templateId}`;
+    if (options) {
+      url = `${url}/${options.shiftRoleId}`;
+    }
     return this.http.get(url).toPromise();
   }
 

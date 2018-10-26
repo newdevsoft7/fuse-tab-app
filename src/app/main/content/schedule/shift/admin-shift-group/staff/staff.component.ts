@@ -18,6 +18,7 @@ import {
 } from '../../../../../../constants/staff-status';
 import { Tab } from '../../../../../tab/tab';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
+import { TAB } from '../../../../../../constants/tab';
 
 
 enum Section {
@@ -505,9 +506,10 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
     this.tabService.openTab(tab);
   }
 
-  inviteStaffs({ shiftId, userIds, filters, role, inviteAll }) {
+  inviteStaffs({ shiftId, userIds, filters, role, inviteAll, messaging }) {
     const params: any = {
-      staff_status_id: STAFF_STATUS_INVITED
+      staff_status_id: STAFF_STATUS_INVITED,
+      edit_message: messaging
     };
     if (inviteAll) {
       params.filters = filters;
@@ -517,13 +519,14 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
     role = { ...role, shift_id: shiftId };
     this.spinner.show();
     this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
-      () => {
+      ({ to, message_template }) => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Invited);
         this.updateStaffsCount(role);
         const roles = this.shifts.find(v => v.id === role.shift_id).shift_roles;
         const index = roles.findIndex(v => v.id === role.id);
         roles[index].section = Section.Invited;
+        if (messaging) { this.openMessageTab(to, message_template, role.id); }
       },
       err => {
         this.spinner.hide();
@@ -531,9 +534,10 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
       });
   }
 
-  selectStaffs({ shiftId, userIds, filters, role, selectAll }) {
+  selectStaffs({ shiftId, userIds, filters, role, selectAll, messaging }) {
     const params: any = {
-      staff_status_id: STAFF_STATUS_SELECTED
+      staff_status_id: STAFF_STATUS_SELECTED,
+      edit_message: messaging
     };
     if (selectAll) {
       params.filters = filters;
@@ -543,13 +547,14 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
     role = { ...role, shift_id: shiftId };
     this.spinner.show();
     this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
-      () => {
+      ({ to, message_template }) => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Selected);
         this.updateStaffsCount(role);
         const roles = this.shifts.find(v => v.id === role.shift_id).shift_roles;
         const index = roles.findIndex(v => v.id === role.id);
         roles[index].section = Section.Selected;
+        if (messaging) { this.openMessageTab(to, message_template, role.id); }
       },
       err => {
         this.spinner.hide();
@@ -601,26 +606,12 @@ export class GroupStaffComponent implements OnInit, OnDestroy {
       });
   }
 
-}
-
-function mapSectionToStaffStatus(section) {
-  switch (section) {
-    case Section.Selected:
-      return STAFF_STATUS_SELECTED;
-
-    case Section.Standby:
-      return STAFF_STATUS_STANDBY;
-
-    case Section.Applicants:
-      return STAFF_STATUS_APPLIED;
-
-    case Section.Invited:
-      return STAFF_STATUS_INVITED;
-
-    case Section.NA:
-      return STAFF_STATUS_REJECTED;
-
-    default:
-      return '';
+  openMessageTab(recipients, messageTemplate, roleId) {
+    const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+    tab.data.recipients = recipients;
+    tab.data.template =  messageTemplate;
+    tab.data.shiftRoleId = roleId;
+    this.tabService.openTab(tab);
   }
+
 }

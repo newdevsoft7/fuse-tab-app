@@ -37,6 +37,7 @@ import { ChatMessageDialogComponent } from './dialogs/chat-message-dialog/chat-m
 import { UsersChatService } from '../../../../users/chat/chat.service';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 import { AddUserToShiftDialogComponent } from './dialogs/add-user-to-shift-dialog/add-user-to-shift-dialog.component';
+import {TAB} from '../../../../../../constants/tab';
 
 export enum Section {
   Selected = 0,
@@ -135,7 +136,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
             const { role, action } = result;
             switch (action) {
               case 'select':
-                this.selectStaffs({ userIds: [user.id], role, selectAll: false, filters: null });
+                this.selectStaffs({ userIds: [user.id], role, selectAll: false, filters: null, messaging: false });
                 break;
               case 'apply':
                 this.applyStaffs({ userIds: [user.id], role });
@@ -144,7 +145,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
                 this.standByStaffs({ userIds: [user.id], role });
                 break;
               case 'invite':
-                this.inviteStaffs({ userIds: [user.id], role, inviteAll: false, filters: null });
+                this.inviteStaffs({ userIds: [user.id], role, inviteAll: false, filters: null, messaging: false });
                 break;
               default:
                 break;
@@ -233,9 +234,10 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     this.refreshTabByRole(role, selectedTab);
   }
 
-  inviteStaffs({ userIds, filters, role, inviteAll }) {
+  inviteStaffs({ userIds, filters, role, inviteAll, messaging }) {
     const params: any = {
-      staff_status_id: STAFF_STATUS_INVITED
+      staff_status_id: STAFF_STATUS_INVITED,
+      edit_message: messaging
     };
     if (inviteAll) {
       params.filters = filters;
@@ -244,12 +246,13 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
     this.spinner.show();
     this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
-      () => {
+      ({ to, message_template }) => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Invited);
         this.updateStaffsCount(role.id);
         const index = this.roles.findIndex(v => v.id === role.id);
         this.roles[index].section = Section.Invited;
+        if (messaging) { this.openMessageTab(to, message_template, role.id); }
       },
       err => {
         this.spinner.hide();
@@ -257,9 +260,10 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
       });
   }
 
-  selectStaffs({ userIds, filters, role, selectAll }) {
+  selectStaffs({ userIds, filters, role, selectAll, messaging }) {
     const params: any = {
-      staff_status_id: STAFF_STATUS_SELECTED
+      staff_status_id: STAFF_STATUS_SELECTED,
+      edit_message: messaging
     };
     if (selectAll) {
       params.filters = filters;
@@ -268,12 +272,13 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
     this.spinner.show();
     this.scheduleService.assignStaffsToRole(role.id, params).subscribe(
-      () => {
+      ({ to, message_template }) => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Selected);
         this.updateStaffsCount(role.id);
         const index = this.roles.findIndex(v => v.id === role.id);
         this.roles[index].section = Section.Selected;
+        if (messaging) { this.openMessageTab(to, message_template, role.id); }
       },
       err => {
         this.spinner.hide();
@@ -687,26 +692,12 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => { });
   }
 
-}
-
-function mapSectionToStaffStatus(section) {
-  switch (section) {
-    case Section.Selected:
-      return STAFF_STATUS_SELECTED;
-
-    case Section.Standby:
-      return STAFF_STATUS_STANDBY;
-
-    case Section.Applicants:
-      return STAFF_STATUS_APPLIED;
-
-    case Section.Invited:
-      return STAFF_STATUS_INVITED;
-
-    case Section.NA:
-      return STAFF_STATUS_REJECTED;
-
-    default:
-      return '';
+  openMessageTab(recipients, messageTemplate, roleId) {
+    const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+    tab.data.recipients = recipients;
+    tab.data.template =  messageTemplate;
+    tab.data.shiftRoleId = roleId;
+    this.tabService.openTab(tab);
   }
+
 }

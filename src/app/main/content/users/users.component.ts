@@ -217,6 +217,10 @@ export class UsersComponent implements OnInit {
     if (this.data.invite && selected.length > 0) {
       this.data.invite_all = false;
     }
+
+    if (this.data.select && selected.length > 0) {
+      this.data.select_all = false;
+    }
   }
 
   toggleSelect() {
@@ -382,12 +386,16 @@ export class UsersComponent implements OnInit {
     dialogRef.componentInstance.confirmMessage = `Really invite ${inviteAll ? this.total : userIds.length} users?`;
     dialogRef.afterClosed().subscribe(async (result) => {
       if (!result) { return; }
-      if (messaging) {
-        this.openMessageTab(true);
-      } else {
-        // Invite Staffs
-        this.actionService.inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll });
-      }
+      this.actionService.inviteUsersToRole(
+        {
+          shiftId,
+          userIds,
+          filters,
+          role,
+          inviteAll,
+          messaging
+        }
+      );
       this.removeInvitationBar();
     });
   }
@@ -406,12 +414,16 @@ export class UsersComponent implements OnInit {
     dialogRef.componentInstance.confirmMessage = `Really select ${selectAll ? this.total : userIds.length} users?`;
     dialogRef.afterClosed().subscribe(async (result) => {
       if (!result) { return; }
-      if (messaging) {
-        this.openMessageTab();
-      } else {
-        // select Staffs
-        this.actionService.selectUsersToRole({ shiftId, userIds, filters, role, selectAll });
-      }
+      this.actionService.selectUsersToRole(
+        {
+          shiftId,
+          userIds,
+          filters,
+          role,
+          selectAll,
+          messaging
+        }
+      );
       this.removeSelectBar();
     });
   }
@@ -430,24 +442,6 @@ export class UsersComponent implements OnInit {
   removeSelectBar() {
     this.data.select = false;
     this.resetFilters();
-  }
-
-  openMessageTab(isInvited: boolean = false) {
-    let users: any[];
-    if (isInvited) {
-      users = this.data.invite_all ? this.users : this.selectedUsers;
-    } else {
-      users = this.selectedUsers;
-    }
-    if (users.length < 1) { return; }
-    const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
-    tab.data.recipients = users.map(v => {
-      return {
-        id: v.id,
-        text: `${v.fname} ${v.lname}`
-      };
-    });
-    this.tabService.openTab(tab);
   }
 
   private resetFilters() {

@@ -70,21 +70,21 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
 
     // Invite Users to Role
     this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
-      ({ shiftId, userIds, filters, role, inviteAll }) => {
+      ({ shiftId, userIds, filters, role, inviteAll, messaging }) => {
         const index = this.shifts.findIndex(v => v.id === shiftId);
         if (index > -1) {
           this.selectedTabIndex = 0; // Set staff tab active
-          this.staffTab.inviteStaffs({ shiftId, userIds, filters, role, inviteAll });
+          this.staffTab.inviteStaffs({ shiftId, userIds, filters, role, inviteAll, messaging });
         }
       });
 
     // add Users to Role
     this.usersToSelectSubscription = this.actionService.usersToSelect.subscribe(
-      ({ shiftId, userIds, filters, role, selectAll }) => {
+      ({ shiftId, userIds, filters, role, selectAll, messaging }) => {
         const index = this.shifts.findIndex(v => v.id === shiftId);
         if (index > -1) {
           this.selectedTabIndex = 0; // Set staff tab active
-          this.staffTab.selectStaffs({ shiftId, userIds, filters, role, selectAll });
+          this.staffTab.selectStaffs({ shiftId, userIds, filters, role, selectAll, messaging });
         }
       });
 
@@ -110,7 +110,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             const role = { id: roleId };
             switch (action) {
               case 'select':
-                this.staffTab.selectStaffs({ shiftId, userIds, role, filters: null, selectAll: false });
+                this.staffTab.selectStaffs({ shiftId, userIds, role, filters: null, selectAll: false, messaging: false });
                 break;
               case 'apply':
                 this.staffTab.applyStaffs({ shiftId, userIds, role });
@@ -119,7 +119,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
                 this.staffTab.standByStaffs({ shiftId, userIds, role});
                 break;
               case 'invite':
-                this.staffTab.inviteStaffs({ shiftId, userIds, role, filters: null, inviteAll: false });
+                this.staffTab.inviteStaffs({ shiftId, userIds, role, filters: null, inviteAll: false, messaging: false });
                 break;
               default:
                 break;
@@ -136,7 +136,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
             if (roles.length === 0) { return; }
             switch (action) {
               case 'select':
-                roles.forEach(role => this.staffTab.selectStaffs({ shiftId: role.shiftId, userIds, role, filters: null, selectAll: false }))
+                roles.forEach(role => this.staffTab.selectStaffs({ shiftId: role.shiftId, userIds, role, filters: null, selectAll: false, messaging: false }))
                 break;
               case 'apply':
                 roles.forEach(role => this.staffTab.applyStaffs({ shiftId: role.shiftId, userIds, role }))
@@ -145,7 +145,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
                 roles.forEach(role => this.staffTab.standByStaffs({ shiftId: role.shiftId, userIds, role }))
                 break;
               case 'invite':
-                roles.forEach(role => this.staffTab.inviteStaffs({ shiftId: role.shiftId, userIds, role, filters: null, inviteAll: false }))
+                roles.forEach(role => this.staffTab.inviteStaffs({ shiftId: role.shiftId, userIds, role, filters: null, inviteAll: false, messaging: false }))
                 break;
               default:
                 break;

@@ -60,7 +60,11 @@ export class MessageComponent implements OnInit, AfterViewInit {
       this.onRecipientFiltersChanged(this.message.recipients);
     }
     if (this.props.template) {
-      this.selectTemplate(this.props.template);
+      if (this.props.shiftRoleId !== null) {
+        this.selectTemplate(this.props.template, { shiftRoleId: this.props.shiftRoleId });
+      } else {
+        this.selectTemplate(this.props.template);
+      }
     }
     this.recipientsFiltersObservable = (text: string): Observable<any> => {
       if (text) {
@@ -91,6 +95,7 @@ export class MessageComponent implements OnInit, AfterViewInit {
     this.props.id = this.data.id;
     this.props.recipients = this.data.recipients;
     this.props.template = this.data.template;
+    this.props.shiftRoleId = this.data.shiftRoleId;
 
     this.init();
 
@@ -196,15 +201,15 @@ export class MessageComponent implements OnInit, AfterViewInit {
     return template? template.tname : '';
   }
 
-  async selectTemplate(event: any): Promise<any> {
+  async selectTemplate(event: any, options?): Promise<any> {
     try {
       let id;
       if (event instanceof MatAutocompleteSelectedEvent) {
-        id = event.option.value.id
+        id = event.option.value.id;
       } else {
         id = event.id;
       }
-      const template = await this.messageService.getTemplate(id);
+      const template = await this.messageService.getTemplate(id, options);
       this.attachmentsSelector.value = [];
       for (let i = 0; i < template.attachments.length; i++) {
         this.file = { id: template.attachments[i].id, text: template.attachments[i].oname }

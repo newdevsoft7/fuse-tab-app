@@ -25,16 +25,16 @@ export class ActionService {
 
   constructor() { }
 
-  inviteUsersToRole({ shiftId, userIds, filters, role, inviteAll }) {
-    this._usersToInvite.next({ shiftId, userIds, filters, role, inviteAll });
+  inviteUsersToRole(payload: { shiftId, userIds, filters, role, inviteAll, messaging }) {
+    this._usersToInvite.next(payload);
   }
 
   get usersToInvite() {
     return this._usersToInvite.asObservable();
   }
 
-  selectUsersToRole({ shiftId, userIds, filters, role, selectAll }) {
-    this._usersToSelect.next({ shiftId, userIds, filters, role, selectAll });
+  selectUsersToRole(payload: { shiftId, userIds, filters, role, selectAll, messaging }) {
+    this._usersToSelect.next(payload);
   }
 
   get usersToSelect() {
