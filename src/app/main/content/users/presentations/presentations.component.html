@@ -59,7 +59,7 @@
             
             <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center" fxLayoutAlign.xs="start" fxLayoutGap.gt-xs="12px" class="mb-16">
                 <mat-form-field fxFlex="1 0 auto">
-                    <mat-select placeholder="Showcase Template" (selectionChange)="onShowcaseChange($event)" 
+                    <mat-select placeholder="Presentation Template" (selectionChange)="onShowcaseChange($event)" 
                         [value]="presentationData.presentation.showcase_template_id">
                         <mat-option *ngFor="let option of presentationData.showcase_templates" [value]="option.id">
                             {{option.name}}
