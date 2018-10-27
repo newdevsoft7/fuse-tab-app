@@ -4,6 +4,7 @@ import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../core/modules/shared.module';
 import { SCCalendarModule } from '../../../core/components/sc-calendar/sc-calendar.module';
+import { ActivityLogModule } from '../activity-log/activity-log.module';
 import { ScheduleComponent } from './schedule.component';
 import { ScheduleCalendarComponent } from './calendar/calendar.component';
 import { CalendarEventFormDialogComponent } from './calendar/event-form/event-form.component';
@@ -109,7 +110,7 @@ import { ChatMessageDialogComponent } from './shift/admin-shift/staff/dialogs/ch
 import { AddUserToShiftDialogComponent } from './shift/admin-shift/staff/dialogs/add-user-to-shift-dialog/add-user-to-shift-dialog.component';
 import { AddUserToGroupDialogComponent } from './shift/admin-shift-group/dialogs/add-user-to-group-dialog/add-user-to-group-dialog.component';
 import { CopyGroupComponent } from './shift/copy-group/copy-group.component';
-
+import { AdminShiftActivityComponent } from './shift/admin-shift/activity/activity.component';
 
 @NgModule({
   imports: [
@@ -123,7 +124,8 @@ import { CopyGroupComponent } from './shift/copy-group/copy-group.component';
       apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
     }),
     AgmJsMarkerClustererModule,
-    CKEditor5Module
+    CKEditor5Module,
+    ActivityLogModule
   ],
   declarations: [
     ScheduleComponent,
@@ -224,7 +226,8 @@ import { CopyGroupComponent } from './shift/copy-group/copy-group.component';
     ChatMessageDialogComponent,
     AddUserToShiftDialogComponent,
     AddUserToGroupDialogComponent,
-    CopyGroupComponent
+    CopyGroupComponent,
+    AdminShiftActivityComponent
   ],
   providers: [ ScheduleService ],
   entryComponents: [

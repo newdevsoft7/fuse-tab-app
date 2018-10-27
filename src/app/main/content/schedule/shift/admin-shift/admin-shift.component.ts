@@ -18,15 +18,17 @@ import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
-import {NewMessageDialogComponent} from '../../../users/profile/dialogs/new-message-dialog/new-message-dialog.component';
-import {UsersChatService} from '../../../users/chat/chat.service';
+import { NewMessageDialogComponent } from '../../../users/profile/dialogs/new-message-dialog/new-message-dialog.component';
+import { UsersChatService } from '../../../users/chat/chat.service';
+import { AdminShiftActivityComponent } from './activity/activity.component';
 
 export enum TAB {
   Staff = 'Staff',
   Bill = 'Bill',
   Reports = 'Reports & Uploads',
   Attachements = 'Attachments',
-  Map = 'Map'
+  Map = 'Map',
+  Activity = 'Activity'
 }
 
 @Component({
@@ -39,6 +41,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
   @Input() data;
   @ViewChild('staffTab') staffTab: AdminShiftStaffComponent;
   @ViewChild('mapTab') mapTab: AdminShiftMapComponent;
+  @ViewChild('activityTab') activityTab: AdminShiftActivityComponent;
 
   showMoreBtn = true;
 
@@ -180,6 +183,10 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     switch (event.tab.textLabel) {
       case TAB.Map:
         this.mapTab.refreshMap();
+        break;
+
+      case TAB.Activity:
+        this.activityTab.show();
         break;
 
       default:

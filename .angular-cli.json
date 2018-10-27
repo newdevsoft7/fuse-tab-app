@@ -24,6 +24,7 @@
             "prefix": "app",
             "styles": [
                 "../node_modules/ngx-toastr/toastr.css",
+                "../node_modules/ladda/dist/ladda.min.css",
                 "styles.scss"
             ],
             "scripts": [

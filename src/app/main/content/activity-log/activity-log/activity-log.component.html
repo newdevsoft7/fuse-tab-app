@@ -1,0 +1,29 @@
+<div class="page-layout simple" ngClass.gt-xs="pt-24 px-4">
+  <ng-container [ngSwitch]="type">
+
+    <ng-container *ngSwitchCase="'shift'">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let record of results">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
+                <div (click)="openUserTab(record.user)">{{record.user.name}}</div>
+                <div>{{record.description}}</div>
+                <div [matTooltip]="record.created_at">{{record.ago}}</div>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <div *ngFor="let change of record.changes">
+              {{change}}
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </ng-container>
+
+  </ng-container>
+  <div class="mt-8">
+    <button mat-raised-button color="accent" [ladda]="isFetching" (click)="loadMore()" [hidden]="chunk.length < pageSize">See more</button>
+  </div>
+</div>

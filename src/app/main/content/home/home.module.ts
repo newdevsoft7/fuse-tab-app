@@ -23,6 +23,7 @@ import { ReportsUploadsModule } from '../reports-uploads/reports-uploads.module'
 import { SetUserTimezoneDialogComponent } from './set-user-timezone-dialog/set-user-timezone-dialog.component';
 import { ShowcaseModule } from '../showcase/showcase.module';
 import { SummaryModule } from '../summary';
+import {ActivityLogModule} from '../activity-log/activity-log.module';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { SummaryModule } from '../summary';
         TimelineModule,
         ReportsUploadsModule,
         ShowcaseModule,
-        SummaryModule
+        SummaryModule,
+        ActivityLogModule
     ],
     exports     : [
         FuseHomeComponent
