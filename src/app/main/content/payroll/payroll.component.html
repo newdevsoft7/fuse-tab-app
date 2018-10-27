@@ -114,6 +114,11 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column name="Status" prop="status" [sortable]="false" [canAutoResize]="true">
+        <ng-template let-value="value" ngx-datatable-cell-template>
+          <div class="status" [style.background-color]="getBGColor(value)">
+            {{value}}
+          </div>
+        </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column name="Action" prop="actions" [sortable]="false" [canAutoResize]="false" *ngIf="currentUser?.lvl !== 'staff'">

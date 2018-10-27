@@ -279,4 +279,22 @@ export class PayrollComponent implements OnInit, OnDestroy {
     }
   }
 
+  getBGColor(status: string) {
+    let color = 'yellow';
+    switch (status.toLowerCase()) {
+      case 'paid':
+        color = 'green';
+        break;
+
+      case 'rejected':
+        color = 'red';
+        break;
+
+      default:
+        color = 'orange';
+        break;
+    }
+    return color;
+  }
+
 }

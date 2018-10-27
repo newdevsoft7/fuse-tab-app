@@ -159,4 +159,22 @@ export class ClientInvoicesComponent implements OnInit {
     this.isAdvancedSearch = true;
   }
 
+  getBGColor(status: string) {
+    let color = 'yellow';
+    switch (status.toLowerCase()) {
+      case 'paid':
+        color = 'green';
+        break;
+
+      case 'rejected':
+        color = 'red';
+        break;
+
+      default:
+        color = 'orange';
+        break;
+    }
+    return color;
+  }
+
 }
