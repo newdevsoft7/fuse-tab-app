@@ -27,7 +27,7 @@
             </mat-chip-list>
         </mat-form-field>
 
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)" autoActiveFirstOption>
             <ng-container *ngFor="let group of source">
                 <ng-container *ngIf="group.children; else noParent">
                     <mat-optgroup *ngIf="sourceFiltered(group.children).length > 0" [label]="group.text">
