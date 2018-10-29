@@ -280,7 +280,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
   }
 
   getBGColor(status: string) {
-    let color = 'yellow';
+    let color = '#fbc02d';
     switch (status.toLowerCase()) {
       case 'paid':
         color = 'green';
@@ -290,7 +290,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
         color = 'red';
         break;
 
-      default:
+      case 'processing':
         color = 'orange';
         break;
     }

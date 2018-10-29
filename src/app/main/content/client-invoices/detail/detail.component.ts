@@ -56,7 +56,7 @@ export class ClientInvoicesDetailComponent implements OnInit {
   }
 
   getBGColor(status: string) {
-    let color: string = 'yellow';
+    let color = '#fbc02d';
     switch (status.toLowerCase()) {
       case 'paid':
         color = 'green';
@@ -66,7 +66,7 @@ export class ClientInvoicesDetailComponent implements OnInit {
         color = 'red';
         break;
 
-      default:
+      case 'processing':
         color = 'orange';
         break;
     }
