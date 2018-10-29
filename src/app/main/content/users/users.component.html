@@ -154,7 +154,7 @@
             *ngIf="column.key_name == 'ppic_a'"
             [name]="column.display_name"
             [prop]="column.key_name"
-            [width]="80"
+            [width]="95"
             [sortable]="false"
             [canAutoResize]="false">
             <ng-template ngx-datatable-header-template>
@@ -166,19 +166,21 @@
               </button>
             </ng-template>
             <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-              <div class="ngx-dnd-container" ngxDroppable [copy]="true">
-                <div [style.margin-left.px]="'-10'" class="savatar ngx-dnd-item" ngxDraggable="['admin-shift', 'admin-group']" [model]="row">
-                  <span
-                    #menuTrigger="matMenuTrigger"
-                    [matMenuTriggerFor]="menu"
-                    [matMenuTriggerData]="{row: row}">
-                  </span>
-                  <img [src]="getAvatar(value)"
-                       (click)="openUserTab(row, $event)"
-                       (contextmenu)="openContextMenu($event, menuTrigger)"/>
-                  <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
-                  <div class="user-warning" *ngIf="row.warning"></div>
+              <div fxLayout="row nowrap" fxLayoutAlign="start center">
+                <div class="ngx-dnd-container" ngxDroppable [copy]="true">
+                  <div [style.margin-left.px]="'-10'" class="savatar ngx-dnd-item" ngxDraggable="['admin-shift', 'admin-group']" [model]="row">
+                    <span
+                      #menuTrigger="matMenuTrigger"
+                      [matMenuTriggerFor]="menu"
+                      [matMenuTriggerData]="{row: row}">
+                    </span>
+                    <img [src]="getAvatar(value)"
+                         (click)="openUserTab(row, $event)"
+                         (contextmenu)="openContextMenu($event, menuTrigger)"/>
+                    <div *ngIf="row.user_status!=null" class="status" [style.background]="row.user_status.color" [matTooltip]="row.user_status.sname"></div>
+                  </div>
                 </div>
+                <mat-icon class="red-fg ml-8" *ngIf="row.warning">warning</mat-icon>
               </div>
             </ng-template>
           </ngx-datatable-column>
