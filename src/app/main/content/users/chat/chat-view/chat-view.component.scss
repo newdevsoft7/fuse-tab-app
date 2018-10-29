@@ -220,4 +220,10 @@
             }
         }
     }
+
+    .clickable {
+      &:hover {
+        cursor: pointer;
+      }
+    }
 }

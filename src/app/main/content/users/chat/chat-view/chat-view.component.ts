@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from '../../../schedule/schedule.service';
 import { Tab } from '../../../../tab/tab';
 import { TabService } from '../../../../tab/tab.service';
+import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 @Component({
     selector   : 'fuse-chat-view',
@@ -70,7 +72,11 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
         private tokenStorage: TokenStorage,
         private toastrService: ToastrService,
         private scheduleService: ScheduleService,
-        private tabService: TabService
+        private tabService: TabService,
+        private spinner: CustomLoadingService,
+        private userService: UserService,
+        private scMessageService: SCMessageService
+
     ) {
         this.authenticatedUser = tokenStorage.getUser();
         this.isLoggedAs = tokenStorage.isExistSecondaryUser();
@@ -208,4 +214,22 @@ export class FuseChatViewComponent implements OnInit, AfterViewInit, OnChanges
             this.toastrService.error(e.error.message);
         }
     }
+
+  async openProfileTab(userId: number): Promise<any> {
+      if (['owner', 'admin'].indexOf(this.authenticatedUser.lvl) < 0) { return; }
+      try {
+          this.spinner.show();
+          const user = await this.userService.getUser(userId).toPromise();
+          const tab = new Tab(`${user.fname} ${user.lname}`, 'usersProfileTpl', `users/user/${user.id}`, user);
+          this.tabService.openTab(tab);
+      } catch (e) {
+          this.scMessageService.error(e);
+      } finally {
+          this.spinner.hide();
+      }
+  }
+
+  get canOpenProfile() {
+      return ['owner', 'admin'].indexOf(this.authenticatedUser.lvl) < 0 ? false : true;
+  }
 }

@@ -68,9 +68,12 @@
                 <img *ngIf="message.sender_id != authenticatedUser.id"
                      [src]="message?.ppic_a"
                      class="avatar"
-                     [alt]="message?.name"/>
+                     [class.clickable]="canOpenProfile"
+                     [alt]="message?.name" (click)="openProfileTab(message.sender_id)"/>
 
-                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="message?.ppic_a">
+                <img *ngIf="message.sender_id == authenticatedUser.id" class="avatar" [src]="message?.ppic_a"
+                     [class.clickable]="canOpenProfile"
+                      (click)="openProfileTab(message.sender_id)">
 
                 <div class="bubble">
                     <div class="message" [innerHtml]="message.content"></div>
