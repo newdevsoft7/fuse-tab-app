@@ -3,8 +3,8 @@
 
     <ng-container *ngSwitchCase="'shift'">
       <mat-accordion>
-        <mat-expansion-panel *ngFor="let record of results">
-          <mat-expansion-panel-header>
+        <mat-expansion-panel *ngFor="let record of results; even as even; odd as odd">
+          <mat-expansion-panel-header [ngClass]="{'odd': odd, 'even': even}">
             <mat-panel-title>
               <div class="w-100-p" fxLayout="row" fxLayoutAlign="space-between center">
                 <div (click)="openUserTab(record.user)">{{record.user.name}}</div>
@@ -14,7 +14,7 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div>
-            <div *ngFor="let change of record.changes">
+            <div *ngFor="let change of record.changes; even as even; odd as odd" class="p-4" [ngClass]="{'odd': odd, 'even': even}">>
               {{change}}
             </div>
           </div>
