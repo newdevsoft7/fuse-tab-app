@@ -65,10 +65,10 @@ export class ReportsUploadsService {
     return this.http.delete(url).toPromise();
   }
 
-  downloadReports(ids, type = 'csv') {
-    const url = `${BASE_URL}/reportsUploads/reports/${ids.join(',')}/${type}`;
+  downloadReports(ids) {
+    const url = `${BASE_URL}/reportsUploads/reports/${ids.join(',')}`;
     return this.http.get(url, { observe: 'response', responseType: 'blob' }).toPromise()
-      .then(res => this.downloadFile(res['body'], 'reports.csv'))
+      .then(res => this.downloadFile(res['body'], 'reports.xlsx'))
       .catch(e => this.scMessageService.error(e));
   }
 

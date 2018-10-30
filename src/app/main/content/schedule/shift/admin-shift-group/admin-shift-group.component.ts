@@ -12,7 +12,7 @@ import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
-import {AddUserToGroupDialogComponent} from './dialogs/add-user-to-group-dialog/add-user-to-group-dialog.component';
+import { AddUserToGroupDialogComponent } from './dialogs/add-user-to-group-dialog/add-user-to-group-dialog.component';
 
 export enum TAB {
   Staff = 'Staff',
@@ -89,7 +89,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
       });
 
     // Drag a user to Role
-    this.userToGroupSubscription = this.actionService.userToGroup.subscribe(async  ({ groupId, user }) => {
+    this.userToGroupSubscription = this.actionService.userToGroup.subscribe(async ({ groupId, user }) => {
       if (groupId != this.group.id) { return; }
       try {
         const shifts = await this.scheduleService.getRolesForDraggingToGroup(user.id, groupId);
@@ -116,7 +116,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
                 this.staffTab.applyStaffs({ shiftId, userIds, role });
                 break;
               case 'standby':
-                this.staffTab.standByStaffs({ shiftId, userIds, role});
+                this.staffTab.standByStaffs({ shiftId, userIds, role });
                 break;
               case 'invite':
                 this.staffTab.inviteStaffs({ shiftId, userIds, role, filters: null, inviteAll: false, messaging: false });
@@ -213,7 +213,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => { });
   }
 
-  openExportCsvDialog() {
+  openExportDialog() {
     const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
       panelClass: 'admin-shift-exports-as-excel-dialog',
       disableClose: false,

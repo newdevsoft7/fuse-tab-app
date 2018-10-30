@@ -295,7 +295,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     }
   }
 
-  openExportCsvDialog() {
+  openExportDialog() {
     const dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
       panelClass: 'admin-shift-exports-as-excel-dialog',
       disableClose: false,

@@ -168,7 +168,6 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         });
     }
 
-
     export() {
         let body: any = {};
         this.options.filter(v => v.checked).forEach(v => body[v.name] = 1);
