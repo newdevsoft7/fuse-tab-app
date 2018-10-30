@@ -500,7 +500,8 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     'tab': TAB.STAFF_INVOICES_TAB
                 };
                 if (permissions && permissions.staff_invoice) {
-                    payMenu.children = [
+                    payMenu.children = [];
+                    payMenu.children.push(
                         {
                             'id': 'new_invoice',
                             'title': 'Generate Invoice',
@@ -508,13 +509,15 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                             'type': 'item',
                             'tab': TAB.STAFF_NEW_INVOICE_TAB
                         }
-                    ];
+                    );
                 } else {
                     payMenu.type = 'item';
                 }
                 const index = navModel.findIndex(m => m.id === 'invoices');
                 if (index < 0) {
                     navModel.splice(1, 0, payMenu);
+                } else {
+                    navModel.splice(index, 1, payMenu);
                 }
                 break;
 
