@@ -515,6 +515,19 @@ export class UsersComponent implements OnInit {
     contextMenu.openMenu();
   }
 
+  openMessageTab() {
+    const users = this.selectedUsers;
+    if (users.length < 1) { return; }
+    const tab = _.cloneDeep(TAB.USERS_NEW_MESSAGE_TAB);
+    tab.data.recipients = users.map(v => {
+      return {
+        id: v.id,
+        text: `${v.fname} ${v.lname}`
+      };
+    });
+    this.tabService.openTab(tab);
+  }
+
   export() {
     const user_ids = this.selectedUsers.map(u => u.id);
     this.userService.export({ user_ids });
