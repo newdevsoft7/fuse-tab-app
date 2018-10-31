@@ -209,6 +209,11 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  linkDocumentToForm(docId: number, formId: number): Promise<any> {
+    const url = `${BASE_URL}/profileDocument/${docId}/form/${formId}`;
+    return this.http.put(url, {}).toPromise();
+  }
+
   lockProfileDocument(documentId: number, setLock = 1): Observable<any> {
     const url = `${BASE_URL}/profileDocument/${documentId}/lock/${setLock}`;
     return this.http.put(url, {})
@@ -592,6 +597,13 @@ export class UserService {
     const url = `${BASE_URL}/user/${userId}/signature`;
     return this.http.put(url, { signature }).toPromise();
   }
+
+  getForms(): Promise<any> {
+    const url = `${BASE_URL}/forms`;
+    return this.http.get(url).toPromise();
+  }
+
+
 
   export(params: {
     user_ids?: number[],

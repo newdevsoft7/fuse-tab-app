@@ -1,95 +1,103 @@
 <div id="documents" [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'">
 
-    <div class="mb-24" *ngIf="settings.profile_doc_message && !(isOwner || isAdmin)">
-        <h3>
-            {{settings.profile_doc_message}}
-            <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
+  <div class="mb-24" *ngIf="settings.profile_doc_message && !(isOwner || isAdmin)">
+    <h3>
+      {{settings.profile_doc_message}}
+      <span class="secondary-text ml-4" *ngIf="settings.profile_doc_required > 0">
                 ({{settings.profile_doc_required}}&nbsp; {{settings.profile_doc_required > 1 ? 'documents' : 'document'}} required)
             </span>
-        </h3>
-    </div>
+    </h3>
+  </div>
 
-    <!-- BASIC SECTION -->
-    <div class="group">
+  <!-- BASIC SECTION -->
+  <div class="group">
 
-        <div class="document">
+    <div class="document">
 
-            <div fxLayout="row" fxLayoutAlign="start center" class="mb-24">
-                <!-- ADD FILE BUTTON -->
-                <div class="file-uploader">
-                    <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
-                    <button mat-raised-button color="accent" (click)="fileInput.click()">
-                        <mat-icon>file_upload</mat-icon>
-                        <span>Upload</span>
-                    </button>
-                </div>
-                <!-- / ADD FILE BUTTON -->
-
-                <button *ngIf="user.id === currentUser.id" mat-raised-button class="ml-8" color="accent" (click)="openFormModal()">
-                    Complete Forms
-                </button>
-            </div>
-
-            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicDocuments" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of basicDocuments" [model]="document">
-                    <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
-                    </ng-container>
-                </div>
-            </div>
-
+      <div fxLayout="row" fxLayoutAlign="start center" class="mb-24">
+        <!-- ADD FILE BUTTON -->
+        <div class="file-uploader">
+          <input hidden type="file" #fileInput (change)="onUploadDocument($event)" multiple/>
+          <button mat-raised-button color="accent" (click)="fileInput.click()">
+            <mat-icon>file_upload</mat-icon>
+            <span>Upload</span>
+          </button>
         </div>
+        <!-- / ADD FILE BUTTON -->
 
-    </div>
-    <!-- / BASIC SECTION-->
+        <button *ngIf="user.id === currentUser.id" mat-raised-button class="ml-8" color="accent" (click)="openFormModal()">
+          Complete Forms
+        </button>
+      </div>
 
-    <!-- ADMIN SECTION -->
-    <div class="group" *ngIf="isOwner || isAdmin">
-
-        <div class="document">
-            <div class="group-title">
-                <span class="name">Admin Only</span>
-                <span class="info"></span>
-            </div>
-
-            <!-- ADD FILE BUTTON -->
-            <div class="file-uploader">
-                <input hidden type="file" #adminFileInput (change)="onUploadDocument($event, 1)" multiple/>
-                <button mat-raised-button class="mb-24" color="accent" (click)="adminFileInput.click()">
-                    <mat-icon>file_upload</mat-icon>
-                    <span>Upload</span>
-                </button>
-            </div>
-            <!-- / ADD FILE BUTTON -->
-
-            <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminDocuments" (drop)="onDrop($event)">
-                <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of adminDocuments" [model]="document">
-                    <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
-                    </ng-container>
-                </div>
-            </div>
-
+      <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="basicDocuments" (drop)="onDrop($event)">
+        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of basicDocuments" [model]="document">
+          <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
+          </ng-container>
         </div>
+      </div>
 
     </div>
-    <!-- / ADMIN SECTION -->
+
+  </div>
+  <!-- / BASIC SECTION-->
+
+  <!-- ADMIN SECTION -->
+  <div class="group" *ngIf="isOwner || isAdmin">
+
+    <div class="document">
+      <div class="group-title">
+        <span class="name">Admin Only</span>
+        <span class="info"></span>
+      </div>
+
+      <!-- ADD FILE BUTTON -->
+      <div class="file-uploader">
+        <input hidden type="file" #adminFileInput (change)="onUploadDocument($event, 1)" multiple/>
+        <button mat-raised-button class="mb-24" color="accent" (click)="adminFileInput.click()">
+          <mat-icon>file_upload</mat-icon>
+          <span>Upload</span>
+        </button>
+      </div>
+      <!-- / ADD FILE BUTTON -->
+
+      <div class="group-media ngx-dnd-container" fxLayout="row" fxLayoutWrap ngxDroppable="group" [model]="adminDocuments" (drop)="onDrop($event)">
+        <div class="media ngx-dnd-item" ngxDraggable *ngFor="let document of adminDocuments" [model]="document">
+          <ng-container [ngTemplateOutlet]="documentTpl" [ngTemplateOutletContext]="{document: document}">
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- / ADMIN SECTION -->
 
 </div>
 
 <ng-template #documentTpl let-document="document">
-    <a [href]="document.path" target="blank">
-        <img class="preview" [src]="document.thumbnail">
-    </a>
-    <div class="action" fxLayout="row" fxLayoutAlign="space-between center">
-        <div class="title" [matTooltip]="document.oname">{{document.oname}}</div>
-        <div fxFlex="noshrink">
-            <button mat-icon-button (click)="onLockedChanged(document)" *ngIf="document.lock == 1">
-                <mat-icon *ngIf="document.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
-                <mat-icon *ngIf="!document.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
-            </button>
-
-            <button mat-icon-button (click)="deleteProfileDocument(document)" *ngIf="document.delete == 1">
-                <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
-            </button>
-        </div>
+  <a [href]="document.path" target="blank">
+    <img class="preview" [src]="document.thumbnail">
+  </a>
+  <div class="action" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="title" [matTooltip]="document.oname">{{document.oname}}</div>
+    <div fxFlex="noshrink" fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-icon-button (click)="onLockedChanged(document)" *ngIf="document.lock == 1">
+        <mat-icon *ngIf="document.locked" fontSet="fa" fontIcon="fa-lock"></mat-icon>
+        <mat-icon *ngIf="!document.locked" fontSet="fa" fontIcon="fa-unlock"></mat-icon>
+      </button>
+      <div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="isOwner || isAdmin" matTooltip="Set as Form">
+          <mat-icon class="s-16">description</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="setAsForm(document, 0)">None</button>
+          <button mat-menu-item *ngFor="let form of forms" (click)="setAsForm(document, form.id)">{{form.fname}}</button>
+        </mat-menu>
+      </div>
+      <button mat-icon-button (click)="deleteProfileDocument(document)" *ngIf="document.delete == 1">
+        <mat-icon fontSet="fa" fontIcon="fa-trash"></mat-icon>
+      </button>
     </div>
+  </div>
 </ng-template>
