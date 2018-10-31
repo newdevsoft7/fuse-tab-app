@@ -19,4 +19,8 @@ export class AdminShiftActivityComponent implements OnInit {
     this.isContentShow = true;
   }
 
+  hide() {
+    this.isContentShow = false;
+  }
+
 }

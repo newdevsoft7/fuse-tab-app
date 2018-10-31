@@ -17,7 +17,6 @@ export class ActivityLogComponent implements OnInit, OnChanges {
   @Input() filters: any[] = [];
   @Input() pageSize = 50;
   @Input() render = false;
-  @Input() lazyRender = false;
 
   pageNumber = 0;
   isFetching = false;
@@ -32,16 +31,11 @@ export class ActivityLogComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    if (!this.lazyRender) {
-      this.fetch();
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['render'] && changes['render'].currentValue) {
-      if (this.lazyRender) {
-        this.fetch();
-      }
+      this.fetch();
     }
   }
 

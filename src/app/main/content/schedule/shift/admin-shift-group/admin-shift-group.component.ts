@@ -247,6 +247,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
         break;
 
       default:
+        this.activityTab.hide();
         break;
     }
   }
