@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { NewMessageDialogComponent } from './dialogs/new-message-dialog/new-message-dialog.component';
 import { UsersChatService } from '../chat/chat.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
-
+import { UsersProfileActivityComponent } from './activity/activity.component';
 
 @Component({
   selector: 'app-users-profile',
@@ -22,6 +22,7 @@ export class UsersProfileComponent implements OnInit {
   @Input('data') user;
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('cardsTab') cardsTab: UsersProfileCardsComponent;
+  @ViewChild('activityTab') activityTab: UsersProfileActivityComponent;
 
   currentUser: any;
   userInfo: any;
@@ -34,6 +35,7 @@ export class UsersProfileComponent implements OnInit {
   isSkillsShow = false;
   isCardsShow = false;
   isWorkAreasShow = false;
+  isActivityShow = false;
   timezones: any[] = [];
   selectedIndex: number = 0;
 
@@ -65,7 +67,6 @@ export class UsersProfileComponent implements OnInit {
     const fav = this.userInfo.fav === 1 ? 0 : 1;
     try {
       const res = await this.userService.updateUser(this.userInfo.id, { fav });
-      //this.toastr.success(res.message);
       this.userInfo.fav = fav;
     } catch (e) {
       this.toastr.error(e.error.error);
@@ -87,7 +88,6 @@ export class UsersProfileComponent implements OnInit {
   async approve() {
     try {
       const res = await this.userService.approveRegistrant(this.userInfo.id);
-      //this.toastr.success(res.message);
       this.userInfo.lvl = res.lvl;
       this.userInfo.user_status = res.user_status;
       this.isApproveRejectShow = ['registrant'].some(v => res.lvl.indexOf(v) > -1);
@@ -111,7 +111,6 @@ export class UsersProfileComponent implements OnInit {
   async reject() {
     try {
       const res = await this.userService.rejectRegistrant(this.userInfo.id);
-      //this.toastr.success(res.message);
       this.userInfo.user_status = res.user_status;
     } catch (e) {
       this.toastr.error(e.error.error);
@@ -153,6 +152,7 @@ export class UsersProfileComponent implements OnInit {
       } else {
         this.isSkillsShow = true;
       }
+      this.isActivityShow = ['admin', 'owner'].indexOf(this.currentUser.lvl) > -1;
 
       this.ratings = await this.userService.getUserRatings(this.user.id);
       if (this.userInfo.linked === 1 && this.userInfo.id === this.currentUser.id
@@ -186,8 +186,19 @@ export class UsersProfileComponent implements OnInit {
   }
 
   onSelectedTabChange(event: MatTabChangeEvent) {
-    if (event.tab.textLabel === 'Cards') {
-      setTimeout(() => this.cardsTab.drawer.open(), 100);
+    switch (event.tab.textLabel) {
+      case 'Cards':
+        setTimeout(() => this.cardsTab.drawer.open(), 100);
+        this.activityTab.hide();
+        break;
+
+      case 'Activity':
+        this.activityTab.show();
+        break;
+
+      default:
+        this.activityTab.hide();
+        break;
     }
   }
 

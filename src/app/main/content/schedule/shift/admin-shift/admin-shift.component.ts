@@ -183,6 +183,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     switch (event.tab.textLabel) {
       case TAB.Map:
         this.mapTab.refreshMap();
+        this.activityTab.hide();
         break;
 
       case TAB.Activity:

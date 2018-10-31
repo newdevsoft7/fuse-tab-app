@@ -72,6 +72,8 @@ import { ProfileCardsPhotoGalleryDialogComponent } from './profile/cards/dialogs
 import { ProfileCardsVideoGalleryDialogComponent } from './profile/cards/dialogs/video-gallery-dialog/video-gallery-dialog.component';
 import { NewMessageDialogComponent } from './profile/dialogs/new-message-dialog/new-message-dialog.component';
 import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-signature/email-signature.component';
+import { UsersProfileActivityComponent } from './profile/activity/activity.component';
+import { ActivityLogModule } from '../activity-log/activity-log.module';
 
 @NgModule({
     imports: [
@@ -81,7 +83,8 @@ import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-s
         CustomMultiSelectModule,
         CKEditor5Module,
         UsersProfileExperienceModule,
-        ClipboardModule
+        ClipboardModule,
+        ActivityLogModule
     ],
     declarations: [
         UsersComponent,
@@ -148,7 +151,8 @@ import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-s
         ProfileCardsPhotoGalleryDialogComponent,
         ProfileCardsVideoGalleryDialogComponent,
         NewMessageDialogComponent,
-        UsersSettingsEmailSignatureComponent
+        UsersSettingsEmailSignatureComponent,
+        UsersProfileActivityComponent
     ],
     exports: [
         UsersComponent,

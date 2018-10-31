@@ -115,6 +115,10 @@
         <app-users-profile-pay-levels [userInfo]="userInfo"></app-users-profile-pay-levels>
       </mat-tab>
 
+      <mat-tab label="Activity" *ngIf="isActivityShow">
+        <app-users-profile-activity [user]="userInfo" #activityTab></app-users-profile-activity>
+      </mat-tab>
+
       <mat-tab label="Settings" *ngIf="isSettingsShow">
         <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers"
                                     [settings]="settings" [timezones]="timezones"></app-users-profile-settings>

@@ -35,8 +35,15 @@ export class ActivityLogComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['render'] && changes['render'].currentValue) {
+      this.init();
       this.fetch();
     }
+  }
+
+  init() {
+    this.pageNumber = 0;
+    this.chunk = [];
+    this.results = [];
   }
 
   async fetch() {
