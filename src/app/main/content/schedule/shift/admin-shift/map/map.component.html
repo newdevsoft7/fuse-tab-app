@@ -1,29 +1,70 @@
 <div id="shift-admin-map" [ngClass.gt-xs]="'p-24'">
 
-    <div class="fuse-card auto-width p-16">
+  <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="8px">
+    <div class="fuse-card auto-width p-16" fxFlex.gt-sm="45">
+      <agm-map class="shift-map w-100-p" [minZoom]="5" [maxZoom]="24" [zoom]="18"
+               [latitude]="mapCenter.lat * 1" [longitude]="mapCenter.lon * 1" [mapTypeControl]="true"
+               [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
+               [scaleControl]="false" [streetViewControl]="false" [scrollwheel]="false" [styles]="styles">
 
-        <agm-map class="h-640 w-100-p" [minZoom]="5" [maxZoom]="24" [zoom]="18"
-            [latitude]="shift.lat * 1" [longitude]="shift.lon * 1" [mapTypeControl]="true"
-            [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
-            [scaleControl]="false" [streetViewControl]="false" [scrollwheel]="false" [styles]="styles">
+        <agm-marker [latitude]="shift.lat * 1" [longitude]="shift.lon * 1" [markerDraggable]="!isClient"
+                    (dragEnd)="changePosition($event)">
 
-            <agm-marker [latitude]="shift.lat * 1" [longitude]="shift.lon * 1" [markerDraggable]="!isClient"
-                 (dragEnd)="changePosition($event)">
-            
-            </agm-marker>
+        </agm-marker>
 
-            <agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'">
-                <agm-marker *ngFor="let marker of markers"
-                    [latitude]="marker.lat * 1" [longitude]="marker.lon * 1"
-                    [iconUrl]="marker.ppic_a">
-                    <agm-info-window>
-                        <strong>{{marker.name}}</strong>
-                    </agm-info-window>
-                </agm-marker>
-            </agm-marker-cluster>
+        <agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'">
+          <agm-overlay *ngFor="let marker of markers"
+                       [latitude]="marker.lat * 1" [longitude]="marker.lon * 1" (markerClick)="onMarkerClick(marker)">
+            <img [src]="marker.ppic_a" class="overlay"
+                 [class.selected]="marker == selectedMarker"
+                 [style.border-color]="marker.border_color">
+            <agm-info-window>
+              <strong>{{marker.name}} {{getType(marker.type)}} {{time}}</strong>
+            </agm-info-window>
+          </agm-overlay>
+        </agm-marker-cluster>
 
-        </agm-map>
-
+      </agm-map>
     </div>
+    <div class="user-table" fxFlex.gt-sm="55">
+      <ngx-datatable class="material striped"
+                     [rows]="markers"
+                     [selected]="selectedMarkers"
+                     [selectionType]="'single'"
+                     [columnMode]="'force'"
+                     [rowHeight]="'auto'"
+                     [headerHeight]="0"
+                     [footerHeight]="0"
+                     [scrollbarH]="true"
+                     [messages]="{emptyMessage: 'No users'}"
+                     (select)="onSelect($event)">
+        <ngx-datatable-column name="avatar">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <img [src]="getAvatar(row.ppic_a)" class="avatar" [style.border-color]="row.border_color"/>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="info">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div class="info">
+              <strong>{{row.name}}</strong><br/>
+              <span [style.color]="row.time_color" [matTooltip]="row.ago">{{row.time}}</span>
+              <span class="ml-8 grey-fg" *ngIf="row.distance != null">{{row.distance}} km</span><br/>
+              <span *ngIf="by">By {{row.by}}</span>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="photo">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <a [href]="row.photo" target="_blank" *ngIf="row.photo" class="clickable">
+              <img [src]="row.thumb" class="thumbnail">
+            </a>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+
 
 </div>

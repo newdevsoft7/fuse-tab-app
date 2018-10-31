@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { AgmOverlays } from 'agm-overlays';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { CommonModule } from '@angular/common';
@@ -121,6 +122,7 @@ import { GroupActivityComponent } from './shift/admin-shift-group/activity/activ
     CustomMultiSelectModule,
     CustomMultiSelectGroupModule,
     StaticMultiSelectModule,
+    AgmOverlays,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyB5zeDlcRAS67RJQZQ3tDjMZNhmD6FsQ6U'
     }),
