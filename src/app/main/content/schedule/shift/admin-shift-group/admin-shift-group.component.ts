@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
 import { ScheduleService } from '../../schedule.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatTabChangeEvent } from '@angular/material';
 import { GroupStaffComponent } from './staff/staff.component';
 import { ActionService } from '../../../../../shared/services/action.service';
 import { ShiftListEmailDialogComponent } from '../../shift-list/admin-shift-list/email-dialog/email-dialog.component';
@@ -13,12 +13,14 @@ import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/expor
 import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/export-as-excel-dialog/export-as-excel-dialog.component';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 import { AddUserToGroupDialogComponent } from './dialogs/add-user-to-group-dialog/add-user-to-group-dialog.component';
+import { GroupActivityComponent } from './activity/activity.component';
 
 export enum TAB {
   Staff = 'Staff',
   Bill = 'Bill',
   Reports = 'Reports & Uploads',
-  Attachements = 'Attachments'
+  Attachements = 'Attachments',
+  Activity = 'Activity'
 }
 
 @Component({
@@ -30,6 +32,8 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
 
   @Input() data;
   @ViewChild('staffTab') staffTab: GroupStaffComponent;
+  @ViewChild('activityTab') activityTab: GroupActivityComponent;
+
 
   group: any;
   shifts: any[] = [];
@@ -174,7 +178,6 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
   async toggleLive() {
     const live = this.group.live === 1 ? 0 : 1;
     try {
-      //this.toastr.success(res.message);
       this.group.live = live;
     } catch (e) {
       this.scMessageService.error(e);
@@ -184,7 +187,6 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
   async toggleFlag(flag) {
     const value = flag.set === 1 ? 0 : 1;
     try {
-      //this.toastr.success(res.message);
       flag.set = value;
     } catch (e) {
       this.scMessageService.error(e);
@@ -194,7 +196,6 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
   async toggleLock() {
     const locked = this.group.locked === 1 ? 0 : 1;
     try {
-      //this.toastr.success(res.message);
       this.group.locked = locked;
     } catch (e) {
       this.scMessageService.error(e);
@@ -237,6 +238,17 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(() => { });
+  }
+
+  selectedTabChange(event: MatTabChangeEvent) {
+    switch (event.tab.textLabel) {
+      case TAB.Activity:
+        this.activityTab.show();
+        break;
+
+      default:
+        break;
+    }
   }
 
 }

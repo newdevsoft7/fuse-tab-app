@@ -78,7 +78,7 @@
     </div>
 
     <div class="content">
-        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedTabIndex">
+        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="selectedTabChange($event)">
 
             <mat-tab label="Staff">
                 <app-group-staff #staffTab [group]="group" [shifts]="shifts"></app-group-staff>
@@ -97,6 +97,10 @@
 
             <mat-tab label="Attachments">
                 <app-group-attachments [group]="group" [shifts]="shifts"></app-group-attachments>
+            </mat-tab>
+
+            <mat-tab label="Activity">
+                <app-group-activity [group]="group" #activityTab></app-group-activity>
             </mat-tab>
 
         </mat-tab-group>
