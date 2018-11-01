@@ -66,6 +66,10 @@ $card = callEndpoint($api_baseurl . '/user/' . $user_id . '/' . $type . '/' . $c
     iframeEle.onload = function () {
       iframeEle.contentWindow.postMessage(data, "*");
     }
+    window.onresize = function() {
+      iframeEle.setAttribute('width', window.innerWidth);
+      iframeEle.setAttribute('height', window.innerHeight);
+    }
   </script>
 </body>
 </html>
