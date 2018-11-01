@@ -1,7 +1,7 @@
 <div id="shift-admin-map" [ngClass.gt-xs]="'p-24'">
 
   <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="8px">
-    <div class="fuse-card auto-width p-16" fxFlex.gt-sm="45">
+    <div class="fuse-card auto-width p-16" fxFlex.gt-sm="1 0 auto">
       <agm-map class="shift-map w-100-p" [minZoom]="5" [maxZoom]="24" [zoom]="18"
                [latitude]="mapCenter.lat * 1" [longitude]="mapCenter.lon * 1" [mapTypeControl]="true"
                [fullscreenControl]="false" [rotateControl]="false" [zoomControl]="true"
@@ -19,14 +19,14 @@
                  [class.selected]="marker == selectedMarker"
                  [style.border-color]="marker.border_color">
             <agm-info-window>
-              <strong>{{marker.name}} {{getType(marker.type)}} {{time}}</strong>
+              <strong>{{marker.name}}<br/>{{getType(marker.type)}} {{time}}</strong>
             </agm-info-window>
           </agm-overlay>
         </agm-marker-cluster>
 
       </agm-map>
     </div>
-    <div class="user-table" fxFlex.gt-sm="55">
+    <div class="user-table" fxFlex.gt-sm="450px">
       <ngx-datatable class="material striped"
                      [rows]="markers"
                      [selected]="selectedMarkers"
@@ -49,7 +49,7 @@
             <div class="info">
               <strong>{{row.name}}</strong><br/>
               <span [style.color]="row.time_color" [matTooltip]="row.ago">{{row.time}}</span>
-              <span class="ml-8 grey-fg" *ngIf="row.distance != null">{{row.distance}} km</span><br/>
+              <span class="ml-8 grey-fg" *ngIf="row.distance != null" matTooltip="Distance">{{row.distance}} km</span><br/>
               <span *ngIf="by">By {{row.by}}</span>
             </div>
           </ng-template>
