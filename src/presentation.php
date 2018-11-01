@@ -63,6 +63,11 @@ $presentation = callEndpoint($api_baseurl . '/presentation/' . $presentation_id 
       data.hostname = window.location.hostname;
       iframeEle.contentWindow.postMessage(data, "*");
     }
+
+    window.onresize = function() {
+      iframeEle.setAttribute('width', window.innerWidth);
+      iframeEle.setAttribute('height', window.innerHeight);
+    }
   </script>
 </body>
 </html>
