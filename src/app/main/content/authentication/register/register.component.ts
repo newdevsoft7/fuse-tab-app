@@ -151,6 +151,7 @@ export class RegisterComponent implements OnInit {
         this.showLinkDialogRef.componentInstance.confirmTitle = 'Link to other Staffconnect accounts';
         this.showLinkDialogRef.componentInstance.confirmMessage = 'A StaffConnect account with a different company has been detected. Would you like to sync your accounts? Syncing your account will speed up the registration process as your basic profile info, photos and videos will be shared.';
         this.showLinkDialogRef.afterClosed().subscribe(async result => {
+          this.user.show_link = 0;
           if (result) {
             try {
               const res = await this.userService.updateLink(this.user.id, true);
