@@ -171,8 +171,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
   }
 
   onShowcaseChange(event: MatSelectChange) {
-    const showcaseTemplateId = event.value;
-    // Todo - get showcase template
+    const showcaseTemplateId = +event.value;
+    this.saveField('showcase_template_id', showcaseTemplateId);
   }
 
   async updateName(value) {
@@ -226,7 +226,6 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
   }
 
   onDrop(event) {
-
   }
 
   async saveField(field, value) {
