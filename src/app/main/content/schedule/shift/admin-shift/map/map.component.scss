@@ -39,6 +39,7 @@
       line-height: 50px;
       border-radius: 50%;
       border: 3px solid;
+      margin-left: -12px;
     }
 
     .thumbnail {
@@ -51,6 +52,14 @@
         line-height: 20px;
       }
     }
+
+    @include media-breakpoint-up('md') {
+      datatable-body-cell:last-child {
+        padding-right: 4px !important;
+        padding-left: 4px !important;
+      }
+    }
+
   }
 
   .datatable-body-row.active {

@@ -26,7 +26,7 @@
 
       </agm-map>
     </div>
-    <div class="user-table" fxFlex.gt-sm="450px">
+    <div class="user-table" fxFlex.gt-sm="350px">
       <ngx-datatable class="material striped"
                      [rows]="markers"
                      [selected]="selectedMarkers"
@@ -38,7 +38,7 @@
                      [scrollbarH]="true"
                      [messages]="{emptyMessage: 'No users'}"
                      (select)="onSelect($event)">
-        <ngx-datatable-column name="avatar">
+        <ngx-datatable-column name="avatar" [width]="70">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <img [src]="getAvatar(row.ppic_a)" class="avatar" [style.border-color]="row.border_color"/>
           </ng-template>
@@ -55,7 +55,7 @@
           </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column name="photo">
+        <ngx-datatable-column name="photo" [width]="130">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <a [href]="row.photo" target="_blank" *ngIf="row.photo" class="clickable">
               <img [src]="row.thumb" class="thumbnail">
