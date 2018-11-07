@@ -74,6 +74,7 @@ import { NewMessageDialogComponent } from './profile/dialogs/new-message-dialog/
 import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-signature/email-signature.component';
 import { UsersProfileActivityComponent } from './profile/activity/activity.component';
 import { ActivityLogModule } from '../activity-log/activity-log.module';
+import { PrsentationEditInOutTextComponent } from './presentations/edit-in-out-text/edit-in-out-text.component';
 
 @NgModule({
     imports: [
@@ -152,7 +153,8 @@ import { ActivityLogModule } from '../activity-log/activity-log.module';
         ProfileCardsVideoGalleryDialogComponent,
         NewMessageDialogComponent,
         UsersSettingsEmailSignatureComponent,
-        UsersProfileActivityComponent
+        UsersProfileActivityComponent,
+        PrsentationEditInOutTextComponent
     ],
     exports: [
         UsersComponent,

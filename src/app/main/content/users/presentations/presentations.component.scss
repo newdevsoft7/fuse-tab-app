@@ -2,111 +2,115 @@
 
 #presentations-container {
 
-    height: 100%;
-    
-    @include media-breakpoint-down('sm') {
-        margin: -1em 0;
+  height: 100%;
+
+  @include media-breakpoint-down('sm') {
+    margin: -1em 0;
+  }
+
+  .form-container {
+    padding: 16px;
+  }
+
+  .draw-container {
+    min-height: 100px !important;
+
+    .draw-sidenav {
+      min-width: 160px;
     }
-    
-    .form-container {
-        padding: 16px;
-    }
-    
-    .draw-container {
-        min-height: 100px !important;
+  }
 
-        .draw-sidenav {
-            min-width: 160px;
-        }
-    }
+  fieldset {
+    border: 1px solid #dcdcdc;
+    border-radius: 2px;
+    margin-bottom: 16px;
 
-    fieldset {
-        border: 1px solid #dcdcdc;
-        border-radius: 2px;
-        margin-bottom: 16px;
-
-        legend {
-            padding: 0 4px;
-        }
-
-        &.preview {
-            min-height: 120px;
-        }
+    legend {
+      padding: 0 4px;
     }
 
-    .savatar {
-        
-        img {
-            width: 50px;
-            min-width: 50px;
-            height: 50px;
-            line-height: 50px;
-            border-radius: 50%;
+    &.preview {
+      min-height: 120px;
+    }
+  }
 
-            &:hover {
-                cursor: pointer;
-            }
-        }
+  .savatar {
 
+    img {
+      width: 50px;
+      min-width: 50px;
+      height: 50px;
+      line-height: 50px;
+      border-radius: 50%;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
-    .title {
-        font-size: 16px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  mat-form-field.no-padding {
+    margin-bottom: -1.25em;
+  }
+
+  .ngx-dnd-item {
+    width: 100%;
+    transition: opacity 0.4s ease-in-out;
+    display: block;
+
+    &.odd {
+      background-color: #ffffff;
     }
 
-    .ngx-dnd-item {
-        width: 100%;
-        transition: opacity 0.4s ease-in-out;
-        display: block;
-
-        &.odd {
-            background-color: #ffffff;
-        }
-        
-        &.even {
-            background-color: #eeeeee;
-        }
+    &.even {
+      background-color: #eeeeee;
     }
+  }
 
-    .ngx-dnd-item:not(.has-handle):not(.move-disabled),
-    .ngx-dnd-item.has-handle [ngxdraghandle],
-    .ngx-dnd-item.has-handle [ngxDragHandle] {
-        cursor: move;
-        cursor: grab;
-        cursor: -webkit-grab;
-    }
+  .ngx-dnd-item:not(.has-handle):not(.move-disabled),
+  .ngx-dnd-item.has-handle [ngxdraghandle],
+  .ngx-dnd-item.has-handle [ngxDragHandle] {
+    cursor: move;
+    cursor: grab;
+    cursor: -webkit-grab;
+  }
 
-    .ngx-dnd-item .ngx-dnd-content {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+  .ngx-dnd-item .ngx-dnd-content {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
-    .gu-mirror {
-        position: fixed !important;
-        margin: 0 !important;
-        z-index: 9999 !important;
-        opacity: 0.8;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
-        filter: alpha(opacity=80);
-    }
+  .gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+  }
 
-    .gu-hide {
-        display: none !important;
-    }
+  .gu-hide {
+    display: none !important;
+  }
 
-    .gu-unselectable {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-    }
+  .gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
 
-    .gu-transit {
-        opacity: 0.2;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
-        filter: alpha(opacity=20);
-    }
+  .gu-transit {
+    opacity: 0.2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+  }
 
 }
