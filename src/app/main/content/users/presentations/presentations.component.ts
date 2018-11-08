@@ -132,8 +132,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
           this.presentationData.presentation.showcase_template_id = +this.presentationData.presentation.showcase_template_id;
         }
         this.selectedPresentation = this.presentations[index];
-        this.link = 'https://demo.staffconnect-app.com/presentation.php?id=4&code=blabla';
-        // this.link = `${location.protocol}//${location.host}/presentation.php?id=${id}&code=blabla`;
+        this.link = `${location.protocol}//${location.host}/presentation.php?id=${id}&code=blabla`;
         this.actionService.selectedPresentationId = id;
         this.refreshPreview();
       }
