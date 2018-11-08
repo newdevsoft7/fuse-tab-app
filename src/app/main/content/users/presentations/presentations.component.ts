@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { UserService } from '../user.service';
 import { ActionService } from '../../../../shared/services/action.service';
 import { MatDialog, MatDrawer, MatSelectChange } from '@angular/material';
@@ -34,6 +34,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
   mediaSubscription: Subscription;
   drawerMode = 'side';
   link ='hello';
+
+  previewRefresh: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private toastr: ToastrService,
@@ -78,6 +80,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
           presentation.showcase_template_id = res.data.id;
           const { message } = await this.userService.savePresentation(presentation.id, presentation);
           this.toastr.success(message);
+          this.refreshPreview();
         } catch (e) {
           this.toastr.error(e.error.message);
         }
@@ -92,6 +95,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         this.presentationData.showcase_templates.splice(0, templates.length);
         setTimeout(() => this.presentationData.showcase_templates.push(...templates));
         this.connectorService.currentShowcaseTab$.next(null);
+        this.refreshPreview();
       }
     });
 
@@ -128,8 +132,10 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
           this.presentationData.presentation.showcase_template_id = +this.presentationData.presentation.showcase_template_id;
         }
         this.selectedPresentation = this.presentations[index];
-        this.link = `${location.protocol}//${location.host}/presentation.php?id=${id}&code=blabla`;
+        this.link = 'https://demo.staffconnect-app.com/presentation.php?id=4&code=blabla';
+        // this.link = `${location.protocol}//${location.host}/presentation.php?id=${id}&code=blabla`;
         this.actionService.selectedPresentationId = id;
+        this.refreshPreview();
       }
     } catch (e) {
       this.scMessageService.error(e);
@@ -218,6 +224,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
         try {
           await this.userService.removeUserFromPresentation(this.presentationData.presentation.id, user.id);
           this.presentationData.users.splice(index, 1);
+          this.refreshPreview();
         } catch (e) {
           this.scMessageService.error(e);
         }
@@ -233,6 +240,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
       await this.userService.savePresentation(this.selectedPresentation.id, {
         [field]: value
       });
+      this.refreshPreview();
     } catch (e) {
       this.scMessageService.error(e);
     }
@@ -279,6 +287,10 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
       }
     );
     this.tabService.openTab(tab);
+  }
+
+  refreshPreview() {
+    this.previewRefresh.next(true);
   }
 
 }

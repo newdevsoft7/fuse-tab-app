@@ -75,6 +75,7 @@ import { UsersSettingsEmailSignatureComponent } from './profile/settings/email-s
 import { UsersProfileActivityComponent } from './profile/activity/activity.component';
 import { ActivityLogModule } from '../activity-log/activity-log.module';
 import { PrsentationEditInOutTextComponent } from './presentations/edit-in-out-text/edit-in-out-text.component';
+import { UsersShowcaseViewComponent } from './showcase-view/showcase-view.component';
 
 @NgModule({
     imports: [
@@ -154,7 +155,8 @@ import { PrsentationEditInOutTextComponent } from './presentations/edit-in-out-t
         NewMessageDialogComponent,
         UsersSettingsEmailSignatureComponent,
         UsersProfileActivityComponent,
-        PrsentationEditInOutTextComponent
+        PrsentationEditInOutTextComponent,
+        UsersShowcaseViewComponent
     ],
     exports: [
         UsersComponent,

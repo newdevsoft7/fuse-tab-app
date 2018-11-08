@@ -55,6 +55,8 @@
 
             <fieldset class="mb-16" class="preview">
                 <legend>Preview</legend>
+                <app-users-showcase-view [iframeUrl]="link" [shouldRefresh]="previewRefresh"></app-users-showcase-view>
+
             </fieldset>
 
             <button mat-raised-button color="warn" (click)="deleteCard(cardData.card.id)" matTooltip="Delete">

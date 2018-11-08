@@ -14,6 +14,8 @@ import { ShowcaseService } from '../../showcase/showcase.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
 import * as _ from 'lodash';
 import { ObservableMedia } from '@angular/flex-layout';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { TokenStorage } from '../../../../shared/services/token-storage.service';
 
 @Component({
     selector: 'app-users-cards',
@@ -33,7 +35,11 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
     cardSubscription: Subscription;
     mediaSubscription: Subscription;
     drawerMode = 'side';
-    
+    user: any;
+    link ='hello';
+
+    previewRefresh: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
     constructor(
         private toastr: ToastrService,
         private tabService: TabService,
@@ -43,7 +49,10 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         private showcaseService: ShowcaseService,
         private scMessageService: SCMessageService,
         private observableMedia: ObservableMedia,
-    ) { }
+        private tokenStorage: TokenStorage
+    ) {
+        this.user = this.tokenStorage.getUser();
+    }
 
     ngOnInit() {
         this.getCards();
@@ -59,6 +68,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                     card.showcase_template_id = res.data.id;
                     const { message } = await this.userService.updateCard(card.id, card);
                     this.toastr.success(message);
+                    this.refreshPreview();
                 } catch (e) {
                     this.toastr.error(e.error.message);
                 }
@@ -73,6 +83,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
                 this.cardData.showcase_templates.splice(0, templates.length);
                 setTimeout(() => this.cardData.showcase_templates.push(...templates));
                 this.connectorService.currentShowcaseTab$.next(null);
+                this.refreshPreview();
             }
         });
 
@@ -129,6 +140,8 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
             if (this.cardData.card.showcase_template_id) {
                 this.cardData.card.showcase_template_id = +this.cardData.card.showcase_template_id;
             }
+            this.link = `${location.protocol}//${location.host}/showcase.php?user_id=${this.user.id}&type=card&card_id=${card.id}`;
+            this.refreshPreview();
         } catch (e) {
             this.scMessageService.error(e);
         }
@@ -159,6 +172,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
     async tag(cardId, type: 'photo' | 'video', tag) {
         try {
             await this.userService.tagCard(cardId, type, tag);
+            this.refreshPreview();
         } catch (e) {
             this.scMessageService.error(e);
         }
@@ -167,6 +181,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
     async untag(cardId, type: 'photo' | 'video', tag) {
         try {
             await this.userService.untagCard(cardId, type, tag);
+            this.refreshPreview();
         } catch (e) {
             this.scMessageService.error(e);
         }
@@ -187,6 +202,7 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
         try {
             await this.userService.updateCard(this.cardData.card.id, data);
             this.cardData.card.showcase_template_id = event.value;
+            this.refreshPreview();
         } catch (e) {
             this.scMessageService.error(e);
         }
@@ -230,6 +246,10 @@ export class UsersCardsComponent implements OnInit, OnDestroy {
             }
         );
         this.tabService.openTab(tab);
+    }
+
+    refreshPreview() {
+        this.previewRefresh.next(true);
     }
 
 }
