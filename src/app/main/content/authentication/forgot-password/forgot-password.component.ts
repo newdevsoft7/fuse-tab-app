@@ -19,6 +19,7 @@ export class FuseForgotPasswordComponent implements OnInit
     forgotPasswordFormErrors: any;
     logoUrl: string;
     backgroundImg: string;
+    isRequestSent = false;
 
     constructor(
         private fuseConfig: FuseConfigService,
@@ -83,6 +84,7 @@ export class FuseForgotPasswordComponent implements OnInit
         try {
             this.spinner.show();
             await this.authService.sendForgotPasswordLink(payload);
+            this.isRequestSent = true;
             this.toastr.success('We have emailed you a link to reset your password.');
         } catch (e) {
             this.toastr.error(e.error.message);
