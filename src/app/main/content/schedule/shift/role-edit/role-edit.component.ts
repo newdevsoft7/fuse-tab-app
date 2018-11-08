@@ -162,7 +162,7 @@ export class ShiftRoleEditComponent implements OnInit {
                 bill_currency: [this.role.bill_currency],
                 pay_rate: [this.role.pay_rate],
                 pay_currency: [this.role.pay_currency],
-                pay_category_id: [this.role.pay_category_id ? this.role.pay_category_id : 'none'],
+                pay_category_id: [this.role.pay_category_id !== null ? +this.role.pay_category_id : 'none'],
                 expense_limit: [this.role.expense_limit],
                 completion_notes: [this.role.completion_notes ? this.role.completion_notes : ''] ,
                 requirements: [[]], // TODO - ROLE REQUIREMENTS,
