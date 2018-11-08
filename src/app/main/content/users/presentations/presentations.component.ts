@@ -233,6 +233,8 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
   }
 
   onDrop(event) {
+    const users = this.presentationData.users.map(user => +user.id);
+    this.saveField('users', users);
   }
 
   async saveField(field, value) {
