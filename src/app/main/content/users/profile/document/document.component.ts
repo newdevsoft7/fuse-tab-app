@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ConnectorService } from '../../../../../shared/services/connector.service';
 import { TabComponent } from '../../../../tab/tab/tab.component';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
+import {FuseConfirmYesNoDialogComponent} from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 
 const PROFILE_DOCUMENT = 'profile_document';
 
@@ -156,13 +157,20 @@ export class UsersProfileDocumentComponent implements OnInit, DoCheck, OnDestroy
   }
 
   deleteProfileDocument(document) {
-    this.userService.deleteProfileFile(document.id, PROFILE_DOCUMENT)
-      .subscribe(res => {
+    const dialogRef = this.dialog.open(FuseConfirmYesNoDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = 'Really delete this?';
+    dialogRef.afterClosed().subscribe(async result => {
+      if (!result) { return; }
+      try {
+        await this.userService.deleteProfileFile(document.id, PROFILE_DOCUMENT).toPromise();
         const index = this.documents.findIndex(v => v.id == document.id);
         this.documents.splice(index, 1);
-      }, err => {
-        console.log(err);
-      });
+      } catch (e) {
+        this.scMessageService.error(e);
+      }
+    });
   }
 
   onDrop(event) {
