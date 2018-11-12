@@ -17,7 +17,7 @@ const CUSTOM_INPUT_VALIDATORS: any = {
   multi: true
 };
 
-declare var ClassicEditor: any;
+declare const CustomEditorLoader: any;
 
 @Component({
   selector: 'app-ckeditor-v5',
@@ -37,6 +37,7 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
   @ViewChild('editor') editorWrapper: ElementRef;
 
   @Input() placeholder: string = '';
+  @Input() html: boolean = false;
 
   uploadUrl: string;
   token: string;
@@ -48,11 +49,12 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
     private tokenStorage: TokenStorage,
     private toastrService: ToastrService) {
 
-    this.uploadUrl = `https://api.${appSettings.baseData.name}.staffconnect-app.com/api/editor/image`;
-    this.token = tokenStorage.getAccessToken();
+    this.uploadUrl = `https://api.${this.appSettings.baseData.name}.staffconnect-app.com/api/editor/image`;
+    this.token = this.tokenStorage.getAccessToken();
   }
 
   ngOnInit() {
+    const ClassicEditor = new CustomEditorLoader(this.html).getEditor();
     ClassicEditor
       .create(this.editorWrapper.nativeElement, {
         heading: {

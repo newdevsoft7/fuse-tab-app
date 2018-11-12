@@ -1,7 +1,10 @@
 <fieldset>
   <legend>{{title}}</legend>
   <div>
-    <app-ckeditor-v5 class="mb-12" [ngModel]="text" (ngModelChange)="onChange($event)"></app-ckeditor-v5>
+    <app-ckeditor-v5 class="mb-12" 
+                     [ngModel]="text"
+                     [html]="true" 
+                     (ngModelChange)="onChange($event)"></app-ckeditor-v5>
     <button mat-raised-button color="accent" (click)="save()" *ngIf="isTextChanged">Save</button>
   </div>
 </fieldset>
