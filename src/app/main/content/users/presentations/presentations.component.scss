@@ -3,6 +3,7 @@
 #presentations-container {
 
   height: 100%;
+  display: block !important;
 
   @include media-breakpoint-down('sm') {
     margin: -1em 0;
@@ -13,7 +14,7 @@
   }
 
   .draw-container {
-    min-height: 100px !important;
+    min-height: 80vh !important;
 
     .draw-sidenav {
       min-width: 160px;
