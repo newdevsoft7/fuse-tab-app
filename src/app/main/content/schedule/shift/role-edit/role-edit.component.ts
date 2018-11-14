@@ -187,6 +187,8 @@ export class ShiftRoleEditComponent implements OnInit {
                 processTime(this.role.role_end)
             );
 
+            this.sameAsShift = (!this.role.role_start && !this.role.role_end) ? true : false;
+
         } else { // ROLE CREATE
             this.roleForm = this.formBuilder.group({
                 num_required: [1],
@@ -204,9 +206,9 @@ export class ShiftRoleEditComponent implements OnInit {
                 uploads_required: [null],
                 reports: [[]]
             });
+            this.sameAsShift = true;
         }
 
-        this.sameAsShift = true;
         this.scheduleService.getPayLevelCategory().subscribe(res => {
             this.payCategories = res;
         }, err => {
@@ -280,7 +282,13 @@ export class ShiftRoleEditComponent implements OnInit {
             };
         }
 
-        if (!this.sameAsShift) {
+        if (this.sameAsShift) {
+          role = {
+            ...role,
+            role_start: null,
+            role_end: null
+          };
+        } else {
             const role_start = convertTime(this.rolePeriod.from);
             const role_end = convertTime(this.rolePeriod.to);
             role = {
