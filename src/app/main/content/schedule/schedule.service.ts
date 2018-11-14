@@ -410,6 +410,11 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
+  deleteHistory(id: number | string): Promise<any> {
+    const url = `${BASE_URL}/shift/import/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
   saveImport(id, live: boolean): Promise<any> {
     const url = `${BASE_URL}/shift/import/${id}`;
     return this.http.put(url, { live: live ? 1 : 0 }).toPromise();

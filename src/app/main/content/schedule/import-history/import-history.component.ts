@@ -44,10 +44,9 @@ export class ImportHistoryComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(async (result) => {
             if (result) {
                 try {
-                    // TODO - Delete import history
                     this.spinner.show();
+                    await this.scheduleService.deleteHistory(item.id);
                     this.spinner.hide();
-                    //this.toastr.success(res.message);
                     const index = this.history.findIndex(v => v.id === item.id);
                     if (index > -1) {
                         this.history.splice(index, 1);
