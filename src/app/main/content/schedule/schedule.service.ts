@@ -31,7 +31,6 @@ export class ScheduleService {
 
   getShifts(params): Observable<any> {
     const filters = params.filters ? encodeURIComponent(JSON.stringify(params.filters)) : '';
-    console.log(filters);
     const sorts = params.sorts ? encodeURIComponent(JSON.stringify(params.sorts)) : '';
     const pageSize = params.pageSize ? params.pageSize : 5;
     const pageNumber = params.pageNumber ? params.pageNumber : 0;
@@ -153,6 +152,11 @@ export class ScheduleService {
 
   deleteShift(id): Promise<any> {
     const url = `${BASE_URL}/shift/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  deleteShifts(ids: number[]): Promise<any> {
+    const url = `${BASE_URL}/shifts/${ids.join(',')}`;
     return this.http.delete(url).toPromise();
   }
 

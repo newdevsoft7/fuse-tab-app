@@ -299,7 +299,26 @@ export class AdminShiftListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async(result) => {
       if (result) {
         try {
-          this.shifts = this.shifts.filter(s => s.id !== shift.id);
+          await this.scheduleService.deleteShift(shift.id);
+          this.getShifts();
+        } catch (e) {
+          this.scMessageService.error(e);
+        }
+      }
+    });
+  }
+
+  deleteShifts() {
+    const dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+      disableClose: false
+    });
+    dialogRef.componentInstance.confirmMessage = `Really delete ${this.selectedShifts.length} shifts?`;
+    dialogRef.afterClosed().subscribe(async(result) => {
+      if (result) {
+        try {
+          await this.scheduleService.deleteShifts(this.selectedShifts.map(shift => shift.id));
+          this.selectedShifts = [];
+          this.getShifts();
         } catch (e) {
           this.scMessageService.error(e);
         }
