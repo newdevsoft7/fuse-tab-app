@@ -527,9 +527,17 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
     }
 
     private addPayRollMenu() {
-        const shouldAddPayroll = this.tokenStorage.getSettings().payroll;
+        var shouldAddPayroll = false;
         const level = this.tokenStorage.getUser().lvl;
-        if (!shouldAddPayroll || !['owner', 'admin'].includes(level)) { return; }
+        if (level == 'owner') {
+            shouldAddPayroll = true;
+        } else if (level == 'admin') {
+            const permissions = this.tokenStorage.getPermissions();
+            if (permissions && permissions.admin_staff_payroll) {
+                shouldAddPayroll = true;
+            }
+        }
+        if (!shouldAddPayroll) { return; }
         const navModel = this.fuseNavigationService.getNavigationModel();
         if (navModel.find(v => v.id === 'payroll')) { return; }
         const payroll = {
