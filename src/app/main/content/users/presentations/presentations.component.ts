@@ -66,7 +66,7 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
       } else {
         this.getPresentations();
       }
-      this.drawer.open();
+      setTimeout(() => this.drawer.open(), 250);
     });
 
     this.presentationSubscription = this.connectorService.currentShowcaseTab$.subscribe(async (tab: TabComponent) => {
@@ -101,11 +101,15 @@ export class UsersPresentationsComponent implements OnInit, OnDestroy {
 
     this.mediaSubscription = this.observableMedia.subscribe(() => {
       if (this.observableMedia.isActive('gt-sm')) {
-        this.drawerMode = 'side';
-        this.drawer.toggle(true);
+        setTimeout(() => {
+          this.drawerMode = 'side';
+          this.drawer.toggle(true);
+        });
       } else {
-        this.drawerMode = 'over';
-        this.drawer.toggle(false);
+        setTimeout(() => {
+          this.drawerMode = 'over';
+          this.drawer.toggle(false);
+        });
       }
     });
 
