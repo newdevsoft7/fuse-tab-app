@@ -6,7 +6,6 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { ScheduleService } from '../../../schedule.service';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-admin-export-as-excel-dialog',

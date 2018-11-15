@@ -1,39 +1,40 @@
 <mat-form-field fxFlex="100">
 
-    <mat-chip-list #chipList>
-        <mat-chip *ngFor="let tag of _value" (remove)="remove(tag)">
-            {{tag[labelBy]}} <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <input #chipInput
-               ngModel
-               debounce
-               [delay]="300"
-               [placeholder]="placeholder"
-               [matChipInputFor]="chipList"
-               [matChipInputAddOnBlur]="false"
-               (matChipInputTokenEnd)="addNew($event)"
-               [matAutocomplete]="auto"
-               [disabled]="disabled"
-               (onValueChange)="onkeyUpChange($event)">
-    </mat-chip-list>
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let tag of _value" (remove)="remove(tag)">
+      {{tag[labelBy]}} <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input #chipInput
+           ngModel
+           debounce
+           [delay]="300"
+           [placeholder]="placeholder"
+           [matChipInputFor]="chipList"
+           [matChipInputAddOnBlur]="false"
+           (matChipInputTokenEnd)="addNew($event)"
+           [matAutocomplete]="auto"
+           [disabled]="disabled"
+           (onValueChange)="onkeyUpChange($event)">
+  </mat-chip-list>
 
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
-        <ng-container *ngFor="let group of source">
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
 
-            <ng-container *ngIf="group.children">
-              <mat-optgroup *ngIf="sourceFiltered(group.children).length > 0" [label]="group.text">
-                  <mat-option *ngFor="let tag of sourceFiltered(group.children)" [value]="tag">
-                      {{tag[labelBy]}}
-                  </mat-option>
-              </mat-optgroup>
-            </ng-container>
+    <ng-container *ngFor="let group of source">
+      <ng-container *ngIf="group.children; else noParent">
+        <mat-optgroup *ngIf="sourceFiltered(group.children).length > 0" [label]="group[labelBy]">
+          <mat-option *ngFor="let tag of sourceFiltered(group.children)" [value]="tag">
+            {{tag[labelBy]}}
+          </mat-option>
+        </mat-optgroup>
+      </ng-container>
 
-            <ng-container *ngIf="!group.children">
-              <mat-option [value]="group" *ngIf="!isFiltered(group)">
-                  <span>{{group[labelBy]}}</span>
-              </mat-option>
-            </ng-container>
-        </ng-container>
-    </mat-autocomplete>
+      <ng-template #noParent>
+        <mat-option *ngIf="sourceFiltered(group).length > 0" [value]="group">
+          {{group[labelBy]}}
+        </mat-option>
+      </ng-template>
+    </ng-container>
+
+  </mat-autocomplete>
 
 </mat-form-field>
