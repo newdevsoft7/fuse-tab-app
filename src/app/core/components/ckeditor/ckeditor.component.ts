@@ -97,9 +97,9 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
       })
       .then(editor => {
         this.editor = editor;
-        this.editor.setData(this._value);
+        this.editor.setData(this.getFilteredValue(this._value));
         this.editor.editing.model.document.on('change', () => {
-          this.value = this.editor.getData();
+          this.value =  this.getOriginValue(this.editor.getData());
         });
       })
       .catch(error => {
@@ -118,7 +118,39 @@ export class CKEditor5Component implements ControlValueAccessor, OnInit {
   writeValue(v): void {
     this._value = v || '';
     if (this.editor) {
-      this.editor.setData(this._value);
+      this.editor.setData(this.getFilteredValue(this._value));
+    }
+  }
+
+  getFilteredValue(value): string {
+    if (this.html) {
+      return value;
+    } else {
+      const matches = value.match(/\[{2}.*?\]{2}/g);
+      if (matches) {
+        for (const match of matches) {
+          value = value.replace(match, `\`${match}\``);
+        }
+        return value;
+      } else {
+        return value;
+      }
+    }
+  }
+
+  getOriginValue(value): string {
+    if (this.html) {
+      return value;
+    } else {
+      const matches = value.match(/\`\[{2}.*?\]{2}\`/g);
+      if (matches) {
+        for (const match of matches) {
+          value = value.replace(match, match.slice(1, match.length - 1));
+        }
+        return value;
+      } else {
+        return value;
+      }
     }
   }
 
