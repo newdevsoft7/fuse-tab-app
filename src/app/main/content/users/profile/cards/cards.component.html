@@ -1,40 +1,47 @@
 <div id="profile-cards-container" fxLayout="column" fxLayoutAlign="start">
-    <button mat-icon-button (click)="toggleDrawer()" fxHide.gt-xs [ngClass.xs]="'m-8'">
-        <mat-icon>menu</mat-icon>
-    </button>
+  <mat-drawer-container autosize class="draw-container" fxFlex="1 0 auto">
 
-    <mat-drawer-container autosize class="draw-container" fxFlex="1 0 auto">
+    <mat-drawer #drawer [mode]="drawerMode" [disableClose]="false" class="draw-sidenav">
 
-        <mat-drawer #drawer mode="side" [disableClose]="false" class="draw-sidenav">
-            <div class="pt-16 nav" fuseperfectscrollbar>
-                <div class="nav-item" *ngFor="let card of cards">
-                    <div matRipple (click)="selectCard(card)" [class.active]="card.id === selectedCard?.id" class="nav-link">
-                        <span class="name">
-                            {{card.name}}
-                        </span>
-                    </div>
-                    <mat-divider></mat-divider>
-                </div>
-            </div>
-        </mat-drawer>
-        <div class="form-container" *ngIf="cardData">
-            <fieldset class="mb-16">
-                <legend>Photos</legend>
-                <div fxLayout="row wrap" fxLayoutAlign="start center">
-                    <img class="preview" *ngFor="let photo of cardData.photos" [src]="photo.thumb" (click)="showPhoto(photo)">
-                </div>
-            </fieldset>
-
-            <fieldset class="mb-16">
-                <legend>Videos</legend>
-                <div fxLayout="row wrap" fxLayoutAlign="start center">
-                    <img class="preview" *ngFor="let video of cardData.videos" [src]="video.thumb" (click)="showVideo(video)">
-                </div>
-            </fieldset>
-
-            <a mat-raised-button color="accent" [href]="'/showcase.php?user_id=' + user.id + '&type=card&card_id=' + selectedCard.id" target="_blank" matTooltip="View">
-                View
-            </a>
+      <div class="pt-16 nav" fuseperfectscrollbar>
+        <div class="nav-item" *ngFor="let card of cards">
+          <div matRipple (click)="selectCard(card)" [class.active]="card.id === selectedCard?.id" class="nav-link">
+            <span class="name">
+                {{card.name}}
+            </span>
+          </div>
+          <mat-divider></mat-divider>
         </div>
-    </mat-drawer-container>
+      </div>
+
+    </mat-drawer>
+
+    <mat-drawer-content>
+      <div class="form-container">
+        <button mat-icon-button (click)="toggleDrawer()" fxHide.gt-sm [ngClass.xs]="'m-8'">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <ng-container *ngIf="cardData">
+          <fieldset class="mb-16">
+            <legend>Photos</legend>
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+              <img class="preview" *ngFor="let photo of cardData.photos" [src]="photo.thumb" (click)="showPhoto(photo)">
+            </div>
+          </fieldset>
+
+          <fieldset class="mb-16">
+            <legend>Videos</legend>
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+              <img class="preview" *ngFor="let video of cardData.videos" [src]="video.thumb" (click)="showVideo(video)">
+            </div>
+          </fieldset>
+
+          <a mat-raised-button color="accent" [href]="'/showcase.php?user_id=' + user.id + '&type=card&card_id=' + selectedCard.id" target="_blank" matTooltip="View">
+            View
+          </a>
+        </ng-container>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
 </div>

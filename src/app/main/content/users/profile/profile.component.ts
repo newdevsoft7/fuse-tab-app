@@ -11,6 +11,7 @@ import { NewMessageDialogComponent } from './dialogs/new-message-dialog/new-mess
 import { UsersChatService } from '../chat/chat.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
 import { UsersProfileActivityComponent } from './activity/activity.component';
+import { UsersProfileSettingsComponent } from './settings/settings.component';
 
 @Component({
   selector: 'app-users-profile',
@@ -22,6 +23,7 @@ export class UsersProfileComponent implements OnInit {
   @Input('data') user;
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
   @ViewChild('cardsTab') cardsTab: UsersProfileCardsComponent;
+  @ViewChild('settingsTab') settingsTab: UsersProfileSettingsComponent;
   @ViewChild('activityTab') activityTab: UsersProfileActivityComponent;
 
   currentUser: any;
@@ -189,6 +191,11 @@ export class UsersProfileComponent implements OnInit {
     switch (event.tab.textLabel) {
       case 'Cards':
         setTimeout(() => this.cardsTab.drawer.open(), 100);
+        this.activityTab.hide();
+        break;
+
+      case 'Settings':
+        setTimeout(() => this.settingsTab.drawer.open(), 100);
         this.activityTab.hide();
         break;
 

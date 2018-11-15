@@ -1,78 +1,77 @@
-<div class="nav h-100-p" fxLayout="row" fxLayoutAlign="start start">
+<div id="profile-settings-container">
+  <mat-drawer-container autosize class="draw-container">
+    <mat-drawer #drawer [mode]="drawerMode" [disableClose]="false" class="draw-sidenav">
+      <div class="nav pt-16" fusePerfectScrollbar>
 
-    <!-- SIDENAV -->
-    <div class="sidenav" fxFlex="200px">
-        <div fusePerfectScrollbar class="pt-16">
-
-            <!-- NAV ITEM -->
-            <ng-container *ngFor="let category of categories">
-                <div class="nav-item" *ngIf="!category.disabled">
-                    <a class="nav-link" matRipple (click)="select(category)" [class.active]="category.id === selectedCategory?.id">
-                        <span>{{category.title}}</span>
-                    </a>
-                    <mat-divider></mat-divider>
-                </div>
-            </ng-container>
-            <!-- / NAV ITEM -->
-
-        </div>
-    </div>
-    <!-- / SIDENAV -->
-
-    <!-- CONTENT -->
-    <div class="content" fxFlex [ngClass.gt-xs]="'p-24'" [ngClass.xs]="'py-4'">
-        <ng-container [ngSwitch]="selectedCategory?.id">
-            <app-users-settings-admin-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'admin-options'" [user]="user" [timezones]="timezones"></app-users-settings-admin-options>
-            <app-users-settings-admin-permissions 
-                [userPermissions]="userPermissions" 
-                [workAreas]="workAreas"
-                [workAreaSource]="workAreaSource"
-                [trackingOptions]="trackingOptions"
-                [trackingOptionSource]="trackingOptionSource"
-                (filterSource)="filterSource($event)"
-                (addItem)="addItem($event)"
-                (removeItem)="removeItem($event)"
-                (optionChanged)="togglePermission($event)"
-                *ngSwitchCase="'admin-permissions'">
-            </app-users-settings-admin-permissions>
-            <app-users-settings-staff-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'staff-options'" [user]="user" [timezones]="timezones"></app-users-settings-staff-options>
-            <app-users-settings-staff-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
-            <app-users-settings-client-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'client-options'" [user]="user" [timezones]="timezones"></app-users-settings-client-options>
-            <app-users-settings-client-permissions 
-                [userPermissions]="userPermissions" 
-                [trackingOptions]="trackingOptions"
-                [trackingOptionSource]="trackingOptionSource"
-                (filterSource)="filterSource($event)"
-                (addItem)="addItem($event)"
-                (removeItem)="removeItem($event)"
-                (optionChanged)="togglePermission($event)" 
-                *ngSwitchCase="'client-permissions'">
-            </app-users-settings-client-permissions>
-            <app-users-settings-change-password [user]="user" *ngSwitchCase="'change-password'"></app-users-settings-change-password>
-            <app-users-settings-email-signature [user]="user" *ngSwitchCase="'email-signature'"></app-users-settings-email-signature>
-            <app-users-settings-staff-outsource
-                [companies]="userOutsourceCompanies"
-                [isWorkHere]="isWorkHere"
-                [companySource]="userOutsourceCompanySource"
-                (filterCompany)="filterOutsourceCompany($event)"
-                (addCompany)="addOutsourceCompany($event)"
-                (removeCompany)="removeOutsourceCompany($event)"
-                (toggleWorkHere)="toggleWorkHere($event)"
-                *ngSwitchCase="'staff-outsource'">
-            </app-users-settings-staff-outsource>
-            <app-users-settings-link-other-accounts
-                [user]="user"
-                [links]="links"
-                [linkStatus]="linkStatus"
-                (toggleLinked)="toggleLinked($event)"
-                (approveCompany)="approveCompany($event)"
-                *ngSwitchCase="'link-other-account'">
-            </app-users-settings-link-other-accounts>
-            <ng-container *ngIf="settings.xtrm_enable">
-                <app-users-settings-xtrm *ngSwitchCase="'xtrm'"></app-users-settings-xtrm>
-            </ng-container>
+        <ng-container *ngFor="let category of categories">
+          <div class="nav-item" *ngIf="!category.disabled">
+            <a class="nav-link" matRipple (click)="select(category)" [class.active]="category.id === selectedCategory?.id">
+              <span>{{category.title}}</span>
+            </a>
+            <mat-divider></mat-divider>
+          </div>
         </ng-container>
-    </div>
-    <!-- / CONTENT -->
 
+      </div>
+    </mat-drawer>
+
+    <mat-drawer-content>
+      <div class="content" ngClass.gt-xs="p-24" ngClass.xs="py-4" fusePerfectScrollbar>
+        <button mat-button class="mat-icon-button sidenav-toggle" fxHide.gt-sm (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <ng-container [ngSwitch]="selectedCategory?.id">
+          <app-users-settings-admin-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'admin-options'" [user]="user" [timezones]="timezones"></app-users-settings-admin-options>
+          <app-users-settings-admin-permissions
+            [userPermissions]="userPermissions"
+            [workAreas]="workAreas"
+            [workAreaSource]="workAreaSource"
+            [trackingOptions]="trackingOptions"
+            [trackingOptionSource]="trackingOptionSource"
+            (filterSource)="filterSource($event)"
+            (addItem)="addItem($event)"
+            (removeItem)="removeItem($event)"
+            (optionChanged)="togglePermission($event)"
+            *ngSwitchCase="'admin-permissions'">
+          </app-users-settings-admin-permissions>
+          <app-users-settings-staff-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'staff-options'" [user]="user" [timezones]="timezones"></app-users-settings-staff-options>
+          <app-users-settings-staff-permissions [userPermissions]="userPermissions" (optionChanged)="togglePermission($event)" *ngSwitchCase="'staff-permissions'"></app-users-settings-staff-permissions>
+          <app-users-settings-client-options [userOptions]="userOptions" (optionChanged)="toggleOption($event)" *ngSwitchCase="'client-options'" [user]="user" [timezones]="timezones"></app-users-settings-client-options>
+          <app-users-settings-client-permissions
+            [userPermissions]="userPermissions"
+            [trackingOptions]="trackingOptions"
+            [trackingOptionSource]="trackingOptionSource"
+            (filterSource)="filterSource($event)"
+            (addItem)="addItem($event)"
+            (removeItem)="removeItem($event)"
+            (optionChanged)="togglePermission($event)"
+            *ngSwitchCase="'client-permissions'">
+          </app-users-settings-client-permissions>
+          <app-users-settings-change-password [user]="user" *ngSwitchCase="'change-password'"></app-users-settings-change-password>
+          <app-users-settings-email-signature [user]="user" *ngSwitchCase="'email-signature'"></app-users-settings-email-signature>
+          <app-users-settings-staff-outsource
+            [companies]="userOutsourceCompanies"
+            [isWorkHere]="isWorkHere"
+            [companySource]="userOutsourceCompanySource"
+            (filterCompany)="filterOutsourceCompany($event)"
+            (addCompany)="addOutsourceCompany($event)"
+            (removeCompany)="removeOutsourceCompany($event)"
+            (toggleWorkHere)="toggleWorkHere($event)"
+            *ngSwitchCase="'staff-outsource'">
+          </app-users-settings-staff-outsource>
+          <app-users-settings-link-other-accounts
+            [user]="user"
+            [links]="links"
+            [linkStatus]="linkStatus"
+            (toggleLinked)="toggleLinked($event)"
+            (approveCompany)="approveCompany($event)"
+            *ngSwitchCase="'link-other-account'">
+          </app-users-settings-link-other-accounts>
+          <ng-container *ngIf="settings.xtrm_enable">
+            <app-users-settings-xtrm *ngSwitchCase="'xtrm'"></app-users-settings-xtrm>
+          </ng-container>
+        </ng-container>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

@@ -120,7 +120,7 @@
       </mat-tab>
 
       <mat-tab label="Settings" *ngIf="isSettingsShow">
-        <app-users-profile-settings [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers"
+        <app-users-profile-settings #settingsTab [userInfo]="userInfo" [currentUser]="currentUser" [links]="linkedUsers"
                                     [settings]="settings" [timezones]="timezones"></app-users-profile-settings>
       </mat-tab>
 
