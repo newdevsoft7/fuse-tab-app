@@ -26,6 +26,8 @@ import { ForgotPasswordModule } from './main/content/authentication/forgot-passw
 import { RegistrationGuardService } from './shared/guards/registration-guard.service';
 import { NgxStripeModule } from 'ngx-stripe';
 import { environment } from '../environments/environment';
+import { NotExistComponent } from './main/content/not-exist/not-exist.component';
+import { NotExistGuardService } from './shared/guards/not-exist-guard.service';
 
 export function init(config: AppSettingService) {
     return () => config.load();
@@ -43,8 +45,9 @@ const appRoutes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
-        path: 'showcase',
-        loadChildren: './main/content/showcase-view/showcase-view.module#ShowcaseViewModule'
+        path: 'not-exist',
+        component: NotExistComponent,
+        canActivate: [NotExistGuardService]
     },
     {
         path: '**',
@@ -55,7 +58,8 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        CustomToastComponent
+        CustomToastComponent,
+        NotExistComponent
     ],
     imports     : [
         BrowserModule,
