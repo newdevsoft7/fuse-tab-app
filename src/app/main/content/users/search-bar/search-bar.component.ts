@@ -26,6 +26,7 @@ import { UsersAddFilterDialogComponent } from './add-filter/add-filter.component
 import * as _ from 'lodash';
 import { TabService } from '../../../tab/tab.service';
 import { Tab } from '../../../tab/tab';
+import { FilterService } from '@shared/services/filter.service';
 
 export interface Tag {
     id: string;
@@ -88,7 +89,9 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
         private dialog: MatDialog,
         private toastr: ToastrService,
         private tabService: TabService,
-        private userService: UserService) {
+        private userService: UserService,
+        private filterService: FilterService
+    ) {
     }
 
     async ngOnInit() {
@@ -133,7 +136,7 @@ export class UsersSearchBarComponent implements OnInit, AfterViewInit, ControlVa
 
     private async getFilters(query = '') {
         try {
-            this.source = await this.userService.getUsersFilters(query);
+            this.source = await this.filterService.getUserFilter(query);
         } catch (e) {}
     }
 

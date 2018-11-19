@@ -11,6 +11,7 @@ import { FuseConfirmDialogComponent } from '../../../../../core/components/confi
 
 import { SettingsService } from '../../settings.service';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-settings-work-area-item',
@@ -34,7 +35,8 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         private formBuilder: FormBuilder,
         private settingsService: SettingsService,
         private scMessageService: SCMessageService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
@@ -68,8 +70,8 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         this.dialogRef.afterClosed().subscribe(result => {
             if (result) {
                 this.settingsService.deleteWorkArea(this.workArea.id).subscribe(() => {
-                    //this.toastr.success(res.message);
                     this.onWorkAreaDeleted.next(this.workArea);
+                    this.filterService.clean(this.filterService.type.workareas);
                 });
             }
         });
@@ -81,6 +83,7 @@ export class SettingsWorkAreaItemComponent implements OnInit {
         if (!params.php_tz) { delete params.php_tz; }
         this.settingsService.updateWorkArea(this.workArea.id, params).subscribe(() => {
             this.workArea = { ...this.workArea, ...params };
+            this.filterService.clean(this.filterService.type.workareas);
         }, err => {
             this.scMessageService.error(err);
         });

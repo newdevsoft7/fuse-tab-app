@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
 import { uuid } from 'lodash-uuid';
+import { FilterService } from '@shared/services/filter.service';
+import { tap } from 'rxjs/operators';
 
 const BASE_URL = `${environment.apiUrl}`;
 const USERS_URL = `${BASE_URL}/users`;
@@ -16,7 +18,8 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private scMessageService: SCMessageService
+    private scMessageService: SCMessageService,
+    private filterService: FilterService
   ) { }
 
   /**
@@ -75,17 +78,27 @@ export class UserService {
   createUser(user): Observable<any> {
     const url = `${BASE_URL}/user`;
     return this.http.post(url, user)
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.user))
+      )
       .catch(this.handleError);
   }
 
   updateUser(id, body: any): Promise<any> {
     const url = `${BASE_URL}/user/${id}`;
-    return this.http.put(url, body).toPromise();
+    return this.http.put(url, body)
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.user))
+      )
+      .toPromise();
   }
 
   updateProfile(userId: number, elementId: number | string, data: any): Observable<any> {
     const url = `${BASE_URL}/profile/${userId}/${elementId}`;
     return this.http.put(url, { data })
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.user))
+      )
       .catch(this.handleError);
   }
 
@@ -346,7 +359,11 @@ export class UserService {
 
   deleteUser(id: number): Promise<any> {
     const url = `${BASE_URL}/user/${id}`;
-    return this.http.delete(url).toPromise();
+    return this.http.delete(url)
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.user))
+      )
+      .toPromise();
   }
 
   assignReport(id: number, data: any): Observable<any> {

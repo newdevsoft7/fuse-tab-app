@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { ProfileAttributesService } from '../profile-attributes.service';
 import { ToastrService } from 'ngx-toastr';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-profile-attributes-edit-attribute-name',
@@ -21,7 +22,9 @@ export class ProfileAttributesEditAttributeNameComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
-        private attributesService: ProfileAttributesService) { }
+        private attributesService: ProfileAttributesService,
+        private filterService: FilterService
+    ) { }
 
     ngOnInit() {
     }
@@ -52,6 +55,7 @@ export class ProfileAttributesEditAttributeNameComponent implements OnInit {
                 res => {
                     const attribute = res.data;
                     this.attribute.aname = attribute.aname;
+                    this.filterService.clean(this.filterService.type.attributes);
                 },
                 err => {
                     const errors = err.error.errors;

@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileRatingsService } from './profile-ratings.service';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-profile-ratings',
@@ -28,7 +29,8 @@ export class ProfileRatingsComponent implements OnInit {
     constructor(
         private dialog: MatDialog,
         private toastr: ToastrService,
-        private ratingsService: ProfileRatingsService
+        private ratingsService: ProfileRatingsService,
+        private filterService: FilterService
     ) {
     }
 
@@ -57,7 +59,7 @@ export class ProfileRatingsComponent implements OnInit {
         const newRating = { rname: newRatingName };
         this.ratingsService.createRating(newRating)
             .subscribe(res => {
-                //this.toastr.success(res.message);
+                this.filterService.clean(this.filterService.type.ratings);
                 this.getRatings();
             });
     }
@@ -71,14 +73,13 @@ export class ProfileRatingsComponent implements OnInit {
 
         this.confirmDialogRef.afterClosed().subscribe(result => {
             if (result) {
-
                 this.ratingsService.deleteRating(rating.id)
-                        .subscribe(res => {
-                            //this.toastr.success(res.message);
-                            this.getRatings();
-                        });
+                    .subscribe(res => {
+                      this.filterService.clean(this.filterService.type.ratings);
+                      this.getRatings();
+                    });
             }
-        });        
+        });
     }
 
 

@@ -13,6 +13,7 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { ProfileAttribute, ProfileAttributeCategory } from './profile-attribute.models';
 import { ProfileAttributesAttributeDialogComponent } from './dialogs/attribute/attribute.component';
+import { FilterService } from '@shared/services/filter.service';
 
 
 @Component({
@@ -31,7 +32,9 @@ export class ProfileAttributesComponent implements OnInit {
     constructor(
         private attributesService: ProfileAttributesService,
         private toastr: ToastrService, 
-        public dialog: MatDialog) {
+        public dialog: MatDialog,
+        private filterService: FilterService
+    ) {
     }
 
     ngOnInit() {
@@ -107,6 +110,7 @@ export class ProfileAttributesComponent implements OnInit {
                 if (!category.attributes) { category.attributes = []; }
                 category.attributes.push(attribute);
                 this.attributes.push(attribute);
+                this.filterService.clean(this.filterService.type.attributes);
             },
             err => {
                 const errors = err.error.errors;
@@ -131,6 +135,7 @@ export class ProfileAttributesComponent implements OnInit {
                             if (!category.attributes) { category.attributes = []; }
                             category.attributes.push(savedAttribute);
                             this.attributes.push(savedAttribute);
+                            this.filterService.clean(this.filterService.type.attributes);
                         },
                         err => {
                             const errors = err.error.errors;
@@ -203,6 +208,7 @@ export class ProfileAttributesComponent implements OnInit {
                 let category = this.categories.find(c => c.id == attribute.attribute_cat_id);
                 index = category.attributes.findIndex(a => a == attribute);
                 category.attributes.splice(index, 1);
+                this.filterService.clean(this.filterService.type.attributes);
             },
             err => {
                 const errors = err.error.errors.data;

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsul
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ProfileInfoService } from '../profile-info.service';
 import * as _ from 'lodash';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-profile-info-edit-element-name',
@@ -18,7 +19,9 @@ export class ProfileInfoEditElementNameComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private profileInfoService: ProfileInfoService) { }
+        private profileInfoService: ProfileInfoService,
+        private filterService: FilterService
+    ) { }
 
     ngOnInit() {
     }
@@ -49,6 +52,7 @@ export class ProfileInfoEditElementNameComponent implements OnInit {
                 .subscribe(res => {
                     const element = res.data;
                     this.element.ename = element.ename;
+                    this.filterService.clean(this.filterService.type.elements);
                 });
             this.formActive = false;
         }

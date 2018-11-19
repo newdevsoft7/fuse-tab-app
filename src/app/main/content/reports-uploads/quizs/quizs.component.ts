@@ -8,6 +8,7 @@ import { SettingsService } from '../../settings/settings.service';
 import { ConnectorService } from '../../../../shared/services/connector.service';
 import { Subscription } from 'rxjs';
 import { TabComponent } from '../../../tab/tab/tab.component';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-quizs',
@@ -29,7 +30,8 @@ export class QuizsComponent implements OnInit, OnDestroy {
         private tabService: TabService,
         private dialog: MatDialog,
         private settingsService: SettingsService,
-        private connectorService: ConnectorService
+        private connectorService: ConnectorService,
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
@@ -41,6 +43,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
                     case `settings/quiz/${id}/edit`:
                         this.tabService.closeTab(tab.url);
                         this.getQuizes();
+                        this.filterService.clean(this.filterService.type.reports);
                         break;
                     case `settings/quiz/${id}`:
                         this.tabService.closeTab(tab.url);
@@ -127,6 +130,7 @@ export class QuizsComponent implements OnInit, OnDestroy {
             if (result) {
                 try {
                     await this.settingsService.deleteReport(id);
+                    this.filterService.clean(this.filterService.type.reports);
                     const index = this.quizes.findIndex(v => v.id === id);
                     if (index > -1) {
                         this.quizes.splice(index, 1);

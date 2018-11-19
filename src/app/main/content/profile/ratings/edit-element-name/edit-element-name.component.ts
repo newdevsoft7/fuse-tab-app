@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import * as _ from 'lodash';
 import { ProfileRatingsService } from '../profile-ratings.service';
+import { FilterService } from '@shared/services/filter.service';
 
 
 @Component({
@@ -20,7 +21,9 @@ export class ProfileRatingsEditElementNameComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private ratingsService: ProfileRatingsService) { }
+        private ratingsService: ProfileRatingsService,
+        private filterService: FilterService
+    ) { }
 
     ngOnInit() {
     }
@@ -51,6 +54,7 @@ export class ProfileRatingsEditElementNameComponent implements OnInit {
                 .subscribe(res => {
                     const rating = res.data;
                     this.rating.rname = rating.rname;
+                    this.filterService.clean(this.filterService.type.ratings);
                 });
             this.formActive = false;
         }
