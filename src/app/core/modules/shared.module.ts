@@ -45,6 +45,7 @@ import { ConnectorService } from '../../shared/services/connector.service';
 import { FuseInfoDialogComponent } from '../components/info-dialog/info-dialog.component';
 import { FuseConfirmTextYesNoDialogComponent } from '../components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
 import { SCMessageService } from '../../shared/services/sc-message.service';
+import { NotExistGuardService } from '../../shared/guards/not-exist-guard.service';
 import { FilterService } from '@shared/services/filter.service';
 
 @NgModule({
@@ -130,6 +131,7 @@ import { FilterService } from '@shared/services/filter.service';
         AuthGuardService,
         UnauthGuardService,
         RegistrationGuardService,
+        NotExistGuardService,
         SCMessageService
     ]
 })

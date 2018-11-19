@@ -66,11 +66,17 @@ export class FuseMainComponent implements OnInit, OnDestroy
     }
 
     get visibleNavbar(): boolean {
-        return this.authService.isAuthorized() && this.tokenStorage.getUser().lvl.indexOf('registrant') === -1 && !this._router.url.startsWith('/showcase');
+        return this.authService.isAuthorized() && 
+               this.tokenStorage.getUser().lvl.indexOf('registrant') === -1 && 
+               !this._router.url.startsWith('/showcase') && 
+               !this._router.url.startsWith('/not-exist');
     }
 
     get visibleToolbar(): boolean {
-       return this.authService.isAuthorized() && this.tokenStorage.getUser().lvl.indexOf('registrant') === -1 && !this._router.url.startsWith('/showcase');
+       return this.authService.isAuthorized() && 
+              this.tokenStorage.getUser().lvl.indexOf('registrant') === -1 && 
+              !this._router.url.startsWith('/showcase') && 
+              !this._router.url.startsWith('/not-exist');
     }
 
     get requiredFormData(): boolean {

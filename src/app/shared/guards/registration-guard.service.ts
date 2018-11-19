@@ -12,6 +12,10 @@ export class RegistrationGuardService implements CanActivate {
     private router: Router) {}
 
   canActivate(route, state: RouterStateSnapshot): boolean {
+    if (!this.appSetting.baseData.name) {
+      this.router.navigate(['/not-exist']);
+      return false;
+    }
     if (!this.authService.isAuthorized() && this.appSetting.baseData.registration_enable !== '1') {
       this.router.navigate(['/login']);
       return false;
