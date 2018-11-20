@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-
-import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { FilterService } from '@shared/services/filter.service';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
+import { from } from 'rxjs/observable/from';
 
-import { ScheduleService } from '../../../schedule.service';
 
 @Component({
     selector: 'app-shifts-export-as-pdf-dialog',
@@ -29,12 +28,13 @@ export class ShiftsExportAsPdfDialogComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<ShiftsExportAsPdfDialogComponent>,
         private scheduleService: ScheduleService,
+        private filterService: FilterService,
         @Inject(MAT_DIALOG_DATA) private data: any,
     ) { }
 
     ngOnInit() {
         this.workareas$ = (text: string): Observable<any> => {
-            return this.scheduleService.getWorkAreas(text);
+            return from(this.filterService.getWorkAreaFilter(text));
         };
     }
 

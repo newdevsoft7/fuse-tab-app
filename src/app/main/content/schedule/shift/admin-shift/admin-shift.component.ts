@@ -21,6 +21,7 @@ import { SCMessageService } from '../../../../../shared/services/sc-message.serv
 import { NewMessageDialogComponent } from '../../../users/profile/dialogs/new-message-dialog/new-message-dialog.component';
 import { UsersChatService } from '../../../users/chat/chat.service';
 import { AdminShiftActivityComponent } from './activity/activity.component';
+import { FilterService } from '@shared/services/filter.service';
 
 export enum TAB {
   Staff = 'Staff',
@@ -76,6 +77,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     private actionService: ActionService,
     private scMessageService: SCMessageService,
     private chatService: UsersChatService,
+    private filterService: FilterService,
     private dialog: MatDialog
   ) {
     // Invite Users to Role
@@ -113,9 +115,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
     if (!this.isClient) {
       // Get Clients
-      this.scheduleService.getClients('').subscribe(res => {
-        this.clients = res;
-      });
+      this.filterService.getClientFilter('').then(clients => this.clients = clients);
 
       // Get Tracking Categories & Options
       this.scheduleService.getShiftsData().subscribe(res => {

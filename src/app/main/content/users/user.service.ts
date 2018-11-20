@@ -327,11 +327,6 @@ export class UserService {
     return this.http.put(url, data).toPromise();
   }
 
-  searchWorkAreas(query: string): Promise<any> {
-    const url = `${AUTOCOMPLETE_URL}/workArea/${query}`;
-    return this.http.get(url).toPromise();
-  }
-
   searchTrackingOptions(catId: number | string, query: string): Promise<any> {
     const url = `${AUTOCOMPLETE_URL}/tracking/${catId}/options/${query}`;
     return this.http.get(url).toPromise();

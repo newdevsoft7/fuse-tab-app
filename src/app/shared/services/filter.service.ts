@@ -41,6 +41,7 @@ export class FilterService {
   async getUserFilter(query: string, userSearch = 1): Promise<any[]> {
     try {
       let data = [];
+      query = query.trim().toLowerCase();
 
       if (query.indexOf('near:') === 0) {
         data = await this.http.get<any[]>(`${baseUrl}/users/filter/${query}`).toPromise();
@@ -169,6 +170,7 @@ export class FilterService {
         this.getReports()
       ]);
 
+      query = query.trim().toLowerCase();
       const data = [];
       let dbQuery = query;
       let operator = '';
@@ -690,6 +692,7 @@ export class FilterService {
 
   async getUserFilterByLevel(level, query = ''): Promise<any[]> {
     try {
+      query = query.trim().toLowerCase();
       const users = await this.getUsers();
       let filteredUsers = users.filter(u => u.lvl === level && u.active === 'active')
         .map(u => {
@@ -707,6 +710,7 @@ export class FilterService {
 
   async getClientFilter(query: string): Promise<any[]> {
     try {
+      query = query.trim().toLowerCase();
       let clients = await this.getClients();
       if (query.length) {
         clients = clients.filter(c => c.cname.toLowerCase().indexOf(query) > -1);
@@ -719,6 +723,7 @@ export class FilterService {
 
   async getOutsourceCompanyFilter(query: string): Promise<any[]> {
     try {
+      query = query.trim().toLowerCase();
       let outsources = await this.getOutsourceCompanies();
       if (query.length) {
         outsources = outsources.filter(out => out.cname.toLowerCase().indexOf(query) > -1);
@@ -731,11 +736,43 @@ export class FilterService {
 
   async getLocationFilter(query = ''): Promise<any> {
     try {
+      query = query.trim().toLowerCase();
       let locations = await this.getLocations();
       if (query.length > 1) {
         locations = locations.filter(v => v.lname.toLowerCase().indexOf(query) > -1);
       }
       return locations.slice(0, 20);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getManagerFilter(query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let users = await this.getUsers();
+      users = users.filter(u => ['owner', 'admin'].indexOf(u.lvl) > -1)
+        .map(u => ({
+          ...u,
+          name: `${u.fname} ${u.lname}`
+        }));
+      if (query.length) {
+        users = users.filter(u => u.name.toLowerCase().indexOf(query) > -1);
+      }
+      return users;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getWorkAreaFilter(query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let workareas = await this.getWorkareas();
+      if (query.length) {
+        workareas = workareas.filter(w => w.aname.toLowerCase().indexOf(query) > -1);
+      }
+      return workareas;
     } catch (e) {
       return [];
     }

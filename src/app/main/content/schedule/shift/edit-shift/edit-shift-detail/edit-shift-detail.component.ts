@@ -1,12 +1,11 @@
-import {
-    Component, OnInit, Input, ViewEncapsulation
-} from '@angular/core';
-
-import { ScheduleService } from '../../../schedule.service';
-import { Observable } from 'rxjs';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { FilterService } from '@shared/services/filter.service';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
+import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
 
 class ShiftTime {
     time;
@@ -72,17 +71,18 @@ export class EditShiftDetailComponent implements OnInit {
 
     constructor(
         private scheduleService: ScheduleService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
 
         this.managers$ = (text: string): Observable<any> => {
-            return this.scheduleService.getManagers(text);
+            return from(this.filterService.getManagerFilter(text));
         };
 
         this.workAreas$ = (text: string): Observable<any> => {
-            return this.scheduleService.getWorkAreas(text);
+            return from(this.filterService.getWorkAreaFilter(text));
         };
 
         this.scheduleService.getShiftsData().subscribe(res => {
