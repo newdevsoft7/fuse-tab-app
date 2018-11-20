@@ -18,6 +18,8 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { FuseConfirmDialogComponent } from '../../../../core/components/confirm-dialog/confirm-dialog.component';
 import { SettingsService } from '../../settings/settings.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
 @Component({
   selector: 'app-schedule-calendar',
@@ -163,7 +165,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     private actionService: ActionService,
     private tabService: TabService,
     private scMessageService: SCMessageService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private filterService: FilterService
   ) {
     if (!this.tokenStorage.isExistSecondaryUser()) {
       this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
@@ -191,6 +194,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         } else {
           this.tabLoaded = true;
         }
+        this.filterService.clean(this.filterService.type.shifts);
       }
     });
   }
@@ -224,8 +228,9 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   }
 
   updateEvents(event: { startDate: string, endDate: string }) {
+    this.filterService.clean(this.filterService.type.shifts);
     this.filtersObservable = (text: string): Observable<any> => {
-      return this.scheduleService.getShiftFilters(event.startDate, event.endDate, text);
+      return from(this.filterService.getShiftFilters(event.startDate, event.endDate, text));
     };
     this.startDate = event.startDate;
     this.endDate = event.endDate;
@@ -290,7 +295,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
               this.options.events.splice(index, 1);
             }
             await this.scheduleService.deleteShift(event.id);
-            // this.toastrService.success(res.message);
+            this.filterService.clean(this.filterService.type.shifts);
           } catch (e) {
             this.toastrService.error((e.error && e.error.message)? e.error.message : 'Something is wrong.');
           }

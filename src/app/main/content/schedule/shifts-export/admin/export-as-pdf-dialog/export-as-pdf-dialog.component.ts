@@ -4,10 +4,12 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { ScheduleService } from '../../../schedule.service';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDatepickerInputEvent } from '@angular/material';
 import { Tab } from '../../../../../tab/tab';
 import { TabService } from '../../../../../tab/tab.service';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
+import { from } from 'rxjs/observable/from';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-admin-export-as-pdf-dialog',
@@ -59,7 +61,8 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private data: any,
         private tokenStorage: TokenStorage,
         private tabService: TabService,
-        private scMessageService: SCMessageService
+        private scMessageService: SCMessageService,
+        private filterService: FilterService
     ) {
         this.shiftIds = data.shiftIds || [];
         this.settings = this.tokenStorage.getSettings();
@@ -73,10 +76,12 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
             return this.scheduleService.getExtraUserInfo(text);
         };
 
+        this.filterService.clean(this.filterService.type.shifts);
+
         this.filtersObservable = (text: string): Observable<any> => {
-            const from = moment(this.period.from).format('YYYY-MM-DD');
-            const to = moment(this.period.to).format('YYYY-MM-DD');
-            return this.scheduleService.getShiftFilters(from, to, text);
+            const fromDate = moment(this.period.from).format('YYYY-MM-DD');
+            const toDate = moment(this.period.to).format('YYYY-MM-DD');
+            return from(this.filterService.getShiftFilters(fromDate, toDate, text));
         };
 
         this.scheduleService.getShiftsData().subscribe(res => {
@@ -93,6 +98,11 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
                 });
             }
         });
+    }
+
+    changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
+        this.period[selector] = event.value;
+        this.filterService.clean(this.filterService.type.shifts);
     }
     
     // Toggles Flag and Filters the Calendar Values

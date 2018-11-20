@@ -10,6 +10,7 @@ import { OutsourceCompanyFormComponent } from "./dialogs/outsource-company-form/
 import * as _ from 'lodash';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { FuseConfirmDialogComponent } from "../../../core/components/confirm-dialog/confirm-dialog.component";
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
   selector: 'app-outsource-companies',
@@ -38,7 +39,8 @@ export class OutsourceCompaniesComponent {
     private userService: UserService,
     private tokenStorage: TokenStorage,
     private outsourceCompaniesService: OutsourceCompaniesService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private filterService: FilterService
   ) { }
 
   ngOnInit() {
@@ -105,8 +107,8 @@ export class OutsourceCompaniesComponent {
         try {
           this.spinner.show();
           const res = await this.outsourceCompaniesService.createCompany(company);
-          //this.toastr.success('Outsource Company has been created successfully!');
           this.companies.push(res.data);
+          this.filterService.clean(this.filterService.type.outsourceCompanies);
         } catch (e) {
           this.handleError(e);
         } finally {
@@ -122,6 +124,9 @@ export class OutsourceCompaniesComponent {
       this.spinner.show();
       await this.outsourceCompaniesService.updateCompany(company);
       this.companyInfo[key] = value;
+      if (key === 'cname') {
+        this.filterService.clean(this.filterService.type.outsourceCompanies);
+      }
     } catch (e) {
       this.handleError(e);
     } finally {
@@ -142,6 +147,7 @@ export class OutsourceCompaniesComponent {
           this.companies.splice(index, 1);
           this.selectedCompany = null;
           await this.outsourceCompaniesService.deleteCompany(id);
+          this.filterService.clean(this.filterService.type.outsourceCompanies);
         } catch (e) {
           this.handleError(e);
         }

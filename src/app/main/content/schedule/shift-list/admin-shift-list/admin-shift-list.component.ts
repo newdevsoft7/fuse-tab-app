@@ -1,6 +1,6 @@
 import {
   Component, OnInit,
-  ViewEncapsulation, ViewChild
+  ViewEncapsulation, ViewChild, OnDestroy
 } from '@angular/core';
 import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 
@@ -26,6 +26,10 @@ import { ShiftListEmailDialogComponent } from './email-dialog/email-dialog.compo
 import { AdminExportAsPdfDialogComponent } from '../../shifts-export/admin/export-as-pdf-dialog/export-as-pdf-dialog.component';
 import { SettingsService } from '../../../settings/settings.service';
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
+import { TabComponent } from '@main/tab/tab/tab.component';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-admin-shift-list',
@@ -34,7 +38,7 @@ import { SCMessageService } from '../../../../../shared/services/sc-message.serv
   encapsulation: ViewEncapsulation.None,
   animations: fuseAnimations
 })
-export class AdminShiftListComponent implements OnInit {
+export class AdminShiftListComponent implements OnInit, OnDestroy {
 
   loadingIndicator: boolean = true; // Datatable loading indicator
 
@@ -73,6 +77,7 @@ export class AdminShiftListComponent implements OnInit {
 
   isLegendShow = false;
   shiftStatuses: any[] = [];
+  tabActiveSubscription: Subscription;
 
   constructor(
     private toastr: ToastrService,
@@ -83,7 +88,8 @@ export class AdminShiftListComponent implements OnInit {
     private dialog: MatDialog,
     private spinner: CustomLoadingService,
     private settingsService: SettingsService,
-    private scMessageService: SCMessageService
+    private scMessageService: SCMessageService,
+    private filterService: FilterService
   ) {
     if (!this.tokenStorage.isExistSecondaryUser()) {
       this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
@@ -98,11 +104,21 @@ export class AdminShiftListComponent implements OnInit {
 
     this.setFlagsFromLocalStorage();
 
+    this.tabActiveSubscription = this.tabService.tabActived.subscribe((tab: TabComponent) => {
+      if (tab.url === 'schedule/admin-list') {
+        this.filterService.clean(this.filterService.type.shifts);
+      }
+    });
+
     this.filtersObservable = (text: string): Observable<any> => {
-      const from = moment(this.period.from).format('YYYY-MM-DD');
-      const to = moment(this.period.to).format('YYYY-MM-DD');
-      return this.scheduleService.getShiftFilters(from, to, text);
+      const fromDate = moment(this.period.from).format('YYYY-MM-DD');
+      const toDate = moment(this.period.to).format('YYYY-MM-DD');
+      return from(this.filterService.getShiftFilters(fromDate, toDate, text));
     };
+  }
+
+  ngOnDestroy() {
+    this.tabActiveSubscription.unsubscribe();
   }
 
   private setFlagsFromLocalStorage() {
@@ -246,6 +262,7 @@ export class AdminShiftListComponent implements OnInit {
 
   changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
     this.period[selector] = event.value;
+    this.filterService.clean(this.filterService.type.shifts);
     this.getShifts();
   }
 

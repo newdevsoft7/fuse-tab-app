@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDatepickerInputEvent, MatDialogRef } from '@angular/material';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { ScheduleService } from '../../../schedule.service';
 import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
 @Component({
     selector: 'app-admin-export-as-excel-dialog',
@@ -95,6 +97,7 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         private scheduleService: ScheduleService,
         @Inject(MAT_DIALOG_DATA) private data: any,
         private tokenStorage: TokenStorage,
+        private filterService: FilterService
     ) {
         this.shiftIds = data.shiftIds || [];
         this.settings = this.tokenStorage.getSettings();
@@ -123,10 +126,12 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
             return this.scheduleService.getExtraUserInfo(text);
         };
 
+        this.filterService.clean(this.filterService.type.shifts);
+
         this.filtersObservable = (text: string): Observable<any> => {
-            const from = moment(this.period.from).format('YYYY-MM-DD');
-            const to = moment(this.period.to).format('YYYY-MM-DD');
-            return this.scheduleService.getShiftFilters(from, to, text);
+            const fromDate = moment(this.period.from).format('YYYY-MM-DD');
+            const toDate = moment(this.period.to).format('YYYY-MM-DD');
+            return from(this.filterService.getShiftFilters(fromDate, toDate, text));
         };
 
         this.scheduleService.getShiftsData().subscribe(res => {
@@ -143,6 +148,11 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
                 });
             }
         });
+    }
+
+    changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
+        this.period[selector] = event.value;
+        this.filterService.clean(this.filterService.type.shifts);
     }
 
     // Toggles Flag and Filters the Calendar Values

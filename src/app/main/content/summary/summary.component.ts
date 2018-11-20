@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import { ScheduleService } from "../schedule/schedule.service";
@@ -6,14 +6,18 @@ import { ToastrService } from "ngx-toastr";
 import { MatDatepickerInputEvent } from "@angular/material";
 import { TabService } from "../../tab/tab.service";
 import { Tab } from "../../tab/tab";
-import { TokenStorage } from "../../../shared/services/token-storage.service";
+import { TabComponent } from '@main/tab/tab/tab.component';
+import { Subscription } from 'rxjs/Subscription';
+import { TokenStorage } from '@shared/services/token-storage.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
-export class SummaryComponent implements OnInit {
+export class SummaryComponent implements OnInit, OnDestroy {
   data: any = [];
   filtersObservable: any;
   period = {
@@ -36,13 +40,16 @@ export class SummaryComponent implements OnInit {
 
   showBillData: boolean = true;
 
+  tabActiveSubscription: Subscription;
+
   @ViewChild('table') table: any;
 
   constructor(
     private toastr: ToastrService,
     private tabService: TabService,
     private tokenStorage: TokenStorage,
-    private scheduleService: ScheduleService
+    private scheduleService: ScheduleService,
+    private filterService: FilterService
   ) {
     if (!this.tokenStorage.isExistSecondaryUser()) {
       this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
@@ -51,10 +58,16 @@ export class SummaryComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.tabActiveSubscription = this.tabService.tabActived.subscribe((tab: TabComponent) => {
+      if (tab.url === 'summary') {
+        this.filterService.clean(this.filterService.type.shifts);
+      }
+    });
     this.filtersObservable = (text: string): Observable<any> => {
-      const from = moment(this.period.from).format('YYYY-MM-DD');
-      const to = moment(this.period.to).format('YYYY-MM-DD');
-      return this.scheduleService.getShiftFilters(from, to, text);
+      const fromDate = moment(this.period.from).format('YYYY-MM-DD');
+      const toDate = moment(this.period.to).format('YYYY-MM-DD');
+      return from(this.filterService.getShiftFilters(fromDate, toDate, text));
     };
 
     this.setFlagsFromLocalStorage();
@@ -64,6 +77,10 @@ export class SummaryComponent implements OnInit {
     }
 
     this.getSummary();
+  }
+
+  ngOnDestroy() {
+    this.tabActiveSubscription.unsubscribe();
   }
 
   private setFlagsFromLocalStorage() {
@@ -195,6 +212,7 @@ export class SummaryComponent implements OnInit {
   changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
     this.period[selector] = event.value;
     this.getSummary();
+    this.filterService.clean(this.filterService.type.shifts);
   }
 
   onSort(event) {

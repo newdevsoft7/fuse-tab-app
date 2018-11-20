@@ -11,7 +11,13 @@ export enum Type {
   elements = 'elements',
   reports = 'reports',
   attributes = 'attributes',
-  workareas = 'workareas'
+  workareas = 'workareas',
+  shiftStatuses = 'shiftStatuses',
+  shifts = 'shifts',
+  trackingCategories = 'trackingCategories',
+  trackingOptions = 'trackingOptions',
+  clients = 'clients',
+  outsourceCompanies = 'outsourceCompanies'
 }
 
 @Injectable()
@@ -451,6 +457,236 @@ export class FilterService {
     }
   }
 
+  async getShiftFilters(fromDate, toDate, query = ''): Promise<any> {
+    try {
+      const [
+        shiftStatuses,
+        shifts,
+        workareas,
+        trackingCategories,
+        trackingOptions,
+        clients,
+        users,
+        outsourceCompanies
+      ] = await Promise.all([
+        this.getShiftStatuses(),
+        this.getShifts(fromDate, toDate),
+        this.getWorkareas(),
+        this.getTrackingCategories(),
+        this.getTrackingOptions(),
+        this.getClients(),
+        this.getUsers(),
+        this.getOutsourceCompanies()
+      ]);
+
+      const data = [];
+      query = query.trim().toLowerCase();
+
+      if ('deleted'.indexOf(query) > -1 || query === '') {
+        data.push({
+          id: 'deleted',
+          text: 'Deleted'
+        });
+      }
+
+      if ('no work area'.indexOf(query) > -1 || query === '') {
+        data.push({
+          id: 'noWorkArea',
+          text: 'No Work Area Assigned'
+        });
+      }
+
+      if (query.length) {
+
+        // shift status
+        const filteredShiftStatuses = shiftStatuses.filter(s => s.status.toLowerCase().indexOf(query) > -1);
+        if (filteredShiftStatuses.length) {
+          const children = []
+          filteredShiftStatuses.forEach(s => {
+            children.push(...[
+              {
+                id: `shift_status_id:=:${s.id}`,
+                text: s.status
+              },
+              {
+                id: `shift_status_id:!=:${s.id}`,
+                text: `Not ${s.status}`
+              }
+            ]);
+          });
+          data.push({
+            children,
+            text: 'Status'
+          });
+        }
+
+        // location
+        if (query.length > 2) {
+          const children = [];
+          shifts.filter(s => s.location && s.location.toLowerCase().indexOf(query) > -1)
+            .forEach(s => {
+              children.push({
+                id: `location:=:${s.location}`,
+                text: s.location
+              });
+            });
+          if (children.length) {
+            data.push({
+              children,
+              text: 'Location'
+            });
+          }
+        }
+
+        // work area
+        if (query.length > 2) {
+          const children = [];
+          workareas.filter(w => w.aname && w.aname.toLowerCase().indexOf(query) > -1)
+            .forEach(s => children.push(...[
+              {
+                id: `wa:=:${s.id}`,
+                text: s.aname
+              },
+              {
+                id: `wa:!=:${s.id}`,
+                text: `Not ${s.aname}`
+              }
+            ]));
+          if (children.length) {
+            data.push({
+              children,
+              text: 'Work Area'
+            });
+          }
+        }
+
+        // tracking
+        if (query.length > 2) {
+          trackingCategories.forEach(cat => {
+            const children = [];
+            trackingOptions.filter(option => {
+              return option.tracking_cat_id == cat.id && option.oname && option.oname.toLowerCase().indexOf(query) > -1;
+            }).forEach(option => {
+              children.push(...[
+                {
+                  id: `tracko:=:${option.id}`,
+                  text: option.oname
+                },
+                {
+                  id: `tracko:!=:${option.id}`,
+                  text: `Not ${option.oname}`
+                }
+              ]);
+            });
+            if (children.length) {
+              data.push({
+                children,
+                text: cat.cname
+              });
+            }
+          });
+        }
+
+        // clients
+        if (query.length > 2) {
+          const children = [];
+          clients.filter(c => c.cname && c.cname.toLowerCase().indexOf(query) > -1)
+            .forEach(c => {
+              children.push(...[
+                {
+                  id: `client_id:=:${c.id}`,
+                  text: c.cname
+                },
+                {
+                  id: `client_id:!=:${c.id}`,
+                  text: `Not ${c.cname}`
+                }
+              ]);
+            });
+          if (children.length) {
+            data.push({
+              children,
+              text: 'Client'
+            });
+          }
+        }
+
+        // manager
+        if (query.length > 2) {
+          const children = [];
+          users.filter(user => {
+            return user.active === 'active' && ['owner', 'admin'].indexOf(user.lvl) > -1 && `${user.fname} ${user.lname}`.toLowerCase().indexOf(query) > -1;
+          }).forEach(user => {
+            children.push(...[
+              {
+                id: `man:=:${user.id}`,
+                text: `${user.fname} ${user.lname}`
+              },
+              {
+                id: `man:!=:${user.id}`,
+                text: `Not ${user.fname} ${user.lname}`
+              }
+            ]);
+          });
+          if (children.length) {
+            data.push({
+              children,
+              text: 'Manager'
+            });
+          }
+        }
+
+        // outsource company
+        if (query.length > 2) {
+          const children = [];
+          outsourceCompanies.filter(c => c.cname && c.cname.toLowerCase().indexOf(query) > -1)
+            .forEach(c => {
+              children.push(...[
+                {
+                  id: `outsource_company_id:=:${c.id}`,
+                  text: c.cname
+                },
+                {
+                  id: `outsource_company_id:!=:${c.id}`,
+                  text: `Not ${c.cname}`
+                }
+              ]);
+            });
+          if (children.length) {
+            data.push({
+              children,
+              text: 'Outsource Company'
+            });
+          }
+        }
+
+        // selected staff
+        if (query.length > 2) {
+          const children = [];
+          users.filter(user => {
+            return user.active === 'active' && ['owner', 'admin'].indexOf(user.lvl) > -1 && `${user.fname} ${user.lname}`.toLowerCase().indexOf(query) > -1;
+          }).forEach(user => {
+            children.push({
+              id: `selected:=:${user.id}`,
+              text: `${user.fname} ${user.lname}`
+            });
+          });
+          if (children.length) {
+            data.push({
+              children,
+              text: 'Selected'
+            });
+          }
+        }
+      }
+
+      return data;
+
+    } catch (e) {
+      return [];
+    }
+  }
+
   private getUsers(): Promise<any> {
     if (!this.promises.user) {
       this.promises.user = this.http.get(`${baseUrl}/users`).toPromise();
@@ -491,6 +727,48 @@ export class FilterService {
       this.promises.workareas = this.http.get(`${baseUrl}/workArea`).toPromise();
     }
     return this.promises.workareas;
+  }
+
+  private getShiftStatuses(): Promise<any> {
+    if (!this.promises.shiftStatuses) {
+      this.promises.shiftStatuses = this.http.get(`${baseUrl}/shiftStatuses`).toPromise();
+    }
+    return this.promises.shiftStatuses;
+  }
+
+  private getShifts(fromDate, toDate): Promise<any> {
+    if (!this.promises.shifts) {
+      this.promises.shifts = this.http.get(`${baseUrl}/shifts/${fromDate}/${toDate}`).toPromise();
+    }
+    return this.promises.shifts;
+  }
+
+  private getTrackingCategories(): Promise<any> {
+    if (!this.promises.trackingCategories) {
+      this.promises.trackingCategories = this.http.get(`${baseUrl}/tracking/category`).toPromise();
+    }
+    return this.promises.trackingCategories;
+  }
+
+  private getTrackingOptions(): Promise<any> {
+    if (!this.promises.trackingOptions) {
+      this.promises.trackingOptions = this.http.get(`${baseUrl}/tracking/option`).toPromise();
+    }
+    return this.promises.trackingOptions;
+  }
+
+  private getClients(): Promise<any> {
+    if (!this.promises.clients) {
+      this.promises.clients = this.http.get(`${baseUrl}/clients`).toPromise();
+    }
+    return this.promises.clients;
+  }
+
+  private getOutsourceCompanies(): Promise<any> {
+    if (!this.promises.outsourceCompanies) {
+      this.promises.outsourceCompanies = this.http.get(`${baseUrl}/outsourceCompany`).toPromise();
+    }
+    return this.promises.outsourceCompanies;
   }
 
   private strposArray(haystack, needle) {

@@ -11,6 +11,7 @@ import { TrackingCategory } from './tracking.models';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
 import { CustomLoadingService } from '../../../shared/services/custom-loading.service';
 import { TabService } from '../../tab/tab.service';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-tracking',
@@ -51,7 +52,9 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
         private toastrService: ToastrService,
         private customLoadingService: CustomLoadingService,
         private tabService: TabService,
-        private trackingService: TrackingService) {
+        private trackingService: TrackingService,
+        private filterService: FilterService
+    ) {
 
         this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
             categories => {
@@ -160,6 +163,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
             let index = this.options.indexOf(this.selectedOption);
             this.options.splice(index, 1);
             this.selectedOption = null;
+            this.filterService.clean(this.filterService.type.trackingOptions);
         } catch (e) {
             this.handleError(e);
         } finally {
@@ -263,6 +267,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
             this.customLoadingService.show();
             const res = await this.trackingService.createTrackingOption(option).toPromise();
             this.options.push({ ...res.data });
+            this.filterService.clean(this.filterService.type.trackingOptions);
         } catch (e) {
             this.handleError(e);
         } finally {
@@ -286,6 +291,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.categories.push(savedCategory);
                 this.trackingService.toggleSelectedCategory(savedCategory);
                 this.trackingService.toggleCategories(this.categories);
+                this.filterService.clean(this.filterService.type.trackingCategories);
             },
             err => {
                 const errors = err.error.errors;

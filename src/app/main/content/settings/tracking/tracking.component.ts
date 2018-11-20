@@ -12,6 +12,7 @@ import { TrackingService } from '../../tracking/tracking.service';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 import { TokenStorage } from '../../../../shared/services/token-storage.service';
 import { SCMessageService } from '../../../../shared/services/sc-message.service';
+import { FilterService } from '@shared/services/filter.service';
 
 enum Setting {
     tracking_enable = 94
@@ -40,7 +41,8 @@ export class SettingsTrackingComponent implements OnInit {
         private tokenStorage: TokenStorage,
         private trackingService: TrackingService,
         private scMessageService: SCMessageService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
@@ -80,7 +82,7 @@ export class SettingsTrackingComponent implements OnInit {
                 });
                 this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
                 this.trackingService.toggleCategories(this.categories);
-                //this.toastr.success(response.message);
+                this.filterService.clean(this.filterService.type.trackingCategories);
             } catch (e) {
                 this.scMessageService.error(e);
             }
@@ -103,7 +105,7 @@ export class SettingsTrackingComponent implements OnInit {
                     category.cname = response.data.cname;
                     this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
                     this.trackingService.toggleCategories(this.categories);
-                    //this.toastr.success(response.message);
+                    this.filterService.clean(this.filterService.type.trackingCategories);
                 } catch (e) {
                     this.scMessageService.error(e);
                 }
@@ -115,12 +117,12 @@ export class SettingsTrackingComponent implements OnInit {
 
     async deleteCategory(categoryId: number) {
         try {
-            const response = await this.trackingService.deleteTrackingCategory(categoryId).toPromise();
+            await this.trackingService.deleteTrackingCategory(categoryId).toPromise();
             const index = this.categories.findIndex(category => category.id === categoryId);
             this.categories.splice(index, 1);
             this.tokenStorage.setSettings({ ...this.tokenStorage.getSettings(), ...{ tracking: this.categories } });
             this.trackingService.toggleCategories(this.categories);
-            //this.toastr.success(response.message);
+            this.filterService.clean(this.filterService.type.trackingCategories);
         } catch (e) {
             this.scMessageService.error(e);
         }

@@ -10,6 +10,7 @@ import { UserService } from "../users/user.service";
 import { TokenStorage } from "../../../shared/services/token-storage.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FuseConfirmDialogComponent } from "../../../core/components/confirm-dialog/confirm-dialog.component";
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
   selector: 'app-clients',
@@ -39,7 +40,8 @@ export class ClientsComponent implements OnInit, AfterViewInit {
     private userService: UserService,
     private tokenStorage: TokenStorage,
     private clientsService: ClientsService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private filterService: FilterService
   ) {}
 
   ngOnInit() {
@@ -106,8 +108,8 @@ export class ClientsComponent implements OnInit, AfterViewInit {
             try {
               this.spinner.show();
               const res = await this.clientsService.createClient(client);
-              //this.toastr.success('Client has been created successfully!');
               this.clients.push(res.data);
+              this.filterService.clean(this.filterService.type.clients);
             } catch (e) {
               this.handleError(e);
             } finally {
@@ -122,6 +124,9 @@ export class ClientsComponent implements OnInit, AfterViewInit {
     try {
       this.spinner.show();
       await this.clientsService.updateClient(client);
+      if (key === 'cname') {
+        this.filterService.clean(this.filterService.type.clients);
+      }
       this.clientInfo[key] = value;
     } catch (e) {
       this.handleError(e);
@@ -143,6 +148,7 @@ export class ClientsComponent implements OnInit, AfterViewInit {
           this.clients.splice(index, 1);
           this.selectedClient = null;
           await this.clientsService.deleteClient(id);
+          this.filterService.clean(this.filterService.type.clients);
         } catch (e) {
           this.handleError(e);
         }
