@@ -3,11 +3,11 @@ import { MAT_DIALOG_DATA, MatDatepickerInputEvent, MatDialogRef } from '@angular
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { ScheduleService } from '../../../schedule.service';
-import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
-import { FilterService } from '@shared/services/filter.service';
 import { from } from 'rxjs/observable/from';
+import { Observable } from 'rxjs/Observable';
+import { FilterService } from '@shared/services/filter.service';
+import { TokenStorage } from '@shared/services/token-storage.service';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
 
 @Component({
     selector: 'app-admin-export-as-excel-dialog',
@@ -123,7 +123,7 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
 
     ngOnInit() {
         this.extraUserInfo$ = (text: string): Observable<any> => {
-            return this.scheduleService.getExtraUserInfo(text);
+            return from(this.filterService.getExtraUserInfoFilter(text));
         };
 
         this.filterService.clean(this.filterService.type.shifts);

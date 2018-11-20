@@ -471,12 +471,6 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
-  getExtraUserInfo(query? : string): Observable<any> {
-    if (_.isNil(query)) { query = ''; }
-    const url = `${BASE_URL}/autocomplete/extraUserInfo/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
   getUsersToMessage(type: string, shiftRoleIds: number[]): Promise<any> {
     const url = `${BASE_URL}/shifts/message/${type}`;
     return this.http.put(url, { shift_role_ids: shiftRoleIds }).toPromise();

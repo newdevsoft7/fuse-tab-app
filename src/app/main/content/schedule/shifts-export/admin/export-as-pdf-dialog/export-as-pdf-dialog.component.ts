@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { ScheduleService } from '../../../schedule.service';
-import { TokenStorage } from '../../../../../../shared/services/token-storage.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDatepickerInputEvent } from '@angular/material';
-import { Tab } from '../../../../../tab/tab';
-import { TabService } from '../../../../../tab/tab.service';
-import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 import { from } from 'rxjs/observable/from';
 import { FilterService } from '@shared/services/filter.service';
+import { Tab } from '@main/tab/tab';
+import { TabService } from '@main/tab/tab.service';
+import { SCMessageService } from '@shared/services/sc-message.service';
+import { TokenStorage } from '@shared/services/token-storage.service';
+import { Observable } from 'rxjs/Observable';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
 
 @Component({
     selector: 'app-admin-export-as-pdf-dialog',
@@ -73,7 +73,7 @@ export class AdminExportAsPdfDialogComponent implements OnInit {
 
     ngOnInit() {
         this.extraUserInfo$ = (text: string): Observable<any> => {
-            return this.scheduleService.getExtraUserInfo(text);
+            return from(this.filterService.getExtraUserInfoFilter(text));
         };
 
         this.filterService.clean(this.filterService.type.shifts);

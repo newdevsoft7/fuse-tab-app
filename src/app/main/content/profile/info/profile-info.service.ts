@@ -35,18 +35,27 @@ export class ProfileInfoService {
   createCategory(category: any): Observable<any> {
     const url = `${PROFILE_STRUCTURE_URL}/category`;
     return this.http.post(url, category)
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.profileCategories))
+      )
       .catch(this.handleError);
   }
 
   updateCategory(category: any): Observable<any> {
     const url = `${PROFILE_STRUCTURE_URL}/category/${category.id}`;
     return this.http.put(url, category)
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.profileCategories))
+      )
       .catch(this.handleError);
   }
 
   deleteCategory(id: number): Observable<any> {
     const url = `${PROFILE_STRUCTURE_URL}/category/${id}`;
     return this.http.delete(url)
+      .pipe(
+        tap(_ => this.filterService.clean(this.filterService.type.profileCategories))
+      )
       .catch(this.handleError);
   }
 

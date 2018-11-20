@@ -18,7 +18,8 @@ export enum Type {
   trackingOptions = 'trackingOptions',
   clients = 'clients',
   outsourceCompanies = 'outsourceCompanies',
-  locations = 'locations'
+  locations = 'locations',
+  profileCategories = 'pCategories'
 }
 
 @Injectable()
@@ -792,6 +793,32 @@ export class FilterService {
     }
   }
 
+  async  getExtraUserInfoFilter(query = ''): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      const data = [];
+      const [categories, elements] = await Promise.all([
+        this.getProfileCategories(),
+        this.getProfileElements()
+      ]);
+      _.orderBy(categories, 'cname').forEach(pc => {
+        let pes = elements.filter(pe => pe.profile_cat_id == pc.id);
+        if (query.length) {
+          pes = pes.filter(pe => pe.ename.toLowerCase().indexOf(query) > -1);
+        }
+        _.orderBy(pes, 'ename').forEach(pe => {
+          data.push({
+            id: pe.id,
+            text: `${pc.cname} - ${pe.ename}`
+          });
+        });
+      });
+      return data;
+    } catch (e) {
+      return [];
+    }
+  }
+
   private getUsers(): Promise<any> {
     if (!this.promises.user) {
       this.promises.user = this.http.get(`${baseUrl}/users`).toPromise();
@@ -811,6 +838,13 @@ export class FilterService {
       this.promises.elements = this.http.get(`${baseUrl}/profileStructure/elements`).toPromise();
     }
     return this.promises.elements;
+  }
+
+  private getProfileCategories(): Promise<any> {
+    if (!this.promises.pCategories) {
+      this.promises.pCategories = this.http.get(`${baseUrl}/profileStructure/category`).toPromise();
+    }
+    return this.promises.pCategories;
   }
 
   private getReports(): Promise<any> {

@@ -5,10 +5,12 @@ import {
 } from '@angular/core';
 import { UP_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
 import { MAT_DIALOG_DATA, MatDialogRef, MatInput, MatAutocompleteSelectedEvent } from '@angular/material';
-
-import { Observable } from 'rxjs';
-import { UserService } from '../user.service';
-import { ScheduleService } from '../../schedule/schedule.service';
+import { UserService } from '@main/content/users/user.service';
+import { FilterService } from '@shared/services/filter.service';
+import { Observable } from 'rxjs/Observable';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
+import { Tag } from '@main/content/users/search-bar/search-bar.component';
+import { from } from 'rxjs/observable/from';
 
 export interface Tag {
   id: string;
@@ -45,6 +47,7 @@ export class UsersExportDialogComponent implements OnInit, AfterViewInit {
     public dialogRef: MatDialogRef<UsersExportDialogComponent>,
     private userService: UserService,
     private scheduleService: ScheduleService,
+    private filterService: FilterService,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) { }
 
@@ -53,7 +56,7 @@ export class UsersExportDialogComponent implements OnInit, AfterViewInit {
     this.getFilters();
 
     this.extraUserInfo$ = (text: string): Observable<any> => {
-      return this.scheduleService.getExtraUserInfo(text);
+      return from(this.filterService.getExtraUserInfoFilter(text));
     };
   }
 
@@ -79,7 +82,7 @@ export class UsersExportDialogComponent implements OnInit, AfterViewInit {
     if (this.extraUserInfo.length > 0) {
       payloads.extra_info = this.extraUserInfo.map(v => v.id);
     }
-    this.userService.export(payloads)
+    this.userService.export(payloads);
   }
 
   private async init() {
