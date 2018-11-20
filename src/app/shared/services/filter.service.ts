@@ -708,6 +708,20 @@ export class FilterService {
     }
   }
 
+  async getReportFilter(type, query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let reports = await this.getReports();
+      reports = reports.filter(r => r.type.toLowerCase() === type);
+      if (query.length) {
+        reports = reports.filter(r => r.rname.toLowerCase().indexOf(query) > -1);
+      }
+      return reports;
+    } catch (e) {
+      return [];
+    }
+  }
+
   async getClientFilter(query: string): Promise<any[]> {
     try {
       query = query.trim().toLowerCase();

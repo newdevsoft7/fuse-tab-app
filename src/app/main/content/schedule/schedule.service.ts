@@ -505,13 +505,6 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
-  getReports(query?): Observable<any> {
-    query = query || '';
-    const url = `${BASE_URL}/autocomplete/report/survey/${query}`;
-    return this.http.get(url.replace(/\/+$/, ''))
-      .catch(this.handleError);
-  }
-
   getRolesForDraggingToShift(userId: number | string, shiftId: number | string): Promise<any> {
     const url = `${BASE_URL}/user/${userId}/shift/${shiftId}`;
     return this.http.get(url).toPromise();

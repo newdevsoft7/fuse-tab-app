@@ -3,18 +3,20 @@ import {
 } from '@angular/core';
 
 import { ScheduleService } from '../../../schedule.service';
-import { Observable } from 'rxjs';
 
-import * as moment from 'moment';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
-import { ToastrService } from 'ngx-toastr';
-import { TabService } from '../../../../../tab/tab.service';
-import { Tab } from '../../../../../tab/tab';
 import { MatDialog } from '@angular/material';
-import { ActionService } from '../../../../../../shared/services/action.service';
-import { FuseConfirmDialogComponent } from '../../../../../../core/components/confirm-dialog/confirm-dialog.component';
-import { UserService } from '../../../../users/user.service';
+import { Tab } from '@main/tab/tab';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '@main/content/users/user.service';
+import { TabService } from '@main/tab/tab.service';
+import { FilterService } from '@shared/services/filter.service';
+import { ActionService } from '@shared/services/action.service';
+import { Observable } from 'rxjs/Observable';
+import { FuseConfirmDialogComponent } from '@core/components/confirm-dialog/confirm-dialog.component';
+import { from } from 'rxjs/observable/from';
 
 class ShiftTime {
     time;
@@ -88,6 +90,7 @@ export class EditShiftRoleDetailComponent implements OnInit {
         private toastr: ToastrService,
         private userService: UserService,
         private actionService: ActionService,
+        private filterService: FilterService,
         private dialog: MatDialog
     ) { }
 
@@ -106,7 +109,7 @@ export class EditShiftRoleDetailComponent implements OnInit {
         this.scheduleService.getPayLevelCategory().subscribe(res => this.payCategories = res);
 
         this.reports$ = (text: string): Observable<any> => {
-            return this.scheduleService.getReports(text);
+            return from(this.filterService.getReportFilter('survey', text));
         };
 
     }

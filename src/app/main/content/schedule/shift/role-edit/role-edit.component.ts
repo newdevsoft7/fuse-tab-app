@@ -16,16 +16,17 @@ import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-
-import { TabService } from '../../../../tab/tab.service';
-import { ScheduleService } from '../../schedule.service';
-import { Tab } from '../../../../tab/tab';
-import { FuseConfirmYesNoDialogComponent } from '../../../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
-import { TokenStorage } from '../../../../../shared/services/token-storage.service';
-import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
-import { ActionService } from '../../../../../shared/services/action.service';
-import { UserService } from '../../../users/user.service';
-import { SCMessageService } from '../../../../../shared/services/sc-message.service';
+import { FuseConfirmYesNoDialogComponent } from '@core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
+import { Tab } from '@main/tab/tab';
+import { UserService } from '@main/content/users/user.service';
+import { TabService } from '@main/tab/tab.service';
+import { SCMessageService } from '@shared/services/sc-message.service';
+import { FilterService } from '@shared/services/filter.service';
+import { TokenStorage } from '@shared/services/token-storage.service';
+import { ActionService } from '@shared/services/action.service';
+import { FuseConfirmDialogComponent } from '@core/components/confirm-dialog/confirm-dialog.component';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
+import { from } from 'rxjs/observable/from';
 
 class TimeRange {
     from;
@@ -120,7 +121,8 @@ export class ShiftRoleEditComponent implements OnInit {
         private userService: UserService,
         private tokenStroage: TokenStorage,
         private actionService: ActionService,
-        private scMessageService: SCMessageService
+        private scMessageService: SCMessageService,
+        private filterService: FilterService
     ) {
         this.formErrors = {
             rname: {}
@@ -134,7 +136,7 @@ export class ShiftRoleEditComponent implements OnInit {
         const billCurrency = localStorage.getItem('bill_currency');
 
         this.reports$ = (text: string): Observable<any> => {
-            return this.scheduleService.getReports(text);
+            return from(this.filterService.getReportFilter('survey', text));
         };
 
         this.userService.getCurrencies().then(currencies => {
