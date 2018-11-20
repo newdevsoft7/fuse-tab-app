@@ -687,6 +687,23 @@ export class FilterService {
     }
   }
 
+  async getUserFilterByLevel(level, query = ''): Promise<any[]> {
+    try {
+      const users = await this.getUsers();
+      let filteredUsers = users.filter(u => u.lvl === level && u.active === 'active')
+        .map(u => {
+          u.name = `${u.fname} ${u.lname}`;
+          return u;
+        });
+      if (query.length) {
+        filteredUsers = filteredUsers.filter(u => u.name.toLowerCase().indexOf(query) > -1);
+      }
+      return filteredUsers;
+    } catch (e) {
+      return [];
+    }
+  }
+
   private getUsers(): Promise<any> {
     if (!this.promises.user) {
       this.promises.user = this.http.get(`${baseUrl}/users`).toPromise();
