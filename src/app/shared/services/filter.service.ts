@@ -17,7 +17,8 @@ export enum Type {
   trackingCategories = 'trackingCategories',
   trackingOptions = 'trackingOptions',
   clients = 'clients',
-  outsourceCompanies = 'outsourceCompanies'
+  outsourceCompanies = 'outsourceCompanies',
+  locations = 'locations'
 }
 
 @Injectable()
@@ -728,6 +729,18 @@ export class FilterService {
     }
   }
 
+  async getLocationFilter(query = ''): Promise<any> {
+    try {
+      let locations = await this.getLocations();
+      if (query.length > 1) {
+        locations = locations.filter(v => v.lname.toLowerCase().indexOf(query) > -1);
+      }
+      return locations.slice(0, 20);
+    } catch (e) {
+      return [];
+    }
+  }
+
   private getUsers(): Promise<any> {
     if (!this.promises.user) {
       this.promises.user = this.http.get(`${baseUrl}/users`).toPromise();
@@ -810,6 +823,13 @@ export class FilterService {
       this.promises.outsourceCompanies = this.http.get(`${baseUrl}/outsourceCompany`).toPromise();
     }
     return this.promises.outsourceCompanies;
+  }
+
+  private getLocations(): Promise<any> {
+    if (!this.promises.locations) {
+      this.promises.locations = this.http.get(`${baseUrl}/locations`).toPromise();
+    }
+    return this.promises.locations;
   }
 
   private strposArray(haystack, needle) {

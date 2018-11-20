@@ -13,6 +13,7 @@ import { TabService } from '../../../../tab/tab.service';
 import { ScheduleService } from '../../schedule.service';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { Tab } from '../../../../tab/tab';
+import { FilterService } from '@shared/services/filter.service';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';
 
@@ -94,7 +95,9 @@ export class NewShiftComponent implements OnInit {
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
         private tabService: TabService,
-        private scheduleService: ScheduleService) {
+        private scheduleService: ScheduleService,
+        private filterService: FilterService
+    ) {
         this.formErrors = {
             title: {}
         };
@@ -196,16 +199,16 @@ export class NewShiftComponent implements OnInit {
         this.shiftForm.controls['location'].valueChanges
             .debounceTime(300)
             .distinctUntilChanged()
-            .subscribe(val => {
+            .subscribe(async val => {
                 if (typeof val === 'string') {
                     this.shiftForm.patchValue({
                         location_id: null,
                         location: val
                     });
 
-                    this.scheduleService.getLocations(val.trim().toLowerCase()).subscribe(res => {
-                        this.filteredLocations = res;
-                    });
+                    try {
+                      this.filteredLocations = await this.filterService.getLocationFilter(val.trim().toLowerCase());
+                    } catch (e) {}
                 }
             });
         

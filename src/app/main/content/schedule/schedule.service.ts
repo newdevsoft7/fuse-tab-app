@@ -92,11 +92,6 @@ export class ScheduleService {
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
   }
 
-  getLocations(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/location/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
   getWorkAreas(query): Observable<any> {
     const url = `${AUTOCOMPLETE_URL}/workArea/${query}`;
     return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
