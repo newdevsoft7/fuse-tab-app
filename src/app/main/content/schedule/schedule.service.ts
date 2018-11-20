@@ -70,11 +70,6 @@ export class ScheduleService {
     return this.http.put(url, params).catch(this.handleError);
   }
 
-  getRoleRequirements(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/roleRequirement/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
   createClient(client): Observable<any> {
     const url = `${BASE_URL}/client`;
     return this.http.post(url, client)
