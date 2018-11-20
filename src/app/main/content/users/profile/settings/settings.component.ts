@@ -11,6 +11,7 @@ import { SCMessageService } from '../../../../../shared/services/sc-message.serv
 import { Subscription } from 'rxjs/Subscription';
 import { ObservableMedia } from '@angular/flex-layout';
 import { FuseMatchMedia } from '../../../../../core/services/match-media.service';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
   selector: 'app-users-profile-settings',
@@ -119,7 +120,8 @@ export class UsersProfileSettingsComponent implements OnInit, OnDestroy {
     private scMessageService: SCMessageService,
     private tokenStorage: TokenStorage,
     private observableMedia: ObservableMedia,
-    private fuseMatchMedia: FuseMatchMedia
+    private fuseMatchMedia: FuseMatchMedia,
+    private filterService: FilterService
   ) { }
 
   ngOnInit() {
@@ -319,7 +321,7 @@ export class UsersProfileSettingsComponent implements OnInit, OnDestroy {
       return;
     }
     try {
-      this.userOutsourceCompanySource = await this.userService.fetchOutsourceCompanies(query);
+      this.userOutsourceCompanySource = await this.filterService.getOutsourceCompanyFilter(query);
     } catch (e) {
       this.scMessageService.error(e);
     }

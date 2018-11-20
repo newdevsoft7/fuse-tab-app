@@ -704,6 +704,30 @@ export class FilterService {
     }
   }
 
+  async getClientFilter(query: string): Promise<any[]> {
+    try {
+      let clients = await this.getClients();
+      if (query.length) {
+        clients = clients.filter(c => c.cname.toLowerCase().indexOf(query) > -1);
+      }
+      return clients;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getOutsourceCompanyFilter(query: string): Promise<any[]> {
+    try {
+      let outsources = await this.getOutsourceCompanies();
+      if (query.length) {
+        outsources = outsources.filter(out => out.cname.toLowerCase().indexOf(query) > -1);
+      }
+      return outsources;
+    } catch (e) {
+      return [];
+    }
+  }
+
   private getUsers(): Promise<any> {
     if (!this.promises.user) {
       this.promises.user = this.http.get(`${baseUrl}/users`).toPromise();

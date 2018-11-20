@@ -301,16 +301,6 @@ export class UserService {
     return this.http.post(url, body).toPromise();
   }
 
-  fetchClients(query: string): Promise<any> {
-    const url = `${AUTOCOMPLETE_URL}/client/${query}`;
-    return this.http.get(url).toPromise();
-  }
-
-  fetchOutsourceCompanies(query: string): Promise<any> {
-    const url = `${AUTOCOMPLETE_URL}/outsourceCompany/${query}`;
-    return this.http.get(url).toPromise();
-  }
-
   changePassword(userId: number, password: string): Observable<any> {
     const url = `${BASE_URL}/user/${userId}/password`;
     return this.http.put(url, { password })
