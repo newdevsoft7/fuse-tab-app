@@ -177,7 +177,7 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
             return;
         }
         try {
-            this.source[data.lvl] = await this.trackingService.fetchUsersByLevel(data.lvl, data.query).toPromise();
+          this.source[data.lvl] = await this.filterService.getUserFilterByLevel(data.lvl, data.query);
         } catch (e) {
             this.handleError(e);
         }

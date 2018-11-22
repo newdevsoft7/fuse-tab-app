@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, IterableDiffers } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -9,10 +9,11 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { TabService } from '../../../../tab/tab.service';
-import { ScheduleService } from '../../schedule.service';
-import { TokenStorage } from '../../../../../shared/services/token-storage.service';
-import { Tab } from '../../../../tab/tab';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
+import { Tab } from '@main/tab/tab';
+import { TabService } from '@main/tab/tab.service';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
 
 const SHOULD_BE_ADDED_OPTION = 'SHOULD_BE_ADDED_OPTION';
 
@@ -28,26 +29,6 @@ class ShiftDate {
 
     isValid() {
         return true;
-        // Jeremy - the following is not needed because some shifts are eg 10pm - 3am next day
-        /*
-        const date = moment(this.date, 'YYYY-MM-DD');
-        const year = date.year();
-        const month = date.month();
-        const day = date.date();
-
-        const from = moment({
-            year, month, day,
-            hour: hours12to24(this.from.hour, this.from.meriden),
-            minute: this.from.minute
-        });
-
-        const to = moment({
-            year, month, day,
-            hour: hours12to24(this.to.hour, this.to.meriden),
-            minute: this.to.minute
-        });
-        return from.isBefore(to) ? true : false;
-        */
     }
 }
 
@@ -94,7 +75,9 @@ export class NewShiftComponent implements OnInit {
         private formBuilder: FormBuilder,
         private toastr: ToastrService,
         private tabService: TabService,
-        private scheduleService: ScheduleService) {
+        private scheduleService: ScheduleService,
+        private filterService: FilterService
+    ) {
         this.formErrors = {
             title: {}
         };
@@ -185,27 +168,27 @@ export class NewShiftComponent implements OnInit {
 
     init () {
         this.managers = (text: string): Observable<any> => {
-            return this.scheduleService.getManagers(text);
+            return from(this.filterService.getManagerFilter(text));
         };
 
         this.workAreas = (text: string): Observable<any> => {
-            return this.scheduleService.getWorkAreas(text);
+            return from(this.filterService.getWorkAreaFilter(text));
         };
 
         // Location Autocomplete
         this.shiftForm.controls['location'].valueChanges
             .debounceTime(300)
             .distinctUntilChanged()
-            .subscribe(val => {
+            .subscribe(async val => {
                 if (typeof val === 'string') {
                     this.shiftForm.patchValue({
                         location_id: null,
                         location: val
                     });
 
-                    this.scheduleService.getLocations(val.trim().toLowerCase()).subscribe(res => {
-                        this.filteredLocations = res;
-                    });
+                    try {
+                      this.filteredLocations = await this.filterService.getLocationFilter(val.trim().toLowerCase());
+                    } catch (e) {}
                 }
             });
         
@@ -218,15 +201,14 @@ export class NewShiftComponent implements OnInit {
                     this.shiftForm.patchValue({
                         client_id: null
                     });
-                    this.scheduleService.getClients(val.trim().toLowerCase()).subscribe(res => {
-                        if (res.length > 0) {
-                            this.filteredClients = res;
-                        }
-                        else {
-                            this.filteredClients = val.trim().length > 0 ? [{
-                                id: SHOULD_BE_ADDED_OPTION,
-                                cname: val
-                            }] : [];
+                    this.filterService.getClientFilter(val.trim().toLowerCase()).then(clients => {
+                        if (clients.length) {
+                            this.filteredClients = clients;
+                        } else {
+                          this.filteredClients = val.trim().length > 0 ? [{
+                              id: SHOULD_BE_ADDED_OPTION,
+                              cname: val
+                          }] : [];
                         }
                     });
                 }
@@ -283,10 +265,7 @@ export class NewShiftComponent implements OnInit {
                 this.shiftForm.patchValue({
                     client_id: data.id
                 });
-                this.scheduleService.getClients('')
-                    .subscribe(res => {
-                        this.filteredClients = res;
-                    });
+                this.filterService.getClientFilter('').then(clients => this.filteredClients = clients);
             }, err => {
                 const errors = err.error.errors;
                 Object.keys(errors).forEach(v => {

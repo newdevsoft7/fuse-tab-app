@@ -248,11 +248,6 @@ export class SettingsService {
           .catch(this.handleError);
     }
 
-    getQuizesAutoComplete(query): Observable<any> {
-        const url = `${AUTOCOMPLETE_URL}/report/quiz/${query}`;
-        return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-    }
-
     addFormLevelRequirement(formId, requirement, lvl): Observable<any> {
         const url = `${BASE_URL}/form/${formId}/requirement/lvl`;
         return this.http.put(url, { requirement, lvl })

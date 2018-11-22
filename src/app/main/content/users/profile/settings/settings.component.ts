@@ -1,16 +1,17 @@
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { UserService } from '../../user.service';
 
 import { MatDrawer } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
-import { CustomLoadingService } from '../../../../../shared/services/custom-loading.service';
-import { TokenStorage } from '../../../../../shared/services/token-storage.service';
-import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ObservableMedia } from '@angular/flex-layout';
-import { FuseMatchMedia } from '../../../../../core/services/match-media.service';
+import { FilterService } from '@shared/services/filter.service';
+import { UserService } from '@main/content/users/user.service';
+import { SCMessageService } from '@shared/services/sc-message.service';
+import { FuseMatchMedia } from '@core/services/match-media.service';
+import { CustomLoadingService } from '@shared/services/custom-loading.service';
+import { TokenStorage } from '@shared/services/token-storage.service';
 
 @Component({
   selector: 'app-users-profile-settings',
@@ -119,7 +120,8 @@ export class UsersProfileSettingsComponent implements OnInit, OnDestroy {
     private scMessageService: SCMessageService,
     private tokenStorage: TokenStorage,
     private observableMedia: ObservableMedia,
-    private fuseMatchMedia: FuseMatchMedia
+    private fuseMatchMedia: FuseMatchMedia,
+    private filterService: FilterService
   ) { }
 
   ngOnInit() {
@@ -241,7 +243,7 @@ export class UsersProfileSettingsComponent implements OnInit, OnDestroy {
     try {
       switch (event.type) {
         case 'workArea':
-          this.workAreaSource = await this.userService.searchWorkAreas(event.query);
+          this.workAreaSource = await this.filterService.getWorkAreaFilter(event.query);
           break;
         case 'trackingOption':
           this.trackingOptionSource = await this.userService.searchTrackingOptions(0, event.query);
@@ -319,7 +321,7 @@ export class UsersProfileSettingsComponent implements OnInit, OnDestroy {
       return;
     }
     try {
-      this.userOutsourceCompanySource = await this.userService.fetchOutsourceCompanies(query);
+      this.userOutsourceCompanySource = await this.filterService.getOutsourceCompanyFilter(query);
     } catch (e) {
       this.scMessageService.error(e);
     }

@@ -17,7 +17,9 @@ export enum Type {
   trackingCategories = 'trackingCategories',
   trackingOptions = 'trackingOptions',
   clients = 'clients',
-  outsourceCompanies = 'outsourceCompanies'
+  outsourceCompanies = 'outsourceCompanies',
+  locations = 'locations',
+  profileCategories = 'pCategories'
 }
 
 @Injectable()
@@ -40,6 +42,7 @@ export class FilterService {
   async getUserFilter(query: string, userSearch = 1): Promise<any[]> {
     try {
       let data = [];
+      query = query.trim().toLowerCase();
 
       if (query.indexOf('near:') === 0) {
         data = await this.http.get<any[]>(`${baseUrl}/users/filter/${query}`).toPromise();
@@ -168,6 +171,7 @@ export class FilterService {
         this.getReports()
       ]);
 
+      query = query.trim().toLowerCase();
       const data = [];
       let dbQuery = query;
       let operator = '';
@@ -687,6 +691,134 @@ export class FilterService {
     }
   }
 
+  async getUserFilterByLevel(level, query = ''): Promise<any[]> {
+    try {
+      query = query.trim().toLowerCase();
+      const users = await this.getUsers();
+      let filteredUsers = users.filter(u => u.lvl === level && u.active === 'active')
+        .map(u => {
+          u.name = `${u.fname} ${u.lname}`;
+          return u;
+        });
+      if (query.length) {
+        filteredUsers = filteredUsers.filter(u => u.name.toLowerCase().indexOf(query) > -1);
+      }
+      return filteredUsers;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getReportFilter(type, query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let reports = await this.getReports();
+      reports = reports.filter(r => r.type.toLowerCase() === type);
+      if (query.length) {
+        reports = reports.filter(r => r.rname.toLowerCase().indexOf(query) > -1);
+      }
+      return reports;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getClientFilter(query: string): Promise<any[]> {
+    try {
+      query = query.trim().toLowerCase();
+      let clients = await this.getClients();
+      if (query.length) {
+        clients = clients.filter(c => c.cname.toLowerCase().indexOf(query) > -1);
+      }
+      return clients;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getOutsourceCompanyFilter(query: string): Promise<any[]> {
+    try {
+      query = query.trim().toLowerCase();
+      let outsources = await this.getOutsourceCompanies();
+      if (query.length) {
+        outsources = outsources.filter(out => out.cname.toLowerCase().indexOf(query) > -1);
+      }
+      return outsources;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getLocationFilter(query = ''): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let locations = await this.getLocations();
+      if (query.length > 1) {
+        locations = locations.filter(v => v.lname.toLowerCase().indexOf(query) > -1);
+      }
+      return locations.slice(0, 20);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getManagerFilter(query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let users = await this.getUsers();
+      users = users.filter(u => ['owner', 'admin'].indexOf(u.lvl) > -1)
+        .map(u => ({
+          ...u,
+          name: `${u.fname} ${u.lname}`
+        }));
+      if (query.length) {
+        users = users.filter(u => u.name.toLowerCase().indexOf(query) > -1);
+      }
+      return users;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async getWorkAreaFilter(query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let workareas = await this.getWorkareas();
+      if (query.length) {
+        workareas = workareas.filter(w => w.aname.toLowerCase().indexOf(query) > -1);
+      }
+      return workareas;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async  getExtraUserInfoFilter(query = ''): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      const data = [];
+      const [categories, elements] = await Promise.all([
+        this.getProfileCategories(),
+        this.getProfileElements()
+      ]);
+      _.orderBy(categories, 'cname').forEach(pc => {
+        let pes = elements.filter(pe => pe.profile_cat_id == pc.id);
+        if (query.length) {
+          pes = pes.filter(pe => pe.ename.toLowerCase().indexOf(query) > -1);
+        }
+        _.orderBy(pes, 'ename').forEach(pe => {
+          data.push({
+            id: pe.id,
+            text: `${pc.cname} - ${pe.ename}`
+          });
+        });
+      });
+      return data;
+    } catch (e) {
+      return [];
+    }
+  }
+
   private getUsers(): Promise<any> {
     if (!this.promises.user) {
       this.promises.user = this.http.get(`${baseUrl}/users`).toPromise();
@@ -706,6 +838,13 @@ export class FilterService {
       this.promises.elements = this.http.get(`${baseUrl}/profileStructure/elements`).toPromise();
     }
     return this.promises.elements;
+  }
+
+  private getProfileCategories(): Promise<any> {
+    if (!this.promises.pCategories) {
+      this.promises.pCategories = this.http.get(`${baseUrl}/profileStructure/category`).toPromise();
+    }
+    return this.promises.pCategories;
   }
 
   private getReports(): Promise<any> {
@@ -769,6 +908,13 @@ export class FilterService {
       this.promises.outsourceCompanies = this.http.get(`${baseUrl}/outsourceCompany`).toPromise();
     }
     return this.promises.outsourceCompanies;
+  }
+
+  private getLocations(): Promise<any> {
+    if (!this.promises.locations) {
+      this.promises.locations = this.http.get(`${baseUrl}/locations`).toPromise();
+    }
+    return this.promises.locations;
   }
 
   private strposArray(haystack, needle) {

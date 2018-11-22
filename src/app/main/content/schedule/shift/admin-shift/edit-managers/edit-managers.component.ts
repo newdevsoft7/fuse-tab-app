@@ -1,15 +1,11 @@
-import {
-    Component, OnInit, ViewEncapsulation,
-    Input, Output, EventEmitter,
-    ViewChild
-} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
-import * as _ from 'lodash';
-import { ScheduleService } from '../../../schedule.service';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-admin-shift-edit-managers',
@@ -30,18 +26,18 @@ export class AdminShiftEditManagersComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private scheduleService: ScheduleService,
-        private toastr: ToastrService
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
         this.managersObservable = (text: string): Observable<any> => {
-            return this.scheduleService.getManagers(text);
+            return from(this.filterService.getManagerFilter(text));
         };
 
         // Get all managers
         this.managersObservable('').subscribe(res => {
             this.managers = res;
-        })
+        });
     }
 
     openForm() {

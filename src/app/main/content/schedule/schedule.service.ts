@@ -20,11 +20,6 @@ export class ScheduleService {
     private scMessageService: SCMessageService
   ) {}
 
-  async getEvents(fromDate: string, toDate: string): Promise<EventEntity[]> {
-    const url = `${SHIFT_URL}/${fromDate}/${toDate}/calendar`;
-    return this.http.get<EventEntity[]>(url).toPromise();
-  }
-
   async getShift(id: string | number): Promise<any> {
     return this.http.get(`${BASE_URL}/shift/${id}`).toPromise();
   }
@@ -40,12 +35,6 @@ export class ScheduleService {
 
     const url = `${SHIFT_URL}/${fromDate}/${toDate}/${view}/${pageSize}/${pageNumber}/${filters}/${sorts}`;
 
-    return this.http.get(url.replace(/\/+$/, ''))
-      .catch(this.handleError);
-  }
-
-  getShiftFilters(fromDate: string, toDate: string, query = '') {
-    const url = `${SHIFT_URL}/filter/${fromDate}/${toDate}/${query}`;
     return this.http.get(url.replace(/\/+$/, ''))
       .catch(this.handleError);
   }
@@ -66,12 +55,6 @@ export class ScheduleService {
     return this.http.post(url, { shift_ids }).catch(this.handleError);
   }
 
-  // TODO - Upload shifts
-  importShifts(params): Observable<any> {
-    const url = `${BASE_URL}/`;
-    return this.http.post(url, params).catch(this.handleError);
-  }
-
   updateShift(id: number, data): Observable<any> {
     const url = `${BASE_URL}/shift/${id}`;
     return this.http.put(url, data).catch(this.handleError);
@@ -85,57 +68,6 @@ export class ScheduleService {
   updateMultipleRoles(params): Observable<any> {
     const url = `${BASE_URL}/shift/roles/edit`;
     return this.http.put(url, params).catch(this.handleError);
-  }
-
-  getManagers(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/manager/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
-  getLocations(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/location/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
-  getWorkAreas(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/workArea/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
-  getAutoTrackingOptionsByCategory(categoryId: number, query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/tracking/${categoryId}/options/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
-  getClients(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/client/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
-  getRoleRequirements(query): Observable<any> {
-    const url = `${AUTOCOMPLETE_URL}/roleRequirement/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
-  getTrackingCategories(): Observable<any> {
-    const url = `${TRACKING_URL}/category`;
-    return this.http.get(url).catch(this.handleError);
-  }
-
-  getTrackingOptionsByCategory(categoryId: number): Observable<any> {
-    const url = `${TRACKING_URL}/option/${categoryId}`;
-    return this.http.get(url).catch(this.handleError);
-  }
-
-  getTrackingOptions(): Observable<any> {
-    const url = `${TRACKING_URL}/option`;
-    return this.http.get(url).catch(this.handleError);
-  }
-
-  createTrackingOption(option): Observable<any> {
-    const url = `${TRACKING_URL}/option`;
-    return this.http.post(url, option)
-      .catch(this.handleError);
   }
 
   createClient(client): Observable<any> {
@@ -221,11 +153,6 @@ export class ScheduleService {
   ): Observable<any> {
     const url = `${BASE_URL}/role/${role_id}/assign`;
     return this.http.post(url, params).catch(this.handleError);
-  }
-
-  inviteStaffsToRole(roleId, body: { user_ids?, filters? }): Observable<any> {
-    const url = `${BASE_URL}/role/${roleId}/invite`;
-    return this.http.post(url, body).catch(this.handleError);
   }
 
   getRoleStaffs(roleId, query): Observable<any> {
@@ -539,12 +466,6 @@ export class ScheduleService {
     return this.http.delete(url).toPromise();
   }
 
-  getExtraUserInfo(query? : string): Observable<any> {
-    if (_.isNil(query)) { query = ''; }
-    const url = `${BASE_URL}/autocomplete/extraUserInfo/${query}`;
-    return this.http.get(url.replace(/\/+$/, '')).catch(this.handleError);
-  }
-
   getUsersToMessage(type: string, shiftRoleIds: number[]): Promise<any> {
     const url = `${BASE_URL}/shifts/message/${type}`;
     return this.http.put(url, { shift_role_ids: shiftRoleIds }).toPromise();
@@ -571,13 +492,6 @@ export class ScheduleService {
   getPopupContent(id: number, group?: boolean): Promise<any> {
     const url = group? `${BASE_URL}/group/${id}/popUp` : `${BASE_URL}/shift/${id}/popUp`;
     return this.http.get(url).toPromise();
-  }
-
-  getReports(query?): Observable<any> {
-    query = query || '';
-    const url = `${BASE_URL}/autocomplete/report/survey/${query}`;
-    return this.http.get(url.replace(/\/+$/, ''))
-      .catch(this.handleError);
   }
 
   getRolesForDraggingToShift(userId: number | string, shiftId: number | string): Promise<any> {

@@ -1,7 +1,6 @@
 import {
     AfterViewInit, Output,
     Component, OnInit,
-    ChangeDetectionStrategy,
     ViewChild, forwardRef,
     EventEmitter, Input
 } from '@angular/core';
@@ -13,19 +12,13 @@ import {
 
 import {
     MatAutocompleteSelectedEvent, MatInput,
-    MatDialog
 } from '@angular/material';
 
 import { UP_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
-
-import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
-import { of } from 'rxjs/observable/of';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-
-import { ToastrService } from 'ngx-toastr';
-
-import { ScheduleService } from '../../../schedule.service';
+import { FilterService } from '@shared/services/filter.service';
+import { Observable } from 'rxjs/Observable';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
 
 export function arrayDiffObj(s: any[], v: any[], key: string) {
     if (!s) { return []; }
@@ -72,8 +65,8 @@ export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, Co
     private searchTerms = new Subject<string>();
 
     constructor(
-        private toastr: ToastrService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private filterService: FilterService
     ) {
     }
 
@@ -92,16 +85,8 @@ export class ShiftRoleRequirementsComponent implements OnInit, AfterViewInit, Co
                 }
             });
     }
-    private getRequirements(query): void {
-        this.scheduleService.getRoleRequirements(query)
-            .subscribe(res => {
-                this.source = res;
-            }, err => {
-                const errors = err.error.errors;
-                Object.keys(errors).forEach(v => {
-                    this.toastr.error(errors[v]);
-                });
-            });
+    private async getRequirements(query) {
+        this.filterService.getRoleRequirementsFilter(query).then(res => this.source = res);
     }
 
     onChange = (_: any): void => {

@@ -1,8 +1,9 @@
 import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {PayrollService} from '../../payroll.service';
-import {ScheduleService} from '../../../schedule/schedule.service';
 import {Observable} from 'rxjs/Observable';
+import { PayrollService } from '@main/content/payroll/payroll.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
 @Component({
   selector: 'app-payroll-export-as-csv-dialog',
@@ -22,7 +23,7 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<PayrollExportAsCsvDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private payrollService: PayrollService,
-    private scheduleService: ScheduleService
+    private filterService: FilterService
   ) {
     this.payrollIds = data.payrollIds;
     this.getOptionsFromLocalStorage();
@@ -42,8 +43,8 @@ export class PayrollExportAsCsvDialogComponent implements OnInit {
 
   ngOnInit() {
     this.extraUserInfo$ = (text: string): Observable<any> => {
-      return this.scheduleService.getExtraUserInfo(text);
-    };
+      return from(this.filterService.getExtraUserInfoFilter(text));
+    }
   }
 
   async export() {

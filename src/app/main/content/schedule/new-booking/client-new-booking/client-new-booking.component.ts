@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs'
 import { ToastrService } from 'ngx-toastr';
 
-import { ScheduleService } from '../../schedule.service';
+import { FilterService } from '@shared/services/filter.service';
+import { ScheduleService } from '@main/content/schedule/schedule.service';
+import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
 
 class ShiftDate {
     date;
@@ -78,12 +79,13 @@ export class ClientNewBookingComponent implements OnInit {
 
     constructor(
         private toastr: ToastrService,
-        private scheduleService: ScheduleService
+        private scheduleService: ScheduleService,
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
         this.workareas$ = (text: string): Observable<any> => {
-            return this.scheduleService.getWorkAreas(text);
+            return from(this.filterService.getWorkAreaFilter(text));
         };
     }
 

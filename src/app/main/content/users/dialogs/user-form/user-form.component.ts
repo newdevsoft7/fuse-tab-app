@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TokenStorage } from '../../../../../shared/services/token-storage.service';
 import { UserService } from '../../user.service';
+import { FilterService } from '@shared/services/filter.service';
 
 @Component({
     selector: 'app-users-user-form-dialog',
@@ -31,7 +32,9 @@ export class UserFormDialogComponent implements OnInit {
         private formBuilder: FormBuilder,
         private userService: UserService,
         private toastr: ToastrService,
-        private tokenStorage: TokenStorage) {
+        private tokenStorage: TokenStorage,
+        private filterService: FilterService
+    ) {
 
         this.userFormErrors = {
             lvl: {},
@@ -117,9 +120,9 @@ export class UserFormDialogComponent implements OnInit {
         if (!query) return;
         try {
             if (lvl === 'client') {
-                this.users = await this.userService.fetchClients(query);
+                this.users = await this.filterService.getClientFilter(query);
             } else {
-                this.users = await this.userService.fetchOutsourceCompanies(query);
+                this.users = await this.filterService.getOutsourceCompanyFilter(query);
             }
         } catch (e) {
             this.toastr.error(e.error.message);

@@ -14,6 +14,7 @@ import { AdminExportAsExcelDialogComponent } from '../../shifts-export/admin/exp
 import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 import { AddUserToGroupDialogComponent } from './dialogs/add-user-to-group-dialog/add-user-to-group-dialog.component';
 import { GroupActivityComponent } from './activity/activity.component';
+import { FilterService } from '@shared/services/filter.service';
 
 export enum TAB {
   Staff = 'Staff',
@@ -50,6 +51,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
     private scheduleService: ScheduleService,
     private actionService: ActionService,
     private scMessageService: SCMessageService,
+    private filterService: FilterService,
     private dialog: MatDialog
   ) { }
 
@@ -68,9 +70,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
     });
 
     // Get Clients
-    this.scheduleService.getClients('').subscribe(res => {
-      this.clients = res;
-    });
+    this.filterService.getClientFilter('').then(clients => this.clients = clients);
 
     // Invite Users to Role
     this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(

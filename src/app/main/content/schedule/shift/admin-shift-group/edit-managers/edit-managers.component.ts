@@ -1,12 +1,12 @@
-import {
-    Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 
-import * as _ from 'lodash';
 import { ScheduleService } from '../../../schedule.service';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
 @Component({
     selector: 'app-group-edit-managers',
@@ -27,12 +27,13 @@ export class GroupEditManagersComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private scheduleService: ScheduleService,
-        private scMessageService: SCMessageService
+        private scMessageService: SCMessageService,
+        private filterService: FilterService
     ) { }
 
     ngOnInit() {
         this.managersObservable = (text: string): Observable<any> => {
-            return this.scheduleService.getManagers(text);
+            return from(this.filterService.getManagerFilter(text));
         };
 
         // Get all managers
