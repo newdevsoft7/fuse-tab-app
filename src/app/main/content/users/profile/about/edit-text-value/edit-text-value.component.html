@@ -6,12 +6,24 @@
 
 	<mat-form-field floatPlaceholder="never" fxFlexLayout="start center">
 		<input matInput
+			*ngIf="element.etype !== 'long'; else longBlock"
 			formControlName="data"
 			#dataInput
 			fxFlex
 			placeholder="Write {{element.ename}}"
 			[required]="element.visibility == 'required'"
 			class="px-8">
+		<ng-template #longBlock>
+			<textarea matInput
+				formControlName="data"
+				#dataInput
+				fxFlex
+				[rows]="5"
+				placeholder="Write {{element.ename}}"
+				[required]="element.visibility == 'required'"
+				class="px-8">
+			</textarea>
+		</ng-template>
 	</mat-form-field>
 
 	<button mat-icon-button fxFlex="0 1 auto">

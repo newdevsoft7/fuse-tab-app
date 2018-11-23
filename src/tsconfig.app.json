@@ -6,11 +6,11 @@
         "module": "es2015",
         "types": [],
         "paths": {
-            "@shared/*": ["./app/shared/*"],
-            "@app/*": ["./app/*"],
-            "@main/*": ["./app/main/*"],
-            "@core/*": ["./app/core/*"],
-            "@environments/*": ["./environments/*"]
+            "@shared/*": ["app/shared/*"],
+            "@app/*": ["app/*"],
+            "@main/*": ["app/main/*"],
+            "@core/*": ["app/core/*"],
+            "@environments/*": ["environments/*"]
         }
     },
     "exclude": [

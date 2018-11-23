@@ -14,7 +14,15 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "@shared/*": ["src/app/shared/*"],
+      "@app/*": ["src/app/*"],
+      "@main/*": ["src/app/main/*"],
+      "@core/*": ["src/app/core/*"],
+      "@environments/*": ["src/environments/*"]
+    }
   },
   "angularCompilerOptions": {
     "genDir": "release/",
