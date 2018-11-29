@@ -177,10 +177,10 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     });
   }
 
-  async updateEvent(event: EventEntity, statusId: number) {
+  async updateEvent(event: EventEntity, statusId: number | string) {
     if (event.type === 'u') { return; }
     try {
-      const { bg_color, border_color, font_color} = await this.scheduleService.updateEventStatus(event.id, statusId, event.type === 'g' ? 'group' : 'shift');
+      const { bg_color, border_color, font_color } = await this.scheduleService.updateEventStatus(event.id, statusId, event.type === 'g' ? 'group' : 'shift');
       event.eventBackgroundColor = bg_color;
       event.eventBorderColor = border_color;
       event.eventTextColor = font_color;

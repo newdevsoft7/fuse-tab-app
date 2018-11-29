@@ -499,9 +499,9 @@ export class ScheduleService {
     return this.http.get(url).toPromise();
   }
 
-  updateEventStatus(eventId: number, statusId: number, eventType: string = 'shift'): Promise<any> {
+  updateEventStatus(eventId: number | string, statusId: number | string, eventType: string = 'shift'): Promise<any> {
     const url =`${BASE_URL}/${eventType}/${eventId}/status/${statusId}`;
-    return this.http.put(url).toPromise();
+    return this.http.put(url, {}).toPromise();
   }
 
   private handleError(error: Response | any) {
