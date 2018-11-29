@@ -1,5 +1,5 @@
 <mat-card class="hover-popup" *ngIf="data">
-  <mat-card-title *ngIf="data.length === 1">{{data[0].location}}</mat-card-title>
+  <mat-card-title *ngIf="data.length === 1">{{data[0].title}}<br />{{data[0].location}}</mat-card-title>
   <mat-card-content>
     <ng-container *ngFor="let event of data; let last = last">
       <h2 class="mt-0 mb-8" *ngIf="event.date">{{event?.date}}</h2>
