@@ -30,6 +30,7 @@ import { FilterService } from '@shared/services/filter.service';
 import { from } from 'rxjs/observable/from';
 import { TabComponent } from '@main/tab/tab/tab.component';
 import { Subscription } from 'rxjs/Subscription';
+import { EventEntity } from '@core/components/sc-calendar';
 
 @Component({
   selector: 'app-admin-shift-list',
@@ -77,6 +78,7 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
 
   isLegendShow = false;
   shiftStatuses: any[] = [];
+  statuses: any[] = [];
   tabActiveSubscription: Subscription;
 
   constructor(
@@ -95,6 +97,7 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
       this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
       this.selectedFlags = JSON.parse(localStorage.getItem('shift_flags')) || [];
     }
+    this.filterService.getShiftStatuses().then(statuses => this.statuses = statuses);
   }
 
   ngOnInit() {
@@ -119,6 +122,18 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.tabActiveSubscription.unsubscribe();
+  }
+
+  private async updateEvent(event, statusId) {
+    try {
+      const { bg_color, border_color, font_color, status} = await this.scheduleService.updateEventStatus(event.id, statusId);
+      event.bg_color = bg_color;
+      event.border_color = border_color;
+      event.font_color = font_color;
+      event.status = status;
+    } catch (e) {
+      this.scMessageService.error(e);
+    }
   }
 
   private setFlagsFromLocalStorage() {

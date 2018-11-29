@@ -1,238 +1,251 @@
 <div class="admin-shift-list-wrapper page-layout simple">
 
-    <!-- HEADER -->
-    <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-16 p-sm-24'" fxLayout="column">
+  <!-- HEADER -->
+  <div class="header mat-accent-bg" [ngClass.gt-xs]="'p-16 p-sm-24'" fxLayout="column">
 
-        <ng-container *ngIf="selectedShifts.length > 0">
-            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms'}}"
-                fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
+    <ng-container *ngIf="selectedShifts.length > 0">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start" *fuseIfOnDom [@animate]="{value:'*',params:{delay:'50ms'}}"
+           fxLayoutGap.gt-xs="12px" fxLayoutGap.xs="4px" fxLayoutWrap class="action-btns">
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="email()">
-                    <mat-icon>mail</mat-icon>
-                    <span>Email</span>
-                </button>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="email()">
+          <mat-icon>mail</mat-icon>
+          <span>Email</span>
+        </button>
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="editShifts()">
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit Selected</span>
-                </button>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="editShifts()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit Selected</span>
+        </button>
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="group()">
-                    <mat-icon fontSet="fa" fontIcon="fa-object-group" class="s-18 mr-4"></mat-icon>
-                    <span>Group</span>
-                </button>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="group()">
+          <mat-icon fontSet="fa" fontIcon="fa-object-group" class="s-18 mr-4"></mat-icon>
+          <span>Group</span>
+        </button>
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="ungroup()">
-                    <mat-icon fontSet="fa" fontIcon="fa-object-ungroup" class="s-18 mr-4"></mat-icon>
-                    <span>Ungroup</span>
-                </button>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="ungroup()">
+          <mat-icon fontSet="fa" fontIcon="fa-object-ungroup" class="s-18 mr-4"></mat-icon>
+          <span>Ungroup</span>
+        </button>
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="export()">
-                    <mat-icon>add_to_photos</mat-icon>
-                    <span>Export</span>
-                </button>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="export()">
+          <mat-icon>add_to_photos</mat-icon>
+          <span>Export</span>
+        </button>
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="overview()">
-                    <mat-icon>description</mat-icon>
-                    <span>Overview</span>
-                </button>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="overview()">
+          <mat-icon>description</mat-icon>
+          <span>Overview</span>
+        </button>
 
-                <button mat-raised-button class="mat-white-bg my-4" (click)="deleteShifts()">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete</span>
-                </button>
-            </div>
-        </ng-container>
+        <button mat-raised-button class="mat-white-bg my-4" (click)="deleteShifts()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </div>
+    </ng-container>
 
-        <!-- Flags Bar -->
-        <div fxLayout="row" fxLayoutAlign="end space-evenly">
-            <button mat-icon-button *ngFor="let flag of currentUserFlags" (click)="toggleFlagClick(flag)"
+    <!-- Flags Bar -->
+    <div fxLayout="row" fxLayoutAlign="end space-evenly">
+      <button mat-icon-button *ngFor="let flag of currentUserFlags" (click)="toggleFlagClick(flag)"
               (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
-              <ng-template [ngIf]="flag.set !==0" [ngIfElse]="showNegative">
-                <mat-icon [ngStyle]="{'color': flag.set !== 2 ? flag.color : 'white'}">flag</mat-icon>
-              </ng-template>
-              <ng-template #showNegative>
-                <mat-icon>highlight_off</mat-icon>
-              </ng-template>
-            </button>
-        </div>
-        <!-- / Flags Bar -->
-
-        <!-- SEARCHBAR -->
-        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
-
-            <!-- FILTER BAR -->
-            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                <mat-icon fxFlex="0 1 auto">search</mat-icon>
-                <div fxFlex>
-                    <app-custom-multi-select-group [autocompleteObservable]="filtersObservable"
-                        [labelBy]="'text'" [valueBy]="'id'"
-                        (valueChange)="onFiltersChanged($event)" [value]="selectedFilters"></app-custom-multi-select-group>
-                </div>
-            </div>
-            <!-- / FILTER BAR -->
-
-            <!-- DATE RANGE SELECTOR -->
-            <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="8px" fxFlex="250px">
-                <mat-form-field class="date-picker">
-                    <input matInput [matDatepicker]="fromPicker" placeholder="From" [value]="period.from" (dateChange)="changeDate($event, 'from')">
-                    <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #fromPicker></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field class="date-picker">
-                    <input matInput [matDatepicker]="toPicker" placeholder="To" [value]="period.to" (dateChange)="changeDate($event, 'to')">
-                    <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                    <mat-datepicker #toPicker></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <!-- / DATE RANGE SELECTOR -->
-        </div>
-        <!-- / SEARCHBAR -->
-
+        <ng-template [ngIf]="flag.set !==0" [ngIfElse]="showNegative">
+          <mat-icon [ngStyle]="{'color': flag.set !== 2 ? flag.color : 'white'}">flag</mat-icon>
+        </ng-template>
+        <ng-template #showNegative>
+          <mat-icon>highlight_off</mat-icon>
+        </ng-template>
+      </button>
     </div>
-    <!-- / HEADER -->
+    <!-- / Flags Bar -->
 
-    <!-- CONTENT -->
-    <div class="content" [ngClass.gt-xs]="'p-24 pt-40 pb-56'" [ngClass.xs]="'py-4'">
+    <!-- SEARCHBAR -->
+    <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start end" fxLayoutWrap class="search-bar" fxLayoutGap.gt-xs="20px">
 
-        <!-- TABLE -->
-        <div *ngIf="shifts" class="shifts-table" #tableWrapper>
-            <ngx-datatable #table class="material striped" [rows]="shifts" [columnMode]="'force'" [headerHeight]="48" [footerHeight]="56"
-                [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true"
-                [selected]="selectedShifts" [loadingIndicator]="loadingIndicator" [reorderable]="true"
-                [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize"
-                [sortType]="'multi'" (page)="setPage($event)"
-                (sort)="onSort($event)" (select)="onSelect($event)">
+      <!-- FILTER BAR -->
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <mat-icon fxFlex="0 1 auto">search</mat-icon>
+        <div fxFlex>
+          <app-custom-multi-select-group [autocompleteObservable]="filtersObservable"
+                                         [labelBy]="'text'" [valueBy]="'id'"
+                                         (valueChange)="onFiltersChanged($event)" [value]="selectedFilters"></app-custom-multi-select-group>
+        </div>
+      </div>
+      <!-- / FILTER BAR -->
 
-                <!-- CHECKBOX -->
-                <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true">
+      <!-- DATE RANGE SELECTOR -->
+      <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="8px" fxFlex="250px">
+        <mat-form-field class="date-picker">
+          <input matInput [matDatepicker]="fromPicker" placeholder="From" [value]="period.from" (dateChange)="changeDate($event, 'from')">
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
 
-                    <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
-                        <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
-                    </ng-template>
+        <mat-form-field class="date-picker">
+          <input matInput [matDatepicker]="toPicker" placeholder="To" [value]="period.to" (dateChange)="changeDate($event, 'to')">
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <!-- / DATE RANGE SELECTOR -->
+    </div>
+    <!-- / SEARCHBAR -->
 
-                    <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
-                        <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
-                    </ng-template>
-                </ngx-datatable-column>
-                <!-- / CHECKBOX -->
+  </div>
+  <!-- / HEADER -->
 
-                <ng-container *ngFor="let column of columns">
-                    <ngx-datatable-column
-                        *ngIf="!hiddenColumns.includes(column.key_name)" [name]="column.display_name" [prop]="column.key_name"
-                        [sortable]="column.sortable == 1 ? true : false">
+  <!-- CONTENT -->
+  <div class="content" [ngClass.gt-xs]="'p-24 pt-40 pb-56'" [ngClass.xs]="'py-4'">
 
-                        <!-- DATE COLUMN -->
-                        <ng-template *ngIf="column.key_name === 'shift_start'" ngx-datatable-cell-template let-value="value" let-row="row">
+    <!-- TABLE -->
+    <div *ngIf="shifts" class="shifts-table" #tableWrapper>
+      <ngx-datatable #table class="material striped" [rows]="shifts" [columnMode]="'force'" [headerHeight]="48" [footerHeight]="56"
+                     [rowHeight]="'auto'" [scrollbarH]="true" [selectionType]="'checkbox'" [selectAllRowsOnPage]="true"
+                     [selected]="selectedShifts" [loadingIndicator]="loadingIndicator" [reorderable]="true"
+                     [externalPaging]="true" [count]="total" [offset]="pageNumber" [limit]="pageSize"
+                     [sortType]="'multi'" (page)="setPage($event)"
+                     (sort)="onSort($event)" (select)="onSelect($event)">
+
+        <!-- CHECKBOX -->
+        <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true">
+
+          <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+            <mat-checkbox [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)"></mat-checkbox>
+          </ng-template>
+
+          <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+            <mat-checkbox [checked]="isSelected" (change)="onCheckboxChangeFn($event)"></mat-checkbox>
+          </ng-template>
+        </ngx-datatable-column>
+        <!-- / CHECKBOX -->
+
+        <ng-container *ngFor="let column of columns">
+          <ngx-datatable-column
+            *ngIf="!hiddenColumns.includes(column.key_name)" [name]="column.display_name" [prop]="column.key_name"
+            [sortable]="column.sortable == 1 ? true : false">
+
+            <!-- DATE COLUMN -->
+            <ng-template *ngIf="column.key_name === 'shift_start'" ngx-datatable-cell-template let-value="value" let-row="row">
                             <span class="shift-date" [ngStyle]="{
                                 'background-color': row.bg_color,
                                 'color': row.font_color,
                                 'border': '1px solid ' + row.border_color
                             }" [matTooltip]="row.status">{{value}}</span>
-                        </ng-template>
-                        <!-- / DATE COLUMN -->
+            </ng-template>
+            <!-- / DATE COLUMN -->
 
-                        <ng-template *ngIf="column.key_name === 'title'" ngx-datatable-cell-template let-value="value" let-row="row">
+            <ng-template *ngIf="column.key_name === 'title'" ngx-datatable-cell-template let-value="value" let-row="row">
                             <span class="shift-title"
-                                (mouseenter)="getHoverContent(row)"
-                                [popover]="hoverPopup"
-                                [popoverOnHover]="true"
-                                [popoverCloseOnMouseOutside]="true"
-                                (click)="openShift(row)">{{value}}</span>
-                        </ng-template>
+                                  (mouseenter)="getHoverContent(row)"
+                                  [popover]="hoverPopup"
+                                  [popoverOnHover]="true"
+                                  [popoverCloseOnMouseOutside]="true"
+                                  (click)="openShift(row)">{{value}}</span>
+            </ng-template>
 
-                        <ng-template *ngIf="column.key_name === 'gname'" ngx-datatable-cell-template let-value="value" let-row="row">
-                            <span class="group" (click)="openGroup(row)">{{value}}</span>
-                        </ng-template>
+            <ng-template *ngIf="column.key_name === 'gname'" ngx-datatable-cell-template let-value="value" let-row="row">
+              <span class="group" (click)="openGroup(row)">{{value}}</span>
+            </ng-template>
 
 
-                    </ngx-datatable-column>
-                </ng-container>
+          </ngx-datatable-column>
+        </ng-container>
 
-                <!-- ACTIONS MENU -->
-                <ngx-datatable-column [width]="100" [sortable]="false" [resizeable]="false"
-                    [draggable]="false" [canAutoResize]="false">
+        <!-- ACTIONS MENU -->
+        <ngx-datatable-column [width]="100" [sortable]="false" [resizeable]="false"
+                              [draggable]="false" [canAutoResize]="false">
 
-                    <ng-template let-row="row" ngx-datatable-cell-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
 
-                        <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
-                            <mat-icon class="material-icons">more_vert</mat-icon>
-                        </button>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="more-vert">
+              <mat-icon class="material-icons">more_vert</mat-icon>
+            </button>
 
-                        <mat-menu #menu="matMenu">
+            <mat-menu #menu="matMenu">
 
-                            <button mat-menu-item (click)="copyShift(row)">
-                                <mat-icon>content_copy</mat-icon>
-                                <span>Copy</span>
-                            </button>
+              <button mat-menu-item (click)="copyShift(row)">
+                <mat-icon>content_copy</mat-icon>
+                <span>Copy</span>
+              </button>
 
-                            <button mat-menu-item (click)="editShift(row)">
-                                <mat-icon>edit</mat-icon>
-                                <span>Edit</span>
-                            </button>
+              <button mat-menu-item (click)="editShift(row)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+              </button>
 
-                            <button mat-menu-item (click)="deleteShift(row)">
-                                <mat-icon>delete</mat-icon>
-                                <span>Delete</span>
-                            </button>
+              <button mat-menu-item [matMenuTriggerFor]="statusMenu">
+                <mat-icon>edit</mat-icon>
+                <span>Status</span>
+              </button>
 
-                        </mat-menu>
+              <button mat-menu-item (click)="deleteShift(row)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+              </button>
 
-                    </ng-template>
+            </mat-menu>
 
-                </ngx-datatable-column>
-                <!-- / ACTIONS MENU -->
+            <mat-menu #statusMenu="matMenu">
 
-                <!-- FOOTER -->
-                <ngx-datatable-footer>
-                    <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-selectedCount="selectedCount"
-                        let-curPage="curPage" let-offset="offset">
-                        <div class="page-count h-60">
-                            Show
-                            <mat-form-field class="mx-8">
-                                <mat-select (change)="onPageLengthChange($event)" [value]="10">
-                                    <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            entries
-                            <span class="mx-48">
-                                Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of {{rowCount}} entries
-                            </span>
-                        </div>
+              <button *ngFor="let status of statuses" mat-menu-item (click)="updateEvent(row, status.id)">
+                <span>{{status.status}}</span>
+              </button>
 
-                        <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
-                            [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
-                            (change)="setPage($event)">
-                        </datatable-pager>
+            </mat-menu>
 
-                    </ng-template>
-                </ngx-datatable-footer>
-                <!-- / FOOTER -->
+          </ng-template>
 
-            </ngx-datatable>
+        </ngx-datatable-column>
+        <!-- / ACTIONS MENU -->
 
-        </div>
-        <!-- / TABLE -->
+        <!-- FOOTER -->
+        <ngx-datatable-footer>
+          <ng-template ngx-datatable-footer-template let-rowCount="rowCount" let-pageSize="pageSize" let-selectedCount="selectedCount"
+                       let-curPage="curPage" let-offset="offset">
+            <div class="page-count h-60">
+              Show
+              <mat-form-field class="mx-8">
+                <mat-select (change)="onPageLengthChange($event)" [value]="10">
+                  <mat-option *ngFor="let item of pageLengths" [value]="item">{{item}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              entries
+              <span class="mx-48">
+                Showing {{pageSize * offset + 1}} to {{min(pageSize * (offset + 1), rowCount)}} of {{rowCount}} entries
+              </span>
+            </div>
 
-        <div class="my-24">
-            <a href="javascript:void(0)" (click)="showLegend()" *ngIf="!isLegendShow">Show legend</a>
-            <fieldset *ngIf="isLegendShow && shiftStatuses.length > 0" class="legend">
-              <legend>Legend</legend>
-              <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                <div fxFlex="33" *ngFor="let status of shiftStatuses" class="status">
-                  <div [style.background-color]="status.bg_color" class="bg"></div>
-                  <span class="title">{{status.status}}</span>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+            <datatable-pager [pagerLeftArrowIcon]="'datatable-icon-left'" [pagerRightArrowIcon]="'datatable-icon-right'" [pagerPreviousIcon]="'datatable-icon-prev'"
+                             [pagerNextIcon]="'datatable-icon-skip'" [page]="curPage" [size]="pageSize" [count]="rowCount" [hidden]="!((rowCount / pageSize) > 1)"
+                             (change)="setPage($event)">
+            </datatable-pager>
+
+          </ng-template>
+        </ngx-datatable-footer>
+        <!-- / FOOTER -->
+
+      </ngx-datatable>
 
     </div>
-    <!-- CONTENT -->
+    <!-- / TABLE -->
+
+    <div class="my-24">
+      <a href="javascript:void(0)" (click)="showLegend()" *ngIf="!isLegendShow">Show legend</a>
+      <fieldset *ngIf="isLegendShow && shiftStatuses.length > 0" class="legend">
+        <legend>Legend</legend>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+          <div fxFlex="33" *ngFor="let status of shiftStatuses" class="status">
+            <div [style.background-color]="status.bg_color" class="bg"></div>
+            <span class="title">{{status.status}}</span>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+  </div>
+  <!-- CONTENT -->
 
 </div>
 
 <popover-content #hoverPopup placement="auto" [closeOnMouseOutside]="true">
-    <sc-calendar-hover-popup [data]="hoverPopupData"></sc-calendar-hover-popup>
+  <sc-calendar-hover-popup [data]="hoverPopupData"></sc-calendar-hover-popup>
 </popover-content>

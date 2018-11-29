@@ -1,17 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../../environments/environment';
-import { EventEntity } from '../../../core/components/sc-calendar';
-import * as _ from 'lodash';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
 import { uuid } from 'lodash-uuid';
 
 const BASE_URL = environment.apiUrl;
 const SHIFT_URL = `${BASE_URL}/shifts`;
-const TRACKING_URL = `${BASE_URL}/tracking`;
-const AUTOCOMPLETE_URL = `${BASE_URL}/autocomplete`;
-
 
 @Injectable()
 export class ScheduleService {
@@ -502,6 +497,11 @@ export class ScheduleService {
   getRolesForDraggingToGroup(userId: number | string, groupId: number | string): Promise<any> {
     const url = `${BASE_URL}/user/${userId}/group/${groupId}`;
     return this.http.get(url).toPromise();
+  }
+
+  updateEventStatus(eventId: number, statusId: number, eventType: string = 'shift'): Promise<any> {
+    const url =`${BASE_URL}/${eventType}/${eventId}/status/${statusId}`;
+    return this.http.put(url).toPromise();
   }
 
   private handleError(error: Response | any) {

@@ -868,7 +868,7 @@ export class FilterService {
     return this.promises.workareas;
   }
 
-  private getShiftStatuses(): Promise<any> {
+  getShiftStatuses(): Promise<any> {
     if (!this.promises.shiftStatuses) {
       this.promises.shiftStatuses = this.http.get(`${baseUrl}/shiftStatuses`).toPromise();
     }

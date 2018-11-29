@@ -111,38 +111,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
       {
         title: 'Status',
         icon: 'mode_edit',
-        children: [
-          {
-            title: 'Default',
-            callback: (event: EventEntity): void => {
-              // put some logic here
-            }
-          },
-          {
-            title: 'Completed',
-            callback: (event: EventEntity): void => {
-              // put some logic here
-            }
-          },
-          {
-            title: 'Invoiced',
-            callback: (event: EventEntity): void => {
-              // put some logic here
-            }
-          },
-          {
-            title: 'Paid',
-            callback: (event: EventEntity): void => {
-              // put some logic here
-            }
-          },
-          {
-            title: 'Cancelled',
-            callback: (event: EventEntity): void => {
-              // put some logic here
-            }
-          }
-        ]
+        children: []
       },
       {
         title: 'Delete',
@@ -172,6 +141,15 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
       this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
       this.selectedFlags = JSON.parse(localStorage.getItem('shift_flags')) || [];
     }
+    this.filterService.getShiftStatuses().then(statuses => {
+      const statusSubMenu = this.contextMenu.data.find(v => v.title === 'Status');
+      statuses.forEach(status => {
+        statusSubMenu.children.push({
+          title: status.status,
+          callback: (event: EventEntity) => this.updateEvent(event, status.id)
+        });
+      });
+    });
   }
 
 
@@ -197,6 +175,18 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         this.filterService.clean(this.filterService.type.shifts);
       }
     });
+  }
+
+  async updateEvent(event: EventEntity, statusId: number) {
+    if (event.type === 'u') { return; }
+    try {
+      const { bg_color, border_color, font_color} = await this.scheduleService.updateEventStatus(event.id, statusId, event.type === 'g' ? 'group' : 'shift');
+      event.eventBackgroundColor = bg_color;
+      event.eventBorderColor = border_color;
+      event.eventTextColor = font_color;
+    } catch (e) {
+      this.scMessageService.error(e);
+    }
   }
 
   private setFlagsFromLocalStorage() {
