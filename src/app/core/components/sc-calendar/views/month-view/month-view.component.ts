@@ -29,10 +29,10 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   activatedCell: ElementRef;
   contextMenuContent: ContextMenuItemEntity[];
 
-  monthDays:any;
+  monthDays: any;
   cellHeight: number = 0;
-  positions:any;
-  rowData:any;
+  positions: any;
+  rowData: any;
 
   hoverPopupData: any;
 
@@ -42,7 +42,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   viewEndDate: any;
 
   constructor(
-    private renderer: Renderer2) {}
+    private renderer: Renderer2) { }
 
   ngOnInit() {
     this.updateCellHeight();
@@ -89,7 +89,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   private getMonthDays(currentDate) {
     const monthDays = [], res = [];
     for (let i = 0; i < moment(currentDate).startOf('month').day(); i++) {
-      const tempDay:any = {
+      const tempDay: any = {
         active: false,
         date: moment(currentDate).startOf('month').subtract(i + 1, 'd')
       };
@@ -97,7 +97,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       monthDays.splice(0, 0, tempDay);
     }
     for (let i = 1; i <= moment(currentDate).daysInMonth(); i++) {
-      const tempDay:any = {
+      const tempDay: any = {
         active: true,
         date: moment(currentDate).date(i)
       };
@@ -107,7 +107,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     const day = moment(currentDate).endOf('month').day();
     if (day !== 6) {
       for (let i = day + 1; i < 7; i++) {
-        const tempDay:any = {
+        const tempDay: any = {
           active: false,
           date: moment(currentDate).endOf('month').add(i - day, 'd')
         };
@@ -131,7 +131,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     if (!this.options.events) return tempEvents;
     for (let i = 0; i < this.options.events.length; i++) {
       const startAt = moment(this.options.events[i].start),
-            endAt = (this.options.events[i].end && moment(this.options.events[i].end).isValid())? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
+        endAt = (this.options.events[i].end && moment(this.options.events[i].end).isValid()) ? moment(this.options.events[i].end) : moment(this.options.events[i].start).endOf('day');
       if ((startAt.isSameOrAfter(startDate, 'day') && startAt.isSameOrBefore(endDate, 'day')) || (startAt.isBefore(startDate) && endAt.isSameOrAfter(startDate))) {
         const event: any = _.cloneDeep(this.options.events[i]);
         event.startedAt = startAt;
@@ -140,8 +140,8 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
         const isBeyondStart = event.startedAt.isBefore(startDate, 'day');
         const isBeyondEnd = event.endedAt.isAfter(endDate, 'day');
         if (isBeyondStart || isBeyondEnd) {
-          const start = isBeyondStart? startDate : event.startedAt;
-          const end = isBeyondEnd? endDate : event.endedAt;
+          const start = isBeyondStart ? startDate : event.startedAt;
+          const end = isBeyondEnd ? endDate : event.endedAt;
           event.duration = moment(end.format('YYYY-MM-DD')).diff(start.format('YYYY-MM-DD'), 'days') + 1;
           event.left = start.diff(startDate, 'days');
           event.isMore = isBeyondEnd;
@@ -216,7 +216,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
     return moment().isSame(date, 'day');
   }
 
-  dayRender(day): void {    
+  dayRender(day): void {
     this.options.dayRender(day.date, day.cell);
   }
 
@@ -225,22 +225,28 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   }
 
   async onPopupShown(event): Promise<any> {
-    if (!this.hoverPopupData) {
-      this.hoverPopupData = [
-        {
-          start: event.data.startedAt.format('h:mm a'),
-          end: event.data.endedAt.format('h:mm a')
-        }
-      ];
-    }
     switch (event.raw.type) {
       case 'u':
         this.hoverPopupData = null;
         break;
       case 'g':
+        this.hoverPopupData = [
+          {
+            start: event.data.startedAt.format('h:mm a'),
+            end: event.data.endedAt.format('h:mm a')
+          }
+        ];
         this.hoverPopupData = await this.hoverAsyncFn(event.raw.id, true);
         break;
       default:
+        this.hoverPopupData = [
+          {
+            title: event.data.title,
+            selected: [],
+            start: event.data.startedAt.format('h:mm a'),
+            end: event.data.endedAt.format('h:mm a')
+          }
+        ];
         this.hoverPopupData = [await this.hoverAsyncFn(event.raw.id)];
         break;
     }
