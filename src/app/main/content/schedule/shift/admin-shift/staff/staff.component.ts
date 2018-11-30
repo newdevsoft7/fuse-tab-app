@@ -228,6 +228,22 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     }
   }
 
+  async onResetRoleTimes(role){
+    this.spinner.show();
+    this.scheduleService.resetTimesToRole(role.id).subscribe(
+      ({ to, message_template }) => {
+        this.spinner.hide();
+        this.refreshTabByRole(role, Section.Selected);
+        this.updateStaffsCount(role.id);
+        const index = this.roles.findIndex(v => v.id === role.id);
+        this.roles[index].section = Section.Selected;
+      },
+      err => {
+        this.spinner.hide();
+        this.toastr.error(err.error.message);
+      });
+  }
+
   onSelectedTabChange(role, event: MatTabChangeEvent) {
     const selectedTab = event.index;
 
