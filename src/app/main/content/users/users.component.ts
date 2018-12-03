@@ -112,6 +112,10 @@ export class UsersComponent implements OnInit {
     private router: Router
   ) {
     this.currentUser = this.tokenStorage.getUser();
+    if (!this.tokenStorage.isExistSecondaryUser()) {
+      this.filters = JSON.parse(localStorage.getItem('user_filters')) || [];
+      this.selectedTypeFilter = localStorage.getItem('user_type_filter') || 'utype:=:all';
+    }
   }
 
   async ngOnInit() {
@@ -316,10 +320,20 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  saveToLocalStorage() {
+    if (this.tokenStorage.isExistSecondaryUser()) { return; }
+    if (this.filters) {
+      localStorage.setItem('user_filters', JSON.stringify(this.filters));
+    }
+    if (this.selectedTypeFilter) {
+      localStorage.setItem('user_type_filter', this.selectedTypeFilter);
+    }
+  }
+
   onFiltersChange(evt: any[]) {
     this.filters = evt;
     this.getUsers();
-
+    this.saveToLocalStorage();
     if (this.data.invite) {
       this.data.invite_all = true;
     }
@@ -336,7 +350,7 @@ export class UsersComponent implements OnInit {
       this.isLoginAs = true;
     }
     this.getUsers();
-
+    this.saveToLocalStorage();
     if (this.data.invite) {
       this.data.invite_all = true;
     }
