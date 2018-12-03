@@ -268,7 +268,8 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
 
   // PAGE LENGTH SELECTOR
   onPageLengthChange(event) {
-    this.getShifts({ pageSize: event.value });
+    this.pageSize = +event.value;
+    this.getShifts();
   }
 
   min(x, y) {
