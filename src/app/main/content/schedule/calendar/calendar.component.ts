@@ -178,7 +178,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.startWeekDay = +this.tokenStorage.getSettings().calendar_start_day;
+    const calendarStartDay = this.tokenStorage.getSettings().calendar_start_day;
+    this.startWeekDay = calendarStartDay !== undefined ? +calendarStartDay : 0;
     if (this.startWeekDay === 1) {
       this.options.dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       this.options.dayNamesShort = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
