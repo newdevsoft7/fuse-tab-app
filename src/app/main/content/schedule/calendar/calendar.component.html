@@ -7,7 +7,7 @@
   [startWeekDay]="startWeekDay"
   (optionChanged)="updateEvents($event)">
 
-  <div calendar-header fxLayout="row" fxLayoutAlign="end space-evenly">
+  <div calendar-header fxLayout="row" fxLayoutAlign="end space-evenly" *ngIf="canFilter()">
     <button mat-icon-button *ngFor="let flag of currentUserFlags" (click)="toggleFlagClick(flag)"
       (dblclick)="toggleFlagDblClick(flag)" [matTooltip]="flag.fname">
         <mat-icon *ngIf="flag.set === 0; else flagBlock">highlight_off</mat-icon>
@@ -17,7 +17,7 @@
     </button>
   </div>
 
-  <div calendar-header fxLayout="row" fxLayoutAlign="start center">
+  <div calendar-header fxLayout="row" fxLayoutAlign="start center" *ngIf="canFilter()">
     <mat-icon class="mr-8 mb-8" fxFlex="0 1 auto">search</mat-icon>
     <div fxFlex>
       <app-custom-multi-select-group 

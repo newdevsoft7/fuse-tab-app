@@ -436,4 +436,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     setTimeout(() => this.loading = false);
   }
 
+  canFilter() {
+    return ['admin', 'owner', 'client'].indexOf(this.currentUser.lvl) > -1;
+  }
+
 }
