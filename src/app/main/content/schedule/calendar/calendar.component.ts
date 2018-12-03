@@ -236,6 +236,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
   }
 
   async fetchEvents(isLoading: boolean) {
+    if (!this.startDate || !this.endDate) { return; }
     const query = {
       filters: [...(this.selectedFilters.map(f => f.id)), ...this.selectedFlags],
       from: this.startDate,
