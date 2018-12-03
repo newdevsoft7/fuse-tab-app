@@ -19,6 +19,7 @@ export class SCCalendarComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
+  @Input() startWeekDay: number;
 
   @Output() optionChanged: EventEmitter<{startDate: string, endDate: string}> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();

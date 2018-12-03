@@ -229,8 +229,13 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   async onResetRoleTimes(role){
+    // @todo
+
+    /*
     this.spinner.show();
-    this.scheduleService.resetTimesToRole(role.id).subscribe(
+    this.scheduleService.assignStaffsToRole(role.id, {
+      staff_status_id: 
+    }).subscribe(
       ({ to, message_template }) => {
         this.spinner.hide();
         this.refreshTabByRole(role, Section.Selected);
@@ -242,6 +247,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         this.spinner.hide();
         this.toastr.error(err.error.message);
       });
+      */
   }
 
   onSelectedTabChange(role, event: MatTabChangeEvent) {

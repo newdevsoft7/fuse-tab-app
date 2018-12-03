@@ -48,6 +48,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
 
   hoverAsyncFn: any;
 
+  startWeekDay: number;
+
   options: EventOptionEntity = {
     dayRender: (date: Moment, cell: Element): void => {
       // put some logic here for styling the day cells
@@ -175,6 +177,12 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         this.filterService.clean(this.filterService.type.shifts);
       }
     });
+
+    this.startWeekDay = +this.tokenStorage.getSettings().calendar_start_day;
+    if (this.startWeekDay === 1) {
+      this.options.dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      this.options.dayNamesShort = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    }
   }
 
   async updateEvent(event: EventEntity, statusId: number | string) {

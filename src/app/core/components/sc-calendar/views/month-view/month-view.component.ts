@@ -13,6 +13,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
   @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
+  @Input() startWeekDay: number;
 
   @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
 
@@ -88,7 +89,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
 
   private getMonthDays(currentDate) {
     const monthDays = [], res = [];
-    for (let i = 0; i < moment(currentDate).startOf('month').day(); i++) {
+    for (let i = 0; i < moment(currentDate).startOf('month').day() - this.startWeekDay; i++) {
       const tempDay: any = {
         active: false,
         date: moment(currentDate).startOf('month').subtract(i + 1, 'd')
@@ -105,14 +106,27 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
       monthDays.push(tempDay);
     }
     const day = moment(currentDate).endOf('month').day();
-    if (day !== 6) {
-      for (let i = day + 1; i < 7; i++) {
-        const tempDay: any = {
-          active: false,
-          date: moment(currentDate).endOf('month').add(i - day, 'd')
-        };
-        tempDay.isToday = moment().isSame(tempDay.date, 'day');
-        monthDays.push(tempDay);
+    if (this.startWeekDay === 0) {
+      if (day !== 6) {
+        for (let i = day + 1; i < 7; i++) {
+          const tempDay: any = {
+            active: false,
+            date: moment(currentDate).endOf('month').add(i - day, 'd')
+          };
+          tempDay.isToday = moment().isSame(tempDay.date, 'day');
+          monthDays.push(tempDay);
+        }
+      }
+    } else {
+      if (day !== 0) {
+        for (let i = day + 1; i < 8; i++) {
+          const tempDay: any = {
+            active: false,
+            date: moment(currentDate).endOf('month').add(i - day, 'd')
+          };
+          tempDay.isToday = moment().isSame(tempDay.date, 'day');
+          monthDays.push(tempDay);
+        }
       }
     }
     for (let i = 0; i < monthDays.length / 7; i++) {
