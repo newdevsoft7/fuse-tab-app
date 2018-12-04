@@ -107,7 +107,11 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
         title: 'Edit',
         icon: 'mode_edit',
         callback: (event: EventEntity): void => {
-          this.openEditShiftTab(event);
+          if (event.type === 'g') {
+            this.openEventTab(event);
+          } else {
+            this.openEditShiftTab(event);
+          }
         }
       },
       {
