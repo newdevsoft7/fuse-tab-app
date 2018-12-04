@@ -24,6 +24,7 @@
             (onMenuShown)="onMenuShown($event)"
             [hoverPopup]="hoverPopup"
             [triggerMode]="contextMenu.mode"
+            [menuDisabled]="contextMenu.disabled"
             (onPopupShown)="onPopupShown($event)"
             (eventClicked)="options.eventClick($event.event, $event.jsEvent)"></sc-calendar-event-chip>
         </div>

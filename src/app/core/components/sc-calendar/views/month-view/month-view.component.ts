@@ -11,7 +11,7 @@ import { MatMenu } from '@angular/material';
 })
 export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   @Input() options: EventOptionEntity;
-  @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[] } = {};
+  @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[], disabled?: boolean } = {};
   @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
   @Input() startWeekDay: number;
 

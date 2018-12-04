@@ -72,7 +72,7 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     }
   };
 
-  contextMenu: { mode: number, data: ContextMenuItemEntity[] } = {
+  contextMenu: { mode: number, data: ContextMenuItemEntity[], disabled: boolean } = {
     mode: CONTEXT_MENU_TRIGGER_MODE.ELLIPSIS,
     data: [
       {
@@ -126,7 +126,8 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
           this.deleteEvent(event);
         }
       }
-    ]
+    ],
+    disabled: false
   };
 
   isLegendShow = false;
@@ -143,24 +144,29 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     private filterService: FilterService
   ) {
+    this.currentUser = this.tokenStorage.getUser();
     if (!this.tokenStorage.isExistSecondaryUser()) {
       this.selectedFilters = JSON.parse(localStorage.getItem('shift_filters')) || [];
       this.selectedFlags = JSON.parse(localStorage.getItem('shift_flags')) || [];
     }
-    this.filterService.getShiftStatuses().then(statuses => {
-      const statusSubMenu = this.contextMenu.data.find(v => v.title === 'Status');
-      statuses.forEach(status => {
-        statusSubMenu.children.push({
-          title: status.status,
-          callback: (event: EventEntity) => this.updateEvent(event, status.id)
+    if (['admin', 'owner', 'client'].indexOf(this.currentUser.lvl) > -1) {
+      this.filterService.getShiftStatuses().then(statuses => {
+        const statusSubMenu = this.contextMenu.data.find(v => v.title === 'Status');
+        statuses.forEach(status => {
+          statusSubMenu.children.push({
+            title: status.status,
+            callback: (event: EventEntity) => this.updateEvent(event, status.id)
+          });
         });
       });
-    });
+    }
+    if (this.currentUser.lvl === 'staff') {
+      this.contextMenu.disabled = true;
+    }
   }
 
 
   ngOnInit() {
-    this.currentUser = this.tokenStorage.getUser();
 
     this.hoverAsyncFn = (shiftId: number, group?: boolean) => this.scheduleService.getPopupContent(shiftId, group);
 

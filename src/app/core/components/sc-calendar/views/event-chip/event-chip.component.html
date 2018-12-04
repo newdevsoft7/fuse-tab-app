@@ -12,14 +12,14 @@
   (onShown)="popupShown()"
   (click)="eventClicked.next({ event: event.raw, jsEvent: $event })">
   <div
-    *ngIf="isRightClick(triggerMode)"
+    *ngIf="isRightClick(triggerMode) && !menuDisabled"
     class="context-menu-trigger"
     [contextMenuTrigger]="contextMenu"
     (onContextMenuShown)="onContextMenuShown()"></div>
   <span class="mr-8 font-weight-400">{{getTime(event.data.startedAt)}}</span>{{event.data.title}}
   <mat-icon>{{event.data.icon}}</mat-icon>
-  <button 
-    *ngIf="!isRightClick(triggerMode)"
+  <button
+    *ngIf="!isRightClick(triggerMode) && !menuDisabled"
     mat-icon-button
     class="btn-ellipsis-menu-trigger"
     [matMenuTriggerFor]="contextMenu"

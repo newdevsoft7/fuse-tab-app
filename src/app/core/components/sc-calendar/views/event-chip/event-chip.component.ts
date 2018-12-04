@@ -17,6 +17,7 @@ export class SCCalendarEventChipComponent implements OnInit {
   @Input() contextMenu: MatMenu;
   @Input() hoverPopup: any;
   @Input() triggerMode: number;
+  @Input() menuDisabled = false;
   @Output() eventShown: EventEmitter<any> = new EventEmitter();
   @Output() onPopupShown: EventEmitter<any> = new EventEmitter();
   @Output() onMenuShown: EventEmitter<any> = new EventEmitter();
