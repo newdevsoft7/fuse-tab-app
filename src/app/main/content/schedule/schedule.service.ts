@@ -131,6 +131,11 @@ export class ScheduleService {
     return this.http.put(url, {}).catch(this.handleError);
   }
 
+  publishGroup(groupId, setPublish = 1): Promise<any> {
+    const url = `${BASE_URL}/group/${groupId}/publish/${setPublish}`;
+    return this.http.put(url, {}).toPromise();
+  }
+
   lockShift(shiftId, setLock = 1): Observable<any> {
     const url = `${BASE_URL}/shift/${shiftId}/lock/${setLock}`;
     return this.http.put(url, {}).catch(this.handleError);

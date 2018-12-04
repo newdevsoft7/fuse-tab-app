@@ -178,6 +178,7 @@ export class AdminShiftGroupComponent implements OnInit, OnDestroy {
   async toggleLive() {
     const live = this.group.live === 1 ? 0 : 1;
     try {
+      await this.scheduleService.publishGroup(this.group.id, live);
       this.group.live = live;
     } catch (e) {
       this.scMessageService.error(e);
