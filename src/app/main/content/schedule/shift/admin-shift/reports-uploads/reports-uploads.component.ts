@@ -193,7 +193,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
                 }
             }
         }
-        this.canDownload = selected > 1;
+        this.canDownload = selected > 0;
     }
 
     toggleSelect() {
@@ -209,7 +209,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
                 }
             }
         }
-        this.canDownload = selected > 1;
+        this.canDownload = selected > 0;
     }
 
     refreshCanDownload(value, item) {
@@ -225,7 +225,7 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
                 }
             }
         }
-        this.canDownload = selected > 1;
+        this.canDownload = selected > 0;
     }
 
     downloadZip() {
