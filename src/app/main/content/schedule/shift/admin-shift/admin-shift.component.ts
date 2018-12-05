@@ -140,7 +140,8 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(async(result) => {
       if (result) {
         try {
-          //this.toastr.success(res.message);
+          await this.scheduleService.deleteShift(this.shift.id);
+          this.filterService.clean(this.filterService.type.shifts);
           this.tabService.closeTab(this.url);
         } catch (e) {
           this.scMessageService.error(e);
