@@ -56,6 +56,20 @@ enum Query {
   Na = 'na'
 }
 
+enum Status {
+  STAFF_STATUS_INVITED = 1,
+  STAFF_STATUS_APPLIED = 2,
+  STAFF_STATUS_STANDBY = 3,
+  STAFF_STATUS_SELECTED = 4,
+  STAFF_STATUS_CONFIRMED = 5,
+  STAFF_STATUS_CHECKED_IN = 7,
+  STAFF_STATUS_NO_SHOW = 8,
+  STAFF_STATUS_CHECKED_OUT = 10,
+  STAFF_STATUS_COMPLETED = 13,
+  STAFF_STATUS_INVOICED = 14,
+  STAFF_STATUS_PAID = 15
+}
+
 @Component({
   selector: 'app-admin-shift-staff',
   templateUrl: './staff.component.html',
@@ -84,6 +98,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   adminNotes = [];
   adminNoteForm: FormGroup;
   noteTemp: any; // Note template for update
+  selectedTab: number = 0;
 
   readonly noteTypes = [
     { value: 0, label: 'Default' }
@@ -229,31 +244,20 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   async onResetRoleTimes(role){
-    // @todo
-
-    /*
-    this.spinner.show();
-    this.scheduleService.assignStaffsToRole(role.id, {
-      staff_status_id: 
-    }).subscribe(
-      ({ to, message_template }) => {
-        this.spinner.hide();
-        this.refreshTabByRole(role, Section.Selected);
-        this.updateStaffsCount(role.id);
-        const index = this.roles.findIndex(v => v.id === role.id);
-        this.roles[index].section = Section.Selected;
-      },
-      err => {
-        this.spinner.hide();
-        this.toastr.error(err.error.message);
-      });
-      */
+    for (const staff of role.role_staff) {
+      staff.start = role.start || this.shift.start;
+      staff.end = role.end || this.shift.end;
+    }
+    await this.scheduleService.updateMultipleRoles({
+      ids: [role.id],
+      reset_times: 1
+    }).toPromise();
   }
 
   onSelectedTabChange(role, event: MatTabChangeEvent) {
-    const selectedTab = event.index;
+    this.selectedTab = event.index;
 
-    this.refreshTabByRole(role, selectedTab);
+    this.refreshTabByRole(role, this.selectedTab);
   }
 
   inviteStaffs({ userIds, filters, role, inviteAll, messaging }) {
@@ -488,31 +492,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
   }
 
   changeStatus(role, statusId) {
-    const section = role.section;
-    let staffs = [];
-    switch (section) {
-      case Section.Selected:
-        staffs = role.selected;
-        break;
-
-      case Section.Standby:
-        staffs = role.standby;
-        break;
-
-      case Section.Applicants:
-        staffs = role.applicants;
-        break;
-
-      case Section.Invited:
-        staffs = role.invited;
-        break;
-
-      default:
-        staffs = role.na;
-        break;
-    }
-
-    const count = staffs.length;
+    const count = role.role_staff.length;
     if (count === 0) { return false; }
 
     const applicantsMsg = count > 1 ? 'these applicants' : 'this applicant';
@@ -549,14 +529,13 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
     this.confirmDialogRef.componentInstance.confirmMessage = message;
 
-    this.confirmDialogRef.afterClosed().subscribe(result => {
+    this.confirmDialogRef.afterClosed().subscribe(async result => {
       if (result) {
-        this.scheduleService.updateRoleStaffs(staffs.map(v => v.id), { staff_status_id: statusId })
-          .subscribe(() => {
-            this.updateStaffsBySection(role);
-          }, () => {
-            this.updateStaffsBySection(role);
-          });
+        await this.scheduleService.updateMultipleRoles({
+          ids: [role.id],
+          staff_status_id: Status[statusId]
+        }).toPromise();
+        this.refreshTabByRole(role, this.selectedTab);
       }
     });
   }
