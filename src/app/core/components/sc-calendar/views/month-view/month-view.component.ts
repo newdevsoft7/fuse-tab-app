@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, QueryList, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, Input, Output, EventEmitter, HostListener, OnChanges, SimpleChanges, QueryList, ElementRef, Renderer2, DoCheck } from '@angular/core';
 import { EventOptionEntity, EventEntity, ContextMenuItemEntity } from '../../entities';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -9,7 +9,7 @@ import { MatMenu } from '@angular/material';
   templateUrl: './month-view.component.html',
   styleUrls: ['./month-view.component.scss']
 })
-export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
+export class SCCalendarMonthViewComponent implements OnInit, OnChanges, DoCheck {
   @Input() options: EventOptionEntity;
   @Input() contextMenu: { mode?: number, data?: ContextMenuItemEntity[], disabled?: boolean } = {};
   @Input() hoverAsyncFn: (shiftId: number, group?: boolean) => Promise<any>;
@@ -42,12 +42,21 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   viewStartDate: any;
   viewEndDate: any;
 
+  oldMonthViewWidth: number = 0;
+
   constructor(
     private renderer: Renderer2) { }
 
   ngOnInit() {
-    this.updateCellHeight();
     this.init();
+  }
+
+  ngDoCheck() {
+    const width = this.monthView.nativeElement.clientWidth;
+    if (width !== this.oldMonthViewWidth) {
+      this.oldMonthViewWidth = width;
+      this.updateCellHeight();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -239,6 +248,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   }
 
   async onPopupShown(event): Promise<any> {
+    if (!this.hoverAsyncFn) return;
     switch (event.raw.type) {
       case 'u':
         this.hoverPopupData = null;
@@ -294,6 +304,12 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges {
   cellClick() {
     if (this.activatedCell) {
       this.activatedCell.nativeElement.click();
+    }
+  }
+
+  dayClick(date: any, event: any) {
+    if (this.options.dayClick) {
+      this.options.dayClick(date, event);
     }
   }
 }

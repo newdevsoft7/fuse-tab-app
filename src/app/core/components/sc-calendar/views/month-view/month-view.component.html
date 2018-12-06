@@ -34,7 +34,7 @@
         [dayCell]="day.date"
         (dayRender)="dayRender($event)"
         [class.today]="isToday(day.date)"
-        (click)="options.dayClick(day.date, $event)"
+        (click)="dayClick(day.date, $event)"
         *ngFor="let day of days"
         fxFlex>
         <span class="date-badge" [class.inactive]="!day.active">{{day.date.date()}}</span>
