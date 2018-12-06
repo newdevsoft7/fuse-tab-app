@@ -1,4 +1,7 @@
-<div class="tabs-wrapper" [class.tabs-nav-control-enabled]="_showPaginationControls">
+<div class="tabs-wrapper" [class.tabs-nav-control-enabled]="_showPaginationControls"
+     scMouseWheel
+     (mouseWheelDown)="onMouseWheelDown()"
+     (mouseWheelUp)="onMouseWheelUp()">
   <div
     class="tabs-nav tabs-nav-prev"
     (click)="scrollHeader('before')"

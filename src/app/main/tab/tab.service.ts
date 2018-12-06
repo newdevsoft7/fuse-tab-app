@@ -7,30 +7,30 @@ import { TabComponent } from './tab/tab.component';
 
 @Injectable()
 export class TabService {
-    private tab: Subject<Tab> = new Subject();
-    tabActived: BehaviorSubject<TabComponent> = new BehaviorSubject(null);
-    currentTab: TabComponent;
-    tabToActivate$: Subject<TabComponent> = new Subject();
+  private tab: Subject<Tab> = new Subject();
+  tabActived: BehaviorSubject<TabComponent> = new BehaviorSubject(null);
+  currentTab: TabComponent;
+  tabToActivate$: Subject<TabComponent> = new Subject();
 
-    openTabs: TabComponent[] = [];
-    
-    tabClosed: Subject<string> = new Subject();
-    
-    constructor() { }
+  openTabs: TabComponent[] = [];
 
-    openTab(newTab: Tab) {
-        this.tab.next(newTab);
-    }
+  tabClosed: Subject<string> = new Subject();
 
-    closeTab(url: string) {
-        this.tabClosed.next(url);
-    }
+  constructor() { }
 
-    selectTab(tab: TabComponent) {
-        this.tabToActivate$.next(tab);
-    }
+  openTab(newTab: Tab) {
+    this.tab.next(newTab);
+  }
 
-    get tab$(): Observable<Tab> {
-        return this.tab.asObservable();
-    }
+  closeTab(url: string) {
+    this.tabClosed.next(url);
+  }
+
+  selectTab(tab: TabComponent) {
+    this.tabToActivate$.next(tab);
+  }
+
+  get tab$(): Observable<Tab> {
+    return this.tab.asObservable();
+  }
 }

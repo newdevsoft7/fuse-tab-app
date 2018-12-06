@@ -8,26 +8,26 @@ import { SharedModule } from '../../core/modules/shared.module';
 import { TabService } from './tab.service';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		SharedModule
-	],
-	declarations: [
-		TabsComponent,
-		TabComponent,
-		DynamicTabsDirective,
-		TabInkBar
-	],
-	entryComponents: [
-		TabComponent
-	],
-	exports: [
-		TabsComponent,
-		TabComponent,
-		DynamicTabsDirective
-	],
-	providers: [
-		TabService
-	]
+  imports: [
+    CommonModule,
+    SharedModule
+  ],
+  declarations: [
+    TabsComponent,
+    TabComponent,
+    DynamicTabsDirective,
+    TabInkBar
+  ],
+  entryComponents: [
+    TabComponent
+  ],
+  exports: [
+    TabsComponent,
+    TabComponent,
+    DynamicTabsDirective
+  ],
+  providers: [
+    TabService
+  ]
 })
 export class TabModule { }

@@ -47,6 +47,7 @@ import { FuseConfirmTextYesNoDialogComponent } from '../components/confirm-text-
 import { SCMessageService } from '../../shared/services/sc-message.service';
 import { NotExistGuardService } from '../../shared/guards/not-exist-guard.service';
 import { FilterService } from '@shared/services/filter.service';
+import { ScMouseWheelDirective } from '@shared/directives/sc-mouse-wheel.directive';
 
 @NgModule({
     declarations   : [
@@ -62,7 +63,8 @@ import { FilterService } from '@shared/services/filter.service';
         FusePerfectScrollbarDirective,
         DebounceDirective,
         FuseMaterialColorPickerComponent,
-        EditableTextComponent
+        EditableTextComponent,
+        ScMouseWheelDirective
     ],
     imports        : [
         FlexLayoutModule,
@@ -104,7 +106,8 @@ import { FilterService } from '@shared/services/filter.service';
         MaterialTimeControlModule,
         NgPipesModule,
         StarRatingModule,
-        EditableTextComponent
+        EditableTextComponent,
+        ScMouseWheelDirective
     ],
     entryComponents: [
         FuseConfirmDialogComponent,

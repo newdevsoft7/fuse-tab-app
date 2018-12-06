@@ -237,7 +237,7 @@ export class TabsComponent implements AfterContentInit, OnInit, OnDestroy {
     this._alignInkBarToSelectedTab();
   }
 
-  closeTab(tab: TabComponent) {
+    closeTab(tab: TabComponent) {
     for (let i = 0; i < this.dynamicTabs.length; i++) {
       if (this.dynamicTabs[i] === tab) {
         // remove the tab from our array
@@ -368,6 +368,14 @@ export class TabsComponent implements AfterContentInit, OnInit, OnDestroy {
   private _alignInkBarToSelectedTab(): void {
     if (this._selectedTab)
       this._inkBar.alignToElement(this._selectedTab);
+  }
+
+  onMouseWheelDown() {
+    this.scrollHeader('after');
+  }
+
+  onMouseWheelUp() {
+    this.scrollHeader('before');
   }
 
 }
