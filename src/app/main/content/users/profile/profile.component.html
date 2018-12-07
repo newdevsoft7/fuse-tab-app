@@ -76,6 +76,14 @@
                                  [settings]="settings"></app-users-profile-about>
       </mat-tab>
 
+      <mat-tab label="Calendar" *ngIf="userInfo.lvl === 'staff' && ['admin', 'owner'].indexOf(currentUser.lvl) > -1">
+        <app-users-profile-calendar [userInfo]="userInfo"
+                                    [currentUser]="currentUser"
+                                    [settings]="settings"
+                                    *ngIf="selectedIndex === 1">
+        </app-users-profile-calendar>
+      </mat-tab>
+
       <mat-tab label="Skills & Qualifications" *ngIf="isSkillsShow">
         <app-users-profile-attributes [userInfo]="userInfo" [currentUser]="currentUser" [settings]="settings"></app-users-profile-attributes>
       </mat-tab>

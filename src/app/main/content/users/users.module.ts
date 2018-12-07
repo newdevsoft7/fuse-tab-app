@@ -76,6 +76,9 @@ import { UsersProfileActivityComponent } from './profile/activity/activity.compo
 import { ActivityLogModule } from '../activity-log/activity-log.module';
 import { PrsentationEditInOutTextComponent } from './presentations/edit-in-out-text/edit-in-out-text.component';
 import { UsersShowcaseViewComponent } from './showcase-view/showcase-view.component';
+import { UsersProfileCalendarComponent } from '@app/main/content/users/profile/calendar/calendar.component';
+import { SCCalendarModule } from '@app/core/components/sc-calendar';
+import { UsersProfileCalendarEventFormDialogComponent } from '@app/main/content/users/profile/calendar/event-form/event-form.component';
 
 @NgModule({
     imports: [
@@ -86,7 +89,8 @@ import { UsersShowcaseViewComponent } from './showcase-view/showcase-view.compon
         CKEditor5Module,
         UsersProfileExperienceModule,
         ClipboardModule,
-        ActivityLogModule
+        ActivityLogModule,
+        SCCalendarModule
     ],
     declarations: [
         UsersComponent,
@@ -106,6 +110,8 @@ import { UsersShowcaseViewComponent } from './showcase-view/showcase-view.compon
         UsersProfileVideoComponent,
         UsersProfileVideoGalleryDialogComponent,
         UsersProfileDocumentComponent,
+        UsersProfileCalendarComponent,
+        UsersProfileCalendarEventFormDialogComponent,
         UsersChatComponent,
         FuseChatViewComponent,
         FuseChatStartComponent,
@@ -183,6 +189,7 @@ import { UsersShowcaseViewComponent } from './showcase-view/showcase-view.compon
         UserFormDialogComponent,
         UsersProfilePhotoGalleryDialogComponent,
         UsersProfileVideoGalleryDialogComponent,
+        UsersProfileCalendarEventFormDialogComponent,
         UsersAddFilterDialogComponent,
         NewThreadFormDialogComponent,
         AddUserFormDialogComponent,

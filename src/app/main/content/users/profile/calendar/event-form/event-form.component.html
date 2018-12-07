@@ -1,0 +1,32 @@
+<div class="dialog-content-wrapper">
+  <mat-toolbar matDialogTitle class="mat-accent m-0">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="title dialog-title">{{event?.title}}</span>
+          <button mat-button class="mat-icon-button"
+                  (click)="dialogRef.close()"
+                  aria-label="Close dialog">
+              <mat-icon>close</mat-icon>
+          </button>
+      </div>
+  </mat-toolbar>
+
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+    <h3 class="text-bold m-0">Start Date/Time</h3>
+    <p class="mt-4 mb-0">{{event?.start | date: 'MMM d, y, h:mm a'}}</p>
+
+    <ng-container *ngIf="event?.end">
+        <h3 class="text-bold mt-20 mb-4">End Date/Time</h3>
+        <p class="m-0">{{event?.end | date: 'MMM d, y, h:mm a'}}</p>
+    </ng-container>
+  </div>
+
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+
+      <button mat-raised-button
+        (click)="dialogRef.close({type: 'delete', id: event?.id})"
+        color="warn"
+        aria-label="DELETE">
+        DELETE
+      </button>
+  </div>
+</div>

@@ -605,7 +605,25 @@ export class UserService {
     return this.http.get(url).toPromise();
   }
 
+  getStaffCalendarShifts(userId: number, from: string, to: string): Promise<any> {
+    const url = `${environment.apiUrl}/user/${userId}/calendar/${from}/${to}`;
+    return this.http.get(url).toPromise();
+  }
 
+  deleteUnavailableShift(id: any): Promise<any> {
+    const url = `${BASE_URL}/user/unavailability/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  deleteShift(id): Promise<any> {
+    const url = `${BASE_URL}/shift/${id}`;
+    return this.http.delete(url).toPromise();
+  }
+
+  deleteGroup(id: number | string): Promise<any> {
+    const url = `${BASE_URL}/group/${id}/all`;
+    return this.http.delete(url).toPromise();
+  }
 
   export(params: {
     user_ids?: number[],
