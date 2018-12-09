@@ -1,13 +1,23 @@
 <div id="reports-uploads" [ngClass.gt-xs]="'p-24'">
     <div class="btn-area">
+
+        <ng-container *ngIf="canDownload">
+          <button mat-icon-button matTooltip="Approve all" (click)="approveAll()">
+              <mat-icon>check_circle</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Unapprove all" (click)="approveAll(0)">
+              <mat-icon>cancel</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Download" (click)="downloadZip()">
+              <mat-icon>file_download</mat-icon>
+          </button>
+        </ng-container>
+
         <button mat-icon-button matTooltip="Select all items" (click)="selectAll()">
             <mat-icon>done_all</mat-icon>
         </button>
         <button mat-icon-button matTooltip="Toggle selection" (click)="toggleSelect()">
             <mat-icon>done</mat-icon>
-        </button>
-        <button mat-icon-button *ngIf="canDownload" matTooltip="Download" (click)="downloadZip()">
-            <mat-icon>file_download</mat-icon>
         </button>
     </div>
     <!-- Files Section -->

@@ -19,6 +19,12 @@
         </ng-container>
         
         <ng-container *ngIf="!selected">
+            <button mat-icon-button matTooltip="Approve all" (click)="approveAll()">
+                <mat-icon>done</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Unapprove all" (click)="approveAll(0)">
+                <mat-icon>clear</mat-icon>
+            </button>
             <ng-container *ngIf="isOpenMultiple">
                 <button mat-icon-button class="mat-icon-button" matTooltip="Open" (click)="openMultiple()">
                     <mat-icon>open_in_new</mat-icon>

@@ -19,7 +19,9 @@ app-reports-uploads {
   }
 
   .breadcrumb {
-    width: 355px;
+    @include media-breakpoint('xs') {
+      width: 355px;
+    }
   }
 
   mat-sidenav-container {

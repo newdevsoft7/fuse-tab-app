@@ -8,6 +8,7 @@ import { TokenStorage } from '../../../../../shared/services/token-storage.servi
 import { ToastrService } from 'ngx-toastr';
 import { MatSlideToggleChange, MatDialog } from '@angular/material';
 import { FuseConfirmDialogComponent } from '../../../../../core/components/confirm-dialog/confirm-dialog.component';
+import { SCMessageService } from '@shared/services/sc-message.service';
 
 @Component({
   selector: 'app-reports-uploads-details-sidenav',
@@ -30,7 +31,8 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
     private tabService: TabService,
     private tokenStorage: TokenStorage,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private scMessageService: SCMessageService
   ) {
     this.currentUser = this.tokenStorage.getUser();
   }
@@ -106,7 +108,7 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
       const type = temp[0] === 'f' ? 'upload' : 'report';
       await this.reportsUploadsService.reportsUploadsApprove(type, type === 'upload' ? temp[1] : temp[0], value);
     } catch (e) {
-      this.toastr.error(e.message);
+      this.scMessageService.error(e);
       this.selected.approved = value ? 0 : 1;
     }
   }
@@ -150,6 +152,15 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
 
   get isOpenMulitple() {
     return this.selectedItems.every(item => item.type == 'quiz' || item.type == 'survey');
+  }
+
+  async approveAll(approved = 1) {
+    try {
+      // TODO - call endpoint
+      this.selectedItems.forEach(v => v.approved = approved);
+    } catch (e) {
+      this.scMessageService.error(e);
+    }
   }
 
 }

@@ -360,7 +360,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
       if (result) {
         this.scheduleService.removeRoleStaff(staff.id)
           .subscribe(() => {
-            //this.toastr.success(res.message);
             this.scheduleService.getRoleStaffs(this.roleId, Query.Selected)
               .subscribe(res => {
                 this.staffs = res;

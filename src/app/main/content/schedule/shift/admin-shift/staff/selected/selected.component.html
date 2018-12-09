@@ -14,6 +14,9 @@
           </span>
           <img [src]="getAvatar(staff.ppic_a)" (click)="openUser(staff, $event)" [ngStyle]="{'border': '3px solid ' + staff.staff_status.border_color}"
                [matTooltip]="staff.staff_status.status" (contextmenu)="openContextMenu($event, menuTrigger)"/>
+          <div class="team-leader">
+            <mat-icon *ngIf="staff.team_leader == 1">accessibility_new</mat-icon>
+          </div>
           <span>
             {{staff.name}}
             <ng-container *ngIf="staff.company">
