@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import { environment } from '../../../../environments/environment';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
+import { Subject } from 'rxjs/Subject';
 
 const BASE_URL = `${environment.apiUrl}`;
 
@@ -13,23 +15,44 @@ export class ReportsUploadsService {
 
   onFilesChanged: BehaviorSubject<any> = new BehaviorSubject([]);
   onFileSelected: BehaviorSubject<any> = new BehaviorSubject([]);
+  onPeriodChanged: Subject<any> = new Subject();
   folders: any[] = []; // Save folder tree in top-down order
+
+  folder: any;
+  id: any;
+  period: any;
 
   constructor(
     private http: HttpClient,
     private scMessageService: SCMessageService
-  ) { }
+  ) {
+    this.onPeriodChanged.subscribe(({ from, to }) => {
+      this.period = {
+        from,
+        to
+      };
+      this.getFilesByDate();
+    });
+  }
 
-  getFiles(file: any | 'up' = {}): Promise<any> {
+  getFiles(file: any | 'up' = {}, period: any): Promise<any> {
     if (file === 'up') {
       this.folders.pop();
       file = this.folders[this.folders.length - 1];
     } else {
       this.folders.push(file);
     }
-    const folder = _.isNil(file.folder) ? '' : file.folder;
-    const id = _.isNil(file.id) ? '' : file.id;
-    const url = `${BASE_URL}/reportsUploads/fileManager/${folder}/${id}`;
+    this.folder = _.isNil(file.folder) ? '' : file.folder;
+    this.id = _.isNil(file.id) ? '' : file.id;
+
+    let fromDate = '';
+    let toDate = '';
+    if (period) {
+      fromDate = period.from ? moment(period.from).format('YYYY-MM-DD') : '';
+      toDate = period.to ? moment(period.to).format('YYYY-MM-DD') : '';
+    }
+
+    const url = `${BASE_URL}/reportsUploads/fileManager/${this.folder}/${this.id}/${fromDate}/${toDate}`;
     return new Promise((resolve, reject) => {
       this.onFileSelected.next([file]);
       this.http.get(url.replace(/\/+$/, ''))
@@ -38,6 +61,22 @@ export class ReportsUploadsService {
           this.onFilesChanged.next(response);
         }, reject);
     });
+  }
+
+  async getFilesByDate() {
+    try {
+      let fromDate = '';
+      let toDate = '';
+      if (this.period) {
+        fromDate = this.period.from ? moment(this.period.from).format('YYYY-MM-DD') : '';
+        toDate = this.period.to ? moment(this.period.to).format('YYYY-MM-DD') : '';
+      }
+      const url = `${BASE_URL}/reportsUploads/fileManager/${this.folder}/${this.id}/${fromDate}/${toDate}`;
+      const res = await this.http.get(url.replace(/\/+$/, '')).toPromise();
+      this.onFilesChanged.next(res);
+    } catch (e) {
+      this.scMessageService.error(e);
+    }
   }
 
   getShifts(trackingId, date, q = ''): Promise<any> {

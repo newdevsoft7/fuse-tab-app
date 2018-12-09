@@ -1,15 +1,16 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { fuseAnimations } from '../../../core/animations';
 import { ReportsUploadsService } from './reports-uploads.service';
-import { MatSidenav, MatDialog } from '@angular/material';
+import { MatSidenav, MatDialog, MatDatepickerInputEvent } from '@angular/material';
 
 import * as _ from 'lodash';
-import { CustomLoadingService } from '../../../shared/services/custom-loading.service';
-import { ToastrService } from 'ngx-toastr';
 import { ReportsSelectShiftDialogComponent } from './select-shift-dialog/select-shift-dialog.component';
 import { ReportsUploadsFileListComponent } from './file-list/file-list.component';
-import { FusePerfectScrollbarDirective } from '../../../core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
 import { Subscription } from 'rxjs';
+import { fuseAnimations } from '@core/animations';
+import { ToastrService } from 'ngx-toastr';
+import { FusePerfectScrollbarDirective } from '@core/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.directive';
+import { CustomLoadingService } from '@shared/services/custom-loading.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-reports-uploads',
@@ -30,6 +31,11 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
   fileChangedSubscription: Subscription;
   selectedFolder: any = {};
 
+  period = {
+    from: null,
+    to: null
+  };
+
   constructor(
     private reportsUploadsService: ReportsUploadsService,
     private spinner: CustomLoadingService,
@@ -46,7 +52,7 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     try {
-      await this.reportsUploadsService.getFiles({});
+      await this.reportsUploadsService.getFiles({}, this.period);
     } catch (e) {
       console.log(e);
     }
@@ -96,7 +102,6 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
         this.spinner.show();
         const res = await this.reportsUploadsService.reportsUploads(formData);
         this.spinner.hide();
-        //this.toastr.success(res.message);
         const data = res.data.map(f => {
           f.id = f.id2;
           f.name = f.oname;
@@ -152,6 +157,11 @@ export class ReportsUploadsComponent implements OnInit, AfterViewInit {
 
   toggleSelection() {
     this.fileList.toggleSelection();
+  }
+
+  changeDate(event: MatDatepickerInputEvent<Date>, selector = 'from' || 'to') {
+    this.period[selector] = event.value;
+    this.reportsUploadsService.onPeriodChanged.next(this.period);
   }
 
 }

@@ -10,10 +10,18 @@
 
                 <!-- TOOLBAR -->
                 <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="end start">
-                    <div class="right-side" fxLayout="row">
-                        <button mat-button class="mat-icon-button" aria-label="Search" matTooltip="Search">
-                            <mat-icon>search</mat-icon>
-                        </button>
+                    <div fxLayout.gt-xs="row" fxLayoutAlign="start" fxLayoutGap="8px" class="search-bar">
+                        <mat-form-field class="date-picker">
+                            <input matInput [matDatepicker]="fromPicker" placeholder="From" [value]="period.from" (dateChange)="changeDate($event, 'from')">
+                            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromPicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field class="date-picker">
+                            <input matInput [matDatepicker]="toPicker" placeholder="To" [value]="period.to" (dateChange)="changeDate($event, 'to')">
+                            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #toPicker></mat-datepicker>
+                        </mat-form-field>
                     </div>
                 </div>
                 <!-- / TOOLBAR -->
@@ -51,7 +59,7 @@
 
             <!-- CONTENT -->
             <div class="content mat-white-bg" #scrollbar="fusePerfectScrollbar" fusePerfectScrollbar>
-                <app-reports-uploads-file-list #fileList></app-reports-uploads-file-list>
+                <app-reports-uploads-file-list #fileList [period]="period"></app-reports-uploads-file-list>
             </div>
             <!-- / CONTENT -->
 

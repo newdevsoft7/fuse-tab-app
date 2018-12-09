@@ -18,11 +18,21 @@ app-reports-uploads {
     width: inherit;
   }
 
+
   .breadcrumb {
     @include media-breakpoint('xs') {
       width: 355px;
     }
   }
+
+  .search-bar {
+    margin-right: -12px;
+
+    .date-picker {
+      width: 120px;
+    }
+  }
+
 
   mat-sidenav-container {
 

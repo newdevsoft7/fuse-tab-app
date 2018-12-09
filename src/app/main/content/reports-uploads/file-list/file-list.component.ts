@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, Input } from '@angular/core';
 import { fuseAnimations } from '../../../../core/animations';
 import { ReportsUploadsService } from '../reports-uploads.service';
 
@@ -17,6 +17,8 @@ import { TabComponent } from '../../../tab/tab/tab.component';
   animations: fuseAnimations
 })
 export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
+
+  @Input() period: any;
 
   selected: any;
   files: any[] = [];
@@ -81,7 +83,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
       this.selectedItems = [];
       try { // get contents of folders
         this.clicked = true;
-        await this.reportsUploadsService.getFiles(selected);
+        await this.reportsUploadsService.getFiles(selected, this.period);
         this.clicked = false;
       } catch (e) {
         this.toastr.error(e.message);
@@ -126,7 +128,7 @@ export class ReportsUploadsFileListComponent implements OnInit, OnDestroy {
     if (this.clicked) { return; }
     try {
       this.clicked = true;
-      await this.reportsUploadsService.getFiles('up');
+      await this.reportsUploadsService.getFiles('up', this.period);
       this.clicked = false;
     } catch (e) {
       this.toastr.error(e.message);
