@@ -34,7 +34,9 @@ enum Setting {
     shift_msg_replacement_request = 57,
     shift_replacement_request_deadline = 58,
     shift_msg_replacement_request_na = 59,
-    shift_replacement_request_email = 60
+    shift_replacement_request_email = 60,
+    calendar_start_day = 146,
+    shift_default_publish = 148
 }
 
 @Component({
@@ -79,7 +81,8 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
         Setting.shift_application_reason,
         Setting.shift_staff_confirm,
         Setting.shift_calendar_overnight_single,
-        Setting.shift_replacement_request
+        Setting.shift_replacement_request,
+        Setting.shift_default_publish
     ];
 
     // Number Items
@@ -94,12 +97,12 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
         private toastr: ToastrService,
         private scMessageService: SCMessageService,
         private tokenStorage: TokenStorage
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges) {
 
         if (changes.settings || changes.options) {
-            
+
             const keys = Object.keys(this.Setting).filter(v => !_.isNaN(_.toNumber(v))) as string[];
 
             _.forEach(keys, (v) => {
@@ -112,7 +115,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
                             case Setting.shift_replacement_request_deadline:
                                 this.deadline.patchValue(item.value);
                                 break;
-                            
+
                             default:
                                 break;
                         }
@@ -210,12 +213,12 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
     }
 
     updateSettingsOnStorage(id, value) {
-      const key = this.Setting[id];
-      const settings = this.tokenStorage.getSettings();
-      if (settings.hasOwnProperty(key)) {
-        settings[key] = value;
-      }
-      this.tokenStorage.setSettings(settings);
+        const key = this.Setting[id];
+        const settings = this.tokenStorage.getSettings();
+        if (settings.hasOwnProperty(key)) {
+            settings[key] = value;
+        }
+        this.tokenStorage.setSettings(settings);
     }
 
 }
