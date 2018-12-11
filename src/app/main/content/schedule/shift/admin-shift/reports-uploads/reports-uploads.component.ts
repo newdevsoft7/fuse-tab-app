@@ -147,7 +147,12 @@ export class AdminShiftReportsUploadsComponent implements OnInit {
 
   async approveAll(approved = 1) {
     try {
-      // TODO - call endpoint
+      const payload = {
+        set: approved,
+        file_ids: this.data.files.filter(v => v.selected).map(v => +v.id),
+        report_ids: this.data.surveys.filter(v => v.selected).map(v => +v.id)
+      };
+      await this.reportsUploadsService.approveAll(payload);
       this.data.files.filter(v => v.selected).forEach(v => v.approved = approved);
       this.data.surveys.filter(v => v.selected).forEach(v => v.approved = approved);
     } catch (e) {

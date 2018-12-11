@@ -137,8 +137,8 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
 
   downloadZip() {
     const params = {
-      file_ids: this.selectedItems.filter(v => v.type != 'quiz' && v.type !='survey').map(v => +v.id.split(':')[1]),
-      report_ids: this.selectedItems.filter(v => v.type == 'quiz' || v.type == 'survey').map(v => +v.id.split(':')[0])
+      file_ids: this.selectedItems.filter(v => v.type !== 'quiz' && v.type !== 'survey').map(v => +v.id.split(':')[1]),
+      report_ids: this.selectedItems.filter(v => v.type === 'quiz' || v.type === 'survey').map(v => +v.id.split(':')[0])
     };
     this.reportsUploadsService.downloadZip(params);
   }
@@ -156,7 +156,12 @@ export class ReportsUploadsDetailsSidenavComponent implements OnInit {
 
   async approveAll(approved = 1) {
     try {
-      // TODO - call endpoint
+      const payload = {
+        set: approved,
+        file_ids: this.selectedItems.filter(v => v.type !== 'quiz' && v.type !== 'survey').map(v => +v.id.split(':')[1]),
+        report_ids: this.selectedItems.filter(v => v.type === 'quiz' || v.type === 'survey').map(v => +v.id.split(':')[0])
+      };
+      await this.reportsUploadsService.approveAll(payload);
       this.selectedItems.forEach(v => v.approved = approved);
     } catch (e) {
       this.scMessageService.error(e);

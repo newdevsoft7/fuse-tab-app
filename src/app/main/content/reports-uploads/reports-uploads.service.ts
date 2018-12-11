@@ -93,6 +93,15 @@ export class ReportsUploadsService {
     return payload;
   }
 
+  approveAll(payload: {
+    set: number,
+    file_ids?: number[];
+    report_ids?: number[],
+  }): Promise<any> {
+    const url = `${BASE_URL}/reportsUploads/approveAll`;
+    return this.http.put(url, payload).toPromise();
+  }
+
   getShifts(trackingId, date, q = ''): Promise<any> {
     const url = `${BASE_URL}/autocomplete/tracking/${trackingId}/shifts/${date}/${q}`;
     return this.http.get(url.replace(/\/+$/, '')).toPromise();
