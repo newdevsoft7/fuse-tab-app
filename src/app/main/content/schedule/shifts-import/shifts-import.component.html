@@ -6,7 +6,7 @@
         <!-- ADD FILE BUTTON -->
         <div class="file-uploader" [class.hidden]="result">
             <input hidden type="file" #fileInput/>
-            <button mat-raised-button color="accent" class="add-file-button mat-accent" (click)="fileInput.click()" aria-label="Add file">
+            <button mat-raised-button color="accent" class="add-file-button mat-accent" (click)="uploaderClick()" aria-label="Add file">
                 Import
             </button>
         </div>

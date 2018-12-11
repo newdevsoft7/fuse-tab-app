@@ -48,6 +48,13 @@ export class ShiftsImportComponent implements OnInit {
         };
     }
 
+    uploaderClick() {
+      if (this.fileInput.nativeElement.files.length) {
+        this.fileInput.nativeElement.value = '';
+      }
+      this.fileInput.nativeElement.click();
+    }
+
     async uploadFile(file: File) {
 
         // Validate file extension
