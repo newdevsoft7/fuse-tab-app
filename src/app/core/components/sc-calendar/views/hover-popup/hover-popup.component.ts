@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EventEntity } from '../../entities';
 
 @Component({
@@ -8,4 +8,9 @@ import { EventEntity } from '../../entities';
 })
 export class SCCalendarHoverPopupComponent {
   @Input() data: any;
+  @Output() staffClicked: EventEmitter<any> = new EventEmitter();
+
+  onStaffClick(staff) {
+    this.staffClicked.emit(staff);
+  }
 }

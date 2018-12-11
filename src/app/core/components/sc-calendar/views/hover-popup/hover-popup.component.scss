@@ -13,12 +13,18 @@ $primary-color: #3f51b5;
         color: $primary-color;
       }
       .staffs {
-        li .dot {
-          display: block;
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          margin-right: 5px;
+        li {
+          &:hover {
+            cursor: pointer;
+          }
+
+          .dot {
+            display: block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 5px;
+          }
         }
       }
     }

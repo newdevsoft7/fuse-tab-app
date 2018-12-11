@@ -22,6 +22,7 @@ export class SCCalendarComponent implements OnInit, OnDestroy, DoCheck {
   @Input() startWeekDay: number;
 
   @Output() optionChanged: EventEmitter<{startDate: string, endDate: string}> = new EventEmitter();
+  @Output() staffClicked: EventEmitter<any> = new EventEmitter();
   eventOptions: EventOptionEntity = new EventOptionEntity();
 
   oldOptions: EventOptionEntity;

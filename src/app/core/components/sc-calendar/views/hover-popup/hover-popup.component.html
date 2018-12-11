@@ -6,7 +6,7 @@
       <p class="m-0" *ngIf="event.date">{{event?.location}}</p>
       <p class="m-0">{{event.duration ? event.duration : event.start + ' - ' + event.end}}</p>
       <ul *ngIf="event.selected?.length > 0" class="staffs">
-        <li fxLayout="row" fxLayoutAlign="start center" *ngFor="let staff of event.selected">
+        <li fxLayout="row" fxLayoutAlign="start center" *ngFor="let staff of event.selected" (click)="onStaffClick(staff)">
           <span class="dot" [style.backgroundColor]="staff?.staff_status[0]?.bg_color" [matTooltip]="staff?.staff_status[0]?.status"></span>
           {{staff.name}}
         </li>

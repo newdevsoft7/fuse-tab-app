@@ -16,6 +16,7 @@ export class SCCalendarMonthViewComponent implements OnInit, OnChanges, DoCheck 
   @Input() startWeekDay: number;
 
   @Output() updateMonthRange: EventEmitter<any> = new EventEmitter();
+  @Output() staffClicked: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('monthView') monthView: any;
   @ViewChildren('daycell') dayCellList: QueryList<ElementRef>;

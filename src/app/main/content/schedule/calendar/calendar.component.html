@@ -5,6 +5,7 @@
   [loading]="loading"
   [hoverAsyncFn]="hoverAsyncFn"
   [startWeekDay]="startWeekDay"
+  (staffClicked)="openUserTab($event)"
   (optionChanged)="updateEvents($event)">
 
   <div calendar-header fxLayout="row" fxLayoutAlign="end space-evenly" *ngIf="canFilter()">

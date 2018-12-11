@@ -438,6 +438,11 @@ export class ScheduleCalendarComponent implements OnInit, OnDestroy {
     }
   }
 
+  openUserTab(user) {
+    const tab = new Tab(user.name, 'usersProfileTpl', `users/user/${user.id}`, user);
+    this.tabService.openTab(tab);
+  }
+
   showLoading() {
     setTimeout(() => this.loading = true);
   }
