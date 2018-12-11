@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { environment } from '../../../../environments/environment';
-import { SCMessageService } from '../../../shared/services/sc-message.service';
 import { Subject } from 'rxjs/Subject';
+import { SCMessageService } from '@shared/services/sc-message.service';
+import { environment } from '@environments/environment';
 
 const BASE_URL = `${environment.apiUrl}`;
+
+export interface Payload {
+  folder?: string;
+  id?: number;
+  from?: string;
+  to?: string;
+}
 
 @Injectable()
 export class ReportsUploadsService {
@@ -42,20 +48,14 @@ export class ReportsUploadsService {
     } else {
       this.folders.push(file);
     }
-    this.folder = _.isNil(file.folder) ? '' : file.folder;
-    this.id = _.isNil(file.id) ? '' : file.id;
+    this.folder = file.folder;
+    this.id = file.id;
 
-    let fromDate = '';
-    let toDate = '';
-    if (period) {
-      fromDate = period.from ? moment(period.from).format('YYYY-MM-DD') : '';
-      toDate = period.to ? moment(period.to).format('YYYY-MM-DD') : '';
-    }
-
-    const url = `${BASE_URL}/reportsUploads/fileManager/${this.folder}/${this.id}/${fromDate}/${toDate}`;
+    const payload: Payload = this.makePayloadForFileList(period);
+    const url = `${BASE_URL}/reportsUploads/fileManager`;
     return new Promise((resolve, reject) => {
       this.onFileSelected.next([file]);
-      this.http.get(url.replace(/\/+$/, ''))
+      this.http.post(url, payload)
         .subscribe((response: any) => {
           resolve(response);
           this.onFilesChanged.next(response);
@@ -65,18 +65,32 @@ export class ReportsUploadsService {
 
   async getFilesByDate() {
     try {
-      let fromDate = '';
-      let toDate = '';
-      if (this.period) {
-        fromDate = this.period.from ? moment(this.period.from).format('YYYY-MM-DD') : '';
-        toDate = this.period.to ? moment(this.period.to).format('YYYY-MM-DD') : '';
-      }
-      const url = `${BASE_URL}/reportsUploads/fileManager/${this.folder}/${this.id}/${fromDate}/${toDate}`;
-      const res = await this.http.get(url.replace(/\/+$/, '')).toPromise();
+      const payload: Payload = this.makePayloadForFileList(this.period);
+      const url = `${BASE_URL}/reportsUploads/fileManager`;
+      const res = await this.http.post(url, payload).toPromise();
       this.onFilesChanged.next(res);
     } catch (e) {
       this.scMessageService.error(e);
     }
+  }
+
+  private makePayloadForFileList(period): Payload {
+    const payload: Payload = {};
+    if (this.folder !== null) {
+      payload.folder = this.folder;
+    }
+    if (this.id !== null) {
+      payload.id = this.id;
+    }
+    if (period) {
+      if (period.from) {
+        payload.from = moment(period.from).format('YYYY-MM-DD');
+      }
+      if (period.to) {
+        payload.to = moment(period.to).format('YYYY-MM-DD');
+      }
+    }
+    return payload;
   }
 
   getShifts(trackingId, date, q = ''): Promise<any> {
