@@ -215,9 +215,7 @@ export class SettingsSchedulingComponent implements OnInit, OnChanges, OnDestroy
     updateSettingsOnStorage(id, value) {
         const key = this.Setting[id];
         const settings = this.tokenStorage.getSettings();
-        if (settings.hasOwnProperty(key)) {
-            settings[key] = value;
-        }
+        settings[key] = value;
         this.tokenStorage.setSettings(settings);
     }
 

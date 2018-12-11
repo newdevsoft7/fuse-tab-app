@@ -142,7 +142,7 @@
             <div class="title">Calendar View</div>
         </header>
 
-        <div class="content">
+        <div class="content" fxLayout="column">
 
             <!-- DISPLAY OVERNIGHT SHIFTS AS ONE DAY -->
             <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="w-100-p">
@@ -161,15 +161,15 @@
             <div fxLayout.gt-xs="row wrap" fxLayout="column" fxLayoutAlign="start center" class="w-100-p">
                 <div class="name mr-24" fxFlex="0 1 auto">Choose the first day of the week</div>
                 <div fxLayout="row wrap" fxFlex="1 0 auto" fxLayoutAlign="start center">
-                    <div fxFlex="15">
-                        <mat-form-field [style.width.px]="50">
-                            <mat-select [value]="value(Setting.shift_calendar_start_day)" (selectionChange)="onChange(Setting.shift_calendar_start_day, $event)">
+                    <div fxFlex="120px">
+                        <mat-form-field>
+                            <mat-select [value]="items[Setting.calendar_start_day]" (selectionChange)="onChange(Setting.calendar_start_day, $event)">
                                 <mat-option value="0">Sunday</mat-option>
                                 <mat-option value="1">Monday</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="desc secondary-text" fxFlex="85">Choose the calendar starting day of the week</div>
+                    <div class="desc secondary-text" fxFlex="1 0 auto">Choose the calendar starting day of the week</div>
                 </div>
             </div>
             <!-- / CALENDAR FIRST DAY OF WEEK  -->
