@@ -30,7 +30,6 @@ import { FilterService } from '@shared/services/filter.service';
 import { from } from 'rxjs/observable/from';
 import { TabComponent } from '@main/tab/tab/tab.component';
 import { Subscription } from 'rxjs/Subscription';
-import { EventEntity } from '@core/components/sc-calendar';
 
 @Component({
   selector: 'app-admin-shift-list',
@@ -178,9 +177,7 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
       },
       err => {
         this.loadingIndicator = false;
-        if (err.status && err.status === 403) {
-          this.toastr.error('You have no permission!');
-        }
+        this.scMessageService.error(err);
       }
     );
   }
@@ -225,10 +222,15 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
 
     const count = this.selectedShifts.length;
     dialogRef.componentInstance.confirmMessage = `Really ungroup ${count} ${count > 1 ? 'shifts' : 'shift'}`;
-    dialogRef.afterClosed().subscribe(async (result) => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result) {
         try {
+          const payload = {
+            ids: shiftIds,
+            shift_group_id: null
+          }
           this.spinner.show();
+          await this.scheduleService.updateMultipleShifts(payload).toPromise();
           this.spinner.hide();
           this.shifts.filter(v => shiftIds.includes(v.id.toString())).forEach(shift => {
             shift.gname = null;
@@ -236,7 +238,7 @@ export class AdminShiftListComponent implements OnInit, OnDestroy {
           });
         } catch (e) {
           this.spinner.hide();
-          this.toastr.error('Error occured!');
+          this.scMessageService.error(e);
         }
       }
     });
