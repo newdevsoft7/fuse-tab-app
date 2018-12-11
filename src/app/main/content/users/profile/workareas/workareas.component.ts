@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../../user.service';
+import { ToastrService } from 'ngx-toastr';
+import { SCMessageService } from '../../../../../shared/services/sc-message.service';
 
 import * as _ from 'lodash';
 
@@ -17,7 +19,9 @@ export class UsersProfileWorkAreasComponent implements OnInit {
     workAreas = [];
 
     constructor(
-        private userService: UserService) { }
+        private userService: UserService,
+        private toastr: ToastrService,
+        private scMessageService: SCMessageService) { }
 
     ngOnInit() {
         this.getWorkAreas();
@@ -29,7 +33,7 @@ export class UsersProfileWorkAreasComponent implements OnInit {
             res => {
             },
             err => {
-                console.log(err);
+                this.scMessageService.error(err);
             }
         );
     }
