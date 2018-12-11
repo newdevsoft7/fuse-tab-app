@@ -20,7 +20,7 @@ enum Setting {
     staff_inactive_after = 62,
     staff_inactive_message = 63,
     staff_blacklisted_login = 64,
-    staff_blacklisted_msg =65,
+    staff_blacklisted_msg = 65,
     staff_see_others = 66,
     staff_see_others_photo = 67,
     staff_see_others_name = 68,
@@ -35,7 +35,8 @@ enum Setting {
     staff_upload_shift_files = 77,
     staff_timeline_post = 116,
     staff_timeline_comment = 117,
-    staff_timeline_approval = 118
+    staff_timeline_approval = 118,
+    staff_apply_filled_shifts = 147
 }
 
 @Component({
@@ -82,7 +83,8 @@ export class SettingsStaffComponent implements OnInit, OnChanges, OnDestroy {
         Setting.staff_see_others_name,
         Setting.staff_see_others_mob,
         Setting.staff_change_work_areas,
-        Setting.staff_upload_shift_files
+        Setting.staff_upload_shift_files,
+        Setting.staff_apply_filled_shifts
     ];
 
     // Form Controls
@@ -93,7 +95,7 @@ export class SettingsStaffComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         private settingsService: SettingsService,
         private toastr: ToastrService
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.settings) {
