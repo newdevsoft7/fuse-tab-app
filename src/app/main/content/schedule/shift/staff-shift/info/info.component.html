@@ -72,10 +72,18 @@
                 <!-- / ROLE THUMBNAIL PAY RATE, ACTION -->
                 
                 <!-- OTHER STAFF -->
-                <div class="other-staffs" fxLayout="row" fxLayoutWrap fxLayoutAlign="start ceneter">
+                <div class="other-staffs"
+                     fxLayout.gt-xs="row wrap"
+                     fxLayoutAlign.gt-xs="start center"
+                     fxLayout.xs="column"
+                     fxLayoutAlign.xs="space-between start">
 
-                    <div class="staff" fxLayout="row" fxLayoutAlign="start center" fxLayoutWrap
-                        *ngFor="let staff of role.role_staff">
+                    <div *ngFor="let staff of role.role_staff"
+                         class="staff"
+                         fxLayout="row"
+                         fxLayoutAlign="start center"
+                         fxFlex.xs="nogrow"
+                         fxFlex.gt-xs="1 1 33%">
 
                         <img class="avatar" [src]="staff.ppic_a" />
 
