@@ -34,6 +34,7 @@ export class UsersProfileWorkAreasComponent implements OnInit {
             },
             err => {
                 this.scMessageService.error(err);
+                workArea.set = value ? 0 : 1;
             }
         );
     }
