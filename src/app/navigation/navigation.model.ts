@@ -201,43 +201,6 @@ export const ADMIN_MODEL = [
                     }
                 ]
             },
-            {
-                'id': 'help',
-                'title': 'Help',
-                'translate': 'NAV.ADMIN.SETTINGS_HELP',
-                'type': 'collapse',
-                'tab': TAB.SETTINGS_HELP_TAB,
-                'children': [
-                    {
-                        'id': 'quickstart_guide',
-                        'title': 'QuickStart Guide',
-                        'translate': 'NAV.ADMIN.SETTINGS_HELP_QUICKSTART_GUIDE',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_HELP_QUICKSTART_GUIDE_TAB
-                    },
-                    {
-                        'id': 'video_system_setup',
-                        'title': 'Video - System Setup',
-                        'translate': 'NAV.ADMIN.SETTINGS_HELP_VIDEO_SYSTEM_SETUP',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_HELP_VIDEO_SYSTEM_SETUP_TAB
-                    },
-                    {
-                        'id': 'video_scheduling',
-                        'title': 'Video Scheduling',
-                        'translate': 'NAV.ADMIN.SETTINGS_HELP_VIDEO_SCHEDULING',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_HELP_VIDEO_SCHEDULING_TAB
-                    },
-                    {
-                        'id': 'updates_and_changelog',
-                        'title': 'Updates & Changelog',
-                        'translate': 'NAV.ADMIN.SETTINGS_HELP_UPDATES_CHANGELOG',
-                        'type': 'item',
-                        'tab': TAB.SETTINGS_HELP_UPDATES_CHANGELOG_TAB
-                    }
-                ]
-            }
         ]
     },
     {
@@ -259,23 +222,6 @@ export const STAFF_MODEL = [
         'type': 'item',
         'tab': TAB.SCHEDULE_CALENDAR_TAB
     },
-    {
-        'id': 'help',
-        'title': 'Help',
-        'translate': 'NAV.STAFF.HELP',
-        'type': 'collapse',
-        'icon': 'help',
-        'children': [
-            {
-                'id': 'quickstart_guide',
-                'title': 'QuickStart Guide',
-                'translate': 'NAV.STAFF.QUICKSTART_GUIDE',
-                'type': 'item',
-                'tab': TAB.SETTINGS_HELP_QUICKSTART_GUIDE_TAB
-            }
-        ]
-    }
-
 ];
 
 export const CLIENT_MODEL = [
