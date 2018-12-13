@@ -1,7 +1,7 @@
 <div id="admin-shift-staff-applicants">
   <ngx-datatable class="material striped" [rows]="staffs" [columnMode]="'force'" [headerHeight]="0" [footerHeight]="0" [rowHeight]="'auto'">
 
-    <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="100" [sortable]="false" [canAutoResize]="false">
+    <ngx-datatable-column name="Thumbnail" prop="ppic_a" [width]="60" [sortable]="false" [canAutoResize]="false">
       <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
         <div class="savatar">
           <span
@@ -23,8 +23,14 @@
     <ngx-datatable-column name="Name" prop="name" [sortable]="true" [canAutoResize]="true">
       <ng-template let-row="row" ngx-datatable-cell-template>
         <strong>{{row.name}}</strong>
-        <br/>
-        <strong>{{row.email}}</strong>
+        <ng-container *ngIf="row.email">
+          <br/>
+          <strong>{{row.email}}</strong>
+        </ng-container>
+        <ng-container *ngIf="row.mob">
+          <br/>
+          <span>{{row.mob}}</span>
+        </ng-container>
       </ng-template>
     </ngx-datatable-column>
 
@@ -63,37 +69,29 @@
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column name="Select" [sortable]="false" [canAutoResize]="false" [width]="60">
+    <ngx-datatable-column [canAutoResize]="false" [width]="180">
       <ng-template let-row="row" ngx-datatable-cell-template>
-        <button mat-icon-button (click)="assignStatus(row, 'STAFF_STATUS_SELECTED')" matTooltip="Select" [disabled]="editable !== 1">
-          <mat-icon>add</mat-icon>
+        <button mat-raised-button color="accent" (click)="assignStatus(row, row.action)">
+          <ng-container [ngSwitch]="row.action">
+            <ng-container *ngSwitchCase="'STAFF_STATUS_SELECTED'">Select</ng-container>
+            <ng-container *ngSwitchCase="'STAFF_STATUS_STANDBY'">Standby</ng-container>
+            <ng-container *ngSwitchCase="'STAFF_STATUS_HIDDEN_REJECTED'">Hidden Reject</ng-container>
+            <ng-container *ngSwitchCase="'STAFF_STATUS_REJECTED'">Reject</ng-container>
+            <ng-container *ngSwitchDefault>Select</ng-container>
+          </ng-container>
         </button>
+        <button mat-raised-button color="accent" [matMenuTriggerFor]="actionMenu" class="btn-menu px-4">
+          <mat-icon class="white-fg">expand_more</mat-icon>
+        </button>
+        <mat-menu #actionMenu="matMenu">
+          <button mat-menu-item (click)="row.action = 'STAFF_STATUS_SELECTED'">Select</button>
+          <button mat-menu-item (click)="row.action = 'STAFF_STATUS_STANDBY'">Standby</button>
+          <button mat-menu-item (click)="row.action = 'STAFF_STATUS_HIDDEN_REJECTED'">Hidden Reject</button>
+          <button mat-menu-item (click)="row.action = 'STAFF_STATUS_REJECTED'">Reject</button>
+        </mat-menu>
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column name="Standby" [sortable]="false" [canAutoResize]="false" [width]="60">
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        <button mat-icon-button (click)="assignStatus(row, 'STAFF_STATUS_STANDBY')" matTooltip="Standby" [disabled]="editable !== 1">
-          <mat-icon>flag</mat-icon>
-        </button>
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column name="Hidden Reject" [sortable]="false" [canAutoResize]="false" [width]="60">
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        <button mat-icon-button (click)="assignStatus(row, 'STAFF_STATUS_HIDDEN_REJECTED')" matTooltip="Hidden Reject" [disabled]="editable !== 1">
-          <mat-icon>block</mat-icon>
-        </button>
-      </ng-template>
-    </ngx-datatable-column>
-
-    <ngx-datatable-column name="Reject" [sortable]="false" [canAutoResize]="false" [width]="60">
-      <ng-template let-row="row" ngx-datatable-cell-template>
-        <button mat-icon-button (click)="assignStatus(row, 'STAFF_STATUS_REJECTED')" matTooltip="Reject" [disabled]="editable !== 1">
-          <mat-icon>clear</mat-icon>
-        </button>
-      </ng-template>
-    </ngx-datatable-column>
 
     <ngx-datatable-column name="Action" [width]="60" [sortable]="false" [resizeable]="false" [draggable]="false" [canAutoResize]="false">
       <ng-template let-row="row" ngx-datatable-cell-template>

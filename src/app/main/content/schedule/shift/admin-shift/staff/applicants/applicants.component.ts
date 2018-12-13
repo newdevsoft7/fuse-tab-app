@@ -141,7 +141,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
     });
   }
 
-  assignStatus(staff, statusId) {
+  assignStatus(staff, statusId = STAFF_STATUS_SELECTED) {
     let message = '';
 
     switch (statusId) {

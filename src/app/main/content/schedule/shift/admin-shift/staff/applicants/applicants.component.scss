@@ -28,4 +28,13 @@
             border: 2px solid #fff;
         }
     }
+
+  .btn-menu {
+      min-width: unset;
+      margin-left: -5px;
+  }
+
+  .ngx-datatable.material .datatable-body .datatable-row-wrapper .datatable-body-cell {
+    padding: 0 8px;
+  }
 }
