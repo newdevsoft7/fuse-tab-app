@@ -160,6 +160,7 @@
                             <strong *ngIf="role.num_applicants > 0">{{role.num_applicants}}</strong>
                         </ng-template>
                         <app-admin-shift-staff-applicants [(staffs)]="role.applicants"
+                            [shift]="shift"
                             [editable]="shift.editable" [roleId]="role.id"
                             (onStaffCountChanged)="updateStaffsCount(role.id)" (onChat)="onChat($event)"></app-admin-shift-staff-applicants>
                     </mat-tab>

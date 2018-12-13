@@ -45,6 +45,7 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
 
   @Input() editable;
   @Input() roleId;
+  @Input() shift;
   @Output() onChat = new EventEmitter();
 
   _staffs;
@@ -238,6 +239,26 @@ export class AdminShiftStaffApplicantsComponent implements OnInit {
   openContextMenu(evt: MouseEvent, contextMenu: MatMenuTrigger) {
     evt.preventDefault();
     contextMenu.openMenu();
+  }
+
+  getPerformanceClass(staff, type) {
+    const rating = type === 'shift' ? staff.performance.rating : staff.performance.rating_client;
+    let style: string;
+    switch (true) {
+      case rating > 0 && rating <= 1:
+        style = 'red-fg';
+        break;
+      case rating > 1 && rating < 4:
+        style = 'orange-fg';
+        break;
+      case rating >= 4:
+        style = 'green-fg';
+        break;
+      default:
+        style = '';
+        break;
+    }
+    return style;
   }
 
 }
