@@ -49,7 +49,7 @@
 
         <mat-divider *ngIf="posts.length > 0"></mat-divider>
 
-        <div class="timeline-item" *ngFor="let post of posts" [class.unapproved]="post.approved === 0">
+        <div class="timeline-item" *ngFor="let post of posts" [class.unapproved]="post.approved == 0">
 
             <header fxLayout="row" fxLayoutAlign="space-between start">
                 <div class="user" fxLayout="row" fxLayoutAlign="start center">
@@ -72,12 +72,12 @@
 
                         <button mat-menu-item *ngIf="post.pin" (click)="pinPost(post)">
                             <mat-icon>attach_file</mat-icon>
-                            <span>{{post.pinned === 0 ? 'Pin' : 'Unpin'}}</span>
+                            <span>{{post.pinned == 0 ? 'Pin' : 'Unpin'}}</span>
                         </button>
 
                         <button mat-menu-item *ngIf="post.approve" (click)="approvePost(post)">
                             <mat-icon>check</mat-icon>
-                            <span>{{post.approved === 0 ? 'Approve' : 'Unapprove'}}</span>
+                            <span>{{post.approved == 0 ? 'Approve' : 'Unapprove'}}</span>
                         </button>
 
                         <button mat-menu-item *ngIf="post.edit" (click)="editPost(post)">
@@ -140,7 +140,7 @@
                 </div>
 
                 <div class="comment" fxLayout="row" fxFlexFill *ngFor="let comment of post.remarks"
-                    [class.unapproved]="comment.approved === 0">
+                    [class.unapproved]="comment.approved == 0">
                     <img [src]="comment.ppic_a" class="avatar"/>
 
                     <div fxLayout="column" fxFlex>
@@ -171,7 +171,7 @@
 
                             <button mat-menu-item *ngIf="comment.approve" (click)="approveComment(comment)">
                                 <mat-icon>check</mat-icon>
-                                <span>{{comment.approved === 0 ? 'Approve' : 'Unapprove'}}</span>
+                                <span>{{comment.approved == 0 ? 'Approve' : 'Unapprove'}}</span>
                             </button>
 
                             <button mat-menu-item *ngIf="comment.edit" (click)="editComment(comment)">

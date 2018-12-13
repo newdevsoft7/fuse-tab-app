@@ -264,7 +264,7 @@ export class TimelineComponent implements OnInit, OnDestroy
   }
 
   likePost(post) {
-    post.liked = post.liked === 0 ? 1 : 0;
+    post.liked = post.liked == 0 ? 1 : 0;
     if (post.liked) {
       post.likes++;
     } else {
@@ -274,7 +274,7 @@ export class TimelineComponent implements OnInit, OnDestroy
   }
 
   likeComment(comment) {
-    comment.liked = comment.liked === 0 ? 1 : 0;
+    comment.liked = comment.liked == 0 ? 1 : 0;
     if (comment.liked) {
       comment.likes++;
     } else {
@@ -284,26 +284,26 @@ export class TimelineComponent implements OnInit, OnDestroy
   }
 
   approvePost(post) {
-    post.approved = post.approved === 0 ? 1 : 0;
+    post.approved = post.approved == 0 ? 1 : 0;
     this.homeService.approvePost(post.id, post.approved).subscribe(
       res => {
         //this.toastr.success(res.message);
       },
       err => {
         this.toastr.error(err.message);
-        post.approved = post.approved === 0  ? 1 : 0; // Roll back
+        post.approved = post.approved == 0  ? 1 : 0; // Roll back
       });
   }
 
   approveComment(comment) {
-    comment.approved = comment.approved === 0 ? 1 : 0;
+    comment.approved = comment.approved == 0 ? 1 : 0;
     this.homeService.approveComment(comment.id, comment.approved).subscribe(
       res => {
         //this.toastr.success(res.message);
       },
       err => {
         this.toastr.error(err.message);
-        comment.approved = comment.approved === 0 ? 1 : 0; // Roll back
+        comment.approved = comment.approved == 0 ? 1 : 0; // Roll back
       });
   }
 
@@ -364,8 +364,8 @@ export class TimelineComponent implements OnInit, OnDestroy
   }
 
   pinPost(post) {
-    const pinned = post.pinned === 0 ? 1 : 0;
-    if (pinned === 0) { // Unpin
+    const pinned = post.pinned == 0 ? 1 : 0;
+    if (pinned == 0) { // Unpin
       this.homeService.pinPost(post.id, 0).subscribe(res => {
         post.pinned = pinned;
         //this.toastr.success(res.message);
