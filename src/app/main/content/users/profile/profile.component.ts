@@ -243,7 +243,7 @@ export class UsersProfileComponent implements OnInit {
   }
 
   get canLoginAs() {
-    return ['admin', 'owner'].indexOf(this.currentUser.lvl) > -1 && this.currentUser.id != this.user.id;
+    return ['admin', 'owner'].indexOf(this.currentUser.lvl) > -1 && this.currentUser.id != this.user.id && this.userInfo.lvl.indexOf('registrant') === -1;
   }
 
   get canChat() {
