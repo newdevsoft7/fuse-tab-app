@@ -111,6 +111,7 @@ export class TabsComponent implements AfterContentInit, OnInit, OnDestroy {
       const instance: TabComponent = componentRef.instance as TabComponent;
       instance.template = newTab.template;
       instance.data = newTab.data;
+      instance.multiple = newTab.multiple;
       if (!newTab.multiple) {
         instance.title = newTab.title;
         instance.url = newTab.url;

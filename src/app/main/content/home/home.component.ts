@@ -418,14 +418,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                 if (scheduleMenu) {
                     const exportShiftMenu = scheduleMenu.children.find(m => m.id === 'export_shifts');
                     if (exportShiftMenu) {
-                        exportShiftMenu.function = () => {
-                            this.dialogRef = this.dialog.open(AdminExportAsExcelDialogComponent, {
-                                panelClass: 'admin-shift-exports-as-excel-dialog',
-                                disableClose: false,
-                                data: {}
-                            });
-                            this.dialogRef.afterClosed().subscribe(res => { });
-                        };
 
                         // Excel Spreadsheet
                         if (_.findIndex(exportShiftMenu.children, ['id', 'excel_spreadsheet']) < 0) {
@@ -497,10 +489,17 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                     'translate': 'NAV.STAFF.PAY',
                     'type': 'collapse',
                     'icon': 'attach_money',
-                    'tab': TAB.STAFF_INVOICES_TAB
+                    'children': [
+                      {
+                          'id': 'staff_pay_view',
+                          'title': 'View',
+                          'translate': 'NAV.STAFF.VIEW',
+                          'type': 'item',
+                          'tab': TAB.STAFF_INVOICES_TAB
+                      }
+                    ]
                 };
                 if (permissions && permissions.staff_invoice) {
-                    payMenu.children = [];
                     payMenu.children.push(
                         {
                             'id': 'new_invoice',
@@ -510,8 +509,6 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
                             'tab': TAB.STAFF_NEW_INVOICE_TAB
                         }
                     );
-                } else {
-                    payMenu.type = 'item';
                 }
                 const index = navModel.findIndex(m => m.id === 'invoices');
                 if (index < 0) {
@@ -548,6 +545,13 @@ export class FuseHomeComponent implements OnInit, OnDestroy {
             'icon': 'payment',
             'tab': new Tab('Payroll', 'payrollTpl', 'payroll', {}),
             children: [
+                {
+                    'id': 'payrolls',
+                    'title': 'Payrolls',
+                    'translate': 'NAV.ADMIN.PAYROLLS',
+                    'type': 'item',
+                    'tab': new Tab('Payroll', 'payrollTpl', 'payroll', {}),
+                },
                 {
                     'id': 'generate_payroll',
                     'title': 'Generate Payroll',

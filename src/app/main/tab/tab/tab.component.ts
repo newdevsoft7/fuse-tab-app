@@ -19,6 +19,7 @@ export class TabComponent {
   @Input() template;
   @Input() data;
   @Input() url;
+  @Input() multiple;
   dropzone: string;
   hover = false;
 

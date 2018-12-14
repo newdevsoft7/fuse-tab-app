@@ -67,8 +67,10 @@ export class TrackingComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
             category => {
-                this.selectedCategory = category;
-                this.loadOptions(this.selectedCategory.id);
+                setTimeout(() => {
+                  this.selectedCategory = category;
+                  this.loadOptions(this.selectedCategory.id);
+                });
             });
 
     }

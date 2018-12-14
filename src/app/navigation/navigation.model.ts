@@ -9,8 +9,15 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.USERS',
         'type': 'collapse',
         'icon': 'people',
-        'tab': TAB.USERS_TAB,
         'children': [
+            {
+                'id': 'users_users',
+                'title': 'Users',
+                'translate': 'NAV.ADMIN.USERS',
+                'type': 'item',
+                'tab': TAB.USERS_TAB
+
+            },
             {
                 'id': 'new_message',
                 'title': 'New Message',
@@ -51,8 +58,14 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.CLIENT_INVOICES',
         'type': 'collapse',
         'icon': 'account_balance',
-        'tab': TAB.CLIENT_INVOICES_TAB,
         'children': [
+            {
+                'id': 'client_invoices_invoices',
+                'title': 'Invoices',
+                'translate': 'NAV.ADMIN.INVOICES',
+                'type': 'item',
+                'tab': TAB.CLIENT_INVOICES_TAB
+            },
             {
                 'id': 'generate_client_invoice',
                 'title': 'Generate Client Invoice',
@@ -76,7 +89,6 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.SCHEDULE',
         'type': 'collapse',
         'icon': 'schedule',
-        'tab': TAB.SCHEDULE_CALENDAR_TAB,
         'children': [
             {
                 'id': 'calendar',
@@ -98,8 +110,14 @@ export const ADMIN_MODEL = [
                 'title': 'Import Shifts',
                 'translate': 'NAV.ADMIN.SCHEDULE_IMPORT_SHIFTS',
                 'type': 'collapse',
-                'tab': TAB.SCHEDULE_IMPORT_SHIFTS_TAB,
                 'children': [
+                    {
+                        'id': 'import_shifts_import',
+                        'title': 'Import',
+                        'translate': 'NAV.ADMIN.IMPORT',
+                        'type': 'item',
+                        'tab': TAB.SCHEDULE_IMPORT_SHIFTS_TAB
+                    },
                     {
                         'id': 'import_history',
                         'title': 'Import History',
@@ -138,8 +156,14 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.REPORTS_AND_UPLOADS',
         'type': 'collapse',
         'icon': 'cloud_upload',
-        'tab': TAB.REPORTS_AND_UPLOADS_TAB,
         'children': [
+            {
+                'id': 'file_manager',
+                'title': 'File Manager',
+                'translate': 'NAV.ADMIN.FILE_MANAGER',
+                'type': 'item',
+                'tab': TAB.REPORTS_AND_UPLOADS_TAB
+            },
             {
                 'id': 'quizs',
                 'title': 'Quizzes',
@@ -156,14 +180,6 @@ export const ADMIN_MODEL = [
             }
         ]
     },
-    // {
-    //     'id': 'accounting',
-    //     'title': 'Accounting',
-    //     'translate': 'NAV.ADMIN.ACCOUNTING',
-    //     'type': 'item',
-    //     'icon': 'attach_money',
-    //     'tab': TAB.ACCOUNTING_TAB,
-    // },
     {
         'id': 'tracking',
         'title': 'Tracking',
@@ -177,8 +193,14 @@ export const ADMIN_MODEL = [
         'translate': 'NAV.ADMIN.SETTINGS',
         'type': 'collapse',
         'icon': 'settings',
-        'tab': TAB.SETTINGS_TAB,
         'children': [
+            {
+                'id': 'system',
+                'title': 'System',
+                'translate': 'NAV.ADMIN.SETTINGS_SYSTEM',
+                'type': 'item',
+                'tab': TAB.SETTINGS_TAB
+            },
             {
                 'id': 'templates',
                 'title': 'Templates',
@@ -265,7 +287,7 @@ export const CLIENT_MODEL = [
     },
     {
         'id': 'reports',
-        'title': 'Repports',
+        'title': 'Reports',
         'translate': 'NAV.CLIENT.REPORTS',
         'type': 'item',
         'icon': 'schedule'

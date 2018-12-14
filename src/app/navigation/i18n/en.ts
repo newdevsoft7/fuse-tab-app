@@ -18,6 +18,9 @@ export const locale = {
                 'CLIENT_INVOICES': 'Client Invoices',
                 'CLIENT_INVOICE_GENERATE': 'Generate Client Invoice',
 
+                'INVOICES': 'Invoices',
+                'IMPORT': 'Import',
+
                 'OUTSOURCE_COMPANIES': 'Outsource Companies',
 
                 'SCHEDULE': 'Schedule',
@@ -34,6 +37,7 @@ export const locale = {
                 'FORMS': 'Forms',
 
                 'PAYROLL': 'Payroll',
+                'PAYROLLS': 'Payrolls',
                 'PAYROLL_GENERATE_PAYROLL': 'Generate Payroll',
 
                 'REPORTS_AND_UPLOADS': 'Reports & Uploads',
@@ -41,6 +45,7 @@ export const locale = {
                 'REPORTS_AND_UPLOADS_SHARED_FILES': 'Shared Files',
                 'QUIZS': 'Quizzes',
                 'SURVEYS': 'Surveys',
+                'FILE_MANAGER': 'File Manager',
 
                 'ACCOUNTING': 'Accounting',
                 'ACCOUNTING_STAFF_INVOICES': 'Staff Invoices',
@@ -76,6 +81,7 @@ export const locale = {
                 'CALENDAR': 'Calendar',
 
                 'PAY': 'Pay',
+                'VIEW': 'View',
                 'NEW_INVOICE': 'New Invoice',
                 'FILES': 'Files',
                 'HELP': '',

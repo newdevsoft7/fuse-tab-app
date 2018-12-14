@@ -7,6 +7,7 @@ import { TrackingCategory } from '../../../main/content/tracking/tracking.models
 import { Tab } from '../../../main/tab/tab';
 import { TokenStorage } from '../../../shared/services/token-storage.service';
 import * as _ from 'lodash';
+import { TabComponent } from '@main/tab/tab/tab.component';
 
 @Component({
   selector     : 'fuse-navigation',
@@ -19,7 +20,7 @@ export class FuseNavigationComponent implements OnDestroy
   navigationModel: any[];
   private navigationModelChangeSubscription: Subscription;
   private tabSubscription: Subscription;
-  private onSelectedCategoryChanged: Subscription;
+  private selectedTabSubscription: Subscription;
   private onCategoriesChanged: Subscription;
 
   trackingCategories: TrackingCategory[];
@@ -42,30 +43,34 @@ export class FuseNavigationComponent implements OnDestroy
           }
         });
 
-    this.tabSubscription =
-      this.tabService.tab$.subscribe(tab => {
+    this.selectedTabSubscription = this.tabService.tabActived.subscribe((tab: TabComponent) => {
+      if (this.navigationModel && tab) {
         this.updateNavItemActive(this.navigationModel, tab);
-      });
+      }
+    });
+
 
     this.onCategoriesChanged = this.trackingService.getCategories().subscribe(
       categeories => {
         this.addTrackingCategoriesToMenu(categeories);
       });
-
-    this.onSelectedCategoryChanged = this.trackingService.getSelectedCategory().subscribe(
-      category => {
-        let trackingNav = this.navigationModel.find(n => n.id == 'tracking');
-        let tab = trackingNav.children.find ( t => t.id == category.id );
-        if (tab) this.updateNavItemActive(trackingNav.children, tab.tab);
-      });
   }
 
-  updateNavItemActive(items, tab) {
-    const _that = this;
+  updateNavItemActive(items, tab: TabComponent) {
     items.forEach(item => {
-      item.active = item.tab == tab ? true : false;
       if (item.children) {
-        _that.updateNavItemActive(item.children, tab);
+        item.active = false;
+        this.updateNavItemActive(item.children, tab);
+      } else {
+        if (item.tab && tab && tab.url) {
+          if (tab.multiple) {
+            item.active = tab.url.substring(0, tab.url.lastIndexOf('/')) === item.tab.url ? true : false
+          } else {
+            item.active = tab.url === item.tab.url ? true : false;
+          }
+        } else {
+          item.active = false;
+        }
       }
     });
   }
@@ -74,8 +79,9 @@ export class FuseNavigationComponent implements OnDestroy
   {
     this.navigationModelChangeSubscription.unsubscribe();
     this.tabSubscription.unsubscribe();
-    this.onSelectedCategoryChanged.unsubscribe();
+    this.selectedTabSubscription.unsubscribe();
     this.onCategoriesChanged.unsubscribe();
+
   }
 
   getTrackingCategories() {
@@ -105,12 +111,12 @@ export class FuseNavigationComponent implements OnDestroy
         }
       }
       trackingNav.children = [];
-      trackingCategories.forEach( category => {
+      trackingCategories.forEach( (category, index) => {
         const navigation: any = {};
         navigation.id = category.id;
         navigation.title = category.cname;
         navigation.type = 'item';
-        const tab = new Tab(`Tracking`, 'trackingTpl', `tracking`, { ...category });
+        const tab = new Tab(`Tracking`, 'trackingTpl', `tracking/${index}`, { ...category });
         navigation.tab = tab;
         trackingNav.children.push(navigation);
       });

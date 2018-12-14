@@ -19,6 +19,17 @@
                 </div>
             </div>
 
+            <div class="px-8 px-md-16" *ngIf="user && !loggedInSecondary && ['admin', 'owner'].indexOf(user.lvl) > -1">
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="0 1 auto">
+                <a mat-icon-button (click)="openTab('users')" matTooltip="Users">
+                  <mat-icon>people</mat-icon>
+                </a>
+                <a mat-icon-button (click)="openTab('calendar')" matTooltip="Calendar">
+                  <mat-icon>today</mat-icon>
+                </a>
+              </div>
+            </div>
+
         </div>
 
         <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">

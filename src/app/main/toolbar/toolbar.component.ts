@@ -162,6 +162,20 @@ export class FuseToolbarComponent implements OnInit, OnDestroy
         this.tabService.openTab(tab);
     }
 
+    openTab(tab: string) {
+        switch (tab) {
+            case 'calendar':
+                this.tabService.openTab(TAB.SCHEDULE_CALENDAR_TAB);
+                break;
+            case 'users':
+                this.tabService.openTab(TAB.USERS_TAB);
+                break;
+            default:
+                break;
+        }
+
+    }
+
     get unreadCount(): number {
         return (this.userChatService.unreadList.length + this.userChatService.unreadThreads.length);
     }
