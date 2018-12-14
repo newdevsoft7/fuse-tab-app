@@ -52,7 +52,7 @@
 
   <!-- BATCH ACTION BUTTONS -->
   <div class="batch-actions" fxLayout="row wrap" fxLayoutAlign="space-between center">
-    <div>
+    <div *ngIf="currentUser?.lvl !== 'staff'">
       <button mat-raised-button [matMenuTriggerFor]="batchActionsMenu">
                 <span fxLayout="row" fxLayoutAlign="center center">
                     <span>Batch Actions</span>
