@@ -77,19 +77,15 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         { label: 'Hours', checked: false, name: 'ecol_hrs' },
         { label: 'Break', checked: false, name: 'ecol_break' },
         { label: 'Client Rate', checked: false, name: 'ecol_crate' },
-        { label: 'Client Rate Type', checked: false, name: 'ecol_crtype' },
         { label: 'Staff Rate', checked: false, name: 'ecol_rate' },
-        { label: 'Staff Rate Type', checked: false, name: 'ecol_rtype' },
         { label: 'Total Payable', checked: false, name: 'ecol_tpayable' },
         { label: 'Total Billable', checked: false, name: 'ecol_tbillable' },
-        { label: 'Agency', checked: false, name: 'ecol_agency' },
+        { label: 'Company', checked: false, name: 'ecol_company' },
         { label: 'Staff', checked: true, name: 'ecol_staff' },
-        { label: 'Mobile', checked: false, name: 'ecol_mob' },
-        { label: 'Email', checked: false, name: 'ecol_email' },
         { label: 'Staff Status', checked: false, name: 'ecol_ustatus' },
         { label: 'Check-In', checked: false, name: 'ecol_checkin' },
         { label: 'Check-Out', checked: false, name: 'ecol_checkout' },
-        { label: 'Staff Expenses', checked: false, name: 'ecol_exps' },
+        { label: 'Staff Pay Items', checked: false, name: 'ecol_staff_pay_items' },
     ];
 
     constructor(
@@ -157,10 +153,10 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
 
     // Toggles Flag and Filters the Calendar Values
     toggleFlagClick(flag) {
-        if (flag.set === 0 ) { return; }
+        if (flag.set === 0) { return; }
         flag.set = flag.set === 1 ? 2 : 1;
         this.updateFlagFilters();
-        
+
     }
 
     toggleFlagDblClick(flag) {
@@ -187,7 +183,7 @@ export class AdminExportAsExcelDialogComponent implements OnInit {
         } else {
             const from = moment(this.period.from);
             const to = moment(this.period.to);
-            if (!from.isValid() || !to.isValid() ) { return; }
+            if (!from.isValid() || !to.isValid()) { return; }
             body = {
                 ...body,
                 from: from.format('YYYY-MM-DD'),
