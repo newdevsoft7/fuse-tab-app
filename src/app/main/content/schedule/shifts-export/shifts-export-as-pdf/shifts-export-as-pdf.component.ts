@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import * as _ from 'lodash';
-
-import { ScheduleService } from '../../schedule.service';
+import { AppSettingService } from '@shared/services/app-setting.service';
 
 @Component({
     selector: 'app-shifts-export-as-pdf',
@@ -15,12 +13,14 @@ export class ShiftsExportAsPdfComponent implements OnInit {
 
     shifts: any[] = [];
     extraInfo: any[] = [];
+    logoUrl: string;
 
     constructor(
-    ) {
-    }
+      private appSettingService: AppSettingService,
+    ) { }
 
     ngOnInit() {
+        this.logoUrl = this.appSettingService.baseData.logo;
 
         // Convert extra_info object to an array.
         const extraInfo = this.data.shifts.extra_info;
