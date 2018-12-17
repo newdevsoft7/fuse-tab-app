@@ -67,7 +67,6 @@ export class AdminShiftBillComponent implements OnInit {
                         this.shift.bill_items[data.item_type] = [];
                     }
                     this.shift.bill_items[data.item_type].push(item);
-                    //this.toastr.success(res.message);
                 } catch (e) {
                     this.scMessageService.error(e);
                 }
@@ -77,11 +76,11 @@ export class AdminShiftBillComponent implements OnInit {
 
     async deleteItem(item, type) {
         try {
+            await this.scheduleService.deletePayItem(item.id);
             const index = this.shift.bill_items[type].findIndex(v => v.id === item.id);
             if (index > -1) {
                 this.shift.bill_items[type].splice(index, 1);
             }
-            //this.toastr.success(res.message);
         } catch (e) {
             this.scMessageService.error(e);
         }

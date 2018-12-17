@@ -173,7 +173,6 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
             type: 'staff'
           };
           staff.pay_items.push(item);
-          //this.toastr.success(res.message);
           this.recalcuatePayItemsTotal(staff);
         } catch (e) {
           this.toastr.error(e.error.message);
@@ -196,7 +195,7 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
       dialogRef.afterClosed().subscribe(async (result) => {
         if (result) {
           try {
-            //this.toastr.success(res.message);
+            await this.scheduleService.deletePayItem(payItem.id);
             const index = staff.pay_items.findIndex(p => p.id === payItem.id);
             if (index > -1) {
               staff.pay_items.splice(index, 1);
