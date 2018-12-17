@@ -442,4 +442,8 @@ export class AdminShiftStaffSelectedComponent implements OnInit {
     contextMenu.openMenu();
   }
 
+  hasUnapprovedPayItem(staff) {
+    return staff.pay_items.some(item => item.item_type === 'staff' && item.approved === null);
+  }
+
 }

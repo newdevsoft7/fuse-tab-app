@@ -56,7 +56,7 @@
             </app-admin-shift-edit-payitems>
           </div>
 
-          <div class="total px-12" *ngIf="!isClient" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
+          <div class="total px-12" [class.red-fg]="hasUnapprovedPayItem(staff)" *ngIf="!isClient" (click)="togglePayItemsView(staff)" matTooltip="Total" fxFlex>
             {{staff.pay_items_total !== null ? (staff.pay_items_total | currency) : '-'}}
           </div>
         </ng-template>
