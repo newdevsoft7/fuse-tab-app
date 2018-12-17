@@ -18,7 +18,7 @@ import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dia
 import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
 import { FuseConfirmTextYesNoDialogComponent } from '../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
 import { SCMessageService } from '../../../shared/services/sc-message.service';
-import {PayrollExportAsCsvDialogComponent} from './dialogs/export-as-csv-dialog/payroll-export-as-csv-dialog.component';
+import { PayrollExportAsCsvDialogComponent } from './dialogs/export-as-csv-dialog/payroll-export-as-csv-dialog.component';
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -122,7 +122,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
   }
 
   getPayrolls() {
-    this.selectedPayrolls= [];
+    this.selectedPayrolls = [];
     this.isLoading = true;
     this.filters = [];
     // Merge filters
@@ -148,7 +148,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
       err => {
         this.isLoading = false;
         if (err.status && err.status === 403) {
-          this.toastr.error('You have no permission!');
+          this.toastr.error('You are not allowed to do this.');
         }
       });
   }
@@ -168,7 +168,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
         disableClose: false
       });
       dialogRef.componentInstance.confirmMessage = `Really pay ${item.total}?`;
-      dialogRef.afterClosed().subscribe(async(result) => {
+      dialogRef.afterClosed().subscribe(async (result) => {
         if (result) {
           try {
             await this.payrollService.payPayrollWithXtrm(item.id);
@@ -201,7 +201,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
         if (result) {
           try {
             await this.payrollService.recordPayment([item.id]).toPromise();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -217,7 +217,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
         if (result) {
           try {
             await this.payrollService.rejectPayroll(item.id, result).toPromise();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -232,7 +232,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
         if (result) {
           try {
             await this.payrollService.deletePayroll(item.id).toPromise();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -292,6 +292,10 @@ export class PayrollComponent implements OnInit, OnDestroy {
 
       case 'processing':
         color = 'orange';
+        break;
+
+      case 'deleted':
+        color = 'gray';
         break;
     }
     return color;
