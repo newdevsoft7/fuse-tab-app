@@ -1,24 +1,26 @@
-import { Component, OnInit, ViewEncapsulation, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Observable } from 'rxjs/Observable';
 
-import { CustomLoadingService } from '../../../shared/services/custom-loading.service';
-import { PayrollService } from './payroll.service';
-import { TabService } from '../../tab/tab.service';
-import { Tab } from '../../tab/tab';
-import { TokenStorage } from '../../../shared/services/token-storage.service';
-import { ActionService } from '../../../shared/services/action.service';
-import { Subscription } from 'rxjs';
-import { TabComponent } from '../../tab/tab/tab.component';
+import { PayrollService } from '@main/content/payroll/payroll.service';
+import { SCMessageService } from '@shared/services/sc-message.service';
+import { PayrollExportAsCsvDialogComponent } from '@main/content/payroll/dialogs/export-as-csv-dialog/payroll-export-as-csv-dialog.component';
+import { TokenStorage } from '@shared/services/token-storage.service';
+import { Observable } from 'rxjs/Observable';
 import { MatDialog } from '@angular/material';
-import { FuseConfirmDialogComponent } from '../../../core/components/confirm-dialog/confirm-dialog.component';
-import { FuseConfirmYesNoDialogComponent } from '../../../core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
-import { FuseConfirmTextYesNoDialogComponent } from '../../../core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
-import { SCMessageService } from '../../../shared/services/sc-message.service';
-import { PayrollExportAsCsvDialogComponent } from './dialogs/export-as-csv-dialog/payroll-export-as-csv-dialog.component';
+import { FuseConfirmYesNoDialogComponent } from '@core/components/confirm-yes-no-dialog/confirm-yes-no-dialog.component';
+import { Tab } from '@main/tab/tab';
+import { TabService } from '@main/tab/tab.service';
+import { TabComponent } from '@main/tab/tab/tab.component';
+import { CustomLoadingService } from '@shared/services/custom-loading.service';
+import { FuseConfirmTextYesNoDialogComponent } from '@core/components/confirm-text-yes-no-dialog/confirm-text-yes-no-dialog.component';
+import { Subscription } from 'rxjs/Subscription';
+import { ActionService } from '@shared/services/action.service';
+import { FuseConfirmDialogComponent } from '@core/components/confirm-dialog/confirm-dialog.component';
+import { FilterService } from '@shared/services/filter.service';
+import { from } from 'rxjs/observable/from';
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -35,7 +37,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
   isAdvancedSearch = false;
   from;
   to;
-  user;
+  users;
   usersObservable;
 
   // Datatable
@@ -63,6 +65,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
     private tokenStorage: TokenStorage,
     private actionService: ActionService,
     private scMessageService: SCMessageService,
+    private filterService: FilterService,
     private dialog: MatDialog
   ) { }
 
@@ -70,7 +73,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
     this.currentUser = this.tokenStorage.getUser();
 
     this.usersObservable = (text: string): Observable<any> => {
-      return this.payrollService.getUsers(text);
+      return from(this.filterService.getUsersFilterForThisCompany(text));
     };
 
     this.getPayrolls();
@@ -92,7 +95,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
   }
 
   onSearchChange(evt: any[]) {
-    this.user = [...evt];
+    this.users = [...evt];
     this.getPayrolls();
   }
 
@@ -134,8 +137,10 @@ export class PayrollComponent implements OnInit, OnDestroy {
       this.to = moment(this.to).format('YYYY-MM-DD');
       this.filters.push(`to:${this.to}`);
     }
-    if (this.user && !_.isEmpty(this.user)) {
-      this.filters.push(`user:${JSON.stringify(this.user)}`);
+    if (this.users && !_.isEmpty(this.users)) {
+      this.users.forEach(user => {
+        this.filters.push(`user:${JSON.stringify(user)}`);
+      });
     }
     this.payrollService.getPayrolls(this.pageSize, this.pageNumber, this.status, this.filters, this.sorts).subscribe(
       res => {
@@ -217,7 +222,6 @@ export class PayrollComponent implements OnInit, OnDestroy {
         if (result) {
           try {
             await this.payrollService.rejectPayroll(item.id, result).toPromise();
-            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -232,7 +236,6 @@ export class PayrollComponent implements OnInit, OnDestroy {
         if (result) {
           try {
             await this.payrollService.deletePayroll(item.id).toPromise();
-            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }

@@ -780,6 +780,24 @@ export class FilterService {
     }
   }
 
+  async getUsersFilterForThisCompany(query: string): Promise<any> {
+    try {
+      query = query.trim().toLowerCase();
+      let users = await this.getUsers();
+      users = users.filter(u => ['owner', 'admin', 'staff'].indexOf(u.lvl) > -1 && u.works_here == 1)
+        .map(u => ({
+          ...u,
+          name: `${u.fname} ${u.lname}`
+        }));
+      if (query.length) {
+        users = users.filter(u => u.name.toLowerCase().indexOf(query) > -1);
+      }
+      return users;
+    } catch (e) {
+      return [];
+    }
+  }
+
   async getWorkAreaFilter(query: string): Promise<any> {
     try {
       query = query.trim().toLowerCase();

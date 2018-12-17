@@ -28,7 +28,7 @@
   <div *ngIf="isAdvancedSearch" class="mt-16">
     <div fxLayout="row wrap" fxLayoutAlign="start end">
       <div fxFlex="1 0 auto" *ngIf="currentUser?.lvl !== 'staff'">
-        <app-payroll-search-bar labelBy="name" valueBy="id" avatar="ppic_a" placeholder="Users"
+        <app-payroll-search-bar labelBy="name" valueBy="id" placeholder="Users"
                                 [autocompleteObservable]="usersObservable"
                                 (valueChange)="onSearchChange($event)"></app-payroll-search-bar>
       </div>

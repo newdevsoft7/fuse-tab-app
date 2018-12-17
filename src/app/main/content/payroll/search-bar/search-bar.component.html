@@ -23,10 +23,7 @@
 
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="add($event)">
             <mat-option *ngFor="let tag of sourceFiltered()" [value]="tag">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <img [src]="tag[avatar]" class="avatar"/>
-                    <span>{{tag[labelBy]}}</span>
-                </div>
+                {{tag[labelBy]}}
             </mat-option>
         </mat-autocomplete>
 

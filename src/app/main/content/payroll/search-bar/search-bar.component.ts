@@ -58,7 +58,6 @@ export class PayrollSearchBarComponent implements ControlValueAccessor, OnInit, 
     @Input() placeholder;
     @Input() labelBy;
     @Input() valueBy;
-    @Input() avatar;
     @Input() disabled = false;
 
     source = [];
