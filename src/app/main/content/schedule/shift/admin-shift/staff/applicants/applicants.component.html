@@ -43,15 +43,15 @@
     <ngx-datatable-column name="Performance" [sortable]="false" [canAutoResize]="true">
       <ng-template let-row="row" ngx-datatable-cell-template>
         <ng-container *ngIf="row.performance">
-          <div fxLayout="row" fxLayoutAlign="start center" matTooltip="Shift rating">
-            <span>{{row.performance.num_shifts}}</span>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <span matTooltip="Number of shifts completed">{{row.performance.num_shifts}}</span>
             <mat-icon class="s-12" [ngClass]="getPerformanceClass(row, 'shift')">{{row.performance.rating != 0 ? 'star' : 'star_border'}}</mat-icon>
-            <span>{{row.performance.rating}}</span>
+            <span matTooltip="Average performance rating">{{row.performance.rating}}</span>
           </div>
-          <div fxLayout="row" fxLayoutAlign="start center" *ngIf="shift.client_id !== null" matTooltip="Client rating">
-            <span>{{row.performance.num_shifts_client}}</span>
+          <div fxLayout="row" fxLayoutAlign="start center" *ngIf="shift.client_id !== null">
+            <span matTooltip="Number of shifts completed for client">{{row.performance.num_shifts_client}}</span>
             <mat-icon class="s-12" [ngClass]="getPerformanceClass(row, 'client')">{{row.performance.rating_client != 0 ? 'star' : 'star_border'}}</mat-icon>
-            <span>{{row.performance.rating_client}}</span>
+            <span matTooltip="Client average performance rating">{{row.performance.rating_client}}</span>
           </div>
         </ng-container>
       </ng-template>
