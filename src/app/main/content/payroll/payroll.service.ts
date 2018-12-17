@@ -62,6 +62,11 @@ export class PayrollService {
             .catch(this.handleError);
     }
 
+    processPayroll(id: string | number): Promise<any> {
+      const url = `${BASE_URL}/payroll/${id}/process`;
+      return this.http.put(url, {}).toPromise();
+    }
+
     savePayroll(params): Observable<any> {
         const url = `${BASE_URL}/payroll/save`;
         return this.http.post(url, params).catch(this.handleError);

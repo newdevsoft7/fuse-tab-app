@@ -185,7 +185,7 @@ export class PayrollComponent implements OnInit, OnDestroy {
       dialogRef.afterClosed().subscribe(async (result) => {
         if (result) {
           try {
-            await this.payrollService.processPayrolls([item.id]).toPromise();
+            await this.payrollService.processPayroll(item.id);
             this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);

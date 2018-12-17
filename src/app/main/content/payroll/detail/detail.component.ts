@@ -126,7 +126,7 @@ export class PayrollDetailComponent implements OnInit {
       dialogRef.afterClosed().subscribe(async (result) => {
         if (result) {
           try {
-            await this.payrollService.processPayrolls([this.payroll.id]).toPromise();
+            await this.payrollService.processPayroll(this.payroll.id);
             this.refreshActionsStatus();
             this.toastr.success('Success!');
           } catch (e) {
