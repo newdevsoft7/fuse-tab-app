@@ -1,5 +1,5 @@
 <div fxFlex="1 0 auto" *ngIf="!formActive" class="list-element" (click)="openForm()">
-	<span class="element-value">{{element.data ? element.data : 'Empty'}}</span>
+	<span class="element-value">{{getDisplayValue()}}</span>
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onFormSubmit()" class="list-element-form" fxLayout="row" fxFlex="1 0 auto" *ngIf="formActive">

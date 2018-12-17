@@ -28,7 +28,9 @@ export class UsersProfileEditListValueComponent implements OnInit {
 
     openForm() {
         this.form = this.formBuilder.group({
-            data: [this.element.data]
+            data: [
+              this.element.ename.toLowerCase() !== 'country' ? this.element.data : this.getCountry()
+            ]
         });
         this.formActive = true;
         setTimeout(() => this.select.first.open());
@@ -47,10 +49,9 @@ export class UsersProfileEditListValueComponent implements OnInit {
         if (this.form.valid) {
             const value = this.form.getRawValue().data;
             if (value != this.element.data) {
-                this.element.data = value;
+                this.element.data = this.element.ename.toLowerCase() !== 'country' ? value : this.getCountryId(value);
                 this.userService.updateProfile(this.userId, this.element.id, value)
                     .subscribe(res => {
-                        //this.toastr.success(res.message);
                     }, err => {
                         const errors = err.error.errors.data;
                         errors.forEach(v => {
@@ -59,5 +60,28 @@ export class UsersProfileEditListValueComponent implements OnInit {
                     });
             }
         }
+    }
+
+    getDisplayValue() {
+      if (this.element.data) {
+        if (this.element.ename.toLowerCase() === 'country') {
+          const value = this.getCountry();
+          return value ? value : 'Empty';
+        } else {
+          return this.element.data;
+        }
+      } else {
+        return 'Empty';
+      }
+    }
+
+    getCountry() {
+      const index = this.element.options.findIndex(o => o.id == this.element.data);
+      return index > -1 ? this.element.options[index].option : null;
+    }
+
+    getCountryId(countryName) {
+      const index = this.element.options.findIndex(o => o.option === countryName);
+      return index > -1 ? this.element.options[index].id : null;
     }
 }
