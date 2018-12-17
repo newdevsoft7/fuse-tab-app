@@ -112,7 +112,7 @@ export class PayrollDetailComponent implements OnInit {
           try {
             await this.payrollService.payPayrollWithXtrm(this.payroll.id);
             this.refreshActionsStatus();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -128,7 +128,7 @@ export class PayrollDetailComponent implements OnInit {
           try {
             await this.payrollService.processPayrolls([this.payroll.id]).toPromise();
             this.refreshActionsStatus();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -144,7 +144,7 @@ export class PayrollDetailComponent implements OnInit {
           try {
             await this.payrollService.recordPayment([this.payroll.id]).toPromise();
             this.refreshActionsStatus();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -152,7 +152,7 @@ export class PayrollDetailComponent implements OnInit {
       });
     } else if (action.action === 'reject') {
       const dialogRef = this.dialog.open(FuseConfirmTextYesNoDialogComponent, {
-          disableClose: false
+        disableClose: false
       });
       dialogRef.componentInstance.confirmMessage = `Are you sure?`;
       dialogRef.componentInstance.placeholder = 'Reason';
@@ -161,7 +161,7 @@ export class PayrollDetailComponent implements OnInit {
           try {
             await this.payrollService.rejectPayroll(this.payroll.id, result).toPromise();
             this.refreshActionsStatus();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -177,7 +177,7 @@ export class PayrollDetailComponent implements OnInit {
           try {
             await this.payrollService.deletePayroll(this.payroll.id).toPromise();
             this.refreshActionsStatus();
-            this.toastr.success('Success!');
+            //this.toastr.success('Success!');
           } catch (e) {
             this.scMessageService.error(e);
           }
@@ -199,6 +199,10 @@ export class PayrollDetailComponent implements OnInit {
 
       case 'processing':
         color = 'orange';
+        break;
+
+      case 'deleted':
+        color = 'gray';
         break;
     }
     return color;
