@@ -14,7 +14,6 @@ export class StaffShiftExpeneseDialogComponent implements OnInit {
     expense: any;
     categories: any[];
     receiptRequired: boolean = false;
-    expenseCategoryId: number;
     filename: string;
     file: any;
 
@@ -25,8 +24,8 @@ export class StaffShiftExpeneseDialogComponent implements OnInit {
         this.mode = this.data.mode;
         this.expense = _.cloneDeep(this.data.expense) || {};
         this.categories = this.data.categories || [];
-        if (this.categories.length > 0) {
-            this.expenseCategoryId = this.categories[0].id;
+        if (this.categories.length > 0 && this.mode === 'add') {
+            this.expense.expense_cat_id = this.categories[0].id;
         }
         this.receiptRequired = this.data.receiptRequired || false; 
     }
@@ -35,7 +34,7 @@ export class StaffShiftExpeneseDialogComponent implements OnInit {
     }
 
     isValid() {
-        if (_.isNil(this.expense.expense_cat_id) ||
+        if ((this.categories.length > 0 && _.isNil(this.expense.expense_cat_id)) ||
             !this.expense.item_name ||
             _.isNil(this.expense.unit_rate) ||
             this.expense.unit_rate === '') {
@@ -53,7 +52,9 @@ export class StaffShiftExpeneseDialogComponent implements OnInit {
             body.append('units', '1');
         }
         body.append('unit_rate', this.expense.unit_rate);
-        body.append('expense_cat_id', this.expense.expense_cat_id);
+        if (!_.isNil(this.expense.expense_cat_id)) {
+            body.append('expense_cat_id', this.expense.expense_cat_id);
+        }
         if (this.file) {
             body.append('receipt', this.file, this.file.name);
         }

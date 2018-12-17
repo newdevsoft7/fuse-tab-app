@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper">
     <div mat-dialog-content fusePerfectScrollbar>
         <div>
-            <mat-form-field class="w-100-p">
+            <mat-form-field class="w-100-p" *ngIf="categories && categories.length > 0">
                 <mat-select [(ngModel)]="expense.expense_cat_id" placeholder="Expense Category">
                     <mat-option *ngFor="let option of categories" [value]="option.id">{{option.cname}}</mat-option>
                 </mat-select>
@@ -21,7 +21,7 @@
                 <ng-container *ngIf="filename; else default">Select a different receipt</ng-container>
                 <ng-template #default>
                     <mat-icon class="white-fg">add</mat-icon>
-                    <span>Upload Recipt</span>
+                    <span>Upload Receipt</span>
                 </ng-template>
             </button>
             <div *ngIf="filename" class="ml-4 filename">{{filename}}</div>

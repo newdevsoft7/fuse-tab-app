@@ -91,9 +91,10 @@ export class StaffShiftExpensesComponent implements OnInit {
             disableClose: false
         });
         dialogRef.componentInstance.confirmMessage = 'Are you sure?';
-        dialogRef.afterClosed().subscribe(async(result) => {
+        dialogRef.afterClosed().subscribe(async (result) => {
             if (result) {
                 try {
+                    await this.scheduleService.deletePayItem(expense.id)
                     const index = this.expenses.findIndex(v => v.id === expense.id);
                     if (index > -1) {
                         this.expenses.splice(index, 1);
