@@ -45,6 +45,9 @@
                             </div>
                             <div *ngIf="payroll?.user?.mob" class="phone">{{payroll?.user?.mob}}</div>
                             <div *ngIf="payroll?.user?.email" class="email">{{payroll?.user?.email}}</div>
+                            <ng-container *ngFor="let info of payroll?.top_info">
+                              <div *ngIf="info">{{info}}</div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
@@ -97,6 +100,13 @@
                         </tr>
                     </tbody>
                 </table>
+                <div style="display:inline-block;">
+                  <div class="bottom-info">
+                    <ng-container *ngFor="let info of payroll?.bottom_info">
+                      <div *ngIf="info">{{info}}</div>
+                    </ng-container>
+                  </div>
+                </div>
             </div>
         </div>
 
