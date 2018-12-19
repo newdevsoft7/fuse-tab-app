@@ -53,6 +53,7 @@ import { FundWalletByOtherDialogComponent } from './xtrm/dialogs/fund-wallet-by-
 import { SettingsXeroAddKeySecretDialogComponent } from './xero/add-key-secret-dialog/add-key-secret-dialog.component';
 import { BillingComponent } from './billing/billing.component';
 import { NgxStripeModule } from 'ngx-stripe';
+import { AddInvoiceItemDialogComponent } from './staff-invoices/add-item-dialog/add-item-dialog.component';
 
 @NgModule({
     imports: [
@@ -110,7 +111,8 @@ import { NgxStripeModule } from 'ngx-stripe';
         FundWalletByCreditCardDialogComponent,
         FundWalletByOtherDialogComponent,
         SettingsXeroAddKeySecretDialogComponent,
-        BillingComponent
+        BillingComponent,
+        AddInvoiceItemDialogComponent
     ],
 
     providers: [
@@ -120,7 +122,8 @@ import { NgxStripeModule } from 'ngx-stripe';
         CategoryDialogComponent,
         FundWalletByCreditCardDialogComponent,
         FundWalletByOtherDialogComponent,
-        SettingsXeroAddKeySecretDialogComponent
+        SettingsXeroAddKeySecretDialogComponent,
+        AddInvoiceItemDialogComponent
     ],
     exports: [
         SettingsComponent,

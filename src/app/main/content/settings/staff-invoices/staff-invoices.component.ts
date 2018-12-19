@@ -1,20 +1,19 @@
 import {
-    Component, OnInit, Input,
-    ViewEncapsulation, SimpleChanges,
-    OnChanges, Output, EventEmitter,
-    ViewChild, OnDestroy
+  Component, OnInit, Input, SimpleChanges,
+  OnChanges, Output, EventEmitter, OnDestroy
 } from '@angular/core';
 
-import { FormControl, Validators } from '@angular/forms'
+import { FormControl } from '@angular/forms'
 
-import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 
-import { MatSlideToggleChange, MatSelectChange } from '@angular/material';
+import { MatSlideToggleChange, MatSelectChange, MatDialog } from '@angular/material';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 
 import { SettingsService } from '../settings.service';
+import { AddInvoiceItemDialogComponent } from '@main/content/settings/staff-invoices/add-item-dialog/add-item-dialog.component';
+import { Subscription } from 'rxjs/Subscription';
 
 enum Setting {
     staff_invoice_enable = 78,
@@ -33,9 +32,22 @@ enum Setting {
     templateUrl: './staff-invoices.component.html',
     styleUrls: ['./staff-invoices.component.scss']
 })
-export class SettingsStaffInvoicesComponent implements OnInit {
+export class SettingsStaffInvoicesComponent implements OnInit, OnChanges, OnDestroy {
 
     _settings = [];
+
+    invoiceTopIds = [];
+    invoiceBottomIds = [];
+
+    invoiceTops = [];
+    invoiceBottoms = [];
+
+    availableInvoiceTops = [];
+    availableInvoiceBottoms = [];
+
+    onItemAdded: Subject<any> = new Subject();
+
+    onItemAddedSubscription: Subscription;
 
     @Input('settings')
     set settings(settings) {
@@ -79,6 +91,7 @@ export class SettingsStaffInvoicesComponent implements OnInit {
 
     constructor(
         private settingsService: SettingsService,
+        private dialog: MatDialog,
         private toastr: ToastrService
     ) {}
 
@@ -103,7 +116,21 @@ export class SettingsStaffInvoicesComponent implements OnInit {
                                 break;
                         }
                     } else { // Text Fields
-                        this.items = { ...this.items, [item.id]: item.value };
+                        if (item.id === Setting.staff_invoice_top) {
+                            if (changes.options) {
+                              this.invoiceTopIds = !item.value ? [] : item.value.split(',').map(k => +k);
+                              this.availableInvoiceTops = this.options[Setting.staff_invoice_top];
+                              this.invoiceTops = this.sort(this.availableInvoiceTops.filter(top => this.invoiceTopIds.indexOf(top.id) > -1), this.invoiceTopIds);
+                            }
+                        } else if (item.id === Setting.staff_invoice_financial) {
+                            if (changes.options) {
+                              this.invoiceBottomIds = !item.value ? [] : item.value.split(',').map(k => +k);
+                              this.availableInvoiceBottoms = this.options[Setting.staff_invoice_financial];
+                              this.invoiceBottoms = this.sort(this.availableInvoiceBottoms.filter(top => this.invoiceBottomIds.indexOf(top.id) > -1), this.invoiceBottomIds);
+                            }
+                        } else {
+                            this.items = { ...this.items, [item.id]: item.value };
+                        }
                     }
                 }
             });
@@ -120,6 +147,14 @@ export class SettingsStaffInvoicesComponent implements OnInit {
             .subscribe(value => {
                 this.onChange(Setting.staff_invoice_deadline, value);
             });
+
+        this.onItemAddedSubscription = this.onItemAdded.subscribe(async ({ item, type }) => {
+          this.addItem(item, type);
+        });
+    }
+
+    ngOnDestroy() {
+        this.onItemAddedSubscription.unsubscribe();
     }
 
     onChange(id: Setting, event: MatSlideToggleChange | MatSelectChange | string) {
@@ -138,7 +173,72 @@ export class SettingsStaffInvoicesComponent implements OnInit {
         this.settingsService.setSetting(id, value).subscribe(res => {
             setting.value = value;
             this.settingsChange.next(this.settings);
-            //this.toastr.success(res.message);
         });
+    }
+
+    openInvoiceItemsDialog(type) {
+        const dialogRef = this.dialog.open(AddInvoiceItemDialogComponent, {
+            disableClose: false,
+            panelClass: 'add-invoice-item-dialog',
+            data: {
+                type,
+                items: type === 'top' ?
+                    this.availableInvoiceTops.filter(v => this.invoiceTopIds.indexOf(v.id) < 0) :
+                    this.availableInvoiceBottoms.filter(v => this.invoiceBottomIds.indexOf(v.id) < 0),
+                onItemAdded: this.onItemAdded
+            }
+        });
+        dialogRef.afterClosed().subscribe(res => {});
+    }
+
+    addItem(item, type) {
+        if (type === 'top') {
+            this.invoiceTops.push(item);
+            this.updateInvoiceTops();
+        } else {
+            this.invoiceBottoms.push(item);
+            this.updateInvoiceBottoms();
+        }
+    }
+
+    removeItem(item, type) {
+        if (type === 'top') {
+            this.invoiceTops.splice(this.invoiceTops.findIndex(v => v.id === item.id), 1);
+            this.updateInvoiceTops();
+        } else {
+            this.invoiceBottoms.splice(this.invoiceBottoms.findIndex(v => v.id === item.id), 1);
+            this.updateInvoiceBottoms();
+        }
+    }
+
+    private updateInvoiceBottoms() {
+        this.invoiceBottomIds = this.invoiceBottoms.map(v => v.id);
+        const value = this.invoiceBottomIds.join(',');
+        this.onChange(Setting.staff_invoice_financial, value);
+    }
+
+    private updateInvoiceTops() {
+        this.invoiceTopIds = this.invoiceTops.map(v => v.id);
+        const value = this.invoiceTopIds.join(',');
+        this.onChange(Setting.staff_invoice_top, value);
+    }
+
+    onDrop(evt, type) {
+        if (type === 'top') {
+            this.updateInvoiceTops();
+        } else {
+            this.updateInvoiceBottoms();
+        }
+    }
+
+    private sort(items, orders): any[] {
+        const results: any[] = [];
+        orders.forEach(id => {
+            const index = items.findIndex(item => item.id === id);
+            if (index > -1) {
+                results.push(items[index]);
+            }
+        });
+        return results;
     }
 }
