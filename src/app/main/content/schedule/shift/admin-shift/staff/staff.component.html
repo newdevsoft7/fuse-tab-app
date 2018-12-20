@@ -127,6 +127,45 @@
             </header>
 
             <div class="content">
+
+                <!-- self admin user -->
+                <div id="self-user" fxLayout="row" fxLayoutWrap fxLayoutGap="8px" fxLayoutAlign="start center" *ngIf="role.message">
+                    <div class="role" fxLayout="row" fxLayoutAlign="start center">
+                        <img class="avatar" [src]="currentUser.ppic_a"/>
+
+                        <div fxLayout="column" fxLayoutAlign="start">
+
+                            <div class="times" *ngIf="shift.shift_start" matTooltip="Times">
+                                {{shift.shift_start | date: 'h:mm a'}} - {{shift.shift_end | date: 'h:mm a'}}
+                            </div>
+
+                            <div *ngIf="role.eligible === 1 && role.pay_items.length === 0" class="pay-rate" matTooltip="Pay rate">
+                                <ng-container *ngIf="role.pay_rate">
+                                    {{role.pay_rate | currency}} {{role.pay_rate_type === 'phr' ? '/hr' : 'flat'}}
+                                </ng-container>
+                            </div>
+
+                            <div *ngIf="role.eligible === 1 && role.pay_items.length > 0" class="pay-rate">
+                                <span *ngIf="role.pay_rate" matTooltip="Pay rate">
+                                    {{role.pay_rate | currency}} {{role.pay_rate_type === 'phr' ? '/hr' : 'flat'}}
+                                </span>
+                                <span matTooltip="Additional Payment" class="pay-item" (click)="openPayItemDialog(role.pay_items)">
+                                    + {{ sum(role.pay_items) | currency}}
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="message">{{role.message}}</div>
+
+                    <button mat-button *ngFor="let action of role.actions" (click)="doAction(action, role)" [ngClass]="getStyle(action)">
+                        {{action.split('_').join(' ') | ucwords}}
+                    </button>
+                </div>
+                <!-- / self admin user -->
+
                 <mat-tab-group dynamicHeight="true" [(selectedIndex)]="role.section"
                     (selectedTabChange)="onSelectedTabChange(role, $event)">
 

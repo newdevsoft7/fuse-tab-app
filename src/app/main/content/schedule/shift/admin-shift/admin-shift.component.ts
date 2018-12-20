@@ -22,6 +22,8 @@ import { NewMessageDialogComponent } from '../../../users/profile/dialogs/new-me
 import { UsersChatService } from '../../../users/chat/chat.service';
 import { AdminShiftActivityComponent } from './activity/activity.component';
 import { FilterService } from '@shared/services/filter.service';
+import { TabComponent } from '@main/tab/tab/tab.component';
+import { ConnectorService } from '@shared/services/connector.service';
 
 export enum TAB {
   Staff = 'Staff',
@@ -48,6 +50,7 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
   usersToInviteSubscription: Subscription;
   usersToSelectSubscription: Subscription;
+  formEventSubscription: Subscription;
   selectedTabIndex: number = 0; // Set staff tab as initial tab
 
   shiftData: any = {}; // For edit tracking & work areas
@@ -78,7 +81,8 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
     private scMessageService: SCMessageService,
     private chatService: UsersChatService,
     private filterService: FilterService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private connectorService: ConnectorService,
   ) {
     // Invite Users to Role
     this.usersToInviteSubscription = this.actionService.usersToInvite.subscribe(
@@ -124,12 +128,29 @@ export class AdminShiftComponent implements OnInit, OnDestroy {
 
     }
 
-
+    this.formEventSubscription = this.connectorService.currentFormTab$.subscribe((tab: TabComponent) => {
+      if (!tab) { return; }
+      const id = tab.data.other_id;
+      if (tab && tab.url === `form_apply/${this.shift.id}/${id}`) {
+        const index = this.shift.forms_apply.findIndex(form => form.other_id === id);
+        if (index > -1) {
+          this.shift.forms_apply.splice(index, 1);
+        }
+        this.tabService.closeTab(tab.url);
+      } else if (tab && tab.url === `form_confirm/${this.shift.id}/${id}`) {
+        const index = this.shift.forms_confirm.findIndex(form => form.other_id === id);
+        if (index > -1) {
+          this.shift.forms_confirm.splice(index, 1);
+        }
+        this.tabService.closeTab(tab.url);
+      }
+    });
   }
 
   ngOnDestroy() {
     this.usersToInviteSubscription.unsubscribe();
     this.usersToSelectSubscription.unsubscribe();
+    this.formEventSubscription.unsubscribe();
   }
 
   deleteShift() {

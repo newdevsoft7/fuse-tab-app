@@ -38,6 +38,16 @@ import { UsersChatService } from '../../../../users/chat/chat.service';
 import { SCMessageService } from '../../../../../../shared/services/sc-message.service';
 import { AddUserToShiftDialogComponent } from './dialogs/add-user-to-shift-dialog/add-user-to-shift-dialog.component';
 import {TAB} from '../../../../../../constants/tab';
+import { StaffShiftPayItemDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/pay-item-dialog/pay-item-dialog.component';
+import { StaffShiftApplyDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/apply-dialog/apply-dialog.component';
+import { StaffShiftConfirmDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/confirm-dialog/confirm-dialog.component';
+import { StaffShiftReplaceDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/replace-dialog/replace-dialog.component';
+import { StaffShiftCheckInOutDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/check-in-out-dialog/check-in-out-dialog.component';
+import { StaffShiftCompleteDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/complete-dialog/complete-dialog.component';
+import { StaffShiftQuizDialogComponent } from '@main/content/schedule/shift/staff-shift/info/dialogs/quiz-dialog/quiz-dialog.component';
+import { TabComponent } from '@main/tab/tab/tab.component';
+import { FuseInfoDialogComponent } from '@core/components/info-dialog/info-dialog.component';
+import { ConnectorService } from '@shared/services/connector.service';
 
 export enum Section {
   Selected = 0,
@@ -70,6 +80,25 @@ enum Status {
   STAFF_STATUS_PAID = 15
 }
 
+enum Action {
+  apply = 'apply',
+  cancel_application = 'cancel_application',
+  not_available = 'not_available',
+  confirm = 'confirm',
+  replace = 'replace',
+  cancel_replace = 'cancel_replace',
+  cancel_replace_standby = 'cancel_replace_standby',
+  check_in = 'check_in',
+  check_out = 'check_out',
+  complete = 'complete',
+  expenses = 'expenses',
+  invoice = 'invoice',
+  view_invoice = 'view_invoice',
+  view_pay = 'view_pay',
+  reports = 'reports',
+  uploads = 'uploads'
+}
+
 @Component({
   selector: 'app-admin-shift-staff',
   templateUrl: './staff.component.html',
@@ -85,6 +114,7 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
 
   @Input() shift;
   @Output() onAddRole = new EventEmitter();
+  @Output() shiftChanged = new EventEmitter();
   @Input() currencies;
 
   @ViewChild('adminNoteInput') adminNoteInput;
@@ -109,8 +139,11 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     { value: 1, label: 'Admin & Client' }
   ];
 
+  readonly Action = Action;
+
   deleteRoleSubscrpition: Subscription;
   userToShiftScription: Subscription;
+  quizEventSubscription: Subscription;
 
   constructor(
     private dialog: MatDialog,
@@ -122,7 +155,9 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     private tabService: TabService,
     private spinner: CustomLoadingService,
     private chatService: UsersChatService,
-    private scMessageService: SCMessageService    ) {
+    private scMessageService: SCMessageService,
+    private connectorService: ConnectorService,
+  ) {
     this.currentUser = this.tokenStorage.getUser();
     this.settings = this.tokenStorage.getSettings();
 
@@ -214,11 +249,38 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
         shiftTitle: this.shift.title,
       };
     });
+
+    this.quizEventSubscription = this.connectorService.currentQuizTab$.subscribe((tab: TabComponent) => {
+      if (!tab) { return; }
+      const id = tab.data.other_id;
+      if (tab && tab.url === `staff-shift/reports/${id}`) {
+        this.tabService.closeTab(tab.url);
+        this.shiftChanged.next(true);
+      } else if (tab && tab.url === `staff-shift/quiz/${id}`) {
+        const role = tab.data.role;
+        const index = this.shift.shift_roles.findIndex(v => v.id === role.id);
+        if (index > -1) {
+          const score = tab.data.score; // assume that quizconnect returns score
+          this.openScoreDialog(score);
+          const quiz = this.shift.shift_roles[index].quizs.find(v => v.other_id === id);
+          if (quiz) {
+            quiz.completed_score = score;
+            if (quiz.required_score > 0) {
+              quiz.required = score >= quiz.required_score ? 0 : 1;
+            } else {
+              quiz.required = 0;
+            }
+          }
+        }
+        this.tabService.closeTab(tab.url);
+      }
+    });
   }
 
   ngOnDestroy() {
     this.deleteRoleSubscrpition.unsubscribe();
     this.userToShiftScription.unsubscribe();
+    this.quizEventSubscription.unsubscribe();
   }
 
   async onEditRole(role) {
@@ -699,6 +761,287 @@ export class AdminShiftStaffComponent implements OnInit, OnDestroy {
     tab.data.template =  messageTemplate;
     tab.data.shiftRoleId = roleId;
     this.tabService.openTab(tab);
+  }
+
+  openQuizDialog(role, quizs) {
+    const dialogRef = this.dialog.open(StaffShiftQuizDialogComponent, {
+      disableClose: false,
+      panelClass: 'staff-shift-quiz-dialog',
+      data: {
+        role,
+        quizs
+      }
+    });
+    dialogRef.afterClosed().subscribe(_ => { });
+  }
+
+  doAction(action, role) {
+    let dialogRef;
+    let quizs;
+    let tab: Tab;
+
+    switch (action) {
+      case Action.apply:
+        quizs = role.quizs.filter(v => v.required === 1);
+        if (role.show_quizs === 1 && quizs.length > 0) {
+          this.openQuizDialog(role, quizs);
+        } else {
+          dialogRef = this.dialog.open(StaffShiftApplyDialogComponent, {
+            panelClass: 'staff-shift-apply-dialog',
+            data: {
+              forms: this.shift.forms_apply,
+              shift_id: this.shift.id
+            }
+          });
+          dialogRef.afterClosed().subscribe(reason => {
+            if (reason === false) { return; }
+            this.scheduleService.applyShiftRole(role.id, reason)
+              .subscribe(res => {
+                role.message = res.role_message;
+                role.actions = [...res.actions];
+                role.role_staff_id = res.id;
+              }, err => this.scMessageService.error(err));
+          });
+        }
+        break;
+
+      case Action.cancel_application:
+        dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+          disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Really cancel your application?';
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const roleStaffId = role.role_staff_id;
+            this.scheduleService.applyCancelShiftRole(roleStaffId)
+              .subscribe(res => {
+                role.message = res.role_message;
+                role.actions = [...res.actions];
+                delete role.role_staff_id;
+              }, err => this.scMessageService.error(err));
+          }
+        });
+        break;
+
+      case Action.not_available:
+        this.scheduleService.notAvailableShiftRole(role.id).subscribe(res => {
+          role.message = res.role_message;
+          role.actions = [...res.actions];
+          role.role_staff_id = res.id;
+        }, err => this.scMessageService.error(err));
+        break;
+
+      case Action.confirm:
+        quizs = role.quizs.filter(v => v.required === 1);
+        if (role.show_quizs === 1 && quizs.length > 0) {
+          this.openQuizDialog(role, quizs);
+        } else {
+          dialogRef = this.dialog.open(StaffShiftConfirmDialogComponent, {
+            data: {
+              title: 'Really confirm this role?',
+              heading: this.settings.shift_msg_confirmation,
+              forms: this.shift.forms_confirm,
+              surveys: role.surveys,
+              showSurveys: role.show_surveys,
+              shift_id: this.shift.id
+            }
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              const roleStaffId = role.role_staff_id;
+              this.scheduleService.confirmStaffSelection(roleStaffId)
+                .subscribe(res => {
+                  role.message = res.role_message;
+                  role.actions = [...res.actions];
+                }, err => this.scMessageService.error(err));
+            }
+          });
+        }
+        break;
+
+      case Action.replace:
+        dialogRef = this.dialog.open(StaffShiftReplaceDialogComponent, {
+          panelClass: 'staff-shift-replace-dialog'
+        });
+        dialogRef.afterClosed().subscribe(reason => {
+          if (reason) {
+            const roleStaffId = role.role_staff_id;
+            this.scheduleService.replaceShiftRole(roleStaffId, reason)
+              .subscribe(res => {
+                role.message = res.role_message;
+                role.actions = [...res.actions];
+              }, err => this.scMessageService.error(err));
+          }
+        });
+        break;
+
+      case Action.cancel_replace:
+        dialogRef = this.dialog.open(FuseConfirmDialogComponent, {
+          disableClose: false
+        });
+        dialogRef.componentInstance.confirmMessage = 'Really cancel your application?';
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            const roleStaffId = role.role_staff_id;
+            this.scheduleService.replaceCancelShiftRole(roleStaffId)
+              .subscribe(res => {
+                role.message = res.role_message;
+                role.actions = [...res.actions];
+              }, err => this.scMessageService.error(err));
+          }
+        });
+        break;
+
+      case Action.cancel_replace_standby:
+
+        break;
+
+      case Action.check_in:
+        dialogRef = this.dialog.open(StaffShiftCheckInOutDialogComponent, {
+          disableClose: false,
+          panelClass: 'staff-shift-check-in-out-dialog',
+          data: {
+            mode: 'checkin',
+            photoRequired: this.shift.check_in_photo
+          }
+        });
+        dialogRef.afterClosed().subscribe(async (result) => {
+          if (result) {
+            const roleStaffId = role.role_staff_id;
+            try {
+              const res = await this.scheduleService.checkInShiftRole(roleStaffId, result);
+              role.message = res.role_message;
+              role.actions = [...res.actions]
+            } catch (e) {
+              this.scMessageService.error(e);
+            }
+          }
+        });
+        break;
+
+      case Action.check_out:
+        dialogRef = this.dialog.open(StaffShiftCheckInOutDialogComponent, {
+          disableClose: false,
+          panelClass: 'staff-shift-check-in-out-dialog',
+          data: {
+            mode: 'checkout',
+            photoRequired: this.shift.check_out_photo
+          }
+        });
+        dialogRef.afterClosed().subscribe(async (result) => {
+          if (result) {
+            const roleStaffId = role.role_staff_id;
+            try {
+              const res = await this.scheduleService.checkOutShiftRole(roleStaffId, result);
+              role.message = res.role_message;
+              role.actions = [...res.actions];
+            } catch (e) {
+              this.scMessageService.error(e);
+            }
+          }
+        });
+        break;
+
+      case Action.complete:
+        dialogRef = this.dialog.open(StaffShiftCompleteDialogComponent, {
+          disableClose: false,
+          panelClass: 'staff-shift-complete-dialog',
+          data: {
+            roleStaffId: role.role_staff_id,
+            // action,
+            role
+          }
+        });
+        dialogRef.afterClosed().subscribe(async (result) => {
+          if (result) {
+            const roleStaffId = role.role_staff_id;
+            try {
+              const res = await this.scheduleService.completeShiftRole(roleStaffId);
+              role.message = res.role_message;
+              role.actions = [...res.actions];
+            } catch (e) {
+              this.toastr.error(e.error.message);
+            }
+          }
+        });
+        break;
+
+      case Action.expenses:
+
+        break;
+
+      case Action.invoice:
+        // Open generating invoice tab
+        tab = new Tab('New Invoice', 'generatePayrollTpl', 'staff/new-invoice', { from: this.shift.date });
+        this.tabService.openTab(tab);
+        break;
+
+      case Action.view_invoice:
+
+        break;
+
+      case Action.view_pay:
+
+        break;
+
+      case Action.reports:
+
+        break;
+
+      case Action.uploads:
+
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  getStyle(action) {
+    let style;
+    switch (action) {
+      case Action.confirm:
+      case Action.apply:
+        style = 'mat-accent-bg'
+        break;
+
+      case Action.replace:
+      case Action.not_available:
+        style = 'mat-warn-bg';
+        break;
+
+
+      default:
+        style = 'mat-primary-50-bg';
+        break;
+    }
+
+    return style;
+  }
+
+  sum(payItems: any[]) {
+    return payItems.reduce((ac, item) => ac + item.total, 0);
+  }
+
+  openPayItemDialog(payItems) {
+    const dialogRef = this.dialog.open(StaffShiftPayItemDialogComponent, {
+      data: { payItems }
+    });
+    dialogRef.afterClosed().subscribe(_ => { });
+  }
+
+  openScoreDialog(score) {
+    if (_.isNil(score)) {
+      return;
+    } else {
+      const dialogRef = this.dialog.open(FuseInfoDialogComponent, {
+        disableClose: false,
+        panelClass: 'fuse-info-dialog'
+      });
+      dialogRef.componentInstance.title = 'QuizConnect';
+      dialogRef.componentInstance.message = `Your score: ${Math.round(score)}%`;
+      dialogRef.afterClosed().subscribe(() => { });
+    }
   }
 
 }
